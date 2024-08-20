@@ -1,22 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'default-param-last',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Enforce default parameters to be last',
-      extendsBaseRule: true,
-    },
-    schema: [],
-    messages: {
-      shouldBeLast: 'Default parameters should be last.',
-    },
-  },
-  defaultOptions: [],
   create(context) {
     /**
      * checks if node is optional parameter
@@ -71,7 +59,7 @@ export default createRule({
           (isOptionalParam(param) ||
             param.type === AST_NODE_TYPES.AssignmentPattern)
         ) {
-          context.report({ node: current, messageId: 'shouldBeLast' });
+          context.report({ messageId: 'shouldBeLast', node: current });
         }
       }
     }
@@ -82,4 +70,17 @@ export default createRule({
       FunctionExpression: checkDefaultParamLast,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Enforce default parameters to be last',
+      extendsBaseRule: true,
+    },
+    messages: {
+      shouldBeLast: 'Default parameters should be last.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'default-param-last',
 });

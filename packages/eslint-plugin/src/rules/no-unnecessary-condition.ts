@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -87,61 +88,6 @@ export type MessageId =
   | 'noStrictNullCheck';
 
 export default createRule<Options, MessageId>({
-  name: 'no-unnecessary-condition',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Disallow conditionals where the type is always truthy or always falsy',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowConstantLoopConditions: {
-            description:
-              'Whether to ignore constant loop conditions, such as `while (true)`.',
-            type: 'boolean',
-          },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            description:
-              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    fixable: 'code',
-    messages: {
-      alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
-      alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
-      alwaysTruthyFunc:
-        'This callback should return a conditional, but return is always truthy.',
-      alwaysFalsyFunc:
-        'This callback should return a conditional, but return is always falsy.',
-      neverNullish:
-        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
-      alwaysNullish:
-        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
-      literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values.',
-      noOverlapBooleanExpression:
-        'Unnecessary conditional, the types have no overlap.',
-      never: 'Unnecessary conditional, value is `never`.',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
-      noStrictNullCheck:
-        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-    },
-  },
-  defaultOptions: [
-    {
-      allowConstantLoopConditions: false,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-    },
-  ],
   create(
     context,
     [
@@ -166,8 +112,8 @@ export default createRule<Options, MessageId>({
     ) {
       context.report({
         loc: {
-          start: { line: 0, column: 0 },
-          end: { line: 0, column: 0 },
+          end: { column: 0, line: 0 },
+          start: { column: 0, line: 0 },
         },
         messageId: 'noStrictNullCheck',
       });
@@ -291,7 +237,7 @@ export default createRule<Options, MessageId>({
       }
 
       if (messageId) {
-        context.report({ node, messageId });
+        context.report({ messageId, node });
       }
     }
 
@@ -339,7 +285,7 @@ export default createRule<Options, MessageId>({
       }
 
       if (messageId) {
-        context.report({ node, messageId });
+        context.report({ messageId, node });
       }
     }
 
@@ -372,7 +318,7 @@ export default createRule<Options, MessageId>({
       const leftType = getConstrainedTypeAtLocation(services, node.left);
       const rightType = getConstrainedTypeAtLocation(services, node.right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
-        context.report({ node, messageId: 'literalBooleanExpression' });
+        context.report({ messageId: 'literalBooleanExpression', node });
         return;
       }
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
@@ -404,7 +350,7 @@ export default createRule<Options, MessageId>({
           (leftType.flags === NULL && !isComparable(rightType, NULL)) ||
           (rightType.flags === NULL && !isComparable(leftType, NULL))
         ) {
-          context.report({ node, messageId: 'noOverlapBooleanExpression' });
+          context.report({ messageId: 'noOverlapBooleanExpression', node });
           return;
         }
       }
@@ -517,14 +463,14 @@ export default createRule<Options, MessageId>({
         }
         if (!returnTypes.some(isPossiblyFalsy)) {
           return context.report({
-            node: callback,
             messageId: 'alwaysTruthyFunc',
+            node: callback,
           });
         }
         if (!returnTypes.some(isPossiblyTruthy)) {
           return context.report({
-            node: callback,
             messageId: 'alwaysFalsyFunc',
+            node: callback,
           });
         }
       }
@@ -654,7 +600,7 @@ export default createRule<Options, MessageId>({
     function checkOptionalChain(
       node: TSESTree.CallExpression | TSESTree.MemberExpression,
       beforeOperator: TSESTree.Node,
-      fix: '.' | '',
+      fix: '' | '.',
     ): void {
       // We only care if this step in the chain is optional. If just descend
       // from an optional chain, then that's fine.
@@ -686,12 +632,12 @@ export default createRule<Options, MessageId>({
       );
 
       context.report({
-        node,
-        loc: questionDotOperator.loc,
-        messageId: 'neverOptionalChain',
         fix(fixer) {
           return fixer.replaceText(questionDotOperator, fix);
         },
+        loc: questionDotOperator.loc,
+        messageId: 'neverOptionalChain',
+        node,
       });
     }
 
@@ -710,7 +656,7 @@ export default createRule<Options, MessageId>({
     ): void {
       // Similar to checkLogicalExpressionForUnnecessaryConditionals, since
       // a ||= b is equivalent to a || (a = b)
-      if (['||=', '&&='].includes(node.operator)) {
+      if (['&&=', '||='].includes(node.operator)) {
         checkNode(node.left);
       } else if (node.operator === '??=') {
         checkNodeForNullish(node.left);
@@ -721,14 +667,69 @@ export default createRule<Options, MessageId>({
       AssignmentExpression: checkAssignmentExpression,
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
+      'CallExpression[optional = true]': checkOptionalCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
       IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
-      WhileStatement: checkIfLoopIsNecessaryConditional,
       'MemberExpression[optional = true]': checkOptionalMemberExpression,
-      'CallExpression[optional = true]': checkOptionalCallExpression,
+      WhileStatement: checkIfLoopIsNecessaryConditional,
     };
   },
+  defaultOptions: [
+    {
+      allowConstantLoopConditions: false,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Disallow conditionals where the type is always truthy or always falsy',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      alwaysFalsyFunc:
+        'This callback should return a conditional, but return is always falsy.',
+      alwaysNullish:
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
+      alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
+      alwaysTruthyFunc:
+        'This callback should return a conditional, but return is always truthy.',
+      literalBooleanExpression:
+        'Unnecessary conditional, both sides of the expression are literal values.',
+      never: 'Unnecessary conditional, value is `never`.',
+      neverNullish:
+        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
+      noOverlapBooleanExpression:
+        'Unnecessary conditional, the types have no overlap.',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowConstantLoopConditions: {
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
+            type: 'boolean',
+          },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-unnecessary-condition',
 });

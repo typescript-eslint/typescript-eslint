@@ -1,5 +1,6 @@
-import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getNameLocationInGlobalDirectiveComment } from '../util';
@@ -13,41 +14,6 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  name: 'no-redeclare',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow variable redeclaration',
-      extendsBaseRule: true,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          builtinGlobals: {
-            type: 'boolean',
-          },
-          ignoreDeclarationMerge: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: {
-      redeclared: "'{{id}}' is already defined.",
-      redeclaredAsBuiltin:
-        "'{{id}}' is already defined as a built-in global variable.",
-      redeclaredBySyntax:
-        "'{{id}}' is already defined by a variable declaration.",
-    },
-  },
-  defaultOptions: [
-    {
-      builtinGlobals: true,
-      ignoreDeclarationMerge: true,
-    },
-  ],
   create(context, [options]) {
     const CLASS_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSInterfaceDeclaration,
@@ -65,9 +31,9 @@ export default createRule<Options, MessageIds>({
 
     function* iterateDeclarations(variable: TSESLint.Scope.Variable): Generator<
       {
-        type: 'builtin' | 'comment' | 'syntax';
-        node?: TSESTree.Comment | TSESTree.Identifier;
         loc?: TSESTree.SourceLocation;
+        node?: TSESTree.Comment | TSESTree.Identifier;
+        type: 'builtin' | 'comment' | 'syntax';
       },
       void
     > {
@@ -86,13 +52,13 @@ export default createRule<Options, MessageIds>({
       ) {
         for (const comment of variable.eslintExplicitGlobalComments) {
           yield {
-            type: 'comment',
-            node: comment,
             loc: getNameLocationInGlobalDirectiveComment(
               context.sourceCode,
               comment,
               variable.name,
             ),
+            node: comment,
+            type: 'comment',
           };
         }
       }
@@ -143,7 +109,7 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one class declaration, which needs to be reported
           for (const { identifier } of classDecls) {
-            yield { type: 'syntax', node: identifier, loc: identifier.loc };
+            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
           }
           return;
         }
@@ -164,7 +130,7 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one function declaration, which needs to be reported
           for (const { identifier } of functionDecls) {
-            yield { type: 'syntax', node: identifier, loc: identifier.loc };
+            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
           }
           return;
         }
@@ -185,14 +151,14 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one enum declaration, which needs to be reported
           for (const { identifier } of enumDecls) {
-            yield { type: 'syntax', node: identifier, loc: identifier.loc };
+            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
           }
           return;
         }
       }
 
       for (const { identifier } of identifiers) {
-        yield { type: 'syntax', node: identifier, loc: identifier.loc };
+        yield { loc: identifier.loc, node: identifier, type: 'syntax' };
       }
     }
 
@@ -217,14 +183,14 @@ export default createRule<Options, MessageIds>({
         const data = { id: variable.name };
 
         // Report extra declarations.
-        for (const { type, node, loc } of extraDeclarations) {
+        for (const { loc, node, type } of extraDeclarations) {
           const messageId =
             type === declaration.type ? 'redeclared' : detailMessageId;
 
           if (node) {
-            context.report({ node, loc, messageId, data });
+            context.report({ data, loc, messageId, node });
           } else if (loc) {
-            context.report({ loc, messageId, data });
+            context.report({ data, loc, messageId });
           }
         }
       }
@@ -246,6 +212,15 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      ArrowFunctionExpression: checkForBlock,
+
+      BlockStatement: checkForBlock,
+      ForInStatement: checkForBlock,
+      ForOfStatement: checkForBlock,
+
+      ForStatement: checkForBlock,
+      FunctionDeclaration: checkForBlock,
+      FunctionExpression: checkForBlock,
       Program(node): void {
         const scope = context.sourceCode.getScope(node);
 
@@ -261,16 +236,42 @@ export default createRule<Options, MessageIds>({
           findVariablesInScope(scope.childScopes[0]);
         }
       },
-
-      FunctionDeclaration: checkForBlock,
-      FunctionExpression: checkForBlock,
-      ArrowFunctionExpression: checkForBlock,
-
-      BlockStatement: checkForBlock,
-      ForStatement: checkForBlock,
-      ForInStatement: checkForBlock,
-      ForOfStatement: checkForBlock,
       SwitchStatement: checkForBlock,
     };
   },
+  defaultOptions: [
+    {
+      builtinGlobals: true,
+      ignoreDeclarationMerge: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow variable redeclaration',
+      extendsBaseRule: true,
+    },
+    messages: {
+      redeclared: "'{{id}}' is already defined.",
+      redeclaredAsBuiltin:
+        "'{{id}}' is already defined as a built-in global variable.",
+      redeclaredBySyntax:
+        "'{{id}}' is already defined by a variable declaration.",
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          builtinGlobals: {
+            type: 'boolean',
+          },
+          ignoreDeclarationMerge: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-redeclare',
 });

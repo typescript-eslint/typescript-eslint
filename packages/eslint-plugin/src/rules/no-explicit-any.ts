@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -12,47 +13,7 @@ export type Options = [
 export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-explicit-any',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow the `any` type',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      unexpectedAny: 'Unexpected any. Specify a different type.',
-      suggestUnknown:
-        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
-      suggestNever:
-        "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          fixToUnknown: {
-            description:
-              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
-            type: 'boolean',
-          },
-          ignoreRestArgs: {
-            description: 'Whether to ignore rest parameter arrays.',
-            type: 'boolean',
-          },
-        },
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      fixToUnknown: false,
-      ignoreRestArgs: false,
-    },
-  ],
-  create(context, [{ ignoreRestArgs, fixToUnknown }]) {
+  create(context, [{ fixToUnknown, ignoreRestArgs }]) {
     /**
      * Checks if the node is an arrow function, function/constructor declaration or function expression
      * @param node the node to be validated.
@@ -64,13 +25,13 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrowFunctionExpression, // const x = (...args: any[]) => {};
         AST_NODE_TYPES.FunctionDeclaration, // function f(...args: any[]) {}
         AST_NODE_TYPES.FunctionExpression, // const x = function(...args: any[]) {};
+        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
+        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
+        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
+        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
         AST_NODE_TYPES.TSEmptyBodyFunctionExpression, // declare class A { f(...args: any[]): unknown; }
         AST_NODE_TYPES.TSFunctionType, // type T = (...args: any[]) => unknown;
-        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
-        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
-        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
         AST_NODE_TYPES.TSMethodSignature, // type T = {f(...args: any[]): unknown};
-        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
       ].includes(node.type);
     }
 
@@ -182,16 +143,16 @@ export default createRule<Options, MessageIds>({
           fix: null,
           suggest: [
             {
-              messageId: 'suggestUnknown',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.replaceText(node, 'unknown');
               },
+              messageId: 'suggestUnknown',
             },
             {
-              messageId: 'suggestNever',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.replaceText(node, 'never');
               },
+              messageId: 'suggestNever',
             },
           ],
         };
@@ -202,11 +163,51 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          node,
           messageId: 'unexpectedAny',
+          node,
           ...fixOrSuggest,
         });
       },
     };
   },
+  defaultOptions: [
+    {
+      fixToUnknown: false,
+      ignoreRestArgs: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow the `any` type',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      suggestNever:
+        "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+      suggestUnknown:
+        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
+      unexpectedAny: 'Unexpected any. Specify a different type.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          fixToUnknown: {
+            description:
+              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
+            type: 'boolean',
+          },
+          ignoreRestArgs: {
+            description: 'Whether to ignore rest parameter arrays.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-explicit-any',
 });

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -25,62 +26,6 @@ type Options = [
 type MessageIds = 'missingAsync';
 
 export default createRule<Options, MessageIds>({
-  name: 'promise-function-async',
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    docs: {
-      description:
-        'Require any function or method that returns a Promise to be marked async',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      missingAsync: 'Functions that return promises must be async.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowAny: {
-            description:
-              'Whether to consider `any` and `unknown` to be Promises.',
-            type: 'boolean',
-          },
-          allowedPromiseNames: {
-            description:
-              'Any extra names of classes or interfaces to be considered Promises.',
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-          checkArrowFunctions: {
-            type: 'boolean',
-          },
-          checkFunctionDeclarations: {
-            type: 'boolean',
-          },
-          checkFunctionExpressions: {
-            type: 'boolean',
-          },
-          checkMethodDeclarations: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowedPromiseNames: [],
-      checkArrowFunctions: true,
-      checkFunctionDeclarations: true,
-      checkFunctionExpressions: true,
-      checkMethodDeclarations: true,
-    },
-  ],
   create(
     context,
     [
@@ -146,16 +91,13 @@ export default createRule<Options, MessageIds>({
       if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         // Report without auto fixer because the return type is unknown
         return context.report({
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           messageId: 'missingAsync',
           node,
-          loc: getFunctionHeadLoc(node, context.sourceCode),
         });
       }
 
       context.report({
-        messageId: 'missingAsync',
-        node,
-        loc: getFunctionHeadLoc(node, context.sourceCode),
         fix: fixer => {
           if (
             node.parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -212,6 +154,9 @@ export default createRule<Options, MessageIds>({
 
           return fixer.insertTextBefore(node, 'async ');
         },
+        loc: getFunctionHeadLoc(node, context.sourceCode),
+        messageId: 'missingAsync',
+        node,
       });
     }
 
@@ -248,4 +193,60 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowedPromiseNames: [],
+      checkArrowFunctions: true,
+      checkFunctionDeclarations: true,
+      checkFunctionExpressions: true,
+      checkMethodDeclarations: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Require any function or method that returns a Promise to be marked async',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      missingAsync: 'Functions that return promises must be async.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowAny: {
+            description:
+              'Whether to consider `any` and `unknown` to be Promises.',
+            type: 'boolean',
+          },
+          allowedPromiseNames: {
+            description:
+              'Any extra names of classes or interfaces to be considered Promises.',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+          checkArrowFunctions: {
+            type: 'boolean',
+          },
+          checkFunctionDeclarations: {
+            type: 'boolean',
+          },
+          checkFunctionExpressions: {
+            type: 'boolean',
+          },
+          checkMethodDeclarations: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'promise-function-async',
 });

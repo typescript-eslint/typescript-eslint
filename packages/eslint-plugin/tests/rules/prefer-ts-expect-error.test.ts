@@ -5,6 +5,123 @@ import rule from '../../src/rules/prefer-ts-expect-error';
 const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-ts-expect-error', rule, {
+  invalid: [
+    {
+      code: '// @ts-ignore',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '// @ts-expect-error',
+    },
+    {
+      code: '// @ts-ignore: Suppress next line',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+
+      output: '// @ts-expect-error: Suppress next line',
+    },
+    {
+      code: '///@ts-ignore: Suppress next line',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '///@ts-expect-error: Suppress next line',
+    },
+    {
+      code: `
+if (false) {
+  // @ts-ignore: Unreachable code error
+  console.log('hello');
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: `
+if (false) {
+  // @ts-expect-error: Unreachable code error
+  console.log('hello');
+}
+      `,
+    },
+    {
+      code: '/* @ts-ignore */',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* @ts-expect-error */',
+    },
+    {
+      code: `
+/**
+ * Explaining comment
+ *
+ * @ts-ignore */
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: `
+/**
+ * Explaining comment
+ *
+ * @ts-expect-error */
+      `,
+    },
+    {
+      code: '/* @ts-ignore in a single block */',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: '/* @ts-expect-error in a single block */',
+    },
+    {
+      code: `
+/*
+// @ts-ignore in a block with single line comments */
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'preferExpectErrorComment',
+        },
+      ],
+      output: `
+/*
+// @ts-expect-error in a block with single line comments */
+      `,
+    },
+  ],
   valid: [
     '// @ts-nocheck',
     '// @ts-check',
@@ -32,122 +149,5 @@ if (false) {
  * Not last line
  * */
     `,
-  ],
-  invalid: [
-    {
-      code: '// @ts-ignore',
-      output: '// @ts-expect-error',
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '// @ts-ignore: Suppress next line',
-      output: '// @ts-expect-error: Suppress next line',
-
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '///@ts-ignore: Suppress next line',
-      output: '///@ts-expect-error: Suppress next line',
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-if (false) {
-  // @ts-ignore: Unreachable code error
-  console.log('hello');
-}
-      `,
-      output: `
-if (false) {
-  // @ts-expect-error: Unreachable code error
-  console.log('hello');
-}
-      `,
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: '/* @ts-ignore */',
-      output: '/* @ts-expect-error */',
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-/**
- * Explaining comment
- *
- * @ts-ignore */
-      `,
-      output: `
-/**
- * Explaining comment
- *
- * @ts-expect-error */
-      `,
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '/* @ts-ignore in a single block */',
-      output: '/* @ts-expect-error in a single block */',
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-/*
-// @ts-ignore in a block with single line comments */
-      `,
-      output: `
-/*
-// @ts-expect-error in a block with single line comments */
-      `,
-      errors: [
-        {
-          messageId: 'preferExpectErrorComment',
-          line: 2,
-          column: 1,
-        },
-      ],
-    },
   ],
 });

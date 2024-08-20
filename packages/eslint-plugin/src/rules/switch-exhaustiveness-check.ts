@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -14,10 +15,10 @@ import {
 } from '../util';
 
 interface SwitchMetadata {
-  readonly symbolName: string | undefined;
+  readonly containsNonLiteralType: boolean;
   readonly defaultCase: TSESTree.SwitchCase | undefined;
   readonly missingLiteralBranchTypes: ts.Type[];
-  readonly containsNonLiteralType: boolean;
+  readonly symbolName: string | undefined;
 }
 
 type Options = [
@@ -40,49 +41,11 @@ type Options = [
 ];
 
 type MessageIds =
-  | 'switchIsNotExhaustive'
+  | 'addMissingCases'
   | 'dangerousDefaultCase'
-  | 'addMissingCases';
+  | 'switchIsNotExhaustive';
 
 export default createRule<Options, MessageIds>({
-  name: 'switch-exhaustiveness-check',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Require switch-case statements to be exhaustive',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowDefaultCaseForExhaustiveSwitch: {
-            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
-            type: 'boolean',
-          },
-          requireDefaultForNonUnion: {
-            description: `If 'true', require a 'default' clause for switches on non-union types.`,
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: {
-      switchIsNotExhaustive:
-        'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
-      dangerousDefaultCase:
-        'The switch statement is exhaustive, so the default case is unnecessary.',
-      addMissingCases: 'Add branches for missing cases.',
-    },
-  },
-  defaultOptions: [
-    {
-      allowDefaultCaseForExhaustiveSwitch: true,
-      requireDefaultForNonUnion: false,
-    },
-  ],
   create(
     context,
     [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
@@ -141,10 +104,10 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        symbolName,
-        missingLiteralBranchTypes,
-        defaultCase,
         containsNonLiteralType,
+        defaultCase,
+        missingLiteralBranchTypes,
+        symbolName,
       };
     }
 
@@ -152,7 +115,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SwitchStatement,
       switchMetadata: SwitchMetadata,
     ): void {
-      const { missingLiteralBranchTypes, symbolName, defaultCase } =
+      const { defaultCase, missingLiteralBranchTypes, symbolName } =
         switchMetadata;
 
       // We only trigger the rule if a `default` case does not exist, since that
@@ -160,8 +123,6 @@ export default createRule<Options, MessageIds>({
       // match the members of a union.
       if (missingLiteralBranchTypes.length > 0 && defaultCase === undefined) {
         context.report({
-          node: node.discriminant,
-          messageId: 'switchIsNotExhaustive',
           data: {
             missingBranches: missingLiteralBranchTypes
               .map(missingType =>
@@ -171,9 +132,10 @@ export default createRule<Options, MessageIds>({
               )
               .join(' | '),
           },
+          messageId: 'switchIsNotExhaustive',
+          node: node.discriminant,
           suggest: [
             {
-              messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix | null {
                 return fixSwitch(
                   fixer,
@@ -182,6 +144,7 @@ export default createRule<Options, MessageIds>({
                   symbolName?.toString(),
                 );
               },
+              messageId: 'addMissingCases',
             },
           ],
         });
@@ -275,7 +238,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { missingLiteralBranchTypes, defaultCase, containsNonLiteralType } =
+      const { containsNonLiteralType, defaultCase, missingLiteralBranchTypes } =
         switchMetadata;
 
       if (
@@ -284,8 +247,8 @@ export default createRule<Options, MessageIds>({
         !containsNonLiteralType
       ) {
         context.report({
-          node: defaultCase,
           messageId: 'dangerousDefaultCase',
+          node: defaultCase,
         });
       }
     }
@@ -298,19 +261,19 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { defaultCase, containsNonLiteralType } = switchMetadata;
+      const { containsNonLiteralType, defaultCase } = switchMetadata;
 
       if (containsNonLiteralType && defaultCase === undefined) {
         context.report({
-          node: node.discriminant,
-          messageId: 'switchIsNotExhaustive',
           data: { missingBranches: 'default' },
+          messageId: 'switchIsNotExhaustive',
+          node: node.discriminant,
           suggest: [
             {
-              messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix {
                 return fixSwitch(fixer, node, [null]);
               },
+              messageId: 'addMissingCases',
             },
           ],
         });
@@ -327,6 +290,44 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allowDefaultCaseForExhaustiveSwitch: true,
+      requireDefaultForNonUnion: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Require switch-case statements to be exhaustive',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      addMissingCases: 'Add branches for missing cases.',
+      dangerousDefaultCase:
+        'The switch statement is exhaustive, so the default case is unnecessary.',
+      switchIsNotExhaustive:
+        'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowDefaultCaseForExhaustiveSwitch: {
+            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
+            type: 'boolean',
+          },
+          requireDefaultForNonUnion: {
+            description: `If 'true', require a 'default' clause for switches on non-union types.`,
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'switch-exhaustiveness-check',
 });
 
 function isTypeLiteralLikeType(type: ts.Type): boolean {

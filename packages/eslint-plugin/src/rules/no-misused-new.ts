@@ -1,23 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'no-misused-new',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Enforce valid definition of `new` and `constructor`',
-      recommended: 'recommended',
-    },
-    schema: [],
-    messages: {
-      errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
-      errorMessageClass: 'Class cannot have method named `new`.',
-    },
-  },
-  defaultOptions: [],
   create(context) {
     /**
      * @param node type to be inspected.
@@ -51,10 +38,10 @@ export default createRule({
      */
     function isMatchingParentType(
       parent:
-        | TSESTree.TSInterfaceDeclaration
         | TSESTree.ClassDeclaration
         | TSESTree.ClassExpression
         | TSESTree.Identifier
+        | TSESTree.TSInterfaceDeclaration
         | undefined,
       returnType: TSESTree.TSTypeAnnotation | undefined,
     ): boolean {
@@ -71,6 +58,18 @@ export default createRule({
     }
 
     return {
+      "ClassBody > MethodDefinition[key.name='new']"(
+        node: TSESTree.MethodDefinition,
+      ): void {
+        if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
+          if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
+            context.report({
+              messageId: 'errorMessageClass',
+              node,
+            });
+          }
+        }
+      },
       'TSInterfaceBody > TSConstructSignatureDeclaration'(
         node: TSESTree.TSConstructSignatureDeclaration,
       ): void {
@@ -82,8 +81,8 @@ export default createRule({
         ) {
           // constructor
           context.report({
-            node,
             messageId: 'errorMessageInterface',
+            node,
           });
         }
       },
@@ -91,22 +90,24 @@ export default createRule({
         node: TSESTree.TSMethodSignature,
       ): void {
         context.report({
-          node,
           messageId: 'errorMessageInterface',
+          node,
         });
-      },
-      "ClassBody > MethodDefinition[key.name='new']"(
-        node: TSESTree.MethodDefinition,
-      ): void {
-        if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
-          if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
-            context.report({
-              node,
-              messageId: 'errorMessageClass',
-            });
-          }
-        }
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Enforce valid definition of `new` and `constructor`',
+      recommended: 'recommended',
+    },
+    messages: {
+      errorMessageClass: 'Class cannot have method named `new`.',
+      errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-misused-new',
 });

@@ -1,10 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -14,19 +16,6 @@ type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  name: 'no-loop-func',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Disallow function declarations that contain unsafe references inside loop statements',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [],
-    messages: baseRule.meta.messages,
-  },
-  defaultOptions: [],
   create(context) {
     /**
      * Reports functions which match the following condition:
@@ -54,19 +43,32 @@ export default createRule<Options, MessageIds>({
 
       if (unsafeRefs.length > 0) {
         context.report({
-          node,
-          messageId: 'unsafeRefs',
           data: { varNames: `'${unsafeRefs.join("', '")}'` },
+          messageId: 'unsafeRefs',
+          node,
         });
       }
     }
 
     return {
       ArrowFunctionExpression: checkForLoops,
-      FunctionExpression: checkForLoops,
       FunctionDeclaration: checkForLoops,
+      FunctionExpression: checkForLoops,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow function declarations that contain unsafe references inside loop statements',
+      extendsBaseRule: true,
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-loop-func',
 });
 
 /**

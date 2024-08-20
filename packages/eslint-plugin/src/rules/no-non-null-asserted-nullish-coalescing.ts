@@ -1,6 +1,7 @@
 import type { Definition } from '@typescript-eslint/scope-manager';
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -30,23 +31,6 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
 }
 
 export default createRule({
-  name: 'no-non-null-asserted-nullish-coalescing',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Disallow non-null assertions in the left operand of a nullish coalescing operator',
-      recommended: 'strict',
-    },
-    messages: {
-      noNonNullAssertedNullishCoalescing:
-        'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
-      suggestRemovingNonNull: 'Remove the non-null assertion.',
-    },
-    schema: [],
-    hasSuggestions: true,
-  },
-  defaultOptions: [],
   create(context) {
     return {
       'LogicalExpression[operator = "??"] > TSNonNullExpression.left'(
@@ -62,8 +46,8 @@ export default createRule({
         }
 
         context.report({
-          node,
           messageId: 'noNonNullAssertedNullishCoalescing',
+          node,
           /*
           Use a suggestion instead of a fixer, because this can break type checks.
           The resulting type of the nullish coalesce is only influenced by the right operand if the left operand can be `null` or `undefined`.
@@ -79,7 +63,6 @@ export default createRule({
           */
           suggest: [
             {
-              messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
                 const exclamationMark = nullThrows(
                   context.sourceCode.getLastToken(
@@ -90,10 +73,28 @@ export default createRule({
                 );
                 return fixer.remove(exclamationMark);
               },
+              messageId: 'suggestRemovingNonNull',
             },
           ],
         });
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow non-null assertions in the left operand of a nullish coalescing operator',
+      recommended: 'strict',
+    },
+    hasSuggestions: true,
+    messages: {
+      noNonNullAssertedNullishCoalescing:
+        'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
+      suggestRemovingNonNull: 'Remove the non-null assertion.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-non-null-asserted-nullish-coalescing',
 });

@@ -2,6 +2,7 @@
 /* eslint-disable eslint-plugin/no-property-in-node */
 
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
@@ -20,7 +21,6 @@ export type MessageIds =
 type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
-  | ReadonlyType
   | 'accessor'
   | 'call-signature'
   | 'constructor'
@@ -29,15 +29,16 @@ type MemberKind =
   | 'method'
   | 'set'
   | 'signature'
-  | 'static-initialization';
+  | 'static-initialization'
+  | ReadonlyType;
 
 type DecoratedMemberKind =
-  | Exclude<ReadonlyType, 'readonly-signature'>
   | 'accessor'
   | 'field'
   | 'get'
   | 'method'
-  | 'set';
+  | 'set'
+  | Exclude<ReadonlyType, 'readonly-signature'>;
 
 type NonCallableMemberKind = Exclude<
   MemberKind,
@@ -46,10 +47,9 @@ type NonCallableMemberKind = Exclude<
 
 type MemberScope = 'abstract' | 'instance' | 'static';
 
-type Accessibility = TSESTree.Accessibility | '#private';
+type Accessibility = '#private' | TSESTree.Accessibility;
 
 type BaseMemberType =
-  | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
       'readonly-signature' | 'signature' | 'static-initialization'
@@ -57,75 +57,76 @@ type BaseMemberType =
   | `${Accessibility}-${MemberScope}-${NonCallableMemberKind}`
   | `${Accessibility}-decorated-${DecoratedMemberKind}`
   | `${MemberScope}-${NonCallableMemberKind}`
-  | `decorated-${DecoratedMemberKind}`;
+  | `decorated-${DecoratedMemberKind}`
+  | MemberKind;
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
 type AlphabeticalOrder =
-  | 'alphabetically-case-insensitive'
   | 'alphabetically'
-  | 'natural-case-insensitive'
-  | 'natural';
+  | 'alphabetically-case-insensitive'
+  | 'natural'
+  | 'natural-case-insensitive';
 
-type Order = AlphabeticalOrder | 'as-written';
+type Order = 'as-written' | AlphabeticalOrder;
 
 interface SortedOrderConfig {
-  memberTypes?: MemberType[] | 'never';
+  memberTypes?: 'never' | MemberType[];
   optionalityOrder?: OptionalityOrder;
   order?: Order;
 }
 
-type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
+type OrderConfig = 'never' | MemberType[] | SortedOrderConfig;
 type Member = TSESTree.ClassElement | TSESTree.TypeElement;
 
 type OptionalityOrder = 'optional-first' | 'required-first';
 
 export type Options = [
   {
-    default?: OrderConfig;
     classes?: OrderConfig;
     classExpressions?: OrderConfig;
+    default?: OrderConfig;
     interfaces?: OrderConfig;
     typeLiterals?: OrderConfig;
   },
 ];
 
 const neverConfig: JSONSchema.JSONSchema4 = {
-  type: 'string',
   enum: ['never'],
+  type: 'string',
 };
 
 const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
-  type: 'array',
   items: {
     oneOf: [
       {
         $ref: memberTypes,
       },
       {
-        type: 'array',
         items: {
           $ref: memberTypes,
         },
+        type: 'array',
       },
     ],
   },
+  type: 'array',
 });
 
 const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
-  type: 'object',
+  additionalProperties: false,
   properties: {
     memberTypes: {
       oneOf: [arrayConfig(memberTypes), neverConfig],
     },
-    order: {
-      $ref: '#/items/0/$defs/orderOptions',
-    },
     optionalityOrder: {
       $ref: '#/items/0/$defs/optionalityOrderOptions',
     },
+    order: {
+      $ref: '#/items/0/$defs/orderOptions',
+    },
   },
-  additionalProperties: false,
+  type: 'object',
 });
 
 export const defaultOrder: MemberType[] = [
@@ -415,12 +416,12 @@ function getNodeType(node: Member): MemberKind | null {
  */
 function getMemberRawName(
   member:
-    | TSESTree.MethodDefinition
     | TSESTree.AccessorProperty
+    | TSESTree.MethodDefinition
     | TSESTree.Property
     | TSESTree.PropertyDefinition
-    | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractAccessorProperty
+    | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
@@ -717,96 +718,6 @@ function getLowestRank(
 }
 
 export default createRule<Options, MessageIds>({
-  name: 'member-ordering',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Require a consistent member declaration order',
-    },
-    messages: {
-      incorrectOrder:
-        'Member {{member}} should be declared before member {{beforeMember}}.',
-      incorrectGroupOrder:
-        'Member {{name}} should be declared before all {{rank}} definitions.',
-      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
-    },
-    schema: [
-      {
-        $defs: {
-          orderOptions: {
-            type: 'string',
-            enum: [
-              'alphabetically',
-              'alphabetically-case-insensitive',
-              'as-written',
-              'natural',
-              'natural-case-insensitive',
-            ],
-          },
-          optionalityOrderOptions: {
-            type: 'string',
-            enum: ['optional-first', 'required-first'],
-          },
-          allItems: {
-            type: 'string',
-            enum: allMemberTypes as string[],
-          },
-          typeItems: {
-            type: 'string',
-            enum: [
-              'readonly-signature',
-              'signature',
-              'readonly-field',
-              'field',
-              'method',
-              'constructor',
-            ],
-          },
-
-          baseConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/allItems'),
-              objectConfig('#/items/0/$defs/allItems'),
-            ],
-          },
-          typesConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/typeItems'),
-              objectConfig('#/items/0/$defs/typeItems'),
-            ],
-          },
-        },
-        type: 'object',
-        properties: {
-          default: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
-          classes: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
-          classExpressions: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
-          interfaces: {
-            $ref: '#/items/0/$defs/typesConfig',
-          },
-          typeLiterals: {
-            $ref: '#/items/0/$defs/typesConfig',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      default: {
-        memberTypes: defaultOrder,
-      },
-    },
-  ],
   create(context, [options]) {
     /**
      * Checks if the member groups are correctly sorted.
@@ -839,12 +750,12 @@ export default createRule<Options, MessageIds>({
         // Works for 1st item because x < undefined === false for any x (typeof string)
         if (rank < rankLastMember) {
           context.report({
-            node: member,
-            messageId: 'incorrectGroupOrder',
             data: {
               name,
               rank: getLowestRank(previousRanks, rank, groupOrder),
             },
+            messageId: 'incorrectGroupOrder',
+            node: member,
           });
 
           isCorrectlySorted = false;
@@ -884,12 +795,12 @@ export default createRule<Options, MessageIds>({
         if (name) {
           if (naturalOutOfOrder(name, previousName, order)) {
             context.report({
-              node: member,
-              messageId: 'incorrectOrder',
               data: {
-                member: name,
                 beforeMember: previousName,
+                member: name,
               },
+              messageId: 'incorrectOrder',
+              node: member,
             });
 
             isCorrectlySorted = false;
@@ -945,13 +856,13 @@ export default createRule<Options, MessageIds>({
 
       const report = (member: Member): void =>
         context.report({
-          messageId: 'incorrectRequiredMembersOrder',
-          loc: member.loc,
           data: {
             member: getMemberName(member, context.sourceCode),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
+          loc: member.loc,
+          messageId: 'incorrectRequiredMembersOrder',
         });
 
       // if the optionality of the first item is correct (based on optionalityOrder)
@@ -1075,17 +986,17 @@ export default createRule<Options, MessageIds>({
     // https://github.com/typescript-eslint/typescript-eslint/issues/5439
     /* eslint-disable @typescript-eslint/no-non-null-assertion */
     return {
-      'ClassDeclaration, FunctionDeclaration'(node): void {
-        if ('superClass' in node) {
-          // ...
-        }
-      },
       ClassDeclaration(node): void {
         validateMembersOrder(
           node.body.body,
           options.classes ?? options.default!,
           true,
         );
+      },
+      'ClassDeclaration, FunctionDeclaration'(node): void {
+        if ('superClass' in node) {
+          // ...
+        }
       },
       ClassExpression(node): void {
         validateMembersOrder(
@@ -1111,4 +1022,94 @@ export default createRule<Options, MessageIds>({
     };
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
+  defaultOptions: [
+    {
+      default: {
+        memberTypes: defaultOrder,
+      },
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Require a consistent member declaration order',
+    },
+    messages: {
+      incorrectGroupOrder:
+        'Member {{name}} should be declared before all {{rank}} definitions.',
+      incorrectOrder:
+        'Member {{member}} should be declared before member {{beforeMember}}.',
+      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
+    },
+    schema: [
+      {
+        $defs: {
+          allItems: {
+            enum: allMemberTypes as string[],
+            type: 'string',
+          },
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
+          },
+          optionalityOrderOptions: {
+            enum: ['optional-first', 'required-first'],
+            type: 'string',
+          },
+          orderOptions: {
+            enum: [
+              'alphabetically',
+              'alphabetically-case-insensitive',
+              'as-written',
+              'natural',
+              'natural-case-insensitive',
+            ],
+            type: 'string',
+          },
+
+          typeItems: {
+            enum: [
+              'readonly-signature',
+              'signature',
+              'readonly-field',
+              'field',
+              'method',
+              'constructor',
+            ],
+            type: 'string',
+          },
+          typesConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/typeItems'),
+              objectConfig('#/items/0/$defs/typeItems'),
+            ],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          classes: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          classExpressions: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          default: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          interfaces: {
+            $ref: '#/items/0/$defs/typesConfig',
+          },
+          typeLiterals: {
+            $ref: '#/items/0/$defs/typesConfig',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'member-ordering',
 });

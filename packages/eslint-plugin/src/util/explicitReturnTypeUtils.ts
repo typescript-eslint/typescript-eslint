@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import {
   AST_NODE_TYPES,
   ASTUtils,
@@ -199,10 +200,10 @@ function returnsConstAssertionDirectly(
 }
 
 interface Options {
-  allowExpressions?: boolean;
-  allowTypedFunctionExpressions?: boolean;
-  allowHigherOrderFunctions?: boolean;
   allowDirectConstAssertionInArrowFunctions?: boolean;
+  allowExpressions?: boolean;
+  allowHigherOrderFunctions?: boolean;
+  allowTypedFunctionExpressions?: boolean;
 }
 
 /**
@@ -362,6 +363,7 @@ function ancestorHasReturnType(node: FunctionNode): boolean {
 }
 
 export {
+  ancestorHasReturnType,
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   doesImmediatelyReturnFunctionExpression,
@@ -369,5 +371,4 @@ export {
   FunctionNode,
   isTypedFunctionExpression,
   isValidFunctionExpressionReturnType,
-  ancestorHasReturnType,
 };

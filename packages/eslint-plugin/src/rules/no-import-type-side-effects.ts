@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -13,21 +14,6 @@ type Options = [];
 type MessageIds = 'useTopLevelQualifier';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-import-type-side-effects',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
-    },
-    fixable: 'code',
-    messages: {
-      useTopLevelQualifier:
-        'TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     return {
       'ImportDeclaration[importKind!="type"]'(
@@ -49,8 +35,6 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          node,
-          messageId: 'useTopLevelQualifier',
           fix(fixer) {
             const fixes: TSESLint.RuleFix[] = [];
             for (const specifier of specifiers) {
@@ -77,8 +61,25 @@ export default createRule<Options, MessageIds>({
 
             return fixes;
           },
+          messageId: 'useTopLevelQualifier',
+          node,
         });
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
+    },
+    fixable: 'code',
+    messages: {
+      useTopLevelQualifier:
+        'TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-import-type-side-effects',
 });

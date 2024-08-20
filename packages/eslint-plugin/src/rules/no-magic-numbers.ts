@@ -1,11 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -22,10 +24,10 @@ const schema = deepMerge(
     : baseRule.meta.schema,
   {
     properties: {
-      ignoreNumericLiteralTypes: {
+      ignoreEnums: {
         type: 'boolean',
       },
-      ignoreEnums: {
+      ignoreNumericLiteralTypes: {
         type: 'boolean',
       },
       ignoreReadonlyClassProperties: {
@@ -39,28 +41,6 @@ const schema = deepMerge(
 ) as unknown as JSONSchema4;
 
 export default createRule<Options, MessageIds>({
-  name: 'no-magic-numbers',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow magic numbers',
-      extendsBaseRule: true,
-    },
-    schema: [schema],
-    messages: baseRule.meta.messages,
-  },
-  defaultOptions: [
-    {
-      ignore: [],
-      ignoreArrayIndexes: false,
-      enforceConst: false,
-      detectObjects: false,
-      ignoreNumericLiteralTypes: false,
-      ignoreEnums: false,
-      ignoreReadonlyClassProperties: false,
-      ignoreTypeIndexes: false,
-    },
-  ],
   create(context, [options]) {
     const rules = baseRule.create(context);
 
@@ -121,9 +101,9 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
+            data: { raw },
             messageId: 'noMagic',
             node: fullNumberNode,
-            data: { raw },
           });
 
           return;
@@ -134,6 +114,28 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      detectObjects: false,
+      enforceConst: false,
+      ignore: [],
+      ignoreArrayIndexes: false,
+      ignoreEnums: false,
+      ignoreNumericLiteralTypes: false,
+      ignoreReadonlyClassProperties: false,
+      ignoreTypeIndexes: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow magic numbers',
+      extendsBaseRule: true,
+    },
+    messages: baseRule.meta.messages,
+    schema: [schema],
+    type: 'suggestion',
+  },
+  name: 'no-magic-numbers',
 });
 
 /**
@@ -158,7 +160,7 @@ function normalizeIgnoreValue(
  */
 function normalizeLiteralValue(
   node: TSESTree.BigIntLiteral | TSESTree.NumberLiteral,
-  value: number | bigint,
+  value: bigint | number,
 ): bigint | number {
   if (
     node.parent.type === AST_NODE_TYPES.UnaryExpression &&

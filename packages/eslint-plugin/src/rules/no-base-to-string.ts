@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -18,39 +19,6 @@ type Options = [
 type MessageIds = 'baseToString';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-base-to-string',
-  meta: {
-    docs: {
-      description:
-        'Require `.toString()` to only be called on objects which provide useful information when stringified',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      baseToString:
-        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          ignoredTypeNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    type: 'suggestion',
-  },
-  defaultOptions: [
-    {
-      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
-    },
-  ],
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -180,4 +148,37 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      baseToString:
+        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoredTypeNames: {
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-base-to-string',
 });

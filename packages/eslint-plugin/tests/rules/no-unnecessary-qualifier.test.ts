@@ -9,8 +9,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -18,73 +18,6 @@ const ruleTester = new RuleTester({
 const messageId = 'unnecessaryQualifier';
 
 ruleTester.run('no-unnecessary-qualifier', rule, {
-  valid: [
-    `
-namespace X {
-  export type T = number;
-}
-
-namespace Y {
-  export const x: X.T = 3;
-}
-    `,
-    `
-namespace A {}
-namespace A.B {
-  export type Z = 1;
-}
-    `,
-    `
-enum A {
-  X,
-  Y,
-}
-
-enum B {
-  Z = A.X,
-}
-    `,
-    `
-namespace X {
-  export type T = number;
-  namespace Y {
-    type T = string;
-    const x: X.T = 0;
-  }
-}
-    `,
-    'const x: A.B = 3;',
-    `
-namespace X {
-  const z = X.y;
-}
-    `,
-    `
-enum Foo {
-  One,
-}
-
-namespace Foo {
-  export function bar() {
-    return Foo.One;
-  }
-}
-    `,
-    `
-namespace Foo {
-  export enum Foo {
-    One,
-  }
-}
-
-namespace Foo {
-  export function bar() {
-    return Foo.One;
-  }
-}
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -286,5 +219,72 @@ declare module './foo' {
 }
       `,
     },
+  ],
+
+  valid: [
+    `
+namespace X {
+  export type T = number;
+}
+
+namespace Y {
+  export const x: X.T = 3;
+}
+    `,
+    `
+namespace A {}
+namespace A.B {
+  export type Z = 1;
+}
+    `,
+    `
+enum A {
+  X,
+  Y,
+}
+
+enum B {
+  Z = A.X,
+}
+    `,
+    `
+namespace X {
+  export type T = number;
+  namespace Y {
+    type T = string;
+    const x: X.T = 0;
+  }
+}
+    `,
+    'const x: A.B = 3;',
+    `
+namespace X {
+  const z = X.y;
+}
+    `,
+    `
+enum Foo {
+  One,
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
+}
+    `,
+    `
+namespace Foo {
+  export enum Foo {
+    One,
+  }
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
+}
+    `,
   ],
 });

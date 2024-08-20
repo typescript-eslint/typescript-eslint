@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -27,32 +28,6 @@ const enum ComparisonType {
 }
 
 export default createRule({
-  name: 'no-unsafe-assignment',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Disallow assigning a value with type `any` to variables and properties',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
-      anyAssignmentThis: [
-        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
-      unsafeArrayPattern:
-        'Unsafe array destructuring of an {{sender}} array value.',
-      unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
-      unsafeAssignment:
-        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -87,9 +62,9 @@ export default createRule({
       // const [x] = ([] as any[]);
       if (isTypeAnyArrayType(senderType, checker)) {
         context.report({
-          node: receiverNode,
-          messageId: 'unsafeArrayPattern',
           data: createData(senderType),
+          messageId: 'unsafeArrayPattern',
+          node: receiverNode,
         });
         return false;
       }
@@ -126,9 +101,9 @@ export default createRule({
         // check for the any type first so we can handle [[[x]]] = [any]
         if (isTypeAnyType(senderType)) {
           context.report({
-            node: receiverElement,
-            messageId: 'unsafeArrayPatternFromTuple',
             data: createData(senderType),
+            messageId: 'unsafeArrayPatternFromTuple',
+            node: receiverElement,
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -213,9 +188,9 @@ export default createRule({
         // check for the any type first so we can handle {x: {y: z}} = {x: any}
         if (isTypeAnyType(senderType)) {
           context.report({
-            node: receiverProperty.value,
-            messageId: 'unsafeArrayPatternFromTuple',
             data: createData(senderType),
+            messageId: 'unsafeArrayPatternFromTuple',
+            node: receiverProperty.value,
           });
           didReport = true;
         } else if (
@@ -277,9 +252,9 @@ export default createRule({
         }
 
         context.report({
-          node: reportingNode,
-          messageId,
           data: createData(senderType),
+          messageId,
+          node: reportingNode,
         });
 
         return true;
@@ -299,11 +274,11 @@ export default createRule({
         return false;
       }
 
-      const { sender, receiver } = result;
+      const { receiver, sender } = result;
       context.report({
-        node: reportingNode,
-        messageId: 'unsafeAssignment',
         data: createData(sender, receiver),
+        messageId: 'unsafeAssignment',
+        node: reportingNode,
       });
       return true;
     }
@@ -324,8 +299,8 @@ export default createRule({
     ): Readonly<Record<string, unknown>> | undefined {
       if (receiverType) {
         return {
-          sender: `\`${checker.typeToString(senderType)}\``,
           receiver: `\`${checker.typeToString(receiverType)}\``,
+          sender: `\`${checker.typeToString(senderType)}\``,
         };
       }
       return {
@@ -336,6 +311,34 @@ export default createRule({
     }
 
     return {
+      'AssignmentExpression[operator = "="], AssignmentPattern'(
+        node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
+      ): void {
+        let didReport = checkAssignment(
+          node.left,
+          node.right,
+          node,
+          // the variable already has some form of a type to compare against
+          ComparisonType.Basic,
+        );
+
+        if (!didReport) {
+          didReport = checkArrayDestructureHelper(node.left, node.right);
+        }
+        if (!didReport) {
+          checkObjectDestructureHelper(node.left, node.right);
+        }
+      },
+      'PropertyDefinition[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.PropertyDefinition,
+      ): void {
+        checkAssignment(
+          node.key,
+          node.value,
+          node,
+          getComparisonType(node.typeAnnotation),
+        );
+      },
       'VariableDeclarator[init != null]'(
         node: TSESTree.VariableDeclarator,
       ): void {
@@ -357,34 +360,6 @@ export default createRule({
           checkObjectDestructureHelper(node.id, init);
         }
       },
-      'PropertyDefinition[value != null]'(
-        node: TSESTree.PropertyDefinition & { value: NonNullable<unknown> },
-      ): void {
-        checkAssignment(
-          node.key,
-          node.value,
-          node,
-          getComparisonType(node.typeAnnotation),
-        );
-      },
-      'AssignmentExpression[operator = "="], AssignmentPattern'(
-        node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
-      ): void {
-        let didReport = checkAssignment(
-          node.left,
-          node.right,
-          node,
-          // the variable already has some form of a type to compare against
-          ComparisonType.Basic,
-        );
-
-        if (!didReport) {
-          didReport = checkArrayDestructureHelper(node.left, node.right);
-        }
-        if (!didReport) {
-          checkObjectDestructureHelper(node.left, node.right);
-        }
-      },
       // object pattern props are checked via assignments
       ':not(ObjectPattern) > Property'(node: TSESTree.Property): void {
         if (
@@ -401,9 +376,9 @@ export default createRule({
         const restType = services.getTypeAtLocation(node.argument);
         if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
           context.report({
-            node,
-            messageId: 'unsafeArraySpread',
             data: createData(restType),
+            messageId: 'unsafeArraySpread',
+            node,
           });
         }
       },
@@ -428,4 +403,30 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow assigning a value with type `any` to variables and properties',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
+      anyAssignmentThis: [
+        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+      unsafeArrayPattern:
+        'Unsafe array destructuring of an {{sender}} array value.',
+      unsafeArrayPatternFromTuple:
+        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
+      unsafeAssignment:
+        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-unsafe-assignment',
 });

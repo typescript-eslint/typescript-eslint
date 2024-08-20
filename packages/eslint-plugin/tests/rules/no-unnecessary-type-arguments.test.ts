@@ -8,154 +8,13 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('no-unnecessary-type-arguments', rule, {
-  valid: [
-    'f<>();',
-    'f<string>();',
-    'expect().toBe<>();',
-    'class Foo extends Bar<> {}',
-    'class Foo extends Bar<string> {}',
-    'class Foo implements Bar<> {}',
-    'class Foo implements Bar<string> {}',
-    `
-function f<T = number>() {}
-f();
-    `,
-    `
-function f<T = number>() {}
-f<string>();
-    `,
-    `
-declare const f: (<T = number>() => void) | null;
-f?.();
-    `,
-    `
-declare const f: (<T = number>() => void) | null;
-f?.<string>();
-    `,
-    `
-declare const f: any;
-f();
-    `,
-    `
-declare const f: any;
-f<string>();
-    `,
-    `
-declare const f: unknown;
-f();
-    `,
-    `
-declare const f: unknown;
-f<string>();
-    `,
-    `
-function g<T = number, U = string>() {}
-g<number, number>();
-    `,
-    `
-declare const g: any;
-g<string, string>();
-    `,
-    `
-declare const g: unknown;
-g<string, string>();
-    `,
-    `
-declare const f: unknown;
-f<string>\`\`;
-    `,
-    `
-function f<T = number>(template: TemplateStringsArray) {}
-f<string>\`\`;
-    `,
-    `
-class C<T = number> {}
-new C<string>();
-    `,
-    `
-declare const C: any;
-new C<string>();
-    `,
-    `
-declare const C: unknown;
-new C<string>();
-    `,
-    `
-class C<T = number> {}
-class D extends C<string> {}
-    `,
-    `
-declare const C: any;
-class D extends C<string> {}
-    `,
-    `
-declare const C: unknown;
-class D extends C<string> {}
-    `,
-    `
-interface I<T = number> {}
-class Impl implements I<string> {}
-    `,
-    `
-class C<TC = number> {}
-class D<TD = number> extends C {}
-    `,
-    `
-declare const C: any;
-class D<TD = number> extends C {}
-    `,
-    `
-declare const C: unknown;
-class D<TD = number> extends C {}
-    `,
-    'let a: A<number>;',
-    `
-class Foo<T> {}
-const foo = new Foo<number>();
-    `,
-    "type Foo<T> = import('foo').Foo<T>;",
-    `
-class Bar<T = number> {}
-class Foo<T = number> extends Bar<T> {}
-    `,
-    `
-interface Bar<T = number> {}
-class Foo<T = number> implements Bar<T> {}
-    `,
-    `
-class Bar<T = number> {}
-class Foo<T = number> extends Bar<string> {}
-    `,
-    `
-interface Bar<T = number> {}
-class Foo<T = number> implements Bar<string> {}
-    `,
-    `
-import { F } from './missing';
-function bar<T = F>() {}
-bar<F<number>>();
-    `,
-    `
-type A<T = Element> = T;
-type B = A<HTMLInputElement>;
-    `,
-    `
-type A<T = Map<string, string>> = T;
-type B = A<Map<string, number>>;
-    `,
-    `
-type A = Map<string, string>;
-type B<T = A> = T;
-type C2 = B<Map<string, number>>;
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -318,8 +177,8 @@ bar<F<string>>();
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -341,8 +200,8 @@ declare module 'bar' {
       `,
       errors: [
         {
-          line: 4,
           column: 12,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -452,5 +311,146 @@ type E<T = B> = T;
 type F = E;
       `,
     },
+  ],
+  valid: [
+    'f<>();',
+    'f<string>();',
+    'expect().toBe<>();',
+    'class Foo extends Bar<> {}',
+    'class Foo extends Bar<string> {}',
+    'class Foo implements Bar<> {}',
+    'class Foo implements Bar<string> {}',
+    `
+function f<T = number>() {}
+f();
+    `,
+    `
+function f<T = number>() {}
+f<string>();
+    `,
+    `
+declare const f: (<T = number>() => void) | null;
+f?.();
+    `,
+    `
+declare const f: (<T = number>() => void) | null;
+f?.<string>();
+    `,
+    `
+declare const f: any;
+f();
+    `,
+    `
+declare const f: any;
+f<string>();
+    `,
+    `
+declare const f: unknown;
+f();
+    `,
+    `
+declare const f: unknown;
+f<string>();
+    `,
+    `
+function g<T = number, U = string>() {}
+g<number, number>();
+    `,
+    `
+declare const g: any;
+g<string, string>();
+    `,
+    `
+declare const g: unknown;
+g<string, string>();
+    `,
+    `
+declare const f: unknown;
+f<string>\`\`;
+    `,
+    `
+function f<T = number>(template: TemplateStringsArray) {}
+f<string>\`\`;
+    `,
+    `
+class C<T = number> {}
+new C<string>();
+    `,
+    `
+declare const C: any;
+new C<string>();
+    `,
+    `
+declare const C: unknown;
+new C<string>();
+    `,
+    `
+class C<T = number> {}
+class D extends C<string> {}
+    `,
+    `
+declare const C: any;
+class D extends C<string> {}
+    `,
+    `
+declare const C: unknown;
+class D extends C<string> {}
+    `,
+    `
+interface I<T = number> {}
+class Impl implements I<string> {}
+    `,
+    `
+class C<TC = number> {}
+class D<TD = number> extends C {}
+    `,
+    `
+declare const C: any;
+class D<TD = number> extends C {}
+    `,
+    `
+declare const C: unknown;
+class D<TD = number> extends C {}
+    `,
+    'let a: A<number>;',
+    `
+class Foo<T> {}
+const foo = new Foo<number>();
+    `,
+    "type Foo<T> = import('foo').Foo<T>;",
+    `
+class Bar<T = number> {}
+class Foo<T = number> extends Bar<T> {}
+    `,
+    `
+interface Bar<T = number> {}
+class Foo<T = number> implements Bar<T> {}
+    `,
+    `
+class Bar<T = number> {}
+class Foo<T = number> extends Bar<string> {}
+    `,
+    `
+interface Bar<T = number> {}
+class Foo<T = number> implements Bar<string> {}
+    `,
+    `
+import { F } from './missing';
+function bar<T = F>() {}
+bar<F<number>>();
+    `,
+    `
+type A<T = Element> = T;
+type B = A<HTMLInputElement>;
+    `,
+    `
+type A<T = Map<string, string>> = T;
+type B = A<Map<string, number>>;
+    `,
+    `
+type A = Map<string, string>;
+type B<T = A> = T;
+type C2 = B<Map<string, number>>;
+    `,
   ],
 });

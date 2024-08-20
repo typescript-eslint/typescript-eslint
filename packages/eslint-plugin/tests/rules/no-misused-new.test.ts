@@ -5,6 +5,100 @@ import rule from '../../src/rules/no-misused-new';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
+  invalid: [
+    {
+      code: `
+interface I {
+  new (): I;
+  constructor(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
+        },
+        {
+          column: 3,
+          line: 4,
+          messageId: 'errorMessageInterface',
+        },
+      ],
+    },
+    // Works for generic type.
+    {
+      code: `
+interface G {
+  new <T>(): G<T>;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
+        },
+      ],
+    },
+    // 'constructor' flagged.
+    {
+      code: `
+type T = {
+  constructor(): void;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
+        },
+      ],
+    },
+    {
+      code: `
+class C {
+  new(): C;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'errorMessageClass',
+        },
+      ],
+    },
+    {
+      code: `
+declare abstract class C {
+  new(): C;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'errorMessageClass',
+        },
+      ],
+    },
+    {
+      code: `
+interface I {
+  constructor(): '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
+        },
+      ],
+    },
+  ],
   valid: [
     `
 declare abstract class C {
@@ -72,99 +166,5 @@ interface foo {
   new <T>(): 'x';
 }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-interface I {
-  new (): I;
-  constructor(): void;
-}
-      `,
-      errors: [
-        {
-          messageId: 'errorMessageInterface',
-          line: 3,
-          column: 3,
-        },
-        {
-          messageId: 'errorMessageInterface',
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    // Works for generic type.
-    {
-      code: `
-interface G {
-  new <T>(): G<T>;
-}
-      `,
-      errors: [
-        {
-          messageId: 'errorMessageInterface',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    // 'constructor' flagged.
-    {
-      code: `
-type T = {
-  constructor(): void;
-};
-      `,
-      errors: [
-        {
-          messageId: 'errorMessageInterface',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class C {
-  new(): C;
-}
-      `,
-      errors: [
-        {
-          messageId: 'errorMessageClass',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-declare abstract class C {
-  new(): C;
-}
-      `,
-      errors: [
-        {
-          messageId: 'errorMessageClass',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface I {
-  constructor(): '';
-}
-      `,
-      errors: [
-        {
-          messageId: 'errorMessageInterface',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
   ],
 });

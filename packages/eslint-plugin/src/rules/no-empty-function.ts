@@ -1,11 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -23,7 +25,6 @@ const schema = deepMerge(
     properties: {
       allow: {
         items: {
-          type: 'string',
           enum: [
             'functions',
             'arrowFunctions',
@@ -40,6 +41,7 @@ const schema = deepMerge(
             'decoratedFunctions',
             'overrideMethods',
           ],
+          type: 'string',
         },
       },
     },
@@ -47,23 +49,6 @@ const schema = deepMerge(
 ) as unknown as JSONSchema4;
 
 export default createRule<Options, MessageIds>({
-  name: 'no-empty-function',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow empty functions',
-      recommended: 'stylistic',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [schema],
-    messages: baseRule.meta.messages,
-  },
-  defaultOptions: [
-    {
-      allow: [],
-    },
-  ],
   create(context, [{ allow = [] }]) {
     const rules = baseRule.create(context);
 
@@ -174,4 +159,21 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allow: [],
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow empty functions',
+      extendsBaseRule: true,
+      recommended: 'stylistic',
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: [schema],
+    type: 'suggestion',
+  },
+  name: 'no-empty-function',
 });

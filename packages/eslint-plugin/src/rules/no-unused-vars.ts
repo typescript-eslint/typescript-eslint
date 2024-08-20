@@ -2,11 +2,12 @@ import type {
   Definition,
   ScopeVariable,
 } from '@typescript-eslint/scope-manager';
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import {
   DefinitionType,
   PatternVisitor,
 } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import {
@@ -25,30 +26,30 @@ export type Options = [
   | 'all'
   | 'local'
   | {
-      vars?: 'all' | 'local';
-      varsIgnorePattern?: string;
       args?: 'after-used' | 'all' | 'none';
-      ignoreRestSiblings?: boolean;
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
       ignoreClassWithStaticInitBlock?: boolean;
+      ignoreRestSiblings?: boolean;
       reportUsedIgnorePattern?: boolean;
+      vars?: 'all' | 'local';
+      varsIgnorePattern?: string;
     },
 ];
 
 interface TranslatedOptions {
-  vars: 'all' | 'local';
-  varsIgnorePattern?: RegExp;
   args: 'after-used' | 'all' | 'none';
-  ignoreRestSiblings: boolean;
   argsIgnorePattern?: RegExp;
   caughtErrors: 'all' | 'none';
   caughtErrorsIgnorePattern?: RegExp;
   destructuredArrayIgnorePattern?: RegExp;
   ignoreClassWithStaticInitBlock: boolean;
+  ignoreRestSiblings: boolean;
   reportUsedIgnorePattern: boolean;
+  vars: 'all' | 'local';
+  varsIgnorePattern?: RegExp;
 }
 
 type VariableType =
@@ -58,83 +59,17 @@ type VariableType =
   | 'variable';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-unused-vars',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow unused variables',
-      recommended: 'recommended',
-      extendsBaseRule: true,
-    },
-    schema: [
-      {
-        oneOf: [
-          {
-            type: 'string',
-            enum: ['all', 'local'],
-          },
-          {
-            type: 'object',
-            properties: {
-              vars: {
-                type: 'string',
-                enum: ['all', 'local'],
-              },
-              varsIgnorePattern: {
-                type: 'string',
-              },
-              args: {
-                type: 'string',
-                enum: ['all', 'after-used', 'none'],
-              },
-              ignoreRestSiblings: {
-                type: 'boolean',
-              },
-              argsIgnorePattern: {
-                type: 'string',
-              },
-              caughtErrors: {
-                type: 'string',
-                enum: ['all', 'none'],
-              },
-              caughtErrorsIgnorePattern: {
-                type: 'string',
-              },
-              destructuredArrayIgnorePattern: {
-                type: 'string',
-              },
-              ignoreClassWithStaticInitBlock: {
-                type: 'boolean',
-              },
-              reportUsedIgnorePattern: {
-                type: 'boolean',
-              },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
-    ],
-    messages: {
-      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
-      usedIgnoredVar:
-        "'{{varName}}' is marked as ignored but is used{{additional}}.",
-      usedOnlyAsType:
-        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
-    },
-  },
-  defaultOptions: [{}],
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
     const options = ((): TranslatedOptions => {
       const options: TranslatedOptions = {
-        vars: 'all',
         args: 'after-used',
-        ignoreRestSiblings: false,
         caughtErrors: 'all',
         ignoreClassWithStaticInitBlock: false,
+        ignoreRestSiblings: false,
         reportUsedIgnorePattern: false,
+        vars: 'all',
       };
 
       if (typeof firstOption === 'string') {
@@ -267,7 +202,7 @@ export default createRule<Options, MessageIds>({
       let additionalMessageData = '';
 
       if (def) {
-        const { variableDescription, pattern } = getVariableDescription(
+        const { pattern, variableDescription } = getVariableDescription(
           defToVariableType(def),
         );
 
@@ -277,9 +212,9 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        varName: unusedVar.name,
         action: 'defined',
         additional: additionalMessageData,
+        varName: unusedVar.name,
       };
     }
 
@@ -296,7 +231,7 @@ export default createRule<Options, MessageIds>({
       let additionalMessageData = '';
 
       if (def) {
-        const { variableDescription, pattern } = getVariableDescription(
+        const { pattern, variableDescription } = getVariableDescription(
           defToVariableType(def),
         );
 
@@ -306,9 +241,9 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        varName: unusedVar.name,
         action: 'assigned a value',
         additional: additionalMessageData,
+        varName: unusedVar.name,
       };
     }
 
@@ -323,7 +258,7 @@ export default createRule<Options, MessageIds>({
       variable: ScopeVariable,
       variableType: VariableType,
     ): Record<string, unknown> {
-      const { variableDescription, pattern } =
+      const { pattern, variableDescription } =
         getVariableDescription(variableType);
 
       let additionalMessageData = '';
@@ -333,8 +268,8 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        varName: variable.name,
         additional: additionalMessageData,
+        varName: variable.name,
       };
     }
 
@@ -433,9 +368,9 @@ export default createRule<Options, MessageIds>({
         ) {
           if (options.reportUsedIgnorePattern && used) {
             context.report({
-              node: def.name,
-              messageId: 'usedIgnoredVar',
               data: getUsedIgnoredMessageData(variable, 'array-destructure'),
+              messageId: 'usedIgnoredVar',
+              node: def.name,
             });
           }
           continue;
@@ -463,9 +398,9 @@ export default createRule<Options, MessageIds>({
           ) {
             if (options.reportUsedIgnorePattern && used) {
               context.report({
-                node: def.name,
-                messageId: 'usedIgnoredVar',
                 data: getUsedIgnoredMessageData(variable, 'catch-clause'),
+                messageId: 'usedIgnoredVar',
+                node: def.name,
               });
             }
             continue;
@@ -482,9 +417,9 @@ export default createRule<Options, MessageIds>({
           ) {
             if (options.reportUsedIgnorePattern && used) {
               context.report({
-                node: def.name,
-                messageId: 'usedIgnoredVar',
                 data: getUsedIgnoredMessageData(variable, 'parameter'),
+                messageId: 'usedIgnoredVar',
+                node: def.name,
               });
             }
             continue;
@@ -505,9 +440,9 @@ export default createRule<Options, MessageIds>({
         ) {
           if (options.reportUsedIgnorePattern && used) {
             context.report({
-              node: def.name,
-              messageId: 'usedIgnoredVar',
               data: getUsedIgnoredMessageData(variable, 'variable'),
+              messageId: 'usedIgnoredVar',
+              node: def.name,
             });
           }
           continue;
@@ -608,19 +543,19 @@ export default createRule<Options, MessageIds>({
             const idLength = id.name.length;
 
             const loc = {
-              start,
               end: {
-                line: start.line,
                 column: start.column + idLength,
+                line: start.line,
               },
+              start,
             };
 
             context.report({
-              loc,
-              messageId,
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
+              loc,
+              messageId,
             });
 
             // If there are no regular declaration, report the first `/*globals*/` comment directive.
@@ -631,14 +566,14 @@ export default createRule<Options, MessageIds>({
             const directiveComment = unusedVar.eslintExplicitGlobalComments[0];
 
             context.report({
-              node: programNode,
+              data: getDefinedMessageData(unusedVar),
               loc: getNameLocationInGlobalDirectiveComment(
                 context.sourceCode,
                 directiveComment,
                 unusedVar.name,
               ),
               messageId: 'unusedVar',
-              data: getDefinedMessageData(unusedVar),
+              node: programNode,
             });
           }
         }
@@ -721,8 +656,8 @@ export default createRule<Options, MessageIds>({
 
       let scope = context.sourceCode.getScope(node);
       const shouldUseUpperScope = [
-        AST_NODE_TYPES.TSModuleDeclaration,
         AST_NODE_TYPES.TSDeclareFunction,
+        AST_NODE_TYPES.TSModuleDeclaration,
       ].includes(node.type);
 
       if (scope.variableScope !== scope) {
@@ -747,6 +682,72 @@ export default createRule<Options, MessageIds>({
       visitor.visit(node);
     }
   },
+  defaultOptions: [{}],
+  meta: {
+    docs: {
+      description: 'Disallow unused variables',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+    },
+    messages: {
+      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
+      usedIgnoredVar:
+        "'{{varName}}' is marked as ignored but is used{{additional}}.",
+      usedOnlyAsType:
+        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
+    },
+    schema: [
+      {
+        oneOf: [
+          {
+            enum: ['all', 'local'],
+            type: 'string',
+          },
+          {
+            additionalProperties: false,
+            properties: {
+              args: {
+                enum: ['all', 'after-used', 'none'],
+                type: 'string',
+              },
+              argsIgnorePattern: {
+                type: 'string',
+              },
+              caughtErrors: {
+                enum: ['all', 'none'],
+                type: 'string',
+              },
+              caughtErrorsIgnorePattern: {
+                type: 'string',
+              },
+              destructuredArrayIgnorePattern: {
+                type: 'string',
+              },
+              ignoreClassWithStaticInitBlock: {
+                type: 'boolean',
+              },
+              ignoreRestSiblings: {
+                type: 'boolean',
+              },
+              reportUsedIgnorePattern: {
+                type: 'boolean',
+              },
+              vars: {
+                enum: ['all', 'local'],
+                type: 'string',
+              },
+              varsIgnorePattern: {
+                type: 'string',
+              },
+            },
+            type: 'object',
+          },
+        ],
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'no-unused-vars',
 });
 
 /*

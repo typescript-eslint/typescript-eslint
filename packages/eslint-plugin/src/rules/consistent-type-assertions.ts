@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -23,7 +24,7 @@ export type MessageIds =
 type OptUnion =
   | {
       assertionStyle: 'angle-bracket' | 'as';
-      objectLiteralTypeAssertions?: 'allow-as-parameter' | 'allow' | 'never';
+      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
     }
   | {
       assertionStyle: 'never';
@@ -31,64 +32,6 @@ type OptUnion =
 export type Options = readonly [OptUnion];
 
 export default createRule<Options, MessageIds>({
-  name: 'consistent-type-assertions',
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    hasSuggestions: true,
-    docs: {
-      description: 'Enforce consistent usage of type assertions',
-      recommended: 'stylistic',
-    },
-    messages: {
-      as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
-      'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
-      never: 'Do not use any type assertions.',
-      unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
-      replaceObjectTypeAssertionWithAnnotation:
-        'Use const x: {{cast}} = { ... } instead.',
-      replaceObjectTypeAssertionWithSatisfies:
-        'Use const x = { ... } satisfies {{cast}} instead.',
-    },
-    schema: [
-      {
-        oneOf: [
-          {
-            type: 'object',
-            properties: {
-              assertionStyle: {
-                type: 'string',
-                enum: ['never'],
-              },
-            },
-            additionalProperties: false,
-            required: ['assertionStyle'],
-          },
-          {
-            type: 'object',
-            properties: {
-              assertionStyle: {
-                type: 'string',
-                enum: ['as', 'angle-bracket'],
-              },
-              objectLiteralTypeAssertions: {
-                type: 'string',
-                enum: ['allow', 'allow-as-parameter', 'never'],
-              },
-            },
-            additionalProperties: false,
-            required: ['assertionStyle'],
-          },
-        ],
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      assertionStyle: 'as',
-      objectLiteralTypeAssertions: 'allow',
-    },
-  ],
   create(context, [options]) {
     const parserServices = getParserServices(context, true);
 
@@ -113,8 +56,6 @@ export default createRule<Options, MessageIds>({
         return;
       }
       context.report({
-        node,
-        messageId,
         data:
           messageId !== 'never'
             ? { cast: context.sourceCode.getText(node.typeAnnotation) }
@@ -167,6 +108,8 @@ export default createRule<Options, MessageIds>({
                 );
               }
             : undefined,
+        messageId,
+        node,
       });
     }
 
@@ -221,7 +164,6 @@ export default createRule<Options, MessageIds>({
         ) {
           const { parent } = node;
           suggest.push({
-            messageId: 'replaceObjectTypeAssertionWithAnnotation',
             data: { cast: context.sourceCode.getText(node.typeAnnotation) },
             fix: fixer => [
               fixer.insertTextAfter(
@@ -233,10 +175,10 @@ export default createRule<Options, MessageIds>({
                 getTextWithParentheses(context.sourceCode, node.expression),
               ),
             ],
+            messageId: 'replaceObjectTypeAssertionWithAnnotation',
           });
         }
         suggest.push({
-          messageId: 'replaceObjectTypeAssertionWithSatisfies',
           data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
             fixer.replaceText(
@@ -248,25 +190,18 @@ export default createRule<Options, MessageIds>({
               ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
             ),
           ],
+          messageId: 'replaceObjectTypeAssertionWithSatisfies',
         });
 
         context.report({
-          node,
           messageId: 'unexpectedObjectTypeAssertion',
+          node,
           suggest,
         });
       }
     }
 
     return {
-      TSTypeAssertion(node): void {
-        if (options.assertionStyle !== 'angle-bracket') {
-          reportIncorrectAssertionType(node);
-          return;
-        }
-
-        checkExpression(node);
-      },
       TSAsExpression(node): void {
         if (options.assertionStyle !== 'as') {
           reportIncorrectAssertionType(node);
@@ -275,6 +210,72 @@ export default createRule<Options, MessageIds>({
 
         checkExpression(node);
       },
+      TSTypeAssertion(node): void {
+        if (options.assertionStyle !== 'angle-bracket') {
+          reportIncorrectAssertionType(node);
+          return;
+        }
+
+        checkExpression(node);
+      },
     };
   },
+  defaultOptions: [
+    {
+      assertionStyle: 'as',
+      objectLiteralTypeAssertions: 'allow',
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Enforce consistent usage of type assertions',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
+      as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
+      never: 'Do not use any type assertions.',
+      replaceObjectTypeAssertionWithAnnotation:
+        'Use const x: {{cast}} = { ... } instead.',
+      replaceObjectTypeAssertionWithSatisfies:
+        'Use const x = { ... } satisfies {{cast}} instead.',
+      unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
+    },
+    schema: [
+      {
+        oneOf: [
+          {
+            additionalProperties: false,
+            properties: {
+              assertionStyle: {
+                enum: ['never'],
+                type: 'string',
+              },
+            },
+            required: ['assertionStyle'],
+            type: 'object',
+          },
+          {
+            additionalProperties: false,
+            properties: {
+              assertionStyle: {
+                enum: ['as', 'angle-bracket'],
+                type: 'string',
+              },
+              objectLiteralTypeAssertions: {
+                enum: ['allow', 'allow-as-parameter', 'never'],
+                type: 'string',
+              },
+            },
+            required: ['assertionStyle'],
+            type: 'object',
+          },
+        ],
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'consistent-type-assertions',
 });

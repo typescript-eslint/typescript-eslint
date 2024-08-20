@@ -8,6 +8,941 @@ const ruleTester = new RuleTester();
 const parserOptions = { ecmaVersion: 6 as const };
 
 ruleTester.run('no-use-before-define', rule, {
+  invalid: [
+    {
+      code: `
+a++;
+var a = 19;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        parserOptions: { sourceType: 'module' },
+      },
+    },
+    {
+      code: `
+a++;
+var a = 19;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+a++;
+var a = 19;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+a();
+var a = function () {};
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+alert(a[1]);
+var a = [1, 3];
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+a();
+function a() {
+  alert(b);
+  var b = 10;
+  a();
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          data: { name: 'b' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+a();
+var a = function () {};
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: ['nofunc'],
+    },
+    {
+      code: `
+(() => {
+  alert(a);
+  var a = 42;
+})();
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+(() => a())();
+function a() {}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+a();
+try {
+  throw new Error();
+} catch (foo) {
+  var a;
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var f = () => a;
+var a;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+new A();
+class A {}
+      `,
+      errors: [
+        {
+          data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+function foo() {
+  new A();
+}
+class A {}
+      `,
+      errors: [
+        {
+          data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+new A();
+var A = class {};
+      `,
+      errors: [
+        {
+          data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+function foo() {
+  new A();
+}
+var A = class {};
+      `,
+      errors: [
+        {
+          data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+
+    // Block-level bindings
+    {
+      code: `
+a++;
+{
+  var a;
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+'use strict';
+{
+  a();
+  function a() {}
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+{
+  a;
+  let a = 1;
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+switch (foo) {
+  case 1:
+    a();
+  default:
+    let a;
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+if (true) {
+  function foo() {
+    a;
+  }
+  let a;
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+
+    // object style options
+    {
+      code: `
+a();
+var a = function () {};
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ classes: false, functions: false }],
+    },
+    {
+      code: `
+new A();
+var A = class {};
+      `,
+      errors: [
+        {
+          data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ classes: false }],
+    },
+    {
+      code: `
+function foo() {
+  new A();
+}
+var A = class {};
+      `,
+      errors: [
+        {
+          data: { name: 'A' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ classes: false }],
+    },
+
+    // invalid initializers
+    {
+      code: 'var a = a;',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: 'let a = a + b;',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'const a = foo(a);',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'function foo(a = a) {}',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'var { a = a } = [];',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'var [a = a] = [];',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'var { b = a, a } = {};',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'var [b = a, a] = {};',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'var { a = 0 } = a;',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: 'var [a = 0] = a;',
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+for (var a in a) {
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+for (var a of a) {
+}
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+
+    // "ignoreTypeReferences" option
+    {
+      code: `
+interface Bar {
+  type: typeof Foo;
+}
+
+const Foo = 2;
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.FOO;
+}
+
+class Foo {
+  public static readonly FOO = '';
+}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+interface Bar {
+  type: typeof Foo.Bar.Baz;
+}
+
+const Foo = {
+  Bar: {
+    Baz: 1,
+  },
+};
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeReferences: false }],
+    },
+    {
+      code: `
+const foo = {
+  bar: 'bar',
+} satisfies {
+  bar: typeof baz;
+};
+
+const baz = '';
+      `,
+      errors: [
+        {
+          data: { name: 'baz' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ ignoreTypeReferences: false }],
+    },
+
+    // "variables" option
+    {
+      code: `
+function foo() {
+  bar;
+  var bar = 1;
+}
+var bar;
+      `,
+      errors: [
+        {
+          data: { name: 'bar' },
+          messageId: 'noUseBeforeDefine',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ variables: false }],
+    },
+    {
+      code: `
+class Test {
+  foo(args: Foo): Foo {
+    return Foo.FOO;
+  }
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          line: 4,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      options: [{ enums: true }],
+    },
+    {
+      code: `
+function foo(): Foo {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          line: 3,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      options: [{ enums: true }],
+    },
+    {
+      code: `
+const foo = Foo.Foo;
+
+enum Foo {
+  FOO,
+}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          line: 2,
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      options: [{ enums: true }],
+    },
+    // "allowNamedExports" option
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{}],
+    },
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: false }],
+    },
+    {
+      code: `
+export { a };
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: ['nofunc'],
+    },
+    {
+      code: `
+export { a as b };
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { a, b };
+let a, b;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+        {
+          data: { name: 'b' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { a };
+var a;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { f };
+function f() {}
+      `,
+      errors: [
+        {
+          data: { name: 'f' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { C };
+class C {}
+      `,
+      errors: [
+        {
+          data: { name: 'C' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export const foo = a;
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
+    },
+    {
+      code: `
+export function foo() {
+  return a;
+}
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
+    },
+    {
+      code: `
+export class C {
+  foo() {
+    return a;
+  }
+}
+const a = 1;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
+    },
+    {
+      code: `
+export { Foo };
+
+enum Foo {
+  BAR,
+}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { Foo };
+
+namespace Foo {
+  export let bar = () => console.log('bar');
+}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+    },
+    {
+      code: `
+export { Foo, baz };
+
+enum Foo {
+  BAR,
+}
+
+let baz: Enum;
+enum Enum {}
+      `,
+      errors: [
+        {
+          data: { name: 'Foo' },
+          messageId: 'noUseBeforeDefine',
+        },
+        {
+          data: { name: 'baz' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [{ allowNamedExports: false, ignoreTypeReferences: true }],
+    },
+    {
+      code: `
+f();
+function f() {}
+      `,
+      errors: [
+        {
+          data: { name: 'f' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+alert(a);
+var a = 10;
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+f()?.();
+function f() {
+  return function t() {};
+}
+      `,
+      errors: [
+        {
+          data: { name: 'f' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+    {
+      code: `
+alert(a?.b);
+var a = { b: 5 };
+      `,
+      errors: [
+        {
+          data: { name: 'a' },
+          messageId: 'noUseBeforeDefine',
+        },
+      ],
+    },
+  ],
   valid: [
     `
 type foo = 1;
@@ -133,8 +1068,8 @@ a();
   function a() {}
 }
       `,
-      options: ['nofunc'],
       languageOptions: { parserOptions },
+      options: ['nofunc'],
     },
     {
       code: `
@@ -177,8 +1112,8 @@ function a() {
   function a() {}
 }
       `,
-      options: [{ functions: false }],
       languageOptions: { parserOptions },
+      options: [{ functions: false }],
     },
     {
       code: `
@@ -187,8 +1122,8 @@ function foo() {
 }
 class A {}
       `,
-      options: [{ classes: false }],
       languageOptions: { parserOptions },
+      options: [{ classes: false }],
     },
 
     // "variables" option
@@ -206,8 +1141,8 @@ var bar;
 var foo = () => bar;
 var bar;
       `,
-      options: [{ variables: false }],
       languageOptions: { parserOptions },
+      options: [{ variables: false }],
     },
 
     // "typedefs" option
@@ -334,48 +1269,48 @@ enum Foo {
 export { a };
 const a = 1;
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
 export { a as b };
 const a = 1;
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
 export { a, b };
 let a, b;
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
 export { a };
 var a;
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
 export { f };
 function f() {}
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
 export { C };
 class C {}
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
@@ -385,8 +1320,8 @@ enum Foo {
   BAR,
 }
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
@@ -396,8 +1331,8 @@ namespace Foo {
   export let bar = () => console.log('bar');
 }
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     {
       code: `
@@ -410,8 +1345,8 @@ enum Foo {
 let baz: Enum;
 enum Enum {}
       `,
-      options: [{ allowNamedExports: true }],
       languageOptions: { parserOptions },
+      options: [{ allowNamedExports: true }],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2502
     {
@@ -422,10 +1357,10 @@ import * as React from 'react';
       `,
       languageOptions: {
         parserOptions: {
-          sourceType: 'module',
           ecmaFeatures: {
             jsx: true,
           },
+          sourceType: 'module',
         },
       },
     },
@@ -437,10 +1372,10 @@ import React from 'react';
       `,
       languageOptions: {
         parserOptions: {
-          sourceType: 'module',
           ecmaFeatures: {
             jsx: true,
           },
+          sourceType: 'module',
         },
       },
     },
@@ -452,11 +1387,11 @@ import { h } from 'preact';
       `,
       languageOptions: {
         parserOptions: {
-          sourceType: 'module',
-          jsxPragma: 'h',
           ecmaFeatures: {
             jsx: true,
           },
+          jsxPragma: 'h',
+          sourceType: 'module',
         },
       },
     },
@@ -582,941 +1517,6 @@ const foo = {
 const baz = '';
       `,
       options: [{ ignoreTypeReferences: true }],
-    },
-  ],
-  invalid: [
-    {
-      code: `
-a++;
-var a = 19;
-      `,
-      languageOptions: {
-        parserOptions: { sourceType: 'module' },
-      },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-a++;
-var a = 19;
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-a++;
-var a = 19;
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-a();
-var a = function () {};
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-alert(a[1]);
-var a = [1, 3];
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-a();
-function a() {
-  alert(b);
-  var b = 10;
-  a();
-}
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'b' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-a();
-var a = function () {};
-      `,
-      options: ['nofunc'],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(() => {
-  alert(a);
-  var a = 42;
-})();
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(() => a())();
-function a() {}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-a();
-try {
-  throw new Error();
-} catch (foo) {
-  var a;
-}
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var f = () => a;
-var a;
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-new A();
-class A {}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'A' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  new A();
-}
-class A {}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'A' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-new A();
-var A = class {};
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'A' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  new A();
-}
-var A = class {};
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'A' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-
-    // Block-level bindings
-    {
-      code: `
-a++;
-{
-  var a;
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-'use strict';
-{
-  a();
-  function a() {}
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  a;
-  let a = 1;
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-switch (foo) {
-  case 1:
-    a();
-  default:
-    let a;
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-if (true) {
-  function foo() {
-    a;
-  }
-  let a;
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-
-    // object style options
-    {
-      code: `
-a();
-var a = function () {};
-      `,
-      options: [{ functions: false, classes: false }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-new A();
-var A = class {};
-      `,
-      options: [{ classes: false }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'A' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  new A();
-}
-var A = class {};
-      `,
-      options: [{ classes: false }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'A' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-
-    // invalid initializers
-    {
-      code: 'var a = a;',
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'let a = a + b;',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'const a = foo(a);',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'function foo(a = a) {}',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var { a = a } = [];',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var [a = a] = [];',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var { b = a, a } = {};',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var [b = a, a] = {};',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var { a = 0 } = a;',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var [a = 0] = a;',
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-for (var a in a) {
-}
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-for (var a of a) {
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-
-    // "ignoreTypeReferences" option
-    {
-      code: `
-interface Bar {
-  type: typeof Foo;
-}
-
-const Foo = 2;
-      `,
-      options: [{ ignoreTypeReferences: false }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-interface Bar {
-  type: typeof Foo.FOO;
-}
-
-class Foo {
-  public static readonly FOO = '';
-}
-      `,
-      options: [{ ignoreTypeReferences: false }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-interface Bar {
-  type: typeof Foo.Bar.Baz;
-}
-
-const Foo = {
-  Bar: {
-    Baz: 1,
-  },
-};
-      `,
-      options: [{ ignoreTypeReferences: false }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = {
-  bar: 'bar',
-} satisfies {
-  bar: typeof baz;
-};
-
-const baz = '';
-      `,
-      options: [{ ignoreTypeReferences: false }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'baz' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-
-    // "variables" option
-    {
-      code: `
-function foo() {
-  bar;
-  var bar = 1;
-}
-var bar;
-      `,
-      languageOptions: { parserOptions },
-      options: [{ variables: false }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'bar' },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-class Test {
-  foo(args: Foo): Foo {
-    return Foo.FOO;
-  }
-}
-
-enum Foo {
-  FOO,
-}
-      `,
-      options: [{ enums: true }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(): Foo {
-  return Foo.FOO;
-}
-
-enum Foo {
-  FOO,
-}
-      `,
-      options: [{ enums: true }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = Foo.Foo;
-
-enum Foo {
-  FOO,
-}
-      `,
-      options: [{ enums: true }],
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-          line: 2,
-        },
-      ],
-    },
-    // "allowNamedExports" option
-    {
-      code: `
-export { a };
-const a = 1;
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { a };
-const a = 1;
-      `,
-      options: [{}],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { a };
-const a = 1;
-      `,
-      options: [{ allowNamedExports: false }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { a };
-const a = 1;
-      `,
-      options: ['nofunc'],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { a as b };
-const a = 1;
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { a, b };
-let a, b;
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'b' },
-        },
-      ],
-    },
-    {
-      code: `
-export { a };
-var a;
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { f };
-function f() {}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'f' },
-        },
-      ],
-    },
-    {
-      code: `
-export { C };
-class C {}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'C' },
-        },
-      ],
-    },
-    {
-      code: `
-export const foo = a;
-const a = 1;
-      `,
-      options: [{ allowNamedExports: true }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export function foo() {
-  return a;
-}
-const a = 1;
-      `,
-      options: [{ allowNamedExports: true }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export class C {
-  foo() {
-    return a;
-  }
-}
-const a = 1;
-      `,
-      options: [{ allowNamedExports: true }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-export { Foo };
-
-enum Foo {
-  BAR,
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-        },
-      ],
-    },
-    {
-      code: `
-export { Foo };
-
-namespace Foo {
-  export let bar = () => console.log('bar');
-}
-      `,
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-        },
-      ],
-    },
-    {
-      code: `
-export { Foo, baz };
-
-enum Foo {
-  BAR,
-}
-
-let baz: Enum;
-enum Enum {}
-      `,
-      options: [{ ignoreTypeReferences: true, allowNamedExports: false }],
-      languageOptions: { parserOptions },
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'Foo' },
-        },
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'baz' },
-        },
-      ],
-    },
-    {
-      code: `
-f();
-function f() {}
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'f' },
-        },
-      ],
-    },
-    {
-      code: `
-alert(a);
-var a = 10;
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
-    },
-    {
-      code: `
-f()?.();
-function f() {
-  return function t() {};
-}
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'f' },
-        },
-      ],
-    },
-    {
-      code: `
-alert(a?.b);
-var a = { b: 5 };
-      `,
-      errors: [
-        {
-          messageId: 'noUseBeforeDefine',
-          data: { name: 'a' },
-        },
-      ],
     },
   ],
 });

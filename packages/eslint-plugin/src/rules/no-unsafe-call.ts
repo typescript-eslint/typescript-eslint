@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -16,26 +17,6 @@ type MessageIds =
   | 'unsafeTemplateTag';
 
 export default createRule<[], MessageIds>({
-  name: 'no-unsafe-call',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow calling a value with type `any`',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unsafeCall: 'Unsafe call of an {{type}} typed value.',
-      unsafeCallThis: [
-        'Unsafe call of an `any` typed value. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
-      unsafeNew: 'Unsafe construction of an any type value.',
-      unsafeTemplateTag: 'Unsafe any typed template tag.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
@@ -68,11 +49,11 @@ export default createRule<[], MessageIds>({
         const isErrorType = tsutils.isIntrinsicErrorType(type);
 
         context.report({
-          node: reportingNode,
-          messageId,
           data: {
             type: isErrorType ? '`error` type' : '`any`',
           },
+          messageId,
+          node: reportingNode,
         });
       }
     }
@@ -91,4 +72,24 @@ export default createRule<[], MessageIds>({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow calling a value with type `any`',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unsafeCall: 'Unsafe call of an {{type}} typed value.',
+      unsafeCallThis: [
+        'Unsafe call of an `any` typed value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+      unsafeNew: 'Unsafe construction of an any type value.',
+      unsafeTemplateTag: 'Unsafe any typed template tag.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-unsafe-call',
 });

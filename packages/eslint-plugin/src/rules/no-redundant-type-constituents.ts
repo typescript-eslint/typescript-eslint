@@ -57,9 +57,9 @@ const keywordNodeTypesToTsTypes = new Map([
   [TSESTree.AST_NODE_TYPES.TSBigIntKeyword, ts.TypeFlags.BigInt],
   [TSESTree.AST_NODE_TYPES.TSBooleanKeyword, ts.TypeFlags.Boolean],
   [TSESTree.AST_NODE_TYPES.TSNeverKeyword, ts.TypeFlags.Never],
-  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
   [TSESTree.AST_NODE_TYPES.TSNumberKeyword, ts.TypeFlags.Number],
   [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
+  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
 ]);
 
 type PrimitiveTypeFlag = (typeof primitiveTypeFlags)[number];
@@ -192,25 +192,6 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
 }
 
 export default createRule({
-  name: 'no-redundant-type-constituents',
-  meta: {
-    docs: {
-      description:
-        'Disallow members of unions and intersections that do nothing or override type information',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
-      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
-      overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
-      overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
-      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
@@ -532,4 +513,23 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow members of unions and intersections that do nothing or override type information',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
+      literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
+      overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
+      overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-redundant-type-constituents',
 });

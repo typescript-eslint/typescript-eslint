@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type, TypeChecker } from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { TypeFlags } from 'typescript';
 
 import {
@@ -45,9 +46,9 @@ const optionTesters = (
     ['Never', isTypeNeverType],
   ] satisfies [string, OptionTester][]
 ).map(([type, tester]) => ({
-  type,
   option: `allow${type}` as const,
   tester,
+  type,
 }));
 type Options = [
   { [Type in (typeof optionTesters)[number]['option']]?: boolean },
@@ -56,55 +57,6 @@ type Options = [
 type MessageId = 'invalidType';
 
 export default createRule<Options, MessageId>({
-  name: 'restrict-template-expressions',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Enforce template literal expressions to be of `string` type',
-      recommended: {
-        recommended: true,
-        strict: [
-          {
-            allowAny: false,
-            allowBoolean: false,
-            allowNullish: false,
-            allowNumber: false,
-            allowRegExp: false,
-            allowNever: false,
-          },
-        ],
-      },
-      requiresTypeChecking: true,
-    },
-    messages: {
-      invalidType: 'Invalid type "{{type}}" of template literal expression.',
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: Object.fromEntries(
-          optionTesters.map(({ option, type }) => [
-            option,
-            {
-              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
-              type: 'boolean',
-            },
-          ]),
-        ),
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowBoolean: true,
-      allowNullish: true,
-      allowNumber: true,
-      allowRegExp: true,
-    },
-  ],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -127,9 +79,9 @@ export default createRule<Options, MessageId>({
 
           if (!recursivelyCheckType(expressionType)) {
             context.report({
-              node: expression,
-              messageId: 'invalidType',
               data: { type: checker.typeToString(expressionType) },
+              messageId: 'invalidType',
+              node: expression,
             });
           }
         }
@@ -153,4 +105,53 @@ export default createRule<Options, MessageId>({
       );
     }
   },
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
+      allowNumber: true,
+      allowRegExp: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Enforce template literal expressions to be of `string` type',
+      recommended: {
+        recommended: true,
+        strict: [
+          {
+            allowAny: false,
+            allowBoolean: false,
+            allowNever: false,
+            allowNullish: false,
+            allowNumber: false,
+            allowRegExp: false,
+          },
+        ],
+      },
+      requiresTypeChecking: true,
+    },
+    messages: {
+      invalidType: 'Invalid type "{{type}}" of template literal expression.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: Object.fromEntries(
+          optionTesters.map(({ option, type }) => [
+            option,
+            {
+              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+              type: 'boolean',
+            },
+          ]),
+        ),
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'restrict-template-expressions',
 });

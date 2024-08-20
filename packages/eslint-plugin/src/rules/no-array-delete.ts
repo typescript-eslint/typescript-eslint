@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
@@ -11,23 +12,6 @@ import {
 type MessageId = 'noArrayDelete' | 'useSplice';
 
 export default createRule<[], MessageId>({
-  name: 'no-array-delete',
-  meta: {
-    hasSuggestions: true,
-    type: 'problem',
-    docs: {
-      description: 'Disallow using the `delete` operator on array values',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      noArrayDelete:
-        'Using the `delete` operator with an array expression is unsafe.',
-      useSplice: 'Use `array.splice()` instead.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -64,11 +48,10 @@ export default createRule<[], MessageId>({
         }
 
         context.report({
-          node,
           messageId: 'noArrayDelete',
+          node,
           suggest: [
             {
-              messageId: 'useSplice',
               fix(fixer): TSESLint.RuleFix | null {
                 const { object, property } = argument;
 
@@ -101,10 +84,28 @@ export default createRule<[], MessageId>({
 
                 return fixer.replaceText(node, suggestion);
               },
+              messageId: 'useSplice',
             },
           ],
         });
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow using the `delete` operator on array values',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      noArrayDelete:
+        'Using the `delete` operator with an array expression is unsafe.',
+      useSplice: 'Use `array.splice()` instead.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-array-delete',
 });

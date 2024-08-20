@@ -1,5 +1,6 @@
-import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
@@ -12,38 +13,6 @@ type Options = [
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-empty-interface',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow the declaration of empty interfaces',
-    },
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/no-empty-object-type'],
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      noEmpty: 'An empty interface is equivalent to `{}`.',
-      noEmptyWithSuper:
-        'An interface declaring no members is equivalent to its supertype.',
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          allowSingleExtends: {
-            type: 'boolean',
-          },
-        },
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      allowSingleExtends: false,
-    },
-  ],
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
@@ -55,8 +24,8 @@ export default createRule<Options, MessageIds>({
         const extend = node.extends;
         if (extend.length === 0) {
           context.report({
-            node: node.id,
             messageId: 'noEmpty',
+            node: node.id,
           });
         } else if (extend.length === 1) {
           // interface extends exactly 1 interface --> Report depending on rule setting
@@ -92,16 +61,16 @@ export default createRule<Options, MessageIds>({
             );
 
             context.report({
-              node: node.id,
               messageId: 'noEmptyWithSuper',
+              node: node.id,
               ...(useAutoFix
                 ? { fix }
                 : !mergedWithClassDeclaration
                   ? {
                       suggest: [
                         {
-                          messageId: 'noEmptyWithSuper',
                           fix,
+                          messageId: 'noEmptyWithSuper',
                         },
                       ],
                     }
@@ -112,4 +81,36 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allowSingleExtends: false,
+    },
+  ],
+  meta: {
+    deprecated: true,
+    docs: {
+      description: 'Disallow the declaration of empty interfaces',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      noEmpty: 'An empty interface is equivalent to `{}`.',
+      noEmptyWithSuper:
+        'An interface declaring no members is equivalent to its supertype.',
+    },
+    replacedBy: ['@typescript-eslint/no-empty-object-type'],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowSingleExtends: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-empty-interface',
 });

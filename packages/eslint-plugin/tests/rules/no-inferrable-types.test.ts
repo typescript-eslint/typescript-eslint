@@ -1,11 +1,13 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-inferrable-types';
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+
+import rule from '../../src/rules/no-inferrable-types';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -15,7 +17,6 @@ function flatten<T>(arr: T[][]): T[] {
 }
 const testCases = [
   {
-    type: 'bigint',
     code: [
       '10n',
       '-10n',
@@ -24,13 +25,13 @@ const testCases = [
       'BigInt?.(10)',
       '-BigInt?.(10)',
     ],
+    type: 'bigint',
   },
   {
-    type: 'boolean',
     code: ['false', 'true', 'Boolean(null)', 'Boolean?.(null)', '!0'],
+    type: 'boolean',
   },
   {
-    type: 'number',
     code: [
       '10',
       '+10',
@@ -48,26 +49,27 @@ const testCases = [
       '+NaN',
       '-NaN',
     ],
+    type: 'number',
   },
   {
-    type: 'null',
     code: ['null'],
+    type: 'null',
   },
   {
-    type: 'RegExp',
     code: ['/a/', 'RegExp("a")', 'RegExp?.("a")', 'new RegExp("a")'],
+    type: 'RegExp',
   },
   {
-    type: 'string',
     code: ['"str"', "'str'", '`str`', 'String(1)', 'String?.(1)'],
+    type: 'string',
   },
   {
-    type: 'symbol',
     code: ['Symbol("a")', 'Symbol?.("a")'],
+    type: 'symbol',
   },
   {
-    type: 'undefined',
     code: ['undefined', 'void someValue'],
+    type: 'undefined',
   },
 ];
 const validTestCases = flatten(
@@ -77,17 +79,17 @@ const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
   testCases.map(cas =>
     cas.code.map(code => ({
       code: `const a: ${cas.type} = ${code}`,
-      output: `const a = ${code}`,
       errors: [
         {
-          messageId: 'noInferrableType',
+          column: 7,
           data: {
             type: cas.type,
           },
           line: 1,
-          column: 7,
+          messageId: 'noInferrableType',
         },
       ],
+      output: `const a = ${code}`,
     })),
   ),
 );
@@ -95,6 +97,170 @@ const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-inferrable-types', rule, {
+  invalid: [
+    ...invalidTestCases,
+    {
+      // This is invalid TS semantic, but it's trivial to make valid anyway
+      code: 'const fn = (a?: number = 5) => {};',
+      errors: [
+        {
+          column: 13,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      options: [
+        {
+          ignoreParameters: false,
+        },
+      ],
+      output: 'const fn = (a = 5) => {};',
+    },
+    {
+      // This is invalid TS semantic, but it's trivial to make valid anyway
+      code: `
+class A {
+  a!: number = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            type: 'number',
+          },
+          line: 3,
+          messageId: 'noInferrableType',
+        },
+      ],
+      options: [
+        {
+          ignoreProperties: false,
+        },
+      ],
+      output: `
+class A {
+  a = 1;
+}
+      `,
+    },
+    {
+      code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
+      errors: [
+        {
+          column: 13,
+          data: {
+            type: 'number',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+        {
+          column: 28,
+          data: {
+            type: 'boolean',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+        {
+          column: 47,
+          data: {
+            type: 'string',
+          },
+          line: 1,
+          messageId: 'noInferrableType',
+        },
+      ],
+      options: [
+        {
+          ignoreParameters: false,
+          ignoreProperties: false,
+        },
+      ],
+      output: "const fn = (a = 5, b = true, c = 'foo') => {};",
+    },
+    {
+      code: `
+class Foo {
+  a: number = 5;
+  b: boolean = true;
+  c: string = 'foo';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            type: 'number',
+          },
+          line: 3,
+          messageId: 'noInferrableType',
+        },
+        {
+          column: 3,
+          data: {
+            type: 'boolean',
+          },
+          line: 4,
+          messageId: 'noInferrableType',
+        },
+        {
+          column: 3,
+          data: {
+            type: 'string',
+          },
+          line: 5,
+          messageId: 'noInferrableType',
+        },
+      ],
+      options: [
+        {
+          ignoreParameters: false,
+          ignoreProperties: false,
+        },
+      ],
+      output: `
+class Foo {
+  a = 5;
+  b = true;
+  c = 'foo';
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a: boolean = true) {}
+}
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            type: 'boolean',
+          },
+          line: 3,
+          messageId: 'noInferrableType',
+        },
+      ],
+      options: [
+        {
+          ignoreParameters: false,
+          ignoreProperties: false,
+        },
+      ],
+      output: `
+class Foo {
+  constructor(public a = true) {}
+}
+      `,
+    },
+  ],
+
   valid: [
     ...validTestCases,
 
@@ -156,170 +322,6 @@ class Foo {
   constructor(public a = true) {}
 }
       `,
-    },
-  ],
-
-  invalid: [
-    ...invalidTestCases,
-    {
-      // This is invalid TS semantic, but it's trivial to make valid anyway
-      code: 'const fn = (a?: number = 5) => {};',
-      output: 'const fn = (a = 5) => {};',
-      options: [
-        {
-          ignoreParameters: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'number',
-          },
-          line: 1,
-          column: 13,
-        },
-      ],
-    },
-    {
-      // This is invalid TS semantic, but it's trivial to make valid anyway
-      code: `
-class A {
-  a!: number = 1;
-}
-      `,
-      output: `
-class A {
-  a = 1;
-}
-      `,
-      options: [
-        {
-          ignoreProperties: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'number',
-          },
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: "const fn = (a: number = 5, b: boolean = true, c: string = 'foo') => {};",
-      output: "const fn = (a = 5, b = true, c = 'foo') => {};",
-      options: [
-        {
-          ignoreParameters: false,
-          ignoreProperties: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'number',
-          },
-          line: 1,
-          column: 13,
-        },
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'boolean',
-          },
-          line: 1,
-          column: 28,
-        },
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'string',
-          },
-          line: 1,
-          column: 47,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  a: number = 5;
-  b: boolean = true;
-  c: string = 'foo';
-}
-      `,
-      output: `
-class Foo {
-  a = 5;
-  b = true;
-  c = 'foo';
-}
-      `,
-      options: [
-        {
-          ignoreParameters: false,
-          ignoreProperties: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'number',
-          },
-          line: 3,
-          column: 3,
-        },
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'boolean',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'string',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public a: boolean = true) {}
-}
-      `,
-      output: `
-class Foo {
-  constructor(public a = true) {}
-}
-      `,
-      options: [
-        {
-          ignoreParameters: false,
-          ignoreProperties: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noInferrableType',
-          data: {
-            type: 'boolean',
-          },
-          line: 3,
-          column: 22,
-        },
-      ],
     },
   ],
 });

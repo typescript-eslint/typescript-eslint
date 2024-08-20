@@ -5,6 +5,317 @@ import rule from '../../src/rules/no-unnecessary-parameter-property-assignment';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-parameter-property-assignment', rule, {
+  invalid: [
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo?: string) {
+    this.foo = foo!;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo?: string) {
+    this.foo = foo as any;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo = '') {
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo = '') {
+    this.foo = foo;
+    this.foo += 'foo';
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo ||= foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo ??= foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public foo: string) {
+    this.foo &&= foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    this['foo'] = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    function bar() {
+      this.foo = foo;
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    this.bar = () => {
+      this.foo = foo;
+    };
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 7,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    class Bar {
+      constructor(private foo: string) {
+        this.foo = foo;
+      }
+    }
+    this.foo = foo;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 6,
+          messageId: 'unnecessaryAssign',
+        },
+        {
+          column: 5,
+          line: 9,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    this.foo = foo;
+  }
+  bar = () => {
+    this.foo = 'foo';
+  };
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    this.foo = foo;
+  }
+  init = foo => {
+    this.foo = foo;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    this.foo = foo;
+  }
+  init = class Bar {
+    constructor(private foo: string) {
+      this.foo = foo;
+    }
+  };
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssign',
+        },
+        {
+          column: 7,
+          line: 8,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    {
+      this.foo = foo;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private foo: string) {
+    (() => {
+      this.foo = foo;
+    })();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          line: 5,
+          messageId: 'unnecessaryAssign',
+        },
+      ],
+    },
+  ],
   valid: [
     `
 class Foo {
@@ -166,316 +477,5 @@ class Foo {
   init2 = (Foo.foo = 1);
 }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-class Foo {
-  constructor(public foo: string) {
-    this.foo = foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo?: string) {
-    this.foo = foo!;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo?: string) {
-    this.foo = foo as any;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo = '') {
-    this.foo = foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo = '') {
-    this.foo = foo;
-    this.foo += 'foo';
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo: string) {
-    this.foo ||= foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo: string) {
-    this.foo ??= foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(public foo: string) {
-    this.foo &&= foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    this['foo'] = foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    function bar() {
-      this.foo = foo;
-    }
-    this.foo = foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    this.bar = () => {
-      this.foo = foo;
-    };
-    this.foo = foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    class Bar {
-      constructor(private foo: string) {
-        this.foo = foo;
-      }
-    }
-    this.foo = foo;
-  }
-}
-      `,
-      errors: [
-        {
-          line: 6,
-          column: 9,
-          messageId: 'unnecessaryAssign',
-        },
-        {
-          line: 9,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    this.foo = foo;
-  }
-  bar = () => {
-    this.foo = 'foo';
-  };
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    this.foo = foo;
-  }
-  init = foo => {
-    this.foo = foo;
-  };
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    this.foo = foo;
-  }
-  init = class Bar {
-    constructor(private foo: string) {
-      this.foo = foo;
-    }
-  };
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          messageId: 'unnecessaryAssign',
-        },
-        {
-          line: 8,
-          column: 7,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    {
-      this.foo = foo;
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          line: 5,
-          column: 7,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor(private foo: string) {
-    (() => {
-      this.foo = foo;
-    })();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 5,
-          column: 7,
-          messageId: 'unnecessaryAssign',
-        },
-      ],
-    },
   ],
 });

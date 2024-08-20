@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -13,24 +14,6 @@ type FunctionLike =
   | TSESTree.MethodDefinition['value'];
 
 export default createRule({
-  name: 'prefer-return-this-type',
-  defaultOptions: [],
-
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Enforce that `this` is used when only `this` type is returned',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      useThisType: 'Use `this` type instead.',
-    },
-    schema: [],
-    fixable: 'code',
-  },
-
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -140,9 +123,9 @@ export default createRule({
 
       if (isFunctionReturningThis(originalFunc, originalClass)) {
         context.report({
-          node,
-          messageId: 'useThisType',
           fix: fixer => fixer.replaceText(node, 'this'),
+          messageId: 'useThisType',
+          node,
         });
       }
     }
@@ -167,4 +150,22 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+
+  meta: {
+    docs: {
+      description:
+        'Enforce that `this` is used when only `this` type is returned',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      useThisType: 'Use `this` type instead.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'prefer-return-this-type',
 });

@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -12,31 +13,13 @@ import {
 } from '../util';
 
 enum ArgumentType {
-  Other = 0,
-  String = 1 << 0,
-  RegExp = 1 << 1,
   Both = String | RegExp,
+  Other = 0,
+  RegExp = 1 << 1,
+  String = 1 << 0,
 }
 
 export default createRule({
-  name: 'prefer-regexp-exec',
-  defaultOptions: [],
-
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    docs: {
-      description:
-        'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
-    },
-    schema: [],
-  },
-
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
@@ -132,14 +115,14 @@ export default createRule({
             return;
           }
           return context.report({
-            node: memberNode.property,
-            messageId: 'regExpExecOverStringMatch',
             fix: getWrappingFixer({
-              sourceCode: context.sourceCode,
-              node: callNode,
               innerNode: [objectNode],
+              node: callNode,
+              sourceCode: context.sourceCode,
               wrap: objectCode => `${regExp.toString()}.exec(${objectCode})`,
             }),
+            messageId: 'regExpExecOverStringMatch',
+            node: memberNode.property,
           });
         }
 
@@ -150,31 +133,49 @@ export default createRule({
         switch (argumentTypes) {
           case ArgumentType.RegExp:
             return context.report({
-              node: memberNode.property,
-              messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                sourceCode: context.sourceCode,
-                node: callNode,
                 innerNode: [objectNode, argumentNode],
+                node: callNode,
+                sourceCode: context.sourceCode,
                 wrap: (objectCode, argumentCode) =>
                   `${argumentCode}.exec(${objectCode})`,
               }),
+              messageId: 'regExpExecOverStringMatch',
+              node: memberNode.property,
             });
 
           case ArgumentType.String:
             return context.report({
-              node: memberNode.property,
-              messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                sourceCode: context.sourceCode,
-                node: callNode,
                 innerNode: [objectNode, argumentNode],
+                node: callNode,
+                sourceCode: context.sourceCode,
                 wrap: (objectCode, argumentCode) =>
                   `RegExp(${argumentCode}).exec(${objectCode})`,
               }),
+              messageId: 'regExpExecOverStringMatch',
+              node: memberNode.property,
             });
         }
       },
     };
   },
+  defaultOptions: [],
+
+  meta: {
+    docs: {
+      description:
+        'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'prefer-regexp-exec',
 });

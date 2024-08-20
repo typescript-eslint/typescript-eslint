@@ -1,5 +1,6 @@
-import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -11,25 +12,6 @@ import {
 } from '../util';
 
 export default createRule({
-  name: 'prefer-includes',
-  defaultOptions: [],
-
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Enforce `includes` method over `indexOf` method',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      preferIncludes: "Use 'includes()' method instead.",
-      preferStringIncludes:
-        'Use `String#includes()` method with a string instead.',
-    },
-    schema: [],
-  },
-
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
@@ -102,7 +84,7 @@ export default createRule({
         return null;
       }
 
-      const { pattern, flags } = parseRegExpLiteral(evaluated.value);
+      const { flags, pattern } = parseRegExpLiteral(evaluated.value);
       if (
         pattern.alternatives.length !== 1 ||
         flags.ignoreCase ||
@@ -124,13 +106,13 @@ export default createRule({
     function escapeString(str: string): string {
       const EscapeMap = {
         '\0': '\\0',
+        '\t': '\\t',
+        '\n': '\\n',
+        '\v': '\\v',
+        '\f': '\\f',
+        '\r': '\\r',
         "'": "\\'",
         '\\': '\\\\',
-        '\n': '\\n',
-        '\r': '\\r',
-        '\v': '\\v',
-        '\t': '\\t',
-        '\f': '\\f',
         // "\b" cause unexpected replacements
         // '\b': '\\b',
       };
@@ -188,8 +170,8 @@ export default createRule({
 
       // Report it.
       context.report({
-        node: compareNode,
         messageId: 'preferIncludes',
+        node: compareNode,
         ...(allowFixing && {
           *fix(fixer): Generator<TSESLint.RuleFix> {
             if (negative) {
@@ -219,7 +201,7 @@ export default createRule({
 
       // /bar/.test(foo)
       'CallExpression[arguments.length=1] > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression & { parent: TSESTree.CallExpression },
+        node: { parent: TSESTree.CallExpression } & TSESTree.MemberExpression,
       ): void {
         const callNode = node.parent;
         const text = parseRegExp(node.object);
@@ -239,8 +221,6 @@ export default createRule({
         }
 
         context.report({
-          node: callNode,
-          messageId: 'preferStringIncludes',
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
@@ -261,8 +241,29 @@ export default createRule({
               `${node.optional ? '?.' : '.'}includes('${escapeString(text)}')`,
             );
           },
+          messageId: 'preferStringIncludes',
+          node: callNode,
         });
       },
     };
   },
+  defaultOptions: [],
+
+  meta: {
+    docs: {
+      description: 'Enforce `includes` method over `indexOf` method',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferIncludes: "Use 'includes()' method instead.",
+      preferStringIncludes:
+        'Use `String#includes()` method with a string instead.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'prefer-includes',
 });

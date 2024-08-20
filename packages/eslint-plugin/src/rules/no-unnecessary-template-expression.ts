@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -25,28 +26,12 @@ function endsWithUnescapedDollarSign(str: string): boolean {
 }
 
 export default createRule<[], MessageId>({
-  name: 'no-unnecessary-template-expression',
-  meta: {
-    fixable: 'code',
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow unnecessary template expressions',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      noUnnecessaryTemplateExpression:
-        'Template literal expression is unnecessary and can be simplified.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
 
     function isUnderlyingTypeString(
       expression: TSESTree.Expression,
-    ): expression is TSESTree.StringLiteral | TSESTree.Identifier {
+    ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
       const type = getConstrainedTypeAtLocation(services, expression);
 
       const isString = (t: ts.Type): boolean => {
@@ -105,17 +90,17 @@ export default createRule<[], MessageId>({
 
         if (hasSingleStringVariable) {
           context.report({
-            node: node.expressions[0],
-            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix | null {
               const wrappingCode = getMovedNodeCode({
-                sourceCode: context.sourceCode,
-                nodeToMove: node.expressions[0],
                 destinationNode: node,
+                nodeToMove: node.expressions[0],
+                sourceCode: context.sourceCode,
               });
 
               return fixer.replaceText(node, wrappingCode);
             },
+            messageId: 'noUnnecessaryTemplateExpression',
+            node: node.expressions[0],
           });
 
           return;
@@ -246,8 +231,6 @@ export default createRule<[], MessageId>({
           }
 
           context.report({
-            node: expression,
-            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               return [
                 // Remove the quasis' parts that are related to the current expression.
@@ -263,9 +246,27 @@ export default createRule<[], MessageId>({
                 ...fixers.flatMap(cb => cb(fixer)),
               ];
             },
+            messageId: 'noUnnecessaryTemplateExpression',
+            node: expression,
           });
         }
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow unnecessary template expressions',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      noUnnecessaryTemplateExpression:
+        'Template literal expression is unnecessary and can be simplified.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-unnecessary-template-expression',
 });

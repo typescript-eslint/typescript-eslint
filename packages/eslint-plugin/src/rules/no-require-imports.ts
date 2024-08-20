@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import * as util from '../util';
@@ -12,35 +13,6 @@ type Options = [
 type MessageIds = 'noRequireImports';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-require-imports',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow invocation of `require()`',
-      recommended: 'recommended',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allow: {
-            type: 'array',
-            items: { type: 'string' },
-            description: 'Patterns of import paths to allow requiring from.',
-          },
-          allowAsImport: {
-            type: 'boolean',
-            description: 'Allows `require` statements in import declarations.',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: {
-      noRequireImports: 'A `require()` style import is forbidden.',
-    },
-  },
-  defaultOptions: [{ allow: [], allowAsImport: false }],
   create(context, options) {
     const allowAsImport = options[0].allowAsImport;
     const allowPatterns = options[0].allow?.map(
@@ -75,8 +47,8 @@ export default util.createRule<Options, MessageIds>({
         // of the commonjs standard
         if (!variable?.identifiers.length) {
           context.report({
-            node,
             messageId: 'noRequireImports',
+            node,
           });
         }
       },
@@ -94,10 +66,39 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         context.report({
-          node,
           messageId: 'noRequireImports',
+          node,
         });
       },
     };
   },
+  defaultOptions: [{ allow: [], allowAsImport: false }],
+  meta: {
+    docs: {
+      description: 'Disallow invocation of `require()`',
+      recommended: 'recommended',
+    },
+    messages: {
+      noRequireImports: 'A `require()` style import is forbidden.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allow: {
+            description: 'Patterns of import paths to allow requiring from.',
+            items: { type: 'string' },
+            type: 'array',
+          },
+          allowAsImport: {
+            description: 'Allows `require` statements in import declarations.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'no-require-imports',
 });

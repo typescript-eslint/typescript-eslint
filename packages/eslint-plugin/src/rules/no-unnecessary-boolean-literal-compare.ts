@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -14,8 +15,8 @@ type MessageIds =
 
 type Options = [
   {
-    allowComparingNullableBooleansToTrue?: boolean;
     allowComparingNullableBooleansToFalse?: boolean;
+    allowComparingNullableBooleansToTrue?: boolean;
   },
 ];
 
@@ -30,53 +31,6 @@ interface BooleanComparisonWithTypeInformation extends BooleanComparison {
 }
 
 export default createRule<Options, MessageIds>({
-  name: 'no-unnecessary-boolean-literal-compare',
-  meta: {
-    docs: {
-      description:
-        'Disallow unnecessary equality comparisons against boolean literals',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      direct:
-        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
-      negated:
-        'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
-      comparingNullableToTrueDirect:
-        'This expression unnecessarily compares a nullable boolean value to true instead of using it directly.',
-      comparingNullableToTrueNegated:
-        'This expression unnecessarily compares a nullable boolean value to true instead of negating it.',
-      comparingNullableToFalse:
-        'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowComparingNullableBooleansToTrue: {
-            description:
-              'Whether to allow comparisons between nullable boolean variables and `true`.',
-            type: 'boolean',
-          },
-          allowComparingNullableBooleansToFalse: {
-            description:
-              'Whether to allow comparisons between nullable boolean variables and `false`.',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    type: 'suggestion',
-  },
-  defaultOptions: [
-    {
-      allowComparingNullableBooleansToTrue: true,
-      allowComparingNullableBooleansToFalse: true,
-    },
-  ],
   create(context, [options]) {
     const services = getParserServices(context);
 
@@ -176,8 +130,8 @@ export default createRule<Options, MessageIds>({
         const negated = !comparisonType.isPositive;
 
         return {
-          literalBooleanInComparison,
           expression,
+          literalBooleanInComparison,
           negated,
         };
       }
@@ -268,6 +222,53 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allowComparingNullableBooleansToFalse: true,
+      allowComparingNullableBooleansToTrue: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Disallow unnecessary equality comparisons against boolean literals',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      comparingNullableToFalse:
+        'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',
+      comparingNullableToTrueDirect:
+        'This expression unnecessarily compares a nullable boolean value to true instead of using it directly.',
+      comparingNullableToTrueNegated:
+        'This expression unnecessarily compares a nullable boolean value to true instead of negating it.',
+      direct:
+        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
+      negated:
+        'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowComparingNullableBooleansToFalse: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `false`.',
+            type: 'boolean',
+          },
+          allowComparingNullableBooleansToTrue: {
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `true`.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-unnecessary-boolean-literal-compare',
 });
 
 interface EqualsKind {
@@ -277,18 +278,6 @@ interface EqualsKind {
 
 function getEqualsKind(operator: string): EqualsKind | undefined {
   switch (operator) {
-    case '==':
-      return {
-        isPositive: true,
-        isStrict: false,
-      };
-
-    case '===':
-      return {
-        isPositive: true,
-        isStrict: true,
-      };
-
     case '!=':
       return {
         isPositive: false,
@@ -298,6 +287,18 @@ function getEqualsKind(operator: string): EqualsKind | undefined {
     case '!==':
       return {
         isPositive: false,
+        isStrict: true,
+      };
+
+    case '==':
+      return {
+        isPositive: true,
+        isStrict: false,
+      };
+
+    case '===':
+      return {
+        isPositive: true,
         isStrict: true,
       };
 

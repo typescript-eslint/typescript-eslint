@@ -8,13 +8,554 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('no-unnecessary-type-parameters', rule, {
+  invalid: [
+    {
+      code: 'const func = <T,>(param: T) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'const f1 = <T,>(): T => {};',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        interface I {
+          <T>(value: T): void;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        interface I {
+          m<T>(x: T): void;
+        }
+      `,
+      errors: [{ messageId: 'sole' }],
+    },
+    {
+      code: `
+        class Joiner<T extends string | number> {
+          join(el: T, other: string) {
+            return [el, other].join(',');
+          }
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class C<V> {}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'class', name: 'V', uses: 'never used' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class C<T, U> {
+          method(param: T): U;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'class', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class C {
+          method<T, U>(param: T): U;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class C {
+          prop: <P>() => P;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'P', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class Foo {
+          foo<T>(this: T): void;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function third<A, B, C>(a: A, b: B, c: C): C {
+          return c;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'A', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'B', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T>(_: T) {
+          const x: T = null!;
+          const y: T = null!;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T>(_: T): void {
+          const x: T = null!;
+          const y: T = null!;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T>(_: T): <T>(input: T) => T {
+          const x: T = null!;
+          const y: T = null!;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function foo<T>(_: T) {
+          function withX(): T {
+            return null!;
+          }
+          function withY(): T {
+            return null!;
+          }
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function parseYAML<T>(input: string): T {
+          return input as any as T;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function printProperty<T, K extends keyof T>(obj: T, key: K) {
+          console.log(obj[key]);
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'K', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function fn<T>(param: string) {
+          let v: T = null!;
+          return v;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function both<
+          Args extends unknown[],
+          CB1 extends (...args: Args) => void,
+          CB2 extends (...args: Args) => void,
+        >(fn1: CB1, fn2: CB2): (...args: Args) => void {
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        function getLength<T extends { length: number }>(x: T) {
+          return x.length;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Lengthy {
+          length: number;
+        }
+        function getLength<T extends Lengthy>(x: T) {
+          return x.length;
+        }
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T>(): unknown;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T>(): T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T extends object>(): T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function take<T>(param: T): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function take<T extends object>(param: T): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function take<T, U extends T>(param: T): U;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function take<T, U extends T>(param: U): U;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T, U = T>(param: U): U;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T, U extends T = T>(param: T): U;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Fn = <T>() => T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Fn = <T>() => [];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        type Other = 0;
+        type Fn = <T>() => Other;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        type Other = 0 | 1;
+        type Fn = <T>() => Other;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Fn = <U>(param: U) => void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Ctr = new <T>() => T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Fn = <T>() => { [K in keyof T]: K };',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: "type Fn = <T>() => { [K in 'a']: T };",
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Fn = <T>(value: unknown) => value is T;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: 'type Fn = <T extends string>() => `a${T}b`;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function mapObj<K extends string, V>(
+          obj: { [key in K]?: V },
+          fn: (key: K) => number,
+        ): number[];
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+  ],
+
   valid: [
     `
       class ClassyArray<T> {
@@ -393,546 +934,5 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return [{ value: () => mappedReturnType(x) }];
       }
     `,
-  ],
-
-  invalid: [
-    {
-      code: 'const func = <T,>(param: T) => null;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'const f1 = <T,>(): T => {};',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        interface I {
-          <T>(value: T): void;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        interface I {
-          m<T>(x: T): void;
-        }
-      `,
-      errors: [{ messageId: 'sole' }],
-    },
-    {
-      code: `
-        class Joiner<T extends string | number> {
-          join(el: T, other: string) {
-            return [el, other].join(',');
-          }
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        declare class C<V> {}
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'class', name: 'V', uses: 'never used' },
-        },
-      ],
-    },
-    {
-      code: `
-        declare class C<T, U> {
-          method(param: T): U;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'class', name: 'T', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'class', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        declare class C {
-          method<T, U>(param: T): U;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        declare class C {
-          prop: <P>() => P;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'P', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        declare class Foo {
-          foo<T>(this: T): void;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function third<A, B, C>(a: A, b: B, c: C): C {
-          return c;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'A', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'B', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function foo<T>(_: T) {
-          const x: T = null!;
-          const y: T = null!;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function foo<T>(_: T): void {
-          const x: T = null!;
-          const y: T = null!;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function foo<T>(_: T): <T>(input: T) => T {
-          const x: T = null!;
-          const y: T = null!;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function foo<T>(_: T) {
-          function withX(): T {
-            return null!;
-          }
-          function withY(): T {
-            return null!;
-          }
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function parseYAML<T>(input: string): T {
-          return input as any as T;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function printProperty<T, K extends keyof T>(obj: T, key: K) {
-          console.log(obj[key]);
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'K', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function fn<T>(param: string) {
-          let v: T = null!;
-          return v;
-        }
-      `,
-      errors: [
-        {
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-          messageId: 'sole',
-        },
-      ],
-    },
-    {
-      code: `
-        function both<
-          Args extends unknown[],
-          CB1 extends (...args: Args) => void,
-          CB2 extends (...args: Args) => void,
-        >(fn1: CB1, fn2: CB2): (...args: Args) => void {
-          return function (...args: Args) {
-            fn1(...args);
-            fn2(...args);
-          };
-        }
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        function getLength<T extends { length: number }>(x: T) {
-          return x.length;
-        }
-      `,
-      errors: [
-        {
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-          messageId: 'sole',
-        },
-      ],
-    },
-    {
-      code: `
-        interface Lengthy {
-          length: number;
-        }
-        function getLength<T extends Lengthy>(x: T) {
-          return x.length;
-        }
-      `,
-      errors: [
-        {
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-          messageId: 'sole',
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T>(): unknown;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'never used' },
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T>(): T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T extends object>(): T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function take<T>(param: T): void;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function take<T extends object>(param: T): void;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function take<T, U extends T>(param: T): U;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function take<T, U extends T>(param: U): U;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T, U = T>(param: U): U;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T, U extends T = T>(param: T): U;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'V', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'type Fn = <T>() => T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'type Fn = <T>() => [];',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'never used' },
-        },
-      ],
-    },
-    {
-      code: `
-        type Other = 0;
-        type Fn = <T>() => Other;
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'never used' },
-        },
-      ],
-    },
-    {
-      code: `
-        type Other = 0 | 1;
-        type Fn = <T>() => Other;
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'never used' },
-        },
-      ],
-    },
-    {
-      code: 'type Fn = <U>(param: U) => void;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'U', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'type Ctr = new <T>() => T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'type Fn = <T>() => { [K in keyof T]: K };',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: "type Fn = <T>() => { [K in 'a']: T };",
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'type Fn = <T>(value: unknown) => value is T;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: 'type Fn = <T extends string>() => `a${T}b`;',
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-        },
-      ],
-    },
-    {
-      code: `
-        declare function mapObj<K extends string, V>(
-          obj: { [key in K]?: V },
-          fn: (key: K) => number,
-        ): number[];
-      `,
-      errors: [
-        {
-          messageId: 'sole',
-          data: { descriptor: 'function', name: 'V', uses: 'used only once' },
-        },
-      ],
-    },
   ],
 });

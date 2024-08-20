@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue } from '../util';
@@ -11,32 +12,6 @@ type Options = [
 type MessageIds = 'noVarReqs';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-var-requires',
-  meta: {
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/no-require-imports'],
-    type: 'problem',
-    docs: {
-      description: 'Disallow `require` statements except in import statements',
-    },
-    messages: {
-      noVarReqs: 'Require statement not part of import statement.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allow: {
-            type: 'array',
-            items: { type: 'string' },
-            description: 'Patterns of import paths to allow requiring from.',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [{ allow: [] }],
   create(context, options) {
     const allowPatterns = options[0].allow.map(
       pattern => new RegExp(pattern, 'u'),
@@ -85,12 +60,38 @@ export default createRule<Options, MessageIds>({
 
           if (!variable?.identifiers.length) {
             context.report({
-              node,
               messageId: 'noVarReqs',
+              node,
             });
           }
         }
       },
     };
   },
+  defaultOptions: [{ allow: [] }],
+  meta: {
+    deprecated: true,
+    docs: {
+      description: 'Disallow `require` statements except in import statements',
+    },
+    messages: {
+      noVarReqs: 'Require statement not part of import statement.',
+    },
+    replacedBy: ['@typescript-eslint/no-require-imports'],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allow: {
+            description: 'Patterns of import paths to allow requiring from.',
+            items: { type: 'string' },
+            type: 'array',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'no-var-requires',
 });

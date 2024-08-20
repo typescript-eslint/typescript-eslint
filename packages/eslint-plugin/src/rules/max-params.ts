@@ -1,17 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 type FunctionLike =
+  | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression;
+  | TSESTree.FunctionExpression;
 
 type FunctionRuleListener<T extends FunctionLike> = (node: T) => void;
 
@@ -21,37 +23,6 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  name: 'max-params',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Enforce a maximum number of parameters in function definitions',
-      extendsBaseRule: true,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          maximum: {
-            type: 'integer',
-            minimum: 0,
-          },
-          max: {
-            type: 'integer',
-            minimum: 0,
-          },
-          countVoidThis: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: baseRule.meta.messages,
-  },
-  defaultOptions: [{ max: 3, countVoidThis: false }],
-
   create(context, [{ countVoidThis }]) {
     const baseRules = baseRule.create(context);
 
@@ -90,4 +61,35 @@ export default createRule<Options, MessageIds>({
       FunctionExpression: wrapListener(baseRules.FunctionExpression),
     };
   },
+  defaultOptions: [{ countVoidThis: false, max: 3 }],
+  meta: {
+    docs: {
+      description:
+        'Enforce a maximum number of parameters in function definitions',
+      extendsBaseRule: true,
+    },
+    messages: baseRule.meta.messages,
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          countVoidThis: {
+            type: 'boolean',
+          },
+          max: {
+            minimum: 0,
+            type: 'integer',
+          },
+          maximum: {
+            minimum: 0,
+            type: 'integer',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+
+  name: 'max-params',
 });

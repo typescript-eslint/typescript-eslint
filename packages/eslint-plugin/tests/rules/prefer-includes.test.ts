@@ -8,13 +8,430 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('prefer-includes', rule, {
+  invalid: [
+    // positive
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) != -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) > -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) >= 0;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          a.includes(b);
+        }
+      `,
+    },
+
+    // negative
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) === -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          !a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) == -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          !a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) <= -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          !a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          a.indexOf(b) < 0;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: string): void {
+          !a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a?: string): void {
+          a?.indexOf(b) === -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: null,
+    },
+    {
+      code: `
+        function f(a?: string): void {
+          a?.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: null,
+    },
+
+    // RegExp#test
+    {
+      code: `
+        function f(a: string): void {
+          /bar/.test(a);
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+      output: `
+        function f(a: string): void {
+          a.includes('bar');
+        }
+      `,
+    },
+    // test SequenceExpression
+    {
+      code: `
+        function f(a: string): void {
+          /bar/.test((1 + 1, a));
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+      output: `
+        function f(a: string): void {
+          (1 + 1, a).includes('bar');
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: string): void {
+          /\\0'\\\\\\n\\r\\v\\t\\f/.test(a);
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+      output: `
+        function f(a: string): void {
+          a.includes('\\0\\'\\\\\\n\\r\\v\\t\\f');
+        }
+      `,
+    },
+    {
+      code: `
+        const pattern = new RegExp('bar');
+        function f(a: string): void {
+          pattern.test(a);
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+      output: `
+        const pattern = new RegExp('bar');
+        function f(a: string): void {
+          a.includes('bar');
+        }
+      `,
+    },
+    {
+      code: `
+        const pattern = /bar/;
+        function f(a: string, b: string): void {
+          pattern.test(a + b);
+        }
+      `,
+      errors: [{ messageId: 'preferStringIncludes' }],
+      output: `
+        const pattern = /bar/;
+        function f(a: string, b: string): void {
+          (a + b).includes('bar');
+        }
+      `,
+    },
+
+    // type variation
+    {
+      code: `
+        function f(a: any[]): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: any[]): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: ReadonlyArray<any>): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: ReadonlyArray<any>): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Int8Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Int8Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Int16Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Int16Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Int32Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Int32Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Uint8Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Uint8Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Uint16Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Uint16Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Uint32Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Uint32Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Float32Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Float32Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Float64Array): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Float64Array): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f<T>(a: T[] | ReadonlyArray<T>): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f<T>(a: T[] | ReadonlyArray<T>): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f<
+          T,
+          U extends
+            | T[]
+            | ReadonlyArray<T>
+            | Int8Array
+            | Uint8Array
+            | Int16Array
+            | Uint16Array
+            | Int32Array
+            | Uint32Array
+            | Float32Array
+            | Float64Array,
+        >(a: U): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f<
+          T,
+          U extends
+            | T[]
+            | ReadonlyArray<T>
+            | Int8Array
+            | Uint8Array
+            | Int16Array
+            | Uint16Array
+            | Int32Array
+            | Uint32Array
+            | Float32Array
+            | Float64Array,
+        >(a: U): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        type UserDefined = {
+          indexOf(x: any): number;
+          includes(x: any): boolean;
+        };
+        function f(a: UserDefined): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        type UserDefined = {
+          indexOf(x: any): number;
+          includes(x: any): boolean;
+        };
+        function f(a: UserDefined): void {
+          a.includes(b);
+        }
+      `,
+    },
+    {
+      code: `
+        function f(a: Readonly<any[]>): void {
+          a.indexOf(b) !== -1;
+        }
+      `,
+      errors: [{ messageId: 'preferIncludes' }],
+      output: `
+        function f(a: Readonly<any[]>): void {
+          a.includes(b);
+        }
+      `,
+    },
+  ],
   valid: [
     `
       function f(a: string): void {
@@ -97,422 +514,5 @@ ruleTester.run('prefer-includes', rule, {
         return pattern.test(a);
       }
     `,
-  ],
-  invalid: [
-    // positive
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) != -1;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) > -1;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) >= 0;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-
-    // negative
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) === -1;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          !a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) == -1;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          !a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) <= -1;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          !a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          a.indexOf(b) < 0;
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          !a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a?: string): void {
-          a?.indexOf(b) === -1;
-        }
-      `,
-      output: null,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a?: string): void {
-          a?.indexOf(b) !== -1;
-        }
-      `,
-      output: null,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-
-    // RegExp#test
-    {
-      code: `
-        function f(a: string): void {
-          /bar/.test(a);
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          a.includes('bar');
-        }
-      `,
-      errors: [{ messageId: 'preferStringIncludes' }],
-    },
-    // test SequenceExpression
-    {
-      code: `
-        function f(a: string): void {
-          /bar/.test((1 + 1, a));
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          (1 + 1, a).includes('bar');
-        }
-      `,
-      errors: [{ messageId: 'preferStringIncludes' }],
-    },
-    {
-      code: `
-        function f(a: string): void {
-          /\\0'\\\\\\n\\r\\v\\t\\f/.test(a);
-        }
-      `,
-      output: `
-        function f(a: string): void {
-          a.includes('\\0\\'\\\\\\n\\r\\v\\t\\f');
-        }
-      `,
-      errors: [{ messageId: 'preferStringIncludes' }],
-    },
-    {
-      code: `
-        const pattern = new RegExp('bar');
-        function f(a: string): void {
-          pattern.test(a);
-        }
-      `,
-      output: `
-        const pattern = new RegExp('bar');
-        function f(a: string): void {
-          a.includes('bar');
-        }
-      `,
-      errors: [{ messageId: 'preferStringIncludes' }],
-    },
-    {
-      code: `
-        const pattern = /bar/;
-        function f(a: string, b: string): void {
-          pattern.test(a + b);
-        }
-      `,
-      output: `
-        const pattern = /bar/;
-        function f(a: string, b: string): void {
-          (a + b).includes('bar');
-        }
-      `,
-      errors: [{ messageId: 'preferStringIncludes' }],
-    },
-
-    // type variation
-    {
-      code: `
-        function f(a: any[]): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: any[]): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: ReadonlyArray<any>): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: ReadonlyArray<any>): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Int8Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Int8Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Int16Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Int16Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Int32Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Int32Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Uint8Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Uint8Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Uint16Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Uint16Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Uint32Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Uint32Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Float32Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Float32Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Float64Array): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Float64Array): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f<T>(a: T[] | ReadonlyArray<T>): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f<T>(a: T[] | ReadonlyArray<T>): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f<
-          T,
-          U extends
-            | T[]
-            | ReadonlyArray<T>
-            | Int8Array
-            | Uint8Array
-            | Int16Array
-            | Uint16Array
-            | Int32Array
-            | Uint32Array
-            | Float32Array
-            | Float64Array,
-        >(a: U): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f<
-          T,
-          U extends
-            | T[]
-            | ReadonlyArray<T>
-            | Int8Array
-            | Uint8Array
-            | Int16Array
-            | Uint16Array
-            | Int32Array
-            | Uint32Array
-            | Float32Array
-            | Float64Array,
-        >(a: U): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        type UserDefined = {
-          indexOf(x: any): number;
-          includes(x: any): boolean;
-        };
-        function f(a: UserDefined): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        type UserDefined = {
-          indexOf(x: any): number;
-          includes(x: any): boolean;
-        };
-        function f(a: UserDefined): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
-    {
-      code: `
-        function f(a: Readonly<any[]>): void {
-          a.indexOf(b) !== -1;
-        }
-      `,
-      output: `
-        function f(a: Readonly<any[]>): void {
-          a.includes(b);
-        }
-      `,
-      errors: [{ messageId: 'preferIncludes' }],
-    },
   ],
 });

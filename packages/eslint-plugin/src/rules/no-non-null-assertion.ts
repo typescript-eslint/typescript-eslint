@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -11,23 +12,6 @@ import {
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
-  name: 'no-non-null-assertion',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Disallow non-null assertions using the `!` postfix operator',
-      recommended: 'strict',
-    },
-    hasSuggestions: true,
-    messages: {
-      noNonNull: 'Forbidden non-null assertion.',
-      suggestOptionalChain:
-        'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     return {
       TSNonNullExpression(node): void {
@@ -58,13 +42,12 @@ export default createRule<[], MessageIds>({
             if (node.parent.computed) {
               // it is x![y]?.z
               suggest.push({
-                messageId: 'suggestOptionalChain',
                 fix: replaceTokenWithOptional(),
+                messageId: 'suggestOptionalChain',
               });
             } else {
               // it is x!.y?.z
               suggest.push({
-                messageId: 'suggestOptionalChain',
                 fix(fixer) {
                   // x!.y?.z
                   //   ^ punctuator
@@ -77,19 +60,20 @@ export default createRule<[], MessageIds>({
                     fixer.insertTextBefore(punctuator, '?'),
                   ];
                 },
+                messageId: 'suggestOptionalChain',
               });
             }
           } else if (node.parent.computed) {
             // it is x!?.[y].z
             suggest.push({
-              messageId: 'suggestOptionalChain',
               fix: removeToken(),
+              messageId: 'suggestOptionalChain',
             });
           } else {
             // it is x!?.y.z
             suggest.push({
-              messageId: 'suggestOptionalChain',
               fix: removeToken(),
+              messageId: 'suggestOptionalChain',
             });
           }
         } else if (
@@ -99,24 +83,41 @@ export default createRule<[], MessageIds>({
           if (!node.parent.optional) {
             // it is x.y?.z!()
             suggest.push({
-              messageId: 'suggestOptionalChain',
               fix: replaceTokenWithOptional(),
+              messageId: 'suggestOptionalChain',
             });
           } else {
             // it is x.y.z!?.()
             suggest.push({
-              messageId: 'suggestOptionalChain',
               fix: removeToken(),
+              messageId: 'suggestOptionalChain',
             });
           }
         }
 
         context.report({
-          node,
           messageId: 'noNonNull',
+          node,
           suggest,
         });
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow non-null assertions using the `!` postfix operator',
+      recommended: 'strict',
+    },
+    hasSuggestions: true,
+    messages: {
+      noNonNull: 'Forbidden non-null assertion.',
+      suggestOptionalChain:
+        'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-non-null-assertion',
 });

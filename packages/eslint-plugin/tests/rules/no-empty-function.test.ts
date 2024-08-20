@@ -5,6 +5,127 @@ import rule from '../../src/rules/no-empty-function';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-function', rule, {
+  invalid: [
+    {
+      code: `
+class Person {
+  constructor(name: string) {}
+}
+      `,
+      errors: [
+        {
+          column: 29,
+          data: {
+            name: 'constructor',
+          },
+          line: 3,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+class Person {
+  otherMethod(name: string) {}
+}
+      `,
+      errors: [
+        {
+          column: 29,
+          data: {
+            name: "method 'otherMethod'",
+          },
+          line: 3,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 25,
+          data: {
+            name: 'constructor',
+          },
+          line: 3,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: {
+            name: 'constructor',
+          },
+          line: 3,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {}
+      `,
+      errors: [
+        {
+          column: 16,
+          data: {
+            name: "function 'foo'",
+          },
+          line: 2,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  @decorator()
+  foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: {
+            name: "method 'foo'",
+          },
+          line: 4,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Base {
+  override foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            name: "method 'foo'",
+          },
+          line: 3,
+          messageId: 'unexpected',
+        },
+      ],
+    },
+  ],
+
   valid: [
     {
       code: `
@@ -78,127 +199,6 @@ class Foo extends Base {
 }
       `,
       options: [{ allow: ['overrideMethods'] }],
-    },
-  ],
-
-  invalid: [
-    {
-      code: `
-class Person {
-  constructor(name: string) {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: 'constructor',
-          },
-          line: 3,
-          column: 29,
-        },
-      ],
-    },
-    {
-      code: `
-class Person {
-  otherMethod(name: string) {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: "method 'otherMethod'",
-          },
-          line: 3,
-          column: 29,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private constructor() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: 'constructor',
-          },
-          line: 3,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  protected constructor() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: 'constructor',
-          },
-          line: 3,
-          column: 27,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: "function 'foo'",
-          },
-          line: 2,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  @decorator()
-  foo() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: "method 'foo'",
-          },
-          line: 4,
-          column: 9,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo extends Base {
-  override foo() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: "method 'foo'",
-          },
-          line: 3,
-          column: 18,
-        },
-      ],
     },
   ],
 });

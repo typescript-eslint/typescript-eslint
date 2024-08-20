@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isReferenceToGlobalFunction } from '../util';
@@ -15,21 +16,6 @@ const classNames = new Set([
 ]);
 
 export default createRule({
-  name: 'no-wrapper-object-types',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow using confusing built-in primitive class wrappers',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    messages: {
-      bannedClassType:
-        'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     function checkBannedTypes(
       node: TSESTree.EntityName | TSESTree.Expression,
@@ -47,7 +33,7 @@ export default createRule({
       const preferred = typeName.toLowerCase();
 
       context.report({
-        data: { typeName, preferred },
+        data: { preferred, typeName },
         fix: includeFix
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(node, preferred)
           : undefined,
@@ -68,4 +54,19 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow using confusing built-in primitive class wrappers',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    messages: {
+      bannedClassType:
+        'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-wrapper-object-types',
 });

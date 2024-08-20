@@ -5,9 +5,53 @@ import { createRule } from '../util';
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
 export default createRule<[], MessageIds>({
-  name: 'prefer-enum-initializers',
+  create(context) {
+    function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
+      const { members } = node.body;
+
+      members.forEach((member, index) => {
+        if (member.initializer == null) {
+          const name = context.sourceCode.getText(member);
+          context.report({
+            data: {
+              name,
+            },
+            messageId: 'defineInitializer',
+            node: member,
+            suggest: [
+              {
+                data: { name, suggested: index },
+                fix: (fixer): TSESLint.RuleFix => {
+                  return fixer.replaceText(member, `${name} = ${index}`);
+                },
+                messageId: 'defineInitializerSuggestion',
+              },
+              {
+                data: { name, suggested: index + 1 },
+                fix: (fixer): TSESLint.RuleFix => {
+                  return fixer.replaceText(member, `${name} = ${index + 1}`);
+                },
+                messageId: 'defineInitializerSuggestion',
+              },
+              {
+                data: { name, suggested: `'${name}'` },
+                fix: (fixer): TSESLint.RuleFix => {
+                  return fixer.replaceText(member, `${name} = '${name}'`);
+                },
+                messageId: 'defineInitializerSuggestion',
+              },
+            ],
+          });
+        }
+      });
+    }
+
+    return {
+      TSEnumDeclaration,
+    };
+  },
+  defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Require each enum member value to be explicitly initialized',
@@ -20,51 +64,7 @@ export default createRule<[], MessageIds>({
         'Can be fixed to {{ name }} = {{ suggested }}',
     },
     schema: [],
+    type: 'suggestion',
   },
-  defaultOptions: [],
-  create(context) {
-    function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-      const { members } = node.body;
-
-      members.forEach((member, index) => {
-        if (member.initializer == null) {
-          const name = context.sourceCode.getText(member);
-          context.report({
-            node: member,
-            messageId: 'defineInitializer',
-            data: {
-              name,
-            },
-            suggest: [
-              {
-                messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: index },
-                fix: (fixer): TSESLint.RuleFix => {
-                  return fixer.replaceText(member, `${name} = ${index}`);
-                },
-              },
-              {
-                messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: index + 1 },
-                fix: (fixer): TSESLint.RuleFix => {
-                  return fixer.replaceText(member, `${name} = ${index + 1}`);
-                },
-              },
-              {
-                messageId: 'defineInitializerSuggestion',
-                data: { name, suggested: `'${name}'` },
-                fix: (fixer): TSESLint.RuleFix => {
-                  return fixer.replaceText(member, `${name} = '${name}'`);
-                },
-              },
-            ],
-          });
-        }
-      });
-    }
-
-    return {
-      TSEnumDeclaration,
-    };
-  },
+  name: 'prefer-enum-initializers',
 });

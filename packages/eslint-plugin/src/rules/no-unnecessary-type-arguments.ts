@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -23,22 +24,6 @@ type ParameterCapableTSNode =
 type MessageIds = 'unnecessaryTypeParameter';
 
 export default createRule<[], MessageIds>({
-  name: 'no-unnecessary-type-arguments',
-  meta: {
-    docs: {
-      description: 'Disallow type arguments that are equal to the default',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      unnecessaryTypeParameter:
-        'This is the default value for this type parameter, so it can be omitted.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -96,14 +81,14 @@ export default createRule<[], MessageIds>({
       }
 
       context.report({
-        node: arg,
-        messageId: 'unnecessaryTypeParameter',
         fix: fixer =>
           fixer.removeRange(
             i === 0
               ? esParameters.range
               : [esParameters.params[i - 1].range[1], arg.range[1]],
           ),
+        messageId: 'unnecessaryTypeParameter',
+        node: arg,
       });
     }
 
@@ -118,6 +103,22 @@ export default createRule<[], MessageIds>({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow type arguments that are equal to the default',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      unnecessaryTypeParameter:
+        'This is the default value for this type parameter, so it can be omitted.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-unnecessary-type-arguments',
 });
 
 function getTypeParametersFromNode(

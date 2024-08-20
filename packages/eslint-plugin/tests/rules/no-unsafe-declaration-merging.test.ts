@@ -8,13 +8,71 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('no-unsafe-declaration-merging', rule, {
+  invalid: [
+    {
+      code: `
+interface Foo {}
+class Foo {}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 2,
+          messageId: 'unsafeMerging',
+        },
+        {
+          column: 7,
+          line: 3,
+          messageId: 'unsafeMerging',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+interface Foo {}
+      `,
+      errors: [
+        {
+          column: 7,
+          line: 2,
+          messageId: 'unsafeMerging',
+        },
+        {
+          column: 11,
+          line: 3,
+          messageId: 'unsafeMerging',
+        },
+      ],
+    },
+    {
+      code: `
+declare global {
+  interface Foo {}
+  class Foo {}
+}
+      `,
+      errors: [
+        {
+          column: 13,
+          line: 3,
+          messageId: 'unsafeMerging',
+        },
+        {
+          column: 9,
+          line: 4,
+          messageId: 'unsafeMerging',
+        },
+      ],
+    },
+  ],
   valid: [
     `
 interface Foo {}
@@ -60,63 +118,5 @@ declare global {
 
 class Foo {}
     `,
-  ],
-  invalid: [
-    {
-      code: `
-interface Foo {}
-class Foo {}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeMerging',
-          line: 2,
-          column: 11,
-        },
-        {
-          messageId: 'unsafeMerging',
-          line: 3,
-          column: 7,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {}
-interface Foo {}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeMerging',
-          line: 2,
-          column: 7,
-        },
-        {
-          messageId: 'unsafeMerging',
-          line: 3,
-          column: 11,
-        },
-      ],
-    },
-    {
-      code: `
-declare global {
-  interface Foo {}
-  class Foo {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'unsafeMerging',
-          line: 3,
-          column: 13,
-        },
-        {
-          messageId: 'unsafeMerging',
-          line: 4,
-          column: 9,
-        },
-      ],
-    },
   ],
 });

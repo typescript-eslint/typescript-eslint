@@ -7,13 +7,1604 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('prefer-readonly', rule, {
+  invalid: [
+    {
+      code: `
+        class TestIncorrectlyModifiableStatic {
+          private static incorrectlyModifiableStatic = 7;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiableStatic',
+          },
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableStatic {
+          private static readonly incorrectlyModifiableStatic = 7;
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableStatic {
+          static #incorrectlyModifiableStatic = 7;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiableStatic',
+          },
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableStatic {
+          static readonly #incorrectlyModifiableStatic = 7;
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableStaticArrow {
+          private static incorrectlyModifiableStaticArrow = () => 7;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiableStaticArrow',
+          },
+          endColumn: 58,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableStaticArrow {
+          private static readonly incorrectlyModifiableStaticArrow = () => 7;
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableStaticArrow {
+          static #incorrectlyModifiableStaticArrow = () => 7;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiableStaticArrow',
+          },
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableStaticArrow {
+          static readonly #incorrectlyModifiableStaticArrow = () => 7;
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableInline {
+          private incorrectlyModifiableInline = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              private incorrectlyModifiableInline = 7;
+            };
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiableInline',
+          },
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+        {
+          column: 15,
+          data: {
+            name: 'incorrectlyModifiableInline',
+          },
+          endColumn: 50,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableInline {
+          private readonly incorrectlyModifiableInline = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              private readonly incorrectlyModifiableInline = 7;
+            };
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableInline {
+          #incorrectlyModifiableInline = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              #incorrectlyModifiableInline = 7;
+            };
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiableInline',
+          },
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+        {
+          column: 15,
+          data: {
+            name: '#incorrectlyModifiableInline',
+          },
+          endColumn: 43,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableInline {
+          readonly #incorrectlyModifiableInline = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              readonly #incorrectlyModifiableInline = 7;
+            };
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableDelayed {
+          private incorrectlyModifiableDelayed = 7;
+
+          public constructor() {
+            this.incorrectlyModifiableDelayed = 7;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiableDelayed',
+          },
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableDelayed {
+          private readonly incorrectlyModifiableDelayed = 7;
+
+          public constructor() {
+            this.incorrectlyModifiableDelayed = 7;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableDelayed {
+          #incorrectlyModifiableDelayed = 7;
+
+          public constructor() {
+            this.#incorrectlyModifiableDelayed = 7;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiableDelayed',
+          },
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableDelayed {
+          readonly #incorrectlyModifiableDelayed = 7;
+
+          public constructor() {
+            this.#incorrectlyModifiableDelayed = 7;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestChildClassExpressionModifiable {
+          private childClassExpressionModifiable = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              private childClassExpressionModifiable = 7;
+
+              mutate() {
+                this.childClassExpressionModifiable += 1;
+              }
+            };
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'childClassExpressionModifiable',
+          },
+          endColumn: 49,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestChildClassExpressionModifiable {
+          private readonly childClassExpressionModifiable = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              private childClassExpressionModifiable = 7;
+
+              mutate() {
+                this.childClassExpressionModifiable += 1;
+              }
+            };
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestChildClassExpressionModifiable {
+          #childClassExpressionModifiable = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              #childClassExpressionModifiable = 7;
+
+              mutate() {
+                this.#childClassExpressionModifiable += 1;
+              }
+            };
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#childClassExpressionModifiable',
+          },
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestChildClassExpressionModifiable {
+          readonly #childClassExpressionModifiable = 7;
+
+          public createConfusingChildClass() {
+            return class {
+              #childClassExpressionModifiable = 7;
+
+              mutate() {
+                this.#childClassExpressionModifiable += 1;
+              }
+            };
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePostMinus {
+          private incorrectlyModifiablePostMinus = 7;
+
+          public mutate() {
+            this.incorrectlyModifiablePostMinus - 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiablePostMinus',
+          },
+          endColumn: 49,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePostMinus {
+          private readonly incorrectlyModifiablePostMinus = 7;
+
+          public mutate() {
+            this.incorrectlyModifiablePostMinus - 1;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePostMinus {
+          #incorrectlyModifiablePostMinus = 7;
+
+          public mutate() {
+            this.#incorrectlyModifiablePostMinus - 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiablePostMinus',
+          },
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePostMinus {
+          readonly #incorrectlyModifiablePostMinus = 7;
+
+          public mutate() {
+            this.#incorrectlyModifiablePostMinus - 1;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePostPlus {
+          private incorrectlyModifiablePostPlus = 7;
+
+          public mutate() {
+            this.incorrectlyModifiablePostPlus + 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiablePostPlus',
+          },
+          endColumn: 48,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePostPlus {
+          private readonly incorrectlyModifiablePostPlus = 7;
+
+          public mutate() {
+            this.incorrectlyModifiablePostPlus + 1;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePostPlus {
+          #incorrectlyModifiablePostPlus = 7;
+
+          public mutate() {
+            this.#incorrectlyModifiablePostPlus + 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiablePostPlus',
+          },
+          endColumn: 41,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePostPlus {
+          readonly #incorrectlyModifiablePostPlus = 7;
+
+          public mutate() {
+            this.#incorrectlyModifiablePostPlus + 1;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePreMinus {
+          private incorrectlyModifiablePreMinus = 7;
+
+          public mutate() {
+            -this.incorrectlyModifiablePreMinus;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiablePreMinus',
+          },
+          endColumn: 48,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePreMinus {
+          private readonly incorrectlyModifiablePreMinus = 7;
+
+          public mutate() {
+            -this.incorrectlyModifiablePreMinus;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePreMinus {
+          #incorrectlyModifiablePreMinus = 7;
+
+          public mutate() {
+            -this.#incorrectlyModifiablePreMinus;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiablePreMinus',
+          },
+          endColumn: 41,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePreMinus {
+          readonly #incorrectlyModifiablePreMinus = 7;
+
+          public mutate() {
+            -this.#incorrectlyModifiablePreMinus;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePrePlus {
+          private incorrectlyModifiablePrePlus = 7;
+
+          public mutate() {
+            +this.incorrectlyModifiablePrePlus;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyModifiablePrePlus',
+          },
+          endColumn: 47,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePrePlus {
+          private readonly incorrectlyModifiablePrePlus = 7;
+
+          public mutate() {
+            +this.incorrectlyModifiablePrePlus;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiablePrePlus {
+          #incorrectlyModifiablePrePlus = 7;
+
+          public mutate() {
+            +this.#incorrectlyModifiablePrePlus;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#incorrectlyModifiablePrePlus',
+          },
+          endColumn: 40,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiablePrePlus {
+          readonly #incorrectlyModifiablePrePlus = 7;
+
+          public mutate() {
+            +this.#incorrectlyModifiablePrePlus;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestOverlappingClassVariable {
+          private overlappingClassVariable = 7;
+
+          public workWithSimilarClass(other: SimilarClass) {
+            other.overlappingClassVariable = 7;
+          }
+        }
+
+        class SimilarClass {
+          public overlappingClassVariable = 7;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'overlappingClassVariable',
+          },
+          endColumn: 43,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestOverlappingClassVariable {
+          private readonly overlappingClassVariable = 7;
+
+          public workWithSimilarClass(other: SimilarClass) {
+            other.overlappingClassVariable = 7;
+          }
+        }
+
+        class SimilarClass {
+          public overlappingClassVariable = 7;
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableParameter {
+          public constructor(private incorrectlyModifiableParameter = 7) {}
+        }
+      `,
+      errors: [
+        {
+          column: 30,
+          data: {
+            name: 'incorrectlyModifiableParameter',
+          },
+          endColumn: 68,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableParameter {
+          public constructor(private readonly incorrectlyModifiableParameter = 7) {}
+        }
+      `,
+    },
+    {
+      code: `
+        class TestIncorrectlyModifiableParameter {
+          public constructor(
+            public ignore: boolean,
+            private incorrectlyModifiableParameter = 7,
+          ) {}
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            name: 'incorrectlyModifiableParameter',
+          },
+          endColumn: 51,
+          endLine: 5,
+
+          line: 5,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestIncorrectlyModifiableParameter {
+          public constructor(
+            public ignore: boolean,
+            private readonly incorrectlyModifiableParameter = 7,
+          ) {}
+        }
+      `,
+    },
+    {
+      code: `
+        class TestCorrectlyNonInlineLambdas {
+          private incorrectlyInlineLambda = () => 7;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'incorrectlyInlineLambda',
+          },
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      options: [
+        {
+          onlyInlineLambdas: true,
+        },
+      ],
+      output: `
+        class TestCorrectlyNonInlineLambdas {
+          private readonly incorrectlyInlineLambda = () => 7;
+        }
+      `,
+    },
+    {
+      code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private _name: string;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            name: '_name',
+          },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    private readonly _name: string;
+  };
+}
+      `,
+    },
+    {
+      code: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    #name: string;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            name: '#name',
+          },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
+  return class extends Base {
+    readonly #name: string;
+  };
+}
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {
+            prop: '',
+          };
+
+          public test(): void {
+            this.testObj.prop = '';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {
+            prop: '',
+          };
+
+          public test(): void {
+            this.testObj.prop = '';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {
+            prop: '',
+          };
+
+          public test(): void {
+            this.#testObj.prop = '';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {
+            prop: '',
+          };
+
+          public test(): void {
+            this.#testObj.prop = '';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestObject {
+          public prop: number;
+        }
+
+        class Test {
+          private testObj = new TestObject();
+
+          public test(): void {
+            this.testObj.prop = 10;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestObject {
+          public prop: number;
+        }
+
+        class Test {
+          private readonly testObj = new TestObject();
+
+          public test(): void {
+            this.testObj.prop = 10;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class TestObject {
+          public prop: number;
+        }
+
+        class Test {
+          #testObj = new TestObject();
+
+          public test(): void {
+            this.#testObj.prop = 10;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class TestObject {
+          public prop: number;
+        }
+
+        class Test {
+          readonly #testObj = new TestObject();
+
+          public test(): void {
+            this.#testObj.prop = 10;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {
+            prop: '',
+          };
+          public test(): void {
+            this.testObj.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {
+            prop: '',
+          };
+          public test(): void {
+            this.testObj.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {
+            prop: '',
+          };
+          public test(): void {
+            this.#testObj.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {
+            prop: '',
+          };
+          public test(): void {
+            this.#testObj.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj!.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj!.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj!.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj!.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj.prop.prop = '';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj.prop.prop = '';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj.prop.prop = '';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj.prop.prop = '';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj.prop.doesSomething();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj.prop.doesSomething();
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj.prop.doesSomething();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj.prop.doesSomething();
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj?.prop.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj?.prop.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj?.prop.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj?.prop.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj?.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj?.prop?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj?.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj?.prop?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj.prop?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj.prop?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private testObj = {};
+          public test(): void {
+            this.testObj!.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly testObj = {};
+          public test(): void {
+            this.testObj!.prop?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          #testObj = {};
+          public test(): void {
+            this.#testObj!.prop?.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          readonly #testObj = {};
+          public test(): void {
+            this.#testObj!.prop?.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop: number = 3;
+
+          test() {
+            const that = {} as this & { _foo: 'bar' };
+            that._foo = 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: number = 3;
+
+          test() {
+            const that = {} as this & { _foo: 'bar' };
+            that._foo = 1;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop: number = 3;
+
+          test() {
+            const that = {} as this | (this & { _foo: 'bar' });
+            that.prop;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: number = 3;
+
+          test() {
+            const that = {} as this | (this & { _foo: 'bar' });
+            that.prop;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop: number;
+
+          constructor() {
+            const that = {} as this & { _foo: 'bar' };
+            that.prop = 1;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: number;
+
+          constructor() {
+            const that = {} as this & { _foo: 'bar' };
+            that.prop = 1;
+          }
+        }
+      `,
+    },
+  ],
   valid: [
     'function ignore() {}',
     'const ignore = function () {};',
@@ -742,1596 +2333,5 @@ class Foo {
         accessor #acc = 3;
       }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-        class TestIncorrectlyModifiableStatic {
-          private static incorrectlyModifiableStatic = 7;
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 53,
-          data: {
-            name: 'incorrectlyModifiableStatic',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableStatic {
-          private static readonly incorrectlyModifiableStatic = 7;
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableStatic {
-          static #incorrectlyModifiableStatic = 7;
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 46,
-          data: {
-            name: '#incorrectlyModifiableStatic',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableStatic {
-          static readonly #incorrectlyModifiableStatic = 7;
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableStaticArrow {
-          private static incorrectlyModifiableStaticArrow = () => 7;
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 58,
-          data: {
-            name: 'incorrectlyModifiableStaticArrow',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableStaticArrow {
-          private static readonly incorrectlyModifiableStaticArrow = () => 7;
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableStaticArrow {
-          static #incorrectlyModifiableStaticArrow = () => 7;
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 51,
-          data: {
-            name: '#incorrectlyModifiableStaticArrow',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableStaticArrow {
-          static readonly #incorrectlyModifiableStaticArrow = () => 7;
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableInline {
-          private incorrectlyModifiableInline = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              private incorrectlyModifiableInline = 7;
-            };
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 46,
-          data: {
-            name: 'incorrectlyModifiableInline',
-          },
-          messageId: 'preferReadonly',
-        },
-        {
-          line: 7,
-          column: 15,
-          endLine: 7,
-          endColumn: 50,
-          data: {
-            name: 'incorrectlyModifiableInline',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableInline {
-          private readonly incorrectlyModifiableInline = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              private readonly incorrectlyModifiableInline = 7;
-            };
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableInline {
-          #incorrectlyModifiableInline = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              #incorrectlyModifiableInline = 7;
-            };
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 39,
-          data: {
-            name: '#incorrectlyModifiableInline',
-          },
-          messageId: 'preferReadonly',
-        },
-        {
-          line: 7,
-          column: 15,
-          endLine: 7,
-          endColumn: 43,
-          data: {
-            name: '#incorrectlyModifiableInline',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableInline {
-          readonly #incorrectlyModifiableInline = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              readonly #incorrectlyModifiableInline = 7;
-            };
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableDelayed {
-          private incorrectlyModifiableDelayed = 7;
-
-          public constructor() {
-            this.incorrectlyModifiableDelayed = 7;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 47,
-          data: {
-            name: 'incorrectlyModifiableDelayed',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableDelayed {
-          private readonly incorrectlyModifiableDelayed = 7;
-
-          public constructor() {
-            this.incorrectlyModifiableDelayed = 7;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableDelayed {
-          #incorrectlyModifiableDelayed = 7;
-
-          public constructor() {
-            this.#incorrectlyModifiableDelayed = 7;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 40,
-          data: {
-            name: '#incorrectlyModifiableDelayed',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableDelayed {
-          readonly #incorrectlyModifiableDelayed = 7;
-
-          public constructor() {
-            this.#incorrectlyModifiableDelayed = 7;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestChildClassExpressionModifiable {
-          private childClassExpressionModifiable = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              private childClassExpressionModifiable = 7;
-
-              mutate() {
-                this.childClassExpressionModifiable += 1;
-              }
-            };
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 49,
-          data: {
-            name: 'childClassExpressionModifiable',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestChildClassExpressionModifiable {
-          private readonly childClassExpressionModifiable = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              private childClassExpressionModifiable = 7;
-
-              mutate() {
-                this.childClassExpressionModifiable += 1;
-              }
-            };
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestChildClassExpressionModifiable {
-          #childClassExpressionModifiable = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              #childClassExpressionModifiable = 7;
-
-              mutate() {
-                this.#childClassExpressionModifiable += 1;
-              }
-            };
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 42,
-          data: {
-            name: '#childClassExpressionModifiable',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestChildClassExpressionModifiable {
-          readonly #childClassExpressionModifiable = 7;
-
-          public createConfusingChildClass() {
-            return class {
-              #childClassExpressionModifiable = 7;
-
-              mutate() {
-                this.#childClassExpressionModifiable += 1;
-              }
-            };
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePostMinus {
-          private incorrectlyModifiablePostMinus = 7;
-
-          public mutate() {
-            this.incorrectlyModifiablePostMinus - 1;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 49,
-
-          data: {
-            name: 'incorrectlyModifiablePostMinus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePostMinus {
-          private readonly incorrectlyModifiablePostMinus = 7;
-
-          public mutate() {
-            this.incorrectlyModifiablePostMinus - 1;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePostMinus {
-          #incorrectlyModifiablePostMinus = 7;
-
-          public mutate() {
-            this.#incorrectlyModifiablePostMinus - 1;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 42,
-          data: {
-            name: '#incorrectlyModifiablePostMinus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePostMinus {
-          readonly #incorrectlyModifiablePostMinus = 7;
-
-          public mutate() {
-            this.#incorrectlyModifiablePostMinus - 1;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePostPlus {
-          private incorrectlyModifiablePostPlus = 7;
-
-          public mutate() {
-            this.incorrectlyModifiablePostPlus + 1;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 48,
-
-          data: {
-            name: 'incorrectlyModifiablePostPlus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePostPlus {
-          private readonly incorrectlyModifiablePostPlus = 7;
-
-          public mutate() {
-            this.incorrectlyModifiablePostPlus + 1;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePostPlus {
-          #incorrectlyModifiablePostPlus = 7;
-
-          public mutate() {
-            this.#incorrectlyModifiablePostPlus + 1;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 41,
-
-          data: {
-            name: '#incorrectlyModifiablePostPlus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePostPlus {
-          readonly #incorrectlyModifiablePostPlus = 7;
-
-          public mutate() {
-            this.#incorrectlyModifiablePostPlus + 1;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePreMinus {
-          private incorrectlyModifiablePreMinus = 7;
-
-          public mutate() {
-            -this.incorrectlyModifiablePreMinus;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 48,
-          data: {
-            name: 'incorrectlyModifiablePreMinus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePreMinus {
-          private readonly incorrectlyModifiablePreMinus = 7;
-
-          public mutate() {
-            -this.incorrectlyModifiablePreMinus;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePreMinus {
-          #incorrectlyModifiablePreMinus = 7;
-
-          public mutate() {
-            -this.#incorrectlyModifiablePreMinus;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 41,
-
-          data: {
-            name: '#incorrectlyModifiablePreMinus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePreMinus {
-          readonly #incorrectlyModifiablePreMinus = 7;
-
-          public mutate() {
-            -this.#incorrectlyModifiablePreMinus;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePrePlus {
-          private incorrectlyModifiablePrePlus = 7;
-
-          public mutate() {
-            +this.incorrectlyModifiablePrePlus;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 47,
-
-          data: {
-            name: 'incorrectlyModifiablePrePlus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePrePlus {
-          private readonly incorrectlyModifiablePrePlus = 7;
-
-          public mutate() {
-            +this.incorrectlyModifiablePrePlus;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiablePrePlus {
-          #incorrectlyModifiablePrePlus = 7;
-
-          public mutate() {
-            +this.#incorrectlyModifiablePrePlus;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 40,
-
-          data: {
-            name: '#incorrectlyModifiablePrePlus',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiablePrePlus {
-          readonly #incorrectlyModifiablePrePlus = 7;
-
-          public mutate() {
-            +this.#incorrectlyModifiablePrePlus;
-          }
-        }
-      `,
-    },
-    {
-      code: `
-        class TestOverlappingClassVariable {
-          private overlappingClassVariable = 7;
-
-          public workWithSimilarClass(other: SimilarClass) {
-            other.overlappingClassVariable = 7;
-          }
-        }
-
-        class SimilarClass {
-          public overlappingClassVariable = 7;
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 43,
-
-          data: {
-            name: 'overlappingClassVariable',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestOverlappingClassVariable {
-          private readonly overlappingClassVariable = 7;
-
-          public workWithSimilarClass(other: SimilarClass) {
-            other.overlappingClassVariable = 7;
-          }
-        }
-
-        class SimilarClass {
-          public overlappingClassVariable = 7;
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableParameter {
-          public constructor(private incorrectlyModifiableParameter = 7) {}
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 30,
-          endLine: 3,
-          endColumn: 68,
-          data: {
-            name: 'incorrectlyModifiableParameter',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableParameter {
-          public constructor(private readonly incorrectlyModifiableParameter = 7) {}
-        }
-      `,
-    },
-    {
-      code: `
-        class TestIncorrectlyModifiableParameter {
-          public constructor(
-            public ignore: boolean,
-            private incorrectlyModifiableParameter = 7,
-          ) {}
-        }
-      `,
-      errors: [
-        {
-          line: 5,
-          column: 13,
-          endLine: 5,
-          endColumn: 51,
-
-          data: {
-            name: 'incorrectlyModifiableParameter',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      output: `
-        class TestIncorrectlyModifiableParameter {
-          public constructor(
-            public ignore: boolean,
-            private readonly incorrectlyModifiableParameter = 7,
-          ) {}
-        }
-      `,
-    },
-    {
-      code: `
-        class TestCorrectlyNonInlineLambdas {
-          private incorrectlyInlineLambda = () => 7;
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 42,
-          data: {
-            name: 'incorrectlyInlineLambda',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-      options: [
-        {
-          onlyInlineLambdas: true,
-        },
-      ],
-      output: `
-        class TestCorrectlyNonInlineLambdas {
-          private readonly incorrectlyInlineLambda = () => 7;
-        }
-      `,
-    },
-    {
-      code: `
-function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
-  return class extends Base {
-    private _name: string;
-  };
-}
-      `,
-      output: `
-function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
-  return class extends Base {
-    private readonly _name: string;
-  };
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 18,
-          data: {
-            name: '_name',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
-  return class extends Base {
-    #name: string;
-  };
-}
-      `,
-      output: `
-function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
-  return class extends Base {
-    readonly #name: string;
-  };
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 10,
-          data: {
-            name: '#name',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {
-            prop: '',
-          };
-
-          public test(): void {
-            this.testObj.prop = '';
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {
-            prop: '',
-          };
-
-          public test(): void {
-            this.testObj.prop = '';
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {
-            prop: '',
-          };
-
-          public test(): void {
-            this.#testObj.prop = '';
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {
-            prop: '',
-          };
-
-          public test(): void {
-            this.#testObj.prop = '';
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class TestObject {
-          public prop: number;
-        }
-
-        class Test {
-          private testObj = new TestObject();
-
-          public test(): void {
-            this.testObj.prop = 10;
-          }
-        }
-      `,
-      output: `
-        class TestObject {
-          public prop: number;
-        }
-
-        class Test {
-          private readonly testObj = new TestObject();
-
-          public test(): void {
-            this.testObj.prop = 10;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 7,
-          column: 11,
-          endLine: 7,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class TestObject {
-          public prop: number;
-        }
-
-        class Test {
-          #testObj = new TestObject();
-
-          public test(): void {
-            this.#testObj.prop = 10;
-          }
-        }
-      `,
-      output: `
-        class TestObject {
-          public prop: number;
-        }
-
-        class Test {
-          readonly #testObj = new TestObject();
-
-          public test(): void {
-            this.#testObj.prop = 10;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 7,
-          column: 11,
-          endLine: 7,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {
-            prop: '',
-          };
-          public test(): void {
-            this.testObj.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {
-            prop: '',
-          };
-          public test(): void {
-            this.testObj.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {
-            prop: '',
-          };
-          public test(): void {
-            this.#testObj.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {
-            prop: '',
-          };
-          public test(): void {
-            this.#testObj.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj!.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj!.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj!.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj!.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj.prop.prop = '';
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj.prop.prop = '';
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj.prop.prop = '';
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj.prop.prop = '';
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj.prop.doesSomething();
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj.prop.doesSomething();
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj.prop.doesSomething();
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj.prop.doesSomething();
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj?.prop.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj?.prop.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj?.prop.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj?.prop.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj?.prop?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj?.prop?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj?.prop?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj?.prop?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj.prop?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj.prop?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj.prop?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj.prop?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private testObj = {};
-          public test(): void {
-            this.testObj!.prop?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly testObj = {};
-          public test(): void {
-            this.testObj!.prop?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 26,
-          data: {
-            name: 'testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          #testObj = {};
-          public test(): void {
-            this.#testObj!.prop?.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          readonly #testObj = {};
-          public test(): void {
-            this.#testObj!.prop?.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 19,
-          data: {
-            name: '#testObj',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private prop: number = 3;
-
-          test() {
-            const that = {} as this & { _foo: 'bar' };
-            that._foo = 1;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly prop: number = 3;
-
-          test() {
-            const that = {} as this & { _foo: 'bar' };
-            that._foo = 1;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 23,
-          data: {
-            name: 'prop',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private prop: number = 3;
-
-          test() {
-            const that = {} as this | (this & { _foo: 'bar' });
-            that.prop;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly prop: number = 3;
-
-          test() {
-            const that = {} as this | (this & { _foo: 'bar' });
-            that.prop;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 23,
-          data: {
-            name: 'prop',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
-    {
-      code: `
-        class Test {
-          private prop: number;
-
-          constructor() {
-            const that = {} as this & { _foo: 'bar' };
-            that.prop = 1;
-          }
-        }
-      `,
-      output: `
-        class Test {
-          private readonly prop: number;
-
-          constructor() {
-            const that = {} as this & { _foo: 'bar' };
-            that.prop = 1;
-          }
-        }
-      `,
-      errors: [
-        {
-          line: 3,
-          column: 11,
-          endLine: 3,
-          endColumn: 23,
-          data: {
-            name: 'prop',
-          },
-          messageId: 'preferReadonly',
-        },
-      ],
-    },
   ],
 });

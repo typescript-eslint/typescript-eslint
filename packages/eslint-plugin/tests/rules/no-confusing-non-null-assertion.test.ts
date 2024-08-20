@@ -10,23 +10,14 @@ import rule from '../../src/rules/no-confusing-non-null-assertion';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-confusing-non-null-assertion', rule, {
-  valid: [
-    //
-    'a == b!;',
-    'a = b!;',
-    'a !== b;',
-    'a != b;',
-    '(a + b!) == c;',
-    '(a + b!) = c;',
-  ],
   invalid: [
     {
       code: 'a! == b;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -40,9 +31,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a! === b;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -56,9 +47,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a + b! == c;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'wrapUpLeft',
@@ -72,9 +63,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(obj = new new OuterObj().InnerObj).Name! == c;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -88,9 +79,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(a==b)! ==c;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -104,9 +95,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a! = b;',
       errors: [
         {
-          messageId: 'confusingAssign',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingAssign',
           suggestions: [
             {
               messageId: 'notNeedInAssign',
@@ -120,9 +111,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(obj = new new OuterObj().InnerObj).Name! = c;',
       errors: [
         {
-          messageId: 'confusingAssign',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingAssign',
           suggestions: [
             {
               messageId: 'notNeedInAssign',
@@ -136,9 +127,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(a=b)! =c;',
       errors: [
         {
-          messageId: 'confusingAssign',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingAssign',
           suggestions: [
             {
               messageId: 'notNeedInAssign',
@@ -148,5 +139,14 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
         },
       ],
     },
+  ],
+  valid: [
+    //
+    'a == b!;',
+    'a = b!;',
+    'a !== b;',
+    'a != b;',
+    '(a + b!) == c;',
+    '(a + b!) = c;',
   ],
 });

@@ -16,38 +16,6 @@ export type Options = [
 export type MessageIds = 'requireCompare';
 
 export default createRule<Options, MessageIds>({
-  name: 'require-array-sort-compare',
-  defaultOptions: [
-    {
-      ignoreStringArrays: true,
-    },
-  ],
-
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      requireCompare: "Require 'compare' argument.",
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          ignoreStringArrays: {
-            description:
-              'Whether to ignore arrays in which all elements are strings.',
-            type: 'boolean',
-          },
-        },
-      },
-    ],
-  },
-
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -76,7 +44,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
-        context.report({ node: callee.parent, messageId: 'requireCompare' });
+        context.report({ messageId: 'requireCompare', node: callee.parent });
       }
     }
 
@@ -87,4 +55,36 @@ export default createRule<Options, MessageIds>({
         checkSortArgument,
     };
   },
+  defaultOptions: [
+    {
+      ignoreStringArrays: true,
+    },
+  ],
+
+  meta: {
+    docs: {
+      description:
+        'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      requireCompare: "Require 'compare' argument.",
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreStringArrays: {
+            description:
+              'Whether to ignore arrays in which all elements are strings.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+
+  name: 'require-array-sort-compare',
 });

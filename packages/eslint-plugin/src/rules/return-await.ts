@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -25,51 +26,12 @@ interface ScopeInfo {
 }
 
 type Option =
-  | 'in-try-catch'
   | 'always'
-  | 'never'
-  | 'error-handling-correctness-only';
+  | 'error-handling-correctness-only'
+  | 'in-try-catch'
+  | 'never';
 
 export default createRule({
-  name: 'return-await',
-  meta: {
-    docs: {
-      description: 'Enforce consistent awaiting of returned promises',
-      requiresTypeChecking: true,
-      extendsBaseRule: 'no-return-await',
-      recommended: {
-        strict: ['error-handling-correctness-only'],
-      },
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    type: 'problem',
-    messages: {
-      nonPromiseAwait:
-        'Returning an awaited value that is not a promise is not allowed.',
-      disallowedPromiseAwait:
-        'Returning an awaited promise is not allowed in this context.',
-      requiredPromiseAwait:
-        'Returning an awaited promise is required in this context.',
-      requiredPromiseAwaitSuggestion:
-        'Add `await` before the expression. Use caution as this may impact control flow.',
-      disallowedPromiseAwaitSuggestion:
-        'Remove `await` before the expression. Use caution as this may impact control flow.',
-    },
-    schema: [
-      {
-        type: 'string',
-        enum: [
-          'in-try-catch',
-          'always',
-          'never',
-          'error-handling-correctness-only',
-        ] satisfies Option[],
-      },
-    ],
-  },
-  defaultOptions: ['in-try-catch'],
-
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -108,7 +70,7 @@ export default createRule({
           // if it's a using/await using declaration, and it comes _before_ the
           // node we're checking, it affects control flow for that node.
           if (
-            ['using', 'await using'].includes(declarationNode.kind) &&
+            ['await using', 'using'].includes(declarationNode.kind) &&
             declaratorNode.range[1] < node.range[0]
           ) {
             return true;
@@ -149,13 +111,9 @@ export default createRule({
         return false;
       }
 
-      const { tryStatement, block } = tryAncestorResult;
+      const { block, tryStatement } = tryAncestorResult;
 
       switch (block) {
-        case 'try':
-          // Try blocks are always followed by either a catch or finally,
-          // so exceptions thrown here always affect control flow.
-          return true;
         case 'catch':
           // Exceptions thrown in catch blocks followed by a finally block affect
           // control flow.
@@ -167,6 +125,10 @@ export default createRule({
           return affectsExplicitErrorHandling(tryStatement);
         case 'finally':
           return affectsExplicitErrorHandling(tryStatement);
+        case 'try':
+          // Try blocks are always followed by either a catch or finally,
+          // so exceptions thrown here always affect control flow.
+          return true;
         default: {
           const __never: never = block;
           throw new Error(`Unexpected block type: ${String(__never)}`);
@@ -175,8 +137,8 @@ export default createRule({
     }
 
     interface FindContainingTryStatementResult {
+      block: 'catch' | 'finally' | 'try';
       tryStatement: ts.TryStatement;
-      block: 'try' | 'catch' | 'finally';
     }
 
     /**
@@ -193,7 +155,7 @@ export default createRule({
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
-          let block: 'try' | 'catch' | 'finally' | undefined;
+          let block: 'catch' | 'finally' | 'try' | undefined;
           if (child === ancestor.tryBlock) {
             block = 'try';
           } else if (child === ancestor.catchClause) {
@@ -203,11 +165,11 @@ export default createRule({
           }
 
           return {
-            tryStatement: ancestor,
             block: nullThrows(
               block,
               'Child of a try statement must be a try block, catch clause, or finally block',
             ),
+            tryStatement: ancestor,
           };
         }
         child = ancestor;
@@ -296,8 +258,8 @@ export default createRule({
             messageId: 'nonPromiseAwait',
             node,
             ...fixOrSuggest(useAutoFix, {
-              messageId: 'nonPromiseAwait',
               fix: fixer => removeAwait(fixer, node),
+              messageId: 'nonPromiseAwait',
             }),
           });
         }
@@ -318,24 +280,24 @@ export default createRule({
         : ruleConfiguration.ordinaryContext;
 
       switch (shouldAwaitInCurrentContext) {
-        case "don't-care":
-          break;
         case 'await':
           if (!isAwait) {
             context.report({
               messageId: 'requiredPromiseAwait',
               node,
               ...fixOrSuggest(useAutoFix, {
-                messageId: 'requiredPromiseAwaitSuggestion',
                 fix: fixer =>
                   insertAwait(
                     fixer,
                     node,
                     isHigherPrecedenceThanAwait(expression),
                   ),
+                messageId: 'requiredPromiseAwaitSuggestion',
               }),
             });
           }
+          break;
+        case "don't-care":
           break;
         case 'no-await':
           if (isAwait) {
@@ -343,8 +305,8 @@ export default createRule({
               messageId: 'disallowedPromiseAwait',
               node,
               ...fixOrSuggest(useAutoFix, {
-                messageId: 'disallowedPromiseAwaitSuggestion',
                 fix: fixer => removeAwait(fixer, node),
+                messageId: 'disallowedPromiseAwaitSuggestion',
               }),
             });
           }
@@ -365,13 +327,13 @@ export default createRule({
     }
 
     return {
-      FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
+      FunctionDeclaration: enterFunction,
 
       'FunctionDeclaration:exit': exitFunction,
+      FunctionExpression: enterFunction,
       'FunctionExpression:exit': exitFunction,
-      'ArrowFunctionExpression:exit': exitFunction,
 
       // executes after less specific handler, so exitFunction is called
       'ArrowFunctionExpression[async = true]:exit'(
@@ -396,36 +358,75 @@ export default createRule({
       },
     };
   },
+  defaultOptions: ['in-try-catch'],
+  meta: {
+    docs: {
+      description: 'Enforce consistent awaiting of returned promises',
+      extendsBaseRule: 'no-return-await',
+      recommended: {
+        strict: ['error-handling-correctness-only'],
+      },
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      disallowedPromiseAwait:
+        'Returning an awaited promise is not allowed in this context.',
+      disallowedPromiseAwaitSuggestion:
+        'Remove `await` before the expression. Use caution as this may impact control flow.',
+      nonPromiseAwait:
+        'Returning an awaited value that is not a promise is not allowed.',
+      requiredPromiseAwait:
+        'Returning an awaited promise is required in this context.',
+      requiredPromiseAwaitSuggestion:
+        'Add `await` before the expression. Use caution as this may impact control flow.',
+    },
+    schema: [
+      {
+        enum: [
+          'in-try-catch',
+          'always',
+          'never',
+          'error-handling-correctness-only',
+        ] satisfies Option[],
+        type: 'string',
+      },
+    ],
+    type: 'problem',
+  },
+
+  name: 'return-await',
 });
 
-type WhetherToAwait = 'await' | 'no-await' | "don't-care";
+type WhetherToAwait = "don't-care" | 'await' | 'no-await';
 
 interface RuleConfiguration {
-  ordinaryContext: WhetherToAwait;
   errorHandlingContext: WhetherToAwait;
+  ordinaryContext: WhetherToAwait;
 }
 
 function getConfiguration(option: Option): RuleConfiguration {
   switch (option) {
     case 'always':
       return {
-        ordinaryContext: 'await',
         errorHandlingContext: 'await',
-      };
-    case 'never':
-      return {
-        ordinaryContext: 'no-await',
-        errorHandlingContext: 'no-await',
+        ordinaryContext: 'await',
       };
     case 'error-handling-correctness-only':
       return {
-        ordinaryContext: "don't-care",
         errorHandlingContext: 'await',
+        ordinaryContext: "don't-care",
       };
     case 'in-try-catch':
       return {
-        ordinaryContext: 'no-await',
         errorHandlingContext: 'await',
+        ordinaryContext: 'no-await',
+      };
+    case 'never':
+      return {
+        errorHandlingContext: 'no-await',
+        ordinaryContext: 'no-await',
       };
   }
 }

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -10,77 +11,15 @@ import {
 
 type Options = [
   {
-    exceptMethods?: string[];
     enforceForClassFields?: boolean;
+    exceptMethods?: string[];
+    ignoreClassesThatImplementAnInterface?: 'public-fields' | boolean;
     ignoreOverrideMethods?: boolean;
-    ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
   },
 ];
 type MessageIds = 'missingThis';
 
 export default createRule<Options, MessageIds>({
-  name: 'class-methods-use-this',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Enforce that class methods utilize `this`',
-      extendsBaseRule: true,
-      requiresTypeChecking: false,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          exceptMethods: {
-            type: 'array',
-            description:
-              'Allows specified method names to be ignored with this rule',
-            items: {
-              type: 'string',
-            },
-          },
-          enforceForClassFields: {
-            type: 'boolean',
-            description:
-              'Enforces that functions used as instance field initializers utilize `this`',
-            default: true,
-          },
-          ignoreOverrideMethods: {
-            type: 'boolean',
-            description: 'Ignore members marked with the `override` modifier',
-          },
-          ignoreClassesThatImplementAnInterface: {
-            oneOf: [
-              {
-                type: 'boolean',
-                description: 'Ignore all classes that implement an interface',
-              },
-              {
-                type: 'string',
-                enum: ['public-fields'],
-                description:
-                  'Ignore only the public fields of classes that implement an interface',
-              },
-            ],
-            description:
-              'Ignore classes that specifically implement some interface',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: {
-      missingThis: "Expected 'this' to be used by class {{name}}.",
-    },
-  },
-  defaultOptions: [
-    {
-      enforceForClassFields: true,
-      exceptMethods: [],
-      ignoreClassesThatImplementAnInterface: false,
-      ignoreOverrideMethods: false,
-    },
-  ],
   create(
     context,
     [
@@ -95,14 +34,14 @@ export default createRule<Options, MessageIds>({
     const exceptMethods = new Set(exceptMethodsRaw);
     type Stack =
       | {
-          member: null;
           class: null;
+          member: null;
           parent: Stack | undefined;
           usesThis: boolean;
         }
       | {
-          member: TSESTree.MethodDefinition | TSESTree.PropertyDefinition;
           class: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
+          member: TSESTree.MethodDefinition | TSESTree.PropertyDefinition;
           parent: Stack | undefined;
           usesThis: boolean;
         };
@@ -113,17 +52,17 @@ export default createRule<Options, MessageIds>({
     ): void {
       if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
-          member,
           class: member.parent.parent,
-          usesThis: false,
+          member,
           parent: stack,
+          usesThis: false,
         };
       } else {
         stack = {
-          member: null,
           class: null,
-          usesThis: false,
+          member: null,
           parent: stack,
+          usesThis: false,
         };
       }
     }
@@ -214,12 +153,12 @@ export default createRule<Options, MessageIds>({
 
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
-          node,
-          loc: getFunctionHeadLoc(node, context.sourceCode),
-          messageId: 'missingThis',
           data: {
             name: getFunctionNameWithKind(node),
           },
+          loc: getFunctionHeadLoc(node, context.sourceCode),
+          messageId: 'missingThis',
+          node,
         });
       }
     }
@@ -284,4 +223,66 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      enforceForClassFields: true,
+      exceptMethods: [],
+      ignoreClassesThatImplementAnInterface: false,
+      ignoreOverrideMethods: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Enforce that class methods utilize `this`',
+      extendsBaseRule: true,
+      requiresTypeChecking: false,
+    },
+    messages: {
+      missingThis: "Expected 'this' to be used by class {{name}}.",
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          enforceForClassFields: {
+            default: true,
+            description:
+              'Enforces that functions used as instance field initializers utilize `this`',
+            type: 'boolean',
+          },
+          exceptMethods: {
+            description:
+              'Allows specified method names to be ignored with this rule',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+          ignoreClassesThatImplementAnInterface: {
+            description:
+              'Ignore classes that specifically implement some interface',
+            oneOf: [
+              {
+                description: 'Ignore all classes that implement an interface',
+                type: 'boolean',
+              },
+              {
+                description:
+                  'Ignore only the public fields of classes that implement an interface',
+                enum: ['public-fields'],
+                type: 'string',
+              },
+            ],
+          },
+          ignoreOverrideMethods: {
+            description: 'Ignore members marked with the `override` modifier',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'class-methods-use-this',
 });

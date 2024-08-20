@@ -1,8 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix, Scope } from '@typescript-eslint/utils/ts-eslint';
-import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -13,33 +14,14 @@ import {
 } from '../util';
 
 export default createRule({
-  name: 'prefer-find',
-  meta: {
-    docs: {
-      description:
-        'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      preferFind: 'Prefer .find(...) instead of .filter(...)[0].',
-      preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
-    },
-    schema: [],
-    type: 'suggestion',
-    hasSuggestions: true,
-  },
-
-  defaultOptions: [],
-
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     interface FilterExpressionData {
-      isBracketSyntaxForFilter: boolean;
       filterNode: TSESTree.Node;
+      isBracketSyntaxForFilter: boolean;
     }
 
     function parseArrayFilterExpressions(
@@ -102,8 +84,8 @@ export default createRule({
             if (isArrayish(filteredObjectType)) {
               return [
                 {
-                  isBracketSyntaxForFilter,
                   filterNode,
+                  isBracketSyntaxForFilter,
                 },
               ];
             }
@@ -251,11 +233,10 @@ export default createRule({
           const filterExpressions = parseArrayFilterExpressions(object);
           if (filterExpressions.length !== 0) {
             context.report({
-              node,
               messageId: 'preferFind',
+              node,
               suggest: [
                 {
-                  messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
                     return [
                       ...filterExpressions.map(filterExpression =>
@@ -272,6 +253,7 @@ export default createRule({
                       ),
                     ];
                   },
+                  messageId: 'preferFindSuggestion',
                 },
               ],
             });
@@ -291,11 +273,10 @@ export default createRule({
           const filterExpressions = parseArrayFilterExpressions(object);
           if (filterExpressions.length !== 0) {
             context.report({
-              node,
               messageId: 'preferFind',
+              node,
               suggest: [
                 {
-                  messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
                     return [
                       ...filterExpressions.map(filterExpression =>
@@ -312,6 +293,7 @@ export default createRule({
                       ),
                     ];
                   },
+                  messageId: 'preferFindSuggestion',
                 },
               ],
             });
@@ -320,6 +302,25 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+
+  meta: {
+    docs: {
+      description:
+        'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      preferFind: 'Prefer .find(...) instead of .filter(...)[0].',
+      preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'prefer-find',
 });
 
 /**

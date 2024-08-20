@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -17,8 +18,8 @@ export type Options = [
 
 export type MessageIds =
   | 'noEmptyInterface'
-  | 'noEmptyObject'
   | 'noEmptyInterfaceWithSuper'
+  | 'noEmptyObject'
   | 'replaceEmptyInterface'
   | 'replaceEmptyInterfaceWithSuper'
   | 'replaceEmptyObjectType';
@@ -32,51 +33,7 @@ const noEmptyMessage = (emptyType: string): string =>
   ].join('\n');
 
 export default createRule<Options, MessageIds>({
-  name: 'no-empty-object-type',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow accidentally using the "empty object" type',
-      recommended: 'recommended',
-    },
-    hasSuggestions: true,
-    messages: {
-      noEmptyInterface: noEmptyMessage('An empty interface declaration'),
-      noEmptyObject: noEmptyMessage('The `{}` ("empty object") type'),
-      noEmptyInterfaceWithSuper:
-        'An interface declaring no members is equivalent to its supertype.',
-      replaceEmptyInterface: 'Replace empty interface with `{{replacement}}`.',
-      replaceEmptyInterfaceWithSuper:
-        'Replace empty interface with a type alias.',
-      replaceEmptyObjectType: 'Replace `{}` with `{{replacement}}`.',
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          allowInterfaces: {
-            enum: ['always', 'never', 'with-single-extends'],
-            type: 'string',
-          },
-          allowObjectTypes: {
-            enum: ['always', 'never'],
-            type: 'string',
-          },
-          allowWithName: {
-            type: 'string',
-          },
-        },
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      allowInterfaces: 'never',
-      allowObjectTypes: 'never',
-    },
-  ],
-  create(context, [{ allowInterfaces, allowWithName, allowObjectTypes }]) {
+  create(context, [{ allowInterfaces, allowObjectTypes, allowWithName }]) {
     const allowWithNameTester = allowWithName
       ? new RegExp(allowWithName, 'u')
       : undefined;
@@ -109,8 +66,8 @@ export default createRule<Options, MessageIds>({
           if (extend.length === 0) {
             context.report({
               data: { option: 'allowInterfaces' },
-              node: node.id,
               messageId: 'noEmptyInterface',
+              node: node.id,
               ...(!mergedWithClassDeclaration && {
                 suggest: ['object', 'unknown'].map(replacement => ({
                   data: { replacement },
@@ -133,8 +90,8 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            node: node.id,
             messageId: 'noEmptyInterfaceWithSuper',
+            node: node.id,
             ...(!mergedWithClassDeclaration && {
               suggest: [
                 {
@@ -175,13 +132,57 @@ export default createRule<Options, MessageIds>({
             node,
             suggest: ['object', 'unknown'].map(replacement => ({
               data: { replacement },
-              messageId: 'replaceEmptyObjectType',
               fix: (fixer): TSESLint.RuleFix =>
                 fixer.replaceText(node, replacement),
+              messageId: 'replaceEmptyObjectType',
             })),
           });
         },
       }),
     };
   },
+  defaultOptions: [
+    {
+      allowInterfaces: 'never',
+      allowObjectTypes: 'never',
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow accidentally using the "empty object" type',
+      recommended: 'recommended',
+    },
+    hasSuggestions: true,
+    messages: {
+      noEmptyInterface: noEmptyMessage('An empty interface declaration'),
+      noEmptyInterfaceWithSuper:
+        'An interface declaring no members is equivalent to its supertype.',
+      noEmptyObject: noEmptyMessage('The `{}` ("empty object") type'),
+      replaceEmptyInterface: 'Replace empty interface with `{{replacement}}`.',
+      replaceEmptyInterfaceWithSuper:
+        'Replace empty interface with a type alias.',
+      replaceEmptyObjectType: 'Replace `{}` with `{{replacement}}`.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowInterfaces: {
+            enum: ['always', 'never', 'with-single-extends'],
+            type: 'string',
+          },
+          allowObjectTypes: {
+            enum: ['always', 'never'],
+            type: 'string',
+          },
+          allowWithName: {
+            type: 'string',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-empty-object-type',
 });

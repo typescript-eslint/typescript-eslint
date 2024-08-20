@@ -9,13 +9,622 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('prefer-destructuring', rule, {
+  invalid: [
+    // enforceForDeclarationWithTypeAnnotation: true
+    {
+      code: 'var foo: string = object.foo;',
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+      output: null,
+    },
+    {
+      code: 'var foo: string = array[0];',
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [
+        { array: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+      output: null,
+    },
+    {
+      code: 'var foo: unknown = object.bar;',
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [
+        { object: true },
+        {
+          enforceForDeclarationWithTypeAnnotation: true,
+          enforceForRenamedProperties: true,
+        },
+      ],
+      output: null,
+    },
+
+    // numeric property for iterable / non-iterable
+    {
+      code: `
+        let x: { [Symbol.iterator]: unknown };
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: { [Symbol.iterator]: unknown };
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: [1, 2, 3];
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: [1, 2, 3];
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        function* it() {
+          yield 1;
+        }
+        let y = it()[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        function* it() {
+          yield 1;
+        }
+        y = it()[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: any;
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: any;
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: string[] | { [Symbol.iterator]: unknown };
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: string[] | { [Symbol.iterator]: unknown };
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: object & unknown[];
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: object & unknown[];
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'array' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: { 0: string };
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+    {
+      code: `
+        let x: { 0: string };
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+    {
+      code: `
+        let x: { 0: string };
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [
+        {
+          AssignmentExpression: { array: false, object: false },
+          VariableDeclarator: { array: false, object: true },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: { 0: string };
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        {
+          AssignmentExpression: { array: false, object: true },
+          VariableDeclarator: { array: false, object: false },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: number = 0;
+        y = x[i];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 = 0;
+        y = x[i];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 | 1 | 2 = 0;
+        y = x[i];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: number = 0;
+        y = x[i];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: 0 = 0;
+        y = x[i];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: unknown[];
+        let i: 0 | 1 | 2 = 0;
+        y = x[i];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+      output: null,
+    },
+    {
+      code: `
+        let x: { 0: unknown } | unknown[];
+        let y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+    {
+      code: `
+        let x: { 0: unknown } | unknown[];
+        y = x[0];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+
+    // auto fixes
+    {
+      code: `
+        let obj = { foo: 'bar' };
+        const foo = obj.foo;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: `
+        let obj = { foo: 'bar' };
+        const {foo} = obj;
+      `,
+    },
+    {
+      code: `
+        let obj = { foo: 'bar' };
+        var x: null = null;
+        const foo = (x, obj).foo;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: `
+        let obj = { foo: 'bar' };
+        var x: null = null;
+        const {foo} = (x, obj);
+      `,
+    },
+    {
+      code: 'const call = (() => null).call;',
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: 'const {call} = () => null;',
+    },
+    {
+      code: `
+        const obj = { foo: 'bar' };
+        let a: any;
+        var foo = (a = obj).foo;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: `
+        const obj = { foo: 'bar' };
+        let a: any;
+        var {foo} = a = obj;
+      `,
+    },
+    {
+      code: `
+        const obj = { asdf: { qwer: null } };
+        const qwer = obj.asdf.qwer;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: `
+        const obj = { asdf: { qwer: null } };
+        const {qwer} = obj.asdf;
+      `,
+    },
+    {
+      code: `
+        const obj = { foo: 100 };
+        const /* comment */ foo = obj.foo;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      output: `
+        const obj = { foo: 100 };
+        const /* comment */ {foo} = obj;
+      `,
+    },
+
+    // enforceForRenamedProperties: true
+    {
+      code: `
+        let obj = { foo: 'bar' };
+        const x = obj.foo;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+    {
+      code: `
+        let obj = { foo: 'bar' };
+        let x: unknown;
+        x = obj.foo;
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+    {
+      code: `
+        let obj: Record<string, unknown>;
+        let key = 'abc';
+        const x = obj[key];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+    {
+      code: `
+        let obj: Record<string, unknown>;
+        let key = 'abc';
+        let x: unknown;
+        x = obj[key];
+      `,
+      errors: [
+        {
+          data: { type: 'object' },
+          messageId: 'preferDestructuring',
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      output: null,
+    },
+  ],
   valid: [
     // type annotated
     `
@@ -197,8 +806,8 @@ ruleTester.run('prefer-destructuring', rule, {
       `,
       options: [
         {
-          VariableDeclarator: { array: true, object: false },
           AssignmentExpression: { array: true, object: true },
+          VariableDeclarator: { array: true, object: false },
         },
         { enforceForRenamedProperties: true },
       ],
@@ -210,8 +819,8 @@ ruleTester.run('prefer-destructuring', rule, {
       `,
       options: [
         {
-          VariableDeclarator: { array: true, object: true },
           AssignmentExpression: { array: true, object: false },
+          VariableDeclarator: { array: true, object: true },
         },
         { enforceForRenamedProperties: true },
       ],
@@ -223,7 +832,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: false, array: true },
+        { array: true, object: false },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -234,7 +843,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: false, array: true },
+        { array: true, object: false },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -245,7 +854,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: false, array: true },
+        { array: true, object: false },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -256,7 +865,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: false, array: true },
+        { array: true, object: false },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -267,7 +876,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: false, array: true },
+        { array: true, object: false },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -278,7 +887,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: false, array: true },
+        { array: true, object: false },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -289,7 +898,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y = x[i];
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForRenamedProperties: false },
       ],
     },
@@ -299,7 +908,7 @@ ruleTester.run('prefer-destructuring', rule, {
         y += x[0];
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -315,7 +924,7 @@ ruleTester.run('prefer-destructuring', rule, {
         }
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -331,7 +940,7 @@ ruleTester.run('prefer-destructuring', rule, {
         }
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForRenamedProperties: true },
       ],
     },
@@ -438,7 +1047,7 @@ ruleTester.run('prefer-destructuring', rule, {
         }
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForDeclarationWithTypeAnnotation: true },
       ],
     },
@@ -454,7 +1063,7 @@ ruleTester.run('prefer-destructuring', rule, {
         }
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForDeclarationWithTypeAnnotation: true },
       ],
     },
@@ -469,617 +1078,8 @@ ruleTester.run('prefer-destructuring', rule, {
         }
       `,
       options: [
-        { object: true, array: true },
+        { array: true, object: true },
         { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-  ],
-  invalid: [
-    // enforceForDeclarationWithTypeAnnotation: true
-    {
-      code: 'var foo: string = object.foo;',
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: 'var foo: string = array[0];',
-      options: [
-        { array: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: 'var foo: unknown = object.bar;',
-      options: [
-        { object: true },
-        {
-          enforceForDeclarationWithTypeAnnotation: true,
-          enforceForRenamedProperties: true,
-        },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-
-    // numeric property for iterable / non-iterable
-    {
-      code: `
-        let x: { [Symbol.iterator]: unknown };
-        let y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { [Symbol.iterator]: unknown };
-        y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: [1, 2, 3];
-        let y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: [1, 2, 3];
-        y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        function* it() {
-          yield 1;
-        }
-        let y = it()[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        function* it() {
-          yield 1;
-        }
-        y = it()[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: any;
-        let y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: any;
-        y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: string[] | { [Symbol.iterator]: unknown };
-        let y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: string[] | { [Symbol.iterator]: unknown };
-        y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: object & unknown[];
-        let y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: object & unknown[];
-        y = x[0];
-      `,
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'array' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: string };
-        let y = x[0];
-      `,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: string };
-        y = x[0];
-      `,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: string };
-        let y = x[0];
-      `,
-      options: [
-        {
-          VariableDeclarator: { object: true, array: false },
-          AssignmentExpression: { object: false, array: false },
-        },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: string };
-        y = x[0];
-      `,
-      options: [
-        {
-          VariableDeclarator: { object: false, array: false },
-          AssignmentExpression: { object: true, array: false },
-        },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: Record<number, unknown>;
-        let i: number = 0;
-        y = x[i];
-      `,
-      options: [
-        { object: true, array: true },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: Record<number, unknown>;
-        let i: 0 = 0;
-        y = x[i];
-      `,
-      options: [
-        { object: true, array: true },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: Record<number, unknown>;
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
-      `,
-      options: [
-        { object: true, array: true },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: number = 0;
-        y = x[i];
-      `,
-      options: [
-        { object: true, array: true },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: 0 = 0;
-        y = x[i];
-      `,
-      options: [
-        { object: true, array: true },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: unknown[];
-        let i: 0 | 1 | 2 = 0;
-        y = x[i];
-      `,
-      options: [
-        { object: true, array: true },
-        { enforceForRenamedProperties: true },
-      ],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: unknown } | unknown[];
-        let y = x[0];
-      `,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let x: { 0: unknown } | unknown[];
-        y = x[0];
-      `,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      output: null,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-
-    // auto fixes
-    {
-      code: `
-        let obj = { foo: 'bar' };
-        const foo = obj.foo;
-      `,
-      output: `
-        let obj = { foo: 'bar' };
-        const {foo} = obj;
-      `,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let obj = { foo: 'bar' };
-        var x: null = null;
-        const foo = (x, obj).foo;
-      `,
-      output: `
-        let obj = { foo: 'bar' };
-        var x: null = null;
-        const {foo} = (x, obj);
-      `,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: 'const call = (() => null).call;',
-      output: 'const {call} = () => null;',
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = { foo: 'bar' };
-        let a: any;
-        var foo = (a = obj).foo;
-      `,
-      output: `
-        const obj = { foo: 'bar' };
-        let a: any;
-        var {foo} = a = obj;
-      `,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = { asdf: { qwer: null } };
-        const qwer = obj.asdf.qwer;
-      `,
-      output: `
-        const obj = { asdf: { qwer: null } };
-        const {qwer} = obj.asdf;
-      `,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = { foo: 100 };
-        const /* comment */ foo = obj.foo;
-      `,
-      output: `
-        const obj = { foo: 100 };
-        const /* comment */ {foo} = obj;
-      `,
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-
-    // enforceForRenamedProperties: true
-    {
-      code: `
-        let obj = { foo: 'bar' };
-        const x = obj.foo;
-      `,
-      output: null,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let obj = { foo: 'bar' };
-        let x: unknown;
-        x = obj.foo;
-      `,
-      output: null,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
-      ],
-    },
-    {
-      code: `
-        let obj: Record<string, unknown>;
-        let key = 'abc';
-        const x = obj[key];
-      `,
-      output: null,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.VariableDeclarator,
-        },
-      ],
-    },
-    {
-      code: `
-        let obj: Record<string, unknown>;
-        let key = 'abc';
-        let x: unknown;
-        x = obj[key];
-      `,
-      output: null,
-      options: [{ object: true }, { enforceForRenamedProperties: true }],
-      errors: [
-        {
-          messageId: 'preferDestructuring',
-          data: { type: 'object' },
-          type: AST_NODE_TYPES.AssignmentExpression,
-        },
       ],
     },
   ],

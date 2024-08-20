@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -103,38 +104,6 @@ const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
 export default createRule<Options, MessageIds>({
-  name: 'unbound-method',
-  meta: {
-    docs: {
-      description:
-        'Enforce unbound methods are called with their expected scope',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unbound: BASE_MESSAGE,
-      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          ignoreStatic: {
-            description:
-              'Whether to skip checking whether `static` methods are correctly bound.',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    type: 'problem',
-  },
-  defaultOptions: [
-    {
-      ignoreStatic: false,
-    },
-  ],
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(context.filename);
@@ -272,6 +241,38 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      ignoreStatic: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Enforce unbound methods are called with their expected scope',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unbound: BASE_MESSAGE,
+      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreStatic: {
+            description:
+              'Whether to skip checking whether `static` methods are correctly bound.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'unbound-method',
 });
 
 function isNodeInsideTypeDeclaration(node: TSESTree.Node): boolean {
@@ -337,9 +338,9 @@ function checkIfMethod(
 
 function checkMethod(
   valueDeclaration:
+    | ts.FunctionExpression
     | ts.MethodDeclaration
-    | ts.MethodSignature
-    | ts.FunctionExpression,
+    | ts.MethodSignature,
   ignoreStatic: boolean,
 ): CheckMethodResult {
   const firstParam = valueDeclaration.parameters.at(0);
@@ -389,10 +390,10 @@ function isSafeUse(node: TSESTree.Node): boolean {
       // the first case is safe for obvious
       // reasons. The second one is also fine
       // since we're returning something falsy
-      return ['typeof', '!', 'void', 'delete'].includes(parent.operator);
+      return ['!', 'delete', 'typeof', 'void'].includes(parent.operator);
 
     case AST_NODE_TYPES.BinaryExpression:
-      return ['instanceof', '==', '!=', '===', '!=='].includes(parent.operator);
+      return ['!=', '!==', '==', '===', 'instanceof'].includes(parent.operator);
 
     case AST_NODE_TYPES.AssignmentExpression:
       return (

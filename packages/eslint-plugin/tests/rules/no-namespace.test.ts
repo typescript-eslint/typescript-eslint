@@ -5,6 +5,496 @@ import rule from '../../src/rules/no-namespace';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-namespace', rule, {
+  invalid: [
+    {
+      code: 'module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+    },
+    {
+      code: 'namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+    },
+    {
+      code: 'module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: false }],
+    },
+    {
+      code: 'namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: false }],
+    },
+    {
+      code: 'module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: 'namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: 'declare module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+    },
+    {
+      code: 'declare namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+    },
+    {
+      code: 'declare module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: false }],
+    },
+    {
+      code: 'declare namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: false }],
+    },
+    {
+      code: 'namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ allowDefinitionFiles: false }],
+    },
+    {
+      code: 'module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ allowDefinitionFiles: false }],
+    },
+    {
+      code: 'declare module foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ allowDefinitionFiles: false }],
+    },
+    {
+      code: 'declare namespace foo {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      filename: 'test.d.ts',
+      options: [{ allowDefinitionFiles: false }],
+    },
+    {
+      code: 'namespace Foo.Bar {}',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: false }],
+    },
+    {
+      code: `
+namespace Foo.Bar {
+  namespace Baz.Bas {
+    interface X {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 3,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+    },
+    {
+      code: `
+namespace A {
+  namespace B {
+    declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 3,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 3,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  declare namespace B {
+    namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  export declare namespace B {
+    namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  export declare namespace B {
+    declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  export declare namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  declare namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+namespace A {
+  export namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 10,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  namespace B {
+    declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 3,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 3,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  declare namespace B {
+    namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  export declare namespace B {
+    namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  export declare namespace B {
+    declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  export declare namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  declare namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export namespace A {
+  export namespace B {
+    export declare namespace C {}
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 2,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+        {
+          column: 10,
+          line: 3,
+          messageId: 'moduleSyntaxIsPreferred',
+        },
+      ],
+      options: [{ allowDeclarations: true }],
+    },
+  ],
   valid: [
     'declare global {}',
     "declare module 'foo' {}",
@@ -63,504 +553,14 @@ export declare namespace foo {
       options: [{ allowDeclarations: true }],
     },
     {
-      filename: 'test.d.ts',
       code: 'namespace foo {}',
+      filename: 'test.d.ts',
       options: [{ allowDefinitionFiles: true }],
     },
     {
-      filename: 'test.d.ts',
       code: 'module foo {}',
+      filename: 'test.d.ts',
       options: [{ allowDefinitionFiles: true }],
-    },
-  ],
-  invalid: [
-    {
-      code: 'module foo {}',
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'namespace foo {}',
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'module foo {}',
-      options: [{ allowDeclarations: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'namespace foo {}',
-      options: [{ allowDeclarations: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'module foo {}',
-      options: [{ allowDeclarations: true }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'namespace foo {}',
-      options: [{ allowDeclarations: true }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'declare module foo {}',
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'declare namespace foo {}',
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'declare module foo {}',
-      options: [{ allowDeclarations: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'declare namespace foo {}',
-      options: [{ allowDeclarations: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      filename: 'test.d.ts',
-      code: 'namespace foo {}',
-      options: [{ allowDefinitionFiles: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      filename: 'test.d.ts',
-      code: 'module foo {}',
-      options: [{ allowDefinitionFiles: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      filename: 'test.d.ts',
-      code: 'declare module foo {}',
-      options: [{ allowDefinitionFiles: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      filename: 'test.d.ts',
-      code: 'declare namespace foo {}',
-      options: [{ allowDefinitionFiles: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: 'namespace Foo.Bar {}',
-      options: [{ allowDeclarations: false }],
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-namespace Foo.Bar {
-  namespace Baz.Bas {
-    interface X {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-namespace A {
-  namespace B {
-    declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 3,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 3,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  declare namespace B {
-    namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  export declare namespace B {
-    namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  export declare namespace B {
-    declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  export declare namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  declare namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-namespace A {
-  export namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 1,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 10,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  namespace B {
-    declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 3,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 3,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  declare namespace B {
-    namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  export declare namespace B {
-    namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  export declare namespace B {
-    declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  export declare namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  declare namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export namespace A {
-  export namespace B {
-    export declare namespace C {}
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 2,
-          column: 8,
-        },
-        {
-          messageId: 'moduleSyntaxIsPreferred',
-          line: 3,
-          column: 10,
-        },
-      ],
-      options: [{ allowDeclarations: true }],
     },
   ],
 });

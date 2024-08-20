@@ -16,6 +16,120 @@ const onlyConstructor = {
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extraneous-class', rule, {
+  invalid: [
+    {
+      code: 'class Foo {}',
+      errors: [empty],
+    },
+    {
+      code: `
+class Foo {
+  public prop = 1;
+  constructor() {
+    class Bar {
+      static PROP = 2;
+    }
+  }
+}
+export class Bar {
+  public static helper(): void {}
+  private static privateHelper(): boolean {
+    return true;
+  }
+}
+      `,
+      errors: [onlyStatic, onlyStatic],
+    },
+    {
+      code: `
+class Foo {
+  constructor() {}
+}
+      `,
+      errors: [onlyConstructor],
+    },
+    {
+      code: `
+export class AClass {
+  public static helper(): void {}
+  private static privateHelper(): boolean {
+    return true;
+  }
+  constructor() {
+    class nestedClass {}
+  }
+}
+      `,
+      errors: [onlyStatic, empty],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/170
+      code: `
+export default class {
+  static hello() {}
+}
+      `,
+      errors: [
+        {
+          ...onlyStatic,
+          type: AST_NODE_TYPES.ClassDeclaration,
+        },
+      ],
+    },
+    {
+      code: `
+@FooDecorator
+class Foo {}
+      `,
+      errors: [
+        {
+          messageId: 'empty',
+        },
+      ],
+      options: [{ allowWithDecorator: false }],
+    },
+    {
+      code: `
+@FooDecorator
+class Foo {
+  constructor(foo: Foo) {
+    foo.subscribe(a => {
+      console.log(a);
+    });
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'onlyConstructor',
+        },
+      ],
+      options: [{ allowWithDecorator: false }],
+    },
+    {
+      code: `
+abstract class Foo {}
+      `,
+      errors: [empty],
+    },
+    {
+      code: `
+abstract class Foo {
+  static property: string;
+}
+      `,
+      errors: [onlyStatic],
+    },
+    {
+      code: `
+abstract class Foo {
+  constructor() {}
+}
+      `,
+      errors: [onlyConstructor],
+    },
+  ],
+
   valid: [
     `
 class Foo {
@@ -98,119 +212,5 @@ abstract class Foo {
   abstract method(): string;
 }
     `,
-  ],
-
-  invalid: [
-    {
-      code: 'class Foo {}',
-      errors: [empty],
-    },
-    {
-      code: `
-class Foo {
-  public prop = 1;
-  constructor() {
-    class Bar {
-      static PROP = 2;
-    }
-  }
-}
-export class Bar {
-  public static helper(): void {}
-  private static privateHelper(): boolean {
-    return true;
-  }
-}
-      `,
-      errors: [onlyStatic, onlyStatic],
-    },
-    {
-      code: `
-class Foo {
-  constructor() {}
-}
-      `,
-      errors: [onlyConstructor],
-    },
-    {
-      code: `
-export class AClass {
-  public static helper(): void {}
-  private static privateHelper(): boolean {
-    return true;
-  }
-  constructor() {
-    class nestedClass {}
-  }
-}
-      `,
-      errors: [onlyStatic, empty],
-    },
-    {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/170
-      code: `
-export default class {
-  static hello() {}
-}
-      `,
-      errors: [
-        {
-          ...onlyStatic,
-          type: AST_NODE_TYPES.ClassDeclaration,
-        },
-      ],
-    },
-    {
-      code: `
-@FooDecorator
-class Foo {}
-      `,
-      options: [{ allowWithDecorator: false }],
-      errors: [
-        {
-          messageId: 'empty',
-        },
-      ],
-    },
-    {
-      code: `
-@FooDecorator
-class Foo {
-  constructor(foo: Foo) {
-    foo.subscribe(a => {
-      console.log(a);
-    });
-  }
-}
-      `,
-      options: [{ allowWithDecorator: false }],
-      errors: [
-        {
-          messageId: 'onlyConstructor',
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {}
-      `,
-      errors: [empty],
-    },
-    {
-      code: `
-abstract class Foo {
-  static property: string;
-}
-      `,
-      errors: [onlyStatic],
-    },
-    {
-      code: `
-abstract class Foo {
-  constructor() {}
-}
-      `,
-      errors: [onlyConstructor],
-    },
   ],
 });

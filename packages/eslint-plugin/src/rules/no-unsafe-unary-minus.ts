@@ -7,21 +7,6 @@ type Options = [];
 type MessageIds = 'unaryMinus';
 
 export default util.createRule<Options, MessageIds>({
-  name: 'no-unsafe-unary-minus',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Require unary negation to take a number',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unaryMinus:
-        'Argument of unary negation should be assignable to number | bigint but is {{type}} instead.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     return {
       UnaryExpression(node): void {
@@ -49,12 +34,27 @@ export default util.createRule<Options, MessageIds>({
             )
         ) {
           context.report({
+            data: { type: checker.typeToString(argType) },
             messageId: 'unaryMinus',
             node,
-            data: { type: checker.typeToString(argType) },
           });
         }
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Require unary negation to take a number',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unaryMinus:
+        'Argument of unary negation should be assignable to number | bigint but is {{type}} instead.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-unsafe-unary-minus',
 });

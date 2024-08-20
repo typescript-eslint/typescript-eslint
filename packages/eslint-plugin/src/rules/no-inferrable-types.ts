@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -13,40 +14,6 @@ type Options = [
 type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-inferrable-types',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      noInferrableType:
-        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          ignoreParameters: {
-            type: 'boolean',
-          },
-          ignoreProperties: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      ignoreParameters: false,
-      ignoreProperties: false,
-    },
-  ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
     function isFunctionCall(
       init: TSESTree.Expression,
@@ -97,8 +64,8 @@ export default createRule<Options, MessageIds>({
     const keywordMap = {
       [AST_NODE_TYPES.TSBigIntKeyword]: 'bigint',
       [AST_NODE_TYPES.TSBooleanKeyword]: 'boolean',
-      [AST_NODE_TYPES.TSNumberKeyword]: 'number',
       [AST_NODE_TYPES.TSNullKeyword]: 'null',
+      [AST_NODE_TYPES.TSNumberKeyword]: 'number',
       [AST_NODE_TYPES.TSStringKeyword]: 'string',
       [AST_NODE_TYPES.TSSymbolKeyword]: 'symbol',
       [AST_NODE_TYPES.TSUndefinedKeyword]: 'undefined',
@@ -211,8 +178,6 @@ export default createRule<Options, MessageIds>({
           : keywordMap[typeNode.typeAnnotation.type];
 
       context.report({
-        node,
-        messageId: 'noInferrableType',
         data: {
           type,
         },
@@ -231,6 +196,8 @@ export default createRule<Options, MessageIds>({
           }
           yield fixer.remove(typeNode);
         },
+        messageId: 'noInferrableType',
+        node,
       });
     }
 
@@ -275,11 +242,45 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      VariableDeclarator: inferrableVariableVisitor,
-      FunctionExpression: inferrableParameterVisitor,
-      FunctionDeclaration: inferrableParameterVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
+      FunctionDeclaration: inferrableParameterVisitor,
+      FunctionExpression: inferrableParameterVisitor,
       PropertyDefinition: inferrablePropertyVisitor,
+      VariableDeclarator: inferrableVariableVisitor,
     };
   },
+  defaultOptions: [
+    {
+      ignoreParameters: false,
+      ignoreProperties: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      noInferrableType:
+        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreParameters: {
+            type: 'boolean',
+          },
+          ignoreProperties: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-inferrable-types',
 });

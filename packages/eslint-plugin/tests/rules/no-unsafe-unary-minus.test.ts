@@ -7,13 +7,27 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-unsafe-unary-minus', rule, {
+  invalid: [
+    { code: '(a: string) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+    { code: '(a: {}) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+    { code: '(a: number[]) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+    { code: "-'hello';", errors: [{ messageId: 'unaryMinus' }] },
+    { code: '-`hello`;', errors: [{ messageId: 'unaryMinus' }] },
+    {
+      code: '(a: { x: number }) => -a;',
+      errors: [{ messageId: 'unaryMinus' }],
+    },
+    { code: '(a: unknown) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+    { code: '(a: void) => -a;', errors: [{ messageId: 'unaryMinus' }] },
+    { code: '<T,>(t: T) => -t;', errors: [{ messageId: 'unaryMinus' }] },
+  ],
   valid: [
     '+42;',
     '-42;',
@@ -29,19 +43,5 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
     '(a: { x: number }) => -a.x;',
     '(a: never) => -a;',
     '<T extends number>(t: T) => -t;',
-  ],
-  invalid: [
-    { code: '(a: string) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '(a: {}) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '(a: number[]) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: "-'hello';", errors: [{ messageId: 'unaryMinus' }] },
-    { code: '-`hello`;', errors: [{ messageId: 'unaryMinus' }] },
-    {
-      code: '(a: { x: number }) => -a;',
-      errors: [{ messageId: 'unaryMinus' }],
-    },
-    { code: '(a: unknown) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '(a: void) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '<T,>(t: T) => -t;', errors: [{ messageId: 'unaryMinus' }] },
   ],
 });

@@ -16,20 +16,6 @@ const toText = (
     : ['/*', text.trim(), '*/'].join(' ');
 
 export default createRule({
-  name: 'ban-tslint-comment',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow `// tslint:<rule-flag>` comments',
-      recommended: 'stylistic',
-    },
-    messages: {
-      commentDetected: 'tslint comment detected: "{{ text }}"',
-    },
-    schema: [],
-    fixable: 'code',
-  },
-  defaultOptions: [],
   create: context => {
     return {
       Program(): void {
@@ -38,8 +24,6 @@ export default createRule({
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
               data: { text: toText(c.value, c.type) },
-              node: c,
-              messageId: 'commentDetected',
               fix(fixer) {
                 const rangeStart = context.sourceCode.getIndexFromLoc({
                   column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,
@@ -51,10 +35,26 @@ export default createRule({
                 });
                 return fixer.removeRange([rangeStart, rangeEnd + 1]);
               },
+              messageId: 'commentDetected',
+              node: c,
             });
           }
         });
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow `// tslint:<rule-flag>` comments',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      commentDetected: 'tslint comment detected: "{{ text }}"',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'ban-tslint-comment',
 });

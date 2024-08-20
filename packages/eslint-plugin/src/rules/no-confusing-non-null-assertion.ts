@@ -1,32 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'no-confusing-non-null-assertion',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Disallow non-null assertion in locations that may be confusing',
-      recommended: 'stylistic',
-    },
-    hasSuggestions: true,
-    messages: {
-      confusingEqual:
-        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',
-      confusingAssign:
-        'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b".',
-      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test.',
-      notNeedInAssign:
-        'Unnecessary non-null assertion (!) in assignment left hand.',
-      wrapUpLeft:
-        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     return {
       'BinaryExpression, AssignmentExpression'(
@@ -53,30 +31,30 @@ export default createRule({
           ) {
             if (isLeftHandPrimaryExpression(node.left)) {
               context.report({
-                node,
                 messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
+                node,
                 suggest: [
                   {
-                    messageId: isAssign
-                      ? 'notNeedInAssign'
-                      : 'notNeedInEqualTest',
                     fix: (fixer): TSESLint.RuleFix[] => [
                       fixer.remove(leftHandFinalToken),
                     ],
+                    messageId: isAssign
+                      ? 'notNeedInAssign'
+                      : 'notNeedInEqualTest',
                   },
                 ],
               });
             } else {
               context.report({
-                node,
                 messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
+                node,
                 suggest: [
                   {
-                    messageId: 'wrapUpLeft',
                     fix: (fixer): TSESLint.RuleFix[] => [
                       fixer.insertTextBefore(node.left, '('),
                       fixer.insertTextAfter(node.left, ')'),
                     ],
+                    messageId: 'wrapUpLeft',
                   },
                 ],
               });
@@ -86,4 +64,27 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow non-null assertion in locations that may be confusing',
+      recommended: 'stylistic',
+    },
+    hasSuggestions: true,
+    messages: {
+      confusingAssign:
+        'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b".',
+      confusingEqual:
+        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',
+      notNeedInAssign:
+        'Unnecessary non-null assertion (!) in assignment left hand.',
+      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test.',
+      wrapUpLeft:
+        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-confusing-non-null-assertion',
 });

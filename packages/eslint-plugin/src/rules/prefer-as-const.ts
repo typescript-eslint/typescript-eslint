@@ -1,28 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'prefer-as-const',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Enforce the use of `as const` over literal type',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      preferConstAssertion:
-        'Expected a `const` instead of a literal type assertion.',
-      variableConstAssertion:
-        'Expected a `const` assertion instead of a literal type annotation.',
-      variableSuggest: 'You should use `as const` instead of type annotation.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     function compareTypes(
       valueNode: TSESTree.Expression,
@@ -37,21 +19,21 @@ export default createRule({
       ) {
         if (canFix) {
           context.report({
-            node: typeNode,
-            messageId: 'preferConstAssertion',
             fix: fixer => fixer.replaceText(typeNode, 'const'),
+            messageId: 'preferConstAssertion',
+            node: typeNode,
           });
         } else {
           context.report({
-            node: typeNode,
             messageId: 'variableConstAssertion',
+            node: typeNode,
             suggest: [
               {
-                messageId: 'variableSuggest',
                 fix: (fixer): TSESLint.RuleFix[] => [
                   fixer.remove(typeNode.parent),
                   fixer.insertTextAfter(valueNode, ' as const'),
                 ],
+                messageId: 'variableSuggest',
               },
             ],
           });
@@ -60,16 +42,16 @@ export default createRule({
     }
 
     return {
+      PropertyDefinition(node): void {
+        if (node.value && node.typeAnnotation) {
+          compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
+        }
+      },
       TSAsExpression(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
       },
       TSTypeAssertion(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
-      },
-      PropertyDefinition(node): void {
-        if (node.value && node.typeAnnotation) {
-          compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
-        }
       },
       VariableDeclarator(node): void {
         if (node.init && node.id.typeAnnotation) {
@@ -78,4 +60,23 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Enforce the use of `as const` over literal type',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      preferConstAssertion:
+        'Expected a `const` instead of a literal type assertion.',
+      variableConstAssertion:
+        'Expected a `const` assertion instead of a literal type annotation.',
+      variableSuggest: 'You should use `as const` instead of type annotation.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'prefer-as-const',
 });

@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { Type } from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type { Type } from 'typescript';
 
 import { createRule, getParserServices } from '../util';
 
@@ -67,40 +68,6 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
 };
 
 export default createRule<Options, MessageIds>({
-  name: 'no-duplicate-type-constituents',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Disallow duplicate constituents of union or intersection types',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        type: 'object',
-        properties: {
-          ignoreIntersections: {
-            type: 'boolean',
-          },
-          ignoreUnions: {
-            type: 'boolean',
-          },
-        },
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      ignoreIntersections: false,
-      ignoreUnions: false,
-    },
-  ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
 
@@ -169,25 +136,22 @@ export default createRule<Options, MessageIds>({
         { count: bracketBeforeTokens.length },
       );
       const reportLocation: TSESTree.SourceLocation = {
-        start: duplicateConstituent.duplicated.loc.start,
         end:
           bracketAfterTokens.length > 0
             ? bracketAfterTokens[bracketAfterTokens.length - 1].loc.end
             : duplicateConstituent.duplicated.loc.end,
+        start: duplicateConstituent.duplicated.loc.start,
       };
       context.report({
         data: {
+          previous: context.sourceCode.getText(
+            duplicateConstituent.duplicatePrevious,
+          ),
           type:
             parentNode.type === AST_NODE_TYPES.TSIntersectionType
               ? 'Intersection'
               : 'Union',
-          previous: context.sourceCode.getText(
-            duplicateConstituent.duplicatePrevious,
-          ),
         },
-        messageId: 'duplicate',
-        node: duplicateConstituent.duplicated,
-        loc: reportLocation,
         fix: fixer => {
           return [
             beforeUnionOrIntersectionToken,
@@ -196,6 +160,9 @@ export default createRule<Options, MessageIds>({
             ...bracketAfterTokens,
           ].map(token => fixer.remove(token));
         },
+        loc: reportLocation,
+        messageId: 'duplicate',
+        node: duplicateConstituent.duplicated,
       });
     }
     return {
@@ -207,4 +174,38 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
+  defaultOptions: [
+    {
+      ignoreIntersections: false,
+      ignoreUnions: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Disallow duplicate constituents of union or intersection types',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreIntersections: {
+            type: 'boolean',
+          },
+          ignoreUnions: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-duplicate-type-constituents',
 });

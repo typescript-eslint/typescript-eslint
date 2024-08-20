@@ -8,13 +8,257 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('consistent-return', rule, {
+  invalid: [
+    {
+      code: `
+        function foo(flag: boolean): any {
+          if (flag) return true;
+          else return;
+        }
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: "Function 'foo'" },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        function bar(): undefined {}
+        function foo(flag: boolean): undefined {
+          if (flag) return bar();
+          return;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Function 'foo'" },
+          endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        declare function foo(): void;
+        function bar(flag: boolean): undefined {
+          function baz(): undefined {
+            if (flag) return;
+            return undefined;
+          }
+          if (flag) return baz();
+          return;
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          data: { name: "Function 'baz'" },
+          endColumn: 30,
+          endLine: 6,
+          line: 6,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+        {
+          column: 11,
+          data: { name: "Function 'bar'" },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(flag: boolean): Promise<void> {
+          if (flag) return Promise.resolve(void 0);
+          else return;
+        }
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: "Function 'foo'" },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        async function foo(flag: boolean): Promise<string> {
+          if (flag) return;
+          else return 'value';
+        }
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: "Async function 'foo'" },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        async function foo(flag: boolean): Promise<string | undefined> {
+          if (flag) return 'value';
+          else return;
+        }
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: "Async function 'foo'" },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        async function foo(flag: boolean) {
+          if (flag) return;
+          return 1;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Async function 'foo'" },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(flag: boolean): Promise<string | undefined> {
+          if (flag) return;
+          else return 'value';
+        }
+      `,
+      errors: [
+        {
+          column: 16,
+          data: { name: "Function 'foo'" },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        declare function bar(): Promise<void>;
+        function foo(flag?: boolean): Promise<void> {
+          if (flag) {
+            return bar();
+          }
+          return;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Function 'foo'" },
+          endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(flag: boolean): undefined | boolean {
+          if (flag) {
+            return undefined;
+          }
+          return true;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Function 'foo'" },
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const undefOrNum: undefined | number;
+        function foo(flag: boolean) {
+          if (flag) {
+            return;
+          }
+          return undefOrNum;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Function 'foo'" },
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
+      options: [
+        {
+          treatUndefinedAsUnspecified: true,
+        },
+      ],
+    },
+  ],
   valid: [
     // base rule
     `
@@ -206,250 +450,6 @@ ruleTester.run('consistent-return', rule, {
       options: [
         {
           treatUndefinedAsUnspecified: true,
-        },
-      ],
-    },
-  ],
-  invalid: [
-    {
-      code: `
-        function foo(flag: boolean): any {
-          if (flag) return true;
-          else return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
-          column: 16,
-          endLine: 4,
-          endColumn: 23,
-        },
-      ],
-    },
-    {
-      code: `
-        function bar(): undefined {}
-        function foo(flag: boolean): undefined {
-          if (flag) return bar();
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 5,
-          column: 11,
-          endLine: 5,
-          endColumn: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        declare function foo(): void;
-        function bar(flag: boolean): undefined {
-          function baz(): undefined {
-            if (flag) return;
-            return undefined;
-          }
-          if (flag) return baz();
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'baz'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 6,
-          column: 13,
-          endLine: 6,
-          endColumn: 30,
-        },
-        {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'bar'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 9,
-          column: 11,
-          endLine: 9,
-          endColumn: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        function foo(flag: boolean): Promise<void> {
-          if (flag) return Promise.resolve(void 0);
-          else return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
-          column: 16,
-          endLine: 4,
-          endColumn: 23,
-        },
-      ],
-    },
-    {
-      code: `
-        async function foo(flag: boolean): Promise<string> {
-          if (flag) return;
-          else return 'value';
-        }
-      `,
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Async function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
-          column: 16,
-          endLine: 4,
-          endColumn: 31,
-        },
-      ],
-    },
-    {
-      code: `
-        async function foo(flag: boolean): Promise<string | undefined> {
-          if (flag) return 'value';
-          else return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'missingReturnValue',
-          data: { name: "Async function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
-          column: 16,
-          endLine: 4,
-          endColumn: 23,
-        },
-      ],
-    },
-    {
-      code: `
-        async function foo(flag: boolean) {
-          if (flag) return;
-          return 1;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Async function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
-          column: 11,
-          endLine: 4,
-          endColumn: 20,
-        },
-      ],
-    },
-    {
-      code: `
-        function foo(flag: boolean): Promise<string | undefined> {
-          if (flag) return;
-          else return 'value';
-        }
-      `,
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
-          column: 16,
-          endLine: 4,
-          endColumn: 31,
-        },
-      ],
-    },
-    {
-      code: `
-        declare function bar(): Promise<void>;
-        function foo(flag?: boolean): Promise<void> {
-          if (flag) {
-            return bar();
-          }
-          return;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 7,
-          column: 11,
-          endLine: 7,
-          endColumn: 18,
-        },
-      ],
-    },
-    {
-      code: `
-        function foo(flag: boolean): undefined | boolean {
-          if (flag) {
-            return undefined;
-          }
-          return true;
-        }
-      `,
-      options: [
-        {
-          treatUndefinedAsUnspecified: true,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 6,
-          column: 11,
-          endLine: 6,
-          endColumn: 23,
-        },
-      ],
-    },
-    {
-      code: `
-        declare const undefOrNum: undefined | number;
-        function foo(flag: boolean) {
-          if (flag) {
-            return;
-          }
-          return undefOrNum;
-        }
-      `,
-      options: [
-        {
-          treatUndefinedAsUnspecified: true,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 7,
-          column: 11,
-          endLine: 7,
-          endColumn: 29,
         },
       ],
     },

@@ -8,13 +8,69 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-meaningless-void-operator', rule, {
+  invalid: [
+    {
+      code: 'void (() => {})();',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: '(() => {})();',
+    },
+    {
+      code: `
+function foo() {}
+void foo();
+      `,
+      errors: [
+        {
+          column: 1,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+        },
+      ],
+      output: `
+function foo() {}
+foo();
+      `,
+    },
+    {
+      code: `
+function bar(x: never) {
+  void x;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId: 'meaninglessVoidOperator',
+          suggestions: [
+            {
+              messageId: 'removeVoid',
+              output: `
+function bar(x: never) {
+  x;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ checkNever: true }],
+      output: null,
+    },
+  ],
   valid: [
     `
 (() => {})();
@@ -33,61 +89,5 @@ function bar(x: never) {
   void x;
 }
     `,
-  ],
-  invalid: [
-    {
-      code: 'void (() => {})();',
-      output: '(() => {})();',
-      errors: [
-        {
-          messageId: 'meaninglessVoidOperator',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {}
-void foo();
-      `,
-      output: `
-function foo() {}
-foo();
-      `,
-      errors: [
-        {
-          messageId: 'meaninglessVoidOperator',
-          line: 3,
-          column: 1,
-        },
-      ],
-    },
-    {
-      options: [{ checkNever: true }],
-      output: null,
-      code: `
-function bar(x: never) {
-  void x;
-}
-      `,
-      errors: [
-        {
-          messageId: 'meaninglessVoidOperator',
-          line: 3,
-          column: 3,
-          suggestions: [
-            {
-              messageId: 'removeVoid',
-              output: `
-function bar(x: never) {
-  x;
-}
-      `,
-            },
-          ],
-        },
-      ],
-    },
   ],
 });

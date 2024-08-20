@@ -5,61 +5,6 @@ import rule from '../../src/rules/no-non-null-asserted-nullish-coalescing';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-non-null-asserted-nullish-coalescing', rule, {
-  valid: [
-    'foo ?? bar;',
-    'foo ?? bar!;',
-    'foo.bazz ?? bar;',
-    'foo.bazz ?? bar!;',
-    'foo!.bazz ?? bar;',
-    'foo!.bazz ?? bar!;',
-    'foo() ?? bar;',
-    'foo() ?? bar!;',
-    '(foo ?? bar)!;',
-    `
-      let x: string;
-      x! ?? '';
-    `,
-    `
-      let x: string;
-      x ?? '';
-    `,
-    `
-      let x!: string;
-      x ?? '';
-    `,
-    `
-      let x: string;
-      foo(x);
-      x! ?? '';
-    `,
-    `
-      let x: string;
-      x! ?? '';
-      x = foo();
-    `,
-    `
-      let x: string;
-      foo(x);
-      x! ?? '';
-      x = foo();
-    `,
-    `
-      let x = foo();
-      x ?? '';
-    `,
-    `
-      function foo() {
-        let x: string;
-        return x ?? '';
-      }
-    `,
-    `
-      let x: string;
-      function foo() {
-        return x ?? '';
-      }
-    `,
-  ],
   invalid: [
     {
       code: 'foo! ?? bar;',
@@ -327,5 +272,60 @@ x   ?? '';
         },
       ],
     },
+  ],
+  valid: [
+    'foo ?? bar;',
+    'foo ?? bar!;',
+    'foo.bazz ?? bar;',
+    'foo.bazz ?? bar!;',
+    'foo!.bazz ?? bar;',
+    'foo!.bazz ?? bar!;',
+    'foo() ?? bar;',
+    'foo() ?? bar!;',
+    '(foo ?? bar)!;',
+    `
+      let x: string;
+      x! ?? '';
+    `,
+    `
+      let x: string;
+      x ?? '';
+    `,
+    `
+      let x!: string;
+      x ?? '';
+    `,
+    `
+      let x: string;
+      foo(x);
+      x! ?? '';
+    `,
+    `
+      let x: string;
+      x! ?? '';
+      x = foo();
+    `,
+    `
+      let x: string;
+      foo(x);
+      x! ?? '';
+      x = foo();
+    `,
+    `
+      let x = foo();
+      x ?? '';
+    `,
+    `
+      function foo() {
+        let x: string;
+        return x ?? '';
+      }
+    `,
+    `
+      let x: string;
+      function foo() {
+        return x ?? '';
+      }
+    `,
   ],
 });

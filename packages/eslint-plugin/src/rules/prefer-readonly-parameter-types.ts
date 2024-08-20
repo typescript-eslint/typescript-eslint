@@ -1,7 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getParserServices,
@@ -21,44 +23,6 @@ type Options = [
 type MessageIds = 'shouldBeReadonly';
 
 export default createRule<Options, MessageIds>({
-  name: 'prefer-readonly-parameter-types',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
-      requiresTypeChecking: true,
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          allow: readonlynessOptionsSchema.properties.allow,
-          checkParameterProperties: {
-            type: 'boolean',
-          },
-          ignoreInferredTypes: {
-            type: 'boolean',
-          },
-          treatMethodsAsReadonly:
-            readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
-        },
-      },
-    ],
-    messages: {
-      shouldBeReadonly: 'Parameter should be a read only type.',
-    },
-  },
-  defaultOptions: [
-    {
-      allow: readonlynessOptionsDefaults.allow,
-      checkParameterProperties: true,
-      ignoreInferredTypes: false,
-      treatMethodsAsReadonly:
-        readonlynessOptionsDefaults.treatMethodsAsReadonly,
-    },
-  ],
   create(
     context,
     [
@@ -114,18 +78,56 @@ export default createRule<Options, MessageIds>({
 
           const type = services.getTypeAtLocation(actualParam);
           const isReadOnly = isTypeReadonly(services.program, type, {
-            treatMethodsAsReadonly: !!treatMethodsAsReadonly,
             allow,
+            treatMethodsAsReadonly: !!treatMethodsAsReadonly,
           });
 
           if (!isReadOnly) {
             context.report({
-              node: actualParam,
               messageId: 'shouldBeReadonly',
+              node: actualParam,
             });
           }
         }
       },
     };
   },
+  defaultOptions: [
+    {
+      allow: readonlynessOptionsDefaults.allow,
+      checkParameterProperties: true,
+      ignoreInferredTypes: false,
+      treatMethodsAsReadonly:
+        readonlynessOptionsDefaults.treatMethodsAsReadonly,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      shouldBeReadonly: 'Parameter should be a read only type.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allow: readonlynessOptionsSchema.properties.allow,
+          checkParameterProperties: {
+            type: 'boolean',
+          },
+          ignoreInferredTypes: {
+            type: 'boolean',
+          },
+          treatMethodsAsReadonly:
+            readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'prefer-readonly-parameter-types',
 });

@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -7,26 +8,6 @@ type MessageIds = 'preferIndexSignature' | 'preferRecord';
 type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
-  name: 'consistent-indexed-object-style',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Require or disallow the `Record` type',
-      recommended: 'stylistic',
-    },
-    messages: {
-      preferRecord: 'A record is preferred over an index signature.',
-      preferIndexSignature: 'An index signature is preferred over a record.',
-    },
-    fixable: 'code',
-    schema: [
-      {
-        type: 'string',
-        enum: ['record', 'index-signature'],
-      },
-    ],
-  },
-  defaultOptions: ['record'],
   create(context, [mode]) {
     function checkMembers(
       members: TSESTree.TypeElement[],
@@ -77,8 +58,6 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
-        node,
-        messageId: 'preferRecord',
         fix: safeFix
           ? (fixer): TSESLint.RuleFix => {
               const key = context.sourceCode.getText(keyType.typeAnnotation);
@@ -91,6 +70,8 @@ export default createRule<Options, MessageIds>({
               return fixer.replaceText(node, `${prefix}${record}${postfix}`);
             }
           : null,
+        messageId: 'preferRecord',
+        node,
       });
     }
 
@@ -111,21 +92,17 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            node,
-            messageId: 'preferIndexSignature',
             fix(fixer) {
               const key = context.sourceCode.getText(params[0]);
               const type = context.sourceCode.getText(params[1]);
               return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
             },
+            messageId: 'preferIndexSignature',
+            node,
           });
         },
       }),
       ...(mode === 'record' && {
-        TSTypeLiteral(node): void {
-          const parent = findParentDeclaration(node);
-          checkMembers(node.members, node, parent?.id, '', '');
-        },
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
@@ -144,9 +121,33 @@ export default createRule<Options, MessageIds>({
             !node.extends.length,
           );
         },
+        TSTypeLiteral(node): void {
+          const parent = findParentDeclaration(node);
+          checkMembers(node.members, node, parent?.id, '', '');
+        },
       }),
     };
   },
+  defaultOptions: ['record'],
+  meta: {
+    docs: {
+      description: 'Require or disallow the `Record` type',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      preferIndexSignature: 'An index signature is preferred over a record.',
+      preferRecord: 'A record is preferred over an index signature.',
+    },
+    schema: [
+      {
+        enum: ['record', 'index-signature'],
+        type: 'string',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'consistent-indexed-object-style',
 });
 
 function findParentDeclaration(

@@ -1,25 +1,11 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'no-unsafe-declaration-merging',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow unsafe declaration merging',
-      recommended: 'recommended',
-      requiresTypeChecking: false,
-    },
-    messages: {
-      unsafeMerging:
-        'Unsafe declaration merging between classes and interfaces.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     function checkUnsafeDeclaration(
       scope: Scope,
@@ -38,8 +24,8 @@ export default createRule({
 
       if (defs.some(def => def.node.type === unsafeKind)) {
         context.report({
-          node,
           messageId: 'unsafeMerging',
+          node,
         });
       }
     }
@@ -70,4 +56,19 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow unsafe declaration merging',
+      recommended: 'recommended',
+      requiresTypeChecking: false,
+    },
+    messages: {
+      unsafeMerging:
+        'Unsafe declaration merging between classes and interfaces.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-unsafe-declaration-merging',
 });

@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -14,18 +16,6 @@ type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  name: 'no-dupe-class-members',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow duplicate class members',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
-  },
-  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
 
@@ -55,4 +45,16 @@ export default createRule<Options, MessageIds>({
       ),
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow duplicate class members',
+      extendsBaseRule: true,
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
+    type: 'problem',
+  },
+  name: 'no-dupe-class-members',
 });

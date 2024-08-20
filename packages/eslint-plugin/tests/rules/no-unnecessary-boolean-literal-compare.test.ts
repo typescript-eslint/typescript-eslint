@@ -7,76 +7,13 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
-  valid: [
-    `
-      declare const varAny: any;
-      varAny === true;
-    `,
-    `
-      declare const varAny: any;
-      varAny == false;
-    `,
-    `
-      declare const varString: string;
-      varString === false;
-    `,
-    `
-      declare const varString: string;
-      varString === true;
-    `,
-    `
-      declare const varObject: {};
-      varObject === true;
-    `,
-    `
-      declare const varObject: {};
-      varObject == false;
-    `,
-    `
-      declare const varNullOrUndefined: null | undefined;
-      varNullOrUndefined === false;
-    `,
-    `
-      declare const varBooleanOrString: boolean | string;
-      varBooleanOrString === false;
-    `,
-    `
-      declare const varBooleanOrString: boolean | string;
-      varBooleanOrString == true;
-    `,
-    `
-      declare const varTrueOrStringOrUndefined: true | string | undefined;
-      varTrueOrStringOrUndefined == true;
-    `,
-    `
-      declare const varBooleanOrUndefined: boolean | undefined;
-      varBooleanOrUndefined === true;
-    `,
-    {
-      code: `
-        declare const varBooleanOrUndefined: boolean | undefined;
-        varBooleanOrUndefined === true;
-      `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
-    },
-    {
-      code: `
-        declare const varBooleanOrUndefined: boolean | undefined;
-        varBooleanOrUndefined === false;
-      `,
-      options: [{ allowComparingNullableBooleansToTrue: false }],
-    },
-    "'false' === true;",
-    "'true' === false;",
-  ],
-
   invalid: [
     {
       code: 'true === true;',
@@ -136,12 +73,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varTrueOrUndefined === true) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToTrue: false }],
       errors: [
         {
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
         declare const varTrueOrUndefined: true | undefined;
         if (varTrueOrUndefined) {
@@ -154,12 +91,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varFalseOrNull !== true) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToTrue: false }],
       errors: [
         {
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
         declare const varFalseOrNull: false | null;
         if (!varFalseOrNull) {
@@ -173,12 +110,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varBooleanOrNull === false && otherBoolean) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
         },
       ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
         declare const varBooleanOrNull: boolean | null;
         declare const otherBoolean: boolean;
@@ -193,12 +130,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (!(varBooleanOrNull === false) || otherBoolean) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
         },
       ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
         declare const varBooleanOrNull: boolean | null;
         declare const otherBoolean: boolean;
@@ -213,12 +150,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
         },
       ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
         declare const varTrueOrFalseOrUndefined: true | false | undefined;
         declare const otherBoolean: boolean;
@@ -481,5 +418,68 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         }
       `,
     },
+  ],
+
+  valid: [
+    `
+      declare const varAny: any;
+      varAny === true;
+    `,
+    `
+      declare const varAny: any;
+      varAny == false;
+    `,
+    `
+      declare const varString: string;
+      varString === false;
+    `,
+    `
+      declare const varString: string;
+      varString === true;
+    `,
+    `
+      declare const varObject: {};
+      varObject === true;
+    `,
+    `
+      declare const varObject: {};
+      varObject == false;
+    `,
+    `
+      declare const varNullOrUndefined: null | undefined;
+      varNullOrUndefined === false;
+    `,
+    `
+      declare const varBooleanOrString: boolean | string;
+      varBooleanOrString === false;
+    `,
+    `
+      declare const varBooleanOrString: boolean | string;
+      varBooleanOrString == true;
+    `,
+    `
+      declare const varTrueOrStringOrUndefined: true | string | undefined;
+      varTrueOrStringOrUndefined == true;
+    `,
+    `
+      declare const varBooleanOrUndefined: boolean | undefined;
+      varBooleanOrUndefined === true;
+    `,
+    {
+      code: `
+        declare const varBooleanOrUndefined: boolean | undefined;
+        varBooleanOrUndefined === true;
+      `,
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+    },
+    {
+      code: `
+        declare const varBooleanOrUndefined: boolean | undefined;
+        varBooleanOrUndefined === false;
+      `,
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+    },
+    "'false' === true;",
+    "'true' === false;",
   ],
 });

@@ -5,6 +5,501 @@ import rule from '../../src/rules/init-declarations';
 const ruleTester = new RuleTester();
 
 ruleTester.run('init-declarations', rule, {
+  invalid: [
+    // checking compatibility with base rule
+    {
+      code: 'var foo;',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'foo' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: 'for (var a in []) var foo;',
+      errors: [
+        {
+          column: 23,
+          data: { idName: 'foo' },
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+var foo,
+  bar = false,
+  baz;
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'foo' },
+          endColumn: 8,
+          endLine: 2,
+          line: 2,
+          messageId: 'initialized',
+        },
+        {
+          column: 3,
+          data: { idName: 'baz' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  var foo = 0;
+  var bar;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'bar' },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  var foo;
+  var bar = foo;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'foo' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: 'let a;',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'a' },
+          endColumn: 6,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  let a = 1,
+    b;
+  if (a) {
+    let c = 3,
+      d = null;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'b' },
+          endColumn: 6,
+          endLine: 4,
+          line: 4,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+  const b = false;
+  var c;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'a' },
+          endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
+        },
+        {
+          column: 7,
+          data: { idName: 'c' },
+          endColumn: 8,
+          endLine: 5,
+          line: 5,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: 'var foo = (bar = 2);',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'foo' },
+          endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: 'var foo = true;',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'foo' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+var foo,
+  bar = 5,
+  baz = 3;
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { idName: 'bar' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'notInitialized',
+        },
+        {
+          column: 3,
+          data: { idName: 'baz' },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  var foo;
+  var bar = foo;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'bar' },
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: 'let a = 1;',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'a' },
+          endColumn: 10,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  let a = 'foo',
+    b;
+  if (a) {
+    let c, d;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'a' },
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+  const b = false;
+  var c = 1;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'c' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: 'for (var i = 0; i < 1; i++) {}',
+      errors: [
+        {
+          column: 10,
+          data: { idName: 'i' },
+          endColumn: 15,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+for (var foo in []) {
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { idName: 'foo' },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+for (var foo of []) {
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { idName: 'foo' },
+          endColumn: 13,
+          endLine: 2,
+          line: 2,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+function foo() {
+  var bar;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'bar' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+
+    // typescript-eslint
+    {
+      code: "let arr: string[] = ['arr', 'ar'];",
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'arr' },
+          endColumn: 34,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: 'let arr: string = function () {};',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'arr' },
+          endColumn: 33,
+          endLine: 1,
+          line: 1,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+const class1 = class NAME {
+  constructor() {
+    var name1: string = 'hello';
+  }
+};
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { idName: 'name1' },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: 'let arr: string;',
+      errors: [
+        {
+          column: 5,
+          data: { idName: 'arr' },
+          endColumn: 8,
+          endLine: 1,
+          line: 1,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'numberOfGreetings' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+    {
+      code: `
+namespace myLib {
+  let numberOfGreetings: number = 2;
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          data: { idName: 'numberOfGreetings' },
+          endColumn: 36,
+          endLine: 3,
+          line: 3,
+          messageId: 'notInitialized',
+        },
+      ],
+      options: ['never'],
+    },
+    {
+      code: `
+namespace myLib1 {
+  const foo: number;
+  namespace myLib2 {
+    let bar: string;
+    namespace myLib3 {
+      let baz: object;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          data: { idName: 'foo' },
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'initialized',
+        },
+        {
+          column: 9,
+          data: { idName: 'bar' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
+          messageId: 'initialized',
+        },
+        {
+          column: 11,
+          data: { idName: 'baz' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
+          messageId: 'initialized',
+        },
+      ],
+      options: ['always'],
+    },
+  ],
   valid: [
     // checking compatibility with base rule
     'var foo = null;',
@@ -36,13 +531,13 @@ for (var foo of []) {
     },
     {
       code: 'let a = true;',
-      options: ['always'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
     },
     {
       code: 'const a = {};',
-      options: ['always'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
     },
     {
       code: `
@@ -55,8 +550,8 @@ function foo() {
   }
 }
       `,
-      options: ['always'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
     },
     {
       code: `
@@ -69,8 +564,8 @@ function foo() {
   }
 }
       `,
-      options: ['always'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
     },
     {
       code: `
@@ -80,18 +575,18 @@ function foo() {
   var c = true;
 }
       `,
-      options: ['always'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['always'],
     },
     {
       code: 'var foo;',
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: 'var foo, bar, baz;',
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: `
@@ -100,18 +595,18 @@ function foo() {
   var bar;
 }
       `,
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: 'let a;',
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: 'const a = 1;',
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: `
@@ -122,8 +617,8 @@ function foo() {
   }
 }
       `,
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: `
@@ -136,8 +631,8 @@ function foo() {
   }
 }
       `,
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: `
@@ -147,8 +642,8 @@ function foo() {
   var c;
 }
       `,
-      options: ['never'],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never'],
     },
     {
       code: 'for (var i = 0; i < 1; i++) {}',
@@ -166,8 +661,8 @@ for (var foo in []) {
 for (var foo of []) {
 }
       `,
-      options: ['never', { ignoreForLoopInit: true }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: ['never', { ignoreForLoopInit: true }],
     },
     {
       code: `
@@ -362,501 +857,6 @@ declare namespace myLib1 {
 }
       `,
       options: ['never'],
-    },
-  ],
-  invalid: [
-    // checking compatibility with base rule
-    {
-      code: 'var foo;',
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'foo' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 8,
-        },
-      ],
-    },
-    {
-      code: 'for (var a in []) var foo;',
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'foo' },
-          line: 1,
-          column: 23,
-          endLine: 1,
-          endColumn: 26,
-        },
-      ],
-    },
-    {
-      code: `
-var foo,
-  bar = false,
-  baz;
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'foo' },
-          line: 2,
-          column: 5,
-          endLine: 2,
-          endColumn: 8,
-        },
-        {
-          messageId: 'initialized',
-          data: { idName: 'baz' },
-          line: 4,
-          column: 3,
-          endLine: 4,
-          endColumn: 6,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var foo = 0;
-  var bar;
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'bar' },
-          line: 4,
-          column: 7,
-          endLine: 4,
-          endColumn: 10,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var foo;
-  var bar = foo;
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'foo' },
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 10,
-        },
-      ],
-    },
-    {
-      code: 'let a;',
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'a' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 6,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a = 1,
-    b;
-  if (a) {
-    let c = 3,
-      d = null;
-  }
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'b' },
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 6,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-  const b = false;
-  var c;
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'a' },
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 8,
-        },
-        {
-          messageId: 'initialized',
-          data: { idName: 'c' },
-          line: 5,
-          column: 7,
-          endLine: 5,
-          endColumn: 8,
-        },
-      ],
-    },
-    {
-      code: 'var foo = (bar = 2);',
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 20,
-        },
-      ],
-    },
-    {
-      code: 'var foo = true;',
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 15,
-        },
-      ],
-    },
-    {
-      code: `
-var foo,
-  bar = 5,
-  baz = 3;
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'bar' },
-          line: 3,
-          column: 3,
-          endLine: 3,
-          endColumn: 10,
-        },
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'baz' },
-          line: 4,
-          column: 3,
-          endLine: 4,
-          endColumn: 10,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var foo;
-  var bar = foo;
-}
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'bar' },
-          line: 4,
-          column: 7,
-          endLine: 4,
-          endColumn: 16,
-        },
-      ],
-    },
-    {
-      code: 'let a = 1;',
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'a' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 10,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a = 'foo',
-    b;
-  if (a) {
-    let c, d;
-  }
-}
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'a' },
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 16,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-  const b = false;
-  var c = 1;
-}
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'c' },
-          line: 5,
-          column: 7,
-          endLine: 5,
-          endColumn: 12,
-        },
-      ],
-    },
-    {
-      code: 'for (var i = 0; i < 1; i++) {}',
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'i' },
-          line: 1,
-          column: 10,
-          endLine: 1,
-          endColumn: 15,
-        },
-      ],
-    },
-    {
-      code: `
-for (var foo in []) {
-}
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 13,
-        },
-      ],
-    },
-    {
-      code: `
-for (var foo of []) {
-}
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'foo' },
-          line: 2,
-          column: 10,
-          endLine: 2,
-          endColumn: 13,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var bar;
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'bar' },
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 10,
-        },
-      ],
-    },
-
-    // typescript-eslint
-    {
-      code: "let arr: string[] = ['arr', 'ar'];",
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'arr' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 34,
-        },
-      ],
-    },
-    {
-      code: 'let arr: string = function () {};',
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'arr' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 33,
-        },
-      ],
-    },
-    {
-      code: `
-const class1 = class NAME {
-  constructor() {
-    var name1: string = 'hello';
-  }
-};
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'name1' },
-          line: 4,
-          column: 9,
-          endLine: 4,
-          endColumn: 32,
-        },
-      ],
-    },
-    {
-      code: 'let arr: string;',
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'arr' },
-          line: 1,
-          column: 5,
-          endLine: 1,
-          endColumn: 8,
-        },
-      ],
-    },
-    {
-      code: `
-namespace myLib {
-  let numberOfGreetings: number;
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'numberOfGreetings' },
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 24,
-        },
-      ],
-    },
-    {
-      code: `
-namespace myLib {
-  let numberOfGreetings: number = 2;
-}
-      `,
-      options: ['never'],
-      errors: [
-        {
-          messageId: 'notInitialized',
-          data: { idName: 'numberOfGreetings' },
-          line: 3,
-          column: 7,
-          endLine: 3,
-          endColumn: 36,
-        },
-      ],
-    },
-    {
-      code: `
-namespace myLib1 {
-  const foo: number;
-  namespace myLib2 {
-    let bar: string;
-    namespace myLib3 {
-      let baz: object;
-    }
-  }
-}
-      `,
-      options: ['always'],
-      errors: [
-        {
-          messageId: 'initialized',
-          data: { idName: 'foo' },
-          line: 3,
-          column: 9,
-          endLine: 3,
-          endColumn: 12,
-        },
-        {
-          messageId: 'initialized',
-          data: { idName: 'bar' },
-          line: 5,
-          column: 9,
-          endLine: 5,
-          endColumn: 12,
-        },
-        {
-          messageId: 'initialized',
-          data: { idName: 'baz' },
-          line: 7,
-          column: 11,
-          endLine: 7,
-          endColumn: 14,
-        },
-      ],
     },
   ],
 });

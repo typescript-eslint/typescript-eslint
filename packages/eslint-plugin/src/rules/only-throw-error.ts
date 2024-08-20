@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -20,40 +21,6 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  name: 'only-throw-error',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow throwing non-`Error` values as exceptions',
-      recommended: 'recommended',
-      extendsBaseRule: 'no-throw-literal',
-      requiresTypeChecking: true,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowThrowingAny: {
-            type: 'boolean',
-          },
-          allowThrowingUnknown: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    messages: {
-      object: 'Expected an error object to be thrown.',
-      undef: 'Do not throw undefined.',
-    },
-  },
-  defaultOptions: [
-    {
-      allowThrowingAny: true,
-      allowThrowingUnknown: true,
-    },
-  ],
   create(context, [options]) {
     const services = getParserServices(context);
 
@@ -68,7 +35,7 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
 
       if (type.flags & ts.TypeFlags.Undefined) {
-        context.report({ node, messageId: 'undef' });
+        context.report({ messageId: 'undef', node });
         return;
       }
 
@@ -84,7 +51,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      context.report({ node, messageId: 'object' });
+      context.report({ messageId: 'object', node });
     }
 
     return {
@@ -95,4 +62,38 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allowThrowingAny: true,
+      allowThrowingUnknown: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow throwing non-`Error` values as exceptions',
+      extendsBaseRule: 'no-throw-literal',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      object: 'Expected an error object to be thrown.',
+      undef: 'Do not throw undefined.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowThrowingAny: {
+            type: 'boolean',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'only-throw-error',
 });

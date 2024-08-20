@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
@@ -25,23 +26,30 @@ const enum RestTypeKind {
 }
 type RestType =
   | {
-      type: ts.Type;
+      index: number;
       kind: RestTypeKind.Array;
-      index: number;
-    }
-  | {
       type: ts.Type;
-      kind: RestTypeKind.Other;
-      index: number;
     }
   | {
-      typeArguments: readonly ts.Type[];
-      kind: RestTypeKind.Tuple;
       index: number;
+      kind: RestTypeKind.Other;
+      type: ts.Type;
+    }
+  | {
+      index: number;
+      kind: RestTypeKind.Tuple;
+      typeArguments: readonly ts.Type[];
     };
 
 class FunctionSignature {
+  private hasConsumedArguments = false;
+
   private parameterTypeIndex = 0;
+
+  private constructor(
+    private paramTypes: ts.Type[],
+    private restType: RestType | null,
+  ) {}
 
   public static create(
     checker: ts.TypeChecker,
@@ -65,21 +73,21 @@ class FunctionSignature {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {
-            type: checker.getTypeArguments(type)[0],
-            kind: RestTypeKind.Array,
             index: i,
+            kind: RestTypeKind.Array,
+            type: checker.getTypeArguments(type)[0],
           };
         } else if (checker.isTupleType(type)) {
           restType = {
-            typeArguments: checker.getTypeArguments(type),
-            kind: RestTypeKind.Tuple,
             index: i,
+            kind: RestTypeKind.Tuple,
+            typeArguments: checker.getTypeArguments(type),
           };
         } else {
           restType = {
-            type,
-            kind: RestTypeKind.Other,
             index: i,
+            kind: RestTypeKind.Other,
+            type,
           };
         }
         break;
@@ -91,12 +99,9 @@ class FunctionSignature {
     return new this(paramTypes, restType);
   }
 
-  private hasConsumedArguments = false;
-
-  private constructor(
-    private paramTypes: ts.Type[],
-    private restType: RestType | null,
-  ) {}
+  public consumeRemainingArguments(): void {
+    this.hasConsumedArguments = true;
+  }
 
   public getNextParameterType(): ts.Type | null {
     const index = this.parameterTypeIndex;
@@ -133,38 +138,15 @@ class FunctionSignature {
     }
     return this.paramTypes[index];
   }
-
-  public consumeRemainingArguments(): void {
-    this.hasConsumedArguments = true;
-  }
 }
 
 export default createRule<[], MessageIds>({
-  name: 'no-unsafe-argument',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow calling a function with a value with type `any`',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unsafeArgument:
-        'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
-      unsafeTupleSpread:
-        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
-      unsafeArraySpread: 'Unsafe spread of an `any` array type.',
-      unsafeSpread: 'Unsafe spread of an `any` type.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     function checkUnsafeArguments(
-      args: TSESTree.Expression[] | TSESTree.CallExpressionArgument[],
+      args: TSESTree.CallExpressionArgument[] | TSESTree.Expression[],
       callee: TSESTree.Expression,
       node:
         | TSESTree.CallExpression
@@ -200,16 +182,16 @@ export default createRule<[], MessageIds>({
             if (isTypeAnyType(spreadArgType)) {
               // foo(...any)
               context.report({
-                node: argument,
                 messageId: 'unsafeSpread',
+                node: argument,
               });
             } else if (isTypeAnyArrayType(spreadArgType, checker)) {
               // foo(...any[])
 
               // TODO - we could break down the spread and compare the array type against each argument
               context.report({
-                node: argument,
                 messageId: 'unsafeArraySpread',
+                node: argument,
               });
             } else if (checker.isTupleType(spreadArgType)) {
               // foo(...[tuple1, tuple2])
@@ -230,12 +212,12 @@ export default createRule<[], MessageIds>({
                 );
                 if (result) {
                   context.report({
-                    node: argument,
-                    messageId: 'unsafeTupleSpread',
                     data: {
-                      sender: checker.typeToString(tupleType),
                       receiver: checker.typeToString(parameterType),
+                      sender: checker.typeToString(tupleType),
                     },
+                    messageId: 'unsafeTupleSpread',
+                    node: argument,
                   });
                 }
               }
@@ -267,12 +249,12 @@ export default createRule<[], MessageIds>({
             );
             if (result) {
               context.report({
-                node: argument,
-                messageId: 'unsafeArgument',
                 data: {
-                  sender: checker.typeToString(argumentType),
                   receiver: checker.typeToString(parameterType),
+                  sender: checker.typeToString(argumentType),
                 },
+                messageId: 'unsafeArgument',
+                node: argument,
               });
             }
           }
@@ -291,4 +273,23 @@ export default createRule<[], MessageIds>({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow calling a function with a value with type `any`',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unsafeArgument:
+        'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
+      unsafeArraySpread: 'Unsafe spread of an `any` array type.',
+      unsafeSpread: 'Unsafe spread of an `any` type.',
+      unsafeTupleSpread:
+        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-unsafe-argument',
 });

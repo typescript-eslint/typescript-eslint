@@ -5,21 +5,6 @@ import rule from '../../src/rules/no-non-null-asserted-optional-chain';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-non-null-asserted-optional-chain', rule, {
-  valid: [
-    'foo.bar!;',
-    'foo.bar!.baz;',
-    'foo.bar!.baz();',
-    'foo.bar()!;',
-    'foo.bar()!();',
-    'foo.bar()!.baz;',
-    'foo?.bar;',
-    'foo?.bar();',
-    '(foo?.bar).baz!;',
-    '(foo?.bar()).baz!;',
-    'foo?.bar!.baz;',
-    'foo?.bar!();',
-    "foo?.['bar']!.baz;",
-  ],
   invalid: [
     {
       code: 'foo?.bar!;',
@@ -161,5 +146,20 @@ ruleTester.run('no-non-null-asserted-optional-chain', rule, {
         },
       ],
     },
+  ],
+  valid: [
+    'foo.bar!;',
+    'foo.bar!.baz;',
+    'foo.bar!.baz();',
+    'foo.bar()!;',
+    'foo.bar()!();',
+    'foo.bar()!.baz;',
+    'foo?.bar;',
+    'foo?.bar();',
+    '(foo?.bar).baz!;',
+    '(foo?.bar()).baz!;',
+    'foo?.bar!.baz;',
+    'foo?.bar!();',
+    "foo?.['bar']!.baz;",
   ],
 });

@@ -1,8 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { AST, RuleFix } from '@typescript-eslint/utils/ts-eslint';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -16,11 +17,11 @@ import {
 } from '../util';
 
 interface ScopeInfo {
-  upper: ScopeInfo | null;
-  hasAwait: boolean;
   hasAsync: boolean;
-  isGen: boolean;
+  hasAwait: boolean;
   isAsyncYield: boolean;
+  isGen: boolean;
+  upper: ScopeInfo | null;
 }
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -28,24 +29,6 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 export default createRule({
-  name: 'require-await',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Disallow async functions which do not return promises and have no `await` expression',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-      extendsBaseRule: true,
-    },
-    schema: [],
-    messages: {
-      missingAwait: "{{name}} has no 'await' expression.",
-      removeAsync: "Remove 'async'.",
-    },
-    hasSuggestions: true,
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -57,11 +40,11 @@ export default createRule({
      */
     function enterFunction(node: FunctionNode): void {
       scopeInfo = {
-        upper: scopeInfo,
-        hasAwait: false,
         hasAsync: node.async,
-        isGen: node.generator || false,
+        hasAwait: false,
         isAsyncYield: false,
+        isGen: node.generator || false,
+        upper: scopeInfo,
       };
     }
 
@@ -186,21 +169,21 @@ export default createRule({
         }
 
         context.report({
-          node,
-          loc: getFunctionHeadLoc(node, context.sourceCode),
-          messageId: 'missingAwait',
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
+          loc: getFunctionHeadLoc(node, context.sourceCode),
+          messageId: 'missingAwait',
+          node,
           suggest: [
             {
-              messageId: 'removeAsync',
               fix: (fixer): RuleFix[] =>
                 changes.map(change =>
                   change.replacement !== undefined
                     ? fixer.replaceTextRange(change.range, change.replacement)
                     : fixer.removeRange(change.range),
                 ),
+              messageId: 'removeAsync',
             },
           ],
         });
@@ -268,16 +251,16 @@ export default createRule({
     }
 
     return {
-      FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
-      'FunctionDeclaration:exit': exitFunction,
-      'FunctionExpression:exit': exitFunction,
       'ArrowFunctionExpression:exit': exitFunction,
-
       AwaitExpression: markAsHasAwait,
-      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
+      FunctionDeclaration: enterFunction,
+      'FunctionDeclaration:exit': exitFunction,
+
+      FunctionExpression: enterFunction,
+      'FunctionExpression:exit': exitFunction,
+      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       YieldExpression: visitYieldExpression,
 
       // check body-less async arrow function.
@@ -306,6 +289,24 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Disallow async functions which do not return promises and have no `await` expression',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      missingAwait: "{{name}} has no 'await' expression.",
+      removeAsync: "Remove 'async'.",
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'require-await',
 });
 
 function isEmptyFunction(node: FunctionNode): boolean {

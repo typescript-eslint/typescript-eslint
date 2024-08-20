@@ -2,9 +2,11 @@ import type {
   InvalidTestCase,
   SuggestionOutput,
 } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../src/rules/no-explicit-any';
+
 import rule from '../../src/rules/no-explicit-any';
 
 type RuleInvalidTestCase = InvalidTestCase<MessageIds, Options>;
@@ -13,6 +15,879 @@ type RuleSuggestionOutput = SuggestionOutput<MessageIds>;
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-explicit-any', rule, {
+  invalid: (
+    [
+      {
+        code: 'const number: any = 1',
+        errors: [
+          {
+            column: 15,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(): any {}',
+        errors: [
+          {
+            column: 21,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(): Array<any> {}',
+        errors: [
+          {
+            column: 27,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(): any[] {}',
+        errors: [
+          {
+            column: 21,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(param: Array<any>): number {}',
+        errors: [
+          {
+            column: 31,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(param: any[]): number {}',
+        errors: [
+          {
+            column: 25,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(param: Array<any>): Array<any> {}',
+        errors: [
+          {
+            column: 31,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output:
+                  'function generic(param: Array<unknown>): Array<any> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output: 'function generic(param: Array<never>): Array<any> {}',
+              },
+            ],
+          },
+          {
+            column: 44,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output:
+                  'function generic(param: Array<any>): Array<unknown> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output: 'function generic(param: Array<any>): Array<never> {}',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: 'function generic(): Array<Array<any>> {}',
+        errors: [
+          {
+            column: 33,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'function generic(): Array<any[]> {}',
+        errors: [
+          {
+            column: 27,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+class Greeter {
+    constructor(param: Array<any>) {}
+}
+            `,
+        errors: [
+          {
+            column: 30,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+class Greeter {
+    message: any;
+}
+            `,
+        errors: [
+          {
+            column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+class Greeter {
+    message: Array<any>;
+}
+            `,
+        errors: [
+          {
+            column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+class Greeter {
+    message: any[];
+}
+            `,
+        errors: [
+          {
+            column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+class Greeter {
+    message: Array<Array<any>>;
+}
+            `,
+        errors: [
+          {
+            column: 26,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+class Greeter {
+    message: Array<any[]>;
+}
+            `,
+        errors: [
+          {
+            column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+interface Greeter {
+    message: any;
+}
+            `,
+        errors: [
+          {
+            column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+interface Greeter {
+    message: Array<any>;
+}
+            `,
+        errors: [
+          {
+            column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+interface Greeter {
+    message: any[];
+}
+            `,
+        errors: [
+          {
+            column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+interface Greeter {
+    message: Array<Array<any>>;
+}
+            `,
+        errors: [
+          {
+            column: 26,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+interface Greeter {
+    message: Array<any[]>;
+}
+            `,
+        errors: [
+          {
+            column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: any;
+}
+            `,
+        errors: [
+          {
+            column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: Array<any>;
+}
+            `,
+        errors: [
+          {
+            column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: any[];
+}
+            `,
+        errors: [
+          {
+            column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: Array<Array<any>>;
+}
+            `,
+        errors: [
+          {
+            column: 26,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: Array<any[]>;
+}
+            `,
+        errors: [
+          {
+            column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string | any;
+}
+            `,
+        errors: [
+          {
+            column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string | Array<any>;
+}
+            `,
+        errors: [
+          {
+            column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string | any[];
+}
+            `,
+        errors: [
+          {
+            column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string | Array<Array<any>>;
+}
+            `,
+        errors: [
+          {
+            column: 35,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string | Array<any[]>;
+}
+            `,
+        errors: [
+          {
+            column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string & any;
+}
+            `,
+        errors: [
+          {
+            column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string & Array<any>;
+}
+            `,
+        errors: [
+          {
+            column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string & any[];
+}
+            `,
+        errors: [
+          {
+            column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string & Array<Array<any>>;
+}
+            `,
+        errors: [
+          {
+            column: 35,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: `
+type obj = {
+    message: string & Array<any[]>;
+}
+            `,
+        errors: [
+          {
+            column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'class Foo<t = any> extends Bar<any> {}',
+        errors: [
+          {
+            column: 15,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output: 'class Foo<t = unknown> extends Bar<any> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output: 'class Foo<t = never> extends Bar<any> {}',
+              },
+            ],
+          },
+          {
+            column: 32,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output: 'class Foo<t = any> extends Bar<unknown> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output: 'class Foo<t = any> extends Bar<never> {}',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: 'abstract class Foo<t = any> extends Bar<any> {}',
+        errors: [
+          {
+            column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output: 'abstract class Foo<t = unknown> extends Bar<any> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output: 'abstract class Foo<t = never> extends Bar<any> {}',
+              },
+            ],
+          },
+          {
+            column: 41,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output: 'abstract class Foo<t = any> extends Bar<unknown> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output: 'abstract class Foo<t = any> extends Bar<never> {}',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: 'abstract class Foo<t = any> implements Bar<any>, Baz<any> {}',
+        errors: [
+          {
+            column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output:
+                  'abstract class Foo<t = unknown> implements Bar<any>, Baz<any> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output:
+                  'abstract class Foo<t = never> implements Bar<any>, Baz<any> {}',
+              },
+            ],
+          },
+          {
+            column: 44,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output:
+                  'abstract class Foo<t = any> implements Bar<unknown>, Baz<any> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output:
+                  'abstract class Foo<t = any> implements Bar<never>, Baz<any> {}',
+              },
+            ],
+          },
+          {
+            column: 54,
+            line: 1,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output:
+                  'abstract class Foo<t = any> implements Bar<any>, Baz<unknown> {}',
+              },
+              {
+                messageId: 'suggestNever',
+                output:
+                  'abstract class Foo<t = any> implements Bar<any>, Baz<never> {}',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: 'new Foo<any>()',
+        errors: [
+          {
+            column: 9,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'Foo<any>()',
+        errors: [
+          {
+            column: 5,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        // https://github.com/typescript-eslint/typescript-eslint/issues/64
+        code: `
+function test<T extends Partial<any>>() {}
+const test = <T extends Partial<any>>() => {};
+      `,
+        errors: [
+          {
+            column: 33,
+            line: 2,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output: `
+function test<T extends Partial<unknown>>() {}
+const test = <T extends Partial<any>>() => {};
+      `,
+              },
+              {
+                messageId: 'suggestNever',
+                output: `
+function test<T extends Partial<never>>() {}
+const test = <T extends Partial<any>>() => {};
+      `,
+              },
+            ],
+          },
+          {
+            column: 33,
+            line: 3,
+            messageId: 'unexpectedAny',
+            suggestions: [
+              {
+                messageId: 'suggestUnknown',
+                output: `
+function test<T extends Partial<any>>() {}
+const test = <T extends Partial<unknown>>() => {};
+      `,
+              },
+              {
+                messageId: 'suggestNever',
+                output: `
+function test<T extends Partial<any>>() {}
+const test = <T extends Partial<never>>() => {};
+      `,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        // https://github.com/eslint/typescript-eslint-parser/issues/397
+        code: `
+        function foo(a: number, ...rest: any[]): void {
+          return;
+        }
+      `,
+        errors: [
+          {
+            column: 42,
+            line: 2,
+            messageId: 'unexpectedAny',
+          },
+        ],
+      },
+      {
+        code: 'type Any = any;',
+        errors: [
+          {
+            column: 12,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'function foo5(...args: any) {}',
+        errors: [
+          {
+            column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'const bar5 = function (...args: any) {}',
+        errors: [
+          {
+            column: 33,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'const baz5 = (...args: any) => {}',
+        errors: [
+          {
+            column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'interface Qux5 { (...args: any): void; }',
+        errors: [
+          {
+            column: 28,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'function quux5(fn: (...args: any) => void): void {}',
+        errors: [
+          {
+            column: 30,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'function quuz5(): ((...args: any) => void) {}',
+        errors: [
+          {
+            column: 30,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'type Fred5 = (...args: any) => void;',
+        errors: [
+          {
+            column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'type Corge5 = new (...args: any) => void;',
+        errors: [
+          {
+            column: 29,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'interface Grault5 { new (...args: any): void; }',
+        errors: [
+          {
+            column: 35,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'interface Garply5 { f(...args: any): void; }',
+        errors: [
+          {
+            column: 32,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+      {
+        code: 'declare function waldo5(...args: any): void;',
+        errors: [
+          {
+            column: 34,
+            line: 1,
+            messageId: 'unexpectedAny',
+          },
+        ],
+        options: [{ ignoreRestArgs: true }],
+      },
+    ] as RuleInvalidTestCase[]
+  ).reduce<RuleInvalidTestCase[]>((acc, testCase) => {
+    const suggestions = (code: string): RuleSuggestionOutput[] => [
+      {
+        messageId: 'suggestUnknown',
+        output: code.replace(/any/, 'unknown'),
+      },
+      {
+        messageId: 'suggestNever',
+        output: code.replace(/any/, 'never'),
+      },
+    ];
+    acc.push({
+      ...testCase,
+      errors: testCase.errors.map(e => ({
+        ...e,
+        suggestions: e.suggestions ?? suggestions(testCase.code),
+      })),
+    });
+    const options = testCase.options ?? [];
+    const code = `// fixToUnknown: true\n${testCase.code}`;
+    acc.push({
+      code,
+      errors: testCase.errors.map(err => {
+        if (err.line === undefined) {
+          return err;
+        }
+
+        return {
+          ...err,
+          line: err.line + 1,
+          suggestions:
+            err.suggestions?.map(
+              (s): RuleSuggestionOutput => ({
+                ...s,
+                output: `// fixToUnknown: true\n${s.output}`,
+              }),
+            ) ?? suggestions(code),
+        };
+      }),
+      options: [{ ...options[0], fixToUnknown: true }],
+      output: code.replaceAll('any', 'unknown'),
+    });
+
+    return acc;
+  }, []),
   valid: [
     'const number: number = 1;',
     'function greet(): string {}',
@@ -370,877 +1245,4 @@ interface Garply4 {
       options: [{ ignoreRestArgs: true }],
     },
   ],
-  invalid: (
-    [
-      {
-        code: 'const number: any = 1',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 15,
-          },
-        ],
-      },
-      {
-        code: 'function generic(): any {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 21,
-          },
-        ],
-      },
-      {
-        code: 'function generic(): Array<any> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 27,
-          },
-        ],
-      },
-      {
-        code: 'function generic(): any[] {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 21,
-          },
-        ],
-      },
-      {
-        code: 'function generic(param: Array<any>): number {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 31,
-          },
-        ],
-      },
-      {
-        code: 'function generic(param: any[]): number {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 25,
-          },
-        ],
-      },
-      {
-        code: 'function generic(param: Array<any>): Array<any> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 31,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output:
-                  'function generic(param: Array<unknown>): Array<any> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output: 'function generic(param: Array<never>): Array<any> {}',
-              },
-            ],
-          },
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 44,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output:
-                  'function generic(param: Array<any>): Array<unknown> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output: 'function generic(param: Array<any>): Array<never> {}',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        code: 'function generic(): Array<Array<any>> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 33,
-          },
-        ],
-      },
-      {
-        code: 'function generic(): Array<any[]> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 27,
-          },
-        ],
-      },
-      {
-        code: `
-class Greeter {
-    constructor(param: Array<any>) {}
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 30,
-          },
-        ],
-      },
-      {
-        code: `
-class Greeter {
-    message: any;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 14,
-          },
-        ],
-      },
-      {
-        code: `
-class Greeter {
-    message: Array<any>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 20,
-          },
-        ],
-      },
-      {
-        code: `
-class Greeter {
-    message: any[];
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 14,
-          },
-        ],
-      },
-      {
-        code: `
-class Greeter {
-    message: Array<Array<any>>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 26,
-          },
-        ],
-      },
-      {
-        code: `
-class Greeter {
-    message: Array<any[]>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 20,
-          },
-        ],
-      },
-      {
-        code: `
-interface Greeter {
-    message: any;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 14,
-          },
-        ],
-      },
-      {
-        code: `
-interface Greeter {
-    message: Array<any>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 20,
-          },
-        ],
-      },
-      {
-        code: `
-interface Greeter {
-    message: any[];
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 14,
-          },
-        ],
-      },
-      {
-        code: `
-interface Greeter {
-    message: Array<Array<any>>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 26,
-          },
-        ],
-      },
-      {
-        code: `
-interface Greeter {
-    message: Array<any[]>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 20,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: any;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 14,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: Array<any>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 20,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: any[];
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 14,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: Array<Array<any>>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 26,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: Array<any[]>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 20,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string | any;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 23,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string | Array<any>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 29,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string | any[];
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 23,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string | Array<Array<any>>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 35,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string | Array<any[]>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 29,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string & any;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 23,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string & Array<any>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 29,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string & any[];
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 23,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string & Array<Array<any>>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 35,
-          },
-        ],
-      },
-      {
-        code: `
-type obj = {
-    message: string & Array<any[]>;
-}
-            `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 29,
-          },
-        ],
-      },
-      {
-        code: 'class Foo<t = any> extends Bar<any> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 15,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output: 'class Foo<t = unknown> extends Bar<any> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output: 'class Foo<t = never> extends Bar<any> {}',
-              },
-            ],
-          },
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 32,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output: 'class Foo<t = any> extends Bar<unknown> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output: 'class Foo<t = any> extends Bar<never> {}',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        code: 'abstract class Foo<t = any> extends Bar<any> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 24,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output: 'abstract class Foo<t = unknown> extends Bar<any> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output: 'abstract class Foo<t = never> extends Bar<any> {}',
-              },
-            ],
-          },
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 41,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output: 'abstract class Foo<t = any> extends Bar<unknown> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output: 'abstract class Foo<t = any> extends Bar<never> {}',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        code: 'abstract class Foo<t = any> implements Bar<any>, Baz<any> {}',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 24,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output:
-                  'abstract class Foo<t = unknown> implements Bar<any>, Baz<any> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output:
-                  'abstract class Foo<t = never> implements Bar<any>, Baz<any> {}',
-              },
-            ],
-          },
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 44,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output:
-                  'abstract class Foo<t = any> implements Bar<unknown>, Baz<any> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output:
-                  'abstract class Foo<t = any> implements Bar<never>, Baz<any> {}',
-              },
-            ],
-          },
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 54,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output:
-                  'abstract class Foo<t = any> implements Bar<any>, Baz<unknown> {}',
-              },
-              {
-                messageId: 'suggestNever',
-                output:
-                  'abstract class Foo<t = any> implements Bar<any>, Baz<never> {}',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        code: 'new Foo<any>()',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 9,
-          },
-        ],
-      },
-      {
-        code: 'Foo<any>()',
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 5,
-          },
-        ],
-      },
-      {
-        // https://github.com/typescript-eslint/typescript-eslint/issues/64
-        code: `
-function test<T extends Partial<any>>() {}
-const test = <T extends Partial<any>>() => {};
-      `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 2,
-            column: 33,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output: `
-function test<T extends Partial<unknown>>() {}
-const test = <T extends Partial<any>>() => {};
-      `,
-              },
-              {
-                messageId: 'suggestNever',
-                output: `
-function test<T extends Partial<never>>() {}
-const test = <T extends Partial<any>>() => {};
-      `,
-              },
-            ],
-          },
-          {
-            messageId: 'unexpectedAny',
-            line: 3,
-            column: 33,
-            suggestions: [
-              {
-                messageId: 'suggestUnknown',
-                output: `
-function test<T extends Partial<any>>() {}
-const test = <T extends Partial<unknown>>() => {};
-      `,
-              },
-              {
-                messageId: 'suggestNever',
-                output: `
-function test<T extends Partial<any>>() {}
-const test = <T extends Partial<never>>() => {};
-      `,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        // https://github.com/eslint/typescript-eslint-parser/issues/397
-        code: `
-        function foo(a: number, ...rest: any[]): void {
-          return;
-        }
-      `,
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 2,
-            column: 42,
-          },
-        ],
-      },
-      {
-        code: 'type Any = any;',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 12,
-          },
-        ],
-      },
-      {
-        code: 'function foo5(...args: any) {}',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 24,
-          },
-        ],
-      },
-      {
-        code: 'const bar5 = function (...args: any) {}',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 33,
-          },
-        ],
-      },
-      {
-        code: 'const baz5 = (...args: any) => {}',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 24,
-          },
-        ],
-      },
-      {
-        code: 'interface Qux5 { (...args: any): void; }',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 28,
-          },
-        ],
-      },
-      {
-        code: 'function quux5(fn: (...args: any) => void): void {}',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 30,
-          },
-        ],
-      },
-      {
-        code: 'function quuz5(): ((...args: any) => void) {}',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 30,
-          },
-        ],
-      },
-      {
-        code: 'type Fred5 = (...args: any) => void;',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 24,
-          },
-        ],
-      },
-      {
-        code: 'type Corge5 = new (...args: any) => void;',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 29,
-          },
-        ],
-      },
-      {
-        code: 'interface Grault5 { new (...args: any): void; }',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 35,
-          },
-        ],
-      },
-      {
-        code: 'interface Garply5 { f(...args: any): void; }',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 32,
-          },
-        ],
-      },
-      {
-        code: 'declare function waldo5(...args: any): void;',
-        options: [{ ignoreRestArgs: true }],
-        errors: [
-          {
-            messageId: 'unexpectedAny',
-            line: 1,
-            column: 34,
-          },
-        ],
-      },
-    ] as RuleInvalidTestCase[]
-  ).reduce<RuleInvalidTestCase[]>((acc, testCase) => {
-    const suggestions = (code: string): RuleSuggestionOutput[] => [
-      {
-        messageId: 'suggestUnknown',
-        output: code.replace(/any/, 'unknown'),
-      },
-      {
-        messageId: 'suggestNever',
-        output: code.replace(/any/, 'never'),
-      },
-    ];
-    acc.push({
-      ...testCase,
-      errors: testCase.errors.map(e => ({
-        ...e,
-        suggestions: e.suggestions ?? suggestions(testCase.code),
-      })),
-    });
-    const options = testCase.options ?? [];
-    const code = `// fixToUnknown: true\n${testCase.code}`;
-    acc.push({
-      code,
-      output: code.replaceAll('any', 'unknown'),
-      options: [{ ...options[0], fixToUnknown: true }],
-      errors: testCase.errors.map(err => {
-        if (err.line === undefined) {
-          return err;
-        }
-
-        return {
-          ...err,
-          line: err.line + 1,
-          suggestions:
-            err.suggestions?.map(
-              (s): RuleSuggestionOutput => ({
-                ...s,
-                output: `// fixToUnknown: true\n${s.output}`,
-              }),
-            ) ?? suggestions(code),
-        };
-      }),
-    });
-
-    return acc;
-  }, []),
 });

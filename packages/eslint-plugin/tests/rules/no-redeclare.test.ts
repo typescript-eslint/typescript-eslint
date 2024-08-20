@@ -13,6 +13,541 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-redeclare', rule, {
+  invalid: [
+    {
+      code: `
+var a = 3;
+var a = 10;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+switch (foo) {
+  case a:
+    var b = 3;
+  case b:
+    var b = 4;
+}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'b',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = 3;
+var a = 10;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = {};
+var a = [];
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a;
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+function a() {}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = function () {};
+var a = function () {};
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = function () {};
+var a = new Date();
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = 3;
+var a = 10;
+var a = 15;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a;
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'module' } },
+    },
+    {
+      code: `
+export var a;
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { sourceType: 'module' } },
+    },
+    {
+      code: 'var Object = 0;',
+      errors: [
+        {
+          data: {
+            id: 'Object',
+          },
+          messageId: 'redeclaredAsBuiltin',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var top = 0;',
+      errors: [
+        {
+          data: {
+            id: 'top',
+          },
+          messageId: 'redeclaredAsBuiltin',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        globals: { top: 'readonly' },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+var a;
+var { a = 0, b: Object = 0 } = {};
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          data: {
+            id: 'Object',
+          },
+          messageId: 'redeclaredAsBuiltin',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+var a;
+var { a = 0, b: Object = 0 } = {};
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+var a;
+var { a = 0, b: Object = 0 } = {};
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true }, ecmaVersion: 6 },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+var a;
+var { a = 0, b: Object = 0 } = {};
+      `,
+      errors: [
+        {
+          data: {
+            id: 'a',
+          },
+          messageId: 'redeclared',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ builtinGlobals: false }],
+    },
+
+    // Notifications of readonly are moved from no-undef: https://github.com/eslint/eslint/issues/4504
+    {
+      code: '/*global b:false*/ var b = 1;',
+      errors: [
+        {
+          data: {
+            id: 'b',
+          },
+          messageId: 'redeclaredBySyntax',
+          type: AST_TOKEN_TYPES.Identifier,
+        },
+      ],
+      options: [{ builtinGlobals: true }],
+    },
+
+    {
+      code: `
+type T = 1;
+type T = 2;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'T',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+    },
+    {
+      code: `
+type NodeListOf = 1;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'NodeListOf',
+          },
+          messageId: 'redeclaredAsBuiltin',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          lib: ['dom'],
+          sourceType: 'script',
+        },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+interface A {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+interface A {}
+class A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+class A {}
+namespace A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+interface A {}
+class A {}
+namespace A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+        {
+          data: {
+            id: 'A',
+          },
+          line: 4,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+class A {}
+class A {}
+namespace A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+function A() {}
+namespace A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+function A() {}
+function A() {}
+namespace A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+function A() {}
+class A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+enum A {}
+namespace A {}
+enum A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 4,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: true }],
+    },
+    {
+      code: `
+function A() {}
+class A {}
+namespace A {}
+      `,
+      errors: [
+        {
+          data: {
+            id: 'A',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+        {
+          data: {
+            id: 'A',
+          },
+          line: 4,
+          messageId: 'redeclared',
+        },
+      ],
+      options: [{ ignoreDeclarationMerge: false }],
+    },
+    {
+      code: `
+type something = string;
+const something = 2;
+      `,
+      errors: [
+        {
+          data: {
+            id: 'something',
+          },
+          line: 3,
+          messageId: 'redeclared',
+        },
+      ],
+    },
+  ],
   valid: [
     `
 var a = 3;
@@ -41,15 +576,15 @@ if (true) {
     { code: 'var Object = 0;', options: [{ builtinGlobals: false }] },
     {
       code: 'var Object = 0;',
-      options: [{ builtinGlobals: true }],
       languageOptions: { parserOptions: { sourceType: 'module' } },
+      options: [{ builtinGlobals: true }],
     },
     {
       code: 'var Object = 0;',
-      options: [{ builtinGlobals: true }],
       languageOptions: {
         parserOptions: { ecmaFeatures: { globalReturn: true } },
       },
+      options: [{ builtinGlobals: true }],
     },
     {
       code: 'var top = 0;',
@@ -58,15 +593,15 @@ if (true) {
     { code: 'var top = 0;', options: [{ builtinGlobals: true }] },
     {
       code: 'var top = 0;',
-      options: [{ builtinGlobals: true }],
       languageOptions: {
         parserOptions: { ecmaFeatures: { globalReturn: true } },
       },
+      options: [{ builtinGlobals: true }],
     },
     {
       code: 'var top = 0;',
-      options: [{ builtinGlobals: true }],
       languageOptions: { parserOptions: { sourceType: 'module' } },
+      options: [{ builtinGlobals: true }],
     },
     {
       code: 'var self = 1;',
@@ -141,541 +676,6 @@ function A() {}
 namespace A {}
       `,
       options: [{ ignoreDeclarationMerge: true }],
-    },
-  ],
-  invalid: [
-    {
-      code: `
-var a = 3;
-var a = 10;
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-switch (foo) {
-  case a:
-    var b = 3;
-  case b:
-    var b = 4;
-}
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'b',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = 3;
-var a = 10;
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = {};
-var a = [];
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a;
-function a() {}
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function a() {}
-function a() {}
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = function () {};
-var a = function () {};
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = function () {};
-var a = new Date();
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = 3;
-var a = 10;
-var a = 15;
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a;
-var a;
-      `,
-      languageOptions: { parserOptions: { sourceType: 'module' } },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-export var a;
-var a;
-      `,
-      languageOptions: { parserOptions: { sourceType: 'module' } },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var Object = 0;',
-      options: [{ builtinGlobals: true }],
-      errors: [
-        {
-          messageId: 'redeclaredAsBuiltin',
-          data: {
-            id: 'Object',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var top = 0;',
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        globals: { top: 'readonly' },
-      },
-      errors: [
-        {
-          messageId: 'redeclaredAsBuiltin',
-          data: {
-            id: 'top',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a;
-var { a = 0, b: Object = 0 } = {};
-      `,
-      options: [{ builtinGlobals: true }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-        {
-          messageId: 'redeclaredAsBuiltin',
-          data: {
-            id: 'Object',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a;
-var { a = 0, b: Object = 0 } = {};
-      `,
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a;
-var { a = 0, b: Object = 0 } = {};
-      `,
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, ecmaFeatures: { globalReturn: true } },
-      },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a;
-var { a = 0, b: Object = 0 } = {};
-      `,
-      options: [{ builtinGlobals: false }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'a',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-
-    // Notifications of readonly are moved from no-undef: https://github.com/eslint/eslint/issues/4504
-    {
-      code: '/*global b:false*/ var b = 1;',
-      options: [{ builtinGlobals: true }],
-      errors: [
-        {
-          messageId: 'redeclaredBySyntax',
-          data: {
-            id: 'b',
-          },
-          type: AST_TOKEN_TYPES.Identifier,
-        },
-      ],
-    },
-
-    {
-      code: `
-type T = 1;
-type T = 2;
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'T',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-type NodeListOf = 1;
-      `,
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        parserOptions: {
-          lib: ['dom'],
-          sourceType: 'script',
-        },
-      },
-      errors: [
-        {
-          messageId: 'redeclaredAsBuiltin',
-          data: {
-            id: 'NodeListOf',
-          },
-        },
-      ],
-    },
-    {
-      code: `
-interface A {}
-interface A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface A {}
-class A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface A {}
-class A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: `
-class A {}
-class A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-function A() {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-function A() {}
-function A() {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-function A() {}
-class A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-      ],
-    },
-    {
-      code: `
-enum A {}
-namespace A {}
-enum A {}
-      `,
-      options: [{ ignoreDeclarationMerge: true }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: `
-function A() {}
-class A {}
-namespace A {}
-      `,
-      options: [{ ignoreDeclarationMerge: false }],
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 3,
-        },
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'A',
-          },
-          line: 4,
-        },
-      ],
-    },
-    {
-      code: `
-type something = string;
-const something = 2;
-      `,
-      errors: [
-        {
-          messageId: 'redeclared',
-          data: {
-            id: 'something',
-          },
-          line: 3,
-        },
-      ],
     },
   ],
 });

@@ -1,12 +1,3133 @@
 import type { RunTests } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../src/rules/member-ordering';
+
 import rule from '../../src/rules/member-ordering';
 
 const ruleTester = new RuleTester();
 
 const grouped: RunTests<MessageIds, Options> = {
+  invalid: [
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+interface X {
+  a: unknown;
+  (): void;
+  b(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'call',
+            rank: 'field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['call-signature', 'field', 'method'] }],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'field',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['signature', 'method', 'constructor', 'field'] }],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'field',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { interfaces: ['method', 'signature', 'constructor', 'field'] },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'field',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['field', 'method', 'constructor', 'signature'],
+          interfaces: ['method', 'signature', 'constructor', 'field'],
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+interface Foo {
+  [Z: string]: any;
+  new ();
+  A: string;
+  G();
+  B: string;
+  H();
+  C: string;
+  I();
+  D: string;
+  J();
+  E: string;
+  K();
+  F: string;
+  L();
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'method',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'method',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'method',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'E',
+            rank: 'method',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'method',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          interfaces: ['signature', 'constructor', 'field', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+type Foo = {
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'method',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+type Foo = {
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  [Z: string]: any;
+  new ();
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'field',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
+    },
+    {
+      code: `
+// no accessibility === public
+type Foo = {
+  [Z: string]: any;
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'signature',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'signature',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'signature',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'signature',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'signature',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'signature',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'signature',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { typeLiterals: ['method', 'constructor', 'signature', 'field'] },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+type Foo = {
+  A: string;
+  B: string;
+  C: string;
+  D: string;
+  E: string;
+  F: string;
+  G();
+  H();
+  I();
+  J();
+  K();
+  L();
+  new ();
+  [Z: string]: any;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'new',
+            rank: 'field',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'Z',
+            rank: 'field',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['field', 'method', 'constructor', 'signature'],
+          typeLiterals: ['signature', 'method', 'constructor', 'field'],
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+type Foo = {
+  new ();
+  [Z: string]: any;
+  A: string;
+  G();
+  B: string;
+  H();
+  C: string;
+  I();
+  D: string;
+  J();
+  E: string;
+  K();
+  F: string;
+  L();
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'method',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'method',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'method',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'E',
+            rank: 'method',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'method',
+          },
+          line: 16,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          typeLiterals: ['constructor', 'signature', 'field', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [Z: string]: any;
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  constructor() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'public instance method',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'public instance method',
+          },
+          line: 18,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'public instance method',
+          },
+          line: 19,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'public instance method',
+          },
+          line: 20,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor() {}
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  static #C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  #F: string = '';
+  public J() {}
+  protected K() {}
+  private L() {}
+  #L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  static #I() {}
+  [Z: string]: any;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'constructor',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'constructor',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'constructor',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'constructor',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'constructor',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'E',
+            rank: 'constructor',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'constructor',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'constructor',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['field', 'constructor', 'method', 'signature'] }],
+    },
+    {
+      code: `
+class Foo {
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  public static G() {}
+  public static A: string;
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'method',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['field', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  public static G() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  public static G() {}
+  protected static H() {}
+  protected static B: string = '';
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  constructor() {}
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ classes: ['method', 'constructor', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  public static A: string;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classes: ['method', 'constructor', 'field'],
+          default: ['field', 'constructor', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private L() {}
+  public J() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  protected K() {}
+  constructor() {}
+  public D: string = '';
+  private static C: string = '';
+  public static A: string;
+  private static C: string = '';
+  protected static B: string = '';
+  private F: string = '';
+  protected static B: string = '';
+  protected E: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'private field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'protected field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classes: [
+            'public-method',
+            'constructor',
+            'public-field',
+            'private-field',
+            'protected-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public static G() {}
+  private static I() {}
+  public J() {}
+  protected static H() {}
+  private L() {}
+  protected K() {}
+  public D: string = '';
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  protected E: string = '';
+  private static C: string = '';
+  private F: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'public instance method',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'public field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classes: [
+            'public-static-method',
+            'static-method',
+            'public-instance-method',
+            'instance-method',
+            'constructor',
+            'public-field',
+            'protected-field',
+            'private-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public J() {}
+  public static G() {}
+  public D: string = '';
+  public static A: string = '';
+  private L() {}
+  constructor() {}
+  protected K() {}
+  protected static H() {}
+  private static I() {}
+  protected static B: string = '';
+  private static C: string = '';
+  protected E: string = '';
+  private F: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'method',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'public-method',
+            'public-field',
+            'constructor',
+            'method',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public J() {}
+  private static I() {}
+  public static G() {}
+  protected static H() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  public static A: string;
+  private F: string = '';
+  protected static B: string = '';
+  public D: string = '';
+  private static C: string = '';
+  protected E: string = '';
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'private static method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'private static method',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classes: [
+            'public-method',
+            'protected-static-method',
+            'private-static-method',
+            'protected-instance-method',
+            'private-instance-method',
+            'constructor',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private static I() {}
+  protected static H() {}
+  protected static B: string = '';
+  public static G() {}
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private L() {}
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'protected static field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classes: ['private-instance-method', 'protected-static-field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  protected static B: string = '';
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'protected static field',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['public-instance-method', 'protected-static-field'],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class Foo {
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'public instance method',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'public instance method',
+          },
+          line: 14,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'public instance method',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  [Z: string]: any;
+  constructor() {}
+  public static A: string = '';
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'constructor',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'constructor',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'constructor',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'constructor',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'E',
+            rank: 'constructor',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'constructor',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
+    },
+    {
+      code: `
+const foo = class {
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  [Z: string]: any;
+  public static G() {}
+  public static A: string;
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'method',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['field', 'method'] }],
+    },
+    {
+      code: `
+const foo = class {
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  public static G() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+  constructor() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'field'] }],
+    },
+    {
+      code: `
+const foo = class {
+  public static G() {}
+  protected static H() {}
+  protected static B: string = '';
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  public static A: string;
+  constructor() {}
+  [Z: string]: any;
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'field',
+          },
+          line: 11,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ classExpressions: ['method', 'constructor', 'field'] }],
+    },
+    {
+      code: `
+const foo = class {
+  public static A: string;
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  public J() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  protected static B: string = '';
+  private static C: string = '';
+  public D: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'field',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classExpressions: ['method', 'constructor', 'field'],
+          default: ['field', 'constructor', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  private L() {}
+  public J() {}
+  public static G() {}
+  protected static H() {}
+  private static I() {}
+  protected K() {}
+  constructor() {}
+  public D: string = '';
+  private static C: string = '';
+  public static A: string;
+  private static C: string = '';
+  protected static B: string = '';
+  private F: string = '';
+  protected static B: string = '';
+  protected E: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'private field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'protected field',
+          },
+          line: 15,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classExpressions: [
+            'public-method',
+            'constructor',
+            'public-field',
+            'private-field',
+            'protected-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  public static G() {}
+  private static I() {}
+  public J() {}
+  protected static H() {}
+  private L() {}
+  protected K() {}
+  public D: string = '';
+  constructor() {}
+  public static A: string;
+  protected static B: string = '';
+  protected E: string = '';
+  private static C: string = '';
+  private F: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'public instance method',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'public field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classExpressions: [
+            'public-static-method',
+            'static-method',
+            'public-instance-method',
+            'instance-method',
+            'constructor',
+            'public-field',
+            'protected-field',
+            'private-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  public J() {}
+  public static G() {}
+  public D: string = '';
+  public static A: string = '';
+  private L() {}
+  constructor() {}
+  protected K() {}
+  protected static H() {}
+  private static I() {}
+  protected static B: string = '';
+  private static C: string = '';
+  protected E: string = '';
+  private F: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'method',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'public-method',
+            'public-field',
+            'constructor',
+            'method',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  public J() {}
+  private static I() {}
+  public static G() {}
+  protected static H() {}
+  protected K() {}
+  private L() {}
+  constructor() {}
+  public static A: string;
+  private F: string = '';
+  protected static B: string = '';
+  public D: string = '';
+  private static C: string = '';
+  protected E: string = '';
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'G',
+            rank: 'private static method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'H',
+            rank: 'private static method',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classExpressions: [
+            'public-method',
+            'protected-static-method',
+            'private-static-method',
+            'protected-instance-method',
+            'private-instance-method',
+            'constructor',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  private static I() {}
+  protected static H() {}
+  protected static B: string = '';
+  public static G() {}
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private L() {}
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'L',
+            rank: 'protected static field',
+          },
+          line: 10,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classExpressions: [
+            'private-instance-method',
+            'protected-static-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const foo = class {
+  private L() {}
+  private static I() {}
+  protected static H() {}
+  public static G() {}
+  protected static B: string = '';
+  public J() {}
+  protected K() {}
+  private static C: string = '';
+  private F: string = '';
+  protected E: string = '';
+  public static A: string;
+  public D: string = '';
+  constructor() {}
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'protected static field',
+          },
+          line: 8,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['public-instance-method', 'protected-static-field'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  K = () => {};
+  A: string;
+  constructor() {}
+  [Z: string]: any;
+  J() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'public instance method',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'public instance method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'Z',
+            rank: 'public instance method',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  J() {}
+  constructor() {}
+  K = () => {};
+  A: string;
+  [Z: string]: any;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'constructor',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'constructor', 'field', 'signature'] }],
+    },
+    {
+      code: `
+class Foo {
+  J() {}
+  constructor() {}
+  K = () => {};
+  L: () => {};
+  A: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'K',
+            rank: 'constructor',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'constructor', 'field'] }],
+    },
+    {
+      code: `
+interface Foo {
+  K: () => {};
+  J();
+  A: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  K: () => {};
+  J();
+  A: string;
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = {
+  A: string;
+  K: () => {};
+  J();
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'constructor', 'field'] }],
+    },
+    {
+      code: `
+abstract class Foo {
+  abstract A(): void;
+  B: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'public abstract method',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  abstract A: () => {};
+  B: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  abstract A: () => {};
+  B: string;
+  public C() {}
+  private D() {}
+  abstract E() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'public abstract field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  C: number;
+  [A: string]: number;
+  public static D(): {};
+  static [B: string]: number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'signature',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'field',
+            'method',
+            'public-static-method',
+            'private-static-method',
+            'signature',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  abstract B: string;
+  abstract A(): void;
+  public C(): {};
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'constructor', 'field'] }],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  B: string;
+  @Dec() A: string = '';
+  C: string = '';
+  constructor() {}
+  D() {}
+  E() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['decorated-field', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  A() {}
+
+  @Decorator()
+  B() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'method',
+          },
+          line: 5, // Symbol starts at the line with decorator
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['decorated-method', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  @Decorator() C() {}
+  A() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'decorated method',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['public-method', 'decorated-method'] }],
+    },
+    {
+      code: `
+class Foo {
+  A(): void;
+  B(): void;
+  private C() {}
+  constructor() {}
+  @Dec() private D() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'private method',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          classes: ['public-method', 'decorated-method', 'private-method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  A: string;
+  get B() {}
+  constructor() {}
+  set B() {}
+  get C() {}
+  set C() {}
+  D(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'get, set',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['field', 'constructor', ['get', 'set'], 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  A: string;
+  private C(): void;
+  constructor() {}
+  @Dec() private B: string;
+  set D() {}
+  E(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'private decorated field, public set, private method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'public-field',
+            'constructor',
+            ['private-decorated-field', 'public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  A: string;
+  constructor() {}
+  get B() {}
+  set B() {}
+  get C() {}
+  set C() {}
+  D(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'set',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['field', 'constructor', 'get', ['set'], 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+  m() {}
+  f = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'm',
+            rank: 'static initialization',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'f',
+            rank: 'static initialization',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['method', 'field', 'static-initialization'] }],
+    },
+    {
+      code: `
+class Foo {
+  m() {}
+  f = 1;
+  static {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'static block',
+            rank: 'method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['static-initialization', 'method', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  f = 1;
+  static {}
+  m() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'static block',
+            rank: 'field',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['static-initialization', 'field', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  static {}
+  f = 1;
+  m() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'f',
+            rank: 'static initialization',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['field', 'static-initialization', 'method'] }],
+    },
+    {
+      code: `
+class Foo {
+  private mp() {}
+  static {}
+  public m() {}
+  @dec
+  md() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'static block',
+            rank: 'method',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'md',
+            rank: 'method',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: ['decorated-method', 'static-initialization', 'method'] },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  #imPrivate() {}
+  imPublic() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'imPublic',
+            rank: '#private method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      name: 'with private identifier',
+      options: [
+        {
+          default: {
+            memberTypes: ['public-method', '#private-method'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  #imPrivate() {}
+  private imPrivate() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'imPrivate',
+            rank: '#private method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      name: 'private and #private member order',
+      options: [
+        {
+          default: {
+            memberTypes: ['private-method', '#private-method'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  static C: boolean;
+  [B: string]: any;
+  private A() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'public static field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      name: 'default member types with alphabetically order',
+      options: [
+        {
+          default: {
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  static C: boolean;
+  [B: string]: any;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            beforeMember: 'C',
+            member: 'B',
+          },
+          line: 5,
+          messageId: 'incorrectOrder',
+        },
+      ],
+      name: 'alphabetically order without member types',
+      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  private imPrivate() {}
+  #imPrivate() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'imPrivate',
+            rank: 'private method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      name: '#private and private member order',
+      options: [
+        {
+          default: {
+            memberTypes: ['#private-method', 'private-method'],
+            order: 'alphabetically-case-insensitive',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+// no accessibility === public
+class Foo {
+  B: string;
+  readonly A: string = '';
+  C: string = '';
+  constructor() {}
+  D() {}
+  E() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'A',
+            rank: 'field',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [{ default: ['readonly-field', 'field'] }],
+    },
+    {
+      code: `
+class Foo {
+  A: string;
+  private C(): void;
+  constructor() {}
+  private readonly B: string;
+  set D() {}
+  E(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'constructor',
+            rank: 'public set, private method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'public field',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'private-readonly-field',
+            'public-field',
+            'constructor',
+            ['public-set', 'private-method'],
+            'public-method',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly A: string;
+  public readonly B: string;
+  public static readonly C: string;
+  static readonly #D: string;
+  readonly #E: string;
+
+  @Dec public F: string;
+  public G: string;
+  public static H: string;
+  static readonly #I: string;
+  readonly #J: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'F',
+            rank: 'readonly field',
+          },
+          line: 9,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'I',
+            rank: 'field',
+          },
+          line: 12,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'J',
+            rank: 'field',
+          },
+          line: 13,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['decorated-field', 'readonly-field', 'field'],
+        },
+      ],
+    },
+    {
+      code: `
+abstract class Foo {
+  @Dec public readonly DA: string;
+  @Dec protected readonly DB: string;
+  @Dec private readonly DC: string;
+
+  public static readonly SA: string;
+  protected static readonly SB: string;
+  private static readonly SC: string;
+  static readonly #SD: string;
+
+  public readonly IA: string;
+  protected readonly IB: string;
+  private readonly IC: string;
+  readonly #ID: string;
+
+  public abstract readonly AA: string;
+  protected abstract readonly AB: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'AA',
+            rank: 'static readonly field',
+          },
+          line: 17,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'AB',
+            rank: 'static readonly field',
+          },
+          line: 18,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'decorated-readonly-field',
+            'abstract-readonly-field',
+            'static-readonly-field',
+            'instance-readonly-field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  readonly A: string;
+  readonly B: string;
+
+  C: string;
+  D: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'C',
+            rank: 'readonly field',
+          },
+          line: 6,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'D',
+            rank: 'readonly field',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['field', 'readonly-field'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  [i: number]: string;
+  readonly [i: string]: string;
+
+  A: string;
+  readonly B: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'i',
+            rank: 'signature',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+        {
+          column: 3,
+          data: {
+            name: 'B',
+            rank: 'field',
+          },
+          line: 7,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: [
+            'readonly-signature',
+            'signature',
+            'readonly-field',
+            'field',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  accessor bar;
+
+  baz() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'baz',
+            rank: 'accessor',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['method', 'accessor'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'x',
+            rank: 'method',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'y',
+            rank: 'get',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        {
+          default: ['method', 'get'],
+        },
+      ],
+    },
+  ],
   valid: [
     `
 // no accessibility === public
@@ -615,8 +3736,8 @@ class Foo {
       `,
       options: [
         {
-          default: ['signature', 'field', 'constructor', 'method'],
           classes: ['method', 'constructor', 'field', 'signature'],
+          default: ['signature', 'field', 'constructor', 'method'],
         },
       ],
     },
@@ -888,15 +4009,15 @@ class Foo {
       `,
       options: [
         {
-          default: [
-            'public-instance-method',
-            'public-constructor',
-            'protected-static-field',
-          ],
           classes: [
             'public-instance-field',
             'private-constructor',
             'protected-instance-method',
+          ],
+          default: [
+            'public-instance-method',
+            'public-constructor',
+            'protected-static-field',
           ],
         },
       ],
@@ -922,15 +4043,15 @@ class Foo {
       `,
       options: [
         {
-          default: [
-            'public-instance-method',
-            'public-constructor',
-            'protected-static-field',
-          ],
           classes: [
             'public-instance-field',
             'private-constructor',
             'protected-instance-method',
+          ],
+          default: [
+            'public-instance-method',
+            'public-constructor',
+            'protected-static-field',
           ],
         },
       ],
@@ -1102,8 +4223,8 @@ const foo = class Foo {
       `,
       options: [
         {
-          default: ['field', 'constructor', 'method'],
           classExpressions: ['method', 'signature', 'constructor', 'field'],
+          default: ['field', 'constructor', 'method'],
         },
       ],
     },
@@ -1209,11 +4330,6 @@ const foo = class Foo {
       `,
       options: [
         {
-          default: [
-            'public-instance-method',
-            'public-constructor',
-            'protected-static-field',
-          ],
           classes: [
             'public-instance-method',
             'protected-constructor',
@@ -1223,6 +4339,11 @@ const foo = class Foo {
             'public-instance-field',
             'private-constructor',
             'protected-instance-method',
+          ],
+          default: [
+            'public-instance-method',
+            'public-constructor',
+            'protected-static-field',
           ],
         },
       ],
@@ -1248,11 +4369,6 @@ const foo = class Foo {
       `,
       options: [
         {
-          default: [
-            'public-instance-method',
-            'public-constructor',
-            'protected-static-field',
-          ],
           classes: [
             'public-instance-method',
             'protected-constructor',
@@ -1262,6 +4378,11 @@ const foo = class Foo {
             'public-instance-field',
             'private-constructor',
             'protected-instance-method',
+          ],
+          default: [
+            'public-instance-method',
+            'public-constructor',
+            'protected-static-field',
           ],
         },
       ],
@@ -1487,8 +4608,8 @@ class Foo {
       `,
       options: [
         {
-          default: ['private-decorated-field', 'public-instance-field'],
           classes: ['public-instance-field', 'private-decorated-field'],
+          default: ['private-decorated-field', 'public-instance-field'],
         },
       ],
     },
@@ -1582,7 +4703,6 @@ class Foo {
       ],
     },
     {
-      name: 'with private identifier',
       code: `
 // no accessibility === public
 class Foo {
@@ -1590,6 +4710,7 @@ class Foo {
   #imPrivate() {}
 }
       `,
+      name: 'with private identifier',
       options: [
         {
           default: {
@@ -1600,7 +4721,6 @@ class Foo {
       ],
     },
     {
-      name: 'private and #private member order',
       code: `
 // no accessibility === public
 class Foo {
@@ -1608,6 +4728,7 @@ class Foo {
   #imPrivate() {}
 }
       `,
+      name: 'private and #private member order',
       options: [
         {
           default: {
@@ -1618,7 +4739,6 @@ class Foo {
       ],
     },
     {
-      name: '#private and private member order',
       code: `
 // no accessibility === public
 class Foo {
@@ -1626,6 +4746,7 @@ class Foo {
   private imPrivate() {}
 }
       `,
+      name: '#private and private member order',
       options: [
         {
           default: {
@@ -1636,7 +4757,6 @@ class Foo {
       ],
     },
     {
-      name: 'default member types with alphabetically-case-insensitive order',
       code: `
 // no accessibility === public
 class Foo {
@@ -1652,6 +4772,7 @@ class Foo {
   private ImPrivate() {}
 }
       `,
+      name: 'default member types with alphabetically-case-insensitive order',
       options: [
         {
           default: {
@@ -1712,8 +4833,8 @@ class Foo {
       `,
       options: [
         {
-          default: ['private-readonly-field', 'public-instance-field'],
           classes: ['public-instance-field', 'private-readonly-field'],
+          default: ['private-readonly-field', 'public-instance-field'],
         },
       ],
     },
@@ -2044,7 +5165,6 @@ class Foo {
       ],
     },
     {
-      name: 'default member types with alphabetically order',
       code: `
 // no accessibility === public
 class Foo {
@@ -2060,6 +5180,7 @@ class Foo {
   private imPrivate() {}
 }
       `,
+      name: 'default member types with alphabetically order',
       options: [
         {
           default: {
@@ -2069,7 +5190,6 @@ class Foo {
       ],
     },
     {
-      name: 'alphabetically order without member types',
       code: `
 // no accessibility === public
 interface Foo {
@@ -2081,6 +5201,7 @@ interface Foo {
   r();
 }
       `,
+      name: 'alphabetically order without member types',
       options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
     },
     {
@@ -2143,3125 +5264,6 @@ interface Foo {
       options: [
         {
           default: ['method', 'get'],
-        },
-      ],
-    },
-  ],
-  invalid: [
-    {
-      code: `
-// no accessibility === public
-interface Foo {
-  [Z: string]: any;
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface X {
-  a: unknown;
-  (): void;
-  b(): void;
-}
-      `,
-      options: [{ default: ['call-signature', 'field', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'call',
-            rank: 'field',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-interface Foo {
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-  [Z: string]: any;
-}
-      `,
-      options: [{ default: ['signature', 'method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 15,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'field',
-          },
-          line: 16,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'Z',
-            rank: 'field',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-interface Foo {
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-  [Z: string]: any;
-}
-      `,
-      options: [
-        { interfaces: ['method', 'signature', 'constructor', 'field'] },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 15,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'field',
-          },
-          line: 16,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'Z',
-            rank: 'field',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-interface Foo {
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-  [Z: string]: any;
-}
-      `,
-      options: [
-        {
-          default: ['field', 'method', 'constructor', 'signature'],
-          interfaces: ['method', 'signature', 'constructor', 'field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 15,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'field',
-          },
-          line: 16,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'Z',
-            rank: 'field',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-interface Foo {
-  [Z: string]: any;
-  new ();
-  A: string;
-  G();
-  B: string;
-  H();
-  C: string;
-  I();
-  D: string;
-  J();
-  E: string;
-  K();
-  F: string;
-  L();
-}
-      `,
-      options: [
-        {
-          interfaces: ['signature', 'constructor', 'field', 'method'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'method',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'method',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'method',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'E',
-            rank: 'method',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'method',
-          },
-          line: 16,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-type Foo = {
-  [Z: string]: any;
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-};
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'method',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-type Foo = {
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  [Z: string]: any;
-  new ();
-};
-      `,
-      options: [{ default: ['method', 'constructor', 'signature', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 15,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'Z',
-            rank: 'field',
-          },
-          line: 16,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'field',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-type Foo = {
-  [Z: string]: any;
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-};
-      `,
-      options: [
-        { typeLiterals: ['method', 'constructor', 'signature', 'field'] },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'signature',
-          },
-          line: 11,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'signature',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'signature',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'signature',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'signature',
-          },
-          line: 15,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'signature',
-          },
-          line: 16,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'signature',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-type Foo = {
-  A: string;
-  B: string;
-  C: string;
-  D: string;
-  E: string;
-  F: string;
-  G();
-  H();
-  I();
-  J();
-  K();
-  L();
-  new ();
-  [Z: string]: any;
-};
-      `,
-      options: [
-        {
-          default: ['field', 'method', 'constructor', 'signature'],
-          typeLiterals: ['signature', 'method', 'constructor', 'field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 15,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'new',
-            rank: 'field',
-          },
-          line: 16,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'Z',
-            rank: 'field',
-          },
-          line: 17,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-type Foo = {
-  new ();
-  [Z: string]: any;
-  A: string;
-  G();
-  B: string;
-  H();
-  C: string;
-  I();
-  D: string;
-  J();
-  E: string;
-  K();
-  F: string;
-  L();
-};
-      `,
-      options: [
-        {
-          typeLiterals: ['constructor', 'signature', 'field', 'method'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'method',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'method',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'method',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'E',
-            rank: 'method',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'method',
-          },
-          line: 16,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  [Z: string]: any;
-  public static A: string = '';
-  protected static B: string = '';
-  private static C: string = '';
-  static #C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  #F: string = '';
-  constructor() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  #L() {}
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-  static #I() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'public instance method',
-          },
-          line: 17,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'public instance method',
-          },
-          line: 18,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'public instance method',
-          },
-          line: 19,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'public instance method',
-          },
-          line: 20,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor() {}
-  public static A: string = '';
-  protected static B: string = '';
-  private static C: string = '';
-  static #C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  #F: string = '';
-  public J() {}
-  protected K() {}
-  private L() {}
-  #L() {}
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-  static #I() {}
-  [Z: string]: any;
-}
-      `,
-      options: [{ default: ['field', 'constructor', 'method', 'signature'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'constructor',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'constructor',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'constructor',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'constructor',
-          },
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'constructor',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'E',
-            rank: 'constructor',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'constructor',
-          },
-          line: 10,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'constructor',
-          },
-          line: 11,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  constructor() {}
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  public static G() {}
-  public static A: string;
-  protected static H() {}
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-}
-      `,
-      options: [{ default: ['field', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'method',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  protected static H() {}
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  public static A: string;
-  public static G() {}
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  constructor() {}
-}
-      `,
-      options: [{ default: ['method', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 9,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  public static G() {}
-  protected static H() {}
-  protected static B: string = '';
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  public static A: string;
-  constructor() {}
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-}
-      `,
-      options: [{ classes: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  public static A: string;
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  constructor() {}
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-}
-      `,
-      options: [
-        {
-          default: ['field', 'constructor', 'method'],
-          classes: ['method', 'constructor', 'field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private L() {}
-  public J() {}
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-  protected K() {}
-  constructor() {}
-  public D: string = '';
-  private static C: string = '';
-  public static A: string;
-  private static C: string = '';
-  protected static B: string = '';
-  private F: string = '';
-  protected static B: string = '';
-  protected E: string = '';
-}
-      `,
-      options: [
-        {
-          classes: [
-            'public-method',
-            'constructor',
-            'public-field',
-            'private-field',
-            'protected-field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'private field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'protected field',
-          },
-          line: 15,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  public static G() {}
-  private static I() {}
-  public J() {}
-  protected static H() {}
-  private L() {}
-  protected K() {}
-  public D: string = '';
-  constructor() {}
-  public static A: string;
-  protected static B: string = '';
-  protected E: string = '';
-  private static C: string = '';
-  private F: string = '';
-}
-      `,
-      options: [
-        {
-          classes: [
-            'public-static-method',
-            'static-method',
-            'public-instance-method',
-            'instance-method',
-            'constructor',
-            'public-field',
-            'protected-field',
-            'private-field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'public instance method',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'public field',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  public J() {}
-  public static G() {}
-  public D: string = '';
-  public static A: string = '';
-  private L() {}
-  constructor() {}
-  protected K() {}
-  protected static H() {}
-  private static I() {}
-  protected static B: string = '';
-  private static C: string = '';
-  protected E: string = '';
-  private F: string = '';
-}
-      `,
-      options: [
-        {
-          default: [
-            'public-method',
-            'public-field',
-            'constructor',
-            'method',
-            'field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'method',
-          },
-          line: 8,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  public J() {}
-  private static I() {}
-  public static G() {}
-  protected static H() {}
-  protected K() {}
-  private L() {}
-  constructor() {}
-  public static A: string;
-  private F: string = '';
-  protected static B: string = '';
-  public D: string = '';
-  private static C: string = '';
-  protected E: string = '';
-}
-      `,
-      options: [
-        {
-          classes: [
-            'public-method',
-            'protected-static-method',
-            'private-static-method',
-            'protected-instance-method',
-            'private-instance-method',
-            'constructor',
-            'field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'private static method',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'private static method',
-          },
-          line: 6,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private static I() {}
-  protected static H() {}
-  protected static B: string = '';
-  public static G() {}
-  public J() {}
-  protected K() {}
-  private static C: string = '';
-  private L() {}
-  private F: string = '';
-  protected E: string = '';
-  public static A: string;
-  public D: string = '';
-  constructor() {}
-}
-      `,
-      options: [
-        {
-          classes: ['private-instance-method', 'protected-static-field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'protected static field',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private L() {}
-  private static I() {}
-  protected static H() {}
-  public static G() {}
-  protected static B: string = '';
-  public J() {}
-  protected K() {}
-  private static C: string = '';
-  private F: string = '';
-  protected E: string = '';
-  public static A: string;
-  public D: string = '';
-  constructor() {}
-}
-      `,
-      options: [
-        {
-          default: ['public-instance-method', 'protected-static-field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'protected static field',
-          },
-          line: 8,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class Foo {
-  public static A: string = '';
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  constructor() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-};
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'public instance method',
-          },
-          line: 13,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'public instance method',
-          },
-          line: 14,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'public instance method',
-          },
-          line: 15,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  [Z: string]: any;
-  constructor() {}
-  public static A: string = '';
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  public J() {}
-  protected K() {}
-  private L() {}
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-};
-      `,
-      options: [{ default: ['signature', 'field', 'constructor', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'constructor',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'constructor',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'constructor',
-          },
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'constructor',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'E',
-            rank: 'constructor',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'constructor',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  constructor() {}
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  [Z: string]: any;
-  public static G() {}
-  public static A: string;
-  protected static H() {}
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-};
-      `,
-      options: [{ default: ['field', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'method',
-          },
-          line: 11,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  protected static H() {}
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  public static A: string;
-  public static G() {}
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-  constructor() {}
-};
-      `,
-      options: [{ default: ['method', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 9,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  public static G() {}
-  protected static H() {}
-  protected static B: string = '';
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  public static A: string;
-  constructor() {}
-  [Z: string]: any;
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-};
-      `,
-      options: [{ classExpressions: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'field',
-          },
-          line: 11,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  public static A: string;
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-  public J() {}
-  protected K() {}
-  private L() {}
-  constructor() {}
-  protected static B: string = '';
-  private static C: string = '';
-  public D: string = '';
-  protected E: string = '';
-  private F: string = '';
-};
-      `,
-      options: [
-        {
-          default: ['field', 'constructor', 'method'],
-          classExpressions: ['method', 'constructor', 'field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'field',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'field',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 7,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'field',
-          },
-          line: 8,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'field',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'field',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  private L() {}
-  public J() {}
-  public static G() {}
-  protected static H() {}
-  private static I() {}
-  protected K() {}
-  constructor() {}
-  public D: string = '';
-  private static C: string = '';
-  public static A: string;
-  private static C: string = '';
-  protected static B: string = '';
-  private F: string = '';
-  protected static B: string = '';
-  protected E: string = '';
-};
-      `,
-      options: [
-        {
-          classExpressions: [
-            'public-method',
-            'constructor',
-            'public-field',
-            'private-field',
-            'protected-field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'private field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'protected field',
-          },
-          line: 15,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  public static G() {}
-  private static I() {}
-  public J() {}
-  protected static H() {}
-  private L() {}
-  protected K() {}
-  public D: string = '';
-  constructor() {}
-  public static A: string;
-  protected static B: string = '';
-  protected E: string = '';
-  private static C: string = '';
-  private F: string = '';
-};
-      `,
-      options: [
-        {
-          classExpressions: [
-            'public-static-method',
-            'static-method',
-            'public-instance-method',
-            'instance-method',
-            'constructor',
-            'public-field',
-            'protected-field',
-            'private-field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'public instance method',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'public field',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  public J() {}
-  public static G() {}
-  public D: string = '';
-  public static A: string = '';
-  private L() {}
-  constructor() {}
-  protected K() {}
-  protected static H() {}
-  private static I() {}
-  protected static B: string = '';
-  private static C: string = '';
-  protected E: string = '';
-  private F: string = '';
-};
-      `,
-      options: [
-        {
-          default: [
-            'public-method',
-            'public-field',
-            'constructor',
-            'method',
-            'field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'method',
-          },
-          line: 8,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  public J() {}
-  private static I() {}
-  public static G() {}
-  protected static H() {}
-  protected K() {}
-  private L() {}
-  constructor() {}
-  public static A: string;
-  private F: string = '';
-  protected static B: string = '';
-  public D: string = '';
-  private static C: string = '';
-  protected E: string = '';
-};
-      `,
-      options: [
-        {
-          classExpressions: [
-            'public-method',
-            'protected-static-method',
-            'private-static-method',
-            'protected-instance-method',
-            'private-instance-method',
-            'constructor',
-            'field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'G',
-            rank: 'private static method',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'H',
-            rank: 'private static method',
-          },
-          line: 6,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  private static I() {}
-  protected static H() {}
-  protected static B: string = '';
-  public static G() {}
-  public J() {}
-  protected K() {}
-  private static C: string = '';
-  private L() {}
-  private F: string = '';
-  protected E: string = '';
-  public static A: string;
-  public D: string = '';
-  constructor() {}
-};
-      `,
-      options: [
-        {
-          classExpressions: [
-            'private-instance-method',
-            'protected-static-field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'L',
-            rank: 'protected static field',
-          },
-          line: 10,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-const foo = class {
-  private L() {}
-  private static I() {}
-  protected static H() {}
-  public static G() {}
-  protected static B: string = '';
-  public J() {}
-  protected K() {}
-  private static C: string = '';
-  private F: string = '';
-  protected E: string = '';
-  public static A: string;
-  public D: string = '';
-  constructor() {}
-};
-      `,
-      options: [
-        {
-          default: ['public-instance-method', 'protected-static-field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'protected static field',
-          },
-          line: 8,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  K = () => {};
-  A: string;
-  constructor() {}
-  [Z: string]: any;
-  J() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'public instance method',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'public instance method',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'Z',
-            rank: 'public instance method',
-          },
-          line: 6,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  J() {}
-  constructor() {}
-  K = () => {};
-  A: string;
-  [Z: string]: any;
-}
-      `,
-      options: [{ default: ['method', 'constructor', 'field', 'signature'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'constructor',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  J() {}
-  constructor() {}
-  K = () => {};
-  L: () => {};
-  A: string;
-}
-      `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'K',
-            rank: 'constructor',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  K: () => {};
-  J();
-  A: string;
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = {
-  K: () => {};
-  J();
-  A: string;
-};
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = {
-  A: string;
-  K: () => {};
-  J();
-};
-      `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-  abstract A(): void;
-  B: string;
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'public abstract method',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-  abstract A: () => {};
-  B: string;
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'public abstract field',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-  abstract A: () => {};
-  B: string;
-  public C() {}
-  private D() {}
-  abstract E() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'public abstract field',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  C: number;
-  [A: string]: number;
-  public static D(): {};
-  static [B: string]: number;
-}
-      `,
-      options: [
-        {
-          default: [
-            'field',
-            'method',
-            'public-static-method',
-            'private-static-method',
-            'signature',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'signature',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-  abstract B: string;
-  abstract A(): void;
-  public C(): {};
-}
-      `,
-      options: [{ default: ['method', 'constructor', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'field',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'field',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-class Foo {
-  B: string;
-  @Dec() A: string = '';
-  C: string = '';
-  constructor() {}
-  D() {}
-  E() {}
-}
-      `,
-      options: [{ default: ['decorated-field', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'field',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  A() {}
-
-  @Decorator()
-  B() {}
-}
-      `,
-      options: [{ default: ['decorated-method', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'method',
-          },
-          line: 5, // Symbol starts at the line with decorator
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  @Decorator() C() {}
-  A() {}
-}
-      `,
-      options: [{ default: ['public-method', 'decorated-method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'decorated method',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  A(): void;
-  B(): void;
-  private C() {}
-  constructor() {}
-  @Dec() private D() {}
-}
-      `,
-      options: [
-        {
-          classes: ['public-method', 'decorated-method', 'private-method'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'private method',
-          },
-          line: 7,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  A: string;
-  get B() {}
-  constructor() {}
-  set B() {}
-  get C() {}
-  set C() {}
-  D(): void;
-}
-      `,
-      options: [
-        {
-          default: ['field', 'constructor', ['get', 'set'], 'method'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'get, set',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  A: string;
-  private C(): void;
-  constructor() {}
-  @Dec() private B: string;
-  set D() {}
-  E(): void;
-}
-      `,
-      options: [
-        {
-          default: [
-            'public-field',
-            'constructor',
-            ['private-decorated-field', 'public-set', 'private-method'],
-            'public-method',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'private decorated field, public set, private method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  A: string;
-  constructor() {}
-  get B() {}
-  set B() {}
-  get C() {}
-  set C() {}
-  D(): void;
-}
-      `,
-      options: [
-        {
-          default: ['field', 'constructor', 'get', ['set'], 'method'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'set',
-          },
-          line: 7,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  static {}
-  m() {}
-  f = 1;
-}
-      `,
-      options: [{ default: ['method', 'field', 'static-initialization'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'm',
-            rank: 'static initialization',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'f',
-            rank: 'static initialization',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  m() {}
-  f = 1;
-  static {}
-}
-      `,
-      options: [{ default: ['static-initialization', 'method', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'static block',
-            rank: 'method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  f = 1;
-  static {}
-  m() {}
-}
-      `,
-      options: [{ default: ['static-initialization', 'field', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'static block',
-            rank: 'field',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  static {}
-  f = 1;
-  m() {}
-}
-      `,
-      options: [{ default: ['field', 'static-initialization', 'method'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'f',
-            rank: 'static initialization',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  private mp() {}
-  static {}
-  public m() {}
-  @dec
-  md() {}
-}
-      `,
-      options: [
-        { default: ['decorated-method', 'static-initialization', 'method'] },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'static block',
-            rank: 'method',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'md',
-            rank: 'method',
-          },
-          line: 6,
-          column: 3,
-        },
-      ],
-    },
-    {
-      name: 'with private identifier',
-      code: `
-// no accessibility === public
-class Foo {
-  #imPrivate() {}
-  imPublic() {}
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['public-method', '#private-method'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'imPublic',
-            rank: '#private method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      name: 'private and #private member order',
-      code: `
-// no accessibility === public
-class Foo {
-  #imPrivate() {}
-  private imPrivate() {}
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['private-method', '#private-method'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'imPrivate',
-            rank: '#private method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      name: 'default member types with alphabetically order',
-      code: `
-// no accessibility === public
-class Foo {
-  static C: boolean;
-  [B: string]: any;
-  private A() {}
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'public static field',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-      options: [
-        {
-          default: {
-            order: 'alphabetically',
-          },
-        },
-      ],
-    },
-    {
-      name: 'alphabetically order without member types',
-      code: `
-// no accessibility === public
-class Foo {
-  static C: boolean;
-  [B: string]: any;
-}
-      `,
-      errors: [
-        {
-          messageId: 'incorrectOrder',
-          data: {
-            member: 'B',
-            beforeMember: 'C',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-      options: [{ default: { memberTypes: 'never', order: 'alphabetically' } }],
-    },
-    {
-      name: '#private and private member order',
-      code: `
-// no accessibility === public
-class Foo {
-  private imPrivate() {}
-  #imPrivate() {}
-}
-      `,
-      options: [
-        {
-          default: {
-            memberTypes: ['#private-method', 'private-method'],
-            order: 'alphabetically-case-insensitive',
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'imPrivate',
-            rank: 'private method',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-// no accessibility === public
-class Foo {
-  B: string;
-  readonly A: string = '';
-  C: string = '';
-  constructor() {}
-  D() {}
-  E() {}
-}
-      `,
-      options: [{ default: ['readonly-field', 'field'] }],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'A',
-            rank: 'field',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  A: string;
-  private C(): void;
-  constructor() {}
-  private readonly B: string;
-  set D() {}
-  E(): void;
-}
-      `,
-      options: [
-        {
-          default: [
-            'private-readonly-field',
-            'public-field',
-            'constructor',
-            ['public-set', 'private-method'],
-            'public-method',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'constructor',
-            rank: 'public set, private method',
-          },
-          line: 5,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'public field',
-          },
-          line: 6,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-  @Dec public readonly A: string;
-  public readonly B: string;
-  public static readonly C: string;
-  static readonly #D: string;
-  readonly #E: string;
-
-  @Dec public F: string;
-  public G: string;
-  public static H: string;
-  static readonly #I: string;
-  readonly #J: string;
-}
-      `,
-      options: [
-        {
-          default: ['decorated-field', 'readonly-field', 'field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'F',
-            rank: 'readonly field',
-          },
-          line: 9,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'I',
-            rank: 'field',
-          },
-          line: 12,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'J',
-            rank: 'field',
-          },
-          line: 13,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-abstract class Foo {
-  @Dec public readonly DA: string;
-  @Dec protected readonly DB: string;
-  @Dec private readonly DC: string;
-
-  public static readonly SA: string;
-  protected static readonly SB: string;
-  private static readonly SC: string;
-  static readonly #SD: string;
-
-  public readonly IA: string;
-  protected readonly IB: string;
-  private readonly IC: string;
-  readonly #ID: string;
-
-  public abstract readonly AA: string;
-  protected abstract readonly AB: string;
-}
-      `,
-      options: [
-        {
-          default: [
-            'decorated-readonly-field',
-            'abstract-readonly-field',
-            'static-readonly-field',
-            'instance-readonly-field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'AA',
-            rank: 'static readonly field',
-          },
-          line: 17,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'AB',
-            rank: 'static readonly field',
-          },
-          line: 18,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  readonly A: string;
-  readonly B: string;
-
-  C: string;
-  D: string;
-}
-      `,
-      options: [
-        {
-          default: ['field', 'readonly-field'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'C',
-            rank: 'readonly field',
-          },
-          line: 6,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'D',
-            rank: 'readonly field',
-          },
-          line: 7,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  [i: number]: string;
-  readonly [i: string]: string;
-
-  A: string;
-  readonly B: string;
-}
-      `,
-      options: [
-        {
-          default: [
-            'readonly-signature',
-            'signature',
-            'readonly-field',
-            'field',
-          ],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'i',
-            rank: 'signature',
-          },
-          line: 4,
-          column: 3,
-        },
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'B',
-            rank: 'field',
-          },
-          line: 7,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-class Foo {
-  accessor bar;
-
-  baz() {}
-}
-      `,
-      options: [
-        {
-          default: ['method', 'accessor'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'baz',
-            rank: 'accessor',
-          },
-          line: 5,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  y(): void;
-  get x(): number;
-}
-      `,
-      options: [
-        {
-          default: ['get', 'method'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'x',
-            rank: 'method',
-          },
-          line: 4,
-          column: 3,
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  get x(): number;
-  y(): void;
-}
-      `,
-      options: [
-        {
-          default: ['method', 'get'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'incorrectGroupOrder',
-          data: {
-            name: 'y',
-            rank: 'get',
-          },
-          line: 4,
-          column: 3,
         },
       ],
     },

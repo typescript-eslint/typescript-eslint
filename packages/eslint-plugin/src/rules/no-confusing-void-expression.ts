@@ -1,9 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -33,55 +35,6 @@ export type MessageId =
   | 'voidExprWrapVoid';
 
 export default createRule<Options, MessageId>({
-  name: 'no-confusing-void-expression',
-  meta: {
-    docs: {
-      description:
-        'Require expressions of type void to appear in statement position',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      invalidVoidExpr:
-        'Placing a void expression inside another expression is forbidden. ' +
-        'Move it to its own statement instead.',
-      invalidVoidExprWrapVoid:
-        'Void expressions used inside another expression ' +
-        'must be moved to its own statement ' +
-        'or marked explicitly with the `void` operator.',
-      invalidVoidExprArrow:
-        'Returning a void expression from an arrow function shorthand is forbidden. ' +
-        'Please add braces to the arrow function.',
-      invalidVoidExprArrowWrapVoid:
-        'Void expressions returned from an arrow function shorthand ' +
-        'must be marked explicitly with the `void` operator.',
-      invalidVoidExprReturn:
-        'Returning a void expression from a function is forbidden. ' +
-        'Please move it before the `return` statement.',
-      invalidVoidExprReturnLast:
-        'Returning a void expression from a function is forbidden. ' +
-        'Please remove the `return` statement.',
-      invalidVoidExprReturnWrapVoid:
-        'Void expressions returned from a function ' +
-        'must be marked explicitly with the `void` operator.',
-      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          ignoreArrowShorthand: { type: 'boolean' },
-          ignoreVoidOperator: { type: 'boolean' },
-        },
-        additionalProperties: false,
-      },
-    ],
-    type: 'problem',
-    fixable: 'code',
-    hasSuggestions: true,
-  },
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
-
   create(context, [options]) {
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -115,17 +68,15 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
             return context.report({
-              node,
-              messageId: 'invalidVoidExprArrowWrapVoid',
               fix: wrapVoidFix,
+              messageId: 'invalidVoidExprArrowWrapVoid',
+              node,
             });
           }
 
           // handle wrapping with braces
           const arrowFunction = invalidAncestor;
           return context.report({
-            node,
-            messageId: 'invalidVoidExprArrow',
             fix(fixer) {
               if (!canFix(arrowFunction)) {
                 return null;
@@ -161,6 +112,8 @@ export default createRule<Options, MessageId>({
               }
               return fixer.replaceText(arrowBody, newArrowBodyText);
             },
+            messageId: 'invalidVoidExprArrow',
+            node,
           });
         }
 
@@ -170,17 +123,15 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
             return context.report({
-              node,
-              messageId: 'invalidVoidExprReturnWrapVoid',
               fix: wrapVoidFix,
+              messageId: 'invalidVoidExprReturnWrapVoid',
+              node,
             });
           }
 
           if (isFinalReturn(invalidAncestor)) {
             // remove the `return` keyword
             return context.report({
-              node,
-              messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
                 if (!canFix(invalidAncestor)) {
                   return null;
@@ -194,13 +145,13 @@ export default createRule<Options, MessageId>({
                 }
                 return fixer.replaceText(invalidAncestor, newReturnStmtText);
               },
+              messageId: 'invalidVoidExprReturnLast',
+              node,
             });
           }
 
           // move before the `return` keyword
           return context.report({
-            node,
-            messageId: 'invalidVoidExprReturn',
             fix(fixer) {
               const returnValue = invalidAncestor.argument;
               const returnValueText = context.sourceCode.getText(returnValue);
@@ -218,6 +169,8 @@ export default createRule<Options, MessageId>({
               }
               return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
+            messageId: 'invalidVoidExprReturn',
+            node,
           });
         }
 
@@ -225,15 +178,15 @@ export default createRule<Options, MessageId>({
         if (options.ignoreVoidOperator) {
           // this would be reported by this rule btw. such irony
           return context.report({
-            node,
             messageId: 'invalidVoidExprWrapVoid',
-            suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
+            node,
+            suggest: [{ fix: wrapVoidFix, messageId: 'voidExprWrapVoid' }],
           });
         }
 
         context.report({
-          node,
           messageId: 'invalidVoidExpr',
+          node,
         });
       },
     };
@@ -329,9 +282,9 @@ export default createRule<Options, MessageId>({
       );
       if (
         ![
+          AST_NODE_TYPES.ArrowFunctionExpression,
           AST_NODE_TYPES.FunctionDeclaration,
           AST_NODE_TYPES.FunctionExpression,
-          AST_NODE_TYPES.ArrowFunctionExpression,
         ].includes(blockParent.type)
       ) {
         // e.g. `if (cond) { return; }`
@@ -377,4 +330,53 @@ export default createRule<Options, MessageId>({
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
   },
+  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  meta: {
+    docs: {
+      description:
+        'Require expressions of type void to appear in statement position',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      invalidVoidExpr:
+        'Placing a void expression inside another expression is forbidden. ' +
+        'Move it to its own statement instead.',
+      invalidVoidExprArrow:
+        'Returning a void expression from an arrow function shorthand is forbidden. ' +
+        'Please add braces to the arrow function.',
+      invalidVoidExprArrowWrapVoid:
+        'Void expressions returned from an arrow function shorthand ' +
+        'must be marked explicitly with the `void` operator.',
+      invalidVoidExprReturn:
+        'Returning a void expression from a function is forbidden. ' +
+        'Please move it before the `return` statement.',
+      invalidVoidExprReturnLast:
+        'Returning a void expression from a function is forbidden. ' +
+        'Please remove the `return` statement.',
+      invalidVoidExprReturnWrapVoid:
+        'Void expressions returned from a function ' +
+        'must be marked explicitly with the `void` operator.',
+      invalidVoidExprWrapVoid:
+        'Void expressions used inside another expression ' +
+        'must be moved to its own statement ' +
+        'or marked explicitly with the `void` operator.',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreArrowShorthand: { type: 'boolean' },
+          ignoreVoidOperator: { type: 'boolean' },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+
+  name: 'no-confusing-void-expression',
 });

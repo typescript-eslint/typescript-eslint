@@ -1,10 +1,11 @@
-import { extname } from 'node:path';
-
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { extname } from 'node:path';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
+
 import { createRule } from '../util';
 
 type TypeParameterWithConstraint = MakeRequired<
@@ -13,23 +14,6 @@ type TypeParameterWithConstraint = MakeRequired<
 >;
 
 export default createRule({
-  name: 'no-unnecessary-type-constraint',
-  meta: {
-    docs: {
-      description: 'Disallow unnecessary constraints on generic types',
-      recommended: 'recommended',
-    },
-    hasSuggestions: true,
-    messages: {
-      unnecessaryConstraint:
-        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
-      removeUnnecessaryConstraint:
-        'Remove the unnecessary `{{constraint}}` constraint.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
   create(context) {
     // In theory, we could use the type checker for more advanced constraint types...
     // ...but in practice, these types are rare, and likely not worth requiring type info.
@@ -81,9 +65,10 @@ export default createRule({
             constraint,
             name: node.name.name,
           },
+          messageId: 'unnecessaryConstraint',
+          node,
           suggest: [
             {
-              messageId: 'removeUnnecessaryConstraint',
               data: {
                 constraint,
               },
@@ -93,10 +78,9 @@ export default createRule({
                   shouldAddTrailingComma() ? ',' : '',
                 );
               },
+              messageId: 'removeUnnecessaryConstraint',
             },
           ],
-          messageId: 'unnecessaryConstraint',
-          node,
         });
       }
     };
@@ -114,4 +98,21 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow unnecessary constraints on generic types',
+      recommended: 'recommended',
+    },
+    hasSuggestions: true,
+    messages: {
+      removeUnnecessaryConstraint:
+        'Remove the unnecessary `{{constraint}}` constraint.',
+      unnecessaryConstraint:
+        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-unnecessary-type-constraint',
 });

@@ -1,32 +1,15 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export const phrases = {
-  [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
   [AST_NODE_TYPES.TSInterfaceDeclaration]: 'Interface',
+  [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
 } as const;
 
 export default createRule({
-  name: 'prefer-function-type',
-  meta: {
-    docs: {
-      description:
-        'Enforce using function types instead of interfaces with call signatures',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      functionTypeOverCallableType:
-        '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
-      unexpectedThisOnFunctionOnlyInterface:
-        "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
   create(context) {
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
@@ -85,11 +68,11 @@ export default createRule({
           // the message can be confusing if we don't point directly to the `this` node instead of the whole member
           // and in favour of generating at most one error we'll only report the first occurrence of `this` if there are multiple
           context.report({
-            node: tsThisTypes[0],
-            messageId: 'unexpectedThisOnFunctionOnlyInterface',
             data: {
               interfaceName: node.id.name,
             },
+            messageId: 'unexpectedThisOnFunctionOnlyInterface',
+            node: tsThisTypes[0],
           });
           return;
         }
@@ -176,12 +159,12 @@ export default createRule({
             };
 
         context.report({
-          node: member,
-          messageId: 'functionTypeOverCallableType',
           data: {
             literalOrInterface: phrases[node.type],
           },
           fix,
+          messageId: 'functionTypeOverCallableType',
+          node: member,
         });
       }
     }
@@ -221,4 +204,22 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Enforce using function types instead of interfaces with call signatures',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      functionTypeOverCallableType:
+        '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
+      unexpectedThisOnFunctionOnlyInterface:
+        "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'prefer-function-type',
 });

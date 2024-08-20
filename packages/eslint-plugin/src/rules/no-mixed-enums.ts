@@ -1,6 +1,7 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -14,20 +15,6 @@ enum AllowedType {
 }
 
 export default createRule({
-  name: 'no-mixed-enums',
-  meta: {
-    docs: {
-      description: 'Disallow enums from having both number and string members',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      mixed: `Mixing number and string enums can be confusing.`,
-    },
-    schema: [],
-    type: 'problem',
-  },
-  defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
@@ -217,4 +204,18 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow enums from having both number and string members',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      mixed: `Mixing number and string enums can be confusing.`,
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-mixed-enums',
 });

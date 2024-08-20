@@ -5,6 +5,120 @@ import rule from '../../src/rules/no-dupe-class-members';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-dupe-class-members', rule, {
+  invalid: [
+    {
+      code: `
+class A {
+  foo() {}
+  foo() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+!class A {
+  foo() {}
+  foo() {}
+};
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: noFormat`
+class A {
+  'foo'() {}
+  'foo'() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  10() {}
+  1e1() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: '10' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo() {}
+  foo() {}
+  foo() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        { column: 3, data: { name: 'foo' }, line: 5, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  static foo() {}
+  static foo() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo() {}
+  get foo() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  set foo(value) {}
+  foo() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo;
+  foo = 42;
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+    {
+      code: `
+class A {
+  foo;
+  foo() {}
+}
+      `,
+      errors: [
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+      ],
+    },
+  ],
   valid: [
     `
 class A {
@@ -79,119 +193,5 @@ class A {
         foo(a: any): any {}
       }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-class A {
-  foo() {}
-  foo() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-!class A {
-  foo() {}
-  foo() {}
-};
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: noFormat`
-class A {
-  'foo'() {}
-  'foo'() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  10() {}
-  1e1() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: '10' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  foo() {}
-  foo() {}
-  foo() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-        { line: 5, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  static foo() {}
-  static foo() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  foo() {}
-  get foo() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  set foo(value) {}
-  foo() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  foo;
-  foo = 42;
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
-    {
-      code: `
-class A {
-  foo;
-  foo() {}
-}
-      `,
-      errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-      ],
-    },
   ],
 });

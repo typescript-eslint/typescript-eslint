@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -10,9 +11,9 @@ import {
   isTypeAssertion,
 } from '../util';
 
-type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
+type MemberExpressionWithCallExpressionParent = {
   parent: TSESTree.CallExpression;
-};
+} & TSESTree.MemberExpression;
 
 const getMemberExpressionName = (
   member: TSESTree.MemberExpression,
@@ -32,23 +33,6 @@ const getMemberExpressionName = (
 };
 
 export default createRule({
-  name: 'prefer-reduce-type-parameter',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Enforce using type parameter when calling `Array#reduce` instead of casting',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      preferTypeParameter:
-        'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
-    },
-    fixable: 'code',
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -86,8 +70,6 @@ export default createRule({
         // Check the owner type of the `reduce` method.
         if (isArrayType(calleeObjType)) {
           context.report({
-            messageId: 'preferTypeParameter',
-            node: secondArg,
             fix: fixer => {
               const fixes = [
                 fixer.removeRange([
@@ -111,6 +93,8 @@ export default createRule({
 
               return fixes;
             },
+            messageId: 'preferTypeParameter',
+            node: secondArg,
           });
 
           return;
@@ -118,4 +102,21 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Enforce using type parameter when calling `Array#reduce` instead of casting',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferTypeParameter:
+        'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'prefer-reduce-type-parameter',
 });

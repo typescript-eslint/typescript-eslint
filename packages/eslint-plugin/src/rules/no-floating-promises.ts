@@ -1,9 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getOperatorPrecedence,
@@ -17,8 +19,8 @@ import {
 
 type Options = [
   {
-    allowForKnownSafePromises?: TypeOrValueSpecifier[];
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
+    allowForKnownSafePromises?: TypeOrValueSpecifier[];
     checkThenables?: boolean;
     ignoreIIFE?: boolean;
     ignoreVoid?: boolean;
@@ -27,13 +29,13 @@ type Options = [
 
 type MessageId =
   | 'floating'
-  | 'floatingVoid'
-  | 'floatingUselessRejectionHandler'
-  | 'floatingUselessRejectionHandlerVoid'
   | 'floatingFixAwait'
   | 'floatingFixVoid'
   | 'floatingPromiseArray'
-  | 'floatingPromiseArrayVoid';
+  | 'floatingPromiseArrayVoid'
+  | 'floatingUselessRejectionHandler'
+  | 'floatingUselessRejectionHandlerVoid'
+  | 'floatingVoid';
 
 const messageBase =
   'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.';
@@ -53,61 +55,6 @@ const messagePromiseArrayVoid =
   ' or explicitly marking the expression as ignored with the `void` operator.';
 
 export default createRule<Options, MessageId>({
-  name: 'no-floating-promises',
-  meta: {
-    docs: {
-      description:
-        'Require Promise-like statements to be handled appropriately',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      floating: messageBase,
-      floatingFixAwait: 'Add await operator.',
-      floatingVoid: messageBaseVoid,
-      floatingFixVoid: 'Add void operator to ignore.',
-      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
-      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
-      floatingPromiseArray: messagePromiseArray,
-      floatingPromiseArrayVoid: messagePromiseArrayVoid,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
-          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
-          checkThenables: {
-            description:
-              'Whether to check all "Thenable"s, not just the built-in Promise type.',
-            type: 'boolean',
-          },
-          ignoreVoid: {
-            description: 'Whether to ignore `void` expressions.',
-            type: 'boolean',
-          },
-          ignoreIIFE: {
-            description:
-              'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    type: 'problem',
-  },
-  defaultOptions: [
-    {
-      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
-      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
-      checkThenables: false,
-      ignoreIIFE: false,
-      ignoreVoid: true,
-    },
-  ],
-
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -141,20 +88,19 @@ export default createRule<Options, MessageId>({
         if (isUnhandled) {
           if (promiseArray) {
             context.report({
-              node,
               messageId: options.ignoreVoid
                 ? 'floatingPromiseArrayVoid'
                 : 'floatingPromiseArray',
+              node,
             });
           } else if (options.ignoreVoid) {
             context.report({
-              node,
               messageId: nonFunctionHandler
                 ? 'floatingUselessRejectionHandlerVoid'
                 : 'floatingVoid',
+              node,
               suggest: [
                 {
-                  messageId: 'floatingFixVoid',
                   fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
                     const tsNode = services.esTreeNodeToTSNodeMap.get(
                       node.expression,
@@ -170,25 +116,26 @@ export default createRule<Options, MessageId>({
                       ),
                     ];
                   },
+                  messageId: 'floatingFixVoid',
                 },
                 {
-                  messageId: 'floatingFixAwait',
                   fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
                     addAwait(fixer, expression, node),
+                  messageId: 'floatingFixAwait',
                 },
               ],
             });
           } else {
             context.report({
-              node,
               messageId: nonFunctionHandler
                 ? 'floatingUselessRejectionHandler'
                 : 'floating',
+              node,
               suggest: [
                 {
-                  messageId: 'floatingFixAwait',
                   fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
                     addAwait(fixer, expression, node),
+                  messageId: 'floatingFixAwait',
                 },
               ],
             });
@@ -448,6 +395,61 @@ export default createRule<Options, MessageId>({
       return false;
     }
   },
+  defaultOptions: [
+    {
+      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      checkThenables: false,
+      ignoreIIFE: false,
+      ignoreVoid: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Require Promise-like statements to be handled appropriately',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      floating: messageBase,
+      floatingFixAwait: 'Add await operator.',
+      floatingFixVoid: 'Add void operator to ignore.',
+      floatingPromiseArray: messagePromiseArray,
+      floatingPromiseArrayVoid: messagePromiseArrayVoid,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
+      floatingVoid: messageBaseVoid,
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          checkThenables: {
+            description:
+              'Whether to check all "Thenable"s, not just the built-in Promise type.',
+            type: 'boolean',
+          },
+          ignoreIIFE: {
+            description:
+              'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
+            type: 'boolean',
+          },
+          ignoreVoid: {
+            description: 'Whether to ignore `void` expressions.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+
+  name: 'no-floating-promises',
 });
 
 function hasMatchingSignature(

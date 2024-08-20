@@ -5,6 +5,47 @@ import rule from '../../src/rules/max-params';
 const ruleTester = new RuleTester();
 
 ruleTester.run('max-params', rule, {
+  invalid: [
+    { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
+    {
+      code: 'const foo = function (a, b, c, d) {};',
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: 'const foo = (a, b, c, d) => {};',
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: 'const foo = a => {};',
+      errors: [{ messageId: 'exceed' }],
+      options: [{ max: 0 }],
+    },
+    {
+      code: `
+class Foo {
+  method(this: void, a, b, c, d) {}
+}
+      `,
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: `
+class Foo {
+  method(this: void, a) {}
+}
+      `,
+      errors: [{ messageId: 'exceed' }],
+      options: [{ countVoidThis: true, max: 1 }],
+    },
+    {
+      code: `
+class Foo {
+  method(this: Foo, a, b, c) {}
+}
+      `,
+      errors: [{ messageId: 'exceed' }],
+    },
+  ],
   valid: [
     'function foo() {}',
     'const foo = function () {};',
@@ -55,48 +96,7 @@ class Foo {
   method(this: void, a) {}
 }
       `,
-      options: [{ max: 2, countVoidThis: true }],
-    },
-  ],
-  invalid: [
-    { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
-    {
-      code: 'const foo = function (a, b, c, d) {};',
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: 'const foo = (a, b, c, d) => {};',
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: 'const foo = a => {};',
-      options: [{ max: 0 }],
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: `
-class Foo {
-  method(this: void, a, b, c, d) {}
-}
-      `,
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: `
-class Foo {
-  method(this: void, a) {}
-}
-      `,
-      options: [{ max: 1, countVoidThis: true }],
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: `
-class Foo {
-  method(this: Foo, a, b, c) {}
-}
-      `,
-      errors: [{ messageId: 'exceed' }],
+      options: [{ countVoidThis: true, max: 2 }],
     },
   ],
 });

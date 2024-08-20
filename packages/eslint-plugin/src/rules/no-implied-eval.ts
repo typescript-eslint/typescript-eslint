@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -20,23 +21,6 @@ const EVAL_LIKE_METHODS = new Set([
 ]);
 
 export default createRule({
-  name: 'no-implied-eval',
-  meta: {
-    docs: {
-      description: 'Disallow the use of `eval()`-like methods',
-      recommended: 'recommended',
-      extendsBaseRule: true,
-      requiresTypeChecking: true,
-    },
-    messages: {
-      noImpliedEvalError: 'Implied eval. Consider passing a function.',
-      noFunctionConstructor:
-        'Implied eval. Do not use the Function constructor to create functions.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -132,11 +116,11 @@ export default createRule({
           if (
             isBuiltinSymbolLike(services.program, type, 'FunctionConstructor')
           ) {
-            context.report({ node, messageId: 'noFunctionConstructor' });
+            context.report({ messageId: 'noFunctionConstructor', node });
             return;
           }
         } else {
-          context.report({ node, messageId: 'noFunctionConstructor' });
+          context.report({ messageId: 'noFunctionConstructor', node });
           return;
         }
       }
@@ -151,13 +135,30 @@ export default createRule({
         !isFunction(handler) &&
         isReferenceToGlobalFunction(calleeName, node, context.sourceCode)
       ) {
-        context.report({ node: handler, messageId: 'noImpliedEvalError' });
+        context.report({ messageId: 'noImpliedEvalError', node: handler });
       }
     }
 
     return {
-      NewExpression: checkImpliedEval,
       CallExpression: checkImpliedEval,
+      NewExpression: checkImpliedEval,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow the use of `eval()`-like methods',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      noFunctionConstructor:
+        'Implied eval. Do not use the Function constructor to create functions.',
+      noImpliedEvalError: 'Implied eval. Consider passing a function.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-implied-eval',
 });

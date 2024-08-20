@@ -1,11 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 interface Options {
-  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
   allowAsThisParameter?: boolean;
+  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
 }
 
 type MessageIds =
@@ -17,52 +18,7 @@ type MessageIds =
   | 'invalidVoidUnionConstituent';
 
 export default createRule<[Options], MessageIds>({
-  name: 'no-invalid-void-type',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow `void` type outside of generic or return types',
-      recommended: 'strict',
-    },
-    messages: {
-      invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type argument.',
-      invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type argument.',
-      invalidVoidNotReturn: 'void is only valid as a return type.',
-      invalidVoidNotReturnOrThisParam:
-        'void is only valid as return type or type of `this` parameter.',
-      invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type argument or the type of a `this` parameter.',
-      invalidVoidUnionConstituent:
-        'void is not valid as a constituent in a union type',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowInGenericTypeArguments: {
-            oneOf: [
-              { type: 'boolean' },
-              {
-                type: 'array',
-                items: { type: 'string' },
-                minItems: 1,
-              },
-            ],
-          },
-          allowAsThisParameter: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [
-    { allowInGenericTypeArguments: true, allowAsThisParameter: false },
-  ],
-  create(context, [{ allowInGenericTypeArguments, allowAsThisParameter }]) {
+  create(context, [{ allowAsThisParameter, allowInGenericTypeArguments }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
     ];
@@ -111,8 +67,8 @@ export default createRule<[Options], MessageIds>({
             .includes(fullyQualifiedName)
         ) {
           context.report({
-            messageId: 'invalidVoidForGeneric',
             data: { generic: fullyQualifiedName },
+            messageId: 'invalidVoidForGeneric',
             node,
           });
         }
@@ -226,6 +182,51 @@ export default createRule<[Options], MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow `void` type outside of generic or return types',
+      recommended: 'strict',
+    },
+    messages: {
+      invalidVoidForGeneric:
+        '{{ generic }} may not have void as a type argument.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
+      invalidVoidNotReturnOrGeneric:
+        'void is only valid as a return type or generic type argument.',
+      invalidVoidNotReturnOrThisParam:
+        'void is only valid as return type or type of `this` parameter.',
+      invalidVoidNotReturnOrThisParamOrGeneric:
+        'void is only valid as a return type or generic type argument or the type of a `this` parameter.',
+      invalidVoidUnionConstituent:
+        'void is not valid as a constituent in a union type',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowAsThisParameter: {
+            type: 'boolean',
+          },
+          allowInGenericTypeArguments: {
+            oneOf: [
+              { type: 'boolean' },
+              {
+                items: { type: 'string' },
+                minItems: 1,
+                type: 'array',
+              },
+            ],
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'no-invalid-void-type',
 });
 
 function getNotReturnOrGenericMessageId(

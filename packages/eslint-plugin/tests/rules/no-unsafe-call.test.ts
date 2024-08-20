@@ -14,37 +14,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-call', rule, {
-  valid: [
-    `
-function foo(x: () => void) {
-  x();
-}
-    `,
-    `
-function foo(x?: { a: () => void }) {
-  x?.a();
-}
-    `,
-    `
-function foo(x: { a?: () => void }) {
-  x.a?.();
-}
-    `,
-    'new Map();',
-    'String.raw`foo`;',
-    "const x = import('./foo');",
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
-    `
-      let foo: any = 23;
-      String(foo); // ERROR: Unsafe call of an any typed value
-    `,
-    // TS 3.9 changed this to be safe
-    `
-      function foo<T extends any>(x: T) {
-        x();
-      }
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -54,13 +23,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 4,
           data: {
             type: '`any`',
           },
+          endColumn: 4,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -72,13 +41,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 4,
           data: {
             type: '`any`',
           },
+          endColumn: 4,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -90,13 +59,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 18,
           data: {
             type: '`any`',
           },
+          endColumn: 18,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -108,13 +77,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 18,
           data: {
             type: '`any`',
           },
+          endColumn: 18,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -126,13 +95,13 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 6,
           data: {
             type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -144,13 +113,13 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 7,
           data: {
             type: '`any`',
           },
+          endColumn: 7,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -162,13 +131,13 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 6,
           data: {
             type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -221,16 +190,16 @@ const methods = {
       `,
       errors: [
         {
-          messageId: 'unsafeCallThis',
-          line: 4,
           column: 12,
           endColumn: 24,
+          line: 4,
+          messageId: 'unsafeCallThis',
         },
         {
-          messageId: 'unsafeCallThis',
-          line: 10,
           column: 12,
           endColumn: 16,
+          line: 10,
+          messageId: 'unsafeCallThis',
         },
       ],
     },
@@ -241,15 +210,46 @@ value();
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 1,
-          endColumn: 6,
           data: {
             type: '`error` type',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
+  ],
+  valid: [
+    `
+function foo(x: () => void) {
+  x();
+}
+    `,
+    `
+function foo(x?: { a: () => void }) {
+  x?.a();
+}
+    `,
+    `
+function foo(x: { a?: () => void }) {
+  x.a?.();
+}
+    `,
+    'new Map();',
+    'String.raw`foo`;',
+    "const x = import('./foo');",
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
+    `
+      let foo: any = 23;
+      String(foo); // ERROR: Unsafe call of an any typed value
+    `,
+    // TS 3.9 changed this to be safe
+    `
+      function foo<T extends any>(x: T) {
+        x();
+      }
+    `,
   ],
 });

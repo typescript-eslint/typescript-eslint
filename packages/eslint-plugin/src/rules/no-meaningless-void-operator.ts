@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -12,37 +13,6 @@ type Options = [
 ];
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
-  name: 'no-meaningless-void-operator',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Disallow the `void` operator except when used to discard a value',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      meaninglessVoidOperator:
-        "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
-      removeVoid: "Remove 'void'",
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          checkNever: {
-            type: 'boolean',
-            default: false,
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [{ checkNever: false }],
-
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -64,10 +34,10 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           )
         ) {
           context.report({
-            node,
-            messageId: 'meaninglessVoidOperator',
             data: { type: checker.typeToString(argType) },
             fix,
+            messageId: 'meaninglessVoidOperator',
+            node,
           });
         } else if (
           checkNever &&
@@ -78,13 +48,44 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           )
         ) {
           context.report({
-            node,
-            messageId: 'meaninglessVoidOperator',
             data: { type: checker.typeToString(argType) },
-            suggest: [{ messageId: 'removeVoid', fix }],
+            messageId: 'meaninglessVoidOperator',
+            node,
+            suggest: [{ fix, messageId: 'removeVoid' }],
           });
         }
       },
     };
   },
+  defaultOptions: [{ checkNever: false }],
+  meta: {
+    docs: {
+      description:
+        'Disallow the `void` operator except when used to discard a value',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      meaninglessVoidOperator:
+        "void operator shouldn't be used on {{type}}; it should convey that a return value is being ignored",
+      removeVoid: "Remove 'void'",
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          checkNever: {
+            default: false,
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+
+  name: 'no-meaningless-void-operator',
 });

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -11,23 +12,6 @@ import {
 } from '../util';
 
 export default createRule({
-  name: 'non-nullable-type-assertion-style',
-  meta: {
-    docs: {
-      description: 'Enforce non-null assertions over explicit type casts',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      preferNonNullAssertion:
-        'Use a ! assertion to more succinctly remove null and undefined from the type.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
-
   create(context) {
     const services = getParserServices(context);
 
@@ -144,4 +128,21 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Enforce non-null assertions over explicit type casts',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferNonNullAssertion:
+        'Use a ! assertion to more succinctly remove null and undefined from the type.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'non-nullable-type-assertion-style',
 });

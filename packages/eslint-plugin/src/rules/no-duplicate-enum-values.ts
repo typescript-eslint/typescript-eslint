@@ -1,23 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'no-duplicate-enum-values',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow duplicate enum member values',
-      recommended: 'recommended',
-    },
-    hasSuggestions: false,
-    messages: {
-      duplicateValue: 'Duplicate enum member value {{value}}.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     function isStringLiteral(
       node: TSESTree.Expression,
@@ -58,11 +45,11 @@ export default createRule({
 
           if (seenValues.has(value)) {
             context.report({
-              node: member,
-              messageId: 'duplicateValue',
               data: {
                 value,
               },
+              messageId: 'duplicateValue',
+              node: member,
             });
           } else {
             seenValues.add(value);
@@ -71,4 +58,18 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow duplicate enum member values',
+      recommended: 'recommended',
+    },
+    hasSuggestions: false,
+    messages: {
+      duplicateValue: 'Duplicate enum member value {{value}}.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-duplicate-enum-values',
 });

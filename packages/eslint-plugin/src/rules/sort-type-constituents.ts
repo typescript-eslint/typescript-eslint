@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getEnumNames, typeNodeRequiresParentheses } from '../util';
@@ -9,9 +10,9 @@ enum Group {
   import = 'import',
   intersection = 'intersection',
   keyword = 'keyword',
-  nullish = 'nullish',
   literal = 'literal',
   named = 'named',
+  nullish = 'nullish',
   object = 'object',
   operator = 'operator',
   tuple = 'tuple',
@@ -106,91 +107,22 @@ function caseSensitiveSort(a: string, b: string): number {
 
 export type Options = [
   {
+    caseSensitive?: boolean;
     checkIntersections?: boolean;
     checkUnions?: boolean;
-    caseSensitive?: boolean;
     groupOrder?: string[];
   },
 ];
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 
 export default createRule<Options, MessageIds>({
-  name: 'sort-type-constituents',
-  meta: {
-    deprecated: true,
-    replacedBy: [
-      'perfectionist/sort-intersection-types',
-      'perfectionist/sort-union-types',
-    ],
-    type: 'suggestion',
-    docs: {
-      description:
-        'Enforce constituents of a type union/intersection to be sorted alphabetically',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      notSorted: '{{type}} type constituents must be sorted.',
-      notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
-      suggestFix: 'Sort constituents of type (removes all comments).',
-    },
-    schema: [
-      {
-        type: 'object',
-        additionalProperties: false,
-        properties: {
-          checkIntersections: {
-            description: 'Whether to check intersection types.',
-            type: 'boolean',
-          },
-          checkUnions: {
-            description: 'Whether to check union types.',
-            type: 'boolean',
-          },
-          caseSensitive: {
-            description: 'Whether to sort using case sensitive sorting.',
-            type: 'boolean',
-          },
-          groupOrder: {
-            description: 'Ordering of the groups.',
-            type: 'array',
-            items: {
-              type: 'string',
-              enum: getEnumNames(Group),
-            },
-          },
-        },
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      checkIntersections: true,
-      checkUnions: true,
-      caseSensitive: false,
-      groupOrder: [
-        Group.named,
-        Group.keyword,
-        Group.operator,
-        Group.literal,
-        Group.function,
-        Group.import,
-        Group.conditional,
-        Group.object,
-        Group.tuple,
-        Group.intersection,
-        Group.union,
-        Group.nullish,
-      ],
-    },
-  ],
   create(
     context,
-    [{ checkIntersections, checkUnions, caseSensitive, groupOrder }],
+    [{ caseSensitive, checkIntersections, checkUnions, groupOrder }],
   ) {
     const collator = new Intl.Collator('en', {
-      sensitivity: 'base',
       numeric: true,
+      sensitivity: 'base',
     });
 
     function checkSorting(
@@ -257,17 +189,17 @@ export default createRule<Options, MessageIds>({
             return fixer.replaceText(node, sorted);
           };
           return context.report({
-            node,
-            messageId,
             data,
+            messageId,
+            node,
             // don't autofix if any of the types have leading/trailing comments
             // the logic for preserving them correctly is a pain - we may implement this later
             ...(hasComments
               ? {
                   suggest: [
                     {
-                      messageId: 'suggestFix',
                       fix,
+                      messageId: 'suggestFix',
                     },
                   ],
                 }
@@ -290,4 +222,73 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
+  defaultOptions: [
+    {
+      caseSensitive: false,
+      checkIntersections: true,
+      checkUnions: true,
+      groupOrder: [
+        Group.named,
+        Group.keyword,
+        Group.operator,
+        Group.literal,
+        Group.function,
+        Group.import,
+        Group.conditional,
+        Group.object,
+        Group.tuple,
+        Group.intersection,
+        Group.union,
+        Group.nullish,
+      ],
+    },
+  ],
+  meta: {
+    deprecated: true,
+    docs: {
+      description:
+        'Enforce constituents of a type union/intersection to be sorted alphabetically',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      notSorted: '{{type}} type constituents must be sorted.',
+      notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
+      suggestFix: 'Sort constituents of type (removes all comments).',
+    },
+    replacedBy: [
+      'perfectionist/sort-intersection-types',
+      'perfectionist/sort-union-types',
+    ],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          caseSensitive: {
+            description: 'Whether to sort using case sensitive sorting.',
+            type: 'boolean',
+          },
+          checkIntersections: {
+            description: 'Whether to check intersection types.',
+            type: 'boolean',
+          },
+          checkUnions: {
+            description: 'Whether to check union types.',
+            type: 'boolean',
+          },
+          groupOrder: {
+            description: 'Ordering of the groups.',
+            items: {
+              enum: getEnumNames(Group),
+              type: 'string',
+            },
+            type: 'array',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'sort-type-constituents',
 });

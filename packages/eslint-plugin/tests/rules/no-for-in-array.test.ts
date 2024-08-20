@@ -7,26 +7,13 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-for-in-array', rule, {
-  valid: [
-    `
-for (const x of [3, 4, 5]) {
-  console.log(x);
-}
-    `,
-    `
-for (const x in { a: 1, b: 2, c: 3 }) {
-  console.log(x);
-}
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -36,11 +23,11 @@ for (const x in [3, 4, 5]) {
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 2,
           column: 1,
-          endLine: 2,
           endColumn: 27,
+          endLine: 2,
+          line: 2,
+          messageId: 'forInViolation',
         },
       ],
     },
@@ -53,11 +40,11 @@ for (const x in z) {
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 3,
           column: 1,
-          endLine: 3,
           endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'forInViolation',
         },
       ],
     },
@@ -71,11 +58,11 @@ const fn = (arr: number[]) => {
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 3,
           column: 3,
-          endLine: 3,
           endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'forInViolation',
         },
       ],
     },
@@ -89,11 +76,11 @@ const fn = (arr: number[] | string[]) => {
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 3,
           column: 3,
-          endLine: 3,
           endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'forInViolation',
         },
       ],
     },
@@ -107,11 +94,11 @@ const fn = <T extends any[]>(arr: T) => {
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 3,
           column: 3,
-          endLine: 3,
           endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'forInViolation',
         },
       ],
     },
@@ -138,11 +125,11 @@ for (const x
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 2,
           column: 1,
-          endLine: 11,
           endColumn: 4,
+          endLine: 11,
+          line: 2,
+          messageId: 'forInViolation',
         },
       ],
     },
@@ -169,13 +156,26 @@ for (const x
       `,
       errors: [
         {
-          messageId: 'forInViolation',
-          line: 2,
           column: 1,
-          endLine: 11,
           endColumn: 4,
+          endLine: 11,
+          line: 2,
+          messageId: 'forInViolation',
         },
       ],
     },
+  ],
+
+  valid: [
+    `
+for (const x of [3, 4, 5]) {
+  console.log(x);
+}
+    `,
+    `
+for (const x in { a: 1, b: 2, c: 3 }) {
+  console.log(x);
+}
+    `,
   ],
 });

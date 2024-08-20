@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -12,23 +13,6 @@ import {
 } from '../util';
 
 export default createRule({
-  name: 'await-thenable',
-  meta: {
-    docs: {
-      description: 'Disallow awaiting a value that is not a Thenable',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
-      removeAwait: 'Remove unnecessary `await`.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  defaultOptions: [],
-
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -48,7 +32,6 @@ export default createRule({
             node,
             suggest: [
               {
-                messageId: 'removeAwait',
                 fix(fixer): TSESLint.RuleFix {
                   const awaitKeyword = nullThrows(
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
@@ -57,6 +40,7 @@ export default createRule({
 
                   return fixer.remove(awaitKeyword);
                 },
+                messageId: 'removeAwait',
               },
             ],
           });
@@ -64,4 +48,21 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow awaiting a value that is not a Thenable',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      removeAwait: 'Remove unnecessary `await`.',
+    },
+    schema: [],
+    type: 'problem',
+  },
+
+  name: 'await-thenable',
 });

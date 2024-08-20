@@ -7,13 +7,420 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-mixed-enums', rule, {
+  invalid: [
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana = 'banana',
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 28,
+          line: 4,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana = 'banana',
+          Cherry = 'cherry',
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 28,
+          line: 4,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+          Cherry = 'cherry',
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 28,
+          line: 5,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple = 0,
+          Banana = 'banana',
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 28,
+          line: 4,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        const getValue = () => 0;
+        enum Fruit {
+          Apple = getValue(),
+          Banana = 'banana',
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 28,
+          line: 5,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        const getValue = () => '';
+        enum Fruit {
+          Apple,
+          Banana = getValue(),
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 30,
+          line: 5,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        const getValue = () => '';
+        enum Fruit {
+          Apple = getValue(),
+          Banana = 0,
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 21,
+          line: 5,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum First {
+          A = 1,
+        }
+
+        enum Second {
+          A = First.A,
+          B = 'b',
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 8,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum First {
+          A = 'a',
+        }
+
+        enum Second {
+          A = First.A,
+          B = 1,
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 16,
+          line: 8,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A,
+        }
+        enum Foo {
+          B = 'b',
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A = 1,
+        }
+        enum Foo {
+          B = 'b',
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A = 'a',
+        }
+        enum Foo {
+          B,
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A = 'a',
+        }
+        enum Foo {
+          B = 0,
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 16,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A,
+        }
+        enum Foo {
+          B = 'b',
+        }
+        enum Foo {
+          C = 'c',
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 6,
+          messageId: 'mixed',
+        },
+        {
+          column: 15,
+          endColumn: 18,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A,
+        }
+        enum Foo {
+          B = 'b',
+        }
+        enum Foo {
+          C,
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+        enum Foo {
+          A,
+        }
+        enum Foo {
+          B,
+        }
+        enum Foo {
+          C = 'c',
+        }
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+import { Enum } from './mixed-enums-decl';
+
+declare module './mixed-enums-decl' {
+  enum Enum {
+    Numeric = 0,
+  }
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 16,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+}
+enum Foo {
+  B = 'B',
+}
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 10,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Test {
+  export enum Bar {
+    A,
+  }
+}
+namespace Test {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Outer {
+  export namespace Test {
+    export enum Bar {
+      A = 1,
+    }
+  }
+}
+namespace Outer {
+  export namespace Test {
+    export enum Bar {
+      B = 'B',
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 14,
+          line: 12,
+          messageId: 'mixed',
+        },
+      ],
+    },
+  ],
   valid: [
     `
       enum Fruit {}
@@ -253,412 +660,5 @@ namespace Different {
   }
 }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-        enum Fruit {
-          Apple,
-          Banana = 'banana',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 28,
-          column: 20,
-          line: 4,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Fruit {
-          Apple,
-          Banana = 'banana',
-          Cherry = 'cherry',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 28,
-          column: 20,
-          line: 4,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Fruit {
-          Apple,
-          Banana,
-          Cherry = 'cherry',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 28,
-          column: 20,
-          line: 5,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Fruit {
-          Apple = 0,
-          Banana = 'banana',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 28,
-          column: 20,
-          line: 4,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        const getValue = () => 0;
-        enum Fruit {
-          Apple = getValue(),
-          Banana = 'banana',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 28,
-          column: 20,
-          line: 5,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        const getValue = () => '';
-        enum Fruit {
-          Apple,
-          Banana = getValue(),
-        }
-      `,
-      errors: [
-        {
-          endColumn: 30,
-          column: 20,
-          line: 5,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        const getValue = () => '';
-        enum Fruit {
-          Apple = getValue(),
-          Banana = 0,
-        }
-      `,
-      errors: [
-        {
-          endColumn: 21,
-          column: 20,
-          line: 5,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum First {
-          A = 1,
-        }
-
-        enum Second {
-          A = First.A,
-          B = 'b',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 18,
-          column: 15,
-          line: 8,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum First {
-          A = 'a',
-        }
-
-        enum Second {
-          A = First.A,
-          B = 1,
-        }
-      `,
-      errors: [
-        {
-          endColumn: 16,
-          column: 15,
-          line: 8,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A,
-        }
-        enum Foo {
-          B = 'b',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 18,
-          column: 15,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A = 1,
-        }
-        enum Foo {
-          B = 'b',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 18,
-          column: 15,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A = 'a',
-        }
-        enum Foo {
-          B,
-        }
-      `,
-      errors: [
-        {
-          endColumn: 12,
-          column: 11,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A = 'a',
-        }
-        enum Foo {
-          B = 0,
-        }
-      `,
-      errors: [
-        {
-          endColumn: 16,
-          column: 15,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A,
-        }
-        enum Foo {
-          B = 'b',
-        }
-        enum Foo {
-          C = 'c',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 18,
-          column: 15,
-          line: 6,
-          messageId: 'mixed',
-        },
-        {
-          endColumn: 18,
-          column: 15,
-          line: 9,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A,
-        }
-        enum Foo {
-          B = 'b',
-        }
-        enum Foo {
-          C,
-        }
-      `,
-      errors: [
-        {
-          endColumn: 18,
-          column: 15,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-        enum Foo {
-          A,
-        }
-        enum Foo {
-          B,
-        }
-        enum Foo {
-          C = 'c',
-        }
-      `,
-      errors: [
-        {
-          endColumn: 18,
-          column: 15,
-          line: 9,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-import { Enum } from './mixed-enums-decl';
-
-declare module './mixed-enums-decl' {
-  enum Enum {
-    Numeric = 0,
-  }
-}
-      `,
-      errors: [
-        {
-          endColumn: 16,
-          column: 15,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-enum Foo {
-  A = 1,
-}
-enum Foo {
-  B = 'B',
-}
-      `,
-      errors: [
-        {
-          endColumn: 10,
-          column: 7,
-          line: 6,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Test {
-  export enum Bar {
-    A = 1,
-  }
-}
-namespace Test {
-  export enum Bar {
-    B = 'B',
-  }
-}
-      `,
-      errors: [
-        {
-          endColumn: 12,
-          column: 9,
-          line: 9,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Test {
-  export enum Bar {
-    A,
-  }
-}
-namespace Test {
-  export enum Bar {
-    B = 'B',
-  }
-}
-      `,
-      errors: [
-        {
-          endColumn: 12,
-          column: 9,
-          line: 9,
-          messageId: 'mixed',
-        },
-      ],
-    },
-    {
-      code: `
-namespace Outer {
-  export namespace Test {
-    export enum Bar {
-      A = 1,
-    }
-  }
-}
-namespace Outer {
-  export namespace Test {
-    export enum Bar {
-      B = 'B',
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          endColumn: 14,
-          column: 11,
-          line: 12,
-          messageId: 'mixed',
-        },
-      ],
-    },
   ],
 });

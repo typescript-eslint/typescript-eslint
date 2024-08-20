@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   JSONSchema4AnyOfSchema,
   JSONSchema4ArraySchema,
@@ -11,12 +10,15 @@ import type {
   RuleListener,
 } from 'eslint/lib/rules/no-restricted-imports';
 import type { Ignore } from 'ignore';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import ignore from 'ignore';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -40,58 +42,56 @@ const baseSchema = baseRule.meta.schema as {
   anyOf: [
     unknown,
     {
-      type: 'array';
       items: [
         {
-          type: 'object';
           properties: {
             paths: {
-              type: 'array';
               items: {
                 anyOf: [
                   { type: 'string' },
                   {
-                    type: 'object';
                     properties: JSONSchema4ObjectSchema['properties'];
                     required: string[];
+                    type: 'object';
                   },
                 ];
               };
+              type: 'array';
             };
             patterns: {
               anyOf: [
-                { type: 'array'; items: { type: 'string' } },
+                { items: { type: 'string' }; type: 'array' },
                 {
-                  type: 'array';
                   items: {
-                    type: 'object';
                     properties: JSONSchema4ObjectSchema['properties'];
                     required: string[];
+                    type: 'object';
                   };
+                  type: 'array';
                 },
               ];
             };
           };
+          type: 'object';
         },
       ];
+      type: 'array';
     },
   ];
 };
 
 const allowTypeImportsOptionSchema: JSONSchema4ObjectSchema['properties'] = {
   allowTypeImports: {
-    type: 'boolean',
     description: 'Disallow value imports, but allow type-only imports.',
+    type: 'boolean',
   },
 };
 
 const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
-  type: 'array',
   items: {
     anyOf: [
       { type: 'string' },
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ...tryAccess(
@@ -108,25 +108,25 @@ const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
               .required,
           undefined,
         ),
+        type: 'object',
       },
     ],
   },
+  type: 'array',
   uniqueItems: true,
 };
 
 const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
   anyOf: [
     {
-      type: 'array',
       items: {
         type: 'string',
       },
+      type: 'array',
       uniqueItems: true,
     },
     {
-      type: 'array',
       items: {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ...tryAccess(
@@ -143,7 +143,9 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
               .required,
           [],
         ),
+        type: 'object',
       },
+      type: 'array',
       uniqueItems: true,
     },
   ],
@@ -153,18 +155,18 @@ const schema: JSONSchema4AnyOfSchema = {
   anyOf: [
     arrayOfStringsOrObjects,
     {
-      type: 'array',
+      additionalItems: false,
       items: [
         {
-          type: 'object',
+          additionalProperties: false,
           properties: {
             paths: arrayOfStringsOrObjects,
             patterns: arrayOfStringsOrObjectPatterns,
           },
-          additionalProperties: false,
+          type: 'object',
         },
       ],
-      additionalItems: false,
+      type: 'array',
     },
   ],
 };
@@ -228,18 +230,6 @@ function shouldCreateRule(
 }
 
 export default createRule<Options, MessageIds>({
-  name: 'no-restricted-imports',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow specified modules when loaded by `import`',
-      extendsBaseRule: true,
-    },
-    messages: baseRule.meta.messages,
-    fixable: baseRule.meta.fixable,
-    schema,
-  },
-  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
     const { options } = context;
@@ -308,36 +298,11 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      TSImportEqualsDeclaration(
-        node: TSESTree.TSImportEqualsDeclaration,
-      ): void {
-        if (
-          node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference
-        ) {
-          const synthesizedImport: TSESTree.ImportDeclaration = {
-            ...node,
-            type: AST_NODE_TYPES.ImportDeclaration,
-            source: node.moduleReference.expression,
-            assertions: [],
-            attributes: [],
-            specifiers: [
-              {
-                ...node.id,
-                type: AST_NODE_TYPES.ImportDefaultSpecifier,
-                local: node.id,
-                // @ts-expect-error -- parent types are incompatible but it's fine for the purposes of this extension
-                parent: node.id.parent,
-              },
-            ],
-          };
-          return checkImportNode(synthesizedImport);
-        }
-      },
-      ImportDeclaration: checkImportNode,
+      ExportAllDeclaration: rules.ExportAllDeclaration,
       'ExportNamedDeclaration[source]'(
-        node: TSESTree.ExportNamedDeclaration & {
+        node: {
           source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
-        },
+        } & TSESTree.ExportNamedDeclaration,
       ): void {
         if (
           node.exportKind === 'type' ||
@@ -355,7 +320,44 @@ export default createRule<Options, MessageIds>({
           return rules.ExportNamedDeclaration(node);
         }
       },
-      ExportAllDeclaration: rules.ExportAllDeclaration,
+      ImportDeclaration: checkImportNode,
+      TSImportEqualsDeclaration(
+        node: TSESTree.TSImportEqualsDeclaration,
+      ): void {
+        if (
+          node.moduleReference.type === AST_NODE_TYPES.TSExternalModuleReference
+        ) {
+          const synthesizedImport: TSESTree.ImportDeclaration = {
+            ...node,
+            assertions: [],
+            attributes: [],
+            source: node.moduleReference.expression,
+            specifiers: [
+              {
+                ...node.id,
+                local: node.id,
+                type: AST_NODE_TYPES.ImportDefaultSpecifier,
+                // @ts-expect-error -- parent types are incompatible but it's fine for the purposes of this extension
+                parent: node.id.parent,
+              },
+            ],
+            type: AST_NODE_TYPES.ImportDeclaration,
+          };
+          return checkImportNode(synthesizedImport);
+        }
+      },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow specified modules when loaded by `import`',
+      extendsBaseRule: true,
+    },
+    fixable: baseRule.meta.fixable,
+    messages: baseRule.meta.messages,
+    schema,
+    type: 'suggestion',
+  },
+  name: 'no-restricted-imports',
 });

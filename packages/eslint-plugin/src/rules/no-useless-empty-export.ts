@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
@@ -24,21 +25,6 @@ const exportOrImportNodeTypes = new Set([
 ]);
 
 export default createRule({
-  name: 'no-useless-empty-export',
-  meta: {
-    docs: {
-      description:
-        "Disallow empty exports that don't change anything in a module file",
-    },
-    fixable: 'code',
-    hasSuggestions: false,
-    messages: {
-      uselessExport: 'Empty export does nothing and can be removed.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  defaultOptions: [],
   create(context) {
     // In a definition file, export {} is necessary to make the module properly
     // encapsulated, even when there are other exports
@@ -80,4 +66,19 @@ export default createRule({
       TSModuleDeclaration: checkNode,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        "Disallow empty exports that don't change anything in a module file",
+    },
+    fixable: 'code',
+    hasSuggestions: false,
+    messages: {
+      uselessExport: 'Empty export does nothing and can be removed.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-useless-empty-export',
 });

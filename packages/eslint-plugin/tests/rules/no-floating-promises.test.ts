@@ -8,848 +8,13 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-floating-promises', rule, {
-  valid: [
-    `
-async function test() {
-  await Promise.resolve('value');
-  Promise.resolve('value').then(
-    () => {},
-    () => {},
-  );
-  Promise.resolve('value')
-    .then(() => {})
-    .catch(() => {});
-  Promise.resolve('value')
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  Promise.resolve('value').catch(() => {});
-  return Promise.resolve('value');
-}
-    `,
-    {
-      options: [{ ignoreVoid: true }],
-      code: `
-async function test() {
-  void Promise.resolve('value');
-}
-      `,
-    },
-    `
-async function test() {
-  await Promise.reject(new Error('message'));
-  Promise.reject(new Error('message')).then(
-    () => {},
-    () => {},
-  );
-  Promise.reject(new Error('message'))
-    .then(() => {})
-    .catch(() => {});
-  Promise.reject(new Error('message'))
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  Promise.reject(new Error('message')).catch(() => {});
-  return Promise.reject(new Error('message'));
-}
-    `,
-    `
-async function test() {
-  await (async () => true)();
-  (async () => true)().then(
-    () => {},
-    () => {},
-  );
-  (async () => true)()
-    .then(() => {})
-    .catch(() => {});
-  (async () => true)()
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  (async () => true)().catch(() => {});
-  return (async () => true)();
-}
-    `,
-    `
-async function test() {
-  async function returnsPromise() {}
-  await returnsPromise();
-  returnsPromise().then(
-    () => {},
-    () => {},
-  );
-  returnsPromise()
-    .then(() => {})
-    .catch(() => {});
-  returnsPromise()
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  returnsPromise().catch(() => {});
-  return returnsPromise();
-}
-    `,
-    `
-async function test() {
-  const x = Promise.resolve();
-  const y = x.then(() => {});
-  y.catch(() => {});
-}
-    `,
-    `
-async function test() {
-  Math.random() > 0.5 ? Promise.resolve().catch(() => {}) : null;
-}
-    `,
-    `
-async function test() {
-  Promise.resolve().catch(() => {}), 123;
-  123,
-    Promise.resolve().then(
-      () => {},
-      () => {},
-    );
-  123,
-    Promise.resolve().then(
-      () => {},
-      () => {},
-    ),
-    123;
-}
-    `,
-    `
-async function test() {
-  void Promise.resolve().catch(() => {});
-}
-    `,
-    `
-async function test() {
-  Promise.resolve().catch(() => {}) ||
-    Promise.resolve().then(
-      () => {},
-      () => {},
-    );
-}
-    `,
-    `
-declare const promiseValue: Promise<number>;
-async function test() {
-  await promiseValue;
-  promiseValue.then(
-    () => {},
-    () => {},
-  );
-  promiseValue.then(() => {}).catch(() => {});
-  promiseValue
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  promiseValue.catch(() => {});
-  return promiseValue;
-}
-    `,
-    `
-declare const promiseUnion: Promise<number> | number;
-async function test() {
-  await promiseUnion;
-  promiseUnion.then(
-    () => {},
-    () => {},
-  );
-  promiseUnion.then(() => {}).catch(() => {});
-  promiseUnion
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  promiseUnion.catch(() => {});
-  promiseValue.finally(() => {});
-  return promiseUnion;
-}
-    `,
-    `
-declare const promiseIntersection: Promise<number> & number;
-async function test() {
-  await promiseIntersection;
-  promiseIntersection.then(
-    () => {},
-    () => {},
-  );
-  promiseIntersection.then(() => {}).catch(() => {});
-  promiseIntersection.catch(() => {});
-  return promiseIntersection;
-}
-    `,
-    `
-async function test() {
-  class CanThen extends Promise<number> {}
-  const canThen: CanThen = Foo.resolve(2);
-
-  await canThen;
-  canThen.then(
-    () => {},
-    () => {},
-  );
-  canThen.then(() => {}).catch(() => {});
-  canThen
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  canThen.catch(() => {});
-  return canThen;
-}
-    `,
-    `
-declare const intersectionPromise: Promise<number> & number;
-async function test() {
-  await (Math.random() > 0.5 ? numberPromise : 0);
-  await (Math.random() > 0.5 ? foo : 0);
-  await (Math.random() > 0.5 ? bar : 0);
-
-  await intersectionPromise;
-}
-    `,
-    `
-async function test() {
-  class Thenable {
-    then(callback: () => void): Thenable {
-      return new Thenable();
-    }
-  }
-  const thenable = new Thenable();
-
-  await thenable;
-  thenable;
-  thenable.then(() => {});
-  return thenable;
-}
-    `,
-    `
-async function test() {
-  class NonFunctionParamThenable {
-    then(param: string, param2: number): NonFunctionParamThenable {
-      return new NonFunctionParamThenable();
-    }
-  }
-  const thenable = new NonFunctionParamThenable();
-
-  await thenable;
-  thenable;
-  thenable.then('abc', 'def');
-  return thenable;
-}
-    `,
-    `
-async function test() {
-  class NonFunctionThenable {
-    then: number;
-  }
-  const thenable = new NonFunctionThenable();
-
-  thenable;
-  thenable.then;
-  return thenable;
-}
-    `,
-    `
-async function test() {
-  class CatchableThenable {
-    then(callback: () => void, callback: () => void): CatchableThenable {
-      return new CatchableThenable();
-    }
-  }
-  const thenable = new CatchableThenable();
-
-  await thenable;
-  return thenable;
-}
-    `,
-    `
-// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/promise-polyfill/index.d.ts
-// Type definitions for promise-polyfill 6.0
-// Project: https://github.com/taylorhakes/promise-polyfill
-// Definitions by: Steve Jenkins <https://github.com/skysteve>
-//                 Daniel Cassidy <https://github.com/djcsdy>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
-
-interface PromisePolyfillConstructor extends PromiseConstructor {
-  _immediateFn?: (handler: (() => void) | string) => void;
-}
-
-declare const PromisePolyfill: PromisePolyfillConstructor;
-
-async function test() {
-  const promise = new PromisePolyfill(() => {});
-
-  await promise;
-  promise.then(
-    () => {},
-    () => {},
-  );
-  promise.then(() => {}).catch(() => {});
-  promise
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
-  promise.catch(() => {});
-  return promise;
-}
-    `,
-
-    // optional chaining
-    `
-declare const returnsPromise: () => Promise<void> | null;
-async function test() {
-  await returnsPromise?.();
-  returnsPromise()?.then(
-    () => {},
-    () => {},
-  );
-  returnsPromise()
-    ?.then(() => {})
-    ?.catch(() => {});
-  returnsPromise()?.catch(() => {});
-  return returnsPromise();
-}
-    `,
-    `
-const doSomething = async (
-  obj1: { a?: { b?: { c?: () => Promise<void> } } },
-  obj2: { a?: { b?: { c: () => Promise<void> } } },
-  obj3: { a?: { b: { c?: () => Promise<void> } } },
-  obj4: { a: { b: { c?: () => Promise<void> } } },
-  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
-  obj6?: { a: { b: { c?: () => Promise<void> } } },
-  callback?: () => Promise<void>,
-): Promise<void> => {
-  await obj1.a?.b?.c?.();
-  await obj2.a?.b?.c();
-  await obj3.a?.b.c?.();
-  await obj4.a.b.c?.();
-  await obj5.a?.().b?.c?.();
-  await obj6?.a.b.c?.();
-
-  return callback?.();
-};
-
-void doSomething();
-    `,
-    // ignoreIIFE
-    {
-      code: `
-        (async () => {
-          await something();
-        })();
-      `,
-      options: [{ ignoreIIFE: true }],
-    },
-    {
-      code: `
-        (async () => {
-          something();
-        })();
-      `,
-      options: [{ ignoreIIFE: true }],
-    },
-    {
-      code: '(async function foo() {})();',
-      options: [{ ignoreIIFE: true }],
-    },
-    {
-      code: `
-        function foo() {
-          (async function bar() {})();
-        }
-      `,
-      options: [{ ignoreIIFE: true }],
-    },
-    {
-      code: `
-        const foo = () =>
-          new Promise(res => {
-            (async function () {
-              await res(1);
-            })();
-          });
-      `,
-      options: [{ ignoreIIFE: true }],
-    },
-    {
-      code: `
-        (async function () {
-          await res(1);
-        })();
-      `,
-      options: [{ ignoreIIFE: true }],
-    },
-    {
-      code: `
-async function foo() {
-  const myPromise = async () => void 0;
-  const condition = true;
-  void (condition && myPromise());
-}
-      `,
-    },
-    {
-      code: `
-async function foo() {
-  const myPromise = async () => void 0;
-  const condition = true;
-  await (condition && myPromise());
-}
-      `,
-      options: [{ ignoreVoid: false }],
-    },
-    {
-      code: `
-async function foo() {
-  const myPromise = async () => void 0;
-  const condition = true;
-  condition && void myPromise();
-}
-      `,
-    },
-    {
-      code: `
-async function foo() {
-  const myPromise = async () => void 0;
-  const condition = true;
-  condition && (await myPromise());
-}
-      `,
-      options: [{ ignoreVoid: false }],
-    },
-    {
-      code: `
-async function foo() {
-  const myPromise = async () => void 0;
-  let condition = false;
-  condition && myPromise();
-  condition = true;
-  condition || myPromise();
-  condition ?? myPromise();
-}
-      `,
-      options: [{ ignoreVoid: false }],
-    },
-    {
-      code: `
-declare const definitelyCallable: () => void;
-Promise.reject().catch(definitelyCallable);
-      `,
-      options: [{ ignoreVoid: false }],
-    },
-    {
-      code: `
-Promise.reject()
-  .catch(() => {})
-  .finally(() => {});
-      `,
-    },
-    {
-      code: `
-Promise.reject()
-  .catch(() => {})
-  .finally(() => {})
-  .finally(() => {});
-      `,
-      options: [{ ignoreVoid: false }],
-    },
-    {
-      code: `
-Promise.reject()
-  .catch(() => {})
-  .finally(() => {})
-  .finally(() => {})
-  .finally(() => {});
-      `,
-    },
-    {
-      code: `
-await Promise.all([Promise.resolve(), Promise.resolve()]);
-      `,
-    },
-    {
-      code: `
-declare const promiseArray: Array<Promise<unknown>>;
-void promiseArray;
-      `,
-    },
-    {
-      // Expressions aren't checked by this rule, so this just becomes an array
-      // of number | undefined, which is fine regardless of the ignoreVoid setting.
-      code: `
-[1, 2, void Promise.reject(), 3];
-      `,
-      options: [{ ignoreVoid: false }],
-    },
-    {
-      code: `
-['I', 'am', 'just', 'an', 'array'];
-      `,
-    },
-    {
-      code: `
-interface SafeThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
-  ): SafeThenable<TResult1 | TResult2>;
-}
-let promise: SafeThenable<number> = Promise.resolve(5);
-0, promise;
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-interface SafeThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
-  ): SafeThenable<TResult1 | TResult2>;
-}
-let promise: SafeThenable<number> = Promise.resolve(5);
-0 ? promise : 3;
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-class SafePromise<T> extends Promise<T> {}
-let promise: { a: SafePromise<number> } = { a: Promise.resolve(5) };
-promise.a;
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
-    },
-    {
-      code: `
-class SafePromise<T> extends Promise<T> {}
-let promise: SafePromise<number> = Promise.resolve(5);
-promise;
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let promise: Foo = Promise.resolve(5);
-0 || promise;
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let promise: Foo = Promise.resolve(5);
-promise.finally();
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-interface SafeThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
-  ): SafeThenable<TResult1 | TResult2>;
-}
-let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-0, promise();
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-interface SafeThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
-  ): SafeThenable<TResult1 | TResult2>;
-}
-let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-0 ? promise() : 3;
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let promise: () => Foo = () => Promise.resolve(5);
-promise();
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo = Promise<number> & { hey?: string };
-let promise: () => Foo = async () => 5;
-promise().finally();
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-class SafePromise<T> extends Promise<T> {}
-let promise: () => SafePromise<number> = async () => 5;
-0 || promise();
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
-    },
-    {
-      code: `
-class SafePromise<T> extends Promise<T> {}
-let promise: () => SafePromise<number> = async () => 5;
-null ?? promise();
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
-    },
-    {
-      code: `
-let promise: () => PromiseLike<number> = () => Promise.resolve(5);
-promise();
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
-      ],
-    },
-    {
-      code: `
-type Foo<T> = Promise<T> & { hey?: string };
-declare const arrayOrPromiseTuple: Foo<unknown>[];
-arrayOrPromiseTuple;
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type Foo<T> = Promise<T> & { hey?: string };
-declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
-arrayOrPromiseTuple;
-      `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
-    },
-    {
-      code: `
-type SafePromise = Promise<number> & { __linterBrands?: string };
-declare const myTag: (strings: TemplateStringsArray) => SafePromise;
-myTag\`abc\`;
-      `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
-    },
-    {
-      code: `
-        declare function it(...args: unknown[]): Promise<void>;
-
-        it('...', () => {});
-      `,
-      options: [
-        {
-          allowForKnownSafeCalls: [
-            {
-              from: 'file',
-              name: 'it',
-              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
-              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
-                ? 'file.ts'
-                : 'tests/fixtures/file.ts',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
-myTag\`abc\`.catch(() => {});
-      `,
-    },
-    {
-      code: `
-declare const myTag: (strings: TemplateStringsArray) => string;
-myTag\`abc\`;
-      `,
-    },
-    {
-      code: `
-declare let x: any;
-declare const promiseArray: Array<Promise<unknown>>;
-x = promiseArray;
-      `,
-    },
-    {
-      code: `
-declare let x: Promise<number>;
-x = Promise.resolve(2);
-      `,
-    },
-    {
-      code: `
-declare const promiseArray: Array<Promise<unknown>>;
-async function f() {
-  return promiseArray;
-}
-      `,
-    },
-    {
-      code: `
-declare const promiseArray: Array<Promise<unknown>>;
-async function* generator() {
-  yield* promiseArray;
-}
-      `,
-    },
-    {
-      code: `
-async function* generator() {
-  yield Promise.resolve();
-}
-      `,
-    },
-    {
-      code: `
-interface SafeThenable<T> {
-  then<TResult1 = T, TResult2 = never>(
-    onfulfilled?:
-      | ((value: T) => TResult1 | SafeThenable<TResult1>)
-      | undefined
-      | null,
-    onrejected?:
-      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
-      | undefined
-      | null,
-  ): SafeThenable<TResult1 | TResult2>;
-}
-let promise: () => SafeThenable<number> = () => Promise.resolve(5);
-promise().then(() => {});
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-        },
-      ],
-    },
-
-    {
-      code: `
-        declare module 'abc' {
-          export function it(name: string, action: () => void): void;
-        }
-        it('...', () => {});
-      `,
-      options: [
-        {
-          allowForKnownSafeCalls: [
-            { from: 'package', name: 'it', package: 'abc' },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-        declare module 'abc' {
-          export function it(name: string, action: () => void): void;
-        }
-
-        it('...', () => {});
-      `,
-      options: [
-        {
-          allowForKnownSafeCalls: [
-            { from: 'package', name: 'it', package: 'abc' },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-interface SafePromise<T> extends Promise<T> {
-  brand: 'safe';
-}
-
-declare const createSafePromise: () => SafePromise<string>;
-createSafePromise();
-      `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }],
-          checkThenables: true,
-        },
-      ],
-    },
-    `
-declare const createPromiseLike: () => PromiseLike<number>;
-createPromiseLike();
-    `,
-    `
-interface MyThenable {
-  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
-}
-
-declare function createMyThenable(): MyThenable;
-
-createMyThenable();
-    `,
-  ],
-
   invalid: [
     {
       code: `
@@ -1535,7 +700,6 @@ await myTag\`abc\`.finally(() => {});
     },
 
     {
-      options: [{ ignoreVoid: true }],
       code: `
 async function test() {
   Promise.resolve('value');
@@ -1565,6 +729,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreVoid: true }],
     },
     {
       code: `
@@ -2074,7 +1239,6 @@ async function test() {
   void Promise.resolve();
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 3,
@@ -2091,6 +1255,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2099,7 +1264,6 @@ async function test() {
   promise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 4,
@@ -2117,6 +1281,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2125,7 +1290,6 @@ async function returnsPromise() {
 }
 void returnsPromise();
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2143,6 +1307,7 @@ await returnsPromise();
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
@@ -2152,7 +1317,6 @@ async function returnsPromise() {
 }
 void /* ... */ returnsPromise();
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2170,6 +1334,7 @@ await /* ... */ returnsPromise();
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2178,7 +1343,6 @@ async function returnsPromise() {
 }
 1, returnsPromise();
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2196,6 +1360,7 @@ await (1, returnsPromise());
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2204,7 +1369,6 @@ async function returnsPromise() {
 }
 bool ? returnsPromise() : null;
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2222,6 +1386,7 @@ await (bool ? returnsPromise() : null);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3198,7 +2363,6 @@ async function test() {
           Promise.resolve();
         })();
       `,
-      options: [{ ignoreIIFE: true }],
       errors: [
         {
           line: 3,
@@ -3223,6 +2387,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreIIFE: true }],
     },
     {
       code: `
@@ -3234,7 +2399,6 @@ declare const promiseIntersection: Promise<number> & number;
   promiseIntersection.finally();
 })();
       `,
-      options: [{ ignoreIIFE: true }],
       errors: [
         {
           line: 4,
@@ -3357,6 +2521,7 @@ declare const promiseIntersection: Promise<number> & number;
           ],
         },
       ],
+      options: [{ ignoreIIFE: true }],
     },
     {
       code: `
@@ -3407,7 +2572,6 @@ async function foo() {
   (await condition) && myPromise();
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 6,
@@ -3427,6 +2591,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3556,7 +2721,6 @@ async function foo() {
   condition && myPromise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -3575,6 +2739,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3584,7 +2749,6 @@ async function foo() {
   condition || myPromise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -3603,6 +2767,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3612,7 +2777,6 @@ async function foo() {
   condition ?? myPromise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -3631,6 +2795,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4056,7 +3221,6 @@ await (Promise.reject() || 3);
       code: `
 void Promise.resolve().then(() => {}, undefined);
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 2,
@@ -4071,13 +3235,13 @@ await Promise.resolve().then(() => {}, undefined);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
 declare const maybeCallable: string | (() => void);
 Promise.resolve().then(() => {}, maybeCallable);
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 3,
@@ -4093,6 +3257,7 @@ await Promise.resolve().then(() => {}, maybeCallable);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4110,7 +3275,6 @@ Promise.resolve().catch(3);
 Promise.resolve().catch(maybeCallable);
 Promise.resolve().catch(definitelyCallable);
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 4,
@@ -4305,12 +3469,12 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
 Promise.reject() || 3;
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 2,
@@ -4325,6 +3489,7 @@ await (Promise.reject() || 3);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4357,7 +3522,6 @@ Promise.reject()
   .finally(() => {})
   .finally(() => {});
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 2,
@@ -4374,6 +3538,7 @@ await Promise.reject()
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4626,8 +3791,8 @@ array.map(() => Promise.reject());
 declare const promiseArray: Array<Promise<unknown>>;
 void promiseArray;
       `,
-      options: [{ ignoreVoid: false }],
       errors: [{ line: 3, messageId: 'floatingPromiseArray' }],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4636,8 +3801,8 @@ async function f() {
   await promiseArray;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [{ line: 4, messageId: 'floatingPromiseArray' }],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4751,12 +3916,6 @@ interface UnsafeThenable<T> {
 let promise: UnsafeThenable<number> = Promise.resolve(5);
 promise;
       `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-          checkThenables: true,
-        },
-      ],
       errors: [
         {
           line: 15,
@@ -4803,6 +3962,12 @@ await promise;
           ],
         },
       ],
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+          checkThenables: true,
+        },
+      ],
     },
     {
       code: `
@@ -4810,9 +3975,6 @@ class SafePromise<T> extends Promise<T> {}
 let promise: SafePromise<number> = Promise.resolve(5);
 promise.catch();
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4837,6 +3999,9 @@ await promise.catch();
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4844,9 +4009,6 @@ class UnsafePromise<T> extends Promise<T> {}
 let promise: () => UnsafePromise<number> = async () => 5;
 promise().finally();
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4871,6 +4033,9 @@ await promise().finally();
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4878,9 +4043,6 @@ type UnsafePromise = Promise<number> & { hey?: string };
 let promise: UnsafePromise = Promise.resolve(5);
 0 ? promise.catch() : 2;
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4905,6 +4067,9 @@ await (0 ? promise.catch() : 2);
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4912,9 +4077,6 @@ type UnsafePromise = Promise<number> & { hey?: string };
 let promise: () => UnsafePromise = async () => 5;
 null ?? promise().catch();
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4939,6 +4101,9 @@ await (null ?? promise().catch());
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4946,8 +4111,8 @@ type Foo<T> = Promise<T> & { hey?: string };
 declare const arrayOrPromiseTuple: Foo<unknown>[];
 arrayOrPromiseTuple;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
     },
     // an array containing elements of `Promise` type and a branded Promise type will be treated as just an ordinary `Promise`.
     // see https://github.com/typescript-eslint/typescript-eslint/pull/8502#issuecomment-2105734406
@@ -4958,10 +4123,10 @@ let foo: SafePromise = Promise.resolve(1);
 let bar = [Promise.resolve(2), foo];
 bar;
       `,
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
     },
     {
       code: `
@@ -4969,8 +4134,8 @@ type Foo<T> = Promise<T> & { hey?: string };
 declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
 arrayOrPromiseTuple;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
     },
     {
       code: `
@@ -4978,7 +4143,6 @@ type SafePromise = Promise<number> & { __linterBrands?: string };
 declare const myTag: (strings: TemplateStringsArray) => SafePromise;
 myTag\`abc\`;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
       errors: [
         {
           line: 4,
@@ -5003,6 +4167,7 @@ await myTag\`abc\`;
           ],
         },
       ],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
     {
       code: `
@@ -5383,8 +4548,8 @@ value as Promise<number>;
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 3,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5410,8 +4575,8 @@ await (value as Promise<number>);
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 2,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5435,8 +4600,8 @@ await (({}) as Promise<number> & number);
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 2,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5460,8 +4625,8 @@ await (({}) as Promise<number> & { yolo?: string });
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 2,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5479,5 +4644,840 @@ await (<Promise<number>>{});
         },
       ],
     },
+  ],
+
+  valid: [
+    `
+async function test() {
+  await Promise.resolve('value');
+  Promise.resolve('value').then(
+    () => {},
+    () => {},
+  );
+  Promise.resolve('value')
+    .then(() => {})
+    .catch(() => {});
+  Promise.resolve('value')
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  Promise.resolve('value').catch(() => {});
+  return Promise.resolve('value');
+}
+    `,
+    {
+      code: `
+async function test() {
+  void Promise.resolve('value');
+}
+      `,
+      options: [{ ignoreVoid: true }],
+    },
+    `
+async function test() {
+  await Promise.reject(new Error('message'));
+  Promise.reject(new Error('message')).then(
+    () => {},
+    () => {},
+  );
+  Promise.reject(new Error('message'))
+    .then(() => {})
+    .catch(() => {});
+  Promise.reject(new Error('message'))
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  Promise.reject(new Error('message')).catch(() => {});
+  return Promise.reject(new Error('message'));
+}
+    `,
+    `
+async function test() {
+  await (async () => true)();
+  (async () => true)().then(
+    () => {},
+    () => {},
+  );
+  (async () => true)()
+    .then(() => {})
+    .catch(() => {});
+  (async () => true)()
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  (async () => true)().catch(() => {});
+  return (async () => true)();
+}
+    `,
+    `
+async function test() {
+  async function returnsPromise() {}
+  await returnsPromise();
+  returnsPromise().then(
+    () => {},
+    () => {},
+  );
+  returnsPromise()
+    .then(() => {})
+    .catch(() => {});
+  returnsPromise()
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  returnsPromise().catch(() => {});
+  return returnsPromise();
+}
+    `,
+    `
+async function test() {
+  const x = Promise.resolve();
+  const y = x.then(() => {});
+  y.catch(() => {});
+}
+    `,
+    `
+async function test() {
+  Math.random() > 0.5 ? Promise.resolve().catch(() => {}) : null;
+}
+    `,
+    `
+async function test() {
+  Promise.resolve().catch(() => {}), 123;
+  123,
+    Promise.resolve().then(
+      () => {},
+      () => {},
+    );
+  123,
+    Promise.resolve().then(
+      () => {},
+      () => {},
+    ),
+    123;
+}
+    `,
+    `
+async function test() {
+  void Promise.resolve().catch(() => {});
+}
+    `,
+    `
+async function test() {
+  Promise.resolve().catch(() => {}) ||
+    Promise.resolve().then(
+      () => {},
+      () => {},
+    );
+}
+    `,
+    `
+declare const promiseValue: Promise<number>;
+async function test() {
+  await promiseValue;
+  promiseValue.then(
+    () => {},
+    () => {},
+  );
+  promiseValue.then(() => {}).catch(() => {});
+  promiseValue
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  promiseValue.catch(() => {});
+  return promiseValue;
+}
+    `,
+    `
+declare const promiseUnion: Promise<number> | number;
+async function test() {
+  await promiseUnion;
+  promiseUnion.then(
+    () => {},
+    () => {},
+  );
+  promiseUnion.then(() => {}).catch(() => {});
+  promiseUnion
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  promiseUnion.catch(() => {});
+  promiseValue.finally(() => {});
+  return promiseUnion;
+}
+    `,
+    `
+declare const promiseIntersection: Promise<number> & number;
+async function test() {
+  await promiseIntersection;
+  promiseIntersection.then(
+    () => {},
+    () => {},
+  );
+  promiseIntersection.then(() => {}).catch(() => {});
+  promiseIntersection.catch(() => {});
+  return promiseIntersection;
+}
+    `,
+    `
+async function test() {
+  class CanThen extends Promise<number> {}
+  const canThen: CanThen = Foo.resolve(2);
+
+  await canThen;
+  canThen.then(
+    () => {},
+    () => {},
+  );
+  canThen.then(() => {}).catch(() => {});
+  canThen
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  canThen.catch(() => {});
+  return canThen;
+}
+    `,
+    `
+declare const intersectionPromise: Promise<number> & number;
+async function test() {
+  await (Math.random() > 0.5 ? numberPromise : 0);
+  await (Math.random() > 0.5 ? foo : 0);
+  await (Math.random() > 0.5 ? bar : 0);
+
+  await intersectionPromise;
+}
+    `,
+    `
+async function test() {
+  class Thenable {
+    then(callback: () => void): Thenable {
+      return new Thenable();
+    }
+  }
+  const thenable = new Thenable();
+
+  await thenable;
+  thenable;
+  thenable.then(() => {});
+  return thenable;
+}
+    `,
+    `
+async function test() {
+  class NonFunctionParamThenable {
+    then(param: string, param2: number): NonFunctionParamThenable {
+      return new NonFunctionParamThenable();
+    }
+  }
+  const thenable = new NonFunctionParamThenable();
+
+  await thenable;
+  thenable;
+  thenable.then('abc', 'def');
+  return thenable;
+}
+    `,
+    `
+async function test() {
+  class NonFunctionThenable {
+    then: number;
+  }
+  const thenable = new NonFunctionThenable();
+
+  thenable;
+  thenable.then;
+  return thenable;
+}
+    `,
+    `
+async function test() {
+  class CatchableThenable {
+    then(callback: () => void, callback: () => void): CatchableThenable {
+      return new CatchableThenable();
+    }
+  }
+  const thenable = new CatchableThenable();
+
+  await thenable;
+  return thenable;
+}
+    `,
+    `
+// https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/promise-polyfill/index.d.ts
+// Type definitions for promise-polyfill 6.0
+// Project: https://github.com/taylorhakes/promise-polyfill
+// Definitions by: Steve Jenkins <https://github.com/skysteve>
+//                 Daniel Cassidy <https://github.com/djcsdy>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+
+interface PromisePolyfillConstructor extends PromiseConstructor {
+  _immediateFn?: (handler: (() => void) | string) => void;
+}
+
+declare const PromisePolyfill: PromisePolyfillConstructor;
+
+async function test() {
+  const promise = new PromisePolyfill(() => {});
+
+  await promise;
+  promise.then(
+    () => {},
+    () => {},
+  );
+  promise.then(() => {}).catch(() => {});
+  promise
+    .then(() => {})
+    .catch(() => {})
+    .finally(() => {});
+  promise.catch(() => {});
+  return promise;
+}
+    `,
+
+    // optional chaining
+    `
+declare const returnsPromise: () => Promise<void> | null;
+async function test() {
+  await returnsPromise?.();
+  returnsPromise()?.then(
+    () => {},
+    () => {},
+  );
+  returnsPromise()
+    ?.then(() => {})
+    ?.catch(() => {});
+  returnsPromise()?.catch(() => {});
+  return returnsPromise();
+}
+    `,
+    `
+const doSomething = async (
+  obj1: { a?: { b?: { c?: () => Promise<void> } } },
+  obj2: { a?: { b?: { c: () => Promise<void> } } },
+  obj3: { a?: { b: { c?: () => Promise<void> } } },
+  obj4: { a: { b: { c?: () => Promise<void> } } },
+  obj5: { a?: () => { b?: { c?: () => Promise<void> } } },
+  obj6?: { a: { b: { c?: () => Promise<void> } } },
+  callback?: () => Promise<void>,
+): Promise<void> => {
+  await obj1.a?.b?.c?.();
+  await obj2.a?.b?.c();
+  await obj3.a?.b.c?.();
+  await obj4.a.b.c?.();
+  await obj5.a?.().b?.c?.();
+  await obj6?.a.b.c?.();
+
+  return callback?.();
+};
+
+void doSomething();
+    `,
+    // ignoreIIFE
+    {
+      code: `
+        (async () => {
+          await something();
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        (async () => {
+          something();
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: '(async function foo() {})();',
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        function foo() {
+          (async function bar() {})();
+        }
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        const foo = () =>
+          new Promise(res => {
+            (async function () {
+              await res(1);
+            })();
+          });
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+        (async function () {
+          await res(1);
+        })();
+      `,
+      options: [{ ignoreIIFE: true }],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  void (condition && myPromise());
+}
+      `,
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  await (condition && myPromise());
+}
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  condition && void myPromise();
+}
+      `,
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  condition && (await myPromise());
+}
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  let condition = false;
+  condition && myPromise();
+  condition = true;
+  condition || myPromise();
+  condition ?? myPromise();
+}
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+declare const definitelyCallable: () => void;
+Promise.reject().catch(definitelyCallable);
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.reject()
+  .catch(() => {})
+  .finally(() => {});
+      `,
+    },
+    {
+      code: `
+Promise.reject()
+  .catch(() => {})
+  .finally(() => {})
+  .finally(() => {});
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.reject()
+  .catch(() => {})
+  .finally(() => {})
+  .finally(() => {})
+  .finally(() => {});
+      `,
+    },
+    {
+      code: `
+await Promise.all([Promise.resolve(), Promise.resolve()]);
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+void promiseArray;
+      `,
+    },
+    {
+      // Expressions aren't checked by this rule, so this just becomes an array
+      // of number | undefined, which is fine regardless of the ignoreVoid setting.
+      code: `
+[1, 2, void Promise.reject(), 3];
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+['I', 'am', 'just', 'an', 'array'];
+      `,
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: SafeThenable<number> = Promise.resolve(5);
+0, promise;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: SafeThenable<number> = Promise.resolve(5);
+0 ? promise : 3;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: { a: SafePromise<number> } = { a: Promise.resolve(5) };
+promise.a;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: SafePromise<number> = Promise.resolve(5);
+promise;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: Foo = Promise.resolve(5);
+0 || promise;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: Foo = Promise.resolve(5);
+promise.finally();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+0, promise();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+0 ? promise() : 3;
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: () => Foo = () => Promise.resolve(5);
+promise();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo = Promise<number> & { hey?: string };
+let promise: () => Foo = async () => 5;
+promise().finally();
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: () => SafePromise<number> = async () => 5;
+0 || promise();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+class SafePromise<T> extends Promise<T> {}
+let promise: () => SafePromise<number> = async () => 5;
+null ?? promise();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+let promise: () => PromiseLike<number> = () => Promise.resolve(5);
+promise();
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'lib', name: 'PromiseLike' }] },
+      ],
+    },
+    {
+      code: `
+type Foo<T> = Promise<T> & { hey?: string };
+declare const arrayOrPromiseTuple: Foo<unknown>[];
+arrayOrPromiseTuple;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type Foo<T> = Promise<T> & { hey?: string };
+declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
+arrayOrPromiseTuple;
+      `,
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
+    },
+    {
+      code: `
+type SafePromise = Promise<number> & { __linterBrands?: string };
+declare const myTag: (strings: TemplateStringsArray) => SafePromise;
+myTag\`abc\`;
+      `,
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
+    },
+    {
+      code: `
+        declare function it(...args: unknown[]): Promise<void>;
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            {
+              from: 'file',
+              name: 'it',
+              // https://github.com/typescript-eslint/typescript-eslint/pull/9234/files#r1626465054
+              path: process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE
+                ? 'file.ts'
+                : 'tests/fixtures/file.ts',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => Promise<void>;
+myTag\`abc\`.catch(() => {});
+      `,
+    },
+    {
+      code: `
+declare const myTag: (strings: TemplateStringsArray) => string;
+myTag\`abc\`;
+      `,
+    },
+    {
+      code: `
+declare let x: any;
+declare const promiseArray: Array<Promise<unknown>>;
+x = promiseArray;
+      `,
+    },
+    {
+      code: `
+declare let x: Promise<number>;
+x = Promise.resolve(2);
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function f() {
+  return promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+declare const promiseArray: Array<Promise<unknown>>;
+async function* generator() {
+  yield* promiseArray;
+}
+      `,
+    },
+    {
+      code: `
+async function* generator() {
+  yield Promise.resolve();
+}
+      `,
+    },
+    {
+      code: `
+interface SafeThenable<T> {
+  then<TResult1 = T, TResult2 = never>(
+    onfulfilled?:
+      | ((value: T) => TResult1 | SafeThenable<TResult1>)
+      | undefined
+      | null,
+    onrejected?:
+      | ((reason: any) => TResult2 | SafeThenable<TResult2>)
+      | undefined
+      | null,
+  ): SafeThenable<TResult1 | TResult2>;
+}
+let promise: () => SafeThenable<number> = () => Promise.resolve(5);
+promise().then(() => {});
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+        },
+      ],
+    },
+
+    {
+      code: `
+        declare module 'abc' {
+          export function it(name: string, action: () => void): void;
+        }
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'abc' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare module 'abc' {
+          export function it(name: string, action: () => void): void;
+        }
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'abc' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface SafePromise<T> extends Promise<T> {
+  brand: 'safe';
+}
+
+declare const createSafePromise: () => SafePromise<string>;
+createSafePromise();
+      `,
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }],
+          checkThenables: true,
+        },
+      ],
+    },
+    `
+declare const createPromiseLike: () => PromiseLike<number>;
+createPromiseLike();
+    `,
+    `
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+createMyThenable();
+    `,
   ],
 });

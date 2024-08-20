@@ -8,13 +8,1235 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
 
 ruleTester.run('no-misused-promises', rule, {
+  invalid: [
+    {
+      code: `
+if (Promise.resolve()) {
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+if (Promise.resolve()) {
+} else if (Promise.resolve()) {
+} else {
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'conditional',
+        },
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: 'for (let i; Promise.resolve(); i++) {}',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: 'do {} while (Promise.resolve());',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: 'while (Promise.resolve()) {}',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: 'Promise.resolve() ? 123 : 456;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+if (!Promise.resolve()) {
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: 'Promise.resolve() || false;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+[Promise.resolve(), Promise.reject()].forEach(async val => {
+  await val;
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+new Promise(async (resolve, reject) => {
+  await Promise.resolve();
+  resolve();
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
+  cb(null, arg);
+};
+
+fnWithCallback('val', async (err, res) => {
+  await res;
+});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
+  cb(null, arg);
+};
+
+fnWithCallback('val', (err, res) => Promise.resolve(res));
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
+  cb(null, arg);
+};
+
+fnWithCallback('val', (err, res) => {
+  if (err) {
+    return 'abc';
+  } else {
+    return Promise.resolve(res);
+  }
+});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback:
+  | ((arg: string, cb: (err: any, res: string) => void) => void)
+  | null = (arg, cb) => {
+  cb(null, arg);
+};
+
+fnWithCallback?.('val', (err, res) => Promise.resolve(res));
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+const fnWithCallback:
+  | ((arg: string, cb: (err: any, res: string) => void) => void)
+  | null = (arg, cb) => {
+  cb(null, arg);
+};
+
+fnWithCallback('val', (err, res) => {
+  if (err) {
+    return 'abc';
+  } else {
+    return Promise.resolve(res);
+  }
+});
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+function test(bool: boolean, p: Promise<void>) {
+  if (bool || p) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+function test(bool: boolean, p: Promise<void>) {
+  if (bool && p) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+function test(a: any, p: Promise<void>) {
+  if (a ?? p) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+function test(p: Promise<void> | undefined) {
+  if (p ?? Promise.reject()) {
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+let f: () => void;
+f = async () => {
+  return 3;
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+      options: [{ checksVoidReturn: { variables: true } }],
+    },
+    {
+      code: `
+const f: () => void = async () => {
+  return 0;
+};
+const g = async () => 1,
+  h: () => void = async () => {};
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'voidReturnVariable',
+        },
+        {
+          line: 6,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+const obj: {
+  f?: () => void;
+} = {};
+obj.f = async () => {
+  return 0;
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'voidReturnVariable',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async () => 'foo',
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+      options: [{ checksVoidReturn: { properties: true } }],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const f = async () => 0;
+const obj: O = {
+  f,
+};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  async f() {
+    return 0;
+  },
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void; g: () => void; h: () => void };
+function f(): O {
+  const h = async () => 0;
+  return {
+    async f() {
+      return 123;
+    },
+    g: async () => 0,
+    h,
+  };
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 9,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 10,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
+        },
+      ],
+    },
+    {
+      code: `
+function f(): () => void {
+  return async () => 0;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'voidReturnReturnValue',
+        },
+      ],
+      options: [{ checksVoidReturn: { returns: true } }],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const Component = (obj: O) => null;
+<Component func={async () => 0} />;
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      options: [{ checksVoidReturn: { attributes: true } }],
+    },
+    {
+      code: `
+type O = {
+  func: () => void;
+};
+const g = async () => 'foo';
+const Component = (obj: O) => null;
+<Component func={g} />;
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 9,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface ItLike {
+  (name: string, callback: () => void): void;
+}
+interface ItLike {
+  (name: string, callback: () => number): void;
+}
+
+declare const it: ItLike;
+
+it('', async () => {});
+      `,
+      errors: [
+        {
+          line: 11,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+console.log({ ...Promise.resolve({ key: 42 }) });
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'spread',
+        },
+      ],
+    },
+    {
+      code: `
+const getData = () => Promise.resolve({ key: 42 });
+
+console.log({
+  someData: 42,
+  ...getData(),
+});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'spread',
+        },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+
+console.log({ ...(condition && Promise.resolve({ key: 42 })) });
+console.log({ ...(condition || Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
+console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
+      `,
+      errors: [
+        { line: 4, messageId: 'spread' },
+        { line: 5, messageId: 'spread' },
+        { line: 6, messageId: 'spread' },
+        { line: 7, messageId: 'spread' },
+      ],
+    },
+    {
+      code: `
+function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
+
+restPromises(
+  true,
+  () => Promise.resolve(true),
+  () => Promise.resolve(null),
+  () => true,
+  () => Promise.resolve('Hello'),
+);
+      `,
+      errors: [
+        { line: 6, messageId: 'voidReturnArgument' },
+        { line: 7, messageId: 'voidReturnArgument' },
+        { line: 9, messageId: 'voidReturnArgument' },
+      ],
+    },
+    {
+      code: `
+type MyUnion = (() => void) | boolean;
+
+function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
+restUnion('Testing', false, () => Promise.resolve(true));
+      `,
+      errors: [{ line: 5, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleOne(first: string, ...callbacks: [() => void]): void {}
+restTupleOne('My string', () => Promise.resolve(1));
+      `,
+      errors: [{ line: 3, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleTwo(
+  first: boolean,
+  ...callbacks: [undefined, () => void, undefined]
+): void {}
+
+restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTupleFour(
+  first: number,
+  ...callbacks: [() => void, boolean, () => void, () => void]
+): void;
+
+restTupleFour(
+  1,
+  () => Promise.resolve(true),
+  false,
+  () => {},
+  () => Promise.resolve(1),
+);
+      `,
+      errors: [
+        { line: 9, messageId: 'voidReturnArgument' },
+        { line: 12, messageId: 'voidReturnArgument' },
+      ],
+    },
+    {
+      // Prettier adds a () but this tests arguments being undefined, not []
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+class TakesVoidCb {
+  constructor(first: string, ...args: Array<() => void>);
+}
+
+new TakesVoidCb;
+new TakesVoidCb();
+new TakesVoidCb(
+  'Testing',
+  () => {},
+  () => Promise.resolve(true),
+);
+      `,
+      errors: [{ line: 11, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function restTuple(...args: []): void;
+function restTuple(...args: [boolean, () => void]): void;
+function restTuple(..._args: any[]): void {}
+
+restTuple();
+restTuple(true, () => Promise.resolve(1));
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+type ReturnsRecord = () => Record<string, () => void>;
+
+const test: ReturnsRecord = () => {
+  return { asynchronous: async () => {} };
+};
+      `,
+      errors: [{ line: 5, messageId: 'voidReturnProperty' }],
+    },
+    {
+      code: `
+let value: Record<string, () => void>;
+value.asynchronous = async () => {};
+      `,
+      errors: [{ line: 3, messageId: 'voidReturnVariable' }],
+    },
+    {
+      code: `
+type ReturnsRecord = () => Record<string, () => void>;
+
+async function asynchronous() {}
+
+const test: ReturnsRecord = () => {
+  return { asynchronous };
+};
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnProperty' }],
+    },
+    {
+      code: `
+declare function foo(cb: undefined | (() => void));
+declare const bar: undefined | (() => Promise<void>);
+foo(bar);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+declare function foo(cb: string & (() => void));
+declare const bar: string & (() => Promise<void>);
+foo(bar);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function consume(..._callbacks: Array<() => void>): void {}
+let cbs: Array<() => Promise<boolean>> = [
+  () => Promise.resolve(true),
+  () => Promise.resolve(true),
+];
+consume(...cbs);
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function consume(..._callbacks: Array<() => void>): void {}
+let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)] as const;
+consume(...cbs);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+function consume(..._callbacks: Array<() => void>): void {}
+let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)];
+consume(...cbs);
+      `,
+      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+abstract class MyAbstractClassExtendsMyClass extends MyClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterfaceExtendsMyClass extends MyClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+class MyInterfaceSubclass implements MyInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MySubInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+type MyTypeIntersection = { setThing(): void } & { thing: number };
+
+class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
+  thing = 1;
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyTypeIntersection' },
+          line: 6,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
+
+interface MyAsyncInterface extends MyGenericType<false> {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: '{ setThing(): void; }' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+interface MyOtherInterface {
+  setThing(): void;
+}
+
+interface MyThirdInterface extends MyInterface, MyOtherInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 11,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherInterface' },
+          line: 11,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MyOtherClass {
+  setThing(): void {
+    return;
+  }
+}
+
+interface MyInterface extends MyClass, MyOtherClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherClass' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyAsyncInterface {
+  setThing(): Promise<void>;
+}
+
+interface MySyncInterface {
+  setThing(): void;
+}
+
+class MyClass {
+  setThing(): void {
+    return;
+  }
+}
+
+class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 17,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 17,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  setThing(): void;
+}
+
+const MyClassExpressionExtendsMyClass = class implements MyInterface {
+  setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+};
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+
+class MyClassExtendsMyClassExpression extends MyClassExpression {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
+    return;
+  }
+};
+type MyClassExpressionType = typeof MyClassExpression;
+
+interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'typeof MyClassExpression' },
+          line: 10,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MySyncInterface {
+  (): void;
+  (arg: string): void;
+  new (): void;
+  [key: string]: () => void;
+  [key: number]: () => void;
+  myMethod(): void;
+}
+interface MyAsyncInterface extends MySyncInterface {
+  (): Promise<void>;
+  (arg: string): Promise<void>;
+  new (): Promise<void>;
+  [key: string]: () => Promise<void>;
+  [key: number]: () => Promise<void>;
+  myMethod(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyCall {
+  (): void;
+  (arg: string): void;
+}
+
+interface MyIndex {
+  [key: string]: () => void;
+  [key: number]: () => void;
+}
+
+interface MyConstruct {
+  new (): void;
+  new (arg: string): void;
+}
+
+interface MyMethods {
+  doSyncThing(): void;
+  doOtherSyncThing(): void;
+  syncMethodProperty: () => void;
+}
+interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
+  (): void;
+  (arg: string): Promise<void>;
+  new (): void;
+  new (arg: string): void;
+  [key: string]: () => Promise<void>;
+  [key: number]: () => void;
+  doSyncThing(): Promise<void>;
+  doAsyncThing(): Promise<void>;
+  syncMethodProperty: () => Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyMethods' },
+          line: 29,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyMethods' },
+          line: 31,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+  ],
+
   valid: [
     `
 if (true) {
@@ -1020,1227 +2242,5 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
     'const notAFn3: boolean = true;',
     'const notAFn4: { prop: 1 } = { prop: 1 };',
     'const notAFn5: {} = {};',
-  ],
-
-  invalid: [
-    {
-      code: `
-if (Promise.resolve()) {
-}
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-if (Promise.resolve()) {
-} else if (Promise.resolve()) {
-} else {
-}
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'conditional',
-        },
-        {
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: 'for (let i; Promise.resolve(); i++) {}',
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: 'do {} while (Promise.resolve());',
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: 'while (Promise.resolve()) {}',
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: 'Promise.resolve() ? 123 : 456;',
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-if (!Promise.resolve()) {
-}
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: 'Promise.resolve() || false;',
-      errors: [
-        {
-          line: 1,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-[Promise.resolve(), Promise.reject()].forEach(async val => {
-  await val;
-});
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-new Promise(async (resolve, reject) => {
-  await Promise.resolve();
-  resolve();
-});
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
-  cb(null, arg);
-};
-
-fnWithCallback('val', async (err, res) => {
-  await res;
-});
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
-  cb(null, arg);
-};
-
-fnWithCallback('val', (err, res) => Promise.resolve(res));
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-const fnWithCallback = (arg: string, cb: (err: any, res: string) => void) => {
-  cb(null, arg);
-};
-
-fnWithCallback('val', (err, res) => {
-  if (err) {
-    return 'abc';
-  } else {
-    return Promise.resolve(res);
-  }
-});
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-const fnWithCallback:
-  | ((arg: string, cb: (err: any, res: string) => void) => void)
-  | null = (arg, cb) => {
-  cb(null, arg);
-};
-
-fnWithCallback?.('val', (err, res) => Promise.resolve(res));
-      `,
-      errors: [
-        {
-          line: 8,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-const fnWithCallback:
-  | ((arg: string, cb: (err: any, res: string) => void) => void)
-  | null = (arg, cb) => {
-  cb(null, arg);
-};
-
-fnWithCallback('val', (err, res) => {
-  if (err) {
-    return 'abc';
-  } else {
-    return Promise.resolve(res);
-  }
-});
-      `,
-      errors: [
-        {
-          line: 8,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-function test(bool: boolean, p: Promise<void>) {
-  if (bool || p) {
-  }
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-function test(bool: boolean, p: Promise<void>) {
-  if (bool && p) {
-  }
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-function test(a: any, p: Promise<void>) {
-  if (a ?? p) {
-  }
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-function test(p: Promise<void> | undefined) {
-  if (p ?? Promise.reject()) {
-  }
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'conditional',
-        },
-      ],
-    },
-    {
-      code: `
-let f: () => void;
-f = async () => {
-  return 3;
-};
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'voidReturnVariable',
-        },
-      ],
-    },
-    {
-      code: `
-let f: () => void;
-f = async () => {
-  return 3;
-};
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'voidReturnVariable',
-        },
-      ],
-      options: [{ checksVoidReturn: { variables: true } }],
-    },
-    {
-      code: `
-const f: () => void = async () => {
-  return 0;
-};
-const g = async () => 1,
-  h: () => void = async () => {};
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'voidReturnVariable',
-        },
-        {
-          line: 6,
-          messageId: 'voidReturnVariable',
-        },
-      ],
-    },
-    {
-      code: `
-const obj: {
-  f?: () => void;
-} = {};
-obj.f = async () => {
-  return 0;
-};
-      `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'voidReturnVariable',
-        },
-      ],
-    },
-    {
-      code: `
-type O = { f: () => void };
-const obj: O = {
-  f: async () => 'foo',
-};
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-    },
-    {
-      code: `
-type O = { f: () => void };
-const obj: O = {
-  f: async () => 'foo',
-};
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-      options: [{ checksVoidReturn: { properties: true } }],
-    },
-    {
-      code: `
-type O = { f: () => void };
-const f = async () => 0;
-const obj: O = {
-  f,
-};
-      `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-    },
-    {
-      code: `
-type O = { f: () => void };
-const obj: O = {
-  async f() {
-    return 0;
-  },
-};
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-    },
-    {
-      code: `
-type O = { f: () => void; g: () => void; h: () => void };
-function f(): O {
-  const h = async () => 0;
-  return {
-    async f() {
-      return 123;
-    },
-    g: async () => 0,
-    h,
-  };
-}
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 9,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 10,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-    },
-    {
-      code: `
-function f(): () => void {
-  return async () => 0;
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'voidReturnReturnValue',
-        },
-      ],
-    },
-    {
-      code: `
-function f(): () => void {
-  return async () => 0;
-}
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'voidReturnReturnValue',
-        },
-      ],
-      options: [{ checksVoidReturn: { returns: true } }],
-    },
-    {
-      code: `
-type O = {
-  func: () => void;
-};
-const Component = (obj: O) => null;
-<Component func={async () => 0} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnAttribute',
-        },
-      ],
-    },
-    {
-      code: `
-type O = {
-  func: () => void;
-};
-const Component = (obj: O) => null;
-<Component func={async () => 0} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnAttribute',
-        },
-      ],
-      options: [{ checksVoidReturn: { attributes: true } }],
-    },
-    {
-      code: `
-type O = {
-  func: () => void;
-};
-const g = async () => 'foo';
-const Component = (obj: O) => null;
-<Component func={g} />;
-      `,
-      languageOptions: {
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-        },
-      },
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnAttribute',
-        },
-      ],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => number): void;
-  (name: string, callback: () => void): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => number): void;
-}
-interface ItLike {
-  (name: string, callback: () => void): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 11,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-interface ItLike {
-  (name: string, callback: () => void): void;
-}
-interface ItLike {
-  (name: string, callback: () => number): void;
-}
-
-declare const it: ItLike;
-
-it('', async () => {});
-      `,
-      errors: [
-        {
-          line: 11,
-          messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-    {
-      code: `
-console.log({ ...Promise.resolve({ key: 42 }) });
-      `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'spread',
-        },
-      ],
-    },
-    {
-      code: `
-const getData = () => Promise.resolve({ key: 42 });
-
-console.log({
-  someData: 42,
-  ...getData(),
-});
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'spread',
-        },
-      ],
-    },
-    {
-      code: `
-declare const condition: boolean;
-
-console.log({ ...(condition && Promise.resolve({ key: 42 })) });
-console.log({ ...(condition || Promise.resolve({ key: 42 })) });
-console.log({ ...(condition ? {} : Promise.resolve({ key: 42 })) });
-console.log({ ...(condition ? Promise.resolve({ key: 42 }) : {}) });
-      `,
-      errors: [
-        { line: 4, messageId: 'spread' },
-        { line: 5, messageId: 'spread' },
-        { line: 6, messageId: 'spread' },
-        { line: 7, messageId: 'spread' },
-      ],
-    },
-    {
-      code: `
-function restPromises(first: Boolean, ...callbacks: Array<() => void>): void {}
-
-restPromises(
-  true,
-  () => Promise.resolve(true),
-  () => Promise.resolve(null),
-  () => true,
-  () => Promise.resolve('Hello'),
-);
-      `,
-      errors: [
-        { line: 6, messageId: 'voidReturnArgument' },
-        { line: 7, messageId: 'voidReturnArgument' },
-        { line: 9, messageId: 'voidReturnArgument' },
-      ],
-    },
-    {
-      code: `
-type MyUnion = (() => void) | boolean;
-
-function restUnion(first: string, ...callbacks: Array<MyUnion>): void {}
-restUnion('Testing', false, () => Promise.resolve(true));
-      `,
-      errors: [{ line: 5, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function restTupleOne(first: string, ...callbacks: [() => void]): void {}
-restTupleOne('My string', () => Promise.resolve(1));
-      `,
-      errors: [{ line: 3, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function restTupleTwo(
-  first: boolean,
-  ...callbacks: [undefined, () => void, undefined]
-): void {}
-
-restTupleTwo(true, undefined, () => Promise.resolve(true), undefined);
-      `,
-      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function restTupleFour(
-  first: number,
-  ...callbacks: [() => void, boolean, () => void, () => void]
-): void;
-
-restTupleFour(
-  1,
-  () => Promise.resolve(true),
-  false,
-  () => {},
-  () => Promise.resolve(1),
-);
-      `,
-      errors: [
-        { line: 9, messageId: 'voidReturnArgument' },
-        { line: 12, messageId: 'voidReturnArgument' },
-      ],
-    },
-    {
-      // Prettier adds a () but this tests arguments being undefined, not []
-      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
-      code: `
-class TakesVoidCb {
-  constructor(first: string, ...args: Array<() => void>);
-}
-
-new TakesVoidCb;
-new TakesVoidCb();
-new TakesVoidCb(
-  'Testing',
-  () => {},
-  () => Promise.resolve(true),
-);
-      `,
-      errors: [{ line: 11, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function restTuple(...args: []): void;
-function restTuple(...args: [boolean, () => void]): void;
-function restTuple(..._args: any[]): void {}
-
-restTuple();
-restTuple(true, () => Promise.resolve(1));
-      `,
-      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-type ReturnsRecord = () => Record<string, () => void>;
-
-const test: ReturnsRecord = () => {
-  return { asynchronous: async () => {} };
-};
-      `,
-      errors: [{ line: 5, messageId: 'voidReturnProperty' }],
-    },
-    {
-      code: `
-let value: Record<string, () => void>;
-value.asynchronous = async () => {};
-      `,
-      errors: [{ line: 3, messageId: 'voidReturnVariable' }],
-    },
-    {
-      code: `
-type ReturnsRecord = () => Record<string, () => void>;
-
-async function asynchronous() {}
-
-const test: ReturnsRecord = () => {
-  return { asynchronous };
-};
-      `,
-      errors: [{ line: 7, messageId: 'voidReturnProperty' }],
-    },
-    {
-      code: `
-declare function foo(cb: undefined | (() => void));
-declare const bar: undefined | (() => Promise<void>);
-foo(bar);
-      `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-declare function foo(cb: string & (() => void));
-declare const bar: string & (() => Promise<void>);
-foo(bar);
-      `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function consume(..._callbacks: Array<() => void>): void {}
-let cbs: Array<() => Promise<boolean>> = [
-  () => Promise.resolve(true),
-  () => Promise.resolve(true),
-];
-consume(...cbs);
-      `,
-      errors: [{ line: 7, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function consume(..._callbacks: Array<() => void>): void {}
-let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)] as const;
-consume(...cbs);
-      `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-function consume(..._callbacks: Array<() => void>): void {}
-let cbs = [() => Promise.resolve(true), () => Promise.resolve(true)];
-consume(...cbs);
-      `,
-      errors: [{ line: 4, messageId: 'voidReturnArgument' }],
-    },
-    {
-      code: `
-class MyClass {
-  setThing(): void {
-    return;
-  }
-}
-
-class MySubclassExtendsMyClass extends MyClass {
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
-        },
-      ],
-    },
-    {
-      code: `
-class MyClass {
-  setThing(): void {
-    return;
-  }
-}
-
-abstract class MyAbstractClassExtendsMyClass extends MyClass {
-  abstract setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
-        },
-      ],
-    },
-    {
-      code: `
-class MyClass {
-  setThing(): void {
-    return;
-  }
-}
-
-interface MyInterfaceExtendsMyClass extends MyClass {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
-        },
-      ],
-    },
-    {
-      code: `
-abstract class MyAbstractClass {
-  abstract setThing(): void;
-}
-
-class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyAbstractClass' },
-        },
-      ],
-    },
-    {
-      code: `
-abstract class MyAbstractClass {
-  abstract setThing(): void;
-}
-
-abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
-  abstract setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyAbstractClass' },
-        },
-      ],
-    },
-    {
-      code: `
-abstract class MyAbstractClass {
-  abstract setThing(): void;
-}
-
-interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyAbstractClass' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyInterface {
-  setThing(): void;
-}
-
-class MyInterfaceSubclass implements MyInterface {
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyInterface {
-  setThing(): void;
-}
-
-abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
-  abstract setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyInterface {
-  setThing(): void;
-}
-
-interface MySubInterface extends MyInterface {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-type MyTypeIntersection = { setThing(): void } & { thing: number };
-
-class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
-  thing = 1;
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyTypeIntersection' },
-        },
-      ],
-    },
-    {
-      code: `
-type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
-  ? { setThing(): Promise<void> }
-  : { setThing(): void };
-
-interface MyAsyncInterface extends MyGenericType<false> {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: '{ setThing(): void; }' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyInterface {
-  setThing(): void;
-}
-
-interface MyOtherInterface {
-  setThing(): void;
-}
-
-interface MyThirdInterface extends MyInterface, MyOtherInterface {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 11,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
-        },
-        {
-          line: 11,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyOtherInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-class MyClass {
-  setThing(): void {
-    return;
-  }
-}
-
-class MyOtherClass {
-  setThing(): void {
-    return;
-  }
-}
-
-interface MyInterface extends MyClass, MyOtherClass {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
-        },
-        {
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyOtherClass' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyAsyncInterface {
-  setThing(): Promise<void>;
-}
-
-interface MySyncInterface {
-  setThing(): void;
-}
-
-class MyClass {
-  setThing(): void {
-    return;
-  }
-}
-
-class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 17,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
-        },
-        {
-          line: 17,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MySyncInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyInterface {
-  setThing(): void;
-}
-
-const MyClassExpressionExtendsMyClass = class implements MyInterface {
-  setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-};
-      `,
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-const MyClassExpression = class {
-  setThing(): void {
-    return;
-  }
-};
-
-class MyClassExtendsMyClassExpression extends MyClassExpression {
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          line: 9,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClassExpression' },
-        },
-      ],
-    },
-    {
-      code: `
-const MyClassExpression = class {
-  setThing(): void {
-    return;
-  }
-};
-type MyClassExpressionType = typeof MyClassExpression;
-
-interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
-  setThing(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 10,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'typeof MyClassExpression' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MySyncInterface {
-  (): void;
-  (arg: string): void;
-  new (): void;
-  [key: string]: () => void;
-  [key: number]: () => void;
-  myMethod(): void;
-}
-interface MyAsyncInterface extends MySyncInterface {
-  (): Promise<void>;
-  (arg: string): Promise<void>;
-  new (): Promise<void>;
-  [key: string]: () => Promise<void>;
-  [key: number]: () => Promise<void>;
-  myMethod(): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MySyncInterface' },
-        },
-      ],
-    },
-    {
-      code: `
-interface MyCall {
-  (): void;
-  (arg: string): void;
-}
-
-interface MyIndex {
-  [key: string]: () => void;
-  [key: number]: () => void;
-}
-
-interface MyConstruct {
-  new (): void;
-  new (arg: string): void;
-}
-
-interface MyMethods {
-  doSyncThing(): void;
-  doOtherSyncThing(): void;
-  syncMethodProperty: () => void;
-}
-interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
-  (): void;
-  (arg: string): Promise<void>;
-  new (): void;
-  new (arg: string): void;
-  [key: string]: () => Promise<void>;
-  [key: number]: () => void;
-  doSyncThing(): Promise<void>;
-  doAsyncThing(): Promise<void>;
-  syncMethodProperty: () => Promise<void>;
-}
-      `,
-      errors: [
-        {
-          line: 29,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyMethods' },
-        },
-        {
-          line: 31,
-          messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyMethods' },
-        },
-      ],
-    },
   ],
 });

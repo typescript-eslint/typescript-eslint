@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -19,26 +20,6 @@ import {
 } from '../util';
 
 export default createRule({
-  name: 'no-unsafe-return',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow returning a value with type `any` from a function',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unsafeReturn: 'Unsafe return of a value of type {{type}}.',
-      unsafeReturnThis: [
-        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
-      unsafeReturnAssignment:
-        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -192,8 +173,6 @@ export default createRule({
 
         // If the function return type was not unknown/unknown[], mark usage as unsafeReturn.
         return context.report({
-          node: reportingNode,
-          messageId,
           data: {
             type: isErrorType
               ? 'error'
@@ -203,6 +182,8 @@ export default createRule({
                   ? '`Promise<any>`'
                   : '`any[]`',
           },
+          messageId,
+          node: reportingNode,
         });
       }
 
@@ -219,19 +200,20 @@ export default createRule({
           return;
         }
 
-        const { sender, receiver } = result;
+        const { receiver, sender } = result;
         return context.report({
-          node: reportingNode,
-          messageId: 'unsafeReturnAssignment',
           data: {
-            sender: checker.typeToString(sender),
             receiver: checker.typeToString(receiver),
+            sender: checker.typeToString(sender),
           },
+          messageId: 'unsafeReturnAssignment',
+          node: reportingNode,
         });
       }
     }
 
     return {
+      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
       ReturnStatement(node): void {
         const argument = node.argument;
         if (!argument) {
@@ -240,7 +222,26 @@ export default createRule({
 
         checkReturn(argument, node);
       },
-      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow returning a value with type `any` from a function',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unsafeReturn: 'Unsafe return of a value of type {{type}}.',
+      unsafeReturnAssignment:
+        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
+      unsafeReturnThis: [
+        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+    },
+    schema: [],
+    type: 'problem',
+  },
+  name: 'no-unsafe-return',
 });

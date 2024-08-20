@@ -5,47 +5,39 @@ import rule from '../../src/rules/no-unsafe-function-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unsafe-function-type', rule, {
-  valid: [
-    'let value: () => void;',
-    'let value: <T>(t: T) => T;',
-    `
-      type Function = () => void;
-      let value: Function;
-    `,
-  ],
   invalid: [
     {
       code: 'let value: Function;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedFunctionType',
-          line: 1,
           column: 12,
+          line: 1,
+          messageId: 'bannedFunctionType',
         },
       ],
+      output: null,
     },
     {
       code: 'let value: Function[];',
-      output: null,
       errors: [
         {
-          messageId: 'bannedFunctionType',
-          line: 1,
           column: 12,
+          line: 1,
+          messageId: 'bannedFunctionType',
         },
       ],
+      output: null,
     },
     {
       code: 'let value: Function | number;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedFunctionType',
-          line: 1,
           column: 12,
+          line: 1,
+          messageId: 'bannedFunctionType',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -53,14 +45,14 @@ ruleTester.run('no-unsafe-function-type', rule, {
           // ...
         }
       `,
-      output: null,
       errors: [
         {
-          messageId: 'bannedFunctionType',
-          line: 2,
           column: 32,
+          line: 2,
+          messageId: 'bannedFunctionType',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -68,14 +60,22 @@ ruleTester.run('no-unsafe-function-type', rule, {
           // ...
         }
       `,
-      output: null,
       errors: [
         {
-          messageId: 'bannedFunctionType',
-          line: 2,
           column: 33,
+          line: 2,
+          messageId: 'bannedFunctionType',
         },
       ],
+      output: null,
     },
+  ],
+  valid: [
+    'let value: () => void;',
+    'let value: <T>(t: T) => T;',
+    `
+      type Function = () => void;
+      let value: Function;
+    `,
   ],
 });

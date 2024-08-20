@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -22,8 +23,8 @@ interface NodeWithModifiers {
 }
 
 interface PropertiesInfo {
-  properties: TSESTree.PropertyDefinition[];
   excludeSet: Set<string>;
+  properties: TSESTree.PropertyDefinition[];
 }
 
 const printNodeModifiers = (
@@ -53,29 +54,6 @@ const isSupportedLiteral = (
 };
 
 export default createRule<Options, MessageIds>({
-  name: 'class-literal-property-style',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        'Enforce that literals on classes are exposed in a consistent style',
-      recommended: 'stylistic',
-    },
-    hasSuggestions: true,
-    messages: {
-      preferFieldStyle: 'Literals should be exposed using readonly fields.',
-      preferFieldStyleSuggestion: 'Replace the literals with readonly fields.',
-      preferGetterStyle: 'Literals should be exposed using getters.',
-      preferGetterStyleSuggestion: 'Replace the literals with getters.',
-    },
-    schema: [
-      {
-        type: 'string',
-        enum: ['fields', 'getters'],
-      },
-    ],
-  },
-  defaultOptions: ['fields'],
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 
@@ -85,13 +63,13 @@ export default createRule<Options, MessageIds>({
 
     function enterClassBody(): void {
       propertiesInfoStack.push({
-        properties: [],
         excludeSet: new Set(),
+        properties: [],
       });
     }
 
     function exitClassBody(): void {
-      const { properties, excludeSet } = nullThrows(
+      const { excludeSet, properties } = nullThrows(
         propertiesInfoStack.pop(),
         'Stack should exist on class exit',
       );
@@ -108,11 +86,10 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          node: node.key,
           messageId: 'preferGetterStyle',
+          node: node.key,
           suggest: [
             {
-              messageId: 'preferGetterStyleSuggestion',
               fix(fixer): TSESLint.RuleFix {
                 const name = context.sourceCode.getText(node.key);
 
@@ -123,6 +100,7 @@ export default createRule<Options, MessageIds>({
 
                 return fixer.replaceText(node, text);
               },
+              messageId: 'preferGetterStyleSuggestion',
             },
           ],
         });
@@ -181,11 +159,10 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            node: node.key,
             messageId: 'preferFieldStyle',
+            node: node.key,
             suggest: [
               {
-                messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
                   const name = context.sourceCode.getText(node.key);
 
@@ -197,6 +174,7 @@ export default createRule<Options, MessageIds>({
 
                   return fixer.replaceText(node, text);
                 },
+                messageId: 'preferFieldStyleSuggestion',
               },
             ],
           });
@@ -234,4 +212,27 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
+  defaultOptions: ['fields'],
+  meta: {
+    docs: {
+      description:
+        'Enforce that literals on classes are exposed in a consistent style',
+      recommended: 'stylistic',
+    },
+    hasSuggestions: true,
+    messages: {
+      preferFieldStyle: 'Literals should be exposed using readonly fields.',
+      preferFieldStyleSuggestion: 'Replace the literals with readonly fields.',
+      preferGetterStyle: 'Literals should be exposed using getters.',
+      preferGetterStyleSuggestion: 'Replace the literals with getters.',
+    },
+    schema: [
+      {
+        enum: ['fields', 'getters'],
+        type: 'string',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'class-literal-property-style',
 });

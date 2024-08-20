@@ -1,24 +1,25 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, objectReduceKey } from '../util';
 
 type Types = Record<
   string,
-  | boolean
-  | string
   | {
-      message: string;
       fixWith?: string;
+      message: string;
       suggest?: readonly string[];
     }
+  | boolean
+  | string
   | null
 >;
 
 export type Options = [
   {
-    types?: Types;
     extendDefaults?: boolean;
+    types?: Types;
   },
 ];
 
@@ -36,7 +37,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: string | true | { message?: string; fixWith?: string } | null,
+  bannedType: { fixWith?: string; message?: string } | true | string | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';
@@ -68,70 +69,6 @@ const TYPE_KEYWORDS = {
 };
 
 export default createRule<Options, MessageIds>({
-  name: 'no-restricted-types',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow certain types',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
-      bannedTypeReplacement: 'Replace `{{name}}` with `{{replacement}}`.',
-    },
-    schema: [
-      {
-        $defs: {
-          banConfig: {
-            oneOf: [
-              {
-                type: 'boolean',
-                enum: [true],
-                description: 'Bans the type with the default message',
-              },
-              {
-                type: 'string',
-                description: 'Bans the type with a custom message',
-              },
-              {
-                type: 'object',
-                description: 'Bans a type',
-                properties: {
-                  message: {
-                    type: 'string',
-                    description: 'Custom error message',
-                  },
-                  fixWith: {
-                    type: 'string',
-                    description:
-                      'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
-                  },
-                  suggest: {
-                    type: 'array',
-                    items: { type: 'string' },
-                    description: 'Types to suggest replacing with.',
-                  },
-                },
-                additionalProperties: false,
-              },
-            ],
-          },
-        },
-        type: 'object',
-        properties: {
-          types: {
-            type: 'object',
-            additionalProperties: {
-              $ref: '#/items/0/$defs/banConfig',
-            },
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [{}],
   create(context, [{ types = {} }]) {
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
@@ -156,23 +93,23 @@ export default createRule<Options, MessageIds>({
           : undefined;
 
       context.report({
-        node: typeNode,
-        messageId: 'bannedTypeMessage',
         data: {
-          name,
           customMessage,
+          name,
         },
         fix: fixWith
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
           : null,
+        messageId: 'bannedTypeMessage',
+        node: typeNode,
         suggest: suggest?.map(replacement => ({
-          messageId: 'bannedTypeReplacement',
           data: {
             name,
             replacement,
           },
           fix: (fixer): TSESLint.RuleFix =>
             fixer.replaceText(typeNode, replacement),
+          messageId: 'bannedTypeReplacement',
         })),
       });
     }
@@ -218,4 +155,68 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [{}],
+  meta: {
+    docs: {
+      description: 'Disallow certain types',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
+      bannedTypeReplacement: 'Replace `{{name}}` with `{{replacement}}`.',
+    },
+    schema: [
+      {
+        $defs: {
+          banConfig: {
+            oneOf: [
+              {
+                description: 'Bans the type with the default message',
+                enum: [true],
+                type: 'boolean',
+              },
+              {
+                description: 'Bans the type with a custom message',
+                type: 'string',
+              },
+              {
+                additionalProperties: false,
+                description: 'Bans a type',
+                properties: {
+                  fixWith: {
+                    description:
+                      'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
+                    type: 'string',
+                  },
+                  message: {
+                    description: 'Custom error message',
+                    type: 'string',
+                  },
+                  suggest: {
+                    description: 'Types to suggest replacing with.',
+                    items: { type: 'string' },
+                    type: 'array',
+                  },
+                },
+                type: 'object',
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          types: {
+            additionalProperties: {
+              $ref: '#/items/0/$defs/banConfig',
+            },
+            type: 'object',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'no-restricted-types',
 });

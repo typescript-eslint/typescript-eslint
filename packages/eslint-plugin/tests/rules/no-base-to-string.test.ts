@@ -7,8 +7,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -39,86 +39,6 @@ const literalListWrapped = [
 ];
 
 ruleTester.run('no-base-to-string', rule, {
-  valid: [
-    // template
-    ...literalList.map(i => `\`\${${i}}\`;`),
-
-    // operator + +=
-    ...literalListWrapped
-      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
-      .reduce((pre, cur) => [...pre, ...cur]),
-
-    // toString()
-    ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
-
-    // variable toString() and template
-    ...literalList.map(
-      i => `
-        let value = ${i};
-        value.toString();
-        let text = \`\${value}\`;
-      `,
-    ),
-
-    `
-function someFunction() {}
-someFunction.toString();
-let text = \`\${someFunction}\`;
-    `,
-    'unknownObject.toString();',
-    'unknownObject.someOtherMethod();',
-    `
-class CustomToString {
-  toString() {
-    return 'Hello, world!';
-  }
-}
-'' + new CustomToString();
-    `,
-    `
-const literalWithToString = {
-  toString: () => 'Hello, world!',
-};
-'' + literalToString;
-    `,
-    `
-const printer = (inVar: string | number | boolean) => {
-  inVar.toString();
-};
-printer('');
-printer(1);
-printer(true);
-    `,
-    'let _ = {} * {};',
-    'let _ = {} / {};',
-    'let _ = ({} *= {});',
-    'let _ = ({} /= {});',
-    'let _ = ({} = {});',
-    'let _ = {} == {};',
-    'let _ = {} === {};',
-    'let _ = {} in {};',
-    'let _ = {} & {};',
-    'let _ = {} ^ {};',
-    'let _ = {} << {};',
-    'let _ = {} >> {};',
-    `
-function tag() {}
-tag\`\${{}}\`;
-    `,
-    `
-      function tag() {}
-      tag\`\${{}}\`;
-    `,
-    `
-      interface Brand {}
-      function test(v: string & Brand): string {
-        return \`\${v}\`;
-      }
-    `,
-    "'' += new Error();",
-    "'' += new URL();",
-    "'' += new URLSearchParams();",
-  ],
   invalid: [
     {
       code: '`${{}})`;',
@@ -246,5 +166,85 @@ tag\`\${{}}\`;
         },
       ],
     },
+  ],
+  valid: [
+    // template
+    ...literalList.map(i => `\`\${${i}}\`;`),
+
+    // operator + +=
+    ...literalListWrapped
+      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
+      .reduce((pre, cur) => [...pre, ...cur]),
+
+    // toString()
+    ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
+
+    // variable toString() and template
+    ...literalList.map(
+      i => `
+        let value = ${i};
+        value.toString();
+        let text = \`\${value}\`;
+      `,
+    ),
+
+    `
+function someFunction() {}
+someFunction.toString();
+let text = \`\${someFunction}\`;
+    `,
+    'unknownObject.toString();',
+    'unknownObject.someOtherMethod();',
+    `
+class CustomToString {
+  toString() {
+    return 'Hello, world!';
+  }
+}
+'' + new CustomToString();
+    `,
+    `
+const literalWithToString = {
+  toString: () => 'Hello, world!',
+};
+'' + literalToString;
+    `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
+    `,
+    'let _ = {} * {};',
+    'let _ = {} / {};',
+    'let _ = ({} *= {});',
+    'let _ = ({} /= {});',
+    'let _ = ({} = {});',
+    'let _ = {} == {};',
+    'let _ = {} === {};',
+    'let _ = {} in {};',
+    'let _ = {} & {};',
+    'let _ = {} ^ {};',
+    'let _ = {} << {};',
+    'let _ = {} >> {};',
+    `
+function tag() {}
+tag\`\${{}}\`;
+    `,
+    `
+      function tag() {}
+      tag\`\${{}}\`;
+    `,
+    `
+      interface Brand {}
+      function test(v: string & Brand): string {
+        return \`\${v}\`;
+      }
+    `,
+    "'' += new Error();",
+    "'' += new URL();",
+    "'' += new URLSearchParams();",
   ],
 });

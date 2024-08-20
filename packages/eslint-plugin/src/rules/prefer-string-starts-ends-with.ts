@@ -1,5 +1,6 @@
-import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { RegExpParser } from '@eslint-community/regexpp';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -27,38 +28,6 @@ export type Options = [
 type MessageIds = 'preferEndsWith' | 'preferStartsWith';
 
 export default createRule<Options, MessageIds>({
-  name: 'prefer-string-starts-ends-with',
-  defaultOptions: [{ allowSingleElementEquality: 'never' }],
-
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      preferStartsWith: "Use 'String#startsWith' method instead.",
-      preferEndsWith: "Use the 'String#endsWith' method instead.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowSingleElementEquality: {
-            description:
-              'Whether to allow equality checks against the first or last element of a string.',
-            enum: ['always', 'never'],
-            type: 'string',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    fixable: 'code',
-  },
-
   create(context, [{ allowSingleElementEquality }]) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
 
@@ -278,13 +247,13 @@ export default createRule<Options, MessageIds>({
      */
     function parseRegExp(
       node: TSESTree.Node,
-    ): { isStartsWith: boolean; isEndsWith: boolean; text: string } | null {
+    ): { isEndsWith: boolean; isStartsWith: boolean; text: string } | null {
       const evaluated = getStaticValue(node, globalScope);
       if (evaluated == null || !(evaluated.value instanceof RegExp)) {
         return null;
       }
 
-      const { source, flags } = evaluated.value;
+      const { flags, source } = evaluated.value;
       const isStartsWith = source.startsWith('^');
       const isEndsWith = source.endsWith('$');
       if (
@@ -435,8 +404,6 @@ export default createRule<Options, MessageIds>({
 
         const eqNode = parentNode;
         context.report({
-          node: parentNode,
-          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           fix(fixer) {
             // Don't fix if it can change the behavior.
             if (!isCharacter(eqNode.right)) {
@@ -450,6 +417,8 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
+          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
+          node: parentNode,
         });
       },
 
@@ -471,8 +440,6 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          node: parentNode,
-          messageId: 'preferStartsWith',
           fix(fixer) {
             return fixWithArgument(
               fixer,
@@ -484,6 +451,8 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
+          messageId: 'preferStartsWith',
+          node: parentNode,
         });
       },
 
@@ -509,8 +478,6 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          node: parentNode,
-          messageId: 'preferEndsWith',
           fix(fixer) {
             return fixWithArgument(
               fixer,
@@ -522,6 +489,8 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
+          messageId: 'preferEndsWith',
+          node: parentNode,
         });
       },
 
@@ -552,8 +521,6 @@ export default createRule<Options, MessageIds>({
 
         const { isStartsWith, text } = parsed;
         context.report({
-          node: callNode,
-          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           *fix(fixer) {
             if (!parentNode.operator.startsWith('!')) {
               yield fixer.insertTextBefore(parentNode, '!');
@@ -570,6 +537,8 @@ export default createRule<Options, MessageIds>({
             );
             yield fixer.removeRange([callNode.range[1], parentNode.range[1]]);
           },
+          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
+          node: callNode,
         });
       },
 
@@ -638,8 +607,6 @@ export default createRule<Options, MessageIds>({
         const negativeIndexSupported =
           (node.property as TSESTree.Identifier).name === 'slice';
         context.report({
-          node: parentNode,
-          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           fix(fixer) {
             // Don't fix if it can change the behavior.
             if (
@@ -680,6 +647,8 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
+          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
+          node: parentNode,
         });
       },
 
@@ -699,8 +668,6 @@ export default createRule<Options, MessageIds>({
         const messageId = isStartsWith ? 'preferStartsWith' : 'preferEndsWith';
         const methodName = isStartsWith ? 'startsWith' : 'endsWith';
         context.report({
-          node: callNode,
-          messageId,
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
@@ -722,8 +689,42 @@ export default createRule<Options, MessageIds>({
               )}`,
             );
           },
+          messageId,
+          node: callNode,
         });
       },
     };
   },
+  defaultOptions: [{ allowSingleElementEquality: 'never' }],
+
+  meta: {
+    docs: {
+      description:
+        'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferEndsWith: "Use the 'String#endsWith' method instead.",
+      preferStartsWith: "Use 'String#startsWith' method instead.",
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowSingleElementEquality: {
+            description:
+              'Whether to allow equality checks against the first or last element of a string.',
+            enum: ['always', 'never'],
+            type: 'string',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+
+  name: 'prefer-string-starts-ends-with',
 });

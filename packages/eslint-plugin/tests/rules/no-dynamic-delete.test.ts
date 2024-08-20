@@ -8,59 +8,13 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('no-dynamic-delete', rule, {
-  valid: [
-    `
-const container: { [i: string]: 0 } = {};
-delete container.aaa;
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container.delete;
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container[7];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container[-7];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['-Infinity'];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['+Infinity'];
-    `,
-    `
-const value = 1;
-delete value;
-    `,
-    `
-const value = 1;
-delete -value;
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['aaa'];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['delete'];
-    `,
-    `
-const container: { [i: string]: 0 } = {};
-delete container['NaN'];
-    `,
-  ],
   invalid: [
     {
       code: `
@@ -117,8 +71,8 @@ const container: { [i: string]: 0 } = {};
 const getName = () => 'aaa';
 delete container[getName()];
       `,
-      output: null,
       errors: [{ messageId: 'dynamicDelete' }],
+      output: null,
     },
     {
       code: `
@@ -126,24 +80,70 @@ const container: { [i: string]: 0 } = {};
 const name = { foo: { bar: 'bar' } };
 delete container[name.foo.bar];
       `,
-      output: null,
       errors: [{ messageId: 'dynamicDelete' }],
+      output: null,
     },
     {
       code: `
 const container: { [i: string]: 0 } = {};
 delete container[+'Infinity'];
       `,
-      output: null,
       errors: [{ messageId: 'dynamicDelete' }],
+      output: null,
     },
     {
       code: `
 const container: { [i: string]: 0 } = {};
 delete container[typeof 1];
       `,
-      output: null,
       errors: [{ messageId: 'dynamicDelete' }],
+      output: null,
     },
+  ],
+  valid: [
+    `
+const container: { [i: string]: 0 } = {};
+delete container.aaa;
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container.delete;
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container[7];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container[-7];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['-Infinity'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['+Infinity'];
+    `,
+    `
+const value = 1;
+delete value;
+    `,
+    `
+const value = 1;
+delete -value;
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['aaa'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['delete'];
+    `,
+    `
+const container: { [i: string]: 0 } = {};
+delete container['NaN'];
+    `,
   ],
 });

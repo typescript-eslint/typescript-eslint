@@ -1,13 +1,15 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isFunction } from '../util';
 import type {
   FunctionExpression,
   FunctionInfo,
   FunctionNode,
 } from '../util/explicitReturnTypeUtils';
+
+import { createRule, isFunction } from '../util';
 import {
   ancestorHasReturnType,
   checkFunctionExpressionReturnType,
@@ -33,71 +35,6 @@ type MessageIds =
   | 'missingReturnType';
 
 export default createRule<Options, MessageIds>({
-  name: 'explicit-module-boundary-types',
-  meta: {
-    type: 'problem',
-    docs: {
-      description:
-        "Require explicit return and argument types on exported functions' and classes' public class methods",
-    },
-    messages: {
-      missingReturnType: 'Missing return type on function.',
-      missingArgType: "Argument '{{name}}' should be typed.",
-      missingArgTypeUnnamed: '{{type}} argument should be typed.',
-      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
-      anyTypedArgUnnamed:
-        '{{type}} argument should be typed with a non-any type.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowArgumentsExplicitlyTypedAsAny: {
-            description:
-              'Whether to ignore arguments that are explicitly typed as `any`.',
-            type: 'boolean',
-          },
-          allowDirectConstAssertionInArrowFunctions: {
-            description: [
-              'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
-              'You must still type the parameters of the function.',
-            ].join('\n'),
-            type: 'boolean',
-          },
-          allowedNames: {
-            description:
-              'An array of function/method names that will not have their arguments or return values checked.',
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-          allowHigherOrderFunctions: {
-            description: [
-              'Whether to ignore return type annotations on functions immediately returning another function expression.',
-              'You must still type the parameters of the function.',
-            ].join('\n'),
-            type: 'boolean',
-          },
-          allowTypedFunctionExpressions: {
-            description:
-              'Whether to ignore type annotations on the variable of a function expression.',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      allowArgumentsExplicitlyTypedAsAny: false,
-      allowDirectConstAssertionInArrowFunctions: true,
-      allowedNames: [],
-      allowHigherOrderFunctions: true,
-      allowTypedFunctionExpressions: true,
-    },
-  ],
   create(context, [options]) {
     // tracks all of the functions we've already checked
     const checkedFunctions = new Set<FunctionNode>();
@@ -139,6 +76,9 @@ export default createRule<Options, MessageIds>({
     */
 
     return {
+      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression':
+        enterFunction,
+      'ArrowFunctionExpression:exit': exitFunction,
       'ExportDefaultDeclaration:exit'(node): void {
         checkNode(node.declaration);
       },
@@ -153,12 +93,6 @@ export default createRule<Options, MessageIds>({
           }
         }
       },
-      'TSExportAssignment:exit'(node): void {
-        checkNode(node.expression);
-      },
-      'ArrowFunctionExpression, FunctionDeclaration, FunctionExpression':
-        enterFunction,
-      'ArrowFunctionExpression:exit': exitFunction,
       'FunctionDeclaration:exit': exitFunction,
       'FunctionExpression:exit': exitFunction,
       'Program:exit'(): void {
@@ -172,6 +106,9 @@ export default createRule<Options, MessageIds>({
         const current = functionStack[functionStack.length - 1];
         functionReturnsMap.get(current)?.push(node);
       },
+      'TSExportAssignment:exit'(node): void {
+        checkNode(node.expression);
+      },
     };
 
     function checkParameters(
@@ -184,34 +121,34 @@ export default createRule<Options, MessageIds>({
         ): void {
           if (param.type === AST_NODE_TYPES.Identifier) {
             context.report({
-              node: param,
-              messageId: namedMessageId,
               data: { name: param.name },
+              messageId: namedMessageId,
+              node: param,
             });
           } else if (param.type === AST_NODE_TYPES.ArrayPattern) {
             context.report({
-              node: param,
-              messageId: unnamedMessageId,
               data: { type: 'Array pattern' },
+              messageId: unnamedMessageId,
+              node: param,
             });
           } else if (param.type === AST_NODE_TYPES.ObjectPattern) {
             context.report({
-              node: param,
-              messageId: unnamedMessageId,
               data: { type: 'Object pattern' },
+              messageId: unnamedMessageId,
+              node: param,
             });
           } else if (param.type === AST_NODE_TYPES.RestElement) {
             if (param.argument.type === AST_NODE_TYPES.Identifier) {
               context.report({
-                node: param,
-                messageId: namedMessageId,
                 data: { name: param.argument.name },
+                messageId: namedMessageId,
+                node: param,
               });
             } else {
               context.report({
-                node: param,
-                messageId: unnamedMessageId,
                 data: { type: 'Rest' },
+                messageId: unnamedMessageId,
+                node: param,
               });
             }
           }
@@ -331,9 +268,9 @@ export default createRule<Options, MessageIds>({
         // cases we don't care about in this rule
         if (
           [
+            DefinitionType.CatchClause,
             DefinitionType.ImplicitGlobalVariable,
             DefinitionType.ImportBinding,
-            DefinitionType.CatchClause,
             DefinitionType.Parameter,
           ].includes(definition.type)
         ) {
@@ -443,8 +380,8 @@ export default createRule<Options, MessageIds>({
         node.parent.kind === 'set';
       if (!isConstructor && !isSetAccessor && !node.returnType) {
         context.report({
-          node,
           messageId: 'missingReturnType',
+          node,
         });
       }
 
@@ -474,9 +411,9 @@ export default createRule<Options, MessageIds>({
         context.sourceCode,
         loc => {
           context.report({
-            node,
             loc,
             messageId: 'missingReturnType',
+            node,
           });
         },
       );
@@ -503,9 +440,9 @@ export default createRule<Options, MessageIds>({
         context.sourceCode,
         loc => {
           context.report({
-            node,
             loc,
             messageId: 'missingReturnType',
+            node,
           });
         },
       );
@@ -513,4 +450,69 @@ export default createRule<Options, MessageIds>({
       checkParameters(node);
     }
   },
+  defaultOptions: [
+    {
+      allowArgumentsExplicitlyTypedAsAny: false,
+      allowDirectConstAssertionInArrowFunctions: true,
+      allowedNames: [],
+      allowHigherOrderFunctions: true,
+      allowTypedFunctionExpressions: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        "Require explicit return and argument types on exported functions' and classes' public class methods",
+    },
+    messages: {
+      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
+      anyTypedArgUnnamed:
+        '{{type}} argument should be typed with a non-any type.',
+      missingArgType: "Argument '{{name}}' should be typed.",
+      missingArgTypeUnnamed: '{{type}} argument should be typed.',
+      missingReturnType: 'Missing return type on function.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowArgumentsExplicitlyTypedAsAny: {
+            description:
+              'Whether to ignore arguments that are explicitly typed as `any`.',
+            type: 'boolean',
+          },
+          allowDirectConstAssertionInArrowFunctions: {
+            description: [
+              'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
+            type: 'boolean',
+          },
+          allowedNames: {
+            description:
+              'An array of function/method names that will not have their arguments or return values checked.',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+          allowHigherOrderFunctions: {
+            description: [
+              'Whether to ignore return type annotations on functions immediately returning another function expression.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
+            type: 'boolean',
+          },
+          allowTypedFunctionExpressions: {
+            description:
+              'Whether to ignore type annotations on the variable of a function expression.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'explicit-module-boundary-types',
 });

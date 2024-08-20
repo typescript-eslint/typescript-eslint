@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getNameFromMember, MemberNameType } from '../util';
@@ -21,24 +22,11 @@ type MemberDeclaration =
   | TSESTree.NamedExportDeclarations;
 
 export default createRule({
-  name: 'adjacent-overload-signatures',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Require that function overload signatures be consecutive',
-      recommended: 'stylistic',
-    },
-    schema: [],
-    messages: {
-      adjacentSignature: 'All {{name}} signatures should be adjacent.',
-    },
-  },
-  defaultOptions: [],
   create(context) {
     interface Method {
+      callSignature: boolean;
       name: string;
       static?: boolean;
-      callSignature: boolean;
       type: MemberNameType;
     }
 
@@ -68,34 +56,34 @@ export default createRule({
             return null;
           }
           return {
-            name,
             callSignature: false,
+            name,
             type: MemberNameType.Normal,
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
           return {
             ...getNameFromMember(member, context.sourceCode),
-            static: !!member.static,
             callSignature: false,
+            static: !!member.static,
           };
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return {
-            name: 'call',
             callSignature: true,
+            name: 'call',
             type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
-            name: 'new',
             callSignature: false,
+            name: 'new',
             type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
             ...getNameFromMember(member, context.sourceCode),
-            static: !!member.static,
             callSignature: false,
+            static: !!member.static,
           };
       }
 
@@ -144,11 +132,11 @@ export default createRule({
         );
         if (index > -1 && !isSameMethod(method, lastMethod)) {
           context.report({
-            node: member,
-            messageId: 'adjacentSignature',
             data: {
               name: `${method.static ? 'static ' : ''}${method.name}`,
             },
+            messageId: 'adjacentSignature',
+            node: member,
           });
         } else if (index === -1) {
           seenMethods.push(method);
@@ -159,12 +147,25 @@ export default createRule({
     }
 
     return {
+      BlockStatement: checkBodyForOverloadMethods,
       ClassBody: checkBodyForOverloadMethods,
       Program: checkBodyForOverloadMethods,
+      TSInterfaceBody: checkBodyForOverloadMethods,
       TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
-      TSInterfaceBody: checkBodyForOverloadMethods,
-      BlockStatement: checkBodyForOverloadMethods,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Require that function overload signatures be consecutive',
+      recommended: 'stylistic',
+    },
+    messages: {
+      adjacentSignature: 'All {{name}} signatures should be adjacent.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'adjacent-overload-signatures',
 });

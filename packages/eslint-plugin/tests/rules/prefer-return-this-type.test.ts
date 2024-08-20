@@ -8,13 +8,246 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
 
 ruleTester.run('prefer-return-this-type', rule, {
+  invalid: [
+    {
+      code: `
+class Foo {
+  f(): Foo {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f(): this {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f(): Foo {
+    const self = this;
+    return self;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f(): this {
+    const self = this;
+    return self;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = (): Foo => {
+    return this;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this => {
+    return this;
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = (): Foo => {
+    const self = this;
+    return self;
+  };
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this => {
+    const self = this;
+    return self;
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f = (): Foo => this;
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f = (): this => this;
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  f1(): Foo | undefined {
+    return this;
+  }
+  f2(): this | undefined {
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  f1(): this | undefined {
+    return this;
+  }
+  f2(): this | undefined {
+    return this;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  bar(): Foo | undefined {
+    if (Math.random() > 0.5) {
+      return this;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  bar(): this | undefined {
+    if (Math.random() > 0.5) {
+      return this;
+    }
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  bar(num: 1 | 2): Foo {
+    switch (num) {
+      case 1:
+        return this;
+      case 2:
+        return this;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Foo {
+  bar(num: 1 | 2): this {
+    switch (num) {
+      case 1:
+        return this;
+      case 2:
+        return this;
+    }
+  }
+}
+      `,
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3842
+      code: `
+class Animal<T> {
+  eat(): Animal<T> {
+    console.log("I'm moving!");
+    return this;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 19,
+          line: 3,
+          messageId: 'useThisType',
+        },
+      ],
+      output: `
+class Animal<T> {
+  eat(): this {
+    console.log("I'm moving!");
+    return this;
+  }
+}
+      `,
+    },
+  ],
   valid: [
     `
 class Foo {
@@ -81,238 +314,5 @@ class Derived extends Base {
   }
 }
     `,
-  ],
-  invalid: [
-    {
-      code: `
-class Foo {
-  f(): Foo {
-    return this;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 8,
-        },
-      ],
-      output: `
-class Foo {
-  f(): this {
-    return this;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  f(): Foo {
-    const self = this;
-    return self;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 8,
-        },
-      ],
-      output: `
-class Foo {
-  f(): this {
-    const self = this;
-    return self;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  f = (): Foo => {
-    return this;
-  };
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 11,
-        },
-      ],
-      output: `
-class Foo {
-  f = (): this => {
-    return this;
-  };
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  f = (): Foo => {
-    const self = this;
-    return self;
-  };
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 11,
-        },
-      ],
-      output: `
-class Foo {
-  f = (): this => {
-    const self = this;
-    return self;
-  };
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  f = (): Foo => this;
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 11,
-        },
-      ],
-      output: `
-class Foo {
-  f = (): this => this;
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  f1(): Foo | undefined {
-    return this;
-  }
-  f2(): this | undefined {
-    return this;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 9,
-        },
-      ],
-      output: `
-class Foo {
-  f1(): this | undefined {
-    return this;
-  }
-  f2(): this | undefined {
-    return this;
-  }
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  bar(): Foo | undefined {
-    if (Math.random() > 0.5) {
-      return this;
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 10,
-        },
-      ],
-      output: `
-class Foo {
-  bar(): this | undefined {
-    if (Math.random() > 0.5) {
-      return this;
-    }
-  }
-}
-      `,
-    },
-    {
-      code: `
-class Foo {
-  bar(num: 1 | 2): Foo {
-    switch (num) {
-      case 1:
-        return this;
-      case 2:
-        return this;
-    }
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 20,
-        },
-      ],
-      output: `
-class Foo {
-  bar(num: 1 | 2): this {
-    switch (num) {
-      case 1:
-        return this;
-      case 2:
-        return this;
-    }
-  }
-}
-      `,
-    },
-    {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/3842
-      code: `
-class Animal<T> {
-  eat(): Animal<T> {
-    console.log("I'm moving!");
-    return this;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'useThisType',
-          line: 3,
-          column: 10,
-          endColumn: 19,
-        },
-      ],
-      output: `
-class Animal<T> {
-  eat(): this {
-    console.log("I'm moving!");
-    return this;
-  }
-}
-      `,
-    },
   ],
 });

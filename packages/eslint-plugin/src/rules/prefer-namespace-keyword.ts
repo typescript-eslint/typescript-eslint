@@ -3,22 +3,6 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  name: 'prefer-namespace-keyword',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    messages: {
-      useNamespace:
-        "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     return {
       TSModuleDeclaration(node): void {
@@ -35,14 +19,30 @@ export default createRule({
           moduleType.value === 'module'
         ) {
           context.report({
-            node,
-            messageId: 'useNamespace',
             fix(fixer) {
               return fixer.replaceText(moduleType, 'namespace');
             },
+            messageId: 'useNamespace',
+            node,
           });
         }
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    messages: {
+      useNamespace:
+        "Use 'namespace' instead of 'module' to declare custom TypeScript modules.",
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'prefer-namespace-keyword',
 });

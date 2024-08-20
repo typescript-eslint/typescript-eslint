@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -42,19 +44,6 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
 }
 
 export default createRule<Options, MessageIds>({
-  name: 'no-useless-constructor',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow unnecessary constructors',
-      recommended: 'strict',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
-    messages: baseRule.meta.messages,
-  },
-  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
     return {
@@ -69,4 +58,17 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow unnecessary constructors',
+      extendsBaseRule: true,
+      recommended: 'strict',
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
+    type: 'problem',
+  },
+  name: 'no-useless-constructor',
 });

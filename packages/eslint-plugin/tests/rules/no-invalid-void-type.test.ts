@@ -5,6 +5,73 @@ import rule from '../../src/rules/no-invalid-void-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('allowInGenericTypeArguments: false', rule, {
+  invalid: [
+    {
+      code: 'type GenericVoid = Generic<void>;',
+      errors: [
+        {
+          column: 28,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'function takeVoid(thing: void) {}',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'let voidPromise: Promise<void> = new Promise<void>(() => {});',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+        {
+          column: 46,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'let voidMap: Map<string, void> = new Map<string, void>();',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+        {
+          column: 50,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'type invalidVoidUnion = void | number;',
+      errors: [
+        {
+          column: 25,
+          line: 1,
+          messageId: 'invalidVoidNotReturn',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+  ],
   valid: [
     {
       code: 'type Generic<T> = [T];',
@@ -28,76 +95,308 @@ function foo(): void | never {
       options: [{ allowInGenericTypeArguments: false }],
     },
   ],
+});
+
+ruleTester.run('allowInGenericTypeArguments: true', rule, {
   invalid: [
     {
-      code: 'type GenericVoid = Generic<void>;',
-      options: [{ allowInGenericTypeArguments: false }],
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturn',
-          line: 1,
-          column: 28,
-        },
-      ],
-    },
-    {
       code: 'function takeVoid(thing: void) {}',
-      options: [{ allowInGenericTypeArguments: false }],
       errors: [
         {
-          messageId: 'invalidVoidNotReturn',
-          line: 1,
           column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
         },
       ],
     },
     {
-      code: 'let voidPromise: Promise<void> = new Promise<void>(() => {});',
-      options: [{ allowInGenericTypeArguments: false }],
+      code: 'const arrowGeneric = <T extends void>(arg: T) => {};',
       errors: [
         {
-          messageId: 'invalidVoidNotReturn',
+          column: 33,
           line: 1,
-          column: 26,
-        },
-        {
-          messageId: 'invalidVoidNotReturn',
-          line: 1,
-          column: 46,
+          messageId: 'invalidVoidNotReturnOrGeneric',
         },
       ],
     },
     {
-      code: 'let voidMap: Map<string, void> = new Map<string, void>();',
-      options: [{ allowInGenericTypeArguments: false }],
+      code: 'const arrowGeneric2 = <T extends void = void>(arg: T) => {};',
       errors: [
         {
-          messageId: 'invalidVoidNotReturn',
+          column: 34,
           line: 1,
-          column: 26,
-        },
-        {
-          messageId: 'invalidVoidNotReturn',
-          line: 1,
-          column: 50,
+          messageId: 'invalidVoidNotReturnOrGeneric',
         },
       ],
     },
     {
-      code: 'type invalidVoidUnion = void | number;',
-      options: [{ allowInGenericTypeArguments: false }],
+      code: 'function functionGeneric<T extends void>(arg: T) {}',
       errors: [
         {
-          messageId: 'invalidVoidNotReturn',
+          column: 36,
           line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'function functionGeneric2<T extends void = void>(arg: T) {}',
+      errors: [
+        {
+          column: 37,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'declare function functionDeclaration<T extends void>(arg: T): void;',
+      errors: [
+        {
+          column: 48,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'declare function functionDeclaration2<T extends void = void>(arg: T): void;',
+      errors: [
+        {
+          column: 49,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'functionGeneric<void>(undefined);',
+      errors: [
+        {
+          column: 17,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'declare function voidArray(args: void[]): void[];',
+      errors: [
+        {
+          column: 34,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+        {
+          column: 43,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'let value = undefined as void;',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'let value = <void>undefined;',
+      errors: [
+        {
+          column: 14,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'function takesThings(...things: void[]): void {}',
+      errors: [
+        {
+          column: 33,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'type KeyofVoid = keyof void;',
+      errors: [
+        {
+          column: 24,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Interface {
+          lambda: () => void;
+          voidProp: void;
+        }
+      `,
+      errors: [
+        {
+          column: 21,
+          line: 4,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        class ClassName {
+          private readonly propName: void;
+        }
+      `,
+      errors: [
+        {
+          column: 38,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'let letVoid: void;',
+      errors: [
+        {
+          column: 14,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        type VoidType = void;
+        class OtherClassName {
+          private propName: VoidType;
+        }
+      `,
+      errors: [
+        {
           column: 25,
+          line: 2,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'type UnionType2 = string | number | void;',
+      errors: [
+        {
+          column: 37,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'type UnionType3 = string | ((number & any) | (string | void));',
+      errors: [
+        {
+          column: 56,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'declare function test(): number | void;',
+      errors: [
+        {
+          column: 35,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'declare function test<T extends number | void>(): T;',
+      errors: [
+        {
+          column: 42,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'type IntersectionType = string & number & void;',
+      errors: [
+        {
+          column: 43,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        type MappedType<T> = {
+          [K in keyof T]: void;
+        };
+      `,
+      errors: [
+        {
+          column: 27,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: `
+        type ConditionalType<T> = {
+          [K in keyof T]: T[K] extends string ? void : string;
+        };
+      `,
+      errors: [
+        {
+          column: 49,
+          line: 3,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'type ManyVoid = readonly void[];',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'function foo(arr: readonly void[]) {}',
+      errors: [
+        {
+          column: 28,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+    },
+    {
+      code: 'type invalidVoidUnion = void | Map<string, number>;',
+      errors: [
+        {
+          column: 25,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
         },
       ],
     },
   ],
-});
-
-ruleTester.run('allowInGenericTypeArguments: true', rule, {
   valid: [
     'function func(): void {}',
     'type NormalType = () => void;',
@@ -121,308 +420,46 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
   ],
+});
+
+ruleTester.run('allowInGenericTypeArguments: whitelist', rule, {
   invalid: [
+    {
+      code: 'type BannedVoid = Banned<void>;',
+      errors: [
+        {
+          column: 26,
+          data: { generic: 'Banned' },
+          line: 1,
+          messageId: 'invalidVoidForGeneric',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
+    },
+    {
+      code: 'type BannedVoid = Ex.Mx.Tx<void>;',
+      errors: [
+        {
+          column: 28,
+          data: { generic: 'Ex.Mx.Tx' },
+          line: 1,
+          messageId: 'invalidVoidForGeneric',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: ['Tx'] }],
+    },
     {
       code: 'function takeVoid(thing: void) {}',
       errors: [
         {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
           column: 26,
-        },
-      ],
-    },
-    {
-      code: 'const arrowGeneric = <T extends void>(arg: T) => {};',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
           line: 1,
-          column: 33,
-        },
-      ],
-    },
-    {
-      code: 'const arrowGeneric2 = <T extends void = void>(arg: T) => {};',
-      errors: [
-        {
           messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 34,
         },
       ],
-    },
-    {
-      code: 'function functionGeneric<T extends void>(arg: T) {}',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 36,
-        },
-      ],
-    },
-    {
-      code: 'function functionGeneric2<T extends void = void>(arg: T) {}',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 37,
-        },
-      ],
-    },
-    {
-      code: 'declare function functionDeclaration<T extends void>(arg: T): void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 48,
-        },
-      ],
-    },
-    {
-      code: 'declare function functionDeclaration2<T extends void = void>(arg: T): void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 49,
-        },
-      ],
-    },
-    {
-      code: 'functionGeneric<void>(undefined);',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 17,
-        },
-      ],
-    },
-    {
-      code: 'declare function voidArray(args: void[]): void[];',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 34,
-        },
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 43,
-        },
-      ],
-    },
-    {
-      code: 'let value = undefined as void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 26,
-        },
-      ],
-    },
-    {
-      code: 'let value = <void>undefined;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 14,
-        },
-      ],
-    },
-    {
-      code: 'function takesThings(...things: void[]): void {}',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 33,
-        },
-      ],
-    },
-    {
-      code: 'type KeyofVoid = keyof void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 24,
-        },
-      ],
-    },
-    {
-      code: `
-        interface Interface {
-          lambda: () => void;
-          voidProp: void;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 4,
-          column: 21,
-        },
-      ],
-    },
-    {
-      code: `
-        class ClassName {
-          private readonly propName: void;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 3,
-          column: 38,
-        },
-      ],
-    },
-    {
-      code: 'let letVoid: void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 14,
-        },
-      ],
-    },
-    {
-      code: `
-        type VoidType = void;
-        class OtherClassName {
-          private propName: VoidType;
-        }
-      `,
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 2,
-          column: 25,
-        },
-      ],
-    },
-    {
-      code: 'type UnionType2 = string | number | void;',
-      errors: [
-        {
-          messageId: 'invalidVoidUnionConstituent',
-          line: 1,
-          column: 37,
-        },
-      ],
-    },
-    {
-      code: 'type UnionType3 = string | ((number & any) | (string | void));',
-      errors: [
-        {
-          messageId: 'invalidVoidUnionConstituent',
-          line: 1,
-          column: 56,
-        },
-      ],
-    },
-    {
-      code: 'declare function test(): number | void;',
-      errors: [
-        {
-          messageId: 'invalidVoidUnionConstituent',
-          line: 1,
-          column: 35,
-        },
-      ],
-    },
-    {
-      code: 'declare function test<T extends number | void>(): T;',
-      errors: [
-        {
-          messageId: 'invalidVoidUnionConstituent',
-          line: 1,
-          column: 42,
-        },
-      ],
-    },
-    {
-      code: 'type IntersectionType = string & number & void;',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 43,
-        },
-      ],
-    },
-    {
-      code: `
-        type MappedType<T> = {
-          [K in keyof T]: void;
-        };
-      `,
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 3,
-          column: 27,
-        },
-      ],
-    },
-    {
-      code: `
-        type ConditionalType<T> = {
-          [K in keyof T]: T[K] extends string ? void : string;
-        };
-      `,
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 3,
-          column: 49,
-        },
-      ],
-    },
-    {
-      code: 'type ManyVoid = readonly void[];',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 26,
-        },
-      ],
-    },
-    {
-      code: 'function foo(arr: readonly void[]) {}',
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 28,
-        },
-      ],
-    },
-    {
-      code: 'type invalidVoidUnion = void | Map<string, number>;',
-      errors: [
-        {
-          messageId: 'invalidVoidUnionConstituent',
-          line: 1,
-          column: 25,
-        },
-      ],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
     },
   ],
-});
-
-ruleTester.run('allowInGenericTypeArguments: whitelist', rule, {
   valid: [
     'type Allowed<T> = [T];',
     'type Banned<T> = [T];',
@@ -474,46 +511,44 @@ async function foo(bar: () => void | Promise<void>) {
       options: [{ allowInGenericTypeArguments: ['Promise'] }],
     },
   ],
-  invalid: [
-    {
-      code: 'type BannedVoid = Banned<void>;',
-      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
-      errors: [
-        {
-          messageId: 'invalidVoidForGeneric',
-          data: { generic: 'Banned' },
-          line: 1,
-          column: 26,
-        },
-      ],
-    },
-    {
-      code: 'type BannedVoid = Ex.Mx.Tx<void>;',
-      options: [{ allowInGenericTypeArguments: ['Tx'] }],
-      errors: [
-        {
-          messageId: 'invalidVoidForGeneric',
-          data: { generic: 'Ex.Mx.Tx' },
-          line: 1,
-          column: 28,
-        },
-      ],
-    },
-    {
-      code: 'function takeVoid(thing: void) {}',
-      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrGeneric',
-          line: 1,
-          column: 26,
-        },
-      ],
-    },
-  ],
 });
 
 ruleTester.run('allowAsThisParameter: true', rule, {
+  invalid: [
+    {
+      code: 'type alias = void;',
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrThisParamOrGeneric',
+        },
+      ],
+      options: [
+        { allowAsThisParameter: true, allowInGenericTypeArguments: true },
+      ],
+    },
+    {
+      code: 'type alias = void;',
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrThisParam',
+        },
+      ],
+      options: [
+        { allowAsThisParameter: true, allowInGenericTypeArguments: false },
+      ],
+    },
+    {
+      code: 'type alias = Array<void>;',
+      errors: [
+        {
+          messageId: 'invalidVoidNotReturnOrThisParam',
+        },
+      ],
+      options: [
+        { allowAsThisParameter: true, allowInGenericTypeArguments: false },
+      ],
+    },
+  ],
   valid: [
     {
       code: 'function f(this: void) {}',
@@ -527,41 +562,6 @@ class Test {
 }
       `,
       options: [{ allowAsThisParameter: true }],
-    },
-  ],
-  invalid: [
-    {
-      code: 'type alias = void;',
-      options: [
-        { allowAsThisParameter: true, allowInGenericTypeArguments: true },
-      ],
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrThisParamOrGeneric',
-        },
-      ],
-    },
-    {
-      code: 'type alias = void;',
-      options: [
-        { allowAsThisParameter: true, allowInGenericTypeArguments: false },
-      ],
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrThisParam',
-        },
-      ],
-    },
-    {
-      code: 'type alias = Array<void>;',
-      options: [
-        { allowAsThisParameter: true, allowInGenericTypeArguments: false },
-      ],
-      errors: [
-        {
-          messageId: 'invalidVoidNotReturnOrThisParam',
-        },
-      ],
     },
   ],
 });

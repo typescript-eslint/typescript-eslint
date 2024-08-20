@@ -1,18 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
+
 import { arraysAreEqual, createRule, nullThrows } from '../util';
 
 interface Failure {
-  unify: Unify;
   only2: boolean;
+  unify: Unify;
 }
 
 type Unify =
   | {
-      kind: 'extra-parameter';
       extraParameter: TSESTree.Parameter;
+      kind: 'extra-parameter';
       otherSignature: SignatureDefinition;
     }
   | {
@@ -63,41 +65,6 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  name: 'unified-signatures',
-  meta: {
-    docs: {
-      description:
-        'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
-      // too opinionated to be recommended
-      recommended: 'strict',
-    },
-    type: 'suggestion',
-    messages: {
-      omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
-      omittingSingleParameter:
-        '{{failureStringStart}} with an optional parameter.',
-      singleParameterDifference:
-        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoreDifferentlyNamedParameters: {
-            description:
-              'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      ignoreDifferentlyNamedParameters: false,
-    },
-  ],
   create(context, [{ ignoreDifferentlyNamedParameters }]) {
     //----------------------------------------------------------------------
     // Helpers
@@ -114,7 +81,7 @@ export default createRule<Options, MessageIds>({
 
     function addFailures(failures: Failure[]): void {
       for (const failure of failures) {
-        const { unify, only2 } = failure;
+        const { only2, unify } = failure;
         switch (unify.kind) {
           case 'single-parameter-difference': {
             const { p0, p1 } = unify;
@@ -128,8 +95,6 @@ export default createRule<Options, MessageIds>({
               : p1.typeAnnotation;
 
             context.report({
-              loc: p1.loc,
-              messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
                 type1: context.sourceCode.getText(
@@ -139,6 +104,8 @@ export default createRule<Options, MessageIds>({
                   typeAnnotation1?.typeAnnotation,
                 ),
               },
+              loc: p1.loc,
+              messageId: 'singleParameterDifference',
               node: p1,
             });
             break;
@@ -150,14 +117,14 @@ export default createRule<Options, MessageIds>({
               : otherSignature.loc.start.line;
 
             context.report({
+              data: {
+                failureStringStart: failureStringStart(lineOfOtherOverload),
+              },
               loc: extraParameter.loc,
               messageId:
                 extraParameter.type === AST_NODE_TYPES.RestElement
                   ? 'omittingRestParameter'
                   : 'omittingSingleParameter',
-              data: {
-                failureStringStart: failureStringStart(lineOfOtherOverload),
-              },
               node: extraParameter,
             });
           }
@@ -182,7 +149,7 @@ export default createRule<Options, MessageIds>({
             isTypeParameter,
           );
           if (unify !== undefined) {
-            result.push({ unify, only2: overloads.length === 2 });
+            result.push({ only2: overloads.length === 2, unify });
           }
         });
       }
@@ -546,43 +513,78 @@ export default createRule<Options, MessageIds>({
     //----------------------------------------------------------------------
 
     return {
-      Program: createScope,
-      TSModuleBlock: createScope,
-      TSInterfaceDeclaration(node): void {
-        createScope(node.body, node.typeParameters);
-      },
       ClassDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
+      Program: createScope,
+      TSInterfaceDeclaration(node): void {
+        createScope(node.body, node.typeParameters);
+      },
+      TSModuleBlock: createScope,
       TSTypeLiteral: createScope,
 
       // collect overloads
-      TSDeclareFunction(node): void {
-        const exportingNode = getExportingNode(node);
-        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
-      },
-      TSCallSignatureDeclaration: addOverload,
-      TSConstructSignatureDeclaration: addOverload,
-      TSMethodSignature: addOverload,
-      TSAbstractMethodDefinition(node): void {
-        if (!node.value.body) {
-          addOverload(node);
-        }
-      },
       MethodDefinition(node): void {
         if (!node.value.body) {
           addOverload(node);
         }
       },
+      TSAbstractMethodDefinition(node): void {
+        if (!node.value.body) {
+          addOverload(node);
+        }
+      },
+      TSCallSignatureDeclaration: addOverload,
+      TSConstructSignatureDeclaration: addOverload,
+      TSDeclareFunction(node): void {
+        const exportingNode = getExportingNode(node);
+        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
+      },
+      TSMethodSignature: addOverload,
 
       // validate scopes
-      'Program:exit': checkScope,
-      'TSModuleBlock:exit': checkScope,
-      'TSInterfaceDeclaration:exit': checkScope,
       'ClassDeclaration:exit': checkScope,
+      'Program:exit': checkScope,
+      'TSInterfaceDeclaration:exit': checkScope,
+      'TSModuleBlock:exit': checkScope,
       'TSTypeLiteral:exit': checkScope,
     };
   },
+  defaultOptions: [
+    {
+      ignoreDifferentlyNamedParameters: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description:
+        'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
+      // too opinionated to be recommended
+      recommended: 'strict',
+    },
+    messages: {
+      omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
+      omittingSingleParameter:
+        '{{failureStringStart}} with an optional parameter.',
+      singleParameterDifference:
+        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignoreDifferentlyNamedParameters: {
+            description:
+              'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'unified-signatures',
 });
 
 function getExportingNode(

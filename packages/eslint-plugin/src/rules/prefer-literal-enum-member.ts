@@ -1,37 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue } from '../util';
 
 export default createRule({
-  name: 'prefer-literal-enum-member',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Require all enum members to be literal values',
-      recommended: 'strict',
-      requiresTypeChecking: false,
-    },
-    messages: {
-      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowBitwiseExpressions: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      allowBitwiseExpressions: false,
-    },
-  ],
   create(context, [{ allowBitwiseExpressions }]) {
     function isIdentifierWithName(node: TSESTree.Node, name: string): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;
@@ -107,7 +80,7 @@ export default createRule({
         if (node.initializer.type === AST_NODE_TYPES.UnaryExpression) {
           if (
             node.initializer.argument.type === AST_NODE_TYPES.Literal &&
-            ['+', '-'].includes(node.initializer.operator)
+            ['-', '+'].includes(node.initializer.operator)
           ) {
             return;
           }
@@ -123,7 +96,7 @@ export default createRule({
         if (
           node.initializer.type === AST_NODE_TYPES.UnaryExpression &&
           node.initializer.argument.type === AST_NODE_TYPES.Literal &&
-          (['+', '-'].includes(node.initializer.operator) ||
+          (['-', '+'].includes(node.initializer.operator) ||
             (allowBitwiseExpressions && node.initializer.operator === '~'))
         ) {
           return;
@@ -132,7 +105,7 @@ export default createRule({
         if (
           allowBitwiseExpressions &&
           node.initializer.type === AST_NODE_TYPES.BinaryExpression &&
-          ['|', '&', '^', '<<', '>>', '>>>'].includes(
+          ['&', '^', '<<', '>>', '>>>', '|'].includes(
             node.initializer.operator,
           ) &&
           isAllowedBitwiseOperand(declaration, node.initializer.left) &&
@@ -142,10 +115,38 @@ export default createRule({
         }
 
         context.report({
-          node: node.id,
           messageId: 'notLiteral',
+          node: node.id,
         });
       },
     };
   },
+  defaultOptions: [
+    {
+      allowBitwiseExpressions: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Require all enum members to be literal values',
+      recommended: 'strict',
+      requiresTypeChecking: false,
+    },
+    messages: {
+      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          allowBitwiseExpressions: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'prefer-literal-enum-member',
 });

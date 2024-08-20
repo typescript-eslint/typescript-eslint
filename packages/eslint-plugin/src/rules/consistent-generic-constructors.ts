@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -7,29 +8,6 @@ type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
-  name: 'consistent-generic-constructors',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description:
-        'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
-      recommended: 'stylistic',
-    },
-    messages: {
-      preferTypeAnnotation:
-        'The generic type arguments should be specified as part of the type annotation.',
-      preferConstructor:
-        'The generic type arguments should be specified as part of the constructor type arguments.',
-    },
-    fixable: 'code',
-    schema: [
-      {
-        type: 'string',
-        enum: ['type-annotation', 'constructor'],
-      },
-    ],
-  },
-  defaultOptions: ['constructor'],
   create(context, [mode]) {
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
@@ -75,13 +53,11 @@ export default createRule<Options, MessageIds>({
         }
         if (mode === 'type-annotation') {
           if (!lhs && rhs.typeArguments) {
-            const { typeArguments, callee } = rhs;
+            const { callee, typeArguments } = rhs;
             const typeAnnotation =
               context.sourceCode.getText(callee) +
               context.sourceCode.getText(typeArguments);
             context.report({
-              node,
-              messageId: 'preferTypeAnnotation',
               fix(fixer) {
                 function getIDToAttachAnnotation():
                   | TSESTree.Node
@@ -107,6 +83,8 @@ export default createRule<Options, MessageIds>({
                   ),
                 ];
               },
+              messageId: 'preferTypeAnnotation',
+              node,
             });
           }
           return;
@@ -122,8 +100,6 @@ export default createRule<Options, MessageIds>({
             .getCommentsInside(lhs.typeArguments)
             .forEach(c => extraComments.delete(c));
           context.report({
-            node,
-            messageId: 'preferConstructor',
             *fix(fixer) {
               yield fixer.remove(lhs.parent);
               for (const comment of extraComments) {
@@ -140,9 +116,34 @@ export default createRule<Options, MessageIds>({
                 yield fixer.insertTextAfter(rhs.callee, '()');
               }
             },
+            messageId: 'preferConstructor',
+            node,
           });
         }
       },
     };
   },
+  defaultOptions: ['constructor'],
+  meta: {
+    docs: {
+      description:
+        'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      preferConstructor:
+        'The generic type arguments should be specified as part of the constructor type arguments.',
+      preferTypeAnnotation:
+        'The generic type arguments should be specified as part of the type annotation.',
+    },
+    schema: [
+      {
+        enum: ['type-annotation', 'constructor'],
+        type: 'string',
+      },
+    ],
+    type: 'suggestion',
+  },
+  name: 'consistent-generic-constructors',
 });

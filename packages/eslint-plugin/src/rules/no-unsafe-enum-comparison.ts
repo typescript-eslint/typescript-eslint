@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -55,25 +56,6 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 }
 
 export default createRule({
-  name: 'no-unsafe-enum-comparison',
-  meta: {
-    hasSuggestions: true,
-    type: 'suggestion',
-    docs: {
-      description: 'Disallow comparing an enum value with a non-enum value',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      mismatchedCase:
-        'The case statement does not have a shared enum type with the switch predicate.',
-      mismatchedCondition:
-        'The two values in this comparison do not have a shared enum type.',
-      replaceValueWithEnum: 'Replace with an enum value comparison.',
-    },
-    schema: [],
-  },
-  defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
@@ -145,7 +127,6 @@ export default createRule({
             node,
             suggest: [
               {
-                messageId: 'replaceValueWithEnum',
                 fix(fixer): TSESLint.RuleFix | null {
                   // Replace the right side with an enum key if possible:
                   //
@@ -178,6 +159,7 @@ export default createRule({
 
                   return null;
                 },
+                messageId: 'replaceValueWithEnum',
               },
             ],
           });
@@ -204,4 +186,23 @@ export default createRule({
       },
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description: 'Disallow comparing an enum value with a non-enum value',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      mismatchedCase:
+        'The case statement does not have a shared enum type with the switch predicate.',
+      mismatchedCondition:
+        'The two values in this comparison do not have a shared enum type.',
+      replaceValueWithEnum: 'Replace with an enum value comparison.',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  name: 'no-unsafe-enum-comparison',
 });

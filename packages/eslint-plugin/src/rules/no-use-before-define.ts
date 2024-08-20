@@ -1,5 +1,6 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -33,13 +34,13 @@ function parseOptions(options: Config | string | null): Required<Config> {
   }
 
   return {
-    functions,
+    allowNamedExports,
     classes,
     enums,
-    variables,
-    typedefs,
+    functions,
     ignoreTypeReferences,
-    allowNamedExports,
+    typedefs,
+    variables,
   };
 }
 
@@ -203,63 +204,18 @@ function isInInitializer(
 }
 
 interface Config {
-  functions?: boolean;
+  allowNamedExports?: boolean;
   classes?: boolean;
   enums?: boolean;
-  variables?: boolean;
-  typedefs?: boolean;
+  functions?: boolean;
   ignoreTypeReferences?: boolean;
-  allowNamedExports?: boolean;
+  typedefs?: boolean;
+  variables?: boolean;
 }
-type Options = [Config | 'nofunc'];
+type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
 export default createRule<Options, MessageIds>({
-  name: 'no-use-before-define',
-  meta: {
-    type: 'problem',
-    docs: {
-      description: 'Disallow the use of variables before they are defined',
-      extendsBaseRule: true,
-    },
-    messages: {
-      noUseBeforeDefine: "'{{name}}' was used before it was defined.",
-    },
-    schema: [
-      {
-        oneOf: [
-          {
-            type: 'string',
-            enum: ['nofunc'],
-          },
-          {
-            type: 'object',
-            properties: {
-              functions: { type: 'boolean' },
-              classes: { type: 'boolean' },
-              enums: { type: 'boolean' },
-              variables: { type: 'boolean' },
-              typedefs: { type: 'boolean' },
-              ignoreTypeReferences: { type: 'boolean' },
-              allowNamedExports: { type: 'boolean' },
-            },
-            additionalProperties: false,
-          },
-        ],
-      },
-    ],
-  },
-  defaultOptions: [
-    {
-      functions: true,
-      classes: true,
-      enums: true,
-      variables: true,
-      typedefs: true,
-      ignoreTypeReferences: true,
-      allowNamedExports: false,
-    },
-  ],
   create(context, optionsWithDefault) {
     const options = parseOptions(optionsWithDefault[0]);
 
@@ -313,11 +269,11 @@ export default createRule<Options, MessageIds>({
 
         function report(): void {
           context.report({
-            node: reference.identifier,
-            messageId: 'noUseBeforeDefine',
             data: {
               name: reference.identifier.name,
             },
+            messageId: 'noUseBeforeDefine',
+            node: reference.identifier,
           });
         }
 
@@ -365,4 +321,49 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      allowNamedExports: false,
+      classes: true,
+      enums: true,
+      functions: true,
+      ignoreTypeReferences: true,
+      typedefs: true,
+      variables: true,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Disallow the use of variables before they are defined',
+      extendsBaseRule: true,
+    },
+    messages: {
+      noUseBeforeDefine: "'{{name}}' was used before it was defined.",
+    },
+    schema: [
+      {
+        oneOf: [
+          {
+            enum: ['nofunc'],
+            type: 'string',
+          },
+          {
+            additionalProperties: false,
+            properties: {
+              allowNamedExports: { type: 'boolean' },
+              classes: { type: 'boolean' },
+              enums: { type: 'boolean' },
+              functions: { type: 'boolean' },
+              ignoreTypeReferences: { type: 'boolean' },
+              typedefs: { type: 'boolean' },
+              variables: { type: 'boolean' },
+            },
+            type: 'object',
+          },
+        ],
+      },
+    ],
+    type: 'problem',
+  },
+  name: 'no-use-before-define',
 });

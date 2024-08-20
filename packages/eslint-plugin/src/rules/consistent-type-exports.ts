@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SymbolFlags } from 'typescript';
 
@@ -19,17 +20,17 @@ type Options = [
 ];
 
 interface SourceExports {
-  source: string;
   reportValueExports: ReportValueExport[];
+  source: string;
   typeOnlyNamedExport: TSESTree.ExportNamedDeclaration | null;
   valueOnlyNamedExport: TSESTree.ExportNamedDeclaration | null;
 }
 
 interface ReportValueExport {
+  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
   node: TSESTree.ExportNamedDeclaration;
   typeBasedSpecifiers: TSESTree.ExportSpecifier[];
   valueSpecifiers: TSESTree.ExportSpecifier[];
-  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
 }
 
 type MessageIds =
@@ -38,41 +39,6 @@ type MessageIds =
   | 'typeOverValue';
 
 export default createRule<Options, MessageIds>({
-  name: 'consistent-type-exports',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Enforce consistent usage of type exports',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      typeOverValue:
-        'All exports in the declaration are only used as types. Use `export type`.',
-
-      singleExportIsType:
-        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
-      multipleExportsAreTypes:
-        'Type exports {{exportNames}} are not values and should be exported using `export type`.',
-    },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          fixMixedExportsWithInlineTypeSpecifier: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
-    fixable: 'code',
-  },
-  defaultOptions: [
-    {
-      fixMixedExportsWithInlineTypeSpecifier: false,
-    },
-  ],
-
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
@@ -109,8 +75,8 @@ export default createRule<Options, MessageIds>({
         const source = getSourceFromExport(node) ?? 'undefined';
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const sourceExports = (sourceExportsMap[source] ||= {
-          source,
           reportValueExports: [],
+          source,
           typeOnlyNamedExport: null,
           valueOnlyNamedExport: null,
         });
@@ -157,10 +123,10 @@ export default createRule<Options, MessageIds>({
           (node.exportKind === 'type' && valueSpecifiers.length)
         ) {
           sourceExports.reportValueExports.push({
+            inlineTypeSpecifiers,
             node,
             typeBasedSpecifiers,
             valueSpecifiers,
-            inlineTypeSpecifiers,
           });
         }
       },
@@ -176,8 +142,6 @@ export default createRule<Options, MessageIds>({
             if (report.valueSpecifiers.length === 0) {
               // Export is all type-only with no type specifiers; convert the entire export to `export type`.
               context.report({
-                node: report.node,
-                messageId: 'typeOverValue',
                 *fix(fixer) {
                   yield* fixExportInsertType(
                     fixer,
@@ -185,6 +149,8 @@ export default createRule<Options, MessageIds>({
                     report.node,
                   );
                 },
+                messageId: 'typeOverValue',
+                node: report.node,
               });
               continue;
             }
@@ -198,8 +164,6 @@ export default createRule<Options, MessageIds>({
               const exportNames = allExportNames[0];
 
               context.report({
-                node: report.node,
-                messageId: 'singleExportIsType',
                 data: { exportNames },
                 *fix(fixer) {
                   if (fixMixedExportsWithInlineTypeSpecifier) {
@@ -212,13 +176,13 @@ export default createRule<Options, MessageIds>({
                     );
                   }
                 },
+                messageId: 'singleExportIsType',
+                node: report.node,
               });
             } else {
               const exportNames = formatWordList(allExportNames);
 
               context.report({
-                node: report.node,
-                messageId: 'multipleExportsAreTypes',
                 data: { exportNames },
                 *fix(fixer) {
                   if (fixMixedExportsWithInlineTypeSpecifier) {
@@ -231,6 +195,8 @@ export default createRule<Options, MessageIds>({
                     );
                   }
                 },
+                messageId: 'multipleExportsAreTypes',
+                node: report.node,
               });
             }
           }
@@ -238,6 +204,41 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
+  defaultOptions: [
+    {
+      fixMixedExportsWithInlineTypeSpecifier: false,
+    },
+  ],
+  meta: {
+    docs: {
+      description: 'Enforce consistent usage of type exports',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      multipleExportsAreTypes:
+        'Type exports {{exportNames}} are not values and should be exported using `export type`.',
+
+      singleExportIsType:
+        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
+      typeOverValue:
+        'All exports in the declaration are only used as types. Use `export type`.',
+    },
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          fixMixedExportsWithInlineTypeSpecifier: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
+    type: 'suggestion',
+  },
+
+  name: 'consistent-type-exports',
 });
 
 /**
@@ -288,7 +289,7 @@ function* fixSeparateNamedExports(
   sourceCode: Readonly<TSESLint.SourceCode>,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
-  const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
+  const { inlineTypeSpecifiers, node, typeBasedSpecifiers, valueSpecifiers } =
     report;
   const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
   const source = getSourceFromExport(node);

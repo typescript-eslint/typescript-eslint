@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -14,28 +15,6 @@ export type Options = [('method' | 'property')?];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
-  name: 'method-signature-style',
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Enforce using a particular method signature syntax',
-    },
-    fixable: 'code',
-    messages: {
-      errorMethod:
-        'Shorthand method signature is forbidden. Use a function property instead.',
-      errorProperty:
-        'Function property signature is forbidden. Use a method shorthand instead.',
-    },
-    schema: [
-      {
-        type: 'string',
-        enum: ['property', 'method'],
-      },
-    ],
-  },
-  defaultOptions: ['property'],
-
   create(context, [mode]) {
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
@@ -147,13 +126,11 @@ export default createRule<Options, MessageIds>({
           if (duplicatedKeyMethodNodes.length > 0) {
             if (isParentModule) {
               context.report({
-                node: methodNode,
                 messageId: 'errorMethod',
+                node: methodNode,
               });
             } else {
               context.report({
-                node: methodNode,
-                messageId: 'errorMethod',
                 *fix(fixer) {
                   const methodNodes = [
                     methodNode,
@@ -187,6 +164,8 @@ export default createRule<Options, MessageIds>({
                     }
                   }
                 },
+                messageId: 'errorMethod',
+                node: methodNode,
               });
             }
             return;
@@ -194,13 +173,11 @@ export default createRule<Options, MessageIds>({
 
           if (isParentModule) {
             context.report({
-              node: methodNode,
               messageId: 'errorMethod',
+              node: methodNode,
             });
           } else {
             context.report({
-              node: methodNode,
-              messageId: 'errorMethod',
               fix: fixer => {
                 const key = getMethodKey(methodNode);
                 const params = getMethodParams(methodNode);
@@ -211,6 +188,8 @@ export default createRule<Options, MessageIds>({
                   `${key}: ${params} => ${returnType}${delimiter}`,
                 );
               },
+              messageId: 'errorMethod',
+              node: methodNode,
             });
           }
         },
@@ -223,8 +202,6 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            node: propertyNode,
-            messageId: 'errorProperty',
             fix: fixer => {
               const key = getMethodKey(propertyNode);
               const params = getMethodParams(typeNode);
@@ -235,9 +212,33 @@ export default createRule<Options, MessageIds>({
                 `${key}${params}: ${returnType}${delimiter}`,
               );
             },
+            messageId: 'errorProperty',
+            node: propertyNode,
           });
         },
       }),
     };
   },
+  defaultOptions: ['property'],
+  meta: {
+    docs: {
+      description: 'Enforce using a particular method signature syntax',
+    },
+    fixable: 'code',
+    messages: {
+      errorMethod:
+        'Shorthand method signature is forbidden. Use a function property instead.',
+      errorProperty:
+        'Function property signature is forbidden. Use a method shorthand instead.',
+    },
+    schema: [
+      {
+        enum: ['property', 'method'],
+        type: 'string',
+      },
+    ],
+    type: 'suggestion',
+  },
+
+  name: 'method-signature-style',
 });
