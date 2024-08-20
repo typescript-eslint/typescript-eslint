@@ -4,7 +4,7 @@
   "plugins": [
     {
       "plugin": "@nx/js/typescript",
-      "exclude": ["*", "packages/integration-tests/fixtures/**"]
+      "exclude": [".", "packages/integration-tests/fixtures/**"]
     }
   ],
   "release": {
