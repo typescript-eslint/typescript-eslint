@@ -120,7 +120,7 @@ export default tseslint.config(
         project: ['packages/*/tsconfig.json', 'tsconfig.eslint.json'],
         // Added lines start
         projectService: {
-          allowDefaultProject: ['./*.js'],
+          allowDefaultProject: ['*.js'],
           defaultProject: './tsconfig.json',
         },
         // Added lines end
@@ -346,6 +346,7 @@ If your ESLint configuration contains many `rules` configurations, we suggest th
    '@typescript-eslint/no-unnecessary-type-arguments': '...',
    '@typescript-eslint/no-unnecessary-type-assertion': '...',
    '@typescript-eslint/no-unnecessary-type-constraint': '...',
++  '@typescript-eslint/no-unnecessary-type-parameters': '...',
    '@typescript-eslint/no-unsafe-argument': '...',
    '@typescript-eslint/no-unsafe-assignment': '...',
    '@typescript-eslint/no-unsafe-call': '...',
@@ -484,21 +485,21 @@ On the other hand, there are legitimate uses for `{}`, and banning it by default
 
 typescript-eslint v8 deletes the `ban-types` rule and replaces it with several more targeted rules:
 
-- [`@typescript-eslint/no-restricted-types`](https://v8--typescript-eslint.netlify.app/rules/no-restricted-types) is the new rule for banning a configurable list of type names.
+- [`@typescript-eslint/no-restricted-types`](/rules/no-restricted-types) is the new rule for banning a configurable list of type names.
   It has no options enabled by default.
-- [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type) bans the built-in `{}` type in confusing locations.
-- [`@typescript-eslint/no-unsafe-function-type`](https://v8--typescript-eslint.netlify.app/rules/no-unsafe-function-type) bans the built-in `Function` type
-- [`@typescript-eslint/no-wrapper-object-types`](https://v8--typescript-eslint.netlify.app/rules/no-wrapper-object-types) bans `Object` and built-in class wrappers such as `Number`.
+- [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type) bans the built-in `{}` type in confusing locations.
+- [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type) bans the built-in `Function` type
+- [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types) bans `Object` and built-in class wrappers such as `Number`.
 
 To migrate to the new rules:
 
-- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
-- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](https://v8--typescript-eslint.netlify.app/rules/no-restricted-types).
+- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
+- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
 - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban:
-  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type).
-  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](https://v8--typescript-eslint.netlify.app/rules/no-unsafe-function-type).
-  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](https://v8--typescript-eslint.netlify.app/rules/no-wrapper-object-types).
-- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](https://v8--typescript-eslint.netlify.app/rules/no-empty-object-type).
+  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
+  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type).
+  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types).
+- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
 
 For more details, see the issues and pull requests that split apart the `ban-types` rule:
 

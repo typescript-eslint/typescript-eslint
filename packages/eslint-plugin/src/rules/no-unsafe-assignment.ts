@@ -324,8 +324,8 @@ export default createRule({
     ): Readonly<Record<string, unknown>> | undefined {
       if (receiverType) {
         return {
-          sender: '`' + checker.typeToString(senderType) + '`',
-          receiver: '`' + checker.typeToString(receiverType) + '`',
+          sender: `\`${checker.typeToString(senderType)}\``,
+          receiver: `\`${checker.typeToString(receiverType)}\``,
         };
       }
       return {
@@ -401,7 +401,7 @@ export default createRule({
         const restType = services.getTypeAtLocation(node.argument);
         if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
           context.report({
-            node: node,
+            node,
             messageId: 'unsafeArraySpread',
             data: createData(restType),
           });

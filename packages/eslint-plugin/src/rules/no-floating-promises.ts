@@ -67,10 +67,8 @@ export default createRule<Options, MessageId>({
       floatingFixAwait: 'Add await operator.',
       floatingVoid: messageBaseVoid,
       floatingFixVoid: 'Add void operator to ignore.',
-      floatingUselessRejectionHandler:
-        messageBase + ' ' + messageRejectionHandler,
-      floatingUselessRejectionHandlerVoid:
-        messageBaseVoid + ' ' + messageRejectionHandler,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
       floatingPromiseArray: messagePromiseArray,
       floatingPromiseArrayVoid: messagePromiseArrayVoid,
     },
@@ -173,6 +171,11 @@ export default createRule<Options, MessageId>({
                     ];
                   },
                 },
+                {
+                  messageId: 'floatingFixAwait',
+                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                    addAwait(fixer, expression, node),
+                },
               ],
             });
           } else {
@@ -184,30 +187,8 @@ export default createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'floatingFixAwait',
-                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    if (
-                      expression.type === AST_NODE_TYPES.UnaryExpression &&
-                      expression.operator === 'void'
-                    ) {
-                      return fixer.replaceTextRange(
-                        [expression.range[0], expression.range[0] + 4],
-                        'await',
-                      );
-                    }
-                    const tsNode = services.esTreeNodeToTSNodeMap.get(
-                      node.expression,
-                    );
-                    if (isHigherPrecedenceThanUnary(tsNode)) {
-                      return fixer.insertTextBefore(node, 'await ');
-                    }
-                    return [
-                      fixer.insertTextBefore(node, 'await ('),
-                      fixer.insertTextAfterRange(
-                        [expression.range[1], expression.range[1]],
-                        ')',
-                      ),
-                    ];
-                  },
+                  fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
+                    addAwait(fixer, expression, node),
                 },
               ],
             });
@@ -215,6 +196,33 @@ export default createRule<Options, MessageId>({
         }
       },
     };
+
+    function addAwait(
+      fixer: TSESLint.RuleFixer,
+      expression: TSESTree.Expression,
+      node: TSESTree.ExpressionStatement,
+    ): TSESLint.RuleFix | TSESLint.RuleFix[] {
+      if (
+        expression.type === AST_NODE_TYPES.UnaryExpression &&
+        expression.operator === 'void'
+      ) {
+        return fixer.replaceTextRange(
+          [expression.range[0], expression.range[0] + 4],
+          'await',
+        );
+      }
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.expression);
+      if (isHigherPrecedenceThanUnary(tsNode)) {
+        return fixer.insertTextBefore(node, 'await ');
+      }
+      return [
+        fixer.insertTextBefore(node, 'await ('),
+        fixer.insertTextAfterRange(
+          [expression.range[1], expression.range[1]],
+          ')',
+        ),
+      ];
+    }
 
     function isKnownSafePromiseReturn(node: TSESTree.Node): boolean {
       if (node.type !== AST_NODE_TYPES.CallExpression) {

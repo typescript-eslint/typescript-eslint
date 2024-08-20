@@ -94,6 +94,7 @@ export default tseslint.config(
         warnOnUnsupportedTypeScriptVersion: false,
       },
     },
+    linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
       // make sure we're not leveraging any deprecated APIs
       'deprecation/deprecation': 'error',
@@ -216,6 +217,7 @@ export default tseslint.config(
       'no-useless-concat': 'error',
       'no-var': 'error',
       'no-void': ['error', { allowAsStatement: true }],
+      'object-shorthand': 'error',
       'one-var': ['error', 'never'],
       'operator-assignment': 'error',
       'prefer-arrow-callback': 'error',
@@ -223,6 +225,7 @@ export default tseslint.config(
       'prefer-object-has-own': 'error',
       'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
+      'prefer-template': 'error',
       radix: 'error',
 
       //
@@ -321,6 +324,10 @@ export default tseslint.config(
 
       'jsdoc/informative-docs': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-node-protocol': 'error',
+      'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-string-replace-all': 'error',
     },
   },
   {
@@ -593,6 +600,7 @@ export default tseslint.config(
         'error',
         {
           order: 'asc',
+          groups: ['unknown', 'nullish'],
           ignoreCase: false,
           type: 'natural',
         },

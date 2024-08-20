@@ -67,12 +67,39 @@ export function getWrappingFixer(
     }
 
     // check if we need to insert semicolon
-    if (/^[`([]/.exec(code) && isMissingSemicolonBefore(node, sourceCode)) {
+    if (/^[`([]/.test(code) && isMissingSemicolonBefore(node, sourceCode)) {
       code = `;${code}`;
     }
 
     return fixer.replaceText(node, code);
   };
+}
+/**
+ * If the node to be moved and the destination node require parentheses, include parentheses in the node to be moved.
+ * @param sourceCode Source code of current file
+ * @param nodeToMove Nodes that need to be moved
+ * @param destinationNode Final destination node with nodeToMove
+ * @returns If parentheses are required, code for the nodeToMove node is returned with parentheses at both ends of the code.
+ */
+export function getMovedNodeCode(params: {
+  sourceCode: Readonly<TSESLint.SourceCode>;
+  nodeToMove: TSESTree.Node;
+  destinationNode: TSESTree.Node;
+}): string {
+  const { sourceCode, nodeToMove: existingNode, destinationNode } = params;
+  const code = sourceCode.getText(existingNode);
+  if (isStrongPrecedenceNode(existingNode)) {
+    // Moved node never needs parens
+    return code;
+  }
+
+  if (!isWeakPrecedenceParent(destinationNode)) {
+    // Destination would never needs parens, regardless what node moves there
+    return code;
+  }
+
+  // Parens may be necessary
+  return `(${code})`;
 }
 
 /**
@@ -98,8 +125,10 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
  * Check if a node's parent could have different precedence if the node changes.
  */
 function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const parent = node.parent!;
+  const parent = node.parent;
+  if (!parent) {
+    return false;
+  }
 
   if (
     parent.type === AST_NODE_TYPES.UpdateExpression ||

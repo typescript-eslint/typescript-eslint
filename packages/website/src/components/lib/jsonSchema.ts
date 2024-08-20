@@ -125,7 +125,7 @@ export function getEslintJsonSchema(
       },
       rules: {
         type: 'object',
-        properties: properties,
+        properties,
         additionalProperties: false,
       },
     },
@@ -206,7 +206,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
     properties: {
       compilerOptions: {
         type: 'object',
-        properties: properties,
+        properties,
       },
     },
   };

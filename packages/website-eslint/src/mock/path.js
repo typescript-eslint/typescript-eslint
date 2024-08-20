@@ -73,7 +73,7 @@ export function resolve(...args) {
       continue;
     }
 
-    resolvedPath = path + '/' + resolvedPath;
+    resolvedPath = `${path}/${resolvedPath}`;
     resolvedAbsolute = path.charAt(0) === '/';
   }
 
@@ -212,16 +212,16 @@ export function extname(path) {
 }
 
 export default {
-  extname: extname,
-  basename: basename,
-  dirname: dirname,
-  sep: sep,
-  delimiter: delimiter,
-  relative: relative,
-  join: join,
-  isAbsolute: isAbsolute,
-  normalize: normalize,
-  resolve: resolve,
+  extname,
+  basename,
+  dirname,
+  sep,
+  delimiter,
+  relative,
+  join,
+  isAbsolute,
+  normalize,
+  resolve,
 };
 
 function filter(xs, f) {

@@ -1,3 +1,93 @@
+## 8.2.0 (2024-08-19)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** add suggestion to `require-await` to remove `async` keyword
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [use-unknown-in-catch-callback-variable] flag second argument of `.then`
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] conflict with TS for variables used before assignment
+
+- **eslint-plugin:** delete [] in message if ReadOnly<string[]> is detected
+
+- **eslint-plugin:** [no-redundant-type-constituents] differentiate a types-error any from a true any
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] check mapped constraint types if necessary
+
+- **eslint-plugin:** [no-unsafe-enum-comparison] add logic to see through intersections
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Dave
+- Jake Bailey
+- James
+- Josh Goldberg ✨
+- liuxingbaoyu
+- Yukihiro Hasegawa
+- Yutong Zhu
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.1.0 (2024-08-12)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-floating-promises] enable "add await" suggestion if ignoreVoid is true
+
+- **typescript-estree:** restrict variable declarator definite/init combinations
+
+- **eslint-plugin:** [no-unsafe-return] check promise any
+
+- **eslint-plugin:** [no-misused-promises] check subtype methods against heritage type methods
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-enum-comparison] typo in test
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] skip checking function bodies for AST references
+
+- **eslint-plugin:** [member-ordering] get accessor member name & take into account `abstract` and decorator
+
+- **eslint-plugin:** [prefer-optional-chain] wrong parenthesis fix output
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] clarify message
+
+
+### ❤️  Thank You
+
+- Aly Thobani
+- Brad Zacher
+- James
+- Josh Goldberg ✨
+- Joshua Chen
+- Olivier Zalmanski
+- YeonJuan
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.0.1 (2024-08-05)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unused-vars] ignore imports used only as types
+
+
+### ❤️  Thank You
+
+- Jake Bailey
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 # 8.0.0 (2024-07-31)
 
 

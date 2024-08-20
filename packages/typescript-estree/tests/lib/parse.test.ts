@@ -1,7 +1,8 @@
+import { join, resolve } from 'node:path';
+
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
 import * as globbyModule from 'globby';
-import { join, resolve } from 'path';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
@@ -57,7 +58,7 @@ const globbySyncMock = jest.mocked(globbyModule.sync);
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
  */
 function alignErrorPath(error: Error): never {
-  error.message = error.message.replace(/\\(?!["])/gm, '/');
+  error.message = error.message.replaceAll(/\\(?!["])/gm, '/');
   throw error;
 }
 
@@ -739,6 +740,35 @@ describe('parseAndGenerateServices', () => {
           // shouldn't call globby again due to the caching
           expect(globbySyncMock).toHaveBeenCalledTimes(1);
         });
+      });
+    });
+
+    describe('project references', () => {
+      beforeEach(() => {
+        parser.clearCaches();
+      });
+
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectReferences');
+      const code = 'var a = true';
+
+      const testParse = () => (): void => {
+        parser.parseAndGenerateServices(code, {
+          disallowAutomaticSingleRunInference: true,
+          filePath: join(PROJECT_DIR, './file.ts'),
+          project: './**/tsconfig.json',
+          tsconfigRootDir: PROJECT_DIR,
+        });
+      };
+
+      it('throws a special-case error when project references are enabled in the only TSConfig and the file is not found', () => {
+        expect(testParse()).toThrowErrorMatchingInlineSnapshot(`
+        "ESLint was configured to run on \`<tsconfigRootDir>/file.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+        That TSConfig uses project "references" and doesn't include \`<tsconfigRootDir>/file.ts\` directly, which is not supported by \`parserOptions.project\`.
+        Either:
+        - Switch to \`parserOptions.projectService\`
+        - Use an ESLint-specific TSConfig
+        See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#are-typescript-project-references-supported"
+        `);
       });
     });
   }

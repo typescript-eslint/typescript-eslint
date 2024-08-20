@@ -57,9 +57,9 @@ export function createParser(
 
       const parseSettings: ParseSettings = {
         ...defaultParseSettings,
-        code: code,
+        code,
         codeFullText: code,
-        filePath: filePath,
+        filePath,
       };
 
       const program = compilerHost.languageService.getProgram();

@@ -30,13 +30,13 @@ The following nodes are considered boolean expressions and their type is checked
 
 ```ts
 // nullable numbers are considered unsafe by default
-let num: number | undefined = 0;
+declare const num: number | undefined;
 if (num) {
   console.log('num is defined');
 }
 
 // nullable strings are considered unsafe by default
-let str: string | null = null;
+declare const str: string | null;
 if (!str) {
   console.log('str is empty');
 }

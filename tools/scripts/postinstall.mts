@@ -36,7 +36,7 @@ void (async function (): Promise<void> {
   process.chdir(workspaceRoot);
 
   // Install git hooks
-  await $`yarn husky install`;
+  await $`yarn husky`;
 
   if (!process.env.SKIP_POSTINSTALL_BUILD) {
     // Clean any caches that may be invalid now

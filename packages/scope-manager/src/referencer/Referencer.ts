@@ -580,7 +580,7 @@ class Referencer extends Visitor {
   }
 
   protected PrivateIdentifier(): void {
-    // private identifiers are members on classes and thus have no variables to to reference
+    // private identifiers are members on classes and thus have no variables to reference
   }
 
   protected Program(node: TSESTree.Program): void {

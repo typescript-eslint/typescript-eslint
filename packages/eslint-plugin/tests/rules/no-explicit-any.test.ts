@@ -1220,7 +1220,7 @@ const test = <T extends Partial<never>>() => {};
     const code = `// fixToUnknown: true\n${testCase.code}`;
     acc.push({
       code,
-      output: code.replace(/any/g, 'unknown'),
+      output: code.replaceAll('any', 'unknown'),
       options: [{ ...options[0], fixToUnknown: true }],
       errors: testCase.errors.map(err => {
         if (err.line === undefined) {

@@ -16,8 +16,18 @@ export namespace SharedConfig {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
-  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
+  export type GlobalVariableOptionBase =
+    | 'off'
+    | 'readonly'
+    | 'writable'
+    | /** @deprecated use `'writable'` */ 'writeable'
+    | /** @deprecated use `'readonly'` */ 'readable';
+  export type GlobalVariableOptionBoolean =
+    | /** @deprecated use `'writable'` */ true
+    | /** @deprecated use `'readonly'` */ false;
+  export type GlobalVariableOption =
+    | GlobalVariableOptionBase
+    | GlobalVariableOptionBoolean;
 
   export interface GlobalsConfig {
     [name: string]: GlobalVariableOption;
@@ -199,7 +209,7 @@ export namespace FlatConfig {
      * Set to `"latest"` for the most recent supported version.
      * @default "latest"
      */
-    ecmaVersion?: EcmaVersion;
+    ecmaVersion?: EcmaVersion | undefined;
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
@@ -212,7 +222,7 @@ export namespace FlatConfig {
      * require('espree')
      * ```
      */
-    parser?: Parser;
+    parser?: Parser | undefined;
     /**
      * An object specifying additional options that are passed directly to the parser.
      * The available options are parser-dependent.
@@ -229,7 +239,7 @@ export namespace FlatConfig {
      * "commonjs"
      * ```
      */
-    sourceType?: SourceType;
+    sourceType?: SourceType | undefined;
   }
 
   // it's not a json schema so it's nowhere near as nice to read and convert...
