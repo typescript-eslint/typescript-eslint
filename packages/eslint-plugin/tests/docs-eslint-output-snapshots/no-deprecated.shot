@@ -6,7 +6,7 @@ exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 1`] 
 /** @deprecated Use @see {@link apiV2} instead. */
 declare function apiV1(): Promise<string>;
 
-declare function apiV1(): Promise<string>;
+declare function apiV2(): Promise<string>;
 
 await apiV1();
       ~~~~~ \`apiV1\` is deprecated. Use
@@ -30,7 +30,7 @@ exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 3`] 
 /** @deprecated Use @see {@link apiV2} instead. */
 declare function apiV1(): Promise<string>;
 
-declare function apiV1(): Promise<string>;
+declare function apiV2(): Promise<string>;
 
 await apiV2();
 "
