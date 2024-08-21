@@ -3,13 +3,13 @@
 exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-/** @deprecated Use @see {@link apiV2} instead. */
+/** @deprecated Use apiV2 instead. */
 declare function apiV1(): Promise<string>;
 
 declare function apiV2(): Promise<string>;
 
 await apiV1();
-      ~~~~~ \`apiV1\` is deprecated. Use
+      ~~~~~ \`apiV1\` is deprecated. Use apiV2 instead.
 "
 `;
 
@@ -27,7 +27,7 @@ const url = parse('/foo');
 exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 3`] = `
 "Correct
 
-/** @deprecated Use @see {@link apiV2} instead. */
+/** @deprecated Use apiV2 instead. */
 declare function apiV1(): Promise<string>;
 
 declare function apiV2(): Promise<string>;
