@@ -1,10 +1,11 @@
-import path from 'node:path';
+import type { TSESTree } from '@typescript-eslint/utils';
 
 import { parseForESLint } from '@typescript-eslint/parser';
-import type { TSESTree } from '@typescript-eslint/utils';
 import Ajv from 'ajv';
+import path from 'node:path';
 
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
+
 import {
   typeMatchesSpecifier,
   typeOrValueSpecifierSchema,
@@ -133,8 +134,8 @@ describe('TypeOrValueSpecifier', () => {
       const rootDir = path.join(__dirname, 'fixtures');
       const { ast, services } = parseForESLint(code, {
         disallowAutomaticSingleRunInference: true,
-        project: './tsconfig.json',
         filePath: path.join(rootDir, 'file.ts'),
+        project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
       const type = services

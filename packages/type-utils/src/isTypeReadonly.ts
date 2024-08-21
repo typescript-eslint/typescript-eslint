@@ -1,49 +1,51 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
+
+import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
   typeMatchesSpecifier,
   typeOrValueSpecifierSchema,
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
-  /** the type cannot be handled by the function */
-  UnknownType = 1,
   /** the type is mutable */
   Mutable = 2,
   /** the type is readonly */
   Readonly = 3,
+  /** the type cannot be handled by the function */
+  UnknownType = 1,
 }
 
 export interface ReadonlynessOptions {
-  readonly treatMethodsAsReadonly?: boolean;
   readonly allow?: TypeOrValueSpecifier[];
+  readonly treatMethodsAsReadonly?: boolean;
 }
 
 export const readonlynessOptionsSchema = {
-  type: 'object',
   additionalProperties: false,
   properties: {
+    allow: {
+      items: typeOrValueSpecifierSchema,
+      type: 'array',
+    },
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: {
-      type: 'array',
-      items: typeOrValueSpecifierSchema,
-    },
   },
+  type: 'object',
 } satisfies JSONSchema4;
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
-  treatMethodsAsReadonly: false,
   allow: [],
+  treatMethodsAsReadonly: false,
 };
 
-function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
+function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
   return Object.hasOwn(node, 'symbol');
 }
 
