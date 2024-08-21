@@ -8,6 +8,7 @@ import type * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getStaticMemberAccessValue,
   getStaticValue,
   isParenlessArrowFunction,
   isRestParameterDeclaration,
@@ -25,19 +26,6 @@ type MessageIds =
 
 const useUnknownMessageBase =
   'Prefer the safe `: unknown` for a `{{method}}`{{append}} callback variable.';
-
-/**
- * `x.memberName` => 'memberKey'
- *
- * `const mk = 'memberKey'; x[mk]` => 'memberKey'
- *
- * `const mk = 1234; x[mk]` => 1234
- */
-const getStaticMemberAccessKey = (
-  { computed, property }: TSESTree.MemberExpression,
-  scope: Scope,
-): { value: unknown } | null =>
-  computed ? getStaticValue(property, scope) : { value: property.name };
 
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
@@ -242,9 +230,9 @@ export default createRule<[], MessageIds>({
           return;
         }
 
-        const staticMemberAccessKey = getStaticMemberAccessKey(
+        const staticMemberAccessKey = getStaticMemberAccessValue(
           callee,
-          context.sourceCode.getScope(callee),
+          context,
         );
         if (!staticMemberAccessKey) {
           return;
@@ -259,7 +247,7 @@ export default createRule<[], MessageIds>({
             append: string;
             argIndexToCheck: number;
           }[]
-        ).find(({ method }) => staticMemberAccessKey.value === method);
+        ).find(({ method }) => staticMemberAccessKey === method);
         if (!promiseMethodInfo) {
           return;
         }
