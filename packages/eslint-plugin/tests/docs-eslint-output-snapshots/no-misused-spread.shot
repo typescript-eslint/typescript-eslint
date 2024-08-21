@@ -48,87 +48,35 @@ const getObjSpread = { ...getObj() };
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
 "Incorrect
 
-// { "allowStrings": false }
-const fruit = 'Apple';
-const chars = [...fruit];
-               ~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
+type UnsafeIterable = Iterable<number>;
+
+declare const iterable: UnsafeIterable;
+
+const spreadIterable = { ...iterable };
+                         ~~~~~~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+
+type UnsafeBrandedString = string & { __brand: 'unsafe' };
+
+declare const brandedString: UnsafeBrandedString;
+
+const spreadBrandedString = { ...brandedString };
 "
 `;
 
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
 "Correct
-Options: {"allowStrings": true}
-
-// { "allowStrings": true }
-const fruit = 'Apple';
-const chars = [...fruit];
-"
-`;
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 5`] = `
-"Incorrect
-
-declare function doWork();
-
-const spread = { ...doWork };
-                 ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
-"
-`;
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 6`] = `
-"Incorrect
-
-class User {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-const user = new User('John');
-
-const spread = { ...user };
-                 ~~~~~~~ Using the spread operator on class instances will lose their class prototype.
-"
-`;
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 7`] = `
-"Incorrect
-
-class User {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-const spread = { ...User };
-                 ~~~~~~~ Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.
-"
-`;
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 8`] = `
-"Incorrect
-
-type UnsafeIterable = Iterable<number>;
-
-declare const iterable: UnsafeIterable;
-
-const spread = { ...iterable };
-                 ~~~~~~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
-"
-`;
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 9`] = `
-"Correct
-Options: {"allowForKnownSafeIterables":["SafeIterable"]}
+Options: {"allow":["SafeIterable", "BrandedString"]}
 
 type SafeIterable = Iterable<number>;
 
 declare const iterable: SafeIterable;
 
-const spread = { ...iterable };
+const spreadIterable = { ...iterable };
+
+type BrandedString = string & { __brand: 'safe' };
+
+declare const brandedString: BrandedString;
+
+const spreadBrandedString = { ...brandedString };
 "
 `;

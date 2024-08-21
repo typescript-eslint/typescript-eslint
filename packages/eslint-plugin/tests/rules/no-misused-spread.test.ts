@@ -163,6 +163,14 @@ ruleTester.run('no-misused-spread', rule, {
       const o = { ...promiseLike };
     `,
 
+    {
+      options: [{ allow: ['Promise'] }],
+      code: `
+        const promise = new Promise(() => {});
+        const o = { ...promise };
+      `,
+    },
+
     `
       interface A {}
 
@@ -179,14 +187,15 @@ ruleTester.run('no-misused-spread', rule, {
     `,
 
     {
-      options: [{ allowStrings: true }],
+      options: [{ allow: ['string'] }],
       code: `
-        const a = [...'test'];
+        const str: string = 'test';
+        const a = [...str];
       `,
     },
 
     {
-      options: [{ allowFunctions: true }],
+      options: [{ allow: ['f'] }],
       code: `
         function f() {}
 
@@ -197,7 +206,7 @@ ruleTester.run('no-misused-spread', rule, {
     {
       options: [
         {
-          allowForKnownSafeIterables: [{ from: 'lib', name: 'Iterable' }],
+          allow: [{ from: 'lib', name: 'Iterable' }],
         },
       ],
       code: `
@@ -208,7 +217,7 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowForKnownSafeIterables: ['CustomIterable'] }],
+      options: [{ allow: ['CustomIterable'] }],
       code: `
         type CustomIterable = {
           [Symbol.iterator]: () => Generator<string>;
@@ -223,9 +232,7 @@ ruleTester.run('no-misused-spread', rule, {
     {
       options: [
         {
-          allowForKnownSafeIterables: [
-            { from: 'file', name: 'CustomIterable' },
-          ],
+          allow: [{ from: 'file', name: 'CustomIterable' }],
         },
       ],
       code: `
@@ -242,7 +249,7 @@ ruleTester.run('no-misused-spread', rule, {
     {
       options: [
         {
-          allowForKnownSafeIterables: [
+          allow: [
             { from: 'package', package: 'module', name: 'CustomIterable' },
           ],
         },
@@ -263,7 +270,7 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowClassInstances: true }],
+      options: [{ allow: ['A'] }],
       code: `
         class A {
           a = 1;
@@ -276,7 +283,7 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowClassDeclarations: true }],
+      options: [{ allow: ['A'] }],
       code: `
         const a = {
           ...class A {
@@ -1025,7 +1032,7 @@ ruleTester.run('no-misused-spread', rule, {
 
         const a = { ...iterator };
       `,
-      options: [{ allowForKnownSafeIterables: ['AnotherIterable'] }],
+      options: [{ allow: ['AnotherIterable'] }],
       errors: [
         {
           messageId: 'noIterableSpreadInObject',
@@ -1051,9 +1058,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [
         {
-          allowForKnownSafeIterables: [
-            { from: 'package', package: 'module', name: 'Nothing' },
-          ],
+          allow: [{ from: 'package', package: 'module', name: 'Nothing' }],
         },
       ],
       errors: [
@@ -1115,7 +1120,6 @@ ruleTester.run('no-misused-spread', rule, {
     },
 
     {
-      options: [{ allowClassInstances: true }],
       code: `
         class A {
           [Symbol.iterator]() {
@@ -1131,7 +1135,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
+          messageId: 'noClassInstanceSpreadInObject',
           line: 12,
           column: 21,
           endColumn: 31,
@@ -1176,9 +1180,9 @@ ruleTester.run('no-misused-spread', rule, {
       errors: [
         {
           messageId: 'noClassInstanceSpreadInObject',
-          line: 2,
+          line: 3,
           column: 21,
-          endColumn: 34,
+          endColumn: 29,
         },
       ],
     },

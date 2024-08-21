@@ -58,157 +58,17 @@ const getObjSpread = { ...getObj() };
 
 ## Options
 
-### `allowStrings`
+### `allow`
 
-By default, this rule disallows using the spread operator on strings inside arrays.
-Set `"allowStrings": true` to allow this behavior.
+This option allows marking specific types as "safe" to be spread. It takes an
+array of type specifiers to consider safe.
 
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-const fruit = 'Apple';
-const chars = [...fruit];
-```
-
-</TabItem>
-
-<TabItem value="✅ Correct">
-
-```ts option='{"allowStrings": true}'
-// { "allowStrings": true }
-const fruit = 'Apple';
-const chars = [...fruit];
-```
-
-</TabItem>
-</Tabs>
-```
-
-### `allowFunctions`
-
-By default, this rule disallows using the spread operator on functions without additional properties.
-Set `"allowFunctions": true` to allow this behavior.
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-declare function doWork();
-
-const spread = { ...doWork };
-```
-
-</TabItem>
-
-<TabItem value="✅ Correct">
-
-```ts option='{"allowFunctions": true}'
-// { "allowFunctions": true }
-declare function doWork();
-
-const spread = { ...doWork };
-```
-
-</TabItem>
-</Tabs>
-
-### `allowClassInstances`
-
-By default, this rule disallows using the spread operator on instances of classes.
-Set `"allowClassInstances": true` to allow this behavior.
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-class User {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-const user = new User('John');
-
-const spread = { ...user };
-```
-
-</TabItem>
-
-<TabItem value="✅ Correct">
-
-```ts option='{"allowClassInstances": true}'
-// { "allowClassInstances": true }
-class User {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-const user = new User('John');
-
-const spread = { ...user };
-```
-
-</TabItem>
-</Tabs>
-
-### `allowClassDeclarations`
-
-By default, this rule disallows using the spread operator on class declarations.
-Set `"allowClassDeclarations": true` to allow this behavior.
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-class User {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-const spread = { ...User };
-```
-
-</TabItem>
-
-<TabItem value="✅ Correct">
-
-```ts option='{"allowClassDeclarations": true}'
-// { "allowClassDeclarations": true }
-class User {
-  name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
-}
-
-const spread = { ...User };
-```
-
-</TabItem>
-</Tabs>
-
-### `allowForKnownSafeIterables`
-
-By default, this rule disallows using the spread operator on iterables. This
-option allows marking specific iterable types as "safe" to be spread.
-
-This option takes an array of type specifiers to consider safe.
 Each item in the array must have one of the following forms:
 
-- A type defined in the current file, or globally available (`"SafeIterable"`)
-- A type defined in a file (`{ from: "file", name: "SafeIterable", path: "src/safe-iterable.ts" }` with `path` being an optional path relative to the project root directory)
-- A type from the default library (`{ from: "lib", name: "CustomIterable" }`)
-- A type from a package (`{ from: "package", name: "AwesomeIterable", package: "iterable-lib" }`, this also works for types defined in a typings package).
+- A type defined in the current file, or globally available (`"SafeType"`)
+- A type defined in a file (`{ from: "file", name: "SafeString", path: "src/safe-string.ts" }` with `path` being an optional path relative to the project root directory)
+- A type from the default library (`{ from: "lib", name: "BrandedArray" }`)
+- A type from a package (`{ from: "package", name: "ThisIsSafe", package: "safe-lib" }`, this also works for types defined in a typings package).
 
 Examples of a configuration for this option:
 
@@ -217,10 +77,10 @@ Examples of a configuration for this option:
   "error",
   {
     "allowForKnownSafeIterables": [
-      "SafeIterable",
-      { "from": "file", "name": "ProbablySafeIterable" },
-      { "from": "lib", "name": "CustomIterable" },
-      { "from": "package", "name": "AwesomeIterable", "package": "iterable-lib" }
+      "SafeType",
+      { "from": "file", "name": "SafeString", "path": "src/safe-string.ts" },
+      { "from": "lib", "name": "BrandedArray" },
+      { "from": "package", "name": "ThisIsSafe", "package": "safe-lib" }
     ]
   }
 ]
@@ -234,18 +94,30 @@ type UnsafeIterable = Iterable<number>;
 
 declare const iterable: UnsafeIterable;
 
-const spread = { ...iterable };
+const spreadIterable = { ...iterable };
+
+type UnsafeBrandedString = string & { __brand: 'unsafe' };
+
+declare const brandedString: UnsafeBrandedString;
+
+const spreadBrandedString = { ...brandedString };
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allowForKnownSafeIterables":["SafeIterable"]}'
+```ts option='{"allow":["SafeIterable", "BrandedString"]}'
 type SafeIterable = Iterable<number>;
 
 declare const iterable: SafeIterable;
 
-const spread = { ...iterable };
+const spreadIterable = { ...iterable };
+
+type BrandedString = string & { __brand: 'safe' };
+
+declare const brandedString: BrandedString;
+
+const spreadBrandedString = { ...brandedString };
 ```
 
 </TabItem>

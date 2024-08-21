@@ -16,11 +16,7 @@ import {
 
 type Options = [
   {
-    allowStrings?: boolean;
-    allowFunctions?: boolean;
-    allowClassInstances?: boolean;
-    allowClassDeclarations?: boolean;
-    allowForKnownSafeIterables?: TypeOrValueSpecifier[];
+    allow?: TypeOrValueSpecifier[];
   },
 ];
 
@@ -73,30 +69,10 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowStrings: {
-            description:
-              'Whether to allow spreading strings in arrays. Defaults to false.',
-            type: 'boolean',
-          },
-          allowFunctions: {
-            description:
-              'Whether to allow spreading functions without properties in objects. Defaults to false.',
-            type: 'boolean',
-          },
-          allowClassInstances: {
-            description:
-              'Whether to allow spreading class instances in objects. Defaults to false.',
-            type: 'boolean',
-          },
-          allowClassDeclarations: {
-            description:
-              'Whether to allow spreading class declarations in objects. Defaults to false.',
-            type: 'boolean',
-          },
-          allowForKnownSafeIterables: {
+          allow: {
             ...readonlynessOptionsSchema.properties.allow,
             description:
-              'An array of iterables type specifiers that are known to be safe to spread in objects.',
+              'An array of type specifiers that are known to be safe to spread.',
           },
         },
         additionalProperties: false,
@@ -106,11 +82,7 @@ export default createRule<Options, MessageIds>({
 
   defaultOptions: [
     {
-      allowStrings: false,
-      allowFunctions: false,
-      allowClassInstances: false,
-      allowClassDeclarations: false,
-      allowForKnownSafeIterables: [],
+      allow: [],
     },
   ],
 
@@ -121,7 +93,11 @@ export default createRule<Options, MessageIds>({
     function checkArraySpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (!options.allowStrings && isString(type)) {
+      if (isTypeAllowed(type)) {
+        return;
+      }
+
+      if (isString(type)) {
         context.report({
           node,
           messageId: 'noStringSpreadInArray',
@@ -134,6 +110,10 @@ export default createRule<Options, MessageIds>({
     function checkObjectSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
+      if (isTypeAllowed(type)) {
+        return;
+      }
+
       if (isPromise(services.program, type)) {
         context.report({
           node,
@@ -143,7 +123,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (!options.allowFunctions && isFunctionWithoutProps(type)) {
+      if (isFunctionWithoutProps(type)) {
         context.report({
           node,
           messageId: 'noFunctionSpreadInObject',
@@ -170,7 +150,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (!options.allowClassInstances && isClassInstance(type)) {
+      if (isClassInstance(type)) {
         context.report({
           node,
           messageId: 'noClassInstanceSpreadInObject',
@@ -179,11 +159,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (
-        !options.allowClassDeclarations &&
-        isClassDeclaration(type) &&
-        !isClassInstance(type)
-      ) {
+      if (isClassDeclaration(type) && !isClassInstance(type)) {
         context.report({
           node,
           messageId: 'noClassDeclarationSpreadInObject',
@@ -192,15 +168,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const isTypeAllowed = (): boolean => {
-        const allowedTypes = options.allowForKnownSafeIterables ?? [];
-
-        return allowedTypes.some(specifier =>
-          typeMatchesSpecifier(type, specifier, services.program),
-        );
-      };
-
-      if (isIterable(type, checker) && !isString(type) && !isTypeAllowed()) {
+      if (
+        isIterable(type, checker) &&
+        // Don't report when the type is string, since TS will flag it already
+        !isString(type)
+      ) {
         context.report({
           node,
           messageId: 'noIterableSpreadInObject',
@@ -208,6 +180,16 @@ export default createRule<Options, MessageIds>({
 
         return;
       }
+    }
+
+    function isTypeAllowed(type: ts.Type): boolean {
+      if (!options.allow) {
+        return false;
+      }
+
+      return options.allow.some(specifier =>
+        typeMatchesSpecifier(type, specifier, services.program),
+      );
     }
 
     return {
