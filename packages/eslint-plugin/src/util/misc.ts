@@ -247,13 +247,18 @@ function getStaticMemberAccessValue(
 ): string | null {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
-  return node.computed
-    ? (getStaticValue(key, sourceCode.getScope(node))?.value as string | null)
-    : key.type === AST_NODE_TYPES.Literal
-      ? getStaticStringValue(key)
-      : 'name' in key
-        ? key.name
-        : '';
+  if (node.computed) {
+    return getStaticValue(key, sourceCode.getScope(node))?.value as
+      | string
+      | null;
+  }
+  const { type } = key;
+  return type === AST_NODE_TYPES.Literal ||
+    type === AST_NODE_TYPES.TemplateLiteral
+    ? getStaticStringValue(key)
+    : 'name' in key
+      ? key.name
+      : '';
 }
 
 /**
