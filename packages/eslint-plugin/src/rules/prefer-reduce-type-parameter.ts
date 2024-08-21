@@ -7,28 +7,12 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isStaticMemberAccessOfValue,
   isTypeAssertion,
 } from '../util';
 
 type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
   parent: TSESTree.CallExpression;
-};
-
-const getMemberExpressionName = (
-  member: TSESTree.MemberExpression,
-): string | null => {
-  if (!member.computed) {
-    return member.property.name;
-  }
-
-  if (
-    member.property.type === AST_NODE_TYPES.Literal &&
-    typeof member.property.value === 'string'
-  ) {
-    return member.property.value;
-  }
-
-  return null;
 };
 
 export default createRule({
@@ -67,7 +51,7 @@ export default createRule({
       'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
       ): void {
-        if (getMemberExpressionName(callee) !== 'reduce') {
+        if (isStaticMemberAccessOfValue(callee, context, 'reduce')) {
           return;
         }
 
