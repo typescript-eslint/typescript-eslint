@@ -24,6 +24,13 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    const { jsDocParsingMode } = context.parserOptions;
+    if (jsDocParsingMode === 'none' || jsDocParsingMode === 'type-info') {
+      throw new Error(
+        `Cannot be used with jsDocParsingMode: '${jsDocParsingMode}'.`,
+      );
+    }
+
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
