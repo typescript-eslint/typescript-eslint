@@ -34,8 +34,8 @@ function BlogSidebarContent({
 }: Props): ReactNode {
   const items = itemsRaw.map(item => ({
     ...item,
-    // BlogSidebarItem only allows title: string, but we render as Markdown
-    title: (<Markdown>{item.title}</Markdown>) as unknown as string,
+    // @ts-expect-error -- BlogSidebarItem only allows title: string, but we render as Markdown
+    title: <Markdown>{item.title}</Markdown>,
   }));
 
   const themeConfig = useThemeConfig();
