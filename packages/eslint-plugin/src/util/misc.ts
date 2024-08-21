@@ -241,7 +241,7 @@ type NodeWithKey =
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractMethodDefinition
   | TSESTree.TSAbstractPropertyDefinition;
-function getStaticKeyValue(
+function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
 ): string | null {
@@ -261,11 +261,14 @@ function getStaticKeyValue(
  * `x.memberName`, `x['memberName']`,
  * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
  */
-const isStaticKeyOfValue = (
+const isStaticMemberAccessOfValue = (
   memberExpression: NodeWithKey,
-  value: string,
   context: RuleContext<string, unknown[]>,
-): boolean => value === getStaticKeyValue(memberExpression, context);
+  ...values: string[]
+): boolean =>
+  (values as (string | null)[]).includes(
+    getStaticMemberAccessValue(memberExpression, context),
+  );
 
 export {
   arrayGroupByToMap,
@@ -275,13 +278,13 @@ export {
   findFirstResult,
   formatWordList,
   getEnumNames,
-  getStaticKeyValue,
+  getStaticMemberAccessValue,
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
   isRestParameterDeclaration,
   isParenlessArrowFunction,
-  isStaticKeyOfValue,
+  isStaticMemberAccessOfValue,
   MemberNameType,
   RequireKeys,
   typeNodeRequiresParentheses,

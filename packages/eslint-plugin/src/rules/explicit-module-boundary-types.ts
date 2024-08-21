@@ -2,7 +2,7 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, getStaticKeyValue, isFunction } from '../util';
+import { createRule, isFunction, isStaticMemberAccessOfValue } from '../util';
 import type {
   FunctionExpression,
   FunctionInfo,
@@ -268,10 +268,11 @@ export default createRule<Options, MessageIds>({
         (node.type === AST_NODE_TYPES.Property && node.method) ||
         node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
-        const value = getStaticKeyValue(node, context);
-        if (typeof value === 'string') {
-          return options.allowedNames.includes(value);
-        }
+        return isStaticMemberAccessOfValue(
+          node,
+          context,
+          ...options.allowedNames,
+        );
       }
 
       return false;

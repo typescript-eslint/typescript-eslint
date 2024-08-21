@@ -8,7 +8,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
-  isStaticKeyOfValue,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export default createRule({
@@ -147,7 +147,7 @@ export default createRule({
       node: TSESTree.MemberExpression,
       allowFixing: boolean,
     ): void {
-      if (!isStaticKeyOfValue(node, 'indexOf', context)) {
+      if (!isStaticMemberAccessOfValue(node, context, 'indexOf')) {
         return;
       }
       // Check if the comparison is equivalent to `includes()`.

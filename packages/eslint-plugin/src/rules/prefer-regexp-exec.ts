@@ -9,7 +9,7 @@ import {
   getStaticValue,
   getTypeName,
   getWrappingFixer,
-  isStaticKeyOfValue,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 enum ArgumentType {
@@ -102,7 +102,7 @@ export default createRule({
       'CallExpression[arguments.length=1] > MemberExpression'(
         memberNode: TSESTree.MemberExpression,
       ): void {
-        if (!isStaticKeyOfValue(memberNode, 'match', context)) {
+        if (!isStaticMemberAccessOfValue(memberNode, context, 'match')) {
           return;
         }
         const objectNode = memberNode.object;

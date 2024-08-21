@@ -10,7 +10,7 @@ import {
   isPromiseConstructorLike,
   isPromiseLike,
   isReadonlyErrorLike,
-  isStaticKeyOfValue,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -99,7 +99,7 @@ export default createRule<Options, MessageIds>({
         }
 
         if (
-          !isStaticKeyOfValue(callee, 'reject', context) ||
+          !isStaticMemberAccessOfValue(callee, context, 'reject') ||
           !typeAtLocationIsLikePromise(callee.object)
         ) {
           return;
