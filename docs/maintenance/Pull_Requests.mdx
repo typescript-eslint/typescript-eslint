@@ -37,7 +37,7 @@ Open pull requests ideally switch between two states:
 - Ready for review: either newly created or after [review is re-requested](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/about-pull-request-reviews#re-requesting-a-review)
 - Waiting for author activity: either by virtue of [being a draft](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests#draft-pull-requests) or having the [`awaiting response` label](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+label%3A%22awaiting+response%22)
 
-Add the `awaiting response` label to a PR whenever you post a review.
+Add the `awaiting response` label to a PR and remove `1 approval` if it exists whenever you post a request for changes.
 It will be automatically removed if the author re-requests review.
 
 ### Be Kind
@@ -65,9 +65,6 @@ If there's no backing issue:
 
 - If the PR is a straightforward docs or tooling fix that doesn't impact users, it's ok to review it as-is
 - Otherwise, add the `please fill out the template` label and post a comment like the _Needs Issue_ template
-
-Upon completing your review, if the build is passing and you feel comfortable merging it in, go ahead and squash merge.
-Otherwise, add the `1 approval` label.
 
 #### Common Things to Look For
 
@@ -110,6 +107,22 @@ For preliminary reviews, be clear with what scale you're reviewing at: _"Reviewi
 
 For repeat reviews, be clear when it's something you missed earlier and/or there's new information.
 Don't apologize if the missed information was only made clear because of requested changes - this is part of the review process!
+
+### Approvals
+
+Upon completing your review, if the build is passing and you have no blockers, approve it on GitHub.
+Then:
+
+- If there isn't a `1 approval` label or existing approval, add the `1 approval` label
+- If there's already `1 approval` and/or it's been a week since the last request for changes, go ahead and squash merge
+  - For straightforward PRs that don't impact users, you can wait 3 business days instead
+
+We try to wait a week on PRs to give part-time reviewers a chance to get to it.
+
+:::tip
+If a PR has had `1 approval` and no change requests for a week, go ahead and merge it.
+We try to do a final pass over [`label:"1 approval" -review:changes-requested` PRs](https://github.com/typescript-eslint/typescript-eslint/pulls?q=is%3Apr+is%3Aopen+label%3A%221+approval%22+-review%3Achanges-requested) the 1-2 days before each [weekly Monday release](../users/Releases.mdx#latest).
+:::
 
 ### Other States
 
