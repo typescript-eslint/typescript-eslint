@@ -11,6 +11,14 @@ import TabItem from '@theme/TabItem';
 
 The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a powerful feature in JavaScript that can be misused in ways not always detectable by TypeScript. This rule disallows using the spread operator on types where spreading can lead to unexpected behavior.
 
+This rule disallows the spread operator in the following cases:
+
+- Spreading a string into an array
+- Spreading a `Promise` into an object
+- Spreading a function without properties into an object
+- Spreading a class instance or declaration into an object
+- Spreading an iterable (`Map`, `Array`, etc.) into an object
+
 ## Examples
 
 <Tabs>
