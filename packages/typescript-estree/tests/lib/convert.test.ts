@@ -324,7 +324,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
       esTsEnumDeclaration.members;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -341,10 +341,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
+      /* eslint-disable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
       esTsEnumDeclaration.members;
       esTsEnumDeclaration.members;
-      /* eslint-enable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
+      /* eslint-enable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -357,7 +357,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
       esTsEnumDeclaration.members;
 
       expect(emitWarning).not.toHaveBeenCalled();
@@ -372,10 +372,10 @@ describe('convert', () => {
     it('allows writing to the deprecated aliased property as a new enumerable value', () => {
       const esTsEnumDeclaration = getEsTsEnumDeclaration();
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       esTsEnumDeclaration.members = [];
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expect(esTsEnumDeclaration.members).toEqual([]);
       expect(Object.keys(esTsEnumDeclaration)).toContain('members');
     });
@@ -388,7 +388,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
       tsMappedType.typeParameter;
 
       expect(emitWarning).toHaveBeenCalledWith(
@@ -405,10 +405,10 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: false,
       });
 
-      /* eslint-disable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
+      /* eslint-disable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
       tsMappedType.typeParameter;
       tsMappedType.typeParameter;
-      /* eslint-enable deprecation/deprecation, @typescript-eslint/no-unused-expressions */
+      /* eslint-enable @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions */
 
       expect(emitWarning).toHaveBeenCalledTimes(1);
     });
@@ -421,7 +421,7 @@ describe('convert', () => {
         suppressDeprecatedPropertyWarnings: true,
       });
 
-      // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unused-expressions
+      // eslint-disable-next-line @typescript-eslint/no-deprecated, @typescript-eslint/no-unused-expressions
       tsMappedType.typeParameter;
 
       expect(emitWarning).not.toHaveBeenCalled();
@@ -436,10 +436,10 @@ describe('convert', () => {
     it('allows writing to the deprecated getter property as a new enumerable value', () => {
       const tsMappedType = getEsTsMappedType();
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       tsMappedType.typeParameter = undefined!;
 
-      // eslint-disable-next-line deprecation/deprecation
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       expect(tsMappedType.typeParameter).toBeUndefined();
       expect(Object.keys(tsMappedType)).toContain('typeParameter');
     });
