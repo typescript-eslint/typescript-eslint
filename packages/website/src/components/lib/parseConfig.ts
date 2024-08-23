@@ -1,5 +1,6 @@
-import { isRecord } from '../ast/utils';
 import type { EslintRC, TSConfig } from '../types';
+
+import { isRecord } from '../ast/utils';
 import { ensureObject, parseJSONObject, toJson } from './json';
 
 /**
