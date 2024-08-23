@@ -60,7 +60,6 @@ export default createRule<Options, MessageIds>({
       typeOverValue:
         'All imports in the declaration are only used as types. Use `import type`.',
       someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
-
       avoidImportType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
     },
@@ -69,13 +68,18 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           disallowTypeAnnotations: {
+            description:
+              'Whether to disallow type imports in type annotations (`import()`).',
             type: 'boolean',
           },
           fixStyle: {
+            description:
+              'The expected type modifier to be added when an import is detected as used only in the type position.',
             type: 'string',
             enum: ['separate-type-imports', 'inline-type-imports'],
           },
           prefer: {
+            description: 'The expected import kind for type-only imports.',
             type: 'string',
             enum: ['type-imports', 'no-type-imports'],
           },

@@ -9,6 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "onlyInlineLambdas": {
+        "description": "Whether to restrict checking only to members immediately assigned a lambda value.",
         "type": "boolean"
       }
     },
@@ -21,6 +22,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to restrict checking only to members immediately assigned a lambda value. */
     onlyInlineLambdas?: boolean;
   },
 ];

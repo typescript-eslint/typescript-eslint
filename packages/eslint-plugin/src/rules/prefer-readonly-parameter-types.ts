@@ -34,15 +34,24 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          allow: readonlynessOptionsSchema.properties.allow,
+          allow: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description: 'An array of type specifiers to ignore.',
+          },
           checkParameterProperties: {
+            description: 'Whether to check class parameter properties.',
             type: 'boolean',
           },
           ignoreInferredTypes: {
+            description:
+              "Whether to ignore parameters which don't explicitly specify a type.",
             type: 'boolean',
           },
-          treatMethodsAsReadonly:
-            readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
+          treatMethodsAsReadonly: {
+            ...readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
+            description:
+              'Whether to treat all mutable methods as though they are readonly.',
+          },
         },
       },
     ],

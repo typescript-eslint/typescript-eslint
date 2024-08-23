@@ -84,6 +84,8 @@ export default createRule<[Options], MessageIds>({
           'ts-nocheck': { $ref: '#/items/0/$defs/directiveConfigSchema' },
           'ts-check': { $ref: '#/items/0/$defs/directiveConfigSchema' },
           minimumDescriptionLength: {
+            description:
+              'A minimum character length for descriptions when `allow-with-description` is enabled.',
             type: 'number',
             default: defaultMinimumDescriptionLength,
           },

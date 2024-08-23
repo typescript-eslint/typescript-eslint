@@ -33,6 +33,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowSingleExtends: {
+            description:
+              'Whether to allow empty interfaces that extend a single other interface.',
             type: 'boolean',
           },
         },

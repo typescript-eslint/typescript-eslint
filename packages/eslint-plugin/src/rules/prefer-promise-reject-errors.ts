@@ -35,6 +35,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowEmptyReject: {
+            description:
+              'Whether to allow calls to `Promise.reject()` with no arguments.',
             type: 'boolean',
           },
         },

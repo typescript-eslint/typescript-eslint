@@ -22,6 +22,8 @@ const schema = deepMerge(
   {
     properties: {
       allow: {
+        description:
+          'Locations and kinds of functions that are allowed to be empty.',
         items: {
           type: 'string',
           enum: [
