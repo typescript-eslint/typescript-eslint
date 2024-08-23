@@ -217,6 +217,14 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
       [
+        'interface FooProps {prop: string}; type Test = FooProps;',
+        {
+          from: 'file',
+          name: 'FooProps',
+          path: 'tests/../tests/fixtures/////file.ts',
+        },
+      ],
+      [
         'type Foo = {prop: string}; type Test = Foo;',
         {
           from: 'file',

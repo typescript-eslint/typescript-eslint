@@ -204,6 +204,10 @@ h6 {
   text-decoration: underline;
 }
 
+.markdown a:has(code) {
+  text-underline-offset: 0.25em;
+}
+
 .markdown a * {
   vertical-align: baseline;
 }
