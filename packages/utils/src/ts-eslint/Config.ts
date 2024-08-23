@@ -18,13 +18,13 @@ export namespace SharedConfig {
 
   export type GlobalVariableOptionBase =
     | 'off'
-    | 'readable'
+    | /** @deprecated use `'readonly'` */ 'readable'
     | 'readonly'
-    | /** @deprecated use `'writable'` */ 'writable'
-    | /** @deprecated use `'readonly'` */ 'writeable';
+    | 'writable'
+    | /** @deprecated use `'writable'` */ 'writeable';
   export type GlobalVariableOptionBoolean =
-    | /** @deprecated use `'writable'` */ false
-    | /** @deprecated use `'readonly'` */ true;
+    | /** @deprecated use `'readonly'` */ false
+    | /** @deprecated use `'writable'` */ true;
   export type GlobalVariableOption =
     | GlobalVariableOptionBase
     | GlobalVariableOptionBoolean;
@@ -250,8 +250,7 @@ export namespace FlatConfig {
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
-      | string[]
-      // yes, a single layer of array nesting is supported
+      | string[] // yes, a single layer of array nesting is supported
       | string
     )[];
     /**
