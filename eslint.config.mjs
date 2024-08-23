@@ -6,7 +6,6 @@ import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
-import deprecationPlugin from 'eslint-plugin-deprecation';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
@@ -32,9 +31,6 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      // https://github.com/gund/eslint-plugin-deprecation/issues/78
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
-      ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       // https://github.com/import-js/eslint-plugin-import/issues/2948
@@ -96,9 +92,6 @@ export default tseslint.config(
     },
     linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
-      // make sure we're not leveraging any deprecated APIs
-      'deprecation/deprecation': 'error',
-
       // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
       '@typescript-eslint/no-confusing-void-expression': 'off',
 
@@ -335,7 +328,6 @@ export default tseslint.config(
     extends: [tseslint.configs.disableTypeChecked],
     rules: {
       // turn off other type-aware rules
-      'deprecation/deprecation': 'off',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
 
       // turn off rules that don't apply to JS code
@@ -581,6 +573,8 @@ export default tseslint.config(
     files: [
       'packages/rule-schema-to-typescript-types/src/**/*.ts',
       'packages/utils/src/**/*.ts',
+      'packages/visitor-keys/src/**/*.ts',
+      'packages/website*/src/**/*.ts',
     ],
     rules: {
       'perfectionist/sort-classes': [
