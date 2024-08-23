@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression BinaryExpression private-lhs-in AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+-             decorators: Array [],
+-             definite: false,
+              key: PrivateIdentifier {
+                type: 'PrivateIdentifier',
+                name: 'a',
+
+                range: [12, 14],
+                loc: {
+                  start: { column: 2, line: 2 },
+                  end: { column: 4, line: 2 },
+                },
+              },
+-             optional: false,
+-             override: false,
+-             readonly: false,
+              static: false,
+              value: null,
+
+              range: [12, 15],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 5, line: 2 },
+              },
+            },
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+-             decorators: Array [],
+-             definite: false,
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'b',
+-               optional: false,
+
+                range: [18, 19],
+                loc: {
+                  start: { column: 2, line: 3 },
+                  end: { column: 3, line: 3 },
+                },
+              },
+-             optional: false,
+-             override: false,
+-             readonly: false,
+              static: false,
+              value: BinaryExpression {
+                type: 'BinaryExpression',
+                left: PrivateIdentifier {
+                  type: 'PrivateIdentifier',
+                  name: 'a',
+
+                  range: [22, 24],
+                  loc: {
+                    start: { column: 6, line: 3 },
+                    end: { column: 8, line: 3 },
+                  },
+                },
+                operator: 'in',
+                right: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'A',
+-                 optional: false,
+
+                  range: [28, 29],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 13, line: 3 },
+                  },
+                },
+
+                range: [22, 29],
+                loc: {
+                  start: { column: 6, line: 3 },
+                  end: { column: 13, line: 3 },
+                },
+              },
+
+              range: [18, 30],
+              loc: {
+                start: { column: 2, line: 3 },
+                end: { column: 14, line: 3 },
+              },
+            },
+          ],
+
+          range: [8, 32],
+          loc: {
+            start: { column: 8, line: 1 },
+            end: { column: 1, line: 4 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'A',
+-         optional: false,
+
+          range: [6, 7],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 7, line: 1 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [0, 32],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 4 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 33],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 5 },
+    },
+  }"
+`;
