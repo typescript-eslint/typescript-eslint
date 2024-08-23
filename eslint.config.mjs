@@ -570,7 +570,11 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
-    files: ['packages/utils/src/**/*.ts', 'packages/visitor-keys/src/**/*.ts'],
+    files: [
+      'packages/utils/src/**/*.ts',
+      'packages/visitor-keys/src/**/*.ts',
+      'packages/website*/src/**/*.ts',
+    ],
     rules: {
       'perfectionist/sort-classes': [
         'error',
