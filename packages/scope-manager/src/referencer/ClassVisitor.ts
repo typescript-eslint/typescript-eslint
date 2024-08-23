@@ -29,13 +29,13 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
+
   protected AccessorProperty(node: TSESTree.AccessorProperty): void {
     this.visitPropertyDefinition(node);
   }
-
-  ///////////////////
-  // Visit helpers //
-  ///////////////////
 
   protected ClassBody(node: TSESTree.ClassBody): void {
     // this is here on purpose so that this visitor explicitly declares visitors
@@ -73,10 +73,6 @@ class ClassVisitor extends Visitor {
     this.visitPropertyDefinition(node);
   }
 
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
-
   protected TSAbstractMethodDefinition(
     node: TSESTree.TSAbstractMethodDefinition,
   ): void {
@@ -92,6 +88,10 @@ class ClassVisitor extends Visitor {
   protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
     this.visitType(node);
   }
+
+  ///////////////////
+  // Visit helpers //
+  ///////////////////
 
   protected visitClass(
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,

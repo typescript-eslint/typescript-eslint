@@ -22,9 +22,9 @@ class TypeVisitor extends Visitor {
     typeReferencer.visit(node);
   }
 
-  ///////////////////
-  // Visit helpers //
-  ///////////////////
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
 
   protected Identifier(node: TSESTree.Identifier): void {
     this.#referencer.currentScope().referenceType(node);
@@ -34,10 +34,6 @@ class TypeVisitor extends Visitor {
     this.visit(node.object);
     // don't visit the property
   }
-
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
 
   protected TSCallSignatureDeclaration(
     node: TSESTree.TSCallSignatureDeclaration,
@@ -215,6 +211,10 @@ class TypeVisitor extends Visitor {
     }
     this.visit(node.typeAnnotation);
   }
+
+  ///////////////////
+  // Visit helpers //
+  ///////////////////
 
   protected visitFunctionType(
     node:
