@@ -46,6 +46,7 @@ export = {
     '@typescript-eslint/no-base-to-string': 'error',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
     '@typescript-eslint/no-confusing-void-expression': 'error',
+    '@typescript-eslint/no-deprecated': 'error',
     'no-dupe-class-members': 'off',
     '@typescript-eslint/no-dupe-class-members': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
