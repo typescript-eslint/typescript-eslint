@@ -225,23 +225,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 RuleTester.afterAll = mocha.after;
 ```
 
-#### Vitest
-
-Consider setting up `RuleTester`'s static properties in a [`setupFiles` script](https://vitest.dev/config/#setupfiles):
-
-```ts
-import * as vitest from 'vitest';
-import { RuleTester } from '@typescript-eslint/rule-tester';
-
-RuleTester.afterAll = vitest.afterAll;
-
-// If you are not using vitest with globals: true (https://vitest.dev/config/#globals):
-RuleTester.it = vitest.it;
-RuleTester.itOnly = vitest.it.only;
-RuleTester.describe = vitest.describe;
-```
-
-#### Node built-in test runner
+#### Node.js (`node:test`)
 
 Consider setting up `RuleTester`'s static properties in a preloaded module using the [`--import`](https://nodejs.org/api/cli.html#--importmodule) or [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag:
 
@@ -260,6 +244,44 @@ Tests can then be [run from the command line](https://nodejs.org/api/test.html#r
 
 ```sh
 node --import setup.js --test
+```
+
+#### Vitest
+
+Consider setting up `RuleTester`'s static properties in a [`setupFiles` script](https://vitest.dev/config/#setupfiles):
+
+```ts
+import * as vitest from 'vitest';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = vitest.afterAll;
+
+// If you are not using vitest with globals: true (https://vitest.dev/config/#globals):
+RuleTester.it = vitest.it;
+RuleTester.itOnly = vitest.it.only;
+RuleTester.describe = vitest.describe;
+```
+
+#### Other Frameworks
+
+In general, `RuleTester` can support any test framework that exposes hooks for running code before or after rules.
+From `RuleTester`'s [Static Properties](#static-properties), assign any of the following that the running test framework supports.
+
+- `afterAll`
+- `describe`
+- `it`
+- `itOnly`
+
+I.e.:
+
+```ts
+import * as test from '...';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = test.after;
+RuleTester.describe = test.describe;
+RuleTester.it = test.it;
+RuleTester.itOnly = test.it.only;
 ```
 
 ## Options
@@ -281,3 +303,41 @@ import ValidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/Val
 import InvalidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/InvalidTestCase.ts';
 
 <CodeBlock language="ts">{InvalidTestCase}</CodeBlock>
+
+## Static Properties
+
+Each of the following properties may be assigned to as static members of the `RuleTester` class.
+
+For example, to assign `afterAll`:
+
+```ts
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = () => {
+  // ...
+};
+```
+
+### `afterAll`
+
+Runs after all the tests in this file have completed.
+
+### `describe`
+
+Creates a test grouping.
+
+### `describeSkip`
+
+Skips running the tests inside this `describe` for the current file.
+
+### `it`
+
+Creates a test closure.
+
+### `itOnly`
+
+Only runs this test in the current file.
+
+### `itSkip`
+
+Skips running this test in the current file.
