@@ -40,7 +40,7 @@ export interface LibSpecifier {
 
 /**
  * Describes specific types or values imported from packages.
- * See [TypeOrValueSpecifier > PackageSpecifier](/packages/type-utils/type-or-value-specifier#packagepecifier).
+ * See [TypeOrValueSpecifier > PackageSpecifier](/packages/type-utils/type-or-value-specifier#packagespecifier).
  */
 export interface PackageSpecifier {
   from: 'package';
