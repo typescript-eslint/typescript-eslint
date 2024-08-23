@@ -1,6 +1,6 @@
 import debug from 'debug';
-import { sync as globSync } from 'globby';
 import isGlob from 'is-glob';
+import { globSync } from 'tinyglobby';
 
 import type { CanonicalPath } from '../create-program/shared';
 import {

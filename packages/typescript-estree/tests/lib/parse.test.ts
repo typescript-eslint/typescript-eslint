@@ -2,7 +2,7 @@ import { join, resolve } from 'node:path';
 
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
-import * as globbyModule from 'globby';
+import * as globbyModule from 'tinyglobby';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
@@ -39,11 +39,11 @@ jest.mock('typescript', () => {
   };
 });
 
-jest.mock('globby', () => {
-  const globby = jest.requireActual<typeof globbyModule>('globby');
+jest.mock('tinyglobby', () => {
+  const globby = jest.requireActual<typeof globbyModule>('tinyglobby');
   return {
     ...globby,
-    sync: jest.fn(globby.sync),
+    globSync: jest.fn(globby.globSync),
   };
 });
 
@@ -52,7 +52,7 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const globbySyncMock = jest.mocked(globbyModule.sync);
+const globbySyncMock = jest.mocked(globbyModule.globSync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
