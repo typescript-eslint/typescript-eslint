@@ -341,7 +341,7 @@ The behavior of `parserOptions.projectService` can be customized by setting it t
 };
 ```
 
-##### **`allowDefaultProject`**
+##### `allowDefaultProject`
 
 Globs of files to allow running with the default project compiler options despite not being matched by the project service.
 It takes in an array of string paths that will be resolved relative to the [`tsconfigRootDir`](#tsconfigrootdir).
@@ -356,14 +356,14 @@ There are several restrictions on this option to prevent it from being overused:
 - `**` is not allowed in globs passed to it
 - Files that match `allowDefaultProject` may not also be included in their nearest `tsconfig.json`
 
-##### **`defaultProject`**
+##### `defaultProject`
 
 Path to a TSConfig to use instead of TypeScript's default project configuration.
 It takes in a string path that will be resolved relative to the [`tsconfigRootDir`](#tsconfigrootdir).
 
 This is required to specify which TSConfig file on disk will be used for [`projectService.allowDefaultProject`](#allowdefaultproject).
 
-##### **`maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING`**
+##### `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING`
 
 > Default: `8`.
 

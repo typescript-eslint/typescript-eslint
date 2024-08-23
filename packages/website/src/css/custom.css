@@ -211,3 +211,7 @@ h6 {
 td > p:last-child {
   margin-bottom: 0;
 }
+
+h5 {
+  font-weight: bold;
+}
