@@ -13,8 +13,8 @@ class FunctionNameDefinition extends DefinitionBase<
   TSESTree.Identifier
 > {
   public readonly isTypeDefinition = false;
-
   public readonly isVariableDefinition = true;
+
   constructor(name: TSESTree.Identifier, node: FunctionNameDefinition['node']) {
     super(DefinitionType.FunctionName, name, node, null);
   }

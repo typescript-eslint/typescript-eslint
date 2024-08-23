@@ -10,8 +10,8 @@ class TSEnumMemberDefinition extends DefinitionBase<
   TSESTree.Identifier | TSESTree.StringLiteral
 > {
   public readonly isTypeDefinition = true;
-
   public readonly isVariableDefinition = true;
+
   constructor(
     name: TSESTree.Identifier | TSESTree.StringLiteral,
     node: TSEnumMemberDefinition['node'],
