@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/lib/rule-tester/rule-tester.js
 
-import assert from 'node:assert';
-import path from 'node:path';
-import util from 'node:util';
-
 import type * as ParserType from '@typescript-eslint/parser';
-import * as parser from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
@@ -16,14 +10,19 @@ import type {
   RuleListener,
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
+
+import * as parser from '@typescript-eslint/parser';
+import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import assert from 'node:assert';
+import path from 'node:path';
+import util from 'node:util';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint';
 import stringify from 'json-stable-stringify-without-jsonify';
 import merge from 'lodash.merge';
 
-import { TestFramework } from './TestFramework';
 import type {
   InvalidTestCase,
   NormalizedRunTests,
@@ -33,6 +32,8 @@ import type {
   TesterConfigWithDefaults,
   ValidTestCase,
 } from './types';
+
+import { TestFramework } from './TestFramework';
 import { ajvBuilder } from './utils/ajv';
 import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
 import { validate } from './utils/config-validator';
@@ -165,9 +166,9 @@ function getUnsubstitutedMessagePlaceholders(
 }
 
 export class RuleTester extends TestFramework {
-  readonly #testerConfig: TesterConfigWithDefaults;
-  readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
   readonly #linter: Linter;
+  readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
+  readonly #testerConfig: TesterConfigWithDefaults;
 
   /**
    * Creates a new instance of RuleTester.
@@ -260,20 +261,6 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleModule): void {
-    this.#rules[name] = {
-      ...rule,
-      // Create a wrapper rule that freezes the `context` properties.
-      create(context): RuleListener {
-        freezeDeeply(context.options);
-        freezeDeeply(context.settings);
-        freezeDeeply(context.parserOptions);
-
-        return (typeof rule === 'function' ? rule : rule.create)(context);
-      },
-    };
-  }
-
   #normalizeTests<
     MessageIds extends string,
     Options extends readonly unknown[],
@@ -335,6 +322,7 @@ export class RuleTester extends TestFramework {
     };
 
     const normalizedTests = {
+      invalid: rawTests.invalid.map(normalizeTest),
       valid: rawTests.valid
         .map(test => {
           if (typeof test === 'string') {
@@ -343,7 +331,6 @@ export class RuleTester extends TestFramework {
           return test;
         })
         .map(normalizeTest),
-      invalid: rawTests.invalid.map(normalizeTest),
     };
 
     // convenience iterator to make it easy to loop all tests without a concat
@@ -407,6 +394,20 @@ export class RuleTester extends TestFramework {
     normalizedTests.invalid = normalizedTests.invalid.map(maybeMarkAsOnly);
 
     return normalizedTests;
+  }
+
+  defineRule(name: string, rule: AnyRuleModule): void {
+    this.#rules[name] = {
+      ...rule,
+      // Create a wrapper rule that freezes the `context` properties.
+      create(context): RuleListener {
+        freezeDeeply(context.options);
+        freezeDeeply(context.settings);
+        freezeDeeply(context.parserOptions);
+
+        return (typeof rule === 'function' ? rule : rule.create)(context);
+      },
+    };
   }
 
   /**
@@ -543,12 +544,12 @@ export class RuleTester extends TestFramework {
     rule: RuleModule<MessageIds, Options>,
     item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
   ): {
-    messages: Linter.LintMessage[];
-    outputs: string[];
-    beforeAST: TSESTree.Program;
     afterAST: TSESTree.Program;
+    beforeAST: TSESTree.Program;
     config: RuleTesterConfig;
     filename?: string;
+    messages: Linter.LintMessage[];
+    outputs: string[];
   } {
     this.defineRule(ruleName, rule);
 
@@ -692,7 +693,7 @@ export class RuleTester extends TestFramework {
     do {
       passNumber++;
 
-      const { applyLanguageOptions, applyInlineConfig, finalize } =
+      const { applyInlineConfig, applyLanguageOptions, finalize } =
         SourceCode.prototype;
 
       try {
@@ -704,7 +705,6 @@ export class RuleTester extends TestFramework {
         });
 
         const actualConfig = merge(configWithoutCustomKeys, {
-          linterOptions: { reportUnusedDisableDirectives: 1 },
           languageOptions: {
             ...configWithoutCustomKeys.languageOptions,
             parserOptions: {
@@ -713,6 +713,7 @@ export class RuleTester extends TestFramework {
               ...configWithoutCustomKeys.languageOptions?.parserOptions,
             },
           },
+          linterOptions: { reportUnusedDisableDirectives: 1 },
         });
         messages = this.#linter.verify(code, actualConfig, filename);
       } finally {
