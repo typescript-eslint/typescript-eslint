@@ -1,5 +1,3 @@
-import type { TSESTreeOptions } from './parser-options';
-
 /**
  * Removes options that prompt the parser to parse the project with type
  * information. In other words, you can use this if you are invoking the parser
