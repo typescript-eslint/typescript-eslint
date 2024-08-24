@@ -50,7 +50,7 @@ function createSerializer<Constructor extends ConstructorSignature>(
         SEEN_THINGS.add(thing);
       }
 
-      const outputLines = [];
+      const outputLines: string[] = [];
       const childIndentation = indentation + config.indent;
       for (const key of keys) {
         let value = thing[key as string];

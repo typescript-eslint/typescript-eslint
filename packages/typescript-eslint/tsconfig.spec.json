@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/scope-manager",
+    "outDir": "../../dist/out-tsc/typescript-eslint",
     "types": ["jest", "node"],
     "noImplicitAny": false
   },

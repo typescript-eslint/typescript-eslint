@@ -1,13 +1,21 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    // specifically disable declarations for the plugin
-    "declaration": false,
-    "declarationMap": false,
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "dist",
     "resolveJsonModule": true
   },
-  "include": ["src", "typings"],
-  "references": []
+  "include": ["typings", "tools"],
+  "references": [
+    { "path": "../rule-tester/tsconfig.build.json" },
+    { "path": "../type-utils/tsconfig.build.json" },
+    { "path": "../rule-schema-to-typescript-types/tsconfig.build.json" },
+    { "path": "../parser/tsconfig.build.json" },
+    { "path": "../visitor-keys/tsconfig.build.json" },
+    { "path": "../ast-spec/tsconfig.build.json" },
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../typescript-estree/tsconfig.build.json" },
+    { "path": "../scope-manager/tsconfig.build.json" },
+    { "path": "../utils/tsconfig.build.json" },
+    { "path": "../typescript-eslint/tsconfig.build.json" }
+  ]
 }

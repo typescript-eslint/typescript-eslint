@@ -4,7 +4,7 @@ declare module 'eslint-plugin-deprecation' {
     Linter,
   } from '@typescript-eslint/utils/ts-eslint';
 
-  declare const exprt: {
+  const exprt: {
     configs: { recommended: ClassicConfig.Config };
     rules: NonNullable<Linter.Plugin['rules']>;
   };

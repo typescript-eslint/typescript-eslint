@@ -4,7 +4,7 @@ declare module 'eslint-plugin-jsx-a11y' {
     Linter,
   } from '@typescript-eslint/utils/ts-eslint';
 
-  declare const exprt: {
+  const exprt: {
     configs: {
       recommended: ClassicConfig.Config;
       strict: ClassicConfig.Config;

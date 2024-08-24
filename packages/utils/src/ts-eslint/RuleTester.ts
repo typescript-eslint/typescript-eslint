@@ -228,9 +228,9 @@ declare class RuleTesterBase {
  */
 class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
-export {
+export { RuleTester };
+export type {
   InvalidTestCase,
-  RuleTester,
   RuleTesterConfig,
   RuleTesterTestFrameworkFunction,
   RunTests,

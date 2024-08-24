@@ -1,15 +1,35 @@
 {
-  "extends": "./tsconfig.build.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "outDir": "../../dist/out-tsc/eslint-plugin",
+    // specifically disable declarations for the plugin (which requires disabling composite)
+    // see reasoning in packages/eslint-plugin/rules.d.ts
     "composite": false,
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "emitDeclarationOnly": null,
     "rootDir": "."
   },
-  "include": ["src", "typings", "tests", "tools", "*.d.ts"],
+  "include": [
+    "src",
+    "typings",
+    "tests",
+    "tools",
+    "index.d.ts",
+    "rules.d.ts",
+    "eslint-recommended-raw.d.ts"
+  ],
   "references": [
-    { "path": "../utils/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" },
-    { "path": "../rule-schema-to-typescript-types/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../type-utils/tsconfig.build.json" }
+    { "path": "../rule-tester" },
+    { "path": "../type-utils" },
+    { "path": "../rule-schema-to-typescript-types" },
+    { "path": "../parser" },
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "../typescript-estree" },
+    { "path": "../scope-manager" },
+    { "path": "../utils" }
   ]
 }

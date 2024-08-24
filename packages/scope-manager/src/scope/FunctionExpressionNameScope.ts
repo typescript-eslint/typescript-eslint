@@ -11,7 +11,7 @@ class FunctionExpressionNameScope extends ScopeBase<
   TSESTree.FunctionExpression,
   Scope
 > {
-  public readonly functionExpressionScope: true;
+  public override readonly functionExpressionScope: true;
   constructor(
     scopeManager: ScopeManager,
     upperScope: FunctionExpressionNameScope['upper'],
