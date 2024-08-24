@@ -570,11 +570,13 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
+    ignores: ['packages/typescript-eslint/src/configs/*'],
     files: [
       'packages/ast-spec/{src,tests,typings}/**/*.ts',
       'packages/integration-tests/{tests,tools,typing}/**/*.ts',
       'packages/parser/{src,tests}/**/*.ts',
       'packages/rule-tester/{src,tests,typings}/**/*.ts',
+      'packages/typescript-eslint/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',
       'packages/visitor-keys/src/**/*.ts',
       'packages/website*/src/**/*.ts',
