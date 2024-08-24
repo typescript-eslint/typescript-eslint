@@ -11,34 +11,34 @@ import type { Accessibility } from './Accessibility';
 import type { BaseNode } from './BaseNode';
 
 interface PropertyDefinitionBase extends BaseNode {
-  key: PropertyName;
-  value: Expression | null;
-  computed: boolean;
-  static: boolean;
-  declare: boolean;
-  readonly: boolean;
-  decorators: Decorator[];
   accessibility: Accessibility | undefined;
-  optional: boolean;
+  computed: boolean;
+  declare: boolean;
+  decorators: Decorator[];
   definite: boolean;
-  typeAnnotation: TSTypeAnnotation | undefined;
+  key: PropertyName;
+  optional: boolean;
   override: boolean;
+  readonly: boolean;
+  static: boolean;
+  typeAnnotation: TSTypeAnnotation | undefined;
+  value: Expression | null;
 }
 
 export interface PropertyDefinitionComputedNameBase
   extends PropertyDefinitionBase {
-  key: PropertyNameComputed;
   computed: true;
+  key: PropertyNameComputed;
 }
 
 export interface PropertyDefinitionNonComputedNameBase
   extends PropertyDefinitionBase {
-  key: PropertyNameNonComputed;
   computed: false;
+  key: PropertyNameNonComputed;
 }
 
 export interface ClassPropertyDefinitionNonComputedNameBase
   extends PropertyDefinitionBase {
-  key: ClassPropertyNameNonComputed;
   computed: false;
+  key: ClassPropertyNameNonComputed;
 }

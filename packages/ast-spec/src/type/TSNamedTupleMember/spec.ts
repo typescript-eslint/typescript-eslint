@@ -4,8 +4,8 @@ import type { Identifier } from '../../expression/Identifier/spec';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSNamedTupleMember extends BaseNode {
-  type: AST_NODE_TYPES.TSNamedTupleMember;
   elementType: TypeNode;
   label: Identifier;
   optional: boolean;
+  type: AST_NODE_TYPES.TSNamedTupleMember;
 }

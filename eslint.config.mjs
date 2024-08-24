@@ -571,12 +571,22 @@ export default tseslint.config(
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
     files: [
+      'packages/ast-spec/{src,tests,typings}/**/*.ts',
       'packages/utils/src/**/*.ts',
       'packages/visitor-keys/src/**/*.ts',
       'packages/website*/src/**/*.ts',
     ],
     rules: {
+      '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-enums': [
         'error',
         {
           order: 'asc',
