@@ -8,7 +8,7 @@ import type { TSESTreeOptions } from './parser-options';
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/8428
  */
-export function withoutProjectParserOptions<Options extends TSESTreeOptions>(
+export function withoutProjectParserOptions<Options extends object>(
   opts: Options,
 ): Omit<
   Options,
