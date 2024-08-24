@@ -3,9 +3,9 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSConditionalType extends BaseNode {
-  type: AST_NODE_TYPES.TSConditionalType;
   checkType: TypeNode;
   extendsType: TypeNode;
-  trueType: TypeNode;
   falseType: TypeNode;
+  trueType: TypeNode;
+  type: AST_NODE_TYPES.TSConditionalType;
 }
