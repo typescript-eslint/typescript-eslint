@@ -12,30 +12,30 @@ import type { BaseNode } from './BaseNode';
 
 /** this should not be directly used - instead use MethodDefinitionComputedNameBase or MethodDefinitionNonComputedNameBase */
 interface MethodDefinitionBase extends BaseNode {
-  key: PropertyName;
-  value: FunctionExpression | TSEmptyBodyFunctionExpression;
+  accessibility: Accessibility | undefined;
   computed: boolean;
-  static: boolean;
+  decorators: Decorator[];
+  key: PropertyName;
   kind: 'constructor' | 'get' | 'method' | 'set';
   optional: boolean;
-  decorators: Decorator[];
-  accessibility: Accessibility | undefined;
   override: boolean;
+  static: boolean;
+  value: FunctionExpression | TSEmptyBodyFunctionExpression;
 }
 
 export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {
-  key: PropertyNameComputed;
   computed: true;
+  key: PropertyNameComputed;
 }
 
 export interface MethodDefinitionNonComputedNameBase
   extends MethodDefinitionBase {
-  key: PropertyNameNonComputed;
   computed: false;
+  key: PropertyNameNonComputed;
 }
 
 export interface ClassMethodDefinitionNonComputedNameBase
   extends MethodDefinitionBase {
-  key: ClassPropertyNameNonComputed;
   computed: false;
+  key: ClassPropertyNameNonComputed;
 }

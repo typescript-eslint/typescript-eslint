@@ -2,10 +2,10 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 
 export interface TemplateElement extends BaseNode {
+  tail: boolean;
   type: AST_NODE_TYPES.TemplateElement;
   value: {
-    raw: string;
     cooked: string;
+    raw: string;
   };
-  tail: boolean;
 }
