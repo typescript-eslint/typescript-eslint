@@ -1,20 +1,20 @@
 import type { SyntaxKind } from 'typescript';
 
 export interface AssignmentOperatorToText {
-  [SyntaxKind.EqualsToken]: '=';
-  [SyntaxKind.PlusEqualsToken]: '+=';
-  [SyntaxKind.MinusEqualsToken]: '-=';
-  [SyntaxKind.AsteriskEqualsToken]: '*=';
+  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
+  [SyntaxKind.AmpersandEqualsToken]: '&=';
   [SyntaxKind.AsteriskAsteriskEqualsToken]: '**=';
-  [SyntaxKind.SlashEqualsToken]: '/=';
-  [SyntaxKind.PercentEqualsToken]: '%=';
-  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
+  [SyntaxKind.AsteriskEqualsToken]: '*=';
+  [SyntaxKind.BarBarEqualsToken]: '||=';
+  [SyntaxKind.BarEqualsToken]: '|=';
+  [SyntaxKind.CaretEqualsToken]: '^=';
+  [SyntaxKind.EqualsToken]: '=';
   [SyntaxKind.GreaterThanGreaterThanEqualsToken]: '>>=';
   [SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken]: '>>>=';
-  [SyntaxKind.AmpersandEqualsToken]: '&=';
-  [SyntaxKind.BarEqualsToken]: '|=';
-  [SyntaxKind.BarBarEqualsToken]: '||=';
-  [SyntaxKind.AmpersandAmpersandEqualsToken]: '&&=';
+  [SyntaxKind.LessThanLessThanEqualsToken]: '<<=';
+  [SyntaxKind.MinusEqualsToken]: '-=';
+  [SyntaxKind.PercentEqualsToken]: '%=';
+  [SyntaxKind.PlusEqualsToken]: '+=';
   [SyntaxKind.QuestionQuestionEqualsToken]: '??=';
-  [SyntaxKind.CaretEqualsToken]: '^=';
+  [SyntaxKind.SlashEqualsToken]: '/=';
 }
