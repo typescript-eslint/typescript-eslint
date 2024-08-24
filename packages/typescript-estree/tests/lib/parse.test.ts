@@ -685,6 +685,9 @@ describe('parseAndGenerateServices', () => {
 
     describe('cacheLifetime', () => {
       describe('glob', () => {
+        const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
+        // `resolveProjectList()` runs a glob for each pattern
+        const expectedGlobCount = project.length;
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
@@ -693,52 +696,52 @@ describe('parseAndGenerateServices', () => {
             disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
             tsconfigRootDir: FIXTURES_DIR,
-            project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            project,
           });
         }
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(globbySyncMock).toHaveBeenCalledTimes(expectedGlobCount);
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't glob again due to the caching
+          expect(globbySyncMock).toHaveBeenCalledTimes(expectedGlobCount);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(globbySyncMock).toHaveBeenCalledTimes(expectedGlobCount);
           doParse(0);
-          // should call globby again because we specified immediate cache expiry
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // should glob again because we specified immediate cache expiry
+          expect(globbySyncMock).toHaveBeenCalledTimes(2 * expectedGlobCount);
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(globbySyncMock).toHaveBeenCalledTimes(expectedGlobCount);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // shouldn't glob again due to the caching
+          expect(globbySyncMock).toHaveBeenCalledTimes(2 * expectedGlobCount);
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(globbySyncMock).toHaveBeenCalledTimes(expectedGlobCount);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't glob again due to the caching
+          expect(globbySyncMock).toHaveBeenCalledTimes(expectedGlobCount);
         });
       });
     });
