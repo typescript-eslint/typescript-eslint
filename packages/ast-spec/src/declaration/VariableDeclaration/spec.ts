@@ -10,7 +10,6 @@ import type {
 } from '../../special/VariableDeclarator/spec';
 
 interface LetOrConstOrVarDeclarationBase extends BaseNode {
-  type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
    * Always non-empty.
@@ -39,12 +38,11 @@ interface LetOrConstOrVarDeclarationBase extends BaseNode {
    * ```
    */
   kind: 'const' | 'let' | 'var';
+  type: AST_NODE_TYPES.VariableDeclaration;
 }
 
 export interface LetOrVarDeclaredDeclaration
   extends LetOrConstOrVarDeclarationBase {
-  kind: 'let' | 'var';
-  declare: true;
   /**
    * In a `declare let` declaration, the declarators must not have definite assignment
    * assertions or initializers.
@@ -56,12 +54,12 @@ export interface LetOrVarDeclaredDeclaration
    * ```
    */
   declarations: VariableDeclaratorNoInit[];
+  declare: true;
+  kind: 'let' | 'var';
 }
 
 export interface LetOrVarNonDeclaredDeclaration
   extends LetOrConstOrVarDeclarationBase {
-  kind: 'let' | 'var';
-  declare: false;
   /**
    * In a `let`/`var` declaration, the declarators may have definite assignment
    * assertions or initializers, but not both.
@@ -70,10 +68,11 @@ export interface LetOrVarNonDeclaredDeclaration
     | VariableDeclaratorDefiniteAssignment
     | VariableDeclaratorMaybeInit
   )[];
+  declare: false;
+  kind: 'let' | 'var';
 }
 
 export interface ConstDeclaration extends LetOrConstOrVarDeclarationBase {
-  kind: 'const';
   /**
    * In a `declare const` declaration, the declarators may have initializers, but
    * not definite assignment assertions. Each declarator cannot have both an
@@ -83,6 +82,7 @@ export interface ConstDeclaration extends LetOrConstOrVarDeclarationBase {
    * no initializer.
    */
   declarations: VariableDeclaratorMaybeInit[];
+  kind: 'const';
 }
 
 export type LetOrConstOrVarDeclaration =
@@ -91,7 +91,6 @@ export type LetOrConstOrVarDeclaration =
   | LetOrVarNonDeclaredDeclaration;
 
 interface UsingDeclarationBase extends BaseNode {
-  type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * This value will always be `false`
    * because 'declare' modifier cannot appear on a 'using' declaration.
@@ -106,6 +105,7 @@ interface UsingDeclarationBase extends BaseNode {
    * ```
    */
   kind: 'await using' | 'using';
+  type: AST_NODE_TYPES.VariableDeclaration;
 }
 
 export interface UsingInNormalContextDeclaration extends UsingDeclarationBase {
