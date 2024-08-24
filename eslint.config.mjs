@@ -573,6 +573,7 @@ export default tseslint.config(
     files: [
       'packages/ast-spec/{src,tests,typings}/**/*.ts',
       'packages/integration-tests/{tests,tools,typing}/**/*.ts',
+      'packages/parser/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',
       'packages/visitor-keys/src/**/*.ts',
       'packages/website*/src/**/*.ts',
