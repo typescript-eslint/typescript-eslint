@@ -64,10 +64,10 @@ describe('TSX', () => {
 
       expect(
         parseWithError(code, {
-          filePath: 'test.ts',
           ecmaFeatures: {
             jsx: true,
           },
+          filePath: 'test.ts',
         }),
       ).toMatchInlineSnapshot(`
         TSError {
