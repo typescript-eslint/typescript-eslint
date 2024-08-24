@@ -5,9 +5,9 @@ import type { CallExpressionArgument } from '../../unions/CallExpressionArgument
 import type { Expression } from '../../unions/Expression';
 
 export interface CallExpression extends BaseNode {
-  type: AST_NODE_TYPES.CallExpression;
-  callee: Expression;
   arguments: CallExpressionArgument[];
-  typeArguments: TSTypeParameterInstantiation | undefined;
+  callee: Expression;
   optional: boolean;
+  type: AST_NODE_TYPES.CallExpression;
+  typeArguments: TSTypeParameterInstantiation | undefined;
 }

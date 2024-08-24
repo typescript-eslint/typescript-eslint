@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Identifier } from '../../expression/Identifier/spec';
 
 export interface ImportDefaultSpecifier extends BaseNode {
-  type: AST_NODE_TYPES.ImportDefaultSpecifier;
   local: Identifier;
+  type: AST_NODE_TYPES.ImportDefaultSpecifier;
 }

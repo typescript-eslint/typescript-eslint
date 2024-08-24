@@ -15,15 +15,15 @@ export interface Fixture {
   readonly relative: string;
   readonly segments: string[];
   readonly snapshotFiles: {
-    readonly success: {
-      readonly tsestree: SuccessSnapshotPaths;
-      readonly babel: SuccessSnapshotPaths;
-      readonly alignment: SuccessSnapshotPaths;
-    };
     readonly error: {
-      readonly tsestree: SnapshotPathFn;
-      readonly babel: SnapshotPathFn;
       readonly alignment: SnapshotPathFn;
+      readonly babel: SnapshotPathFn;
+      readonly tsestree: SnapshotPathFn;
+    };
+    readonly success: {
+      readonly alignment: SuccessSnapshotPaths;
+      readonly babel: SuccessSnapshotPaths;
+      readonly tsestree: SuccessSnapshotPaths;
     };
   };
   readonly snapshotPath: string;
@@ -35,14 +35,14 @@ export enum ParserResponseType {
 }
 
 export interface ParserResponseSuccess {
-  readonly type: ParserResponseType.NoError;
   readonly ast: unknown;
   // this exists for the error alignment test snapshots
   readonly error: 'NO ERROR';
   readonly tokens: unknown;
+  readonly type: ParserResponseType.NoError;
 }
 export interface ParserResponseError {
-  readonly type: ParserResponseType.Error;
   readonly error: unknown;
+  readonly type: ParserResponseType.Error;
 }
 export type ParserResponse = ParserResponseError | ParserResponseSuccess;
