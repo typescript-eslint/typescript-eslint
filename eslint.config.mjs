@@ -352,9 +352,7 @@ export default tseslint.config(
   // test file specific configuration
   {
     files: [
-      'packages/*/tests/**/*.spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
-      'packages/*/tests/**/spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/tools/integration-test-base.ts',
