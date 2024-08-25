@@ -6,11 +6,11 @@ import metaSchema from 'ajv/lib/refs/json-schema-draft-04.json';
 export function ajvBuilder(additionalOptions = {}): Ajv.Ajv {
   const ajv = new Ajv({
     meta: false,
+    missingRefs: 'ignore',
+    schemaId: 'auto',
     useDefaults: true,
     validateSchema: false,
-    missingRefs: 'ignore',
     verbose: true,
-    schemaId: 'auto',
     ...additionalOptions,
   });
 

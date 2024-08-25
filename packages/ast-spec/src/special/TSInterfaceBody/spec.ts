@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { TypeElement } from '../../unions/TypeElement';
 
 export interface TSInterfaceBody extends BaseNode {
-  type: AST_NODE_TYPES.TSInterfaceBody;
   body: TypeElement[];
+  type: AST_NODE_TYPES.TSInterfaceBody;
 }

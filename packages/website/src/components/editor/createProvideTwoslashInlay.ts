@@ -30,10 +30,10 @@ export function createTwoslashInlayProvider(
       const worker = await sandbox.getWorkerProcess();
       if (model.isDisposed() || cancel.isCancellationRequested) {
         return {
-          hints: [],
           dispose(): void {
             /* nop */
           },
+          hints: [],
         };
       }
 
@@ -50,10 +50,10 @@ export function createTwoslashInlayProvider(
       }
 
       return {
-        hints: results,
         dispose(): void {
           /* nop */
         },
+        hints: results,
       };
 
       async function resolveInlayHint(
@@ -85,12 +85,12 @@ export function createTwoslashInlayProvider(
 
         return {
           kind: sandbox.monaco.languages.InlayHintKind.Type,
+          label: text,
+          paddingLeft: true,
           position: new sandbox.monaco.Position(
             endPos.lineNumber,
             endPos.column + 1,
           ),
-          label: text,
-          paddingLeft: true,
         };
       }
     },
