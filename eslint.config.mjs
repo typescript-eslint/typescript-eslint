@@ -591,14 +591,7 @@ export default tseslint.config(
           type: 'natural',
         },
       ],
-      'perfectionist/sort-enums': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
+      'perfectionist/sort-enums': 'off',
       'perfectionist/sort-objects': [
         'error',
         {
