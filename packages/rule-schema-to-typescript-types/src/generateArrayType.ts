@@ -1,13 +1,15 @@
-import { TSUtils } from '@typescript-eslint/utils';
 import type {
   JSONSchema4,
   JSONSchema4ArraySchema,
 } from '@typescript-eslint/utils/json-schema';
 
+import { TSUtils } from '@typescript-eslint/utils';
+
+import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
+
 import { NotSupportedError, UnexpectedError } from './errors';
 import { generateType } from './generateType';
 import { getCommentLines } from './getCommentLines';
-import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
 
 /**
  * If there are more than 20 tuple items then we will not make it a tuple type
@@ -59,9 +61,9 @@ export function generateArrayType(
     } else {
       // treat as an array type
       return {
-        type: 'array',
-        elementType: generateType(schema.items, refMap),
         commentLines,
+        elementType: generateType(schema.items, refMap),
+        type: 'array',
       };
     }
   } else {
@@ -128,17 +130,17 @@ export function generateArrayType(
     }
 
     return {
-      type: 'union',
-      elements: typesToUnion,
       commentLines,
+      elements: typesToUnion,
+      type: 'union',
     };
   }
 
   return {
-    type: 'tuple',
+    commentLines,
     elements: itemTypes,
     spreadType: spreadItem,
-    commentLines,
+    type: 'tuple',
   };
 }
 
@@ -149,8 +151,8 @@ function createTupleType(
   return {
     type: 'tuple',
     // clone the array because we know we'll keep mutating it
+    commentLines: [],
     elements: [...elements],
     spreadType,
-    commentLines: [],
   };
 }
