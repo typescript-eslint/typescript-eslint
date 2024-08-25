@@ -58,12 +58,13 @@ export function getWrappingFixer(
     let code = wrap(...innerCodes);
 
     // check the outer expression's precedence
-    if (isWeakPrecedenceParent(node)) {
+    if (
+      isWeakPrecedenceParent(node) &&
       // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
       // let's wrap the whole expression in parens just in case
-      if (!ASTUtils.isParenthesized(node, sourceCode)) {
-        code = `(${code})`;
-      }
+      !ASTUtils.isParenthesized(node, sourceCode)
+    ) {
+      code = `(${code})`;
     }
 
     // check if we need to insert semicolon

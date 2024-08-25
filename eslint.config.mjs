@@ -316,6 +316,7 @@ export default tseslint.config(
       //
 
       'jsdoc/informative-docs': 'error',
+      'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
       'unicorn/prefer-node-protocol': 'error',
@@ -351,9 +352,7 @@ export default tseslint.config(
   // test file specific configuration
   {
     files: [
-      'packages/*/tests/**/*.spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
-      'packages/*/tests/**/spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/tools/integration-test-base.ts',
@@ -570,14 +569,30 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
+    ignores: ['packages/typescript-eslint/src/configs/*'],
     files: [
+      'packages/ast-spec/{src,tests,typings}/**/*.ts',
+      'packages/integration-tests/{tests,tools,typing}/**/*.ts',
+      'packages/parser/{src,tests}/**/*.ts',
       'packages/rule-schema-to-typescript-types/src/**/*.ts',
+      'packages/rule-tester/{src,tests,typings}/**/*.ts',
+      'packages/types/{src,tools}/**/*.ts',
+      'packages/typescript-eslint/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',
       'packages/visitor-keys/src/**/*.ts',
       'packages/website*/src/**/*.ts',
     ],
     rules: {
+      '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-enums': [
         'error',
         {
           order: 'asc',

@@ -89,9 +89,7 @@ export default createRule<Options, MessageIds>({
 
     return {
       ThrowStatement(node): void {
-        if (node.argument) {
-          checkThrowArgument(node.argument);
-        }
+        checkThrowArgument(node.argument);
       },
     };
   },
