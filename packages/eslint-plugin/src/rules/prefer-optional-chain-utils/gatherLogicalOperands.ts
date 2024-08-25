@@ -68,7 +68,8 @@ function isValidFalseBooleanCheckType(
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  if (disallowFalseyLiteral) {
+  if (
+    disallowFalseyLiteral &&
     /*
     ```
     declare const x: false | {a: string};
@@ -79,15 +80,14 @@ function isValidFalseBooleanCheckType(
     We don't want to consider these two cases because the boolean expression
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
-    */
-    if (
-      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
+    */ (types.some(
+      t => isBooleanLiteralType(t) && t.intrinsicName === 'false',
+    ) ||
       types.some(t => isStringLiteralType(t) && t.value === '') ||
       types.some(t => isNumberLiteralType(t) && t.value === 0) ||
-      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
-    ) {
-      return false;
-    }
+      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0'))
+  ) {
+    return false;
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;

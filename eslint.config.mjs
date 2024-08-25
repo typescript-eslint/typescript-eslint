@@ -316,6 +316,7 @@ export default tseslint.config(
       //
 
       'jsdoc/informative-docs': 'error',
+      'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
       'unicorn/prefer-node-protocol': 'error',

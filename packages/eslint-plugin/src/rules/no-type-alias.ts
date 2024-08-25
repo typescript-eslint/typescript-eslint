@@ -214,14 +214,13 @@ export default createRule<Options, MessageIds>({
       if (type.node.type === AST_NODE_TYPES.TSTupleType) {
         return true;
       }
-      if (type.node.type === AST_NODE_TYPES.TSTypeOperator) {
-        if (
-          ['keyof', 'readonly'].includes(type.node.operator) &&
-          type.node.typeAnnotation &&
-          type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
-        ) {
-          return true;
-        }
+      if (
+        type.node.type === AST_NODE_TYPES.TSTypeOperator &&
+        ['keyof', 'readonly'].includes(type.node.operator) &&
+        type.node.typeAnnotation &&
+        type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
+      ) {
+        return true;
       }
       return false;
     };
