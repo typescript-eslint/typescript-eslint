@@ -9,7 +9,7 @@ This is exclusively used for the playground in the [`website` package](../websit
 
 - ESLint's [`Linter` class](https://eslint.org/docs/latest/integrate/nodejs-api#linter) and built-in rules
 - A wrapper that causes TypeScript's `typescript` and `typescript/lib/tsserverlibrary` module entry points to be downloaded on the fly
-  - This uses the same source as the [TypeScript playground](https://typescript-eslint.io), giving us a "Monaco web" compatible bundle
+  - This uses the same source as the [TypeScript playground](https://typescriptlang.org/play), giving us a "Monaco web" compatible bundle
 - typescript-eslint packages, including:
   - `@typescript-eslint/eslint-plugin` and all its configs and rules
   - `@typescript-eslint/parser` and `@typescript-eslint/typescript-estree`
