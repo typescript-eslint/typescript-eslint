@@ -162,11 +162,10 @@ function normalizeLiteralValue(
 ): bigint | number {
   if (
     node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-    ['-', '+'].includes(node.parent.operator)
+    ['-', '+'].includes(node.parent.operator) &&
+    node.parent.operator === '-'
   ) {
-    if (node.parent.operator === '-') {
-      return -value;
-    }
+    return -value;
   }
 
   return value;

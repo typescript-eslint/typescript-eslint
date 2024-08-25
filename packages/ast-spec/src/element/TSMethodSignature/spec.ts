@@ -11,7 +11,6 @@ import type {
 } from '../../unions/PropertyName';
 
 interface TSMethodSignatureBase extends BaseNode {
-  type: AST_NODE_TYPES.TSMethodSignature;
   accessibility: Accessibility | undefined;
   computed: boolean;
   key: PropertyName;
@@ -21,17 +20,18 @@ interface TSMethodSignatureBase extends BaseNode {
   readonly: boolean;
   returnType: TSTypeAnnotation | undefined;
   static: boolean;
+  type: AST_NODE_TYPES.TSMethodSignature;
   typeParameters: TSTypeParameterDeclaration | undefined;
 }
 
 export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {
-  key: PropertyNameComputed;
   computed: true;
+  key: PropertyNameComputed;
 }
 export interface TSMethodSignatureNonComputedName
   extends TSMethodSignatureBase {
-  key: PropertyNameNonComputed;
   computed: false;
+  key: PropertyNameNonComputed;
 }
 
 export type TSMethodSignature =

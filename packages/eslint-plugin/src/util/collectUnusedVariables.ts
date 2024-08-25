@@ -309,12 +309,12 @@ class UnusedVarsVisitor extends Visitor {
     const scope = this.getScope(node);
     if (
       scope.type === TSESLint.Scope.ScopeType.function &&
-      node.name === 'this'
-    ) {
+      node.name === 'this' &&
       // this parameters should always be considered used as they're pseudo-parameters
-      if ('params' in scope.block && scope.block.params.includes(node)) {
-        this.markVariableAsUsed(node);
-      }
+      'params' in scope.block &&
+      scope.block.params.includes(node)
+    ) {
+      this.markVariableAsUsed(node);
     }
   }
 

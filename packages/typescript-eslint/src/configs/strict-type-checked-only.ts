@@ -10,6 +10,10 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import baseConfig from './base';
 import eslintRecommendedConfig from './eslint-recommended';
 
+/**
+ * A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.
+ * @see {@link https://typescript-eslint.io/users/configs#strict-type-checked-only}
+ */
 export default (
   plugin: FlatConfig.Plugin,
   parser: FlatConfig.Parser,
@@ -23,6 +27,7 @@ export default (
       '@typescript-eslint/no-array-delete': 'error',
       '@typescript-eslint/no-base-to-string': 'error',
       '@typescript-eslint/no-confusing-void-expression': 'error',
+      '@typescript-eslint/no-deprecated': 'error',
       '@typescript-eslint/no-duplicate-type-constituents': 'error',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-for-in-array': 'error',

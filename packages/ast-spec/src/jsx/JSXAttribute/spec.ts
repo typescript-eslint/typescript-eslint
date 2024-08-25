@@ -7,7 +7,7 @@ import type { JSXIdentifier } from '../JSXIdentifier/spec';
 import type { JSXNamespacedName } from '../JSXNamespacedName/spec';
 
 export interface JSXAttribute extends BaseNode {
-  type: AST_NODE_TYPES.JSXAttribute;
   name: JSXIdentifier | JSXNamespacedName;
+  type: AST_NODE_TYPES.JSXAttribute;
   value: JSXElement | JSXExpression | Literal | null;
 }

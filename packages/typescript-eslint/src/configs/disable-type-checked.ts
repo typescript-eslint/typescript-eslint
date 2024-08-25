@@ -7,6 +7,10 @@
 
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
+/**
+ * A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.
+ * @see {@link https://typescript-eslint.io/users/configs#disable-type-checked}
+ */
 export default (
   _plugin: FlatConfig.Plugin,
   _parser: FlatConfig.Parser,
@@ -21,6 +25,7 @@ export default (
     '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/no-deprecated': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-for-in-array': 'off',

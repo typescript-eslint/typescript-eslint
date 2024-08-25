@@ -5,6 +5,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getMovedNodeCode,
   getParserServices,
   isTypeFlagSet,
   isUndefinedIdentifier,
@@ -18,7 +19,7 @@ const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 // '\\\\$' <- true
 // '\\\\\\$' <- false
 function endsWithUnescapedDollarSign(str: string): boolean {
-  return new RegExp(String(evenNumOfBackslashesRegExp.source) + '\\$$').test(
+  return new RegExp(`${String(evenNumOfBackslashesRegExp.source)}\\$$`).test(
     str,
   );
 }
@@ -106,21 +107,14 @@ export default createRule<[], MessageId>({
           context.report({
             node: node.expressions[0],
             messageId: 'noUnnecessaryTemplateExpression',
-            fix(fixer): TSESLint.RuleFix[] {
-              const [prevQuasi, nextQuasi] = node.quasis;
+            fix(fixer): TSESLint.RuleFix | null {
+              const wrappingCode = getMovedNodeCode({
+                sourceCode: context.sourceCode,
+                nodeToMove: node.expressions[0],
+                destinationNode: node,
+              });
 
-              // Remove the quasis and backticks.
-              return [
-                fixer.removeRange([
-                  prevQuasi.range[1] - 3,
-                  node.expressions[0].range[0],
-                ]),
-
-                fixer.removeRange([
-                  node.expressions[0].range[1],
-                  nextQuasi.range[0] + 2,
-                ]),
-              ];
+              return fixer.replaceText(node, wrappingCode);
             },
           });
 
@@ -160,7 +154,7 @@ export default createRule<[], MessageId>({
                   expression.raw.slice(1, -1)
                 : // The value may be one of number | bigint | boolean | RegExp | null.
                   // In regular expressions, we escape every backslash
-                  String(expression.value).replace(/\\/g, '\\\\')
+                  String(expression.value).replaceAll('\\', '\\\\')
             )
               // The string or RegExp may contain ` or ${.
               // We want both of these to be escaped in the final template expression.
@@ -175,9 +169,9 @@ export default createRule<[], MessageId>({
               // \\` -> \\\`
               // \${ -> \${
               // \\${ -> \\\${
-              .replace(
+              .replaceAll(
                 new RegExp(
-                  String(evenNumOfBackslashesRegExp.source) + '(`|\\${)',
+                  `${String(evenNumOfBackslashesRegExp.source)}(\`|\\\${)`,
                   'g',
                 ),
                 '\\$1',

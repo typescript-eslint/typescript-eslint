@@ -136,7 +136,7 @@ export default createRule({
       };
       const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
 
-      return str.replace(
+      return str.replaceAll(
         replaceRegex,
         char => EscapeMap[char as keyof typeof EscapeMap],
       );

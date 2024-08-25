@@ -1,3 +1,30 @@
+## 8.2.0 (2024-08-19)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.1.0 (2024-08-12)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-return] check promise any
+
+
+### ❤️  Thank You
+
+- Aly Thobani
+- Brad Zacher
+- James
+- Josh Goldberg ✨
+- Joshua Chen
+- Olivier Zalmanski
+- YeonJuan
+- Yukihiro Hasegawa
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.0.1 (2024-08-05)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.

@@ -46,13 +46,17 @@ describe('createProjectService', () => {
 
   it('sets allowDefaultProject when options.allowDefaultProject is defined', () => {
     const allowDefaultProject = ['./*.js'];
-    const settings = createProjectService({ allowDefaultProject }, undefined);
+    const settings = createProjectService(
+      { allowDefaultProject },
+      undefined,
+      undefined,
+    );
 
     expect(settings.allowDefaultProject).toBe(allowDefaultProject);
   });
 
   it('does not set allowDefaultProject when options.allowDefaultProject is not defined', () => {
-    const settings = createProjectService(undefined, undefined);
+    const settings = createProjectService(undefined, undefined, undefined);
 
     expect(settings.allowDefaultProject).toBeUndefined();
   });
@@ -68,6 +72,7 @@ describe('createProjectService', () => {
           allowDefaultProject: ['file.js'],
           defaultProject: './tsconfig.json',
         },
+        undefined,
         undefined,
       ),
     ).toThrow(
@@ -89,6 +94,7 @@ describe('createProjectService', () => {
           defaultProject: './tsconfig.json',
         },
         undefined,
+        undefined,
       ),
     ).toThrow(
       "Could not read default project './tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
@@ -105,6 +111,7 @@ describe('createProjectService', () => {
         defaultProject: './tsconfig.json',
       },
       undefined,
+      undefined,
     );
 
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
@@ -112,9 +119,34 @@ describe('createProjectService', () => {
     );
   });
 
+  it('uses tsconfigRootDir as getParsedConfigFile projectDirectory when provided', () => {
+    const compilerOptions = { strict: true };
+    const tsconfigRootDir = 'path/to/repo';
+    mockGetParsedConfigFile.mockReturnValue({ options: compilerOptions });
+
+    const { service } = createProjectService(
+      {
+        allowDefaultProject: ['file.js'],
+        defaultProject: './tsconfig.json',
+      },
+      undefined,
+      tsconfigRootDir,
+    );
+
+    expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
+      compilerOptions,
+    );
+    expect(mockGetParsedConfigFile).toHaveBeenCalledWith(
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require('typescript/lib/tsserverlibrary'),
+      './tsconfig.json',
+      tsconfigRootDir,
+    );
+  });
+
   it('uses the default projects error debugger for error messages when enabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
     debug.enable('typescript-eslint:typescript-estree:tsserver:err');
     const enabled = service.logger.loggingEnabled();
     service.logger.msg('foo', ts.server.Msg.Err);
@@ -130,7 +162,7 @@ describe('createProjectService', () => {
 
   it('does not use the default projects error debugger for error messages when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
     const enabled = service.logger.loggingEnabled();
     service.logger.msg('foo', ts.server.Msg.Err);
 
@@ -140,7 +172,7 @@ describe('createProjectService', () => {
 
   it('uses the default projects info debugger for info messages when enabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
     debug.enable('typescript-eslint:typescript-estree:tsserver:info');
     const enabled = service.logger.loggingEnabled();
     service.logger.info('foo');
@@ -156,7 +188,7 @@ describe('createProjectService', () => {
 
   it('does not use the default projects info debugger for info messages when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
     const enabled = service.logger.loggingEnabled();
     service.logger.info('foo');
 
@@ -166,7 +198,7 @@ describe('createProjectService', () => {
 
   it('uses the default projects perf debugger for perf messages when enabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
     debug.enable('typescript-eslint:typescript-estree:tsserver:perf');
     const enabled = service.logger.loggingEnabled();
     service.logger.perftrc('foo');
@@ -182,7 +214,7 @@ describe('createProjectService', () => {
 
   it('does not use the default projects perf debugger for perf messages when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
     const enabled = service.logger.loggingEnabled();
     service.logger.perftrc('foo');
 
@@ -191,7 +223,7 @@ describe('createProjectService', () => {
   });
 
   it('enables all log levels for the default projects logger', () => {
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
 
     expect(service.logger.hasLevel(ts.server.LogLevel.terse)).toBe(true);
     expect(service.logger.hasLevel(ts.server.LogLevel.normal)).toBe(true);
@@ -200,7 +232,7 @@ describe('createProjectService', () => {
   });
 
   it('does not return a log filename with the default projects logger', () => {
-    const { service } = createProjectService(undefined, undefined);
+    const { service } = createProjectService(undefined, undefined, undefined);
 
     expect(service.logger.getLogFileName()).toBeUndefined();
   });
@@ -209,7 +241,7 @@ describe('createProjectService', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
 
     debug.enable('typescript-eslint:typescript-estree:tsserver:event');
-    createProjectService(undefined, undefined);
+    createProjectService(undefined, undefined, undefined);
     debug.disable();
 
     expect(process.stderr.write).toHaveBeenCalledWith(
@@ -222,7 +254,7 @@ describe('createProjectService', () => {
   it('does not use the default projects event debugger for event handling when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
 
-    createProjectService(undefined, undefined);
+    createProjectService(undefined, undefined, undefined);
 
     expect(process.stderr.write).toHaveBeenCalledTimes(0);
   });
@@ -232,6 +264,7 @@ describe('createProjectService', () => {
       {
         allowDefaultProject: ['file.js'],
       },
+      undefined,
       undefined,
     );
 

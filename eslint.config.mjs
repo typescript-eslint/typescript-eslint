@@ -6,13 +6,13 @@ import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
 import eslint from '@eslint/js';
 import tseslintInternalPlugin from '@typescript-eslint/eslint-plugin-internal';
-import deprecationPlugin from 'eslint-plugin-deprecation';
 import eslintCommentsPlugin from 'eslint-plugin-eslint-comments';
 import eslintPluginPlugin from 'eslint-plugin-eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
 import jestPlugin from 'eslint-plugin-jest';
 import jsdocPlugin from 'eslint-plugin-jsdoc';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
@@ -31,9 +31,6 @@ export default tseslint.config(
     plugins: {
       ['@typescript-eslint']: tseslint.plugin,
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
-      // https://github.com/gund/eslint-plugin-deprecation/issues/78
-      // https://github.com/typescript-eslint/typescript-eslint/issues/8988
-      ['deprecation']: fixupPluginRules(deprecationPlugin),
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
       // https://github.com/import-js/eslint-plugin-import/issues/2948
@@ -95,9 +92,6 @@ export default tseslint.config(
     },
     linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
-      // make sure we're not leveraging any deprecated APIs
-      'deprecation/deprecation': 'error',
-
       // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
       '@typescript-eslint/no-confusing-void-expression': 'off',
 
@@ -216,6 +210,7 @@ export default tseslint.config(
       'no-useless-concat': 'error',
       'no-var': 'error',
       'no-void': ['error', { allowAsStatement: true }],
+      'object-shorthand': 'error',
       'one-var': ['error', 'never'],
       'operator-assignment': 'error',
       'prefer-arrow-callback': 'error',
@@ -223,6 +218,7 @@ export default tseslint.config(
       'prefer-object-has-own': 'error',
       'prefer-object-spread': 'error',
       'prefer-rest-params': 'error',
+      'prefer-template': 'error',
       radix: 'error',
 
       //
@@ -320,9 +316,12 @@ export default tseslint.config(
       //
 
       'jsdoc/informative-docs': 'error',
+      'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-string-replace-all': 'error',
     },
   },
   {
@@ -330,7 +329,6 @@ export default tseslint.config(
     extends: [tseslint.configs.disableTypeChecked],
     rules: {
       // turn off other type-aware rules
-      'deprecation/deprecation': 'off',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
 
       // turn off rules that don't apply to JS code
@@ -569,6 +567,56 @@ export default tseslint.config(
     rules: {
       // mocks and declaration files have to mirror their original package
       'import/no-default-export': 'off',
+    },
+  },
+  {
+    extends: [perfectionistPlugin.configs['recommended-alphabetical']],
+    ignores: ['packages/typescript-eslint/src/configs/*'],
+    files: [
+      'packages/ast-spec/{src,tests,typings}/**/*.ts',
+      'packages/integration-tests/{tests,tools,typing}/**/*.ts',
+      'packages/parser/{src,tests}/**/*.ts',
+      'packages/rule-tester/{src,tests,typings}/**/*.ts',
+      'packages/typescript-eslint/{src,tests}/**/*.ts',
+      'packages/utils/src/**/*.ts',
+      'packages/visitor-keys/src/**/*.ts',
+      'packages/website*/src/**/*.ts',
+    ],
+    rules: {
+      '@typescript-eslint/sort-type-constituents': 'off',
+      'perfectionist/sort-classes': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-enums': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          order: 'asc',
+          partitionByComment: true,
+          type: 'natural',
+        },
+      ],
+      'perfectionist/sort-union-types': [
+        'error',
+        {
+          order: 'asc',
+          groups: ['unknown', 'keyword', 'nullish'],
+          type: 'natural',
+        },
+      ],
+      'simple-import-sort/imports': 'off',
     },
   },
 );
