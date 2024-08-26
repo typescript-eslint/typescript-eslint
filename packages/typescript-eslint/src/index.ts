@@ -1,9 +1,11 @@
-import pluginBase from '@typescript-eslint/eslint-plugin';
-import * as parserBase from '@typescript-eslint/parser';
 // see the comment in config-helper.ts for why this doesn't use /ts-eslint
 import type { TSESLint } from '@typescript-eslint/utils';
 
+import pluginBase from '@typescript-eslint/eslint-plugin';
+import * as parserBase from '@typescript-eslint/parser';
+
 import type { ConfigWithExtends } from './config-helper';
+
 import { config } from './config-helper';
 import allConfig from './configs/all';
 import baseConfig from './configs/base';

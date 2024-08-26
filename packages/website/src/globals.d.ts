@@ -12,16 +12,16 @@ declare global {
       error?: (e: Error) => void,
     ): void;
     config: (arg: {
-      paths?: Record<string, string>;
       ignoreDuplicateModules?: string[];
+      paths?: Record<string, string>;
     }) => void;
   }
 
   interface Window {
-    ts: typeof ts;
-    require: WindowRequire;
     esquery: typeof esquery;
+    require: WindowRequire;
     system: unknown;
+    ts: typeof ts;
     visitorKeys: Record<string, readonly string[] | undefined>;
   }
 }

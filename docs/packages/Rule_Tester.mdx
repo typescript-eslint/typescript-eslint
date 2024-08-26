@@ -250,7 +250,7 @@ Consider setting up `RuleTester`'s static properties in a preloaded module using
 import * as test from 'node:test';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-RuleTester.afterAll = test.afterAll;
+RuleTester.afterAll = test.after;
 RuleTester.describe = test.describe;
 RuleTester.it = test.it;
 RuleTester.itOnly = test.it.only;

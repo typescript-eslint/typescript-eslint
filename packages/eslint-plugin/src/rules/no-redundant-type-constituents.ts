@@ -6,8 +6,7 @@ import {
   arrayGroupByToMap,
   createRule,
   getParserServices,
-  isFunction,
-  isFunctionType,
+  isFunctionOrFunctionType,
   isTypeAnyType,
   isTypeBigIntLiteralType,
   isTypeNeverType,
@@ -102,6 +101,10 @@ function describeLiteralType(type: ts.Type): string {
     return type.value.toString();
   }
 
+  if (tsutils.isIntrinsicErrorType(type) && type.aliasSymbol) {
+    return type.aliasSymbol.escapedName.toString();
+  }
+
   if (isTypeAnyType(type)) {
     return 'any';
   }
@@ -171,7 +174,7 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   return !!(
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
-    (isFunctionType(node.parent.parent) || isFunction(node.parent.parent))
+    isFunctionOrFunctionType(node.parent.parent)
   );
 }
 
@@ -201,6 +204,7 @@ export default createRule({
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
+      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
     },
     schema: [],
     type: 'suggestion',
@@ -292,7 +296,10 @@ export default createRule({
                   container: 'intersection',
                   typeName,
                 },
-                messageId,
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : messageId,
                 node: typeNode,
               });
               return true;
@@ -419,7 +426,10 @@ export default createRule({
                   container: 'union',
                   typeName,
                 },
-                messageId: 'overrides',
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : 'overrides',
                 node: typeNode,
               });
               return true;

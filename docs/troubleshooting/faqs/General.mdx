@@ -1,6 +1,7 @@
 ---
 id: general
 title: General
+pagination_next: troubleshooting/faqs/eslint
 ---
 
 import Tabs from '@theme/Tabs';
@@ -161,7 +162,7 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(...tseslint.configs.recommendedTypeCheckedOnly, {
   languageOptions: {
     parserOptions: {
-      project: true,
+      projectService: true,
       tsconfigRootDir: import.meta.dirname,
     },
   },
@@ -175,7 +176,7 @@ export default tseslint.config(...tseslint.configs.recommendedTypeCheckedOnly, {
 module.exports = {
   extends: ['plugin:@typescript-eslint/recommended-type-checked-only'],
   parserOptions: {
-    project: true,
+    projectService: true,
     tsconfigRootDir: __dirname,
   },
   root: true,

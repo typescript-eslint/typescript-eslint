@@ -4,10 +4,10 @@ import type { Identifier } from '../../expression/Identifier/spec';
 import type { BlockStatement } from '../../statement/BlockStatement/spec';
 
 interface FunctionDeclarationBase extends FunctionBase {
-  type: AST_NODE_TYPES.FunctionDeclaration;
   body: BlockStatement;
   declare: false;
   expression: false;
+  type: AST_NODE_TYPES.FunctionDeclaration;
 }
 
 /**

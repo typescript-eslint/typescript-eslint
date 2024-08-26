@@ -1127,5 +1127,14 @@ declare const nested: string, interpolation: string;
         },
       ],
     },
+    {
+      code: "true ? `${'test' || ''}`.trim() : undefined;",
+      output: "true ? ('test' || '').trim() : undefined;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+    },
   ],
 });

@@ -5,6 +5,7 @@ import type {
   RuleMetaDataDocs,
   RuleModule,
 } from '../ts-eslint/Rule';
+
 import { applyDefault } from './applyDefault';
 
 export type { RuleListener, RuleModule };
@@ -15,9 +16,9 @@ export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 export type NamedCreateRuleMeta<
   MessageIds extends string,
   PluginDocs = unknown,
-> = Omit<RuleMetaData<MessageIds, PluginDocs>, 'docs'> & {
-  docs: RuleMetaDataDocs & PluginDocs;
-};
+> = {
+  docs: PluginDocs & RuleMetaDataDocs;
+} & Omit<RuleMetaData<MessageIds, PluginDocs>, 'docs'>;
 
 export interface RuleCreateAndOptions<
   Options extends readonly unknown[],
@@ -62,8 +63,8 @@ export function RuleCreator<PluginDocs = unknown>(
     Options extends readonly unknown[],
     MessageIds extends string,
   >({
-    name,
     meta,
+    name,
     ...rule
   }: Readonly<
     RuleWithMetaAndName<Options, MessageIds, PluginDocs>

@@ -7,13 +7,13 @@ import type { Expression } from '../../unions/Expression';
 import type { Parameter } from '../../unions/Parameter';
 
 export interface ArrowFunctionExpression extends BaseNode {
-  type: AST_NODE_TYPES.ArrowFunctionExpression;
+  async: boolean;
+  body: BlockStatement | Expression;
+  expression: boolean;
   generator: boolean;
   id: null;
   params: Parameter[];
-  body: BlockStatement | Expression;
-  async: boolean;
-  expression: boolean;
   returnType: TSTypeAnnotation | undefined;
+  type: AST_NODE_TYPES.ArrowFunctionExpression;
   typeParameters: TSTypeParameterDeclaration | undefined;
 }

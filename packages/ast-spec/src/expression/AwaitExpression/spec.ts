@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Expression } from '../../unions/Expression';
 
 export interface AwaitExpression extends BaseNode {
-  type: AST_NODE_TYPES.AwaitExpression;
   argument: Expression;
+  type: AST_NODE_TYPES.AwaitExpression;
 }

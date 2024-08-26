@@ -221,14 +221,16 @@ export default createRule<Options, MessageIds>({
                * export = Type;
                */
               if (
-                ref.identifier.parent.type === AST_NODE_TYPES.ExportSpecifier ||
-                ref.identifier.parent.type ===
-                  AST_NODE_TYPES.ExportDefaultDeclaration ||
-                ref.identifier.parent.type === AST_NODE_TYPES.TSExportAssignment
+                (ref.identifier.parent.type ===
+                  AST_NODE_TYPES.ExportSpecifier ||
+                  ref.identifier.parent.type ===
+                    AST_NODE_TYPES.ExportDefaultDeclaration ||
+                  ref.identifier.parent.type ===
+                    AST_NODE_TYPES.TSExportAssignment) &&
+                ref.isValueReference &&
+                ref.isTypeReference
               ) {
-                if (ref.isValueReference && ref.isTypeReference) {
-                  return node.importKind === 'type';
-                }
+                return node.importKind === 'type';
               }
               if (ref.isValueReference) {
                 let parent = ref.identifier.parent as TSESTree.Node | undefined;
@@ -556,10 +558,8 @@ export default createRule<Options, MessageIds>({
         NullThrowsReasons.MissingToken('token', 'last specifier'),
       );
       textRange[1] = after.range[0];
-      if (isFirst || isLast) {
-        if (isCommaToken(after)) {
-          removeRange[1] = after.range[1];
-        }
+      if ((isFirst || isLast) && isCommaToken(after)) {
+        removeRange[1] = after.range[1];
       }
 
       return {
