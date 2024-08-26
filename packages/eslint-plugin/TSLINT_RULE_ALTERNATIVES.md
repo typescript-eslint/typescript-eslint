@@ -122,7 +122,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | TSLint rule                  |     | ESLint rule                                        |
 | ---------------------------- | :-: | -------------------------------------------------- |
 | [`cyclomatic-complexity`]    | 🌟  | [`complexity`][complexity]                         |
-| [`deprecation`]              | 🔌  | [`deprecation/deprecation`]                        |
+| [`deprecation`]              | ✅  | [`@typescript-eslint/no-deprecated`]               |
 | [`eofline`]                  | 🌟  | [`eol-last`][eol-last]                             |
 | [`indent`]                   | ✅  | [`@typescript-eslint/indent`] or [Prettier]        |
 | [`linebreak-style`]          | 🌟  | [`linebreak-style`][linebreak-style] or [Prettier] |
@@ -724,5 +724,4 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`jest/no-focused-tests`]: https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/no-focused-tests.md
 [`jsx-a11y/heading-has-content`]: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/heading-has-content.md
 [`lodash/chaining`]: https://github.com/wix/eslint-plugin-lodash/blob/master/docs/rules/chaining.md
-[`deprecation/deprecation`]: https://github.com/gund/eslint-plugin-deprecation
 [`desktop/insecure-random`]: https://github.com/desktop/desktop/blob/development/eslint-rules/insecure-random.js

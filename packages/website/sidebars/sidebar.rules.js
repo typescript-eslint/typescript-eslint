@@ -3,7 +3,7 @@ const plugin = require('@typescript-eslint/eslint-plugin');
 
 const rules = Object.entries(plugin.rules).map(([name, rule]) => {
   return {
-    name: name,
+    name,
     meta: { ...rule.meta },
   };
 });

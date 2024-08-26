@@ -3,8 +3,7 @@
     "types": ["@types/node"],
     "noEmit": true,
     "allowJs": true,
-    "allowImportingTsExtensions": true,
-    "lib": ["ESNext"]
+    "allowImportingTsExtensions": true
   },
   "extends": "./tsconfig.base.json",
   "include": [
