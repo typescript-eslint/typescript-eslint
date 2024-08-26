@@ -51,13 +51,6 @@ export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
    */
   messages: Record<MessageIds, string>;
   /**
-   * The type of rule.
-   * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
-   * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
-   * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
-   */
-  type: 'problem' | 'suggestion' | 'layout';
-  /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
   replacedBy?: readonly string[];
@@ -65,6 +58,13 @@ export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
    * The options schema. Supply an empty array if there are no options.
    */
   schema: JSONSchema4 | readonly JSONSchema4[];
+  /**
+   * The type of rule.
+   * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
+   * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
+   * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
+   */
+  type: 'layout' | 'problem' | 'suggestion';
 }
 
 export interface RuleMetaDataWithDocs<
@@ -116,7 +116,7 @@ export interface SuggestionReportDescriptor<MessageIds extends string>
 
 export type ReportFixFunction = (
   fixer: RuleFixer,
-) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
+) => IterableIterator<RuleFix> | readonly RuleFix[] | RuleFix | null;
 
 export type ReportSuggestionArray<MessageIds extends string> =
   SuggestionReportDescriptor<MessageIds>[];
@@ -150,15 +150,15 @@ interface ReportDescriptorWithSuggestion<MessageIds extends string>
 
 interface ReportDescriptorNodeOptionalLoc {
   /**
-   * The Node or AST Token which the report is being attached to
-   */
-  readonly node: TSESTree.Node | TSESTree.Token;
-  /**
    * An override of the location of the report
    */
   readonly loc?:
     | Readonly<TSESTree.Position>
     | Readonly<TSESTree.SourceLocation>;
+  /**
+   * The Node or AST Token which the report is being attached to
+   */
+  readonly node: TSESTree.Node | TSESTree.Token;
 }
 interface ReportDescriptorLocOnly {
   /**
@@ -167,9 +167,11 @@ interface ReportDescriptorLocOnly {
   loc: Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
 }
 
-export type ReportDescriptor<MessageIds extends string> =
-  ReportDescriptorWithSuggestion<MessageIds> &
-    (ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc);
+export type ReportDescriptor<MessageIds extends string> = (
+  | ReportDescriptorLocOnly
+  | ReportDescriptorNodeOptionalLoc
+) &
+  ReportDescriptorWithSuggestion<MessageIds>;
 
 /**
  * Plugins can add their settings using declaration
@@ -180,6 +182,8 @@ export interface SharedConfigurationSettings {
   [name: string]: unknown;
 }
 
+/* eslint-disable perfectionist/sort-interfaces */
+
 export interface RuleContext<
   MessageIds extends string,
   Options extends readonly unknown[],
@@ -189,22 +193,22 @@ export interface RuleContext<
    */
   id: string;
   /**
+   * The language options configured for this run
+   */
+  languageOptions: FlatConfig.LanguageOptions;
+  /**
    * An array of the configured options for this rule.
    * This array does not include the rule severity.
    */
   options: Options;
   /**
-   * The name of the parser from configuration, if in eslintrc (legacy) config.
-   */
-  parserPath: string | undefined;
-  /**
-   * The language options configured for this run
-   */
-  languageOptions: FlatConfig.LanguageOptions;
-  /**
    * The parser options configured for this run
    */
   parserOptions: Linter.ParserOptions;
+  /**
+   * The name of the parser from configuration, if in eslintrc (legacy) config.
+   */
+  parserPath: string | undefined;
   /**
    * An object containing parser-provided services for rules
    *
@@ -216,6 +220,8 @@ export interface RuleContext<
    * We do not have any shared settings in this plugin.
    */
   settings: SharedConfigurationSettings;
+
+  // Deprecated members
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at
@@ -306,6 +312,8 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
+/* eslint-enable perfectionist/sort-interfaces */
+
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
@@ -316,22 +324,8 @@ export interface RuleContext<
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
 export interface CodePath {
-  /**
-   * A unique string. Respective rules can use `id` to save additional
-   * information for each code path.
-   */
-  id: string;
-
-  initialSegment: CodePathSegment;
-
-  /** The final segments which includes both returned and thrown. */
-  finalSegments: CodePathSegment[];
-
-  /** The final segments which includes only returned. */
-  returnedSegments: CodePathSegment[];
-
-  /** The final segments which includes only thrown. */
-  thrownSegments: CodePathSegment[];
+  /** Code paths of functions this code path contains. */
+  childCodePaths: CodePath[];
 
   /**
    * Segments of the current traversal position.
@@ -340,11 +334,25 @@ export interface CodePath {
    */
   currentSegments: CodePathSegment[];
 
+  /** The final segments which includes both returned and thrown. */
+  finalSegments: CodePathSegment[];
+
+  /**
+   * A unique string. Respective rules can use `id` to save additional
+   * information for each code path.
+   */
+  id: string;
+
+  initialSegment: CodePathSegment;
+
+  /** The final segments which includes only returned. */
+  returnedSegments: CodePathSegment[];
+
+  /** The final segments which includes only thrown. */
+  thrownSegments: CodePathSegment[];
+
   /** The code path of the upper function/global scope. */
   upper: CodePath | null;
-
-  /** Code paths of functions this code path contains. */
-  childCodePaths: CodePath[];
 }
 
 /**
@@ -627,6 +635,14 @@ export interface RuleModule<
   ExtendedRuleListener extends RuleListener = RuleListener,
 > {
   /**
+   * Function which returns an object with methods that ESLint calls to “visit”
+   * nodes while traversing the abstract syntax tree.
+   */
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): ExtendedRuleListener;
+
+  /**
    * Default options the rule will be run with
    */
   defaultOptions: Options;
@@ -635,14 +651,6 @@ export interface RuleModule<
    * Metadata about the rule
    */
   meta: RuleMetaData<MessageIds, Docs>;
-
-  /**
-   * Function which returns an object with methods that ESLint calls to “visit”
-   * nodes while traversing the abstract syntax tree.
-   */
-  create(
-    context: Readonly<RuleContext<MessageIds, Options>>,
-  ): ExtendedRuleListener;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
@@ -679,11 +687,11 @@ export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
  */
 export type LooseRuleDefinition =
   // TODO - remove RuleCreateFunction once we no longer support ESLint 8
-  | LooseRuleCreateFunction
   | {
-      meta?: object | undefined;
       create: LooseRuleCreateFunction;
-    };
+      meta?: object | undefined;
+    }
+  | LooseRuleCreateFunction;
 /*
 eslint-disable-next-line @typescript-eslint/no-explicit-any --
 intentionally using `any` to allow bi-directional assignment (unknown and

@@ -4,7 +4,7 @@ import type { TemplateElement } from '../../special/TemplateElement/spec';
 import type { Expression } from '../../unions/Expression';
 
 export interface TemplateLiteral extends BaseNode {
-  type: AST_NODE_TYPES.TemplateLiteral;
-  quasis: TemplateElement[];
   expressions: Expression[];
+  quasis: TemplateElement[];
+  type: AST_NODE_TYPES.TemplateLiteral;
 }
