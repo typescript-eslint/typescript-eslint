@@ -18,11 +18,29 @@ Unlike the base rule, our implementation also supports [async generator function
 
 ## Examples
 
-Examples of **correct** code for this rule:
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts
-async function returnsPromise1() {
-  return Promise.resolve(1);
+async function returnNumber() {
+  return 1;
+}
+
+async function* asyncGenerator() {
+  const num = Promise.resolve(1);
+  yield 1 + num;
+}
+
+const num = returnNumber();
+const callAsyncGenerator = () => asyncGenerator();
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function returnNumber() {
+  return 1;
 }
 
 async function* asyncGenerator() {
@@ -30,6 +48,9 @@ async function* asyncGenerator() {
   yield 1 + num;
 }
 
-const returnsPromise2 = () => returnsPromise1();
+const num = () => returnNumber();
 const callAsyncGenerator = () => asyncGenerator();
 ```
+
+</TabItem>
+</Tabs>
