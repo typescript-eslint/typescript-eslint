@@ -5915,8 +5915,8 @@ __metadata:
     "@typescript-eslint/types": 8.2.0
     "@typescript-eslint/visitor-keys": 8.2.0
     debug: ^4.3.4
+    fast-glob: ^3.3.2
     glob: "*"
-    globby: ^11.1.0
     is-glob: ^4.0.3
     jest: 29.7.0
     minimatch: ^9.0.4
