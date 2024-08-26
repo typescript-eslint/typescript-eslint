@@ -375,6 +375,8 @@ export default createRule<Options, MessageIds>({
           return;
 
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.MethodDefinition:
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
           if (
             node.accessibility === 'private' ||
             node.key.type === AST_NODE_TYPES.PrivateIdentifier
@@ -394,16 +396,6 @@ export default createRule<Options, MessageIds>({
           const returns = getReturnsInFunction(node);
           return checkFunction({ node, returns });
         }
-
-        case AST_NODE_TYPES.MethodDefinition:
-        case AST_NODE_TYPES.TSAbstractMethodDefinition:
-          if (
-            node.accessibility === 'private' ||
-            node.key.type === AST_NODE_TYPES.PrivateIdentifier
-          ) {
-            return;
-          }
-          return checkNode(node.value);
 
         case AST_NODE_TYPES.Identifier:
           return followReference(node);
