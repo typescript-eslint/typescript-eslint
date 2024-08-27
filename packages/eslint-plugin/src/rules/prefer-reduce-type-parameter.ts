@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -51,7 +50,7 @@ export default createRule({
       'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
       ): void {
-        if (isStaticMemberAccessOfValue(callee, context, 'reduce')) {
+        if (!isStaticMemberAccessOfValue(callee, context, 'reduce')) {
           return;
         }
 

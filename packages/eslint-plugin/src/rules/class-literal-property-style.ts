@@ -81,10 +81,6 @@ export default createRule<Options, MessageIds>({
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 
-    function getStringValue(node: TSESTree.Node): string {
-      return getStaticStringValue(node) ?? context.sourceCode.getText(node);
-    }
-
     function enterClassBody(): void {
       propertiesInfoStack.push({
         properties: [],

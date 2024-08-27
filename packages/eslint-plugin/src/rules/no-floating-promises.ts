@@ -1,16 +1,15 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getStaticMemberAccessValue, TypeOrValueSpecifier } from '../util';
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
+  getStaticMemberAccessValue,
   isBuiltinSymbolLike,
-  isStaticMemberAccessOfValue,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,

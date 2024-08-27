@@ -1,4 +1,3 @@
-import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { ReportDescriptor } from '@typescript-eslint/utils/ts-eslint';
@@ -9,7 +8,6 @@ import {
   createRule,
   getParserServices,
   getStaticMemberAccessValue,
-  getStaticValue,
   isParenlessArrowFunction,
   isRestParameterDeclaration,
   nullThrows,
