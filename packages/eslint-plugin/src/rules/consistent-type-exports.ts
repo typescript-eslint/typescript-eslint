@@ -193,46 +193,20 @@ export default createRule<Options, MessageIds>({
             const allExportNames = report.typeBasedSpecifiers.map(
               specifier => specifier.local.name,
             );
-
-            if (allExportNames.length === 1) {
-              const exportNames = allExportNames[0];
-
-              context.report({
-                node: report.node,
-                messageId: 'singleExportIsType',
-                data: { exportNames },
-                *fix(fixer) {
-                  if (fixMixedExportsWithInlineTypeSpecifier) {
-                    yield* fixAddTypeSpecifierToNamedExports(fixer, report);
-                  } else {
-                    yield* fixSeparateNamedExports(
-                      fixer,
-                      context.sourceCode,
-                      report,
-                    );
-                  }
-                },
-              });
-            } else {
-              const exportNames = formatWordList(allExportNames);
-
-              context.report({
-                node: report.node,
-                messageId: 'multipleExportsAreTypes',
-                data: { exportNames },
-                *fix(fixer) {
-                  if (fixMixedExportsWithInlineTypeSpecifier) {
-                    yield* fixAddTypeSpecifierToNamedExports(fixer, report);
-                  } else {
-                    yield* fixSeparateNamedExports(
-                      fixer,
-                      context.sourceCode,
-                      report,
-                    );
-                  }
-                },
-              });
-            }
+            const exportNames = formatWordList(allExportNames);
+            context.report({
+              node: report.node,
+              messageId:
+                allExportNames.length === 1
+                  ? 'singleExportIsType'
+                  : 'multipleExportsAreTypes',
+              data: { exportNames },
+              *fix(fixer) {
+                yield* fixMixedExportsWithInlineTypeSpecifier
+                  ? fixAddTypeSpecifierToNamedExports(fixer, report)
+                  : fixSeparateNamedExports(fixer, context.sourceCode, report);
+              },
+            });
           }
         }
       },

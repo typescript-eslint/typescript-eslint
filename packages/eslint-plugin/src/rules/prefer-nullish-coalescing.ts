@@ -361,14 +361,13 @@ export default createRule<Options, MessageIds>({
         ): IterableIterator<TSESLint.RuleFix> {
           if (isLogicalOrOperator(node.parent)) {
             // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
-            if (
+            yield fixer.insertTextBefore(
               node.left.type === AST_NODE_TYPES.LogicalExpression &&
-              !isLogicalOrOperator(node.left.left)
-            ) {
-              yield fixer.insertTextBefore(node.left.right, '(');
-            } else {
-              yield fixer.insertTextBefore(node.left, '(');
-            }
+                !isLogicalOrOperator(node.left.left)
+                ? node.left.right
+                : node.left,
+              '(',
+            );
             yield fixer.insertTextAfter(node.right, ')');
           }
           yield fixer.replaceText(barBarOperator, '??');

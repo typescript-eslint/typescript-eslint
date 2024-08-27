@@ -272,15 +272,9 @@ export default createRule({
     }
 
     function test(node: TSESTree.Expression, expression: ts.Node): void {
-      let child: ts.Node;
-
       const isAwait = ts.isAwaitExpression(expression);
 
-      if (isAwait) {
-        child = expression.getChildAt(1);
-      } else {
-        child = expression;
-      }
+      const child = isAwait ? expression.getChildAt(1) : expression;
 
       const type = checker.getTypeAtLocation(child);
       const isThenable = tsutils.isThenableType(checker, expression, type);

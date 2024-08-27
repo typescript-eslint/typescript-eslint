@@ -123,16 +123,13 @@ export default createRule({
               }
 
               if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
-                if (node.typeParameters !== undefined) {
-                  suggestion = `type ${context.sourceCode
-                    .getText()
-                    .slice(
-                      node.id.range[0],
-                      node.typeParameters.range[1],
-                    )} = ${suggestion}${lastChar}`;
-                } else {
-                  suggestion = `type ${node.id.name} = ${suggestion}${lastChar}`;
-                }
+                suggestion = `type ${
+                  node.typeParameters === undefined
+                    ? node.id.name
+                    : context.sourceCode
+                        .getText()
+                        .slice(node.id.range[0], node.typeParameters.range[1])
+                } = ${suggestion}${lastChar}`;
               }
 
               const isParentExported =
@@ -159,11 +156,7 @@ export default createRule({
                       : `/*${comment.value}*/`;
                   const isCommentOnTheSameLine =
                     comment.loc.start.line === member.loc.start.line;
-                  if (!isCommentOnTheSameLine) {
-                    commentText += '\n';
-                  } else {
-                    commentText += ' ';
-                  }
+                  commentText += isCommentOnTheSameLine ? ' ' : '\n';
                   suggestion = commentText + suggestion;
                 });
               }

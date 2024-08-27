@@ -29,13 +29,12 @@ export function deepMerge(
     const secondValue = second[key];
 
     if (firstHasKey && secondHasKey) {
-      if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
-        // object type
-        acc[key] = deepMerge(firstValue, secondValue);
-      } else {
-        // value type
-        acc[key] = secondValue;
-      }
+      acc[key] =
+        isObjectNotArray(firstValue) && isObjectNotArray(secondValue)
+          ? // object type
+            deepMerge(firstValue, secondValue)
+          : // value type
+            secondValue;
     } else if (firstHasKey) {
       acc[key] = firstValue;
     } else {

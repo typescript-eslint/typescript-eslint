@@ -310,13 +310,8 @@ export default createRule<Options, MessageIds>({
         return getLeftNode(node.expression);
       }
 
-      let leftNode;
-      if (node.type === AST_NODE_TYPES.CallExpression) {
-        leftNode = node.callee;
-      } else {
-        leftNode = node;
-      }
-
+      const leftNode =
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node;
       if (leftNode.type !== AST_NODE_TYPES.MemberExpression) {
         throw new Error(`Expected a MemberExpression, got ${leftNode.type}`);
       }

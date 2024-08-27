@@ -545,11 +545,7 @@ export default createRule<Options, MessageIds>({
         NullThrowsReasons.MissingToken('token', 'first specifier'),
       );
       textRange[0] = before.range[1];
-      if (isCommaToken(before)) {
-        removeRange[0] = before.range[0];
-      } else {
-        removeRange[0] = before.range[1];
-      }
+      removeRange[0] = before.range[isCommaToken(before) ? 0 : 1];
 
       const isFirst = allNamedSpecifiers[0] === first;
       const isLast = allNamedSpecifiers[allNamedSpecifiers.length - 1] === last;
@@ -731,29 +727,23 @@ export default createRule<Options, MessageIds>({
           }
         } else {
           // The import is both default and named.  Insert named on new line because can't mix default type import and named type imports
-          // eslint-disable-next-line no-lonely-if
-          if (fixStyle === 'inline-type-imports') {
-            yield fixer.insertTextBefore(
-              node,
-              `import {${typeNamedSpecifiers
-                .map(spec => {
-                  const insertText = context.sourceCode.text.slice(
-                    ...spec.range,
-                  );
-                  return `type ${insertText}`;
-                })
-                .join(
-                  ', ',
-                )}} from ${context.sourceCode.getText(node.source)};\n`,
-            );
-          } else {
-            yield fixer.insertTextBefore(
-              node,
-              `import type {${
-                fixesNamedSpecifiers.typeNamedSpecifiersText
-              }} from ${context.sourceCode.getText(node.source)};\n`,
-            );
-          }
+          yield fixer.insertTextBefore(
+            node,
+            fixStyle === 'inline-type-imports'
+              ? `import {${typeNamedSpecifiers
+                  .map(spec => {
+                    const insertText = context.sourceCode.text.slice(
+                      ...spec.range,
+                    );
+                    return `type ${insertText}`;
+                  })
+                  .join(
+                    ', ',
+                  )}} from ${context.sourceCode.getText(node.source)};\n`
+              : `import type {${
+                  fixesNamedSpecifiers.typeNamedSpecifiersText
+                }} from ${context.sourceCode.getText(node.source)};\n`,
+          );
         }
       }
 

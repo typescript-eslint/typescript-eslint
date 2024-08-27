@@ -111,21 +111,13 @@ export default createRule<Options, MessageIds>({
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
     ): void {
-      if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
-        stack = {
-          member,
-          class: member.parent.parent,
-          usesThis: false,
-          parent: stack,
-        };
-      } else {
-        stack = {
-          member: null,
-          class: null,
-          usesThis: false,
-          parent: stack,
-        };
-      }
+      stack = {
+        ...(member?.parent.type === AST_NODE_TYPES.ClassBody
+          ? { member, class: member.parent.parent }
+          : { member: null, class: null }),
+        usesThis: false,
+        parent: stack,
+      };
     }
 
     function enterFunction(

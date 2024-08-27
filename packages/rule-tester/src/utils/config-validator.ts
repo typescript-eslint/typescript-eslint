@@ -117,11 +117,9 @@ function validateRuleOptions(
       (err as Error).message
     }`;
 
-    if (typeof source === 'string') {
-      throw new Error(`${source}:\n\t${enhancedMessage}`);
-    } else {
-      throw new Error(enhancedMessage);
-    }
+    throw new Error(
+      (typeof source === 'string' ? `${source}:\n\t` : '') + enhancedMessage,
+    );
   }
 }
 

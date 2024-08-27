@@ -303,11 +303,9 @@ class ClassScope {
     private readonly onlyInlineLambdas?: boolean,
   ) {
     const classType = checker.getTypeAtLocation(classNode);
-    if (tsutils.isIntersectionType(classType)) {
-      this.classType = classType.types[0];
-    } else {
-      this.classType = classType;
-    }
+    this.classType = tsutils.isIntersectionType(classType)
+      ? classType.types[0]
+      : classType;
 
     for (const member of classNode.members) {
       if (ts.isPropertyDeclaration(member)) {

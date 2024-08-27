@@ -26,11 +26,10 @@ function applyDefault<User extends readonly unknown[], Default extends User>(
     if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];
 
-      if (isObjectNotArray(userOpt) && isObjectNotArray(opt)) {
-        options[i] = deepMerge(opt, userOpt);
-      } else {
-        options[i] = userOpt;
-      }
+      options[i] =
+        isObjectNotArray(userOpt) && isObjectNotArray(opt)
+          ? deepMerge(opt, userOpt)
+          : userOpt;
     }
   });
 

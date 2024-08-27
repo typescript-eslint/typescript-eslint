@@ -355,14 +355,11 @@ function getReportDescriptor(
           str += '.';
         }
       }
-      if (
+      str +=
         part.precedence !== OperatorPrecedence.Invalid &&
         part.precedence < OperatorPrecedence.Member
-      ) {
-        str += `(${part.text})`;
-      } else {
-        str += part.text;
-      }
+          ? `(${part.text})`
+          : part.text;
       return str;
     })
     .join('');

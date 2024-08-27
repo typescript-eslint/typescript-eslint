@@ -1598,31 +1598,28 @@ export class Converter {
           }
           return arrayItem;
         }
-        let result: TSESTree.Property | TSESTree.RestElement;
-        if (node.dotDotDotToken) {
-          result = this.createNode<TSESTree.RestElement>(node, {
-            type: AST_NODE_TYPES.RestElement,
-            argument: this.convertChild(node.propertyName ?? node.name),
-            decorators: [],
-            optional: false,
-            typeAnnotation: undefined,
-            value: undefined,
-          });
-        } else {
-          result = this.createNode<TSESTree.Property>(node, {
-            type: AST_NODE_TYPES.Property,
-            key: this.convertChild(node.propertyName ?? node.name),
-            value: this.convertChild(node.name),
-            computed: Boolean(
-              node.propertyName &&
-                node.propertyName.kind === SyntaxKind.ComputedPropertyName,
-            ),
-            method: false,
-            optional: false,
-            shorthand: !node.propertyName,
-            kind: 'init',
-          });
-        }
+        const result = node.dotDotDotToken
+          ? this.createNode<TSESTree.RestElement>(node, {
+              type: AST_NODE_TYPES.RestElement,
+              argument: this.convertChild(node.propertyName ?? node.name),
+              decorators: [],
+              optional: false,
+              typeAnnotation: undefined,
+              value: undefined,
+            })
+          : this.createNode<TSESTree.Property>(node, {
+              type: AST_NODE_TYPES.Property,
+              key: this.convertChild(node.propertyName ?? node.name),
+              value: this.convertChild(node.name),
+              computed: Boolean(
+                node.propertyName &&
+                  node.propertyName.kind === SyntaxKind.ComputedPropertyName,
+              ),
+              method: false,
+              optional: false,
+              shorthand: !node.propertyName,
+              kind: 'init',
+            });
 
         if (node.initializer) {
           result.value = this.createNode<TSESTree.AssignmentPattern>(node, {

@@ -93,11 +93,9 @@ function parseForESLint(
   code: ts.SourceFile | string,
   parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
-  if (!parserOptions || typeof parserOptions !== 'object') {
-    parserOptions = {};
-  } else {
-    parserOptions = { ...parserOptions };
-  }
+  parserOptions = {
+    ...(parserOptions && typeof parserOptions === 'object' && parserOptions),
+  };
   // https://eslint.org/docs/user-guide/configuring#specifying-parser-options
   // if sourceType is not provided by default eslint expect that it will be set to "script"
   if (

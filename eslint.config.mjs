@@ -326,6 +326,7 @@ export default tseslint.config(
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
       'unicorn/prefer-string-replace-all': 'error',
+      'unicorn/prefer-ternary': 'error',
     },
   },
   {
