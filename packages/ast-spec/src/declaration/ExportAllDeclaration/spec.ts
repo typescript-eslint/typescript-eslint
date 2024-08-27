@@ -6,7 +6,6 @@ import type { ImportAttribute } from '../../special/ImportAttribute/spec';
 import type { ExportKind } from '../ExportAndImportKind';
 
 export interface ExportAllDeclaration extends BaseNode {
-  type: AST_NODE_TYPES.ExportAllDeclaration;
   /**
    * The assertions declared for the export.
    * @example
@@ -36,4 +35,5 @@ export interface ExportAllDeclaration extends BaseNode {
    * The source module being exported from.
    */
   source: StringLiteral;
+  type: AST_NODE_TYPES.ExportAllDeclaration;
 }

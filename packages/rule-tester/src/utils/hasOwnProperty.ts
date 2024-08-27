@@ -5,4 +5,4 @@ export const hasOwnProperty = Object.hasOwn as <
 >(
   obj: Obj,
   key: K,
-) => obj is Obj & { [key in K]-?: Obj[key] };
+) => obj is { [key in K]-?: Obj[key] } & Obj;

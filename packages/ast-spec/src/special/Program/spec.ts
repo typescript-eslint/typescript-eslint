@@ -5,9 +5,9 @@ import type { ProgramStatement } from '../../unions/Statement';
 import type { Token } from '../../unions/Token';
 
 export interface Program extends NodeOrTokenData {
-  type: AST_NODE_TYPES.Program;
   body: ProgramStatement[];
-  sourceType: 'module' | 'script';
   comments: Comment[] | undefined;
+  sourceType: 'module' | 'script';
   tokens: Token[] | undefined;
+  type: AST_NODE_TYPES.Program;
 }

@@ -7,11 +7,11 @@ import type { AssignmentPattern } from '../AssignmentPattern/spec';
 import type { RestElement } from '../RestElement/spec';
 
 export interface TSParameterProperty extends BaseNode {
-  type: AST_NODE_TYPES.TSParameterProperty;
   accessibility: Accessibility | undefined;
-  readonly: boolean;
-  static: boolean;
+  decorators: Decorator[];
   override: boolean;
   parameter: AssignmentPattern | BindingName | RestElement;
-  decorators: Decorator[];
+  readonly: boolean;
+  static: boolean;
+  type: AST_NODE_TYPES.TSParameterProperty;
 }
