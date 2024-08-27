@@ -42,7 +42,7 @@ export {
   isObjectNotArray,
   getParserServices,
   nullThrows,
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
+  type InferMessageIdsTypeFromRule,
+  type InferOptionsTypeFromRule,
   NullThrowsReasons,
 };

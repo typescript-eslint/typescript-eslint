@@ -1,10 +1,10 @@
 export {
-  AST,
+  type AST,
   parse,
   parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
+  type ParseAndGenerateServicesResult,
 } from './parser';
-export {
+export type {
   ParserServices,
   ParserServicesWithTypeInformation,
   ParserServicesWithoutTypeInformation,

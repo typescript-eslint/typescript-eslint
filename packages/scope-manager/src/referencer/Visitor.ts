@@ -45,4 +45,4 @@ class Visitor extends VisitorBase {
 
 export { Visitor };
 
-export { VisitorBase, VisitorOptions } from './VisitorBase';
+export { VisitorBase, type VisitorOptions } from './VisitorBase';

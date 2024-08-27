@@ -84,6 +84,6 @@ abstract class VisitorBase {
   }
 }
 
-export { VisitorBase, VisitorOptions };
+export { VisitorBase, type VisitorOptions };
 
-export { VisitorKeys } from '@typescript-eslint/visitor-keys';
+export type { VisitorKeys } from '@typescript-eslint/visitor-keys';

@@ -189,4 +189,4 @@ function parseForESLint(
 
 export { parse, parseForESLint };
 
-export { ParserOptions } from '@typescript-eslint/types';
+export type { ParserOptions } from '@typescript-eslint/types';

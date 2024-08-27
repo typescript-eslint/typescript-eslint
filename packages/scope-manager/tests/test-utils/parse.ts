@@ -62,4 +62,4 @@ function parseAndAnalyze(
 
 export { parse, parseAndAnalyze };
 
-export { AnalyzeOptions } from '../../src/analyze';
+export type { AnalyzeOptions } from '../../src/analyze';
