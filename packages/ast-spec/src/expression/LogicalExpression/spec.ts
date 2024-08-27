@@ -3,8 +3,8 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Expression } from '../../unions/Expression';
 
 export interface LogicalExpression extends BaseNode {
-  type: AST_NODE_TYPES.LogicalExpression;
-  operator: '??' | '&&' | '||';
   left: Expression;
+  operator: '&&' | '??' | '||';
   right: Expression;
+  type: AST_NODE_TYPES.LogicalExpression;
 }

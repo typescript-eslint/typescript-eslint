@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import path from 'node:path';
-
 import debug from 'debug';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
@@ -34,6 +32,7 @@ export type TypeScriptProjectService = ts.server.ProjectService;
 
 export interface ProjectServiceSettings {
   allowDefaultProject: string[] | undefined;
+  lastReloadTimestamp: number;
   maximumDefaultProjectFileMatchCount: number;
   service: TypeScriptProjectService;
 }
@@ -41,6 +40,7 @@ export interface ProjectServiceSettings {
 export function createProjectService(
   optionsRaw: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
+  tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {
   const options = typeof optionsRaw === 'object' ? optionsRaw : {};
   validateDefaultProjectForFilesGlob(options);
@@ -130,7 +130,7 @@ export function createProjectService(
       configFile = getParsedConfigFile(
         tsserver,
         options.defaultProject,
-        path.dirname(options.defaultProject),
+        tsconfigRootDir,
       );
     } catch (error) {
       throw new Error(
@@ -149,6 +149,7 @@ export function createProjectService(
 
   return {
     allowDefaultProject: options.allowDefaultProject,
+    lastReloadTimestamp: performance.now(),
     maximumDefaultProjectFileMatchCount:
       options.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
       DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD,

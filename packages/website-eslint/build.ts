@@ -11,7 +11,7 @@ function requireResolved(targetPath: string): string {
 }
 
 function normalizePath(filePath: string): string {
-  return filePath.replace(/\\/g, '/');
+  return filePath.replaceAll('\\', '/');
 }
 
 function requireMock(targetPath: string): Promise<string> {
@@ -21,16 +21,16 @@ function requireMock(targetPath: string): Promise<string> {
 function makeFilter(filePath: string[] | string): { filter: RegExp } {
   const paths = Array.isArray(filePath) ? filePath : [filePath];
   const norm = paths.map(item =>
-    normalizePath(item).replace(/\//g, '[\\\\/]').replace(/\./g, '\\.'),
+    normalizePath(item).replaceAll('/', '[\\\\/]').replaceAll('.', '\\.'),
   );
-  return { filter: new RegExp('(' + norm.join('|') + ')$') };
+  return { filter: new RegExp(`(${norm.join('|')})$`) };
 }
 
 function createResolve(
   targetPath: string,
   join: string,
 ): esbuild.OnResolveResult {
-  const resolvedPackage = requireResolved(targetPath + '/package.json');
+  const resolvedPackage = requireResolved(`${targetPath}/package.json`);
   return {
     path: path.join(resolvedPackage, '../src/', join),
   };

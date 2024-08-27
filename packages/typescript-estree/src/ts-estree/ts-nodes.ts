@@ -24,9 +24,9 @@ export type TSNode =
   | ts.Identifier
   | ts.ImportAttribute
   | ts.ImportAttributes
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional for old TS versions */
   | ts.AssertClause
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional for old TS versions */
   | ts.AssertEntry
   | ts.PrivateIdentifier
   | ts.QualifiedName

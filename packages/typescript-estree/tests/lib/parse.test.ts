@@ -1,7 +1,8 @@
+import { join, resolve } from 'node:path';
+
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
-import * as globbyModule from 'globby';
-import { join, resolve } from 'path';
+import * as fastGlobModule from 'fast-glob';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
@@ -38,11 +39,11 @@ jest.mock('typescript', () => {
   };
 });
 
-jest.mock('globby', () => {
-  const globby = jest.requireActual<typeof globbyModule>('globby');
+jest.mock('fast-glob', () => {
+  const fastGlob = jest.requireActual<typeof fastGlobModule>('fast-glob');
   return {
-    ...globby,
-    sync: jest.fn(globby.sync),
+    ...fastGlob,
+    sync: jest.fn(fastGlob.sync),
   };
 });
 
@@ -51,13 +52,13 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const globbySyncMock = jest.mocked(globbyModule.sync);
+const fastGlobSyncMock = jest.mocked(fastGlobModule.sync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
  */
 function alignErrorPath(error: Error): never {
-  error.message = error.message.replace(/\\(?!["])/gm, '/');
+  error.message = error.message.replaceAll(/\\(?!["])/gm, '/');
   throw error;
 }
 
@@ -684,6 +685,12 @@ describe('parseAndGenerateServices', () => {
 
     describe('cacheLifetime', () => {
       describe('glob', () => {
+        const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
+        // fast-glob returns arbitrary order of results to improve performance.
+        // `resolveProjectList()` calls fast-glob for each pattern to ensure the
+        // order is correct.
+        // Thus the expected call time of spy is the number of patterns.
+        const expectFastGlobCalls = project.length;
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
@@ -692,53 +699,86 @@ describe('parseAndGenerateServices', () => {
             disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
             tsconfigRootDir: FIXTURES_DIR,
-            project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            project,
           });
         }
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(0);
-          // should call globby again because we specified immediate cache expiry
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // should call fast-glob again because we specified immediate cache expiry
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
+            expectFastGlobCalls * 2,
+          );
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
+            expectFastGlobCalls * 2,
+          );
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
+      });
+    });
+
+    describe('project references', () => {
+      beforeEach(() => {
+        parser.clearCaches();
+      });
+
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectReferences');
+      const code = 'var a = true';
+
+      const testParse = () => (): void => {
+        parser.parseAndGenerateServices(code, {
+          disallowAutomaticSingleRunInference: true,
+          filePath: join(PROJECT_DIR, './file.ts'),
+          project: './**/tsconfig.json',
+          tsconfigRootDir: PROJECT_DIR,
+        });
+      };
+
+      it('throws a special-case error when project references are enabled in the only TSConfig and the file is not found', () => {
+        expect(testParse()).toThrowErrorMatchingInlineSnapshot(`
+        "ESLint was configured to run on \`<tsconfigRootDir>/file.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+        That TSConfig uses project "references" and doesn't include \`<tsconfigRootDir>/file.ts\` directly, which is not supported by \`parserOptions.project\`.
+        Either:
+        - Switch to \`parserOptions.projectService\`
+        - Use an ESLint-specific TSConfig
+        See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#are-typescript-project-references-supported"
+        `);
       });
     });
   }

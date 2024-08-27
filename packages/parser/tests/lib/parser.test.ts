@@ -1,7 +1,8 @@
-import * as scopeManager from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
+
+import * as scopeManager from '@typescript-eslint/scope-manager';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
-import path from 'path';
+import path from 'node:path';
 import { ScriptTarget } from 'typescript';
 
 import { parse, parseForESLint } from '../../src/parser';
@@ -25,17 +26,17 @@ describe('parser', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(typescriptESTree, 'parseAndGenerateServices');
     const config: ParserOptions = {
-      sourceType: 'module' as const,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,
       },
+      sourceType: 'module' as const,
       // ts-estree specific
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      extraFileExtensions: ['.foo'],
       filePath: './isolated-file.src.ts',
       project: 'tsconfig.json',
-      errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: path.resolve(__dirname, '../fixtures/services'),
-      extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
     expect(spy).toHaveBeenCalledTimes(1);
@@ -172,21 +173,21 @@ describe('parser', () => {
     const code = 'const valid = true;';
     const spy = jest.spyOn(scopeManager, 'analyze');
     const config: ParserOptions = {
-      sourceType: 'module' as const,
       ecmaFeatures: {
         globalReturn: false,
         jsx: false,
       },
+      sourceType: 'module' as const,
       // scope-manager specific
-      lib: ['dom.iterable'],
-      jsxPragma: 'Foo',
       jsxFragmentName: 'Bar',
+      jsxPragma: 'Foo',
+      lib: ['dom.iterable'],
       // ts-estree specific
+      errorOnTypeScriptSyntacticAndSemanticIssues: false,
+      extraFileExtensions: ['.foo'],
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
-      errorOnTypeScriptSyntacticAndSemanticIssues: false,
       tsconfigRootDir: path.join(__dirname, '../fixtures/services'),
-      extraFileExtensions: ['.foo'],
     };
 
     parseForESLint(code, config);
@@ -194,9 +195,9 @@ describe('parser', () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenLastCalledWith(expect.anything(), {
       globalReturn: false,
-      lib: ['dom.iterable'],
-      jsxPragma: 'Foo',
       jsxFragmentName: 'Bar',
+      jsxPragma: 'Foo',
+      lib: ['dom.iterable'],
       sourceType: 'module',
     });
   });

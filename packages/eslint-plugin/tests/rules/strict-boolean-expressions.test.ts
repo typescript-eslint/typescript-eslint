@@ -1,7 +1,8 @@
-/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
+
+import * as path from 'node:path';
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
 
 import type {
   MessageId,

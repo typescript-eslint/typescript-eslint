@@ -6,7 +6,6 @@ import type { ImportClause } from '../../unions/ImportClause';
 import type { ImportKind } from '../ExportAndImportKind';
 
 export interface ImportDeclaration extends BaseNode {
-  type: AST_NODE_TYPES.ImportDeclaration;
   /**
    * The assertions declared for the export.
    * @example
@@ -44,4 +43,5 @@ export interface ImportDeclaration extends BaseNode {
    * ```
    */
   specifiers: ImportClause[];
+  type: AST_NODE_TYPES.ImportDeclaration;
 }
