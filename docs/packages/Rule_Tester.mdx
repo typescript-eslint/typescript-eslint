@@ -123,10 +123,7 @@ ruleTester.run('my-rule', rule, {
 ### Type-Aware Testing
 
 Type-aware rules can be tested in almost exactly the same way as regular code, using `parserOptions.projectService`.
-Most rule tests can use settings like:
-
-- `allowDefaultProjectForFiles: ["*.ts*"]`: to include files in your tests
-- `defaultProject: "tsconfig.json"`: to use the same TSConfig as other files
+Most rule tests specify `parserOptions.allowDefaultProjectForFiles: ["*.ts*"]` to enable type checking on all test files.
 
 You can then test your rule by providing the type-aware config:
 
@@ -135,9 +132,8 @@ const ruleTester = new RuleTester({
   // Added lines start
   languageOptions: {
     parserOptions: {
-      projectServices: {
+      projectService: {
         allowDefaultProject: ['*.ts*'],
-        defaultProject: 'tsconfig.json',
       },
       tsconfigRootDir: './path/to/your/folder/fixture',
     },

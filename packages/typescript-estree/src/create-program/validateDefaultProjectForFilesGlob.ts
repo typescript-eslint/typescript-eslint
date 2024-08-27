@@ -8,13 +8,13 @@ See https://typescript-eslint.io/troubleshooting/typed-linting#allowdefaultproje
 `;
 
 export function validateDefaultProjectForFilesGlob(
-  options: ProjectServiceOptions,
+  allowDefaultProject: string[] | undefined,
 ): void {
-  if (!options.allowDefaultProject?.length) {
+  if (!allowDefaultProject?.length) {
     return;
   }
 
-  for (const glob of options.allowDefaultProject) {
+  for (const glob of allowDefaultProject) {
     if (glob === '*') {
       throw new Error(
         `allowDefaultProject contains the overly wide '*'.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}`,

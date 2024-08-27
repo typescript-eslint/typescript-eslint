@@ -335,17 +335,21 @@ The behavior of `parserOptions.projectService` can be customized by setting it t
   parserOptions: {
     projectService: {
       allowDefaultProject: ['*.js'],
-      defaultProject: 'tsconfig.json',
     },
   },
 };
 ```
 
+:::tip
+See [Troubleshooting & FAQs > Typed Linting > Project Service Issues](../troubleshooting/typed-linting/index.mdx#project-service-issues) for help using these options.
+:::
+
 ##### `allowDefaultProject`
+
+> Default `[]` _(none)_
 
 Globs of files to allow running with the default project compiler options despite not being matched by the project service.
 It takes in an array of string paths that will be resolved relative to the [`tsconfigRootDir`](#tsconfigrootdir).
-When set, [`projectService.defaultProject`](#defaultproject) must be set as well.
 
 This is intended to produce type information for config files such as `eslint.config.js` that aren't included in their sibling `tsconfig.json`.
 Every file with type information retrieved from the default project incurs a non-trivial performance overhead to linting.
@@ -358,10 +362,12 @@ There are several restrictions on this option to prevent it from being overused:
 
 ##### `defaultProject`
 
+> Default `'tsconfig.json'`
+
 Path to a TSConfig to use instead of TypeScript's default project configuration.
 It takes in a string path that will be resolved relative to the [`tsconfigRootDir`](#tsconfigrootdir).
 
-This is required to specify which TSConfig file on disk will be used for [`projectService.allowDefaultProject`](#allowdefaultproject).
+`projectService.defaultProject` only impacts the "out-of-project" files included by [`allowDefaultProject`](#allowdefaultproject).
 
 ##### `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING`
 
