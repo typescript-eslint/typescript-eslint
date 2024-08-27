@@ -232,8 +232,7 @@ export default createRule<Options, MessageIds>({
               ) {
                 const maybeFunction = maybeIdentifier.parent;
                 if (
-                  (isFunctionOrFunctionType(maybeFunction) ||
-                    maybeFunction.type === AST_NODE_TYPES.TSDeclareFunction) &&
+                  isFunctionOrFunctionType(maybeFunction) &&
                   maybeFunction.params.includes(maybeIdentifier) &&
                   tsutils.isTypeFlagSet(
                     constituentNodeType,
