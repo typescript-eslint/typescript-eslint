@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSSatisfiesExpression extends BaseNode {
-  type: AST_NODE_TYPES.TSSatisfiesExpression;
   expression: Expression;
+  type: AST_NODE_TYPES.TSSatisfiesExpression;
   typeAnnotation: TypeNode;
 }

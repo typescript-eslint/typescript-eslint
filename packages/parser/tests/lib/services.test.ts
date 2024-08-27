@@ -1,10 +1,10 @@
+import { createProgram } from '@typescript-eslint/typescript-estree';
+import * as glob from 'glob';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { createProgram } from '@typescript-eslint/typescript-estree';
-import * as glob from 'glob';
-
 import type { ParserOptions } from '../../src/parser';
+
 import {
   createSnapshotTestBlock,
   formatSnapshotName,

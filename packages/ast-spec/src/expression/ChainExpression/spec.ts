@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { ChainElement } from '../../unions/ChainElement';
 
 export interface ChainExpression extends BaseNode {
-  type: AST_NODE_TYPES.ChainExpression;
   expression: ChainElement;
+  type: AST_NODE_TYPES.ChainExpression;
 }
