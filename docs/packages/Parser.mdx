@@ -285,6 +285,8 @@ For an option that allows linting files outside of your TSConfig file(s), see [`
 Specifies using TypeScript APIs to generate type information for rules.
 It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 
+See [Typed Linting with `parserOptions.projectService`](/blog/parser-options-project-service) for more context.
+
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
@@ -321,7 +323,6 @@ This option brings two main benefits over the older `project`:
 
 - Simpler configurations: most projects shouldn't need to explicitly configure `project` paths or create `tsconfig.eslint.json`s
 - Improved performance: this API is optimized on the TypeScript side for speed
-  - Initial versions of this option demonstrated performance changes in subsets of the typescript-eslint monorepo ranging from 11% slower to 70% faster
 
 For more information, see:
 
@@ -333,11 +334,12 @@ For more information, see:
 The behavior of `parserOptions.projectService` can be customized by setting it to an object.
 
 ```js
-module.exports = {
+{
   parser: '@typescript-eslint/parser',
   parserOptions: {
     projectService: {
       allowDefaultProject: ['*.js'],
+      defaultProject: "tsconfig.json"
     },
   },
 };
@@ -346,10 +348,24 @@ module.exports = {
 ##### `allowDefaultProject`
 
 Globs of files to allow running with the default project compiler options despite not being matched by the project service.
+It takes in an array of string paths that will be resolved relative to the [`tsconfigRootDir`](#tsconfigrootdir).
+When set, [`projectService.defaultProject`](#defaultproject) must be set as well.
+
+This is intended to produce type information for in root-level config files such as `eslint.config.js` that aren't included in their sibling `tsconfig.json`.
+Every file with type information retrieved from the default project incurs a non-trivial performance overhead to linting.
+Use this option sparingly.
+
+There are several restrictions on this option to prevent it from being overused:
+
+- `**` is not allowed in globs passed to it
+- Files that match `allowDefaultProject` may not also be included in their nearest `tsconfig.json`
 
 ##### `defaultProject`
 
 Path to a TSConfig to use instead of TypeScript's default project configuration.
+It takes in an array of string paths that will be resolved relative to the [`tsconfigRootDir`](#tsconfigrootdir).
+
+This is required to specify which TSConfig file on disk will be used for [`projectService.allowDefaultProject`](#allowdefaultproject).
 
 ##### `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING`
 

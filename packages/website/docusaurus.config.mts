@@ -17,8 +17,11 @@ const remarkPlugins: MDXPlugin[] = [[npm2yarnPlugin, { sync: true }]];
 
 const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 
+const beforeDefaultRemarkPlugins = [generatedRuleDocs];
+
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
+    beforeDefaultRemarkPlugins,
     blogSidebarCount: 'ALL',
     // Allow Docusaurus TOC remark plugin to pick up the injected H2
     beforeDefaultRemarkPlugins: [blogFooter],
@@ -30,7 +33,7 @@ const presetClassicOptions: PresetClassicOptions = {
     sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
     routeBasePath: 'rules',
     editUrl: `${githubUrl}/edit/main/packages/website/`,
-    beforeDefaultRemarkPlugins: [generatedRuleDocs],
+    beforeDefaultRemarkPlugins: beforeDefaultRemarkPlugins,
     remarkPlugins,
     exclude: ['TEMPLATE.md'],
     breadcrumbs: false,
