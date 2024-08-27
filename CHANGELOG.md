@@ -1,3 +1,62 @@
+## 8.3.0 (2024-08-26)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-deprecation] add rule ([#9783](https://github.com/typescript-eslint/typescript-eslint/pull/9783))
+- **typescript-estree:** replace `globby` w/ `fast-glob` ([#9518](https://github.com/typescript-eslint/typescript-eslint/pull/9518))
+- **typescript-estree:** reload project service once when file config isn't found ([#9853](https://github.com/typescript-eslint/typescript-eslint/pull/9853))
+
+### 🩹 Fixes
+
+- **ast-spec:** use `Expression` in argument of `ThrowStatement` ([#9632](https://github.com/typescript-eslint/typescript-eslint/pull/9632))
+- **eslint-plugin:** [no-unnecessary-template-expression] add missing parentheses in autofix ([#8673](https://github.com/typescript-eslint/typescript-eslint/pull/8673))
+- **eslint-plugin:** [no-unnecessary-type-parameters] check mapped alias type arguments ([#9741](https://github.com/typescript-eslint/typescript-eslint/pull/9741))
+- **utils:** add missing `TSSatisfiesExpression` in `RuleListenerBaseSelectors` ([#9832](https://github.com/typescript-eslint/typescript-eslint/pull/9832))
+- **utils:** add `TSDeclareFunction` to `functionTypeTypes` ([#9788](https://github.com/typescript-eslint/typescript-eslint/pull/9788))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Daichi Kamiyama @dak2
+- Josh Goldberg ✨
+- Kim Sang Du @developer-bandi
+- Sukka
+- Vida Xie @9romise
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.2.0 (2024-08-19)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** add suggestion to `require-await` to remove `async` keyword ([#9718](https://github.com/typescript-eslint/typescript-eslint/pull/9718))
+- **typescript-estree:** special-case error for parserOptions.project and project references ([#9686](https://github.com/typescript-eslint/typescript-eslint/pull/9686))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [use-unknown-in-catch-callback-variable] flag second argument of `.then` ([#9059](https://github.com/typescript-eslint/typescript-eslint/pull/9059))
+- **eslint-plugin:** [no-unnecessary-type-assertion] conflict with TS for variables used before assignment ([#9209](https://github.com/typescript-eslint/typescript-eslint/pull/9209))
+- **eslint-plugin:** delete [] in message if ReadOnly<string[]> is detected ([#9513](https://github.com/typescript-eslint/typescript-eslint/pull/9513))
+- **eslint-plugin:** [no-redundant-type-constituents] differentiate a types-error any from a true any ([#9555](https://github.com/typescript-eslint/typescript-eslint/pull/9555))
+- **eslint-plugin:** [no-unnecessary-type-parameters] check mapped constraint types if necessary ([#9740](https://github.com/typescript-eslint/typescript-eslint/pull/9740))
+- **eslint-plugin:** [no-unsafe-enum-comparison] add logic to see through intersections ([#9777](https://github.com/typescript-eslint/typescript-eslint/pull/9777))
+- **typescript-estree:** pass in tsconfigRootDir as cwd to getParsedConfigFile ([#9804](https://github.com/typescript-eslint/typescript-eslint/pull/9804))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Dave @reduckted
+- Jake Bailey @jakebailey
+- James @Zamiell
+- Josh Goldberg ✨
+- liuxingbaoyu @liuxingbaoyu
+- Yukihiro Hasegawa @y-hsgw
+- Yutong Zhu @YutongZhuu
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.1.0 (2024-08-12)
 
 

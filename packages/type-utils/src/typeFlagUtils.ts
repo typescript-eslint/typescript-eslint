@@ -32,7 +32,7 @@ export function isTypeFlagSet(
 ): boolean {
   const flags = getTypeFlags(type);
 
-  // eslint-disable-next-line deprecation/deprecation -- not used
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- not used
   if (isReceiver && flags & ANY_OR_UNKNOWN) {
     return true;
   }

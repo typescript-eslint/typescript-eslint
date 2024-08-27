@@ -29,10 +29,11 @@ export function isSerializable(val: unknown): boolean {
         if (!isSerializablePrimitiveOrPlainObject(valAsObj[property])) {
           return false;
         }
-        if (typeof valAsObj[property] === 'object') {
-          if (!isSerializable(valAsObj[property])) {
-            return false;
-          }
+        if (
+          typeof valAsObj[property] === 'object' &&
+          !isSerializable(valAsObj[property])
+        ) {
+          return false;
         }
       }
     }

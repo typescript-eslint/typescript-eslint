@@ -1,4 +1,4 @@
-/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 

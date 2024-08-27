@@ -11,27 +11,27 @@ import type {
 } from '../../unions/PropertyName';
 
 interface PropertyBase extends BaseNode {
-  type: AST_NODE_TYPES.Property;
+  computed: boolean;
   key: PropertyName;
+  kind: 'get' | 'init' | 'set';
+  method: boolean;
+  optional: boolean;
+  shorthand: boolean;
+  type: AST_NODE_TYPES.Property;
   value:
     | AssignmentPattern
     | BindingName
     | Expression
     | TSEmptyBodyFunctionExpression;
-  computed: boolean;
-  method: boolean;
-  shorthand: boolean;
-  optional: boolean;
-  kind: 'get' | 'init' | 'set';
 }
 
 export interface PropertyComputedName extends PropertyBase {
-  key: PropertyNameComputed;
   computed: true;
+  key: PropertyNameComputed;
 }
 export interface PropertyNonComputedName extends PropertyBase {
-  key: PropertyNameNonComputed;
   computed: false;
+  key: PropertyNameNonComputed;
 }
 
 export type Property = PropertyComputedName | PropertyNonComputedName;

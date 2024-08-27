@@ -1,8 +1,9 @@
-import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type {
   FlatConfig,
   RuleRecommendation,
 } from '@typescript-eslint/utils/ts-eslint';
+
+import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
 import plugin from '../src/index';
 
@@ -30,14 +31,14 @@ function filterRules(
 
 interface FilterAndMapRuleConfigsSettings {
   excludeDeprecated?: boolean;
-  typeChecked?: 'exclude' | 'include-only';
   recommendations?: (RuleRecommendation | undefined)[];
+  typeChecked?: 'exclude' | 'include-only';
 }
 
 function filterAndMapRuleConfigs({
   excludeDeprecated,
-  typeChecked,
   recommendations,
+  typeChecked,
 }: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
   let result = Object.entries(rules);
 
@@ -146,8 +147,8 @@ describe('recommended.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'exclude',
       recommendations: ['recommended'],
+      typeChecked: 'exclude',
     });
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -184,8 +185,8 @@ describe('recommended-type-checked-only.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'include-only',
       recommendations: ['recommended'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -204,8 +205,8 @@ describe('strict.ts', () => {
     // note: exclude deprecated rules, this config is allowed to change between minor versions
     const ruleConfigs = filterAndMapRuleConfigs({
       excludeDeprecated: true,
-      typeChecked: 'exclude',
       recommendations: ['recommended', 'strict'],
+      typeChecked: 'exclude',
     });
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -242,8 +243,8 @@ describe('strict-type-checked-only.ts', () => {
     // note: exclude deprecated rules, this config is allowed to change between minor versions
     const ruleConfigs = filterAndMapRuleConfigs({
       excludeDeprecated: true,
-      typeChecked: 'include-only',
       recommendations: ['recommended', 'strict'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -261,8 +262,8 @@ describe('stylistic.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'exclude',
       recommendations: ['stylistic'],
+      typeChecked: 'exclude',
     });
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -298,8 +299,8 @@ describe('stylistic-type-checked-only.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'include-only',
       recommendations: ['stylistic'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -315,14 +316,14 @@ describe('config helper', () => {
     expect(
       plugin.config({
         files: ['file'],
-        rules: { rule: 'error' },
         ignores: ['ignored'],
+        rules: { rule: 'error' },
       }),
     ).toEqual([
       {
         files: ['file'],
-        rules: { rule: 'error' },
         ignores: ['ignored'],
+        rules: { rule: 'error' },
       },
     ]);
   });
@@ -330,8 +331,8 @@ describe('config helper', () => {
   it('flattens extended configs', () => {
     expect(
       plugin.config({
-        rules: { rule: 'error' },
         extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+        rules: { rule: 'error' },
       }),
     ).toEqual([
       { rules: { rule1: 'error' } },
@@ -343,10 +344,10 @@ describe('config helper', () => {
   it('flattens extended configs with files and ignores', () => {
     expect(
       plugin.config({
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
         files: ['common-file'],
         ignores: ['common-ignored'],
         rules: { rule: 'error' },
-        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
       }),
     ).toEqual([
       {

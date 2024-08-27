@@ -10,13 +10,12 @@
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
-
 import tmp from 'tmp';
 
 interface PackageJSON {
+  devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
-  devDependencies: Record<string, string>;
 }
 
 const PACKAGES_DIR = path.resolve(__dirname, '..', '..');

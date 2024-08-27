@@ -1,4 +1,5 @@
 import type { TSESTree } from '../ts-estree';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import {
   isNodeOfType,
@@ -71,6 +72,7 @@ const functionTypeTypes = [
   AST_NODE_TYPES.TSCallSignatureDeclaration,
   AST_NODE_TYPES.TSConstructorType,
   AST_NODE_TYPES.TSConstructSignatureDeclaration,
+  AST_NODE_TYPES.TSDeclareFunction,
   AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
   AST_NODE_TYPES.TSFunctionType,
   AST_NODE_TYPES.TSMethodSignature,
@@ -164,20 +166,20 @@ const isLoop = isNodeOfTypes([
 export {
   isAwaitExpression,
   isAwaitKeyword,
-  isConstructor,
   isClassOrTypeElement,
+  isConstructor,
   isFunction,
   isFunctionOrFunctionType,
   isFunctionType,
   isIdentifier,
   isImportKeyword,
-  isLoop,
   isLogicalOrOperator,
+  isLoop,
   isNonNullAssertionPunctuator,
   isNotNonNullAssertionPunctuator,
   isNotOptionalChainPunctuator,
-  isOptionalChainPunctuator,
   isOptionalCallExpression,
+  isOptionalChainPunctuator,
   isSetter,
   isTSConstructorType,
   isTSFunctionType,
