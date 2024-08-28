@@ -18,6 +18,7 @@ import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode'
 import rules from '../src/rules';
 import { areOptionsValid } from './areOptionsValid';
 import { getFixturesRootDir } from './RuleTester';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
@@ -574,6 +575,29 @@ describe('Validating rule metadata', () => {
         expect(requiresFullTypeInformation(ruleFileContents)).toEqual(
           rule.meta.docs?.requiresTypeChecking ?? false,
         );
+      });
+
+      it('all properties of the rule options schema must include a description', () => {
+        const getPathsMissingDescription = (
+          schema: unknown,
+          path: string,
+        ): string[] =>
+          Array.isArray(schema)
+            ? (schema as readonly JSONSchema4[]).flatMap((schema, i) =>
+                getPathsMissingDescription(schema, `${path}.${i}`),
+              )
+            : Object.entries(schema as JSONSchema4).flatMap(([key, value]) =>
+                key === 'properties'
+                  ? Object.entries(value as Record<string, JSONSchema4>)
+                      .filter(
+                        ([, { $ref, description }]) => !$ref && !description,
+                      )
+                      .map(([key]) => `${path}.${key}`)
+                  : typeof value === 'object'
+                    ? getPathsMissingDescription(value, `${path}.${key}`)
+                    : [],
+              );
+        expect(getPathsMissingDescription(rule.meta.schema, ``)).toEqual([]);
       });
     });
   }
