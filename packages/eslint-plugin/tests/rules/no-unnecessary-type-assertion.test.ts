@@ -1137,5 +1137,20 @@ var x = 1;
         },
       ],
     },
+    {
+      code: `
+const a = '';
+const b: string | undefined = (a ? undefined : a)!;
+      `,
+      output: `
+const a = '';
+const b: string | undefined = (a ? undefined : a);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+    },
   ],
 });
