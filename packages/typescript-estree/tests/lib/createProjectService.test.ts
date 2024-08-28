@@ -149,7 +149,7 @@ describe('createProjectService', () => {
     const { service } = createProjectService(
       {
         allowDefaultProject: ['file.js'],
-        defaultProject: defaultProject,
+        defaultProject,
       },
       undefined,
       undefined,

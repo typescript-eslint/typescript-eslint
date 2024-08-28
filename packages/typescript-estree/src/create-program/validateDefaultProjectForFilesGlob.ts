@@ -1,5 +1,3 @@
-import type { ProjectServiceOptions } from '../parser-options';
-
 export const DEFAULT_PROJECT_FILES_ERROR_EXPLANATION = `
 
 Having many files run with the default project is known to cause performance issues and slow down linting.
