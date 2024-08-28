@@ -48,12 +48,14 @@ export default createRule({
           );
 
         const smTypeParameterVariable = nullThrows(
-          scope.variables.find(
-            variable =>
-              // type identifiers can only be declared once, unlike var.
-              variable.identifiers.length === 1 &&
-              variable.identifiers[0] === esTypeParameter.name,
-          ),
+          (() => {
+            const variable = scope.set.get(esTypeParameter.name.name);
+            return variable != null &&
+              variable.isTypeVariable &&
+              !variable.isValueVariable
+              ? variable
+              : undefined;
+          })(),
           "Type parameter should be present in scope's variables.",
         );
 
