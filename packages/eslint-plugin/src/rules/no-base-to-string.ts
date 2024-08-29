@@ -35,6 +35,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoredTypeNames: {
+            description:
+              'Stringified regular expressions of type names to ignore.',
             type: 'array',
             items: {
               type: 'string',
