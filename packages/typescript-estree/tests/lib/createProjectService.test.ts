@@ -61,7 +61,7 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error when options.defaultProject is set and getParsedConfigFile throws a diagnostic error', () => {
+  it('throws an error with a relative path when options.defaultProject is set to a relative path and getParsedConfigFile throws a diagnostic error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
       throw new Error('./tsconfig.json(1,1): error TS1234: Oh no!');
     });
@@ -80,6 +80,25 @@ describe('createProjectService', () => {
     );
   });
 
+  it('throws an error with a local path when options.defaultProject is set to a local path and getParsedConfigFile throws a diagnostic error', () => {
+    mockGetParsedConfigFile.mockImplementation(() => {
+      throw new Error('./tsconfig.json(1,1): error TS1234: Oh no!');
+    });
+
+    expect(() =>
+      createProjectService(
+        {
+          allowDefaultProject: ['file.js'],
+          defaultProject: 'tsconfig.json',
+        },
+        undefined,
+        undefined,
+      ),
+    ).toThrow(
+      /Could not read default project 'tsconfig.json': .+ error TS1234: Oh no!/,
+    );
+  });
+
   it('throws an error when options.defaultProject is set and getParsedConfigFile throws an environment error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
       throw new Error(
@@ -91,13 +110,13 @@ describe('createProjectService', () => {
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
-          defaultProject: './tsconfig.json',
+          defaultProject: 'tsconfig.json',
         },
         undefined,
         undefined,
       ),
     ).toThrow(
-      "Could not read default project './tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
+      "Could not read default project 'tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
     );
   });
 
@@ -108,7 +127,7 @@ describe('createProjectService', () => {
     const { service } = createProjectService(
       {
         allowDefaultProject: ['file.js'],
-        defaultProject: './tsconfig.json',
+        defaultProject: 'tsconfig.json',
       },
       undefined,
       undefined,
@@ -127,7 +146,7 @@ describe('createProjectService', () => {
     const { service } = createProjectService(
       {
         allowDefaultProject: ['file.js'],
-        defaultProject: './tsconfig.json',
+        defaultProject: 'tsconfig.json',
       },
       undefined,
       tsconfigRootDir,
@@ -139,7 +158,7 @@ describe('createProjectService', () => {
     expect(mockGetParsedConfigFile).toHaveBeenCalledWith(
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       require('typescript/lib/tsserverlibrary'),
-      './tsconfig.json',
+      'tsconfig.json',
       tsconfigRootDir,
     );
   });

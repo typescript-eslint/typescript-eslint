@@ -67,14 +67,43 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowString: { type: 'boolean' },
-          allowNumber: { type: 'boolean' },
-          allowNullableObject: { type: 'boolean' },
-          allowNullableBoolean: { type: 'boolean' },
-          allowNullableString: { type: 'boolean' },
-          allowNullableNumber: { type: 'boolean' },
-          allowNullableEnum: { type: 'boolean' },
-          allowAny: { type: 'boolean' },
+          allowString: {
+            description: 'Whether to allow `string` in a boolean context.',
+            type: 'boolean',
+          },
+          allowNumber: {
+            description: 'Whether to allow `number` in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableObject: {
+            description:
+              'Whether to allow nullable `object`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableBoolean: {
+            description:
+              'Whether to allow nullable `boolean`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableString: {
+            description:
+              'Whether to allow nullable `string`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableNumber: {
+            description:
+              'Whether to allow nullable `number`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableEnum: {
+            description:
+              'Whether to allow nullable `enum`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowAny: {
+            description: 'Whether to allow `any` in a boolean context.',
+            type: 'boolean',
+          },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
