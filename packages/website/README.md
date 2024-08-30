@@ -2,7 +2,7 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/128d21c7-b2fe-45ad-b141-9878fcf5de3a/deploy-status)](https://app.netlify.com/sites/typescript-eslint/deploys)
 
-This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 ## Installation
 
