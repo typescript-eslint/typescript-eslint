@@ -11,3 +11,45 @@ import TabItem from '@theme/TabItem';
 
 This rule extends the base [`eslint/max-params`](https://eslint.org/docs/rules/max-params) rule.
 This version adds support for TypeScript `this` parameters so they won't be counted as a parameter.
+
+## Options
+
+This rule adds the following options:
+
+```ts
+interface Options extends BaseMaxParamsOptions {
+  countVoidThis?: boolean;
+}
+
+const defaultOptions: Options = {
+  ...baseMaxParamsOptions,
+  countVoidThis: false,
+};
+```
+
+### `countVoidThis`
+
+Whether to count a `this` declaration when the type is `void`.
+
+Example of a code when `countVoidThis` is set to `false` and `max` is `1`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "countVoidThis": false, "max": 1 }'
+function hasNoThis(this: void, first: string, second: string) {
+  // ...
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "countVoidThis": false, "max": 1 }'
+function hasNoThis(this: void, first: string) {
+  // ...
+}
+```
+
+</TabItem>
+</Tabs>

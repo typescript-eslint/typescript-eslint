@@ -175,10 +175,8 @@ class NoInheritPlugin {
       return false;
     };
 
-    if (parent.extendedTypes) {
-      if (parent.extendedTypes.some(checkExtended)) {
-        return true;
-      }
+    if (parent.extendedTypes?.some(checkExtended)) {
+      return true;
     }
 
     return false;

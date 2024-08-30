@@ -251,7 +251,7 @@ function fn(arg: Foo) {}
 
 ### `checkParameterProperties`
 
-This option allows you to enable or disable the checking of parameter properties.
+Whether to check class parameter properties.
 Because parameter properties create properties on the class, it may be undesirable to force them to be readonly.
 
 Examples of code for this rule with `{checkParameterProperties: true}`:
@@ -290,7 +290,8 @@ class Foo {
 
 ### `ignoreInferredTypes`
 
-This option allows you to ignore parameters which don't explicitly specify a type. This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
+Whether to ignore parameters which don't explicitly specify a type.
+This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
 
 Examples of code for this rule with `{ignoreInferredTypes: true}`:
 
@@ -347,7 +348,8 @@ export const acceptsCallback: AcceptsCallback;
 
 ### `treatMethodsAsReadonly`
 
-This option allows you to treat all mutable methods as though they were readonly. This may be desirable when you are never reassigning methods.
+Whether to treat all mutable methods as though they are readonly.
+This may be desirable when you are never reassigning methods.
 
 Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
 

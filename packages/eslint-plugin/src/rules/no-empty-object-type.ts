@@ -56,14 +56,18 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowInterfaces: {
+            description: 'Whether to allow empty interfaces.',
             enum: ['always', 'never', 'with-single-extends'],
             type: 'string',
           },
           allowObjectTypes: {
+            description: 'Whether to allow empty object type literals.',
             enum: ['always', 'never'],
             type: 'string',
           },
           allowWithName: {
+            description:
+              'A stringified regular expression to allow interfaces and object type aliases with the configured name.',
             type: 'string',
           },
         },
