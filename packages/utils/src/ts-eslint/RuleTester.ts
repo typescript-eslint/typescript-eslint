@@ -229,12 +229,12 @@ declare class RuleTesterBase {
 class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
 export {
-  InvalidTestCase,
+  type InvalidTestCase,
   RuleTester,
-  RuleTesterConfig,
-  RuleTesterTestFrameworkFunction,
-  RunTests,
-  SuggestionOutput,
-  TestCaseError,
-  ValidTestCase,
+  type RuleTesterConfig,
+  type RuleTesterTestFrameworkFunction,
+  type RunTests,
+  type SuggestionOutput,
+  type TestCaseError,
+  type ValidTestCase,
 };
