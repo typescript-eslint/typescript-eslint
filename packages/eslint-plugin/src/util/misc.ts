@@ -1,7 +1,6 @@
 /**
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
-
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -9,7 +8,6 @@ import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
 import { getStaticValue, isParenthesized } from './astUtils';
-import { getStaticStringValue } from './getStaticStringValue';
 
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
@@ -244,22 +242,20 @@ type NodeWithKey =
 function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
-): string | null | undefined {
+): string | undefined {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
-  if (node.computed) {
-    return getStaticValue(key, sourceCode.getScope(node))?.value as
-      | string
-      | null
-      | undefined;
+  if (!node.computed) {
+    return key.type === AST_NODE_TYPES.Literal
+      ? `${key.value}`
+      : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
   }
-  const { type } = key;
-  return type === AST_NODE_TYPES.Literal ||
-    type === AST_NODE_TYPES.TemplateLiteral
-    ? getStaticStringValue(key)
-    : 'name' in key
-      ? key.name
-      : '';
+  const value = getStaticValue(key, sourceCode.getScope(node))?.value as
+    | string
+    | number
+    | null
+    | undefined;
+  return value == null ? undefined : `${value}`;
 }
 
 /**
@@ -272,7 +268,7 @@ const isStaticMemberAccessOfValue = (
   context: RuleContext<string, unknown[]>,
   ...values: string[]
 ): boolean =>
-  (values as (string | null | undefined)[]).includes(
+  (values as (string | undefined)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
 
