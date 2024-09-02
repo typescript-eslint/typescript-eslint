@@ -807,4 +807,4 @@ class Referencer extends Visitor {
   }
 }
 
-export { Referencer, ReferencerOptions };
+export { Referencer, type ReferencerOptions };

@@ -59,12 +59,30 @@ export default createRule({
     schema: [
       {
         type: 'string',
-        enum: [
-          'in-try-catch',
-          'always',
-          'never',
-          'error-handling-correctness-only',
-        ] satisfies Option[],
+        oneOf: [
+          {
+            type: 'string',
+            enum: ['always'],
+            description: 'Requires that all returned promises be awaited.',
+          },
+          {
+            type: 'string',
+            enum: ['error-handling-correctness-only'],
+            description:
+              'In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited.',
+          },
+          {
+            type: 'string',
+            enum: ['in-try-catch'],
+            description:
+              'In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule enforces that returned promises _must not_ be awaited.',
+          },
+          {
+            type: 'string',
+            enum: ['never'],
+            description: 'Disallows awaiting any returned promises.',
+          },
+        ],
       },
     ],
   },
