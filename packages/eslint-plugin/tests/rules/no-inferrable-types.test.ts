@@ -10,9 +10,6 @@ import type {
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
 
-function flatten<T>(arr: T[][]): T[] {
-  return arr.reduce((acc, a) => acc.concat(a), []);
-}
 const testCases = [
   {
     type: 'bigint',
@@ -70,11 +67,11 @@ const testCases = [
     code: ['undefined', 'void someValue'],
   },
 ];
-const validTestCases = flatten(
-  testCases.map(c => c.code.map(code => `const a = ${code}`)),
+const validTestCases = testCases.flatMap(c =>
+  c.code.map(code => `const a = ${code}`),
 );
-const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
-  testCases.map(cas =>
+const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
+  testCases.flatMap(cas =>
     cas.code.map(code => ({
       code: `const a: ${cas.type} = ${code}`,
       output: `const a = ${code}`,
@@ -89,8 +86,7 @@ const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
         },
       ],
     })),
-  ),
-);
+  );
 
 const ruleTester = new RuleTester();
 
