@@ -324,10 +324,7 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.TSUnionType ||
         node.type === AST_NODE_TYPES.TSIntersectionType
       ) {
-        return node.types.reduce<TypeWithLabel[]>((acc, type) => {
-          acc.push(...getTypes(type, node.type));
-          return acc;
-        }, []);
+        return node.types.flatMap(type => getTypes(type, node.type));
       }
       return [{ node, compositionType }];
     }
