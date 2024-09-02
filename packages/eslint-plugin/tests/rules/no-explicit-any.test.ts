@@ -1198,7 +1198,7 @@ const test = <T extends Partial<never>>() => {};
         ],
       },
     ] as RuleInvalidTestCase[]
-  ).reduce<RuleInvalidTestCase[]>((acc, testCase) => {
+  ).flatMap(testCase => {
     const suggestions = (code: string): RuleSuggestionOutput[] => [
       {
         messageId: 'suggestUnknown',
@@ -1209,38 +1209,37 @@ const test = <T extends Partial<never>>() => {};
         output: code.replace(/any/, 'never'),
       },
     ];
-    acc.push({
-      ...testCase,
-      errors: testCase.errors.map(e => ({
-        ...e,
-        suggestions: e.suggestions ?? suggestions(testCase.code),
-      })),
-    });
-    const options = testCase.options ?? [];
     const code = `// fixToUnknown: true\n${testCase.code}`;
-    acc.push({
-      code,
-      output: code.replaceAll('any', 'unknown'),
-      options: [{ ...options[0], fixToUnknown: true }],
-      errors: testCase.errors.map(err => {
-        if (err.line === undefined) {
-          return err;
-        }
+    return [
+      {
+        ...testCase,
+        errors: testCase.errors.map(e => ({
+          ...e,
+          suggestions: e.suggestions ?? suggestions(testCase.code),
+        })),
+      },
+      {
+        code,
+        output: code.replaceAll('any', 'unknown'),
+        options: [{ ...testCase.options?.[0], fixToUnknown: true }],
+        errors: testCase.errors.map(err => {
+          if (err.line === undefined) {
+            return err;
+          }
 
-        return {
-          ...err,
-          line: err.line + 1,
-          suggestions:
-            err.suggestions?.map(
-              (s): RuleSuggestionOutput => ({
-                ...s,
-                output: `// fixToUnknown: true\n${s.output}`,
-              }),
-            ) ?? suggestions(code),
-        };
-      }),
-    });
-
-    return acc;
-  }, []),
+          return {
+            ...err,
+            line: err.line + 1,
+            suggestions:
+              err.suggestions?.map(
+                (s): RuleSuggestionOutput => ({
+                  ...s,
+                  output: `// fixToUnknown: true\n${s.output}`,
+                }),
+              ) ?? suggestions(code),
+          };
+        }),
+      },
+    ];
+  }),
 });

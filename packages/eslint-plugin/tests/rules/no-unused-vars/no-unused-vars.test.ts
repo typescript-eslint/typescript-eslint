@@ -991,7 +991,7 @@ declare function A(A: string): string;
     },
     // 4.1 template literal types
     {
-      code: noFormat`
+      code: `
 type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 export type SeussFish = \`\${Quantity | Color} fish\`;
