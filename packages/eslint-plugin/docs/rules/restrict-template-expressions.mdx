@@ -86,7 +86,7 @@ const msg2 = `arg = ${arg || 'not truthy'}`;
 
 ### `allowAny`
 
-Whether to `any` typed values in template expressions.
+Whether to allow `any` typed values in template expressions.
 
 Examples of additional **correct** code for this rule with `{ allowAny: true }`:
 
@@ -125,7 +125,7 @@ const msg1 = `arg = ${arg}`;
 
 ### `allowNever`
 
-Whether to `never` typed values in template expressions.
+Whether to allow `never` typed values in template expressions.
 
 Examples of additional **correct** code for this rule with `{ allowNever: true }`:
 
@@ -136,7 +136,7 @@ const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 
 ### `allowArray`
 
-Whether to `Array` typed values in template expressions.
+Whether to allow `Array` typed values in template expressions.
 
 Examples of additional **correct** code for this rule with `{ allowArray: true }`:
 
@@ -147,7 +147,9 @@ const msg1 = `arg = ${arg}`;
 
 ### `allow`
 
-<TypeOrValueSpecifier verb="allow" />
+Whether to allow additional types in template expressions.
+
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
 Examples of additional **correct** code for this rule with the default option `{ allow: [{ from: 'lib', name: 'Error' }, { from: 'lib', name: 'URL' }, { from: 'lib', name: 'URLSearchParams' }] }`:
 
