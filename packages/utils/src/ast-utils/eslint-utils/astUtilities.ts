@@ -105,6 +105,12 @@ const hasSideEffect = eslintUtils.hasSideEffect as (
 ) => boolean;
 
 const isParenthesized = eslintUtils.isParenthesized as {
+  (
+    times: number,
+    node: TSESTree.Node,
+    sourceCode: TSESLint.SourceCode,
+  ): boolean;
+
   /**
    * Check whether a given node is parenthesized or not.
    * This function detects it correctly even if it's parenthesized by specific syntax.
@@ -115,11 +121,6 @@ const isParenthesized = eslintUtils.isParenthesized as {
    * For example, `isParenthesized(2, node, sourceCode)` returns true for `((foo))`, but not for `(foo)`.
    */
   (node: TSESTree.Node, sourceCode: TSESLint.SourceCode): boolean;
-  (
-    times: number,
-    node: TSESTree.Node,
-    sourceCode: TSESLint.SourceCode,
-  ): boolean;
 };
 
 export {

@@ -16,6 +16,8 @@ import type {
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 import type { MutableParseSettings } from './parseSettings';
 
+const RELOAD_THROTTLE_MS = 250;
+
 const log = debug(
   'typescript-eslint:typescript-estree:useProgramFromProjectService',
 );
@@ -54,17 +56,9 @@ function openClientFileFromProjectService(
   parseSettings: Readonly<MutableParseSettings>,
   serviceSettings: ProjectServiceSettings,
 ): ts.server.OpenConfiguredProjectResult {
-  const opened = serviceSettings.service.openClientFile(
-    filePathAbsolute,
-    parseSettings.codeFullText,
-    /* scriptKind */ undefined,
-    parseSettings.tsconfigRootDir,
-  );
+  const opened = openClientFileAndMaybeReload();
 
-  log(
-    'Project service type information enabled; checking for file path match on: %o',
-    serviceSettings.allowDefaultProject,
-  );
+  log('Result from attempting to open client file: %o', opened);
 
   log(
     'Default project allowed path: %s, based on config file: %s',
@@ -112,6 +106,40 @@ If you absolutely need more files included, set parserOptions.projectService.max
   }
 
   return opened;
+
+  function openClientFile(): ts.server.OpenConfiguredProjectResult {
+    return serviceSettings.service.openClientFile(
+      filePathAbsolute,
+      parseSettings.codeFullText,
+      /* scriptKind */ undefined,
+      parseSettings.tsconfigRootDir,
+    );
+  }
+
+  function openClientFileAndMaybeReload(): ts.server.OpenConfiguredProjectResult {
+    log('Opening project service client file at path: %s', filePathAbsolute);
+
+    let opened = openClientFile();
+
+    // If no project included the file and we're not in single-run mode,
+    // we might be running in an editor with outdated file info.
+    // We can try refreshing the project service - debounced for performance.
+    if (
+      !opened.configFileErrors &&
+      !opened.configFileName &&
+      !parseSettings.singleRun &&
+      !isDefaultProjectAllowed &&
+      performance.now() - serviceSettings.lastReloadTimestamp >
+        RELOAD_THROTTLE_MS
+    ) {
+      log('No config file found; reloading project service and retrying.');
+      serviceSettings.service.reloadProjects();
+      opened = openClientFile();
+      serviceSettings.lastReloadTimestamp = performance.now();
+    }
+
+    return opened;
+  }
 }
 
 function createNoProgramWithProjectService(

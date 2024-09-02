@@ -1,8 +1,7 @@
-import * as ASTUtils from './ast-utils';
-import * as ESLintUtils from './eslint-utils';
-import * as JSONSchema from './json-schema';
-import * as TSESLint from './ts-eslint';
-import * as TSUtils from './ts-utils';
+export * as ASTUtils from './ast-utils';
 
-export { ASTUtils, ESLintUtils, JSONSchema, TSESLint, TSUtils };
+export * as ESLintUtils from './eslint-utils';
+export * as JSONSchema from './json-schema';
+export * as TSESLint from './ts-eslint';
 export * from './ts-estree';
+export * as TSUtils from './ts-utils';

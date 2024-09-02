@@ -64,11 +64,13 @@ const { members } = (
   ).json()) as { data: { collective: { members: { nodes: MemberNodes } } } }
 ).data.collective;
 
-const sponsors = (
-  Object.entries(
-    Object.groupBy(members.nodes, ({ account }) => account.name || account.id),
-    // When using `Object.entries` to iterate the result of `Object.groupBy`, we do not get any `undefined`s
-  ) as [string, MemberNodes][]
+const sponsors = Object.entries(
+  // TODO: use Object.groupBy in Node 22
+  members.nodes.reduce<Record<string, MemberNodes>>((membersById, member) => {
+    const { account } = member;
+    (membersById[account.name || account.id] ??= []).push(member);
+    return membersById;
+  }, {}),
 )
   .map(([id, members]) => {
     const [{ account }] = members;

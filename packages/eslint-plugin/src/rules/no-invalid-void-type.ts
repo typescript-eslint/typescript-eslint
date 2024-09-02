@@ -42,6 +42,8 @@ export default createRule<[Options], MessageIds>({
         type: 'object',
         properties: {
           allowInGenericTypeArguments: {
+            description:
+              'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
               { type: 'boolean' },
               {
@@ -52,6 +54,8 @@ export default createRule<[Options], MessageIds>({
             ],
           },
           allowAsThisParameter: {
+            description:
+              'Whether a `this` parameter of a function may be `void`.',
             type: 'boolean',
           },
         },

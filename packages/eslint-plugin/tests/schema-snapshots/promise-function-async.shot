@@ -20,15 +20,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "checkArrowFunctions": {
+        "description": "Whether to check arrow functions.",
         "type": "boolean"
       },
       "checkFunctionDeclarations": {
+        "description": "Whether to check standalone function declarations.",
         "type": "boolean"
       },
       "checkFunctionExpressions": {
+        "description": "Whether to check inline function expressions",
         "type": "boolean"
       },
       "checkMethodDeclarations": {
+        "description": "Whether to check methods on classes and object literals.",
         "type": "boolean"
       }
     },
@@ -45,9 +49,13 @@ type Options = [
     allowAny?: boolean;
     /** Any extra names of classes or interfaces to be considered Promises. */
     allowedPromiseNames?: string[];
+    /** Whether to check arrow functions. */
     checkArrowFunctions?: boolean;
+    /** Whether to check standalone function declarations. */
     checkFunctionDeclarations?: boolean;
+    /** Whether to check inline function expressions */
     checkFunctionExpressions?: boolean;
+    /** Whether to check methods on classes and object literals. */
     checkMethodDeclarations?: boolean;
   },
 ];

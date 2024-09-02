@@ -9,9 +9,9 @@ import type { Identifier } from '../../expression/Identifier/spec';
  * ```
  */
 export interface TSNamespaceExportDeclaration extends BaseNode {
-  type: AST_NODE_TYPES.TSNamespaceExportDeclaration;
   /**
    * The name of the global variable that's exported as namespace
    */
   id: Identifier;
+  type: AST_NODE_TYPES.TSNamespaceExportDeclaration;
 }

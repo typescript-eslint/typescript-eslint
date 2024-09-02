@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { TypeElement } from '../../unions/TypeElement';
 
 export interface TSTypeLiteral extends BaseNode {
-  type: AST_NODE_TYPES.TSTypeLiteral;
   members: TypeElement[];
+  type: AST_NODE_TYPES.TSTypeLiteral;
 }

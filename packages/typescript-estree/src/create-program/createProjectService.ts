@@ -32,6 +32,7 @@ export type TypeScriptProjectService = ts.server.ProjectService;
 
 export interface ProjectServiceSettings {
   allowDefaultProject: string[] | undefined;
+  lastReloadTimestamp: number;
   maximumDefaultProjectFileMatchCount: number;
   service: TypeScriptProjectService;
 }
@@ -148,6 +149,7 @@ export function createProjectService(
 
   return {
     allowDefaultProject: options.allowDefaultProject,
+    lastReloadTimestamp: performance.now(),
     maximumDefaultProjectFileMatchCount:
       options.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING ??
       DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD,
