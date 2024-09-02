@@ -244,13 +244,14 @@ type NodeWithKey =
 function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
-): string | null {
+): string | null | undefined {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   if (node.computed) {
     return getStaticValue(key, sourceCode.getScope(node))?.value as
       | string
-      | null;
+      | null
+      | undefined;
   }
   const { type } = key;
   return type === AST_NODE_TYPES.Literal ||
@@ -271,7 +272,7 @@ const isStaticMemberAccessOfValue = (
   context: RuleContext<string, unknown[]>,
   ...values: string[]
 ): boolean =>
-  (values as (string | null)[]).includes(
+  (values as (string | null | undefined)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
 
