@@ -107,18 +107,43 @@ export default createRule<Options, MessageId>({
               {
                 additionalProperties: false,
                 properties: {
-                  arguments: { type: 'boolean' },
-                  attributes: { type: 'boolean' },
-                  inheritedMethods: { type: 'boolean' },
-                  properties: { type: 'boolean' },
-                  returns: { type: 'boolean' },
-                  variables: { type: 'boolean' },
+                  arguments: {
+                    description:
+                      'Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`.',
+                    type: 'boolean',
+                  },
+                  attributes: {
+                    description:
+                      'Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.',
+                    type: 'boolean',
+                  },
+                  inheritedMethods: {
+                    description:
+                      'Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.',
+                    type: 'boolean',
+                  },
+                  properties: {
+                    description:
+                      'Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`.',
+                    type: 'boolean',
+                  },
+                  returns: {
+                    description:
+                      'Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`.',
+                    type: 'boolean',
+                  },
+                  variables: {
+                    description:
+                      'Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`.',
+                    type: 'boolean',
+                  },
                 },
                 type: 'object',
               },
             ],
           },
           checksSpreads: {
+            description: 'Whether to warn when `...` spreading a `Promise`.',
             type: 'boolean',
           },
         },

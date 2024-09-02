@@ -91,10 +91,10 @@ export default createRule<Options, MessageIds>({
                 $ref: '#/items/0/$defs/accessibilityLevel',
               },
             },
-
             additionalProperties: false,
           },
           ignoredMethodNames: {
+            description: 'Specific method names that may be ignored.',
             type: 'array',
             items: {
               type: 'string',

@@ -70,8 +70,16 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          ignoreArrowShorthand: { type: 'boolean' },
-          ignoreVoidOperator: { type: 'boolean' },
+          ignoreArrowShorthand: {
+            description:
+              'Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces.',
+            type: 'boolean',
+          },
+          ignoreVoidOperator: {
+            description:
+              'Whether to ignore returns that start with the `void` operator.',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },

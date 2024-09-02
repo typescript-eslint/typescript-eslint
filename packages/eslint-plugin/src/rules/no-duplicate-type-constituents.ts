@@ -86,9 +86,11 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreIntersections: {
+            description: 'Whether to ignore `&` intersections.',
             type: 'boolean',
           },
           ignoreUnions: {
+            description: 'Whether to ignore `|` unions.',
             type: 'boolean',
           },
         },

@@ -37,25 +37,36 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           builtinGlobals: {
+            description:
+              'Whether to report shadowing of built-in global variables.',
             type: 'boolean',
           },
           hoist: {
+            description:
+              'Whether to report shadowing before outer functions or variables are defined.',
             type: 'string',
             enum: ['all', 'functions', 'never'],
           },
           allow: {
+            description: 'Identifier names for which shadowing is allowed.',
             type: 'array',
             items: {
               type: 'string',
             },
           },
           ignoreOnInitialization: {
+            description:
+              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
             type: 'boolean',
           },
           ignoreTypeValueShadow: {
+            description:
+              'Whether to ignore types named the same as a variable.',
             type: 'boolean',
           },
           ignoreFunctionTypeParameterNameValueShadow: {
+            description:
+              'Whether to ignore function parameters named the same as a variable.',
             type: 'boolean',
           },
         },

@@ -23,15 +23,20 @@ const schema = deepMerge(
   {
     properties: {
       ignoreNumericLiteralTypes: {
+        description:
+          'Whether numbers used in TypeScript numeric literal types are considered okay.',
         type: 'boolean',
       },
       ignoreEnums: {
+        description: 'Whether enums used in TypeScript are considered okay.',
         type: 'boolean',
       },
       ignoreReadonlyClassProperties: {
+        description: 'Whether `readonly` class properties are considered okay.',
         type: 'boolean',
       },
       ignoreTypeIndexes: {
+        description: 'Whether numbers used to index types are okay.',
         type: 'boolean',
       },
     },

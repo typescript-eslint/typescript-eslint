@@ -235,12 +235,33 @@ export default createRule<Options, MessageIds>({
           {
             type: 'object',
             properties: {
-              functions: { type: 'boolean' },
-              classes: { type: 'boolean' },
-              enums: { type: 'boolean' },
-              variables: { type: 'boolean' },
-              typedefs: { type: 'boolean' },
-              ignoreTypeReferences: { type: 'boolean' },
+              functions: {
+                description:
+                  'Whether to ignore references to function declarations.',
+                type: 'boolean',
+              },
+              classes: {
+                description:
+                  'Whether to ignore references to class declarations.',
+                type: 'boolean',
+              },
+              enums: {
+                description: 'Whether to check references to enums.',
+                type: 'boolean',
+              },
+              variables: {
+                description: 'Whether to ignore references to variables.',
+                type: 'boolean',
+              },
+              typedefs: {
+                description: 'Whether to check references to types.',
+                type: 'boolean',
+              },
+              ignoreTypeReferences: {
+                description:
+                  'Whether to ignore type references, such as in type annotations and assertions.',
+                type: 'boolean',
+              },
               allowNamedExports: { type: 'boolean' },
             },
             additionalProperties: false,

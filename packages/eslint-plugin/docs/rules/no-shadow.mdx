@@ -31,7 +31,7 @@ const defaultOptions: Options = {
 
 ### `ignoreTypeValueShadow`
 
-When set to `true`, the rule will ignore the case when you name a type the same as a variable. This is generally safe because you cannot use variables in type locations without a `typeof` operator, so there's little risk of confusion.
+Whether to ignore types named the same as a variable. This is generally safe because you cannot use variables in type locations without a `typeof` operator, so there's little risk of confusion.
 
 Examples of **correct** code with `{ ignoreTypeValueShadow: true }`:
 
@@ -55,7 +55,7 @@ _Shadowing_ specifically refers to two identical identifiers that are in differe
 
 ### `ignoreFunctionTypeParameterNameValueShadow`
 
-When set to `true`, the rule will ignore the case when you name a parameter in a function type the same as a variable.
+Whether to ignore function parameters named the same as a variable.
 
 Each of a function type's arguments creates a value variable within the scope of the function type. This is done so that you can reference the type later using the `typeof` operator:
 

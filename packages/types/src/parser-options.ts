@@ -107,7 +107,7 @@ interface ParserOptions {
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
 
-export {
+export type {
   CacheDurationSeconds,
   DebugLevel,
   EcmaVersion,

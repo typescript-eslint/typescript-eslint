@@ -140,23 +140,16 @@ interface Foo {
 
 ### `allow`
 
+An array of type specifiers to ignore.
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
-This option takes an array of type specifiers to ignore.
-Each item in the array must have one of the following forms:
-
-- A type defined in a file (`{ from: "file", name: "Foo", path: "src/foo-file.ts" }` with `path` being an optional path relative to the project root directory)
-- A type from the default library (`{ from: "lib", name: "Foo" }`)
-- A type from a package (`{ from: "package", name: "Foo", package: "foo-lib" }`, this also works for types defined in a typings package).
-
-Additionally, a type may be defined just as a simple string, which then matches the type independently of its origin.
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
 Examples of code for this rule with:
 
 ```json
 {
   "allow": [
-    "$",
     { "from": "file", "name": "Foo" },
     { "from": "lib", "name": "HTMLElement" },
     { "from": "package", "name": "Bar", "package": "bar-lib" }
@@ -167,7 +160,7 @@ Examples of code for this rule with:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface ThisIsMutable {
   prop: string;
 }
@@ -191,7 +184,7 @@ function fn2(arg: Wrapper) {}
 function fn3(arg: WrapperWithOther) {}
 ```
 
-```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from 'some-lib';
 import { Bar } from 'incorrect-lib';
 
@@ -212,7 +205,7 @@ function fn3(arg: Bar) {}
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface Foo {
   prop: string;
 }
@@ -229,7 +222,7 @@ function fn1(arg: Foo) {}
 function fn2(arg: Wrapper) {}
 ```
 
-```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Bar } from 'bar-lib';
 
 interface Foo {
@@ -246,7 +239,7 @@ function fn2(arg: HTMLElement) {}
 function fn3(arg: Bar) {}
 ```
 
-```ts option='{"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from './foo';
 
 // Works because Foo is still a local type - it has to be in the same package
@@ -258,7 +251,7 @@ function fn(arg: Foo) {}
 
 ### `checkParameterProperties`
 
-This option allows you to enable or disable the checking of parameter properties.
+Whether to check class parameter properties.
 Because parameter properties create properties on the class, it may be undesirable to force them to be readonly.
 
 Examples of code for this rule with `{checkParameterProperties: true}`:
@@ -297,7 +290,8 @@ class Foo {
 
 ### `ignoreInferredTypes`
 
-This option allows you to ignore parameters which don't explicitly specify a type. This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
+Whether to ignore parameters which don't explicitly specify a type.
+This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
 
 Examples of code for this rule with `{ignoreInferredTypes: true}`:
 
@@ -354,7 +348,8 @@ export const acceptsCallback: AcceptsCallback;
 
 ### `treatMethodsAsReadonly`
 
-This option allows you to treat all mutable methods as though they were readonly. This may be desirable when you are never reassigning methods.
+Whether to treat all mutable methods as though they are readonly.
+This may be desirable when you are never reassigning methods.
 
 Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
 
