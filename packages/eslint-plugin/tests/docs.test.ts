@@ -6,6 +6,7 @@ import path from 'node:path';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import * as tseslintParser from '@typescript-eslint/parser';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { marked } from 'marked';
 import type * as mdast from 'mdast';
@@ -18,7 +19,6 @@ import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode'
 import rules from '../src/rules';
 import { areOptionsValid } from './areOptionsValid';
 import { getFixturesRootDir } from './RuleTester';
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
