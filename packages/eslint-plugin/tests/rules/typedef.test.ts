@@ -1,4 +1,4 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/typedef';
 import { getFixturesRootDir } from '../RuleTester';
@@ -351,7 +351,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: noFormat`
+      code: `
         type Test = {
           [i: string];
         };
@@ -918,7 +918,7 @@ class ClassName {
       ],
     },
     {
-      code: noFormat`
+      code: `
         type Test = {
           [i: string];
         };
@@ -953,7 +953,7 @@ class ClassName {
       ],
     },
     {
-      code: noFormat`
+      code: `
         interface Test {
           [i: string];
         }

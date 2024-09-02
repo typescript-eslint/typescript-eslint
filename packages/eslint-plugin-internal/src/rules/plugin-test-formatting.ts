@@ -96,12 +96,18 @@ type Options = [
 type MessageIds =
   | 'invalidFormatting'
   | 'invalidFormattingErrorTest'
+  | 'noUnnecessaryNoFormat'
   | 'prettierException'
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
   | 'templateLiteralLastLineIndent'
   | 'templateStringMinimumIndent'
   | 'templateStringRequiresIndent';
+
+type FormattingError = Error & {
+  codeFrame: string;
+  loc?: unknown;
+};
 
 export default createRule<Options, MessageIds>({
   name: 'plugin-test-formatting',
@@ -128,6 +134,8 @@ export default createRule<Options, MessageIds>({
         'This snippet should be formatted correctly. Use the fixer to format the code.',
       invalidFormattingErrorTest:
         'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
+      noUnnecessaryNoFormat:
+        'noFormat is unnecessary here. Use the fixer to remove it.',
       singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
       templateLiteralEmptyEnds:
         'Template literals must start and end with an empty line.',
@@ -152,14 +160,7 @@ export default createRule<Options, MessageIds>({
 
     const checkedObjects = new Set<TSESTree.ObjectExpression>();
 
-    function prettierFormat(
-      code: string,
-      location: TSESTree.Node,
-    ): string | null {
-      if (formatWithPrettier === false) {
-        return null;
-      }
-
+    function getCodeFormatted(code: string): string | FormattingError {
       try {
         return prettier
           .format(code, {
@@ -176,29 +177,41 @@ export default createRule<Options, MessageIds>({
         ) {
           throw ex;
         }
-        const err = ex as Error & {
-          codeFrame: string;
-          loc?: unknown;
-        };
 
-        let message = err.message;
+        return ex as FormattingError;
+      }
+    }
 
-        if (err.codeFrame) {
-          message = message.replace(`\n${err.codeFrame}`, '');
-        }
-        if (err.loc) {
-          message = message.replace(/ \(\d+:\d+\)$/, '');
-        }
-
-        context.report({
-          node: location,
-          messageId: 'prettierException',
-          data: {
-            message,
-          },
-        });
+    function getCodeFormattedOrReport(
+      code: string,
+      location: TSESTree.Node,
+    ): string | null {
+      if (formatWithPrettier === false) {
         return null;
       }
+
+      const formatted = getCodeFormatted(code);
+      if (typeof formatted === 'string') {
+        return formatted;
+      }
+
+      let message = formatted.message;
+
+      if (formatted.codeFrame) {
+        message = message.replace(`\n${formatted.codeFrame}`, '');
+      }
+      if (formatted.loc) {
+        message = message.replace(/ \(\d+:\d+\)$/, '');
+      }
+
+      context.report({
+        node: location,
+        messageId: 'prettierException',
+        data: {
+          message,
+        },
+      });
+      return null;
     }
 
     function checkExpression(
@@ -230,7 +243,7 @@ export default createRule<Options, MessageIds>({
       quoteIn?: string,
     ): void {
       if (typeof literal.value === 'string') {
-        const output = prettierFormat(literal.value, literal);
+        const output = getCodeFormattedOrReport(literal.value, literal);
         if (output && output !== literal.value) {
           context.report({
             node: literal,
@@ -393,12 +406,16 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      const code = lines.join('\n');
+
       if (isNoFormatTagged) {
+        if (literal.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+          checkForUnnecesaryNoFormat(code, literal.parent);
+        }
         return;
       }
 
-      const code = lines.join('\n');
-      const formatted = prettierFormat(code, literal);
+      const formatted = getCodeFormattedOrReport(code, literal);
       if (formatted && formatted !== code) {
         const formattedIndented = requiresIndent
           ? formatted
@@ -429,11 +446,33 @@ export default createRule<Options, MessageIds>({
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 
+    function checkForUnnecesaryNoFormat(
+      text: string,
+      expr: TSESTree.TaggedTemplateExpression,
+    ): void {
+      const formatted = getCodeFormatted(text);
+      if (formatted === text) {
+        context.report({
+          node: expr,
+          messageId: 'noUnnecessaryNoFormat',
+          fix(fixer) {
+            if (expr.loc.start.line === expr.loc.end.line) {
+              return fixer.replaceText(expr, `'${escapeTemplateString(text)}'`);
+            }
+            return fixer.replaceText(expr.tag, '');
+          },
+        });
+      }
+    }
+
     function checkTaggedTemplateExpression(
       expr: TSESTree.TaggedTemplateExpression,
       isErrorTest: boolean,
     ): void {
-      if (!isNoFormatTemplateTag(expr.tag)) {
+      if (isNoFormatTemplateTag(expr.tag)) {
+        const { cooked } = expr.quasi.quasis[0].value;
+        checkForUnnecesaryNoFormat(cooked, expr);
+      } else {
         return;
       }
 
