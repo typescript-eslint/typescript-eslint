@@ -68,7 +68,7 @@ async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
 
 ### `allowAny`
 
-Whether to ignore functions that return `any` and `unknown`.
+Whether to ignore functions that return `any` or `unknown`.
 If you want additional safety, consider turning this option off, as it makes the rule less able to catch incorrect Promise behaviors.
 
 Examples of code with `{ "allowAny": false }`:
@@ -135,7 +135,7 @@ Whether to check inline function expressions.
 
 ### `checkMethodDeclarations`
 
-Whether to check methods on classes and object literals
+Whether to check methods on classes and object literals.
 `true` by default, but can be set to `false` to ignore them.
 
 ## When Not To Use It

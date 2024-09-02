@@ -44,15 +44,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "ignoreEnums": {
+        "description": "Whether enums used in TypeScript are considered okay.",
         "type": "boolean"
       },
       "ignoreNumericLiteralTypes": {
+        "description": "Whether numbers used in TypeScript numeric literal types are considered okay.",
         "type": "boolean"
       },
       "ignoreReadonlyClassProperties": {
+        "description": "Whether \`readonly\` class properties are considered okay.",
         "type": "boolean"
       },
       "ignoreTypeIndexes": {
+        "description": "Whether numbers used to index types are okay.",
         "type": "boolean"
       }
     },
@@ -71,9 +75,13 @@ type Options = [
     ignoreArrayIndexes?: boolean;
     ignoreClassFieldInitialValues?: boolean;
     ignoreDefaultValues?: boolean;
+    /** Whether enums used in TypeScript are considered okay. */
     ignoreEnums?: boolean;
+    /** Whether numbers used in TypeScript numeric literal types are considered okay. */
     ignoreNumericLiteralTypes?: boolean;
+    /** Whether \`readonly\` class properties are considered okay. */
     ignoreReadonlyClassProperties?: boolean;
+    /** Whether numbers used to index types are okay. */
     ignoreTypeIndexes?: boolean;
   },
 ];

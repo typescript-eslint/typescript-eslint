@@ -30,14 +30,20 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           lib: {
+            description:
+              'What to enforce for `/// <reference lib="..." />` references.',
             type: 'string',
             enum: ['always', 'never'],
           },
           path: {
+            description:
+              'What to enforce for `/// <reference path="..." />` references.',
             type: 'string',
             enum: ['always', 'never'],
           },
           types: {
+            description:
+              'What to enforce for `/// <reference types="..." />` references.',
             type: 'string',
             enum: ['always', 'never', 'prefer-import'],
           },
