@@ -351,7 +351,7 @@ export class Converter {
           return child; // child can be null, but it's filtered below
         })
         // filter out unknown nodes for now
-        .filter(statement => statement)
+        .filter(Boolean)
     );
   }
 
