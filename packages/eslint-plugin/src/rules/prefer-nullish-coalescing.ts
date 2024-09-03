@@ -31,6 +31,7 @@ export type Options = [
         }
       | true;
     ignoreTernaryTests?: boolean;
+    ignoreMakeBoolean?: boolean;
   },
 ];
 
@@ -103,6 +104,11 @@ export default createRule<Options, MessageIds>({
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
             type: 'boolean',
           },
+          ignoreMakeBoolean: {
+            description:
+              'Whether to ignore any make boolean type value like `Boolan`, `!`',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -120,6 +126,7 @@ export default createRule<Options, MessageIds>({
         number: false,
         string: false,
       },
+      ignoreMakeBoolean: false,
     },
   ],
   create(
@@ -131,6 +138,7 @@ export default createRule<Options, MessageIds>({
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
+        ignoreMakeBoolean,
       },
     ],
   ) {
@@ -324,6 +332,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        if (ignoreMakeBoolean === true && isMakeBoolean(node)) {
+          return;
+        }
+
         const isMixedLogical = isMixedLogicalExpression(node);
         if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
           return;
@@ -412,6 +424,42 @@ function isConditionalTest(node: TSESTree.Node): boolean {
         current.type === AST_NODE_TYPES.ForStatement ||
         current.type === AST_NODE_TYPES.WhileStatement) &&
       parents.has(current.test)
+    ) {
+      return true;
+    }
+
+    if (
+      [
+        AST_NODE_TYPES.ArrowFunctionExpression,
+        AST_NODE_TYPES.FunctionExpression,
+      ].includes(current.type)
+    ) {
+      /**
+       * This is a weird situation like:
+       * `if (() => a || b) {}`
+       * `if (function () { return a || b }) {}`
+       */
+      return false;
+    }
+
+    current = current.parent;
+  }
+
+  return false;
+}
+
+function isMakeBoolean(node: TSESTree.Node): boolean {
+  const parents = new Set<TSESTree.Node | null>([node]);
+  let current = node.parent;
+  while (current) {
+    parents.add(current);
+
+    if (
+      (current.type === AST_NODE_TYPES.UnaryExpression &&
+        current.operator === '!') ||
+      (current.type === AST_NODE_TYPES.CallExpression &&
+        current.callee.type === 'Identifier' &&
+        current.callee.name === 'Boolean')
     ) {
       return true;
     }

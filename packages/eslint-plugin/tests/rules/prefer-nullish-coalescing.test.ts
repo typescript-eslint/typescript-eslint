@@ -355,6 +355,46 @@ x || y;
         },
       ],
     },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = Boolean(a || b);
+      `,
+      options: [
+        {
+          ignoreMakeBoolean: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = !!(a || b);
+      `,
+      options: [
+        {
+          ignoreMakeBoolean: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = !(a || b);
+      `,
+      options: [
+        {
+          ignoreMakeBoolean: true,
+        },
+      ],
+    },
   ],
   invalid: [
     ...nullishTypeTest((nullish, type) => ({
@@ -1817,6 +1857,97 @@ enum Enum {
 }
 declare const x: Enum.A | Enum.B | undefined;
 x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = Boolean(a || b);
+      `,
+      options: [
+        {
+          ignoreMakeBoolean: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = !!(a || b);
+      `,
+      options: [
+        {
+          ignoreMakeBoolean: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = !!(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = !(a || b);
+      `,
+      options: [
+        {
+          ignoreMakeBoolean: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = !(a ?? b);
       `,
             },
           ],
