@@ -326,6 +326,7 @@ export default tseslint.config(
 
       'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-single-promise-in-promise-methods': 'error',
       'unicorn/no-useless-spread': 'error',
       'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-node-protocol': 'error',
