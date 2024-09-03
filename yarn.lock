@@ -14055,7 +14055,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-from-markdown@npm:^2.0.0":
+"mdast-util-from-markdown@npm:^2.0.0, mdast-util-from-markdown@npm:^2.0.1":
   version: 2.0.1
   resolution: "mdast-util-from-markdown@npm:2.0.1"
   dependencies:
@@ -20268,6 +20268,7 @@ __metadata:
     konamimojisplosion: ^0.5.2
     lz-string: ^1.5.0
     make-dir: "*"
+    mdast-util-from-markdown: ^2.0.1
     mdast-util-mdx: ^3.0.0
     monaco-editor: ~0.50.0
     prettier: ^3.2.5
