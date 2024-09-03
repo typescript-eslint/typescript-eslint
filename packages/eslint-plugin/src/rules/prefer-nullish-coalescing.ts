@@ -19,7 +19,6 @@ import {
 
 export type Options = [
   {
-    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
@@ -64,11 +63,6 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            description:
-              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
-            type: 'boolean',
-          },
           ignoreConditionalTests: {
             description:
               'Whether to ignore cases that are located within a conditional test.',
@@ -110,7 +104,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignoreConditionalTests: true,
       ignoreTernaryTests: false,
       ignoreMixedLogicalExpressions: false,
@@ -126,7 +119,6 @@ export default createRule<Options, MessageIds>({
     context,
     [
       {
-        allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
         ignoreConditionalTests,
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
@@ -143,10 +135,7 @@ export default createRule<Options, MessageIds>({
       'strictNullChecks',
     );
 
-    if (
-      !isStrictNullChecks &&
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
-    ) {
+    if (!isStrictNullChecks) {
       context.report({
         loc: {
           start: { line: 0, column: 0 },
