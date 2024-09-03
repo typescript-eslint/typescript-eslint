@@ -88,7 +88,7 @@ export default createRule<[Options], MessageIds>({
     /**
      * @brief check if the given void keyword is used as a valid generic type
      *
-     * reports if the type parametrized by void is not in the whitelist, or
+     * reports if the type parametrized by void is not in the allowlist, or
      * allowInGenericTypeArguments is false.
      * no-op if the given void keyword is not used as generic type
      */
@@ -103,7 +103,7 @@ export default createRule<[Options], MessageIds>({
         return;
       }
 
-      // check whitelist
+      // check allowlist
       if (Array.isArray(allowInGenericTypeArguments)) {
         const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)

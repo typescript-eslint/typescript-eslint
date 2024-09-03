@@ -6,8 +6,8 @@ import { isESLintPluginRuleModule, isVFileWithStem } from '../utils/rules';
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
-import { insertFormattingNotice } from './insertions/insertFormattingNotice';
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
+import { insertRuleOptions } from './insertions/insertRuleOptions';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
@@ -28,7 +28,6 @@ export const generatedRuleDocs: Plugin = () => {
 
     removeSourceCodeNotice(page);
     insertRuleDescription(page);
-    insertFormattingNotice(page);
 
     const eslintrc = rule.meta.docs.extendsBaseRule
       ? insertBaseRuleReferences(page)
@@ -36,6 +35,7 @@ export const generatedRuleDocs: Plugin = () => {
 
     insertWhenNotToUseIt(page);
     insertResources(page);
+    insertRuleOptions(page);
     addESLintHashToCodeBlocksMeta(page, eslintrc);
   };
 };

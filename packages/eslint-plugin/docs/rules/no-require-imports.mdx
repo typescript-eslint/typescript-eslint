@@ -61,7 +61,7 @@ console.log(require('../package.json').version);
 
 ### `allowAsImport`
 
-When set to `true`, the `import x = require(...)` declaration won't be reported.
+When set to `true`, `import ... = require(...)` declarations won't be reported.
 This is useful if you use certain module options that require strict CommonJS interop semantics.
 
 With `{allowAsImport: true}`:

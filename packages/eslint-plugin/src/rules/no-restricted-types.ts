@@ -121,6 +121,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           types: {
+            description:
+              'An object whose keys are the types you want to ban, and the values are error messages.',
             type: 'object',
             additionalProperties: {
               $ref: '#/items/0/$defs/banConfig',

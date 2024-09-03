@@ -55,8 +55,6 @@ const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 
 ### `allowNumber`
 
-Whether to allow `number` typed values in template expressions.
-
 Examples of additional **correct** code for this rule with `{ allowNumber: true }`:
 
 ```ts option='{ "allowNumber": true }' showPlaygroundButton
@@ -73,8 +71,6 @@ Consider using [`.toFixed()`](https://developer.mozilla.org/en-US/docs/Web/JavaS
 
 ### `allowBoolean`
 
-Whether to allow Boolean typed values in template expressions.
-
 Examples of additional **correct** code for this rule with `{ allowBoolean: true }`:
 
 ```ts option='{ "allowBoolean": true }' showPlaygroundButton
@@ -84,8 +80,6 @@ const msg2 = `arg = ${arg || 'not truthy'}`;
 ```
 
 ### `allowAny`
-
-Whether to `any` typed values in template expressions.
 
 Examples of additional **correct** code for this rule with `{ allowAny: true }`:
 
@@ -97,8 +91,6 @@ const msg2 = `arg = ${user.name || 'the user with no name'}`;
 
 ### `allowNullish`
 
-Whether to allow `null` or `undefined` typed values in template expressions.
-
 Examples of additional **correct** code for this rule with `{ allowNullish: true }`:
 
 ```ts option='{ "allowNullish": true }' showPlaygroundButton
@@ -107,8 +99,6 @@ const msg1 = `arg = ${arg}`;
 ```
 
 ### `allowRegExp`
-
-Whether to allow `RegExp` typed values in template expressions.
 
 Examples of additional **correct** code for this rule with `{ allowRegExp: true }`:
 
@@ -124,8 +114,6 @@ const msg1 = `arg = ${arg}`;
 
 ### `allowNever`
 
-Whether to `never` typed values in template expressions.
-
 Examples of additional **correct** code for this rule with `{ allowNever: true }`:
 
 ```ts option='{ "allowNever": true }' showPlaygroundButton
@@ -134,8 +122,6 @@ const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 ```
 
 ### `allowArray`
-
-Whether to `Array` typed values in template expressions.
 
 Examples of additional **correct** code for this rule with `{ allowArray: true }`:
 

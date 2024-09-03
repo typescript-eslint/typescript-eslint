@@ -79,8 +79,14 @@ export default createRule<Options, MessageIds>({
         },
         type: 'object',
         properties: {
-          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
+          accessibility: {
+            $ref: '#/items/0/$defs/accessibilityLevel',
+            description:
+              'Which of accessibility modifier is required to exist or not exist.',
+          },
           overrides: {
+            description:
+              'Changes to required accessibility modifiers for specific kinds of class members.',
             type: 'object',
             properties: {
               accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
