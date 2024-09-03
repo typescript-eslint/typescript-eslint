@@ -89,36 +89,6 @@ for (; true; ) {}
 do {} while (true);
 ```
 
-### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
-
-If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
-
-Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
-
-You should be using `strictNullChecks` to ensure complete type-safety in your codebase.
-
-If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
-
-## When Not To Use It
-
-If your project is not accurately typed, such as if it's in the process of being converted to TypeScript or is susceptible to [trade-offs in control flow analysis](https://github.com/Microsoft/TypeScript/issues/9998), it may be difficult to enable this rule for particularly non-type-safe areas of code.
-You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
-
-This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
-It is due to limitations of TypeScript's type narrowing.
-See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
-We recommend using a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in those cases.
-
-```ts
-let condition = false as boolean;
-
-const f = () => (condition = true);
-f();
-
-if (condition) {
-}
-```
-
 ## Related To
 
 - ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - `no-unnecessary-condition` is essentially a stronger version of `no-constant-condition`, but requires type information.

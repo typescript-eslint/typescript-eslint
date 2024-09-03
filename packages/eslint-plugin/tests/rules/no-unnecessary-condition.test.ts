@@ -721,24 +721,6 @@ declare const unknownTyped: unknown;
 if (!(booleanTyped || unknownTyped)) {
 }
     `,
-    {
-      code: `
-declare const x: string[] | null;
-// eslint-disable-next-line
-if (x) {
-}
-      `,
-      options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
-        },
-      },
-    },
     `
 interface Foo {
   [key: string]: [string] | undefined;
