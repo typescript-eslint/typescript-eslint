@@ -175,8 +175,7 @@ export default createRule<[], MessageIds>({
     function describeTypeForSpread(type: ts.Type): string {
       if (
         checker.isArrayType(type) &&
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        tsutils.isIntrinsicErrorType(type.typeArguments![0])
+        tsutils.isIntrinsicErrorType(checker.getTypeArguments(type)[0])
       ) {
         return 'error';
       }
