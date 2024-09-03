@@ -364,13 +364,15 @@ export default createRule<Options, MessageId>({
       '!==',
     ]);
     function checkIfBinaryExpressionIsNecessaryConditional(
-      node: TSESTree.BinaryExpression,
+      node: TSESTree.Node,
+      {
+        left,
+        right,
+        operator,
+      }: Pick<TSESTree.BinaryExpression, 'left' | 'right' | 'operator'>,
     ): void {
-      if (!BOOL_OPERATORS.has(node.operator)) {
-        return;
-      }
-      const leftType = getConstrainedTypeAtLocation(services, node.left);
-      const rightType = getConstrainedTypeAtLocation(services, node.right);
+      const leftType = getConstrainedTypeAtLocation(services, left);
+      const rightType = getConstrainedTypeAtLocation(services, right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
         context.report({ node, messageId: 'literalBooleanExpression' });
         return;
@@ -389,7 +391,7 @@ export default createRule<Options, MessageId>({
             ts.TypeFlags.TypeVariable;
 
           // Allow loose comparison to nullish values.
-          if (node.operator === '==' || node.operator === '!=') {
+          if (operator === '==' || operator === '!=') {
             flag |= NULL | UNDEFINED | VOID;
           }
 
@@ -719,13 +721,27 @@ export default createRule<Options, MessageId>({
 
     return {
       AssignmentExpression: checkAssignmentExpression,
-      BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
+      BinaryExpression(node): void {
+        if (BOOL_OPERATORS.has(node.operator)) {
+          checkIfBinaryExpressionIsNecessaryConditional(node, node);
+        }
+      },
       CallExpression: checkCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
       IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
+      SwitchCase: (node): void => {
+        const { test } = node;
+        if (test) {
+          checkIfBinaryExpressionIsNecessaryConditional(node, {
+            operator: '===',
+            left: node.parent.discriminant,
+            right: test,
+          });
+        }
+      },
       WhileStatement: checkIfLoopIsNecessaryConditional,
       'MemberExpression[optional = true]': checkOptionalMemberExpression,
       'CallExpression[optional = true]': checkOptionalCallExpression,
