@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/bradzacher.jpg
-    name: Brad Zacher
-    title: typescript-eslint Maintainer
-    url: https://github.com/bradzacher
+authors: bradzacher
 description: Changes to consistent-type-imports when used with decorators, experimentalDecorators, and emitDecoratorMetadata
 slug: changes-to-consistent-type-imports-with-decorators
 tags:
