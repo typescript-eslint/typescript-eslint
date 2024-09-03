@@ -324,6 +324,7 @@ export default tseslint.config(
       // eslint-plugin-unicorn
       //
 
+      'unicorn/no-length-as-slice-end': 'error',
       'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-useless-spread': 'error',
