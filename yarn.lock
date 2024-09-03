@@ -5650,6 +5650,7 @@ __metadata:
     cross-env: ^7.0.3
     cross-fetch: "*"
     eslint: "*"
+    espree: ^10.0.1
     graphemer: ^1.4.0
     ignore: ^5.3.1
     jest: 29.7.0

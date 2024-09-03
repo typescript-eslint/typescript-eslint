@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import * as espree from 'espree';
 
 import type {
   MessageIds,
@@ -143,6 +144,12 @@ ruleTester.run('consistent-type-assertions', rule, {
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
+    },
+    {
+      code: "console.log('Hello, world!');",
+      languageOptions: {
+        parser: espree,
+      },
     },
   ],
   invalid: [
