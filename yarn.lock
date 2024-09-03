@@ -5121,6 +5121,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/espree@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "@types/espree@npm:10.1.0"
+  dependencies:
+    acorn: ^8.12.0
+    eslint-visitor-keys: ^4.0.0
+  checksum: 2de5fadadda43ded0dce53c488c9e48f1d699f690294942abbcab306d30c1d83ddd1f0d575583d45fa6e6148ead25b45d468104dee435358e613158fdeac5586
+  languageName: node
+  linkType: hard
+
 "@types/estree-jsx@npm:^1.0.0":
   version: 1.0.5
   resolution: "@types/estree-jsx@npm:1.0.5"
@@ -5637,6 +5647,7 @@ __metadata:
   dependencies:
     "@eslint-community/regexpp": ^4.10.0
     "@jest/types": 29.6.3
+    "@types/espree": ^10.1.0
     "@types/marked": ^5.0.2
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"

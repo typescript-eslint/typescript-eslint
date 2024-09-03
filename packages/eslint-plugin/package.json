@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
+    "@types/espree": "^10.1.0",
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
