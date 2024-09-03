@@ -732,8 +732,9 @@ export default createRule<Options, MessageId>({
       ForStatement: checkIfLoopIsNecessaryConditional,
       IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
-      SwitchCase: (node): void => {
+      SwitchCase(node): void {
         const { test } = node;
+        // only check `case ...:`, not `default:`
         if (test) {
           checkIfBinaryExpressionIsNecessaryConditional(node, {
             operator: '===',
