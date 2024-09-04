@@ -111,7 +111,7 @@ If you absolutely need more files included, set parserOptions.projectService.max
     return serviceSettings.service.openClientFile(
       filePathAbsolute,
       parseSettings.codeFullText,
-      /* scriptKind */ undefined,
+      createInferredScriptKind(filePathAbsolute, parseSettings),
       parseSettings.tsconfigRootDir,
     );
   }
@@ -142,6 +142,22 @@ If you absolutely need more files included, set parserOptions.projectService.max
   }
 }
 
+function createInferredScriptKind(
+  filePathAbsolute: string,
+  parseSettings: Readonly<MutableParseSettings>,
+): ts.ScriptKind | undefined {
+  if (parseSettings.extraFileExtensions.length > 0 && parseSettings.jsx) {
+    const isExtraFileExtension = parseSettings.extraFileExtensions.some(
+      extension => filePathAbsolute.endsWith(extension),
+    );
+    if (isExtraFileExtension) {
+      return ts.ScriptKind.TSX;
+    }
+  }
+
+  return undefined;
+}
+
 function createNoProgramWithProjectService(
   filePathAbsolute: string,
   parseSettings: Readonly<MutableParseSettings>,
@@ -158,7 +174,7 @@ function createNoProgramWithProjectService(
     service.openClientFile(
       filePathAbsolute,
       parseSettings.codeFullText,
-      /* scriptKind */ undefined,
+      createInferredScriptKind(filePathAbsolute, parseSettings),
       parseSettings.tsconfigRootDir,
     );
   }
