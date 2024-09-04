@@ -18,21 +18,27 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "boolean"
           },
           "classes": {
+            "description": "Whether to ignore references to class declarations.",
             "type": "boolean"
           },
           "enums": {
+            "description": "Whether to check references to enums.",
             "type": "boolean"
           },
           "functions": {
+            "description": "Whether to ignore references to function declarations.",
             "type": "boolean"
           },
           "ignoreTypeReferences": {
+            "description": "Whether to ignore type references, such as in type annotations and assertions.",
             "type": "boolean"
           },
           "typedefs": {
+            "description": "Whether to check references to types.",
             "type": "boolean"
           },
           "variables": {
+            "description": "Whether to ignore references to variables.",
             "type": "boolean"
           }
         },
@@ -49,11 +55,17 @@ type Options = [
   | 'nofunc'
   | {
       allowNamedExports?: boolean;
+      /** Whether to ignore references to class declarations. */
       classes?: boolean;
+      /** Whether to check references to enums. */
       enums?: boolean;
+      /** Whether to ignore references to function declarations. */
       functions?: boolean;
+      /** Whether to ignore type references, such as in type annotations and assertions. */
       ignoreTypeReferences?: boolean;
+      /** Whether to check references to types. */
       typedefs?: boolean;
+      /** Whether to ignore references to variables. */
       variables?: boolean;
     },
 ];

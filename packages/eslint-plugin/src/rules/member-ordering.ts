@@ -300,37 +300,35 @@ export const defaultOrder: MemberType[] = [
 ];
 
 const allMemberTypes = [
-  ...(
-    [
-      'readonly-signature',
-      'signature',
-      'readonly-field',
-      'field',
-      'method',
-      'call-signature',
-      'constructor',
-      'accessor',
-      'get',
-      'set',
-      'static-initialization',
-    ] as const
-  ).reduce<Set<MemberType>>((all, type) => {
-    all.add(type);
+  ...new Set(
+    (
+      [
+        'readonly-signature',
+        'signature',
+        'readonly-field',
+        'field',
+        'method',
+        'call-signature',
+        'constructor',
+        'accessor',
+        'get',
+        'set',
+        'static-initialization',
+      ] as const
+    ).flatMap(type => [
+      type,
 
-    (['public', 'protected', 'private', '#private'] as const).forEach(
-      accessibility => {
-        if (
+      ...(['public', 'protected', 'private', '#private'] as const)
+        .flatMap<MemberType>(accessibility => [
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'static-initialization' &&
           type !== 'call-signature' &&
           !(type === 'constructor' && accessibility === '#private')
-        ) {
-          all.add(`${accessibility}-${type}`); // e.g. `public-field`
-        }
+            ? `${accessibility}-${type}` // e.g. `public-field`
+            : [],
 
-        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
-        if (
+          // Only class instance fields, methods, accessors, get and set can have decorators attached to them
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
@@ -338,35 +336,35 @@ const allMemberTypes = [
             type === 'accessor' ||
             type === 'get' ||
             type === 'set')
-        ) {
-          all.add(`${accessibility}-decorated-${type}`);
-          all.add(`decorated-${type}`);
-        }
+            ? [`${accessibility}-decorated-${type}`, `decorated-${type}`]
+            : [],
 
-        if (
           type !== 'constructor' &&
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'call-signature'
-        ) {
-          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-          if (accessibility === '#private' || accessibility === 'private') {
-            (['static', 'instance'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          } else {
-            (['static', 'instance', 'abstract'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          }
-        }
-      },
-    );
-
-    return all;
-  }, new Set<MemberType>()),
+            ? (
+                [
+                  'static',
+                  'instance',
+                  // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+                  ...(accessibility === '#private' ||
+                  accessibility === 'private'
+                    ? []
+                    : (['abstract'] as const)),
+                ] as const
+              ).flatMap(
+                scope =>
+                  [
+                    `${scope}-${type}`,
+                    `${accessibility}-${scope}-${type}`,
+                  ] as const,
+              )
+            : [],
+        ])
+        .flat(),
+    ]),
+  ),
 ];
 
 const functionExpressions = [

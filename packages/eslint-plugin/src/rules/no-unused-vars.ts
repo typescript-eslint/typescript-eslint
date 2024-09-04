@@ -77,36 +77,54 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               vars: {
+                description:
+                  'Whether to check all variables or only locally-declared variables.',
                 type: 'string',
                 enum: ['all', 'local'],
               },
               varsIgnorePattern: {
+                description:
+                  'Regular expressions of variable names to not check for usage.',
                 type: 'string',
               },
               args: {
+                description: 'Whether to check all, some, or no arguments.',
                 type: 'string',
                 enum: ['all', 'after-used', 'none'],
               },
-              ignoreRestSiblings: {
-                type: 'boolean',
-              },
               argsIgnorePattern: {
+                description:
+                  'Regular expressions of argument names to not check for usage.',
                 type: 'string',
               },
               caughtErrors: {
+                description: 'Whether to check catch block arguments.',
                 type: 'string',
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
+                description:
+                  'Regular expressions of catch block argument names to not check for usage.',
                 type: 'string',
               },
               destructuredArrayIgnorePattern: {
+                description:
+                  'Regular expressions of destructured array variable names to not check for usage.',
                 type: 'string',
               },
               ignoreClassWithStaticInitBlock: {
+                description:
+                  'Whether to ignore classes with at least one static initialization block.',
+                type: 'boolean',
+              },
+              ignoreRestSiblings: {
+                description:
+                  'Whether to ignore sibling properties in `...` destructurings.',
                 type: 'boolean',
               },
               reportUsedIgnorePattern: {
+                description:
+                  'Whether to report variables that match any of the valid ignore pattern options if they have been used.',
                 type: 'boolean',
               },
             },

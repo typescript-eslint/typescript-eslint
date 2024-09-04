@@ -8,7 +8,7 @@ import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
-export { ProjectServiceOptions } from '@typescript-eslint/types';
+export type { ProjectServiceOptions } from '@typescript-eslint/types';
 
 //////////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //

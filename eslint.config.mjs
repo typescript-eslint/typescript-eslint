@@ -111,6 +111,10 @@ export default tseslint.config(
           minimumDescriptionLength: 5,
         },
       ],
+      '@typescript-eslint/consistent-type-exports': [
+        'error',
+        { fixMixedExportsWithInlineTypeSpecifier: true },
+      ],
       '@typescript-eslint/consistent-type-imports': [
         'error',
         { prefer: 'type-imports', disallowTypeAnnotations: true },
@@ -320,13 +324,17 @@ export default tseslint.config(
       // eslint-plugin-unicorn
       //
 
+      'unicorn/no-length-as-slice-end': 'error',
       'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-single-promise-in-promise-methods': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
       'unicorn/prefer-spread': 'error',
       'unicorn/prefer-string-replace-all': 'error',
+      'unicorn/prefer-structured-clone': 'error',
     },
   },
   {
@@ -597,14 +605,7 @@ export default tseslint.config(
           type: 'natural',
         },
       ],
-      'perfectionist/sort-enums': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
+      'perfectionist/sort-enums': 'off',
       'perfectionist/sort-objects': [
         'error',
         {

@@ -46,6 +46,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           onlyInlineLambdas: {
+            description:
+              'Whether to restrict checking only to members immediately assigned a lambda value.',
             type: 'boolean',
           },
         },

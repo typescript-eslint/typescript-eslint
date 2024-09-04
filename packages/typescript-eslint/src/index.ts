@@ -4,8 +4,6 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import pluginBase from '@typescript-eslint/eslint-plugin';
 import * as parserBase from '@typescript-eslint/parser';
 
-import type { ConfigWithExtends } from './config-helper';
-
 import { config } from './config-helper';
 import allConfig from './configs/all';
 import baseConfig from './configs/base';
@@ -138,7 +136,7 @@ const configs = {
 };
 
 export type Config = TSESLint.FlatConfig.ConfigFile;
-export type { ConfigWithExtends };
+
 /*
 we do both a default and named exports to allow people to use this package from
 both CJS and ESM in very natural ways.
@@ -186,4 +184,6 @@ export default {
   parser,
   plugin,
 };
-export { config, configs, parser, plugin };
+export { configs, parser, plugin };
+
+export { config, type ConfigWithExtends } from './config-helper';

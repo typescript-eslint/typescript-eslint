@@ -1002,7 +1002,7 @@ const foo =  /* a */ (3 + 5);
       ],
     },
     {
-      code: noFormat`
+      code: `
 const foo = <number /* a */>(3 + 5);
       `,
       output: `

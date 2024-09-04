@@ -166,14 +166,9 @@ await (async function () {
 
 ### `allowForKnownSafePromises`
 
-This option allows marking specific types as "safe" to be floating. For example, you may need to do this in the case of libraries whose APIs return Promises whose rejections are safely handled by the library.
+Specific types to be marked as "safe" to be floating. For example, you may need to do this in the case of libraries whose APIs return Promises whose rejections are safely handled by the library.
 
-This option takes an array of type specifiers to consider safe.
-Each item in the array must have one of the following forms:
-
-- A type defined in a file (`{ from: "file", name: "Foo", path: "src/foo-file.ts" }` with `path` being an optional path relative to the project root directory)
-- A type from the default library (`{ from: "lib", name: "PromiseLike" }`)
-- A type from a package (`{ from: "package", name: "Foo", package: "foo-lib" }`, this also works for types defined in a typings package).
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
 Examples of code for this rule with:
 
@@ -223,10 +218,10 @@ returnsSafePromise();
 
 ### `allowForKnownSafeCalls`
 
-This option allows marking specific functions as "safe" to be called to create floating Promises.
+Specific functions to be marked as "safe" to be called to create floating Promises.
 For example, you may need to do this in the case of libraries whose APIs may be called without handling the resultant Promises.
 
-This option takes the same array format as [`allowForKnownSafePromises`](#allowForKnownSafePromises).
+This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
 Examples of code for this rule with:
 

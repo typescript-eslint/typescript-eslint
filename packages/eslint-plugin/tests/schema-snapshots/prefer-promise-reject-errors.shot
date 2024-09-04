@@ -9,6 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowEmptyReject": {
+        "description": "Whether to allow calls to \`Promise.reject()\` with no arguments.",
         "type": "boolean"
       }
     },
@@ -21,6 +22,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to allow calls to \`Promise.reject()\` with no arguments. */
     allowEmptyReject?: boolean;
   },
 ];

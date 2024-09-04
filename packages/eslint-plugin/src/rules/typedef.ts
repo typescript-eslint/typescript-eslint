@@ -33,14 +33,46 @@ export default createRule<[Options], MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
-          [OptionKeys.ArrowParameter]: { type: 'boolean' },
-          [OptionKeys.MemberVariableDeclaration]: { type: 'boolean' },
-          [OptionKeys.ObjectDestructuring]: { type: 'boolean' },
-          [OptionKeys.Parameter]: { type: 'boolean' },
-          [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
-          [OptionKeys.VariableDeclaration]: { type: 'boolean' },
-          [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
+          [OptionKeys.ArrayDestructuring]: {
+            description:
+              'Whether to enforce type annotations on variables declared using array destructuring.',
+            type: 'boolean',
+          },
+          [OptionKeys.ArrowParameter]: {
+            description:
+              'Whether to enforce type annotations for parameters of arrow functions.',
+            type: 'boolean',
+          },
+          [OptionKeys.MemberVariableDeclaration]: {
+            description:
+              'Whether to enforce type annotations on member variables of classes.',
+            type: 'boolean',
+          },
+          [OptionKeys.ObjectDestructuring]: {
+            description:
+              'Whether to enforce type annotations on variables declared using object destructuring.',
+            type: 'boolean',
+          },
+          [OptionKeys.Parameter]: {
+            description:
+              'Whether to enforce type annotations for parameters of functions and methods.',
+            type: 'boolean',
+          },
+          [OptionKeys.PropertyDeclaration]: {
+            description:
+              'Whether to enforce type annotations for properties of interfaces and types.',
+            type: 'boolean',
+          },
+          [OptionKeys.VariableDeclaration]: {
+            description:
+              'Whether to enforce type annotations for variable declarations, excluding array and object destructuring.',
+            type: 'boolean',
+          },
+          [OptionKeys.VariableDeclarationIgnoreFunction]: {
+            description:
+              'Whether to ignore variable declarations for non-arrow and arrow functions.',
+            type: 'boolean',
+          },
         },
       },
     ],
