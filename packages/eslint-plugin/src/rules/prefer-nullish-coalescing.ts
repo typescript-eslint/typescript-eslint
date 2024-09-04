@@ -458,7 +458,7 @@ function isMakeBoolean(node: TSESTree.Node): boolean {
       (current.type === AST_NODE_TYPES.UnaryExpression &&
         current.operator === '!') ||
       (current.type === AST_NODE_TYPES.CallExpression &&
-        current.callee.type === 'Identifier' &&
+        current.callee.type === AST_NODE_TYPES.Identifier &&
         current.callee.name === 'Boolean')
     ) {
       return true;
