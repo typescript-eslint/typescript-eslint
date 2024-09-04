@@ -235,7 +235,7 @@ export default createRule<Options, MessageIds>({
 
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
-        if (!isNullableType(type) && !isTypeFlagSet(type, ts.TypeFlags.Void)) {
+        if (!isNullableType(type)) {
           if (
             node.expression.type === AST_NODE_TYPES.Identifier &&
             isPossiblyUsedBeforeAssigned(node.expression)

@@ -644,10 +644,9 @@ export default createRule<Options, MessageId>({
             ? !isCallExpressionNullableOriginFromCallee(node)
             : true;
 
-      const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
-        (isOwnNullable && (isNullableType(type) || possiblyVoid))
+        (isOwnNullable && isNullableType(type))
       );
     }
 

@@ -868,6 +868,15 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare function foo(): void | { key: string}
+const bar = foo()?.key
+    `,
+    `
+type fn = () => void
+declare function foo(): void | fn
+const bar = foo()?.()
+    `,
     {
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
       code: `
