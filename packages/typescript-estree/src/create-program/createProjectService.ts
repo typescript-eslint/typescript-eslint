@@ -42,8 +42,11 @@ export function createProjectService(
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
   tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {
-  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
-  validateDefaultProjectForFilesGlob(options);
+  const options = {
+    defaultProject: 'tsconfig.json',
+    ...(typeof optionsRaw === 'object' && optionsRaw),
+  };
+  validateDefaultProjectForFilesGlob(options.allowDefaultProject);
 
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
@@ -122,30 +125,28 @@ export function createProjectService(
     },
   });
 
-  if (options.defaultProject) {
-    log('Enabling default project: %s', options.defaultProject);
-    let configFile: ts.ParsedCommandLine;
+  log('Enabling default project: %s', options.defaultProject);
+  let configFile: ts.ParsedCommandLine;
 
-    try {
-      configFile = getParsedConfigFile(
-        tsserver,
-        options.defaultProject,
-        tsconfigRootDir,
-      );
-    } catch (error) {
-      throw new Error(
-        `Could not read default project '${options.defaultProject}': ${(error as Error).message}`,
-      );
-    }
-
-    service.setCompilerOptionsForInferredProjects(
-      // NOTE: The inferred projects API is not intended for source files when a tsconfig
-      // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
-      // it is meant for hard coded options passed in. Hard asserting as a work around.
-      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
-      configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
+  try {
+    configFile = getParsedConfigFile(
+      tsserver,
+      options.defaultProject,
+      tsconfigRootDir,
+    );
+  } catch (error) {
+    throw new Error(
+      `Could not read project service default project '${options.defaultProject}': ${(error as Error).message}`,
     );
   }
+
+  service.setCompilerOptionsForInferredProjects(
+    // NOTE: The inferred projects API is not intended for source files when a tsconfig
+    // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
+    // it is meant for hard coded options passed in. Hard asserting as a work around.
+    // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
+    configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
+  );
 
   return {
     allowDefaultProject: options.allowDefaultProject,
