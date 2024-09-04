@@ -29,21 +29,16 @@ export function deepMerge(
       const firstValue = first[key];
       const secondValue = second[key];
 
-      let value;
-      if (firstHasKey && secondHasKey) {
-        if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
-          // object type
-          value = deepMerge(firstValue, secondValue);
-        } else {
-          // value type
-          value = secondValue;
-        }
-      } else if (firstHasKey) {
-        value = firstValue;
-      } else {
-        value = secondValue;
-      }
-      return [key, value];
+      return [
+        key,
+        firstHasKey && secondHasKey
+          ? isObjectNotArray(firstValue) && isObjectNotArray(secondValue)
+            ? deepMerge(firstValue, secondValue) // object type
+            : secondValue // value type
+          : firstHasKey
+            ? firstValue
+            : secondValue,
+      ];
     }),
   );
 }
