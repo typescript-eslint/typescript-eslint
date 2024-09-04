@@ -36,9 +36,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to allow \`number\` in a boolean context.",
         "type": "boolean"
       },
-      "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
-        "type": "boolean"
-      },
       "allowString": {
         "description": "Whether to allow \`string\` in a boolean context.",
         "type": "boolean"
@@ -67,7 +64,6 @@ type Options = [
     allowNullableString?: boolean;
     /** Whether to allow \`number\` in a boolean context. */
     allowNumber?: boolean;
-    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     /** Whether to allow \`string\` in a boolean context. */
     allowString?: boolean;
   },
