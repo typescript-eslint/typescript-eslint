@@ -329,6 +329,7 @@ export default tseslint.config(
       'unicorn/no-typeof-undefined': 'error',
       'unicorn/no-single-promise-in-promise-methods': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-array-some': 'error',
       'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
