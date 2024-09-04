@@ -87,7 +87,7 @@ function openClientFileFromProjectService(
       serviceSettings.maximumDefaultProjectFileMatchCount
     ) {
       const filePrintLimit = 20;
-      const filesToPrint = Array.from(defaultProjectMatchedFiles).slice(
+      const filesToPrint = [...defaultProjectMatchedFiles].slice(
         0,
         filePrintLimit,
       );

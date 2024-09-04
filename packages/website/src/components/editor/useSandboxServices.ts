@@ -120,10 +120,13 @@ export const useSandboxServices = (
         );
 
         onLoaded(
-          Array.from(webLinter.rules.values()),
-          Array.from(
-            new Set([...sandboxInstance.supportedVersions, window.ts.version]),
-          )
+          [...webLinter.rules.values()],
+          [
+            ...new Set([
+              ...sandboxInstance.supportedVersions,
+              window.ts.version,
+            ]),
+          ]
             .filter(item =>
               semverSatisfies(item, rootPackageJson.devDependencies.typescript),
             )
