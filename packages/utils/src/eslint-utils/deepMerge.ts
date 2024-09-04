@@ -22,27 +22,30 @@ export function deepMerge(
   // get the unique set of keys across both objects
   const keys = new Set(Object.keys(first).concat(Object.keys(second)));
 
-  return Array.from(keys).reduce<ObjectLike>((acc, key) => {
-    const firstHasKey = key in first;
-    const secondHasKey = key in second;
-    const firstValue = first[key];
-    const secondValue = second[key];
+  return Object.fromEntries(
+    Array.from(keys, key => {
+      const firstHasKey = key in first;
+      const secondHasKey = key in second;
+      const firstValue = first[key];
+      const secondValue = second[key];
 
-    if (firstHasKey && secondHasKey) {
-      acc[key] =
-        isObjectNotArray(firstValue) && isObjectNotArray(secondValue)
-          ? // object type
-            deepMerge(firstValue, secondValue)
-          : // value type
-            secondValue;
-    } else if (firstHasKey) {
-      acc[key] = firstValue;
-    } else {
-      acc[key] = secondValue;
-    }
-
-    return acc;
-  }, {});
+      let value;
+      if (firstHasKey && secondHasKey) {
+        if (isObjectNotArray(firstValue) && isObjectNotArray(secondValue)) {
+          // object type
+          value = deepMerge(firstValue, secondValue);
+        } else {
+          // value type
+          value = secondValue;
+        }
+      } else if (firstHasKey) {
+        value = firstValue;
+      } else {
+        value = secondValue;
+      }
+      return [key, value];
+    }),
+  );
 }
 
 export { isObjectNotArray };

@@ -1,3 +1,16 @@
+## 8.4.0 (2024-09-02)
+
+
+### 🚀 Features
+
+- **typescript-estree:** make withoutProjectParserOptions generic ([#9877](https://github.com/typescript-eslint/typescript-eslint/pull/9877))
+
+### ❤️  Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.3.0 (2024-08-26)
 
 
