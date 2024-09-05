@@ -241,7 +241,7 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.UnaryExpression &&
         node.operator === '!'
       ) {
-        return checkNode(node.argument, true);
+        return checkNode(node.argument, !isUnaryNotArgument);
       }
 
       // Since typescript array index signature types don't represent the
