@@ -2277,6 +2277,14 @@ foo?.['bar']?.().toExponential();
         },
       ],
     },
+    {
+      code: `
+        const a = true;
+        if (!!a) {
+        }
+      `,
+      errors: [ruleError(3, 15, 'alwaysTruthy')],
+    },
 
     // "branded" types
     unnecessaryConditionTest('"" & {}', 'alwaysFalsy'),
