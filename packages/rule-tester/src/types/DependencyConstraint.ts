@@ -6,12 +6,12 @@ export interface RangeOptions {
 }
 
 export interface SemverVersionConstraint {
-  readonly range: string;
   readonly options?: RangeOptions | boolean;
+  readonly range: string;
 }
 export type AtLeastVersionConstraint =
-  | `${number}.${number}.${number}-${string}`
   | `${number}.${number}.${number}`
+  | `${number}.${number}.${number}-${string}`
   | `${number}.${number}`
   | `${number}`;
 export type VersionConstraint =

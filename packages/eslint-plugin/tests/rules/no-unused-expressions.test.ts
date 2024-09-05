@@ -300,7 +300,7 @@ function foo() {
       ]),
     },
     {
-      code: noFormat`
+      code: `
 class Foo<T> {}
 Foo<string>;
       `,

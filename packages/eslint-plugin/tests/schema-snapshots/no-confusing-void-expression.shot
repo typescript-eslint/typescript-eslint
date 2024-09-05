@@ -9,9 +9,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "ignoreArrowShorthand": {
+        "description": "Whether to ignore \\"shorthand\\" \`() =>\` arrow functions: those without \`{ ... }\` braces.",
         "type": "boolean"
       },
       "ignoreVoidOperator": {
+        "description": "Whether to ignore returns that start with the \`void\` operator.",
         "type": "boolean"
       }
     },
@@ -24,7 +26,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to ignore "shorthand" \`() =>\` arrow functions: those without \`{ ... }\` braces. */
     ignoreArrowShorthand?: boolean;
+    /** Whether to ignore returns that start with the \`void\` operator. */
     ignoreVoidOperator?: boolean;
   },
 ];

@@ -9,9 +9,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowAsThisParameter": {
+        "description": "Whether a \`this\` parameter of a function may be \`void\`.",
         "type": "boolean"
       },
       "allowInGenericTypeArguments": {
+        "description": "Whether \`void\` can be used as a valid value for generic type parameters.",
         "oneOf": [
           {
             "type": "boolean"
@@ -35,8 +37,13 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether a \`this\` parameter of a function may be \`void\`. */
     allowAsThisParameter?: boolean;
-    allowInGenericTypeArguments?: [string, ...string[]] | boolean;
+    /** Whether \`void\` can be used as a valid value for generic type parameters. */
+    allowInGenericTypeArguments?:
+      | [string, ...string[]]
+      /** Whether \`void\` can be used as a valid value for generic type parameters. */
+      | boolean;
   },
 ];
 "

@@ -1,9 +1,10 @@
+import * as path from 'node:path';
+
 import type {
   InvalidTestCase,
   TestCaseError,
 } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
 
 import type {
   MessageId,
@@ -2165,7 +2166,7 @@ foo.bar ??= 1;
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar()?.toExponential();
@@ -2186,7 +2187,7 @@ foo?.bar().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux?.toExponential();
@@ -2214,7 +2215,7 @@ foo?.bar?.baz().qux.toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.()?.toExponential();
@@ -2235,7 +2236,7 @@ foo?.().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
@@ -2256,7 +2257,7 @@ foo?.['bar']().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.()?.toExponential();

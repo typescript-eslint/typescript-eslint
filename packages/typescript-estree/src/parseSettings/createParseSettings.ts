@@ -110,6 +110,7 @@ export function createParseSettings(
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
             tsestreeOptions.projectService,
             jsDocParsingMode,
+            tsconfigRootDir,
           ))
         : undefined,
     range: tsestreeOptions.range === true,
@@ -162,7 +163,7 @@ export function createParseSettings(
       project: getProjectConfigFiles(parseSettings, tsestreeOptions.project),
       projectFolderIgnoreList: tsestreeOptions.projectFolderIgnoreList,
       singleRun: parseSettings.singleRun,
-      tsconfigRootDir: tsconfigRootDir,
+      tsconfigRootDir,
     });
   }
 

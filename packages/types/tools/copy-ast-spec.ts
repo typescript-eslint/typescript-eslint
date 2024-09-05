@@ -1,7 +1,7 @@
-import childProcess from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { promisify } from 'util';
+import childProcess from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { promisify } from 'node:util';
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -76,11 +76,9 @@ async function main(): Promise<void> {
     await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
   }
 
-  await Promise.all([
-    copyFile('dist', 'ast-spec.ts', code =>
-      code.replace(/export declare enum/g, 'export enum'),
-    ),
-  ]);
+  await copyFile('dist', 'ast-spec.ts', code =>
+    code.replaceAll('export declare enum', 'export enum'),
+  );
 }
 
 main().catch((error: unknown) => {

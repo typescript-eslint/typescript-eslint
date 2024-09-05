@@ -31,9 +31,11 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreParameters: {
+            description: 'Whether to ignore function parameters.',
             type: 'boolean',
           },
           ignoreProperties: {
+            description: 'Whether to ignore class properties.',
             type: 'boolean',
           },
         },

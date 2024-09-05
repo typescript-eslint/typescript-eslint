@@ -1,7 +1,8 @@
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
+
 import * as glob from 'glob';
 import makeDir from 'make-dir';
-import path from 'path';
 
 import type { AnalyzeOptions } from './test-utils';
 import { parseAndAnalyze } from './test-utils';
@@ -124,7 +125,7 @@ function nestDescribe(
 
         if (type[1] && !type[1].has(value)) {
           throw new Error(
-            `Expected value for ${key} to be one of (${Array.from(type[1]).join(
+            `Expected value for ${key} to be one of (${[...type[1]].join(
               ' | ',
             )}), but got ${value as string}`,
           );

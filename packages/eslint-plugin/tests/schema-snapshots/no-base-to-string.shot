@@ -9,6 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "ignoredTypeNames": {
+        "description": "Stringified regular expressions of type names to ignore.",
         "items": {
           "type": "string"
         },
@@ -24,6 +25,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Stringified regular expressions of type names to ignore. */
     ignoredTypeNames?: string[];
   },
 ];

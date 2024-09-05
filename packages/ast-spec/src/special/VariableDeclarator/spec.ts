@@ -7,7 +7,12 @@ import type { Expression } from '../../unions/Expression';
 // TODO: these declarator types can probably be refined further, especially
 // their differences when used in different contexts (e.g. for...of)
 interface VariableDeclaratorBase extends BaseNode {
-  type: AST_NODE_TYPES.VariableDeclarator;
+  /**
+   * Whether there's definite assignment assertion (`let x!: number`).
+   * If `true`, then: `id` must be an identifier with a type annotation,
+   * `init` must be `null`, and the declarator must be a `var`/`let` declarator.
+   */
+  definite: boolean;
   /**
    * The name(s) of the variable(s).
    */
@@ -17,17 +22,12 @@ interface VariableDeclaratorBase extends BaseNode {
    * in a `declare const`.
    */
   init: Expression | null;
-  /**
-   * Whether there's definite assignment assertion (`let x!: number`).
-   * If `true`, then: `id` must be an identifier with a type annotation,
-   * `init` must be `null`, and the declarator must be a `var`/`let` declarator.
-   */
-  definite: boolean;
+  type: AST_NODE_TYPES.VariableDeclarator;
 }
 
 export interface VariableDeclaratorNoInit extends VariableDeclaratorBase {
-  init: null;
   definite: false;
+  init: null;
 }
 
 export interface VariableDeclaratorMaybeInit extends VariableDeclaratorBase {
@@ -36,12 +36,12 @@ export interface VariableDeclaratorMaybeInit extends VariableDeclaratorBase {
 
 export interface VariableDeclaratorDefiniteAssignment
   extends VariableDeclaratorBase {
+  definite: true;
   /**
    * The name of the variable. Must have a type annotation.
    */
   id: Identifier;
   init: null;
-  definite: true;
 }
 
 export type LetOrConstOrVarDeclarator =
@@ -50,15 +50,15 @@ export type LetOrConstOrVarDeclarator =
   | VariableDeclaratorNoInit;
 
 export interface UsingInNormalContextDeclarator extends VariableDeclaratorBase {
+  definite: false;
   id: Identifier;
   init: Expression;
-  definite: false;
 }
 
 export interface UsingInForOfDeclarator extends VariableDeclaratorBase {
+  definite: false;
   id: Identifier;
   init: null;
-  definite: false;
 }
 
 export type UsingDeclarator =

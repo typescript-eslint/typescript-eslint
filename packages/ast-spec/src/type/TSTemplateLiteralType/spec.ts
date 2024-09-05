@@ -4,7 +4,7 @@ import type { TemplateElement } from '../../special/TemplateElement/spec';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTemplateLiteralType extends BaseNode {
-  type: AST_NODE_TYPES.TSTemplateLiteralType;
   quasis: TemplateElement[];
+  type: AST_NODE_TYPES.TSTemplateLiteralType;
   types: TypeNode[];
 }

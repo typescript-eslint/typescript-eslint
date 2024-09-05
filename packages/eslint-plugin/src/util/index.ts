@@ -12,8 +12,10 @@ export * from './getThisExpression';
 export * from './getWrappingFixer';
 export * from './isNodeEqual';
 export * from './isNullLiteral';
+export * from './isStartOfExpressionStatement';
 export * from './isUndefinedIdentifier';
 export * from './misc';
+export * from './needsPrecedingSemiColon';
 export * from './objectIterators';
 export * from './scopeUtils';
 export * from './types';
@@ -40,7 +42,7 @@ export {
   isObjectNotArray,
   getParserServices,
   nullThrows,
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
+  type InferMessageIdsTypeFromRule,
+  type InferOptionsTypeFromRule,
   NullThrowsReasons,
 };

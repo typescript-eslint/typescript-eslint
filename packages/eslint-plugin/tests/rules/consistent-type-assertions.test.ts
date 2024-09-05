@@ -1,6 +1,6 @@
-/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageIds,
@@ -600,7 +600,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     {
       // prettier wants to remove the parens around the yield expression,
       // but they're required.
-      code: noFormat`
+      code: `
 function* g() {
   const y = <any>(yield a);
 }

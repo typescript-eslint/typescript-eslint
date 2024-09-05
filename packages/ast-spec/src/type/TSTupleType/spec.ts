@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTupleType extends BaseNode {
-  type: AST_NODE_TYPES.TSTupleType;
   elementTypes: TypeNode[];
+  type: AST_NODE_TYPES.TSTupleType;
 }

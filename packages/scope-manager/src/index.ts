@@ -1,11 +1,11 @@
-export { analyze, AnalyzeOptions } from './analyze';
+export { analyze, type AnalyzeOptions } from './analyze';
 export * from './definition';
 export { Reference } from './referencer/Reference';
 export { Visitor } from './referencer/Visitor';
 export {
   PatternVisitor,
-  PatternVisitorCallback,
-  PatternVisitorOptions,
+  type PatternVisitorCallback,
+  type PatternVisitorOptions,
 } from './referencer/PatternVisitor';
 export * from './scope';
 export { ScopeManager } from './ScopeManager';

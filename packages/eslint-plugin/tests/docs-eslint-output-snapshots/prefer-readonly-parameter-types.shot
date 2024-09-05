@@ -127,7 +127,7 @@ interface Foo {
 
 exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 3`] = `
 "Incorrect
-Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 interface ThisIsMutable {
   prop: string;
@@ -158,7 +158,7 @@ function fn3(arg: WrapperWithOther) {}
 
 exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 4`] = `
 "Incorrect
-Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Foo } from 'some-lib';
 import { Bar } from 'incorrect-lib';
@@ -181,7 +181,7 @@ function fn3(arg: Bar) {}
 
 exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 5`] = `
 "Correct
-Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 interface Foo {
   prop: string;
@@ -202,7 +202,7 @@ function fn2(arg: Wrapper) {}
 
 exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 6`] = `
 "Correct
-Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Bar } from 'bar-lib';
 
@@ -223,7 +223,7 @@ function fn3(arg: Bar) {}
 
 exports[`Validating rule docs prefer-readonly-parameter-types.mdx code examples ESLint output 7`] = `
 "Correct
-Options: {"allow":["$",{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Foo } from './foo';
 

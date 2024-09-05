@@ -4,13 +4,13 @@ import type Monaco from 'monaco-editor';
 import type { ErrorGroup } from '../types';
 
 export interface LintCodeAction {
-  message: string;
   code?: string | null;
-  isPreferred: boolean;
   fix: {
     range: Readonly<[number, number]>;
     text: string;
   };
+  isPreferred: boolean;
+  message: string;
 }
 
 export function ensurePositiveInt(
@@ -38,19 +38,19 @@ export function createEditOperation(
   const start = model.getPositionAt(action.fix.range[0]);
   const end = model.getPositionAt(action.fix.range[1]);
   return {
-    text: action.fix.text,
     range: {
-      startLineNumber: start.lineNumber,
-      startColumn: start.column,
-      endLineNumber: end.lineNumber,
       endColumn: end.column,
+      endLineNumber: end.lineNumber,
+      startColumn: start.column,
+      startLineNumber: start.lineNumber,
     },
+    text: action.fix.text,
   };
 }
 
 function normalizeCode(code: Monaco.editor.IMarker['code']): {
-  value: string;
   target?: string;
+  value: string;
 } {
   if (!code) {
     return { value: '' };
@@ -59,8 +59,8 @@ function normalizeCode(code: Monaco.editor.IMarker['code']): {
     return { value: code };
   }
   return {
-    value: code.value,
     target: code.target.toString(),
+    value: code.value,
   };
 }
 
@@ -76,14 +76,14 @@ export function parseMarkers(
 
     const fixers =
       fixes.get(uri)?.map(item => ({
-        message: item.message,
-        isPreferred: item.isPreferred,
         fix(): void {
           const model = editor.getModel();
           if (model) {
             editor.executeEdits('eslint', [createEditOperation(model, item)]);
           }
         },
+        isPreferred: item.isPreferred,
+        message: item.message,
       })) ?? [];
 
     const group =
@@ -95,19 +95,19 @@ export function parseMarkers(
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     result[group] ||= {
-      group: group,
-      uri: code.target,
+      group,
       items: [],
+      uri: code.target,
     };
 
     result[group].items.push({
+      fixer: fixers.find(item => item.isPreferred),
+      location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       message:
         (marker.owner !== 'eslint' && marker.owner !== 'json' && code.value
           ? `${code.value}: `
           : '') + marker.message,
-      location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       severity: marker.severity,
-      fixer: fixers.find(item => item.isPreferred),
       suggestions: fixers.filter(item => !item.isPreferred),
     });
   }
@@ -133,38 +133,38 @@ export function parseLintResults(
     const marker: Monaco.editor.IMarkerData = {
       code: message.ruleId
         ? {
-            value: message.ruleId,
             target: ruleUri(message.ruleId),
+            value: message.ruleId,
           }
         : 'Internal error',
+      endColumn,
+      endLineNumber,
+      message: message.message,
       severity:
         message.severity === 2
           ? 8 // MarkerSeverity.Error
           : 4, // MarkerSeverity.Warning
       source: 'ESLint',
-      message: message.message,
-      startLineNumber,
       startColumn,
-      endLineNumber,
-      endColumn,
+      startLineNumber,
     };
     const markerUri = createURI(marker);
 
     const fixes: LintCodeAction[] = [];
     if (message.fix) {
       fixes.push({
-        message: `Fix this ${message.ruleId ?? 'unknown'} problem`,
         fix: message.fix,
         isPreferred: true,
+        message: `Fix this ${message.ruleId ?? 'unknown'} problem`,
       });
     }
     if (message.suggestions) {
       for (const suggestion of message.suggestions) {
         fixes.push({
-          message: suggestion.desc,
           code: message.ruleId,
           fix: suggestion.fix,
           isPreferred: false,
+          message: suggestion.desc,
         });
       }
     }
@@ -179,6 +179,6 @@ export function parseLintResults(
 }
 
 export function getPathRegExp(path: string): RegExp {
-  const escapedPath = path.replace(/\./g, '\\.').replace(/\*/g, '[^/]+');
+  const escapedPath = path.replaceAll('.', '\\.').replaceAll('*', '[^/]+');
   return new RegExp(`^${escapedPath}$`, '');
 }

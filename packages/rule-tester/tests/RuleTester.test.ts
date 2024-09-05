@@ -1,10 +1,12 @@
-import * as parser from '@typescript-eslint/parser';
-import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
-import { RuleTester } from '../src/RuleTester';
+import * as parser from '@typescript-eslint/parser';
+import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
+
+import { RuleTester } from '../src/RuleTester';
 import * as dependencyConstraintsModule from '../src/utils/dependencyConstraints';
 
 // we can't spy on the exports of an ES module - so we instead have to mock the entire module
@@ -79,26 +81,26 @@ const _mockedItSkip = jest.mocked(RuleTester.itSkip);
 const mockedParserClearCaches = jest.mocked(parser.clearCaches);
 
 const EMPTY_PROGRAM: TSESTree.Program = {
-  type: AST_NODE_TYPES.Program,
   body: [],
   comments: [],
   loc: { end: { column: 0, line: 0 }, start: { column: 0, line: 0 } },
+  range: [0, 0],
   sourceType: 'module',
   tokens: [],
-  range: [0, 0],
+  type: AST_NODE_TYPES.Program,
 };
 
 const NOOP_RULE: RuleModule<'error'> = {
+  create() {
+    return {};
+  },
+  defaultOptions: [],
   meta: {
     messages: {
       error: 'error',
     },
-    type: 'problem',
     schema: [],
-  },
-  defaultOptions: [],
-  create() {
-    return {};
+    type: 'problem',
   },
 };
 
@@ -113,6 +115,9 @@ describe('RuleTester', () => {
   });
   runRuleForItemSpy.mockImplementation((_1, _2, testCase) => {
     return {
+      afterAST: EMPTY_PROGRAM,
+      beforeAST: EMPTY_PROGRAM,
+      config: {},
       messages:
         'errors' in testCase
           ? [
@@ -129,9 +134,6 @@ describe('RuleTester', () => {
             ]
           : [],
       outputs: [testCase.code],
-      afterAST: EMPTY_PROGRAM,
-      beforeAST: EMPTY_PROGRAM,
-      config: {},
     };
   });
 
@@ -154,6 +156,12 @@ describe('RuleTester', () => {
       });
 
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'invalid tests should work as well',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
         valid: [
           'string based valid test',
           {
@@ -181,12 +189,6 @@ describe('RuleTester', () => {
                 tsconfigRootDir: '/set/in/the/test/',
               },
             },
-          },
-        ],
-        invalid: [
-          {
-            code: 'invalid tests should work as well',
-            errors: [{ messageId: 'error' }],
           },
         ],
       });
@@ -263,6 +265,10 @@ describe('RuleTester', () => {
 
     it('allows the automated filenames to be overridden in the constructor', () => {
       const ruleTester = new RuleTester({
+        defaultFilenames: {
+          ts: 'set-in-constructor.ts',
+          tsx: 'react-set-in-constructor.tsx',
+        },
         languageOptions: {
           parser,
           parserOptions: {
@@ -270,13 +276,10 @@ describe('RuleTester', () => {
             tsconfigRootDir: '/some/path/that/totally/exists/',
           },
         },
-        defaultFilenames: {
-          ts: 'set-in-constructor.ts',
-          tsx: 'react-set-in-constructor.tsx',
-        },
       });
 
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
         valid: [
           {
             code: 'normal',
@@ -292,7 +295,6 @@ describe('RuleTester', () => {
             },
           },
         ],
-        invalid: [],
       });
 
       expect(getTestConfigFromCall()).toMatchInlineSnapshot(`
@@ -358,14 +360,14 @@ describe('RuleTester', () => {
 
     expect(() =>
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+
         valid: [
           {
             code: 'object based valid test',
             languageOptions: { parser },
           },
         ],
-
-        invalid: [],
       }),
     ).toThrowErrorMatchingInlineSnapshot(
       `"Do not set the parser at the test level unless you want to use a parser other than "@typescript-eslint/parser""`,
@@ -379,13 +381,13 @@ describe('RuleTester', () => {
       });
 
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
         valid: [
           'const x = 1;',
           { code: 'const x = 2;' },
           // empty object is ignored
           { code: 'const x = 3;', dependencyConstraints: {} },
         ],
-        invalid: [],
       });
 
       expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
@@ -398,6 +400,7 @@ describe('RuleTester', () => {
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [],
           valid: [
             'const x = 1;',
             { code: 'const x = 2;' },
@@ -412,7 +415,6 @@ describe('RuleTester', () => {
               },
             },
           ],
-          invalid: [],
         });
 
         expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
@@ -424,6 +426,13 @@ describe('RuleTester', () => {
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'const x = 3;',
+              errors: [{ messageId: 'error' }],
+              only: true,
+            },
+          ],
           valid: [
             'const x = 1;',
             { code: 'const x = 2;' },
@@ -432,13 +441,6 @@ describe('RuleTester', () => {
               dependencyConstraints: {
                 'totally-real-dependency': '999',
               },
-            },
-          ],
-          invalid: [
-            {
-              code: 'const x = 3;',
-              errors: [{ messageId: 'error' }],
-              only: true,
             },
           ],
         });
@@ -453,6 +455,29 @@ describe('RuleTester', () => {
       });
 
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'failing - major',
+            dependencyConstraints: {
+              'totally-real-dependency': '999',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+          {
+            code: 'failing - major.minor',
+            dependencyConstraints: {
+              'totally-real-dependency': '999.0',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+          {
+            code: 'failing - major.minor.patch',
+            dependencyConstraints: {
+              'totally-real-dependency': '999.0.0',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+        ],
         valid: [
           {
             code: 'passing - major',
@@ -470,29 +495,6 @@ describe('RuleTester', () => {
             code: 'passing - major.minor.patch',
             dependencyConstraints: {
               'totally-real-dependency': '10.0.0',
-            },
-          },
-        ],
-        invalid: [
-          {
-            code: 'failing - major',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency': '999',
-            },
-          },
-          {
-            code: 'failing - major.minor',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency': '999.0',
-            },
-          },
-          {
-            code: 'failing - major.minor.patch',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency': '999.0.0',
             },
           },
         ],
@@ -603,6 +605,39 @@ describe('RuleTester', () => {
       });
 
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'failing - major',
+            dependencyConstraints: {
+              'totally-real-dependency': {
+                range: '^999',
+              },
+            },
+            errors: [{ messageId: 'error' }],
+          },
+          {
+            code: 'failing - major.minor',
+            dependencyConstraints: {
+              'totally-real-dependency': {
+                range: '>=999.0',
+              },
+            },
+            errors: [{ messageId: 'error' }],
+          },
+
+          {
+            code: 'failing with options',
+            dependencyConstraints: {
+              'totally-real-dependency-prerelease': {
+                options: {
+                  includePrerelease: false,
+                },
+                range: '^10',
+              },
+            },
+            errors: [{ messageId: 'error' }],
+          },
+        ],
         valid: [
           {
             code: 'passing - major',
@@ -617,39 +652,6 @@ describe('RuleTester', () => {
             dependencyConstraints: {
               'totally-real-dependency': {
                 range: '<999',
-              },
-            },
-          },
-        ],
-        invalid: [
-          {
-            code: 'failing - major',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency': {
-                range: '^999',
-              },
-            },
-          },
-          {
-            code: 'failing - major.minor',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency': {
-                range: '>=999.0',
-              },
-            },
-          },
-
-          {
-            code: 'failing with options',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency-prerelease': {
-                range: '^10',
-                options: {
-                  includePrerelease: false,
-                },
               },
             },
           },
@@ -761,6 +763,24 @@ describe('RuleTester', () => {
       });
 
       ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'no constraints is always run',
+            errors: [{ messageId: 'error' }],
+          },
+          {
+            code: 'empty object is always run',
+            dependencyConstraints: {},
+            errors: [{ messageId: 'error' }],
+          },
+          {
+            code: 'failing constraint',
+            dependencyConstraints: {
+              'totally-real-dependency': '99999',
+            },
+            errors: [{ messageId: 'error' }],
+          },
+        ],
         valid: [
           'string based is always run',
           {
@@ -774,24 +794,6 @@ describe('RuleTester', () => {
             code: 'passing constraint',
             dependencyConstraints: {
               'totally-real-dependency': '10',
-            },
-          },
-        ],
-        invalid: [
-          {
-            code: 'no constraints is always run',
-            errors: [{ messageId: 'error' }],
-          },
-          {
-            code: 'empty object is always run',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {},
-          },
-          {
-            code: 'failing constraint',
-            errors: [{ messageId: 'error' }],
-            dependencyConstraints: {
-              'totally-real-dependency': '99999',
             },
           },
         ],
@@ -906,15 +908,15 @@ describe('RuleTester', () => {
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
-          valid: [
-            {
-              code: 'passing - major',
-            },
-          ],
           invalid: [
             {
               code: 'failing - major',
               errors: [{ messageId: 'error' }],
+            },
+          ],
+          valid: [
+            {
+              code: 'passing - major',
             },
           ],
         });
@@ -938,15 +940,15 @@ describe('RuleTester', () => {
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
-          valid: [
-            {
-              code: 'valid',
-            },
-          ],
           invalid: [
             {
               code: 'invalid',
               errors: [{ messageId: 'error' }],
+            },
+          ],
+          valid: [
+            {
+              code: 'valid',
             },
           ],
         });
@@ -961,13 +963,13 @@ describe('RuleTester', () => {
         const ruleTester = new RuleTester();
 
         ruleTester.run('my-rule', NOOP_RULE, {
-          valid: [],
           invalid: [
             {
               code: 'invalid',
               errors: [{ messageId: 'error' }],
             },
           ],
+          valid: [],
         });
 
         expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
@@ -988,12 +990,12 @@ describe('RuleTester', () => {
         const ruleTester = new RuleTester();
 
         ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [],
           valid: [
             {
               code: 'valid',
             },
           ],
-          invalid: [],
         });
 
         expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
@@ -1021,36 +1023,36 @@ describe('RuleTester - multipass fixer', () => {
   describe('without fixes', () => {
     const ruleTester = new RuleTester();
     const rule: RuleModule<'error'> = {
-      meta: {
-        messages: {
-          error: 'error',
-        },
-        type: 'problem',
-        schema: [],
-      },
-      defaultOptions: [],
       create(context) {
         return {
           'Identifier[name=foo]'(node): void {
             context.report({
-              node,
               messageId: 'error',
+              node,
             });
           },
         };
+      },
+      defaultOptions: [],
+      meta: {
+        messages: {
+          error: 'error',
+        },
+        schema: [],
+        type: 'problem',
       },
     };
 
     it('passes with no output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
               errors: [{ messageId: 'error' }],
             },
           ],
+          valid: [],
         });
       }).not.toThrow();
     });
@@ -1058,13 +1060,13 @@ describe('RuleTester - multipass fixer', () => {
     it('passes with null output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
               errors: [{ messageId: 'error' }],
             },
           ],
+          valid: [],
         });
       }).not.toThrow();
     });
@@ -1072,14 +1074,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with string output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: 'bar',
               errors: [{ messageId: 'error' }],
+              output: 'bar',
             },
           ],
+          valid: [],
         });
       }).toThrow('Expected autofix to be suggested.');
     });
@@ -1087,14 +1089,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with array output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: ['bar', 'baz'],
               errors: [{ messageId: 'error' }],
+              output: ['bar', 'baz'],
             },
           ],
+          valid: [],
         });
       }).toThrow('Expected autofix to be suggested.');
     });
@@ -1103,39 +1105,39 @@ describe('RuleTester - multipass fixer', () => {
   describe('with single fix', () => {
     const ruleTester = new RuleTester();
     const rule: RuleModule<'error'> = {
-      meta: {
-        messages: {
-          error: 'error',
-        },
-        type: 'problem',
-        fixable: 'code',
-        schema: [],
-      },
-      defaultOptions: [],
       create(context) {
         return {
           'Identifier[name=foo]'(node): void {
             context.report({
-              node,
-              messageId: 'error',
               fix: fixer => fixer.replaceText(node, 'bar'),
+              messageId: 'error',
+              node,
             });
           },
         };
+      },
+      defaultOptions: [],
+      meta: {
+        fixable: 'code',
+        messages: {
+          error: 'error',
+        },
+        schema: [],
+        type: 'problem',
       },
     };
 
     it('passes with correct string output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: 'bar',
               errors: [{ messageId: 'error' }],
+              output: 'bar',
             },
           ],
+          valid: [],
         });
       }).not.toThrow();
     });
@@ -1143,14 +1145,14 @@ describe('RuleTester - multipass fixer', () => {
     it('passes with correct array output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: ['bar'],
               errors: [{ messageId: 'error' }],
+              output: ['bar'],
             },
           ],
+          valid: [],
         });
       }).not.toThrow();
     });
@@ -1158,13 +1160,13 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with no output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
               errors: [{ messageId: 'error' }],
             },
           ],
+          valid: [],
         });
       }).toThrow("The rule fixed the code. Please add 'output' property.");
     });
@@ -1172,14 +1174,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with null output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: null,
               errors: [{ messageId: 'error' }],
+              output: null,
             },
           ],
+          valid: [],
         });
       }).toThrow('Expected no autofixes to be suggested.');
     });
@@ -1187,14 +1189,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with incorrect array output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: ['bar', 'baz'],
               errors: [{ messageId: 'error' }],
+              output: ['bar', 'baz'],
             },
           ],
+          valid: [],
         });
       }).toThrow('Outputs do not match.');
     });
@@ -1202,14 +1204,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with incorrect string output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: 'baz',
               errors: [{ messageId: 'error' }],
+              output: 'baz',
             },
           ],
+          valid: [],
         });
       }).toThrow('Output is incorrect.');
     });
@@ -1218,46 +1220,46 @@ describe('RuleTester - multipass fixer', () => {
   describe('with multiple fixes', () => {
     const ruleTester = new RuleTester();
     const rule: RuleModule<'error'> = {
-      meta: {
-        messages: {
-          error: 'error',
-        },
-        type: 'problem',
-        fixable: 'code',
-        schema: [],
-      },
-      defaultOptions: [],
       create(context) {
         return {
-          'Identifier[name=foo]'(node): void {
-            context.report({
-              node,
-              messageId: 'error',
-              fix: fixer => fixer.replaceText(node, 'bar'),
-            });
-          },
           'Identifier[name=bar]'(node): void {
             context.report({
-              node,
-              messageId: 'error',
               fix: fixer => fixer.replaceText(node, 'baz'),
+              messageId: 'error',
+              node,
+            });
+          },
+          'Identifier[name=foo]'(node): void {
+            context.report({
+              fix: fixer => fixer.replaceText(node, 'bar'),
+              messageId: 'error',
+              node,
             });
           },
         };
+      },
+      defaultOptions: [],
+      meta: {
+        fixable: 'code',
+        messages: {
+          error: 'error',
+        },
+        schema: [],
+        type: 'problem',
       },
     };
 
     it('passes with correct array output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: ['bar', 'baz'],
               errors: [{ messageId: 'error' }],
+              output: ['bar', 'baz'],
             },
           ],
+          valid: [],
         });
       }).not.toThrow();
     });
@@ -1265,14 +1267,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with string output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: 'bar',
               errors: [{ messageId: 'error' }],
+              output: 'bar',
             },
           ],
+          valid: [],
         });
       }).toThrow(
         'Multiple autofixes are required due to overlapping fix ranges - please use the array form of output to declare all of the expected autofix passes.',
@@ -1282,14 +1284,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with incorrect array output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: ['bar'],
               errors: [{ messageId: 'error' }],
+              output: ['bar'],
             },
           ],
+          valid: [],
         });
       }).toThrow('Outputs do not match.');
     });
@@ -1297,14 +1299,14 @@ describe('RuleTester - multipass fixer', () => {
     it('throws with incorrectly ordered array output', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
-          valid: [],
           invalid: [
             {
               code: 'foo',
-              output: ['baz', 'bar'],
               errors: [{ messageId: 'error' }],
+              output: ['baz', 'bar'],
             },
           ],
+          valid: [],
         });
       }).toThrow('Outputs do not match.');
     });

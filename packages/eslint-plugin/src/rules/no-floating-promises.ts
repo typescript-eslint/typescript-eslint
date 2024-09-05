@@ -67,10 +67,8 @@ export default createRule<Options, MessageId>({
       floatingFixAwait: 'Add await operator.',
       floatingVoid: messageBaseVoid,
       floatingFixVoid: 'Add void operator to ignore.',
-      floatingUselessRejectionHandler:
-        messageBase + ' ' + messageRejectionHandler,
-      floatingUselessRejectionHandlerVoid:
-        messageBaseVoid + ' ' + messageRejectionHandler,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
       floatingPromiseArray: messagePromiseArray,
       floatingPromiseArrayVoid: messagePromiseArrayVoid,
     },
@@ -78,8 +76,15 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
-          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafePromises: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description: 'Type specifiers that are known to be safe to float.',
+          },
+          allowForKnownSafeCalls: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description:
+              'Type specifiers of functions whose calls are safe to float.',
+          },
           checkThenables: {
             description:
               'Whether to check all "Thenable"s, not just the built-in Promise type.',

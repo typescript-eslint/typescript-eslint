@@ -271,6 +271,13 @@ function collectTypeParameterUsageCounts(
       }
     }
 
+    // Catch-all: generic type references like `Exclude<T, null>`
+    else if (type.aliasTypeArguments) {
+      // We don't descend into the definition of the type alias, so we don't
+      // know whether it's used multiple times. It's safest to assume it is.
+      visitTypesList(type.aliasTypeArguments, true);
+    }
+
     // Intersections and unions like `0 | 1`
     else if (tsutils.isUnionOrIntersectionType(type)) {
       visitTypesList(type.types, assumeMultipleUses);
@@ -338,12 +345,8 @@ function collectTypeParameterUsageCounts(
         if (properties.length === 0) {
           // TS treats mapped types like `{[k in "a"]: T}` like `{a: T}`.
           // They have properties, so we need to avoid double-counting.
-          visitType(type.templateType, false);
+          visitType(type.templateType ?? type.constraintType, false);
         }
-      }
-
-      for (const typeArgument of type.aliasTypeArguments ?? []) {
-        visitType(typeArgument, true);
       }
 
       visitType(type.getNumberIndexType(), true);
@@ -363,11 +366,6 @@ function collectTypeParameterUsageCounts(
     // Catch-all: operator types like `keyof T`
     else if (isOperatorType(type)) {
       visitType(type.type, assumeMultipleUses);
-    }
-
-    // Catch-all: generic type references like `Exclude<T, null>`
-    else if (type.aliasTypeArguments) {
-      visitTypesList(type.aliasTypeArguments, true);
     }
   }
 
