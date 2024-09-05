@@ -36,7 +36,7 @@ const fixtures = glob
     };
   });
 
-const FOUR_SLASH = /^\/\/\/\/[ ]+@(\w+)[ ]*=[ ]*(.+)$/;
+const FOUR_SLASH = /^\/\/\/\/ +@(\w+) *= *(.+)$/;
 const QUOTED_STRING = /^["'](.+?)['"]$/;
 type ALLOWED_VALUE = ['boolean' | 'number' | 'string', Set<unknown>?];
 const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<

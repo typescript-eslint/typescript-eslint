@@ -321,6 +321,7 @@ export default tseslint.config(
       'jsdoc/tag-lines': 'off',
 
       'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-useless-character-class': 'error',
 
       'sonarjs/no-duplicated-branches': 'error',
 
