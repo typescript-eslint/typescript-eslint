@@ -15,6 +15,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import regexpPlugin from 'eslint-plugin-regexp';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
@@ -43,6 +44,7 @@ export default tseslint.config(
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
+      ['regexp']: regexpPlugin,
       ['simple-import-sort']: simpleImportSortPlugin,
       ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
