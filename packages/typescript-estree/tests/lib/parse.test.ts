@@ -58,7 +58,7 @@ const fastGlobSyncMock = jest.mocked(fastGlobModule.sync);
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
  */
 function alignErrorPath(error: Error): never {
-  error.message = error.message.replaceAll(/\\(?!")/gm, '/');
+  error.message = error.message.replaceAll(/\\(?!")/g, '/');
   throw error;
 }
 
