@@ -325,6 +325,7 @@ export default tseslint.config(
       'regexp/no-useless-flag': 'error',
       'regexp/no-useless-lazy': 'error',
       'regexp/no-useless-non-capturing-group': 'error',
+      'regexp/prefer-quantifier': 'error',
 
       'sonarjs/no-duplicated-branches': 'error',
 
