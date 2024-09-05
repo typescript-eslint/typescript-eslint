@@ -323,6 +323,7 @@ export default tseslint.config(
       'regexp/no-dupe-disjunctions': 'error',
       'regexp/no-useless-character-class': 'error',
       'regexp/no-useless-flag': 'error',
+      'regexp/no-useless-lazy': 'error',
 
       'sonarjs/no-duplicated-branches': 'error',
 
