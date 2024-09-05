@@ -182,7 +182,7 @@ export function createLinter(
   applyTSConfig('/tsconfig.json');
 
   return {
-    configs: Array.from(configs.keys()),
+    configs: [...configs.keys()],
     onLint: onLint.register,
     onParse: onParse.register,
     rules,

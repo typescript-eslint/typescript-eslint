@@ -460,8 +460,8 @@ class ClassScope {
     });
 
     return [
-      ...Array.from(this.privateModifiableMembers.values()),
-      ...Array.from(this.privateModifiableStatics.values()),
+      ...this.privateModifiableMembers.values(),
+      ...this.privateModifiableStatics.values(),
     ];
   }
 }

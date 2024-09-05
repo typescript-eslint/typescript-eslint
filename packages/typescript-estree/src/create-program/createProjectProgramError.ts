@@ -35,7 +35,7 @@ function getErrorStart(
   describedFilePath: string,
   parseSettings: ParseSettings,
 ): string {
-  const relativeProjects = Array.from(parseSettings.projects.values()).map(
+  const relativeProjects = [...parseSettings.projects.values()].map(
     projectFile => describeFilePath(projectFile, parseSettings.tsconfigRootDir),
   );
 

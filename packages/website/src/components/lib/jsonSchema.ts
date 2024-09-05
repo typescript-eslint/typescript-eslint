@@ -189,7 +189,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
           value = {
             description: item.description.message,
             items: {
-              enum: Array.from(item.element.type.keys()),
+              enum: [...item.element.type.keys()],
               type: 'string',
             },
             type: 'array',
@@ -197,7 +197,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
         } else if (item.type instanceof Map) {
           value = {
             description: item.description.message,
-            enum: Array.from(item.type.keys()),
+            enum: [...item.type.keys()],
             type: 'string',
           };
         }
