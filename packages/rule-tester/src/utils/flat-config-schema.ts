@@ -218,7 +218,7 @@ function assertIsPluginMemberName(
 ): asserts value is PluginMemberName {
   if (
     typeof value !== 'string' ||
-    !/[@a-z0-9-_$]+(?:\/(?:[a-z0-9-_$]+))+$/iu.test(value)
+    !/[@a-z0-9-_$]+(?:\/[a-z0-9-_$]+)+$/iu.test(value)
   ) {
     throw new TypeError(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
