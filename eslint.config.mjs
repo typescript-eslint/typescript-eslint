@@ -320,6 +320,8 @@ export default tseslint.config(
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
 
+      'regexp/no-dupe-disjunctions': 'error',
+
       'sonarjs/no-duplicated-branches': 'error',
 
       //
