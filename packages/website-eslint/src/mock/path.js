@@ -51,7 +51,7 @@ function normalizeArray(parts, allowAboveRoot) {
 
 // Split a filename into [root, dir, basename, ext], unix version
 // 'root' is just a slash, or nothing.
-const splitPathRe = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^/]+?|)(\.[^./]*|))\/*$/;
+const splitPathRe = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^/]+?)?(\.[^./]*|))\/*$/;
 const splitPath = function (filename) {
   return splitPathRe.exec(filename).slice(1);
 };
