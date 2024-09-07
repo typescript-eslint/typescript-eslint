@@ -170,6 +170,7 @@ jobs:
             'eslint-plugin',
             'eslint-plugin-internal',
             'parser',
+            'rule-tester',
             'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
