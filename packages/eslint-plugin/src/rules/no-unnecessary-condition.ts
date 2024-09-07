@@ -362,14 +362,15 @@ export default createRule<Options, MessageId>({
       '===',
       '!=',
       '!==',
-    ]);
-    function checkIfBinaryExpressionIsNecessaryConditional(
+    ] as const);
+    type BoolOperator = Parameters<typeof BOOL_OPERATORS.has>[0];
+    const isBoolOperator = (operator: string): operator is BoolOperator =>
+      (BOOL_OPERATORS as Set<string>).has(operator);
+    function checkIfBoolExpressionIsNecessaryConditional(
       node: TSESTree.Node,
-      {
-        left,
-        right,
-        operator,
-      }: Pick<TSESTree.BinaryExpression, 'left' | 'right' | 'operator'>,
+      left: TSESTree.Node,
+      right: TSESTree.Node,
+      operator: BoolOperator,
     ): void {
       const leftType = getConstrainedTypeAtLocation(services, left);
       const rightType = getConstrainedTypeAtLocation(services, right);
@@ -722,8 +723,14 @@ export default createRule<Options, MessageId>({
     return {
       AssignmentExpression: checkAssignmentExpression,
       BinaryExpression(node): void {
-        if (BOOL_OPERATORS.has(node.operator)) {
-          checkIfBinaryExpressionIsNecessaryConditional(node, node);
+        const { operator } = node;
+        if (isBoolOperator(operator)) {
+          checkIfBoolExpressionIsNecessaryConditional(
+            node,
+            node.left,
+            node.right,
+            operator,
+          );
         }
       },
       CallExpression: checkCallExpression,
@@ -735,11 +742,12 @@ export default createRule<Options, MessageId>({
       SwitchCase({ test, parent }): void {
         // only check `case ...:`, not `default:`
         if (test) {
-          checkIfBinaryExpressionIsNecessaryConditional(test, {
-            operator: '===',
-            left: parent.discriminant,
-            right: test,
-          });
+          checkIfBoolExpressionIsNecessaryConditional(
+            test,
+            parent.discriminant,
+            test,
+            '===',
+          );
         }
       },
       WhileStatement: checkIfLoopIsNecessaryConditional,
