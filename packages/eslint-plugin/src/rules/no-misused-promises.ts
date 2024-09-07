@@ -912,7 +912,8 @@ function getMemberIfExists(
 
 function isStaticMember(node: TSESTree.Node): boolean {
   return (
-    (node.type === AST_NODE_TYPES.MethodDefinition && node.static) ||
-    (node.type === AST_NODE_TYPES.PropertyDefinition && node.static)
+    (node.type === AST_NODE_TYPES.MethodDefinition ||
+      node.type === AST_NODE_TYPES.PropertyDefinition) &&
+    node.static
   );
 }
