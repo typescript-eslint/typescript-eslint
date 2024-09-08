@@ -124,6 +124,7 @@ export default createRule<Options, MessageIds>({
         fix:
           messageId === 'as'
             ? (fixer): TSESLint.RuleFix => {
+                // lazily access parserServices to avoid crashing on non TS files (#9860)
                 const tsNode = getParserServices(
                   context,
                   true,
