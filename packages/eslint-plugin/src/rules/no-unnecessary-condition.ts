@@ -69,7 +69,6 @@ const isLiteral = (type: ts.Type): boolean =>
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
-    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
 
@@ -105,11 +104,6 @@ export default createRule<Options, MessageId>({
               'Whether to ignore constant loop conditions, such as `while (true)`.',
             type: 'boolean',
           },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            description:
-              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },
@@ -139,18 +133,9 @@ export default createRule<Options, MessageId>({
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
-  create(
-    context,
-    [
-      {
-        allowConstantLoopConditions,
-        allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
-      },
-    ],
-  ) {
+  create(context, [{ allowConstantLoopConditions }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -160,10 +145,7 @@ export default createRule<Options, MessageId>({
       'strictNullChecks',
     );
 
-    if (
-      !isStrictNullChecks &&
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
-    ) {
+    if (!isStrictNullChecks) {
       context.report({
         loc: {
           start: { line: 0, column: 0 },

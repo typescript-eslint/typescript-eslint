@@ -24,7 +24,6 @@ export type Options = [
     allowNullableNumber?: boolean;
     allowNullableEnum?: boolean;
     allowAny?: boolean;
-    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
 
@@ -104,9 +103,6 @@ export default createRule<Options, MessageId>({
             description: 'Whether to allow `any` in a boolean context.',
             type: 'boolean',
           },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            type: 'boolean',
-          },
         },
         additionalProperties: false,
       },
@@ -182,7 +178,6 @@ export default createRule<Options, MessageId>({
       allowNullableNumber: false,
       allowNullableEnum: false,
       allowAny: false,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
   create(context, [options]) {
@@ -195,10 +190,7 @@ export default createRule<Options, MessageId>({
       'strictNullChecks',
     );
 
-    if (
-      !isStrictNullChecks &&
-      options.allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing !== true
-    ) {
+    if (!isStrictNullChecks) {
       context.report({
         loc: {
           start: { line: 0, column: 0 },

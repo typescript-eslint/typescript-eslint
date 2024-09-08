@@ -330,26 +330,6 @@ if (x) {
       `,
       options: [{ allowNullableEnum: true }],
     },
-
-    {
-      code: `
-declare const x: string[] | null;
-// eslint-disable-next-line
-if (x) {
-}
-      `,
-      options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
-      ],
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
-        },
-      },
-    },
-
     `
 function f(arg: 'a' | null) {
   if (arg) console.log(arg);
