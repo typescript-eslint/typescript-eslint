@@ -35,4 +35,4 @@ interface WatchCompilerHostOfConfigFile<T extends ts.BuilderProgram>
   extraFileExtensions?: readonly ts.FileExtensionInfo[];
 }
 
-export { WatchCompilerHostOfConfigFile };
+export type { WatchCompilerHostOfConfigFile };

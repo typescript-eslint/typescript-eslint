@@ -60,7 +60,9 @@ Most issues go through the following review flow when created or updated:
      - Close the issue as _not planned_
    - If the issue requires further discussion or community engagement evaluation:
      - Add the `evaluating community engagement` label and remove the `triage` label
-2. If the report is valid, add the `accepting prs` label and remove the `triage` label
+2. If the report is valid:
+   - Remove the `triage` label
+   - Add the `team assigned` label if you think only a member of the team should tackle it, or `accepting prs` if anybody could
 3. If you know the rough steps for a fix, consider writing a comment with links to codebase to help someone put together a fix
 4. If you think that the fix is relatively straightforward, consider also adding the `good first issue` label
 
@@ -97,7 +99,7 @@ However, there are cases when maintainers can't confidently choose the most reas
 
 3-6 months after the issue is labeled `evaluating community engagement`, the engagement of community is evaluated:
 
-- If the community was active and common ground was found, the issue is labeled as `accepting prs`
+- If the community was active and common ground was found, the issue is labeled as `accepting prs` or `team assigned`
 - Otherwise, the issue is closed as _not planned_ with the `wontfix` label
 
 For requests that can be implemented outside of typescript-eslint, be sure to mention any relevant APIs such as [Custom Rules](../developers/Custom_Rules.mdx) that can be used.

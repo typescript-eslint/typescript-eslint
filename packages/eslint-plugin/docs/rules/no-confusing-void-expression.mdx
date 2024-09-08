@@ -77,8 +77,10 @@ cond ? console.log('true') : console.error('false');
 
 ### `ignoreArrowShorthand`
 
-It might be undesirable to wrap every arrow function shorthand expression with braces.
-Especially when using Prettier formatter, which spreads such code across 3 lines instead of 1.
+Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces.
+
+It might be undesirable to wrap every arrow function shorthand expression.
+Especially when using the Prettier formatter, which spreads such code across 3 lines instead of 1.
 
 Examples of additional **correct** code with this option enabled:
 
@@ -87,6 +89,8 @@ promise.then(value => window.postMessage(value));
 ```
 
 ### `ignoreVoidOperator`
+
+Whether to ignore returns that start with the `void` operator.
 
 It might be preferable to only use some distinct syntax
 to explicitly mark the confusing but valid usage of void expressions.

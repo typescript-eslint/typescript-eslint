@@ -1,16 +1,16 @@
+import * as glob from 'glob';
+import makeDir from 'make-dir';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import * as glob from 'glob';
-import makeDir from 'make-dir';
-
-import { parseBabel } from './util/parsers/babel';
 import type {
   Fixture,
   ParserResponse,
   ParserResponseError,
   ParserResponseSuccess,
 } from './util/parsers/parser-types';
+
+import { parseBabel } from './util/parsers/babel';
 import { ParserResponseType } from './util/parsers/parser-types';
 import { parseTSESTree } from './util/parsers/typescript-estree';
 import { serializeError } from './util/serialize-error';
@@ -29,28 +29,28 @@ const fixturesWithASTDifferences = new Set<string>();
 const fixturesWithTokenDifferences = new Set<string>();
 const fixturesConfiguredToExpectBabelToNotSupport = new Map<string, string>();
 enum ErrorLabel {
-  TSESTree = "TSESTree errored but Babel didn't",
   Babel = "Babel errored but TSESTree didn't",
   Both = 'Both errored',
   None = 'No errors',
+  TSESTree = "TSESTree errored but Babel didn't",
 }
 const fixturesWithErrorDifferences = {
-  [ErrorLabel.TSESTree]: new Set<string>(),
   [ErrorLabel.Babel]: new Set<string>(),
+  [ErrorLabel.TSESTree]: new Set<string>(),
 } as const;
 
 const VALID_FIXTURES: readonly string[] = glob.sync(
   `**/fixtures/*/fixture.{ts,tsx}`,
   {
-    cwd: SRC_DIR,
     absolute: true,
+    cwd: SRC_DIR,
   },
 );
 const ERROR_FIXTURES: readonly string[] = glob.sync(
   `**/fixtures/_error_/*/fixture.{ts,tsx}`,
   {
-    cwd: SRC_DIR,
     absolute: true,
+    cwd: SRC_DIR,
   },
 );
 
@@ -80,32 +80,32 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       relative: path.relative(SRC_DIR, absolute).replaceAll('\\', '/'),
       segments,
       snapshotFiles: {
+        error: {
+          alignment: (i: number) =>
+            path.join(snapshotPath, `${i}-Alignment-Error.shot`),
+          babel: (i: number) =>
+            path.join(snapshotPath, `${i}-Babel-Error.shot`),
+          tsestree: (i: number) =>
+            path.join(snapshotPath, `${i}-TSESTree-Error.shot`),
+        },
         success: {
-          tsestree: {
-            ast: (i: number) =>
-              path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
-            tokens: (i: number) =>
-              path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
-          },
-          babel: {
-            ast: (i: number) => path.join(snapshotPath, `${i}-Babel-AST.shot`),
-            tokens: (i: number) =>
-              path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
-          },
           alignment: {
             ast: (i: number) =>
               path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
             tokens: (i: number) =>
               path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
           },
-        },
-        error: {
-          tsestree: (i: number) =>
-            path.join(snapshotPath, `${i}-TSESTree-Error.shot`),
-          babel: (i: number) =>
-            path.join(snapshotPath, `${i}-Babel-Error.shot`),
-          alignment: (i: number) =>
-            path.join(snapshotPath, `${i}-Alignment-Error.shot`),
+          babel: {
+            ast: (i: number) => path.join(snapshotPath, `${i}-Babel-AST.shot`),
+            tokens: (i: number) =>
+              path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
+          },
+          tsestree: {
+            ast: (i: number) =>
+              path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
+            tokens: (i: number) =>
+              path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
+          },
         },
       },
       snapshotPath,
@@ -277,9 +277,6 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         it('Should parse with no errors', () => {
           // log the error for debug purposes in case there wasn't supposed to be an error
           switch (errorLabel) {
-            case ErrorLabel.None:
-              return;
-
             case ErrorLabel.Babel:
               expectErrorResponse(babelParsed);
               if (fixture.config.expectBabelToNotSupport == null) {
@@ -287,15 +284,18 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
               }
               break;
 
-            case ErrorLabel.TSESTree:
-              expectErrorResponse(tsestreeParsed);
-              console.error('TSESTree:\n', tsestreeParsed.error);
-              break;
-
             case ErrorLabel.Both:
               expectErrorResponse(babelParsed);
               expectErrorResponse(tsestreeParsed);
               console.error('Babel:\n', babelParsed.error);
+              console.error('TSESTree:\n', tsestreeParsed.error);
+              break;
+
+            case ErrorLabel.None:
+              return;
+
+            case ErrorLabel.TSESTree:
+              expectErrorResponse(tsestreeParsed);
               console.error('TSESTree:\n', tsestreeParsed.error);
               break;
           }
@@ -339,16 +339,12 @@ describe('AST Fixtures', () => {
 
   // once we've run all the tests, snapshot the list of fixtures that have differences for easy reference
   it('List fixtures with AST differences', () => {
-    expect(
-      Array.from(fixturesWithASTDifferences).sort(),
-    ).toMatchSpecificSnapshot(
+    expect([...fixturesWithASTDifferences].sort()).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-ast.shot'),
     );
   });
   it('List fixtures with Token differences', () => {
-    expect(
-      Array.from(fixturesWithTokenDifferences).sort(),
-    ).toMatchSpecificSnapshot(
+    expect([...fixturesWithTokenDifferences].sort()).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-tokens.shot'),
     );
   });
@@ -357,7 +353,7 @@ describe('AST Fixtures', () => {
       Object.fromEntries(
         Object.entries(fixturesWithErrorDifferences).map(([key, value]) => [
           key,
-          Array.from(value).sort(),
+          [...value].sort(),
         ]),
       ),
     ).toMatchSpecificSnapshot(
@@ -366,7 +362,7 @@ describe('AST Fixtures', () => {
   });
   it('List fixtures we expect babel to not support', () => {
     expect(
-      Array.from(fixturesConfiguredToExpectBabelToNotSupport).sort(),
+      [...fixturesConfiguredToExpectBabelToNotSupport].sort(),
     ).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-without-babel-support.shot'),
     );

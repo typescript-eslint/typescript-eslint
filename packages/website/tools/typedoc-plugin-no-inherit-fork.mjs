@@ -115,12 +115,9 @@ class NoInheritPlugin {
    * @param search  The DeclarationReflection to search for in the list.
    */
   isNoInherit(search) {
-    if (
-      this.noInherit.find(no => no.id === search.id && no.name === search.name)
-    ) {
-      return true;
-    }
-    return false;
+    return this.noInherit.some(
+      no => no.id === search.id && no.name === search.name,
+    );
   }
 
   /**
@@ -128,14 +125,9 @@ class NoInheritPlugin {
    * @param search  The Reflection to search for in the list.
    */
   isInherited(search) {
-    if (
-      this.inheritedReflections.find(
-        inh => inh.id === search.id && inh.name === search.name,
-      )
-    ) {
-      return true;
-    }
-    return false;
+    return this.inheritedReflections.some(
+      inh => inh.id === search.id && inh.name === search.name,
+    );
   }
 
   /**
@@ -175,10 +167,8 @@ class NoInheritPlugin {
       return false;
     };
 
-    if (parent.extendedTypes) {
-      if (parent.extendedTypes.some(checkExtended)) {
-        return true;
-      }
+    if (parent.extendedTypes?.some(checkExtended)) {
+      return true;
     }
 
     return false;

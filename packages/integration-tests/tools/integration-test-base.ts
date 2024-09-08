@@ -1,16 +1,16 @@
+import type { DirOptions } from 'tmp';
+
+import ncp from 'ncp';
 import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { promisify } from 'node:util';
-
-import ncp from 'ncp';
-import type { DirOptions } from 'tmp';
 import tmp from 'tmp';
 
 interface PackageJSON {
+  devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
-  devDependencies: Record<string, string>;
 }
 
 const rootPackageJson: PackageJSON = require('../../../package.json');
@@ -27,8 +27,8 @@ const writeFile = promisify(fs.writeFile);
 const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
   ...global.tseslintPackages,
   eslint: rootPackageJson.devDependencies.eslint,
-  typescript: rootPackageJson.devDependencies.typescript,
   jest: rootPackageJson.devDependencies.jest,
+  typescript: rootPackageJson.devDependencies.typescript,
 };
 
 const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');

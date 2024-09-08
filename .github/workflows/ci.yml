@@ -18,7 +18,7 @@ env:
   # Only set the read-write token if we are on the main branch
   NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
   # This increases the verbosity of the logs for everything, including Nx Cloud, but will hopefully surface more info about recent lint failures
-  NX_VERBOSE_LOGGING: true
+  NX_VERBOSE_LOGGING: false
 
 defaults:
   run:
@@ -170,6 +170,7 @@ jobs:
             'eslint-plugin',
             'eslint-plugin-internal',
             'parser',
+            'rule-tester',
             'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',

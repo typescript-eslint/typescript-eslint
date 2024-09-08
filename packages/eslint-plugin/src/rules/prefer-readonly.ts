@@ -46,6 +46,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           onlyInlineLambdas: {
+            description:
+              'Whether to restrict checking only to members immediately assigned a lambda value.',
             type: 'boolean',
           },
         },
@@ -458,8 +460,8 @@ class ClassScope {
     });
 
     return [
-      ...Array.from(this.privateModifiableMembers.values()),
-      ...Array.from(this.privateModifiableStatics.values()),
+      ...this.privateModifiableMembers.values(),
+      ...this.privateModifiableStatics.values(),
     ];
   }
 }

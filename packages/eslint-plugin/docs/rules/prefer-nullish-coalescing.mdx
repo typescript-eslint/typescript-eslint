@@ -25,7 +25,7 @@ This rule will not work as expected if [`strictNullChecks`](https://www.typescri
 
 ### `ignoreTernaryTests`
 
-Setting this option to `true` will cause the rule to ignore any ternary expressions that could be simplified by using the nullish coalescing operator. This is set to `false` by default.
+Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator. This is set to `false` by default.
 
 Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
 
@@ -65,7 +65,7 @@ foo ?? 'a string';
 
 ### `ignoreConditionalTests`
 
-Setting this option to `false` will cause the rule to also check cases that are located within a conditional test. This is set to `true` by default.
+Whether to ignore cases that are located within a conditional test. This is set to `true` by default.
 
 Generally expressions within conditional tests intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
@@ -107,7 +107,7 @@ a ?? b ? true : false;
 
 ### `ignoreMixedLogicalExpressions`
 
-Setting this option to `true` will cause the rule to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). This is set to `false` by default.
+Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). This is set to `false` by default.
 
 Generally expressions within mixed logical expressions intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
@@ -147,6 +147,8 @@ a ?? (b && c && d);
 
 ### `ignorePrimitives`
 
+Whether to ignore all (`true`) or some (an object with properties) primitive types.
+
 If you would like to ignore expressions containing operands of certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
 
 - `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
@@ -172,7 +174,7 @@ Also, if you would like to ignore all primitives types, you can set `ignorePrimi
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
-If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
 
 Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
 

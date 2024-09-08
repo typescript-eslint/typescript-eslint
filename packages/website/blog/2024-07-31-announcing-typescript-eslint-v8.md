@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Announcing the stable release of typescript-eslint's v8.
 slug: announcing-typescript-eslint-v8
 tags: [breaking changes, typescript-eslint, v7, v8]
@@ -121,7 +117,7 @@ export default tseslint.config(
         // Added lines start
         projectService: {
           allowDefaultProject: ['*.js'],
-          defaultProject: './tsconfig.json',
+          defaultProject: 'tsconfig.json',
         },
         // Added lines end
         tsconfigRootDir: import.meta.dirname,
@@ -496,7 +492,7 @@ To migrate to the new rules:
 - If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
 - If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
 - If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban:
-  - `{}` or `object`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
+  - `{}`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
   - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type).
   - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types).
 - If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).

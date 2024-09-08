@@ -33,6 +33,8 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
         type: 'object',
         properties: {
           checkNever: {
+            description:
+              'Whether to suggest removing `void` when the argument has type `never`.',
             type: 'boolean',
             default: false,
           },

@@ -57,6 +57,7 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               assertionStyle: {
+                description: 'The expected assertion style to enforce.',
                 type: 'string',
                 enum: ['never'],
               },
@@ -68,10 +69,13 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               assertionStyle: {
+                description: 'The expected assertion style to enforce.',
                 type: 'string',
                 enum: ['as', 'angle-bracket'],
               },
               objectLiteralTypeAssertions: {
+                description:
+                  'Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions.',
                 type: 'string',
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },

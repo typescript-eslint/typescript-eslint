@@ -155,7 +155,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       enableSchemaRequest: false,
       allowComments: true,
       schemas: [
-        ...Array.from(webLinter.rules.values()).map(rule => ({
+        ...[...webLinter.rules.values()].map(rule => ({
           uri: createRuleUri(rule.name),
           schema: getRuleJsonSchemaWithErrorLevel(rule.name, rule.schema),
         })),

@@ -16,6 +16,7 @@ import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -43,6 +44,7 @@ export default tseslint.config(
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
       ['simple-import-sort']: simpleImportSortPlugin,
+      ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
     },
     /* eslint-enable no-useless-computed-key */
@@ -108,6 +110,10 @@ export default tseslint.config(
           'ts-check': false,
           minimumDescriptionLength: 5,
         },
+      ],
+      '@typescript-eslint/consistent-type-exports': [
+        'error',
+        { fixMixedExportsWithInlineTypeSpecifier: true },
       ],
       '@typescript-eslint/consistent-type-imports': [
         'error',
@@ -304,6 +310,7 @@ export default tseslint.config(
       'jsdoc/check-tag-names': 'off',
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/1169
       'jsdoc/check-param-names': 'off',
+      'jsdoc/informative-docs': 'error',
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/1175
       'jsdoc/require-jsdoc': 'off',
       'jsdoc/require-param': 'off',
@@ -311,16 +318,24 @@ export default tseslint.config(
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
 
+      'sonarjs/no-duplicated-branches': 'error',
+
       //
       // eslint-plugin-unicorn
       //
 
-      'jsdoc/informative-docs': 'error',
+      'unicorn/no-length-as-slice-end': 'error',
+      'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-single-promise-in-promise-methods': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-array-some': 'error',
+      'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-spread': 'error',
       'unicorn/prefer-string-replace-all': 'error',
+      'unicorn/prefer-structured-clone': 'error',
     },
   },
   {
@@ -351,9 +366,7 @@ export default tseslint.config(
   // test file specific configuration
   {
     files: [
-      'packages/*/tests/**/*.spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
-      'packages/*/tests/**/spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/tools/integration-test-base.ts',
@@ -570,8 +583,21 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
-    files: ['packages/utils/src/**/*.ts', 'packages/visitor-keys/src/**/*.ts'],
+    ignores: ['packages/typescript-eslint/src/configs/*'],
+    files: [
+      'packages/ast-spec/{src,tests,typings}/**/*.ts',
+      'packages/integration-tests/{tests,tools,typing}/**/*.ts',
+      'packages/parser/{src,tests}/**/*.ts',
+      'packages/rule-schema-to-typescript-types/src/**/*.ts',
+      'packages/rule-tester/{src,tests,typings}/**/*.ts',
+      'packages/types/{src,tools}/**/*.ts',
+      'packages/typescript-eslint/{src,tests}/**/*.ts',
+      'packages/utils/src/**/*.ts',
+      'packages/visitor-keys/src/**/*.ts',
+      'packages/website*/src/**/*.ts',
+    ],
     rules: {
+      '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': [
         'error',
         {
@@ -580,6 +606,7 @@ export default tseslint.config(
           type: 'natural',
         },
       ],
+      'perfectionist/sort-enums': 'off',
       'perfectionist/sort-objects': [
         'error',
         {

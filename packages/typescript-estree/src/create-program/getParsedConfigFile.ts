@@ -33,7 +33,11 @@ function getParsedConfigFile(
       fileExists: fs.existsSync,
       getCurrentDirectory,
       readDirectory: tsserver.sys.readDirectory,
-      readFile: file => fs.readFileSync(file, 'utf-8'),
+      readFile: file =>
+        fs.readFileSync(
+          path.isAbsolute(file) ? file : path.join(getCurrentDirectory(), file),
+          'utf-8',
+        ),
       useCaseSensitiveFileNames: tsserver.sys.useCaseSensitiveFileNames,
     },
   );
