@@ -811,6 +811,50 @@ switch (value) {
         },
       ],
     },
+    {
+      code: `
+    declare const literal: "a" | "b";
+    switch (literal) {
+      case "a": break;
+      case "b": break;
+    }
+          `,
+      options: [
+        {
+          allowDefaultCaseMatchUnionMember: true,
+        },
+      ],
+    },
+    {
+      code: `
+    declare const literal: "a" | "b";
+    switch (literal) {
+      case "a": break;
+      case "b": break;
+      default: break;
+    }
+          `,
+      options: [
+        {
+          allowDefaultCaseMatchUnionMember: true,
+        },
+      ],
+    },
+    {
+      code: `
+    declare const literal: "a" | "b";
+    switch (literal) {
+      case "a": break;
+      case "b": break;
+    }
+          `,
+      options: [
+        {
+          allowDefaultCaseMatchUnionMember: true,
+          allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -2371,6 +2415,79 @@ switch (myValue) {
       errors: [
         {
           messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: "a" | "b";
+
+switch (literal) {
+  case "a": break;
+  default: break;
+}
+          `,
+      options: [
+        {
+          allowDefaultCaseMatchUnionMember: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: "a" | "b";
+
+switch (literal) {
+  case "a": break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  default: break;
+}
+          `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: "a" | "b" | "c";
+
+switch (literal) {
+  case "a": break;
+  default: break;
+}
+          `,
+      options: [
+        {
+          allowDefaultCaseMatchUnionMember: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: "a" | "b" | "c";
+
+switch (literal) {
+  case "a": break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  default: break;
+}
+          `,
+            },
+          ],
         },
       ],
     },

@@ -36,6 +36,13 @@ type Options = [
      * @default false
      */
     requireDefaultForNonUnion?: boolean;
+
+    /**
+     * If `true`, the `default` clause is used to determine whether the switch statement is Exhaustive for union type.
+     *
+     * @default true
+     */
+    allowDefaultCaseMatchUnionMember?: boolean;
   },
 ];
 
@@ -65,6 +72,10 @@ export default createRule<Options, MessageIds>({
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
             type: 'boolean',
           },
+          allowDefaultCaseMatchUnionMember: {
+            description: `If 'true', the 'default' clause is used to determine whether the switch statement is Exhaustive for union type`,
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -81,11 +92,18 @@ export default createRule<Options, MessageIds>({
     {
       allowDefaultCaseForExhaustiveSwitch: true,
       requireDefaultForNonUnion: false,
+      allowDefaultCaseMatchUnionMember: true,
     },
   ],
   create(
     context,
-    [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
+    [
+      {
+        allowDefaultCaseForExhaustiveSwitch,
+        requireDefaultForNonUnion,
+        allowDefaultCaseMatchUnionMember,
+      },
+    ],
   ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -155,10 +173,13 @@ export default createRule<Options, MessageIds>({
       const { missingLiteralBranchTypes, symbolName, defaultCase } =
         switchMetadata;
 
-      // We only trigger the rule if a `default` case does not exist, since that
-      // would disqualify the switch statement from having cases that exactly
+      // We only trigger the rule if a `default` case does not exist when allowDefaultCaseMatchUnionMember option
+      // is `true`. because that would disqualify the switch statement from having cases that exactly
       // match the members of a union.
-      if (missingLiteralBranchTypes.length > 0 && defaultCase === undefined) {
+      if (
+        missingLiteralBranchTypes.length > 0 &&
+        (allowDefaultCaseMatchUnionMember ? defaultCase === undefined : true)
+      ) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
@@ -243,6 +264,15 @@ export default createRule<Options, MessageIds>({
         .join('\n');
 
       if (lastCase) {
+        const isLastCaseDefaultCase = lastCase.test === null;
+        if (isLastCaseDefaultCase) {
+          const beforeFixString = missingCases
+            .map(code => `${code}\n${caseIndent}`)
+            .join('');
+
+          return fixer.insertTextBefore(lastCase, beforeFixString);
+        }
+
         return fixer.insertTextAfter(lastCase, `\n${fixString}`);
       }
 
