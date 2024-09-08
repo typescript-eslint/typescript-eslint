@@ -53,6 +53,27 @@ switch (value) {
 
 Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
 
+### `allowDefaultCaseMatchUnionMember`
+
+Defaults to true. If set to `true`, the `default` clause is used to determine whether the switch statement is Exhaustive for union type.
+
+In a switch case, if you enter the default statement, it can be considered that Exhaustive is satisfied, but if you think that entering the default statement did not solve the exhaustive problem of the union type, please set to option `true`.
+
+Examples of additional **incorrect** code for this rule with `{ allowDefaultCaseMatchUnionMember: true }`:
+
+```ts option='{ "allowDefaultCaseMatchUnionMember": true }' showPlaygroundButton
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+```
+
+Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
+
 ## Examples
 
 When the switch doesn't have exhaustive cases, either filling them all out or adding a default will correct the rule's complaint.

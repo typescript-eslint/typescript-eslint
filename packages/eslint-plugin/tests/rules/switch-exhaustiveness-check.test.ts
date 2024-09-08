@@ -813,12 +813,14 @@ switch (value) {
     },
     {
       code: `
-    declare const literal: "a" | "b";
-    switch (literal) {
-      case "a": break;
-      case "b": break;
-    }
-          `,
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
       options: [
         {
           allowDefaultCaseMatchUnionMember: true,
@@ -827,13 +829,16 @@ switch (value) {
     },
     {
       code: `
-    declare const literal: "a" | "b";
-    switch (literal) {
-      case "a": break;
-      case "b": break;
-      default: break;
-    }
-          `,
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+  default:
+    break;
+}
+      `,
       options: [
         {
           allowDefaultCaseMatchUnionMember: true,
@@ -842,12 +847,14 @@ switch (value) {
     },
     {
       code: `
-    declare const literal: "a" | "b";
-    switch (literal) {
-      case "a": break;
-      case "b": break;
-    }
-          `,
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
       options: [
         {
           allowDefaultCaseMatchUnionMember: true,
@@ -2420,13 +2427,15 @@ switch (myValue) {
     },
     {
       code: `
-declare const literal: "a" | "b";
+declare const literal: 'a' | 'b';
 
 switch (literal) {
-  case "a": break;
-  default: break;
+  case 'a':
+    break;
+  default:
+    break;
 }
-          `,
+      `,
       options: [
         {
           allowDefaultCaseMatchUnionMember: false,
@@ -2441,14 +2450,16 @@ switch (literal) {
             {
               messageId: 'addMissingCases',
               output: `
-declare const literal: "a" | "b";
+declare const literal: 'a' | 'b';
 
 switch (literal) {
-  case "a": break;
+  case 'a':
+    break;
   case "b": { throw new Error('Not implemented yet: "b" case') }
-  default: break;
+  default:
+    break;
 }
-          `,
+      `,
             },
           ],
         },
@@ -2456,13 +2467,15 @@ switch (literal) {
     },
     {
       code: `
-declare const literal: "a" | "b" | "c";
+declare const literal: 'a' | 'b' | 'c';
 
 switch (literal) {
-  case "a": break;
-  default: break;
+  case 'a':
+    break;
+  default:
+    break;
 }
-          `,
+      `,
       options: [
         {
           allowDefaultCaseMatchUnionMember: false,
@@ -2477,15 +2490,17 @@ switch (literal) {
             {
               messageId: 'addMissingCases',
               output: `
-declare const literal: "a" | "b" | "c";
+declare const literal: 'a' | 'b' | 'c';
 
 switch (literal) {
-  case "a": break;
+  case 'a':
+    break;
   case "b": { throw new Error('Not implemented yet: "b" case') }
   case "c": { throw new Error('Not implemented yet: "c" case') }
-  default: break;
+  default:
+    break;
 }
-          `,
+      `,
             },
           ],
         },
