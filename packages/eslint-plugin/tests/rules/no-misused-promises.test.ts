@@ -1047,6 +1047,10 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
     'const notAFn3: boolean = true;',
     'const notAFn4: { prop: 1 } = { prop: 1 };',
     'const notAFn5: {} = {};',
+    `
+const array: number[] = [1, 2, 3];
+array.filter(a => a > 1);
+    `,
   ],
 
   invalid: [
@@ -2266,6 +2270,42 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
           line: 31,
           messageId: 'voidReturnInheritedMethod',
           data: { heritageTypeName: 'MyMethods' },
+        },
+      ],
+    },
+    {
+      code: `
+declare function isTruthy(value: unknown): Promise<boolean>;
+[0, 1, 2].filter(isTruthy);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+const array: number[] = [];
+array.every(() => Promise.resolve(true));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
+        },
+      ],
+    },
+    {
+      code: `
+const tuple: [number, number, number] = [1, 2, 3];
+tuple.find(() => Promise.resolve(false));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'conditional',
         },
       ],
     },

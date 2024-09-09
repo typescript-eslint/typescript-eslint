@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isArrayMethodCallWithPredicate,
   isFunction,
   isRestParameterDeclaration,
   nullThrows,
@@ -175,6 +176,7 @@ export default createRule<Options, MessageId>({
         checkConditional(node.argument, true);
       },
       WhileStatement: checkTestConditional,
+      'CallExpression > MemberExpression': checkArrayPredicates,
     };
 
     checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
@@ -319,6 +321,22 @@ export default createRule<Options, MessageId>({
           messageId: 'conditional',
           node,
         });
+      }
+    }
+
+    function checkArrayPredicates(node: TSESTree.MemberExpression): void {
+      const parent = node.parent;
+      if (parent.type === AST_NODE_TYPES.CallExpression) {
+        const callback = parent.arguments.at(0);
+        if (callback && isArrayMethodCallWithPredicate(services, parent)) {
+          const type = services.esTreeNodeToTSNodeMap.get(callback);
+          if (returnsThenable(checker, type)) {
+            context.report({
+              messageId: 'conditional',
+              node,
+            });
+          }
+        }
       }
     }
 

@@ -9,6 +9,7 @@ import {
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
+  isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
   isTypeAnyType,
@@ -457,26 +458,12 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
-    const ARRAY_PREDICATE_FUNCTIONS = new Set([
-      'filter',
-      'find',
-      'some',
-      'every',
-    ]);
-    function isArrayPredicateFunction(node: TSESTree.CallExpression): boolean {
-      const { callee } = node;
-      return (
-        // looks like `something.filter` or `something.find`
-        callee.type === AST_NODE_TYPES.MemberExpression &&
-        callee.property.type === AST_NODE_TYPES.Identifier &&
-        ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
-        // and the left-hand side is an array, according to the types
-        (nodeIsArrayType(callee.object) || nodeIsTupleType(callee.object))
-      );
-    }
     function checkCallExpression(node: TSESTree.CallExpression): void {
       // If this is something like arr.filter(x => /*condition*/), check `condition`
-      if (isArrayPredicateFunction(node) && node.arguments.length) {
+      if (
+        isArrayMethodCallWithPredicate(services, node) &&
+        node.arguments.length
+      ) {
         const callback = node.arguments[0];
         // Inline defined functions
         if (
