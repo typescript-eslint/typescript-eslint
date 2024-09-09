@@ -12,8 +12,7 @@ import TabItem from '@theme/TabItem';
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
 Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.
 
-This rule reports when a Promise is created and not properly handled.
-Valid ways of silencing a Promise-valued statement include:
+This rule will report Promise-valued statements that are not treated in one of the following ways:
 
 - `await`ing it (❌ unhandled)
 - `return`ing it (❌ unhandled)
