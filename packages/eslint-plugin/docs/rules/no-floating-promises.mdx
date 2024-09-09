@@ -14,11 +14,11 @@ Floating Promises can cause several issues, such as improperly sequenced operati
 
 This rule will report Promise-valued statements that are not treated in one of the following ways:
 
+- Calling its `.then()` with two arguments (✅ handled)
+- Calling its `.catch()` with one argument (✅ handled)
 - `await`ing it (❌ unhandled)
 - `return`ing it (❌ unhandled)
 - [`void`ing it](#ignorevoid) (❌ unhandled)
-- Calling its `.then()` with two arguments (✅ handled)
-- Calling its `.catch()` with one argument (✅ handled)
 
 This rule also reports when an Array containing Promises is created and not properly handled. The main way to resolve this is by using one of the Promise concurrency methods to create a single Promise, then handling that according to the procedure above. These methods include:
 
