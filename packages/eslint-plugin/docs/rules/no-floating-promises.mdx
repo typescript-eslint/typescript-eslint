@@ -131,7 +131,7 @@ await createMyThenable();
 
 ### `ignoreVoid`
 
-This option, which is `true` by default, allows you to stop the rule reporting promises consumed with void operator.
+This option, which is `true` by default, allows you to stop the rule reporting promises consumed with the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void).
 This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
