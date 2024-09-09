@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
+import * as parser from '@typescript-eslint/parser';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   MessageIds,
@@ -147,58 +147,10 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     },
     {
-      code: "console.log('Hello, world!');",
+      code: '123;',
       languageOptions: {
         parser: {
-          parse: (): TSESTree.Program =>
-            ({
-              type: AST_NODE_TYPES.Program,
-              body: [
-                {
-                  type: AST_NODE_TYPES.ExpressionStatement,
-                  expression: {
-                    type: AST_NODE_TYPES.Literal,
-                    value: 123,
-                    raw: '123',
-                    range: [0, 3],
-                    loc: {
-                      start: {
-                        line: 1,
-                        column: 0,
-                      },
-                      end: {
-                        line: 1,
-                        column: 3,
-                      },
-                    },
-                  },
-                  range: [0, 4],
-                  loc: {
-                    start: {
-                      line: 1,
-                      column: 0,
-                    },
-                    end: {
-                      line: 1,
-                      column: 4,
-                    },
-                  },
-                },
-              ],
-              comments: [],
-              loc: {
-                start: {
-                  line: 1,
-                  column: 0,
-                },
-                end: {
-                  line: 1,
-                  column: 4,
-                },
-              },
-              range: [0, 4],
-              tokens: [],
-            }) as TSESTree.Program,
+          parse: (): TSESTree.Program => parser.parse('123;'),
         },
       },
     },
