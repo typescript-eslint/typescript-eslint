@@ -459,6 +459,7 @@ function isMakeBoolean(node: TSESTree.Node): boolean {
         current.operator === '!') ||
       (current.type === AST_NODE_TYPES.CallExpression &&
         current.callee.type === AST_NODE_TYPES.Identifier &&
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         current.callee.name === 'Boolean')
     ) {
       return true;
