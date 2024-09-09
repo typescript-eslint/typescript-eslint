@@ -440,6 +440,33 @@ new TakeCallbacks(
 );
     `,
     `
+class Foo {
+  public static doThing(): void {}
+}
+
+class Bar extends Foo {
+  public async doThing(): Promise<void> {}
+}
+    `,
+    `
+class Foo {
+  public doThing(): void {}
+}
+
+class Bar extends Foo {
+  public static async doThing(): Promise<void> {}
+}
+    `,
+    `
+class Foo {
+  public doThing = (): void => {};
+}
+
+class Bar extends Foo {
+  public static doThing = async (): Promise<void> => {};
+}
+    `,
+    `
 function restTuple(...args: []): void;
 function restTuple(...args: [string]): void;
 function restTuple(..._args: string[]): void {}
