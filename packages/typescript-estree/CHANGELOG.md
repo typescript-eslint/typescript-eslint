@@ -1,3 +1,20 @@
+## 8.5.0 (2024-09-09)
+
+
+### 🚀 Features
+
+- **typescript-estree:** default projectService.defaultProject to 'tsconfig.json'
+
+
+### ❤️  Thank You
+
+- f44da958e
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.4.0 (2024-09-02)
 
 
