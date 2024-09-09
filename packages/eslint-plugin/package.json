@@ -71,7 +71,6 @@
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
-    "@types/espree": "^10.1.0",
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
@@ -81,7 +80,6 @@
     "cross-env": "^7.0.3",
     "cross-fetch": "*",
     "eslint": "*",
-    "espree": "^10.0.1",
     "jest": "29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "json-schema": "*",
