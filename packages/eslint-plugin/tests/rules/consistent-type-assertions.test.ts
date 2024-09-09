@@ -149,6 +149,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     {
       code: '123;',
       languageOptions: {
+        // simulate a 3rd party parser that doesn't provide parser services
         parser: {
           parse: (): TSESTree.Program => parser.parse('123;'),
         },
