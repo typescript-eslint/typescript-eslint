@@ -32,6 +32,7 @@ interface ChecksVoidReturnOptions {
 
 type MessageId =
   | 'conditional'
+  | 'predicate'
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
@@ -92,6 +93,7 @@ export default createRule<Options, MessageId>({
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
+      predicate: 'Expected a non-Promise value to be returned.',
       spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
     schema: [
@@ -332,8 +334,8 @@ export default createRule<Options, MessageId>({
           const type = services.esTreeNodeToTSNodeMap.get(callback);
           if (returnsThenable(checker, type)) {
             context.report({
-              messageId: 'conditional',
-              node,
+              messageId: 'predicate',
+              node: callback,
             });
           }
         }

@@ -2281,7 +2281,7 @@ declare function isTruthy(value: unknown): Promise<boolean>;
       errors: [
         {
           line: 3,
-          messageId: 'conditional',
+          messageId: 'predicate',
         },
       ],
     },
@@ -2293,7 +2293,7 @@ array.every(() => Promise.resolve(true));
       errors: [
         {
           line: 3,
-          messageId: 'conditional',
+          messageId: 'predicate',
         },
       ],
     },
@@ -2302,10 +2302,11 @@ array.every(() => Promise.resolve(true));
 const tuple: [number, number, number] = [1, 2, 3];
 tuple.find(() => Promise.resolve(false));
       `,
+      options: [{ checksConditionals: true }],
       errors: [
         {
           line: 3,
-          messageId: 'conditional',
+          messageId: 'predicate',
         },
       ],
     },
