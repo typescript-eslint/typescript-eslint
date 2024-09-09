@@ -79,7 +79,7 @@ switch (b1) {
   case true:
   default:
 }
-      `,
+    `,
     `
 declare function foo(): number | void;
 const result1 = foo() === undefined;
