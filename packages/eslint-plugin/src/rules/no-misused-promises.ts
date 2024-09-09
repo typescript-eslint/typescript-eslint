@@ -528,6 +528,12 @@ export default createRule<Options, MessageId>({
         if (!returnsThenable(checker, nodeMember)) {
           continue;
         }
+
+        const node = services.tsNodeToESTreeNodeMap.get(nodeMember);
+        if (isStaticMember(node)) {
+          continue;
+        }
+
         for (const heritageType of heritageTypes) {
           checkHeritageTypeForMemberReturningVoid(
             nodeMember,
@@ -901,5 +907,13 @@ function getMemberIfExists(
   const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
   return (
     symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
+  );
+}
+
+function isStaticMember(node: TSESTree.Node): boolean {
+  return (
+    (node.type === AST_NODE_TYPES.MethodDefinition ||
+      node.type === AST_NODE_TYPES.PropertyDefinition) &&
+    node.static
   );
 }
