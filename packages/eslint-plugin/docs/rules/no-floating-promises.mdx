@@ -134,9 +134,15 @@ This option, which is `true` by default, allows you to stop the rule reporting p
 This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 :::warning
-Voiding a Promise doesn't handle it, but just ignores the outcome. Such Promise rejection will still lead to an
-[`unhandledrejection` event](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event)
-being fired and error logs being printed. Refer to the list at the top of the page for the possible ways to handle a promise.
+Voiding a Promise doesn't handle it or change the runtime behavior. The outcome is just ignored, like disabling the rule with a
+
+```
+// eslint-disable-next-line @typescript-eslint/no-floating-promises
+```
+
+Such Promise rejection will still lead to an [`unhandledrejection` event](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event)
+being fired and error logs being printed. Refer to MDN's [_Using Promises (error handling)_](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises#error_handling)
+to learn how to handle correctly a promise.
 :::
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
