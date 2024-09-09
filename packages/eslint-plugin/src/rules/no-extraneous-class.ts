@@ -114,6 +114,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow classes used as namespaces',
       recommended: 'strict',
@@ -125,33 +126,32 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowConstructorOnly: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that contain only a constructor.',
-            type: 'boolean',
           },
           allowEmpty: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that have no body (i.e. are empty).',
-            type: 'boolean',
           },
           allowStaticOnly: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that only contain static members.',
-            type: 'boolean',
           },
           allowWithDecorator: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that include a decorator.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-extraneous-class',
 });

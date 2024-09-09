@@ -31,6 +31,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow iterating over an array with a for-in loop',
       recommended: 'recommended',
@@ -41,7 +42,6 @@ export default createRule({
         'For-in loops over arrays skips holes, returns indices as strings, and may visit the prototype chain or other enumerable properties. Use a more robust iteration method such as for-of or array.forEach instead.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-for-in-array',
 });

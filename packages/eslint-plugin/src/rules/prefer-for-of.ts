@@ -149,6 +149,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
@@ -159,7 +160,6 @@ export default createRule({
         'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'prefer-for-of',
 });

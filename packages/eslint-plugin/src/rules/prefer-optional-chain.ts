@@ -156,6 +156,7 @@ export default createRule<
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
@@ -171,53 +172,52 @@ export default createRule<
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
+            type: 'boolean',
             description:
               'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
-            type: 'boolean',
           },
           checkAny: {
+            type: 'boolean',
             description:
               'Check operands that are typed as `any` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
           checkBigInt: {
+            type: 'boolean',
             description:
               'Check operands that are typed as `bigint` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
           checkBoolean: {
+            type: 'boolean',
             description:
               'Check operands that are typed as `boolean` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
           checkNumber: {
+            type: 'boolean',
             description:
               'Check operands that are typed as `number` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
           checkString: {
+            type: 'boolean',
             description:
               'Check operands that are typed as `string` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
           checkUnknown: {
+            type: 'boolean',
             description:
               'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
           requireNullish: {
+            type: 'boolean',
             description:
               'Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'prefer-optional-chain',
 });

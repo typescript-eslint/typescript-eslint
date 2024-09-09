@@ -99,6 +99,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['always'],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Require or disallow initialization in variable declarations',
@@ -107,7 +108,6 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
-    type: 'suggestion',
   },
   name: 'init-declarations',
 });

@@ -46,9 +46,9 @@ const optionTesters = (
     ['Never', isTypeNeverType],
   ] satisfies [string, OptionTester][]
 ).map(([type, tester]) => ({
+  type,
   option: `allow${type}` as const,
   tester,
-  type,
 }));
 type Options = [
   { [Type in (typeof optionTesters)[number]['option']]?: boolean },
@@ -115,6 +115,7 @@ export default createRule<Options, MessageId>({
     },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Enforce template literal expressions to be of `string` type',
@@ -138,20 +139,19 @@ export default createRule<Options, MessageId>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: Object.fromEntries(
-          optionTesters.map(({ option, type }) => [
+          optionTesters.map(({ type, option }) => [
             option,
             {
-              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
               type: 'boolean',
+              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
             },
           ]),
         ),
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'restrict-template-expressions',
 });

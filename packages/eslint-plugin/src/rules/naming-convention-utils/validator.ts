@@ -162,6 +162,7 @@ function createValidator(
     processedName?: string;
   }): Record<string, unknown> {
     return {
+      type: selectorTypeToMessageString(type),
       affixes: affixes?.join(', '),
       count,
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
@@ -175,7 +176,6 @@ function createValidator(
           : custom?.match === false
             ? 'not match'
             : null,
-      type: selectorTypeToMessageString(type),
     };
   }
 

@@ -85,6 +85,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ capIsConstructor: true }],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow `this` keywords outside of classes or class-like objects',
@@ -93,7 +94,6 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
-    type: 'suggestion',
   },
   name: 'no-invalid-this',
 });

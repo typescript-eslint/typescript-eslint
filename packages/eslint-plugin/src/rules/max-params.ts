@@ -63,6 +63,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ countVoidThis: false, max: 3 }],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce a maximum number of parameters in function definitions',
@@ -71,24 +72,23 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           countVoidThis: {
             type: 'boolean',
           },
           max: {
-            minimum: 0,
             type: 'integer',
+            minimum: 0,
           },
           maximum: {
-            minimum: 0,
             type: 'integer',
+            minimum: 0,
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'max-params',
 });

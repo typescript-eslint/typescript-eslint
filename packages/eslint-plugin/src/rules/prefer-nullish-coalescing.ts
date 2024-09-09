@@ -332,6 +332,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
@@ -350,6 +351,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
@@ -364,17 +366,17 @@ export default createRule<Options, MessageIds>({
           ignorePrimitives: {
             oneOf: [
               {
+                type: 'object',
                 properties: {
                   bigint: { type: 'boolean' },
                   boolean: { type: 'boolean' },
                   number: { type: 'boolean' },
                   string: { type: 'boolean' },
                 },
-                type: 'object',
               },
               {
-                enum: [true],
                 type: 'boolean',
+                enum: [true],
               },
             ],
           },
@@ -382,10 +384,8 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'prefer-nullish-coalescing',
 });

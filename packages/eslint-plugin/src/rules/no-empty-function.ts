@@ -25,6 +25,7 @@ const schema = deepMerge(
     properties: {
       allow: {
         items: {
+          type: 'string',
           enum: [
             'functions',
             'arrowFunctions',
@@ -41,7 +42,6 @@ const schema = deepMerge(
             'decoratedFunctions',
             'overrideMethods',
           ],
-          type: 'string',
         },
       },
     },
@@ -165,6 +165,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow empty functions',
       extendsBaseRule: true,
@@ -173,7 +174,6 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: [schema],
-    type: 'suggestion',
   },
   name: 'no-empty-function',
 });

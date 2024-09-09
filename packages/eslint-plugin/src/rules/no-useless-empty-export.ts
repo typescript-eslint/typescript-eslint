@@ -68,6 +68,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         "Disallow empty exports that don't change anything in a module file",
@@ -78,7 +79,6 @@ export default createRule({
       uselessExport: 'Empty export does nothing and can be removed.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'no-useless-empty-export',
 });

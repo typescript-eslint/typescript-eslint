@@ -50,6 +50,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow awaiting a value that is not a Thenable',
       recommended: 'recommended',
@@ -61,7 +62,6 @@ export default createRule({
       removeAwait: 'Remove unnecessary `await`.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'await-thenable',
 });

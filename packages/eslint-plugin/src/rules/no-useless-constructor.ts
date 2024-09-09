@@ -60,6 +60,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow unnecessary constructors',
       extendsBaseRule: true,
@@ -68,7 +69,6 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
-    type: 'problem',
   },
   name: 'no-useless-constructor',
 });

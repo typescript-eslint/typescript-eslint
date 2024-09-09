@@ -227,6 +227,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce consistent usage of type assertions',
       recommended: 'stylistic',
@@ -247,35 +248,34 @@ export default createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'object',
             additionalProperties: false,
             properties: {
               assertionStyle: {
-                enum: ['never'],
                 type: 'string',
+                enum: ['never'],
               },
             },
             required: ['assertionStyle'],
-            type: 'object',
           },
           {
+            type: 'object',
             additionalProperties: false,
             properties: {
               assertionStyle: {
-                enum: ['as', 'angle-bracket'],
                 type: 'string',
+                enum: ['as', 'angle-bracket'],
               },
               objectLiteralTypeAssertions: {
-                enum: ['allow', 'allow-as-parameter', 'never'],
                 type: 'string',
+                enum: ['allow', 'allow-as-parameter', 'never'],
               },
             },
             required: ['assertionStyle'],
-            type: 'object',
           },
         ],
       },
     ],
-    type: 'suggestion',
   },
   name: 'consistent-type-assertions',
 });

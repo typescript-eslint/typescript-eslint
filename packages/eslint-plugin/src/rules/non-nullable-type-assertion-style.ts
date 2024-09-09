@@ -130,6 +130,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce non-null assertions over explicit type casts',
       recommended: 'stylistic',
@@ -141,7 +142,6 @@ export default createRule({
         'Use a ! assertion to more succinctly remove null and undefined from the type.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'non-nullable-type-assertion-style',
 });

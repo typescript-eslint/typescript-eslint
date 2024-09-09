@@ -63,6 +63,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow using the `delete` operator on computed key expressions',
@@ -73,7 +74,6 @@ export default createRule({
       dynamicDelete: 'Do not delete dynamically computed property keys.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'no-dynamic-delete',
 });

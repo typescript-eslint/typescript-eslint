@@ -909,6 +909,7 @@ export default createRule<Options, MessageIds>({
   ],
 
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce consistent usage of type imports',
     },
@@ -923,24 +924,23 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           disallowTypeAnnotations: {
             type: 'boolean',
           },
           fixStyle: {
-            enum: ['separate-type-imports', 'inline-type-imports'],
             type: 'string',
+            enum: ['separate-type-imports', 'inline-type-imports'],
           },
           prefer: {
-            enum: ['type-imports', 'no-type-imports'],
             type: 'string',
+            enum: ['type-imports', 'no-type-imports'],
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'consistent-type-imports',
 });

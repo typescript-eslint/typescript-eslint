@@ -177,6 +177,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow the `any` type',
       recommended: 'recommended',
@@ -192,22 +193,21 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           fixToUnknown: {
+            type: 'boolean',
             description:
               'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
-            type: 'boolean',
           },
           ignoreRestArgs: {
-            description: 'Whether to ignore rest parameter arrays.',
             type: 'boolean',
+            description: 'Whether to ignore rest parameter arrays.',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-explicit-any',
 });

@@ -45,6 +45,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow `// tslint:<rule-flag>` comments',
       recommended: 'stylistic',
@@ -54,7 +55,6 @@ export default createRule({
       commentDetected: 'tslint comment detected: "{{ text }}"',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'ban-tslint-comment',
 });

@@ -585,39 +585,38 @@ export default tseslint.config(
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
-      'perfectionist/sort-classes': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
-      'perfectionist/sort-enums': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
+      'perfectionist/sort-classes': 'error',
+      'perfectionist/sort-enums': 'error',
       'perfectionist/sort-objects': [
         'error',
         {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
+          customGroups: {
+            top: [
+              'meta',
+              'defaultOptions',
+              'create',
+              'type',
+              'valid',
+              'invalid',
+            ],
+          },
+          groups: ['top', 'unknown'],
         },
       ],
       'perfectionist/sort-union-types': [
         'error',
         {
-          order: 'asc',
           groups: ['unknown', 'keyword', 'nullish'],
-          type: 'natural',
         },
       ],
       'simple-import-sort/imports': 'off',
+    },
+    settings: {
+      perfectionist: {
+        partitionByComment: true,
+        order: 'asc',
+        type: 'natural',
+      },
     },
   },
 );

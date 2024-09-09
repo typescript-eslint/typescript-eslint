@@ -281,6 +281,7 @@ export default createRule<[], MessageIds>({
   defaultOptions: [],
 
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce typing arguments in Promise rejection callbacks as `unknown`',
@@ -305,7 +306,6 @@ export default createRule<[], MessageIds>({
         'Change existing type annotation to `: unknown`.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'use-unknown-in-catch-callback-variable',
 });

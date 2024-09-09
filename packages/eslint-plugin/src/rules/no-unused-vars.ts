@@ -684,6 +684,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow unused variables',
       extendsBaseRule: true,
@@ -700,22 +701,23 @@ export default createRule<Options, MessageIds>({
       {
         oneOf: [
           {
-            enum: ['all', 'local'],
             type: 'string',
+            enum: ['all', 'local'],
           },
           {
+            type: 'object',
             additionalProperties: false,
             properties: {
               args: {
-                enum: ['all', 'after-used', 'none'],
                 type: 'string',
+                enum: ['all', 'after-used', 'none'],
               },
               argsIgnorePattern: {
                 type: 'string',
               },
               caughtErrors: {
-                enum: ['all', 'none'],
                 type: 'string',
+                enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
                 type: 'string',
@@ -733,19 +735,17 @@ export default createRule<Options, MessageIds>({
                 type: 'boolean',
               },
               vars: {
-                enum: ['all', 'local'],
                 type: 'string',
+                enum: ['all', 'local'],
               },
               varsIgnorePattern: {
                 type: 'string',
               },
             },
-            type: 'object',
           },
         ],
       },
     ],
-    type: 'problem',
   },
   name: 'no-unused-vars',
 });

@@ -218,6 +218,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow unnecessary assignment of constructor property parameter',
@@ -227,7 +228,6 @@ export default createRule({
         'This assignment is unnecessary since it is already assigned by a parameter property.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'no-unnecessary-parameter-property-assignment',
 });

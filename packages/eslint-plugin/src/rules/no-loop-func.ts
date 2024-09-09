@@ -58,6 +58,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
@@ -66,7 +67,6 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: [],
-    type: 'suggestion',
   },
   name: 'no-loop-func',
 });

@@ -125,6 +125,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['constructor'],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
@@ -139,11 +140,10 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        enum: ['type-annotation', 'constructor'],
         type: 'string',
+        enum: ['type-annotation', 'constructor'],
       },
     ],
-    type: 'suggestion',
   },
   name: 'consistent-generic-constructors',
 });

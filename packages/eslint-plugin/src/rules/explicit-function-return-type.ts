@@ -194,6 +194,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require explicit return types on functions and class methods',
@@ -203,56 +204,55 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowConciseArrowFunctionExpressionsStartingWithVoid: {
+            type: 'boolean',
             description:
               'Whether to allow arrow functions that start with the `void` keyword.',
-            type: 'boolean',
           },
           allowDirectConstAssertionInArrowFunctions: {
+            type: 'boolean',
             description:
               'Whether to ignore arrow functions immediately returning a `as const` value.',
-            type: 'boolean',
           },
           allowedNames: {
+            type: 'array',
             description:
               'An array of function/method names that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
-            type: 'array',
           },
           allowExpressions: {
+            type: 'boolean',
             description:
               'Whether to ignore function expressions (functions which are not part of a declaration).',
-            type: 'boolean',
           },
           allowFunctionsWithoutTypeParameters: {
+            type: 'boolean',
             description:
               "Whether to ignore functions that don't have generic type parameters.",
-            type: 'boolean',
           },
           allowHigherOrderFunctions: {
+            type: 'boolean',
             description:
               'Whether to ignore functions immediately returning another function expression.',
-            type: 'boolean',
           },
           allowIIFEs: {
+            type: 'boolean',
             description:
               'Whether to ignore immediately invoked function expressions (IIFEs).',
-            type: 'boolean',
           },
           allowTypedFunctionExpressions: {
+            type: 'boolean',
             description:
               'Whether to ignore type annotations on the variable of function expressions.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'explicit-function-return-type',
 });

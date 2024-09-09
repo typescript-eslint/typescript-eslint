@@ -250,6 +250,7 @@ export default createRule({
   defaultOptions: [],
 
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
       recommended: 'stylistic',
@@ -262,7 +263,6 @@ export default createRule({
         'Use `String#includes()` method with a string instead.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'prefer-includes',
 });

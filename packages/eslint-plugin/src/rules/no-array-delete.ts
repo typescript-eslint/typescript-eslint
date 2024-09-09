@@ -93,6 +93,7 @@ export default createRule<[], MessageId>({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow using the `delete` operator on array values',
       recommended: 'recommended',
@@ -105,7 +106,6 @@ export default createRule<[], MessageId>({
       useSplice: 'Use `array.splice()` instead.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-array-delete',
 });

@@ -250,6 +250,7 @@ export default createRule<[Options], MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Require type annotations in certain places',
     },
@@ -259,6 +260,7 @@ export default createRule<[Options], MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
@@ -270,10 +272,8 @@ export default createRule<[Options], MessageIds>({
           [OptionKeys.VariableDeclaration]: { type: 'boolean' },
           [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'typedef',
 });

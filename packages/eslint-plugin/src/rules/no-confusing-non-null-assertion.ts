@@ -66,6 +66,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Disallow non-null assertion in locations that may be confusing',
@@ -84,7 +85,6 @@ export default createRule({
         'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-confusing-non-null-assertion',
 });

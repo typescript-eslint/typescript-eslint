@@ -698,6 +698,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{ allowSingleElementEquality: 'never' }],
 
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
@@ -711,19 +712,18 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowSingleElementEquality: {
+            type: 'string',
             description:
               'Whether to allow equality checks against the first or last element of a string.',
             enum: ['always', 'never'],
-            type: 'string',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'prefer-string-starts-ends-with',
 });

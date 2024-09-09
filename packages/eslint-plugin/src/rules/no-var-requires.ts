@@ -70,6 +70,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ allow: [] }],
   meta: {
+    type: 'problem',
     deprecated: true,
     docs: {
       description: 'Disallow `require` statements except in import statements',
@@ -80,18 +81,17 @@ export default createRule<Options, MessageIds>({
     replacedBy: ['@typescript-eslint/no-require-imports'],
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allow: {
+            type: 'array',
             description: 'Patterns of import paths to allow requiring from.',
             items: { type: 'string' },
-            type: 'array',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'no-var-requires',
 });

@@ -105,6 +105,7 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Disallow non-null assertions using the `!` postfix operator',
@@ -117,7 +118,6 @@ export default createRule<[], MessageIds>({
         'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-non-null-assertion',
 });

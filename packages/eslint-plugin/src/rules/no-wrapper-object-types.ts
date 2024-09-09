@@ -56,6 +56,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow using confusing built-in primitive class wrappers',
       recommended: 'recommended',
@@ -66,7 +67,6 @@ export default createRule({
         'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-wrapper-object-types',
 });

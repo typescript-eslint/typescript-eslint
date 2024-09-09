@@ -68,6 +68,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow unused expressions',
       extendsBaseRule: true,
@@ -76,7 +77,6 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
-    type: 'suggestion',
   },
   name: 'no-unused-expressions',
 });

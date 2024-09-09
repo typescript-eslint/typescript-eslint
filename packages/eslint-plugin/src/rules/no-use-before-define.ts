@@ -333,6 +333,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow the use of variables before they are defined',
       extendsBaseRule: true,
@@ -344,10 +345,11 @@ export default createRule<Options, MessageIds>({
       {
         oneOf: [
           {
-            enum: ['nofunc'],
             type: 'string',
+            enum: ['nofunc'],
           },
           {
+            type: 'object',
             additionalProperties: false,
             properties: {
               allowNamedExports: { type: 'boolean' },
@@ -358,12 +360,10 @@ export default createRule<Options, MessageIds>({
               typedefs: { type: 'boolean' },
               variables: { type: 'boolean' },
             },
-            type: 'object',
           },
         ],
       },
     ],
-    type: 'problem',
   },
   name: 'no-use-before-define',
 });

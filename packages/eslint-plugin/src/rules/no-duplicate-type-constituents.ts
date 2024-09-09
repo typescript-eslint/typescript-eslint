@@ -144,13 +144,13 @@ export default createRule<Options, MessageIds>({
       };
       context.report({
         data: {
-          previous: context.sourceCode.getText(
-            duplicateConstituent.duplicatePrevious,
-          ),
           type:
             parentNode.type === AST_NODE_TYPES.TSIntersectionType
               ? 'Intersection'
               : 'Union',
+          previous: context.sourceCode.getText(
+            duplicateConstituent.duplicatePrevious,
+          ),
         },
         fix: fixer => {
           return [
@@ -181,6 +181,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow duplicate constituents of union or intersection types',
@@ -193,6 +194,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreIntersections: {
@@ -202,10 +204,8 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-duplicate-type-constituents',
 });

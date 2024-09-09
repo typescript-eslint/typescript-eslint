@@ -186,6 +186,7 @@ export default createRule<[Options], MessageIds>({
     { allowAsThisParameter: false, allowInGenericTypeArguments: true },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow `void` type outside of generic or return types',
       recommended: 'strict',
@@ -205,6 +206,7 @@ export default createRule<[Options], MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowAsThisParameter: {
@@ -214,17 +216,15 @@ export default createRule<[Options], MessageIds>({
             oneOf: [
               { type: 'boolean' },
               {
+                type: 'array',
                 items: { type: 'string' },
                 minItems: 1,
-                type: 'array',
               },
             ],
           },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'no-invalid-void-type',
 });

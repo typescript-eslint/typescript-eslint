@@ -48,6 +48,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow TypeScript namespaces',
       recommended: 'recommended',
@@ -58,23 +59,22 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowDeclarations: {
+            type: 'boolean',
             description:
               'Whether to allow `declare` with custom TypeScript namespaces.',
-            type: 'boolean',
           },
           allowDefinitionFiles: {
+            type: 'boolean',
             description:
               'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-namespace',
 });

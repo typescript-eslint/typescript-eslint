@@ -196,6 +196,7 @@ export default createRule<[Options], MessageIds>({
     },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Disallow `@ts-<directive>` comments or require descriptions after directives',
@@ -219,23 +220,24 @@ export default createRule<[Options], MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           directiveConfigSchema: {
             oneOf: [
               {
-                default: true,
                 type: 'boolean',
+                default: true,
               },
               {
-                enum: ['allow-with-description'],
                 type: 'string',
+                enum: ['allow-with-description'],
               },
               {
+                type: 'object',
                 additionalProperties: false,
                 properties: {
                   descriptionFormat: { type: 'string' },
                 },
-                type: 'object',
               },
             ],
           },
@@ -243,18 +245,16 @@ export default createRule<[Options], MessageIds>({
         additionalProperties: false,
         properties: {
           minimumDescriptionLength: {
-            default: defaultMinimumDescriptionLength,
             type: 'number',
+            default: defaultMinimumDescriptionLength,
           },
           'ts-check': { $ref: '#/items/0/$defs/directiveConfigSchema' },
           'ts-expect-error': { $ref: '#/items/0/$defs/directiveConfigSchema' },
           'ts-ignore': { $ref: '#/items/0/$defs/directiveConfigSchema' },
           'ts-nocheck': { $ref: '#/items/0/$defs/directiveConfigSchema' },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'ban-ts-comment',
 });

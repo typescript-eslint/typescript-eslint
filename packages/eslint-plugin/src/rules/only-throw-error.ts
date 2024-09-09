@@ -69,6 +69,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow throwing non-`Error` values as exceptions',
       extendsBaseRule: 'no-throw-literal',
@@ -81,6 +82,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowThrowingAny: {
@@ -90,10 +92,8 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'only-throw-error',
 });

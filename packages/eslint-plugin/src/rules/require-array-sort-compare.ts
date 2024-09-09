@@ -62,6 +62,7 @@ export default createRule<Options, MessageIds>({
   ],
 
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`',
@@ -72,18 +73,17 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreStringArrays: {
+            type: 'boolean',
             description:
               'Whether to ignore arrays in which all elements are strings.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'require-array-sort-compare',
 });

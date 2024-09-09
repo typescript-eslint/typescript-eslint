@@ -100,8 +100,8 @@ export default createRule<Options, MessageIds>({
         ) {
           context.report({
             data: {
-              stringLike,
               type: typeChecker.typeToString(baseType),
+              stringLike,
             },
             messageId: 'invalid',
             node: baseNode,
@@ -122,8 +122,8 @@ export default createRule<Options, MessageIds>({
           ) {
             context.report({
               data: {
-                stringLike,
                 type: typeChecker.typeToString(subBaseType),
+                stringLike,
               },
               messageId: 'invalid',
               node: baseNode,
@@ -194,6 +194,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
@@ -212,48 +213,47 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      bigintAndNumber:
-        "Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`.",
       invalid:
         "Invalid operand for a '+' operation. Operands must each be a number or {{stringLike}}. Got `{{type}}`.",
+      bigintAndNumber:
+        "Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`.",
       mismatched:
         "Operands of '+' operations must be a number or {{stringLike}}. Got `{{left}}` + `{{right}}`.",
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowAny: {
-            description: 'Whether to allow `any` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `any` typed values.',
           },
           allowBoolean: {
-            description: 'Whether to allow `boolean` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `boolean` typed values.',
           },
           allowNullish: {
+            type: 'boolean',
             description:
               'Whether to allow potentially `null` or `undefined` typed values.',
-            type: 'boolean',
           },
           allowNumberAndString: {
+            type: 'boolean',
             description:
               'Whether to allow `bigint`/`number` typed values and `string` typed values to be added together.',
-            type: 'boolean',
           },
           allowRegExp: {
-            description: 'Whether to allow `regexp` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `regexp` typed values.',
           },
           skipCompoundAssignments: {
-            description: 'Whether to skip compound assignments such as `+=`.',
             type: 'boolean',
+            description: 'Whether to skip compound assignments such as `+=`.',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'problem',
   },
   name: 'restrict-plus-operands',
 });

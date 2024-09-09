@@ -166,13 +166,13 @@ export function gatherLogicalOperands(
 
             // typeof x.y === 'undefined'
             result.push({
+              type: OperandValidity.Valid,
               comparedName: comparedExpression.argument,
               comparisonType: operand.operator.startsWith('!')
                 ? NullishComparisonType.NotStrictEqualUndefined
                 : NullishComparisonType.StrictEqualUndefined,
               isYoda,
               node: operand,
-              type: OperandValidity.Valid,
             });
             continue;
           }
@@ -191,13 +191,13 @@ export function gatherLogicalOperands(
             ) {
               // x == null, x == undefined
               result.push({
+                type: OperandValidity.Valid,
                 comparedName: comparedExpression,
                 comparisonType: operand.operator.startsWith('!')
                   ? NullishComparisonType.NotEqualNullOrUndefined
                   : NullishComparisonType.EqualNullOrUndefined,
                 isYoda,
                 node: operand,
-                type: OperandValidity.Valid,
               });
               continue;
             }
@@ -211,25 +211,25 @@ export function gatherLogicalOperands(
             switch (comparedValue) {
               case ComparisonValueType.Null:
                 result.push({
+                  type: OperandValidity.Valid,
                   comparedName,
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualNull
                     : NullishComparisonType.StrictEqualNull,
                   isYoda,
                   node: operand,
-                  type: OperandValidity.Valid,
                 });
                 continue;
 
               case ComparisonValueType.Undefined:
                 result.push({
+                  type: OperandValidity.Valid,
                   comparedName,
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualUndefined
                     : NullishComparisonType.StrictEqualUndefined,
                   isYoda,
                   node: operand,
-                  type: OperandValidity.Valid,
                 });
                 continue;
 
@@ -256,11 +256,11 @@ export function gatherLogicalOperands(
           )
         ) {
           result.push({
+            type: OperandValidity.Valid,
             comparedName: operand.argument,
             comparisonType: NullishComparisonType.NotBoolean,
             isYoda: false,
             node: operand,
-            type: OperandValidity.Valid,
           });
           continue;
         }
@@ -282,11 +282,11 @@ export function gatherLogicalOperands(
           )
         ) {
           result.push({
+            type: OperandValidity.Valid,
             comparedName: operand,
             comparisonType: NullishComparisonType.Boolean,
             isYoda: false,
             node: operand,
-            type: OperandValidity.Valid,
           });
         } else {
           result.push({ type: OperandValidity.Invalid });

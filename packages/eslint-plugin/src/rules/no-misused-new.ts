@@ -98,6 +98,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Enforce valid definition of `new` and `constructor`',
       recommended: 'recommended',
@@ -107,7 +108,6 @@ export default createRule({
       errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-misused-new',
 });

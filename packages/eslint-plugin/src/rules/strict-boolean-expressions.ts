@@ -975,6 +975,7 @@ export default createRule<Options, MessageId>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow certain types in boolean expressions',
       requiresTypeChecking: true,
@@ -1043,6 +1044,7 @@ export default createRule<Options, MessageId>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowAny: { type: 'boolean' },
@@ -1057,10 +1059,8 @@ export default createRule<Options, MessageId>({
           },
           allowString: { type: 'boolean' },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'strict-boolean-expressions',
 });

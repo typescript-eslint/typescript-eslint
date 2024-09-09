@@ -176,6 +176,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary namespace qualifiers',
       requiresTypeChecking: true,
@@ -186,7 +187,6 @@ export default createRule({
         "Qualifier is unnecessary since '{{ name }}' is in scope.",
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'no-unnecessary-qualifier',
 });

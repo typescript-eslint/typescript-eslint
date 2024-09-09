@@ -291,6 +291,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow async functions which do not return promises and have no `await` expression',
@@ -304,7 +305,6 @@ export default createRule({
       removeAsync: "Remove 'async'.",
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'require-await',
 });

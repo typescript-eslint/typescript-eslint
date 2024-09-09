@@ -52,6 +52,7 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Require each enum member value to be explicitly initialized',
@@ -64,7 +65,6 @@ export default createRule<[], MessageIds>({
         'Can be fixed to {{ name }} = {{ suggested }}',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'prefer-enum-initializers',
 });

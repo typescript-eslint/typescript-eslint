@@ -206,6 +206,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce using function types instead of interfaces with call signatures',
@@ -219,7 +220,6 @@ export default createRule({
         "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'prefer-function-type',
 });

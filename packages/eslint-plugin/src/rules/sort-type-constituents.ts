@@ -162,11 +162,11 @@ export default createRule<Options, MessageIds>({
         if (expectedOrder[i].node !== sourceOrder[i].node) {
           let messageId: MessageIds = 'notSorted';
           const data = {
-            name: '',
             type:
               node.type === AST_NODE_TYPES.TSIntersectionType
                 ? 'Intersection'
                 : 'Union',
+            name: '',
           };
           if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
             messageId = 'notSortedNamed';
@@ -244,6 +244,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     deprecated: true,
     docs: {
       description:
@@ -262,33 +263,32 @@ export default createRule<Options, MessageIds>({
     ],
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           caseSensitive: {
-            description: 'Whether to sort using case sensitive sorting.',
             type: 'boolean',
+            description: 'Whether to sort using case sensitive sorting.',
           },
           checkIntersections: {
-            description: 'Whether to check intersection types.',
             type: 'boolean',
+            description: 'Whether to check intersection types.',
           },
           checkUnions: {
-            description: 'Whether to check union types.',
             type: 'boolean',
+            description: 'Whether to check union types.',
           },
           groupOrder: {
+            type: 'array',
             description: 'Ordering of the groups.',
             items: {
-              enum: getEnumNames(Group),
               type: 'string',
+              enum: getEnumNames(Group),
             },
-            type: 'array',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'sort-type-constituents',
 });

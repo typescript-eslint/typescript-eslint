@@ -148,6 +148,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow accidentally using the "empty object" type',
       recommended: 'recommended',
@@ -165,24 +166,23 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowInterfaces: {
-            enum: ['always', 'never', 'with-single-extends'],
             type: 'string',
+            enum: ['always', 'never', 'with-single-extends'],
           },
           allowObjectTypes: {
-            enum: ['always', 'never'],
             type: 'string',
+            enum: ['always', 'never'],
           },
           allowWithName: {
             type: 'string',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-empty-object-type',
 });

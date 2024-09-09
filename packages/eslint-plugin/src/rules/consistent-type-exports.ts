@@ -210,6 +210,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce consistent usage of type exports',
       requiresTypeChecking: true,
@@ -226,16 +227,15 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           fixMixedExportsWithInlineTypeSpecifier: {
             type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'consistent-type-exports',
 });

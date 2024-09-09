@@ -100,6 +100,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary constraints on generic types',
       recommended: 'recommended',
@@ -112,7 +113,6 @@ export default createRule({
         'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'no-unnecessary-type-constraint',
 });

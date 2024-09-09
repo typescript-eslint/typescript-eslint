@@ -125,9 +125,9 @@ export default createRule<Options, MessageIds>({
 
         context.report({
           data: {
+            type: getMessageType(node.elementType),
             className: isReadonly ? 'ReadonlyArray' : 'Array',
             readonlyPrefix: isReadonly ? 'readonly ' : '',
-            type: getMessageType(node.elementType),
           },
           fix(fixer) {
             const typeNode = node.elementType;
@@ -193,9 +193,9 @@ export default createRule<Options, MessageIds>({
           // Create an 'any' array
           context.report({
             data: {
+              type: 'any',
               className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
               readonlyPrefix,
-              type: 'any',
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -227,9 +227,9 @@ export default createRule<Options, MessageIds>({
         const end = `${typeParens ? ')' : ''}${isReadonlyWithGenericArrayType ? '' : `[]`}${parentParens ? ')' : ''}`;
         context.report({
           data: {
+            type: getMessageType(type),
             className: isReadonlyArrayType ? node.typeName.name : 'Array',
             readonlyPrefix,
-            type: getMessageType(type),
           },
           fix(fixer) {
             return [
@@ -249,6 +249,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Require consistently using either `T[]` or `Array<T>` for arrays',
@@ -271,10 +272,11 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           arrayOption: {
-            enum: ['array', 'generic', 'array-simple'],
             type: 'string',
+            enum: ['array', 'generic', 'array-simple'],
           },
         },
         additionalProperties: false,
@@ -289,10 +291,8 @@ export default createRule<Options, MessageIds>({
               'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'array-type',
 });

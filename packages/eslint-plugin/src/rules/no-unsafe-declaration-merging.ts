@@ -58,6 +58,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow unsafe declaration merging',
       recommended: 'recommended',
@@ -68,7 +69,6 @@ export default createRule({
         'Unsafe declaration merging between classes and interfaces.',
     },
     schema: [],
-    type: 'problem',
   },
   name: 'no-unsafe-declaration-merging',
 });

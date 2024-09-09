@@ -165,6 +165,7 @@ export default createRule({
   defaultOptions: [],
 
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
@@ -176,7 +177,6 @@ export default createRule({
       regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'prefer-regexp-exec',
 });

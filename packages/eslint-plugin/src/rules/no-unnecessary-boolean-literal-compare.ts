@@ -229,6 +229,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow unnecessary equality comparisons against boolean literals',
@@ -250,23 +251,22 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowComparingNullableBooleansToFalse: {
+            type: 'boolean',
             description:
               'Whether to allow comparisons between nullable boolean variables and `false`.',
-            type: 'boolean',
           },
           allowComparingNullableBooleansToTrue: {
+            type: 'boolean',
             description:
               'Whether to allow comparisons between nullable boolean variables and `true`.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-unnecessary-boolean-literal-compare',
 });

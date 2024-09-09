@@ -72,6 +72,7 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce default parameters to be last',
       extendsBaseRule: true,
@@ -80,7 +81,6 @@ export default createRule({
       shouldBeLast: 'Default parameters should be last.',
     },
     schema: [],
-    type: 'suggestion',
   },
   name: 'default-param-last',
 });

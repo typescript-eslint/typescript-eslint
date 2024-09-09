@@ -49,6 +49,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow aliasing `this`',
       recommended: 'recommended',
@@ -60,26 +61,25 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           allowDestructuring: {
+            type: 'boolean',
             description:
               'Whether to ignore destructurings, such as `const { props, state } = this`.',
-            type: 'boolean',
           },
           allowedNames: {
+            type: 'array',
             description:
               'Names to ignore, such as ["self"] for `const self = this;`.',
             items: {
               type: 'string',
             },
-            type: 'array',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-this-alias',
 });

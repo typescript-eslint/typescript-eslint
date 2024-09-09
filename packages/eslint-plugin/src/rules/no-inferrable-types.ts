@@ -256,6 +256,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
@@ -268,6 +269,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreParameters: {
@@ -277,10 +279,8 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   name: 'no-inferrable-types',
 });
