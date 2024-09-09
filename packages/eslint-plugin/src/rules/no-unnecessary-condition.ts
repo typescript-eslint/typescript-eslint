@@ -722,52 +722,39 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    const counts = {};
-    return Object.fromEntries(
-      Object.entries({
-        AssignmentExpression: checkAssignmentExpression,
-        BinaryExpression(node): void {
-          const { operator } = node;
-          if (isBoolOperator(operator)) {
-            checkIfBoolExpressionIsNecessaryConditional(
-              node,
-              node.left,
-              node.right,
-              operator,
-            );
-          }
-        },
-        CallExpression: checkCallExpression,
-        ConditionalExpression: (node): void => checkNode(node.test),
-        DoWhileStatement: checkIfLoopIsNecessaryConditional,
-        ForStatement: checkIfLoopIsNecessaryConditional,
-        IfStatement: (node): void => checkNode(node.test),
-        LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
-        SwitchCase({ test, parent }): void {
-          // only check `case ...:`, not `default:`
-          if (test) {
-            checkIfBoolExpressionIsNecessaryConditional(
-              test,
-              parent.discriminant,
-              test,
-              '===',
-            );
-          }
-        },
-        WhileStatement: checkIfLoopIsNecessaryConditional,
-        'MemberExpression[optional = true]': checkOptionalMemberExpression,
-        'CallExpression[optional = true]': checkOptionalCallExpression,
-      }).map(([selector, fn]) => {
-        counts[selector] = 0;
-        return [
-          selector,
-          node => {
-            counts[selector]++;
-            console.log(counts);
-            fn(node);
-          },
-        ];
-      }),
-    );
+    return {
+      AssignmentExpression: checkAssignmentExpression,
+      BinaryExpression(node): void {
+        const { operator } = node;
+        if (isBoolOperator(operator)) {
+          checkIfBoolExpressionIsNecessaryConditional(
+            node,
+            node.left,
+            node.right,
+            operator,
+          );
+        }
+      },
+      CallExpression: checkCallExpression,
+      ConditionalExpression: (node): void => checkNode(node.test),
+      DoWhileStatement: checkIfLoopIsNecessaryConditional,
+      ForStatement: checkIfLoopIsNecessaryConditional,
+      IfStatement: (node): void => checkNode(node.test),
+      LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
+      SwitchCase({ test, parent }): void {
+        // only check `case ...:`, not `default:`
+        if (test) {
+          checkIfBoolExpressionIsNecessaryConditional(
+            test,
+            parent.discriminant,
+            test,
+            '===',
+          );
+        }
+      },
+      WhileStatement: checkIfLoopIsNecessaryConditional,
+      'MemberExpression[optional = true]': checkOptionalMemberExpression,
+      'CallExpression[optional = true]': checkOptionalCallExpression,
+    };
   },
 });

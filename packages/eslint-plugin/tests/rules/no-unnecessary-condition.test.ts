@@ -55,9 +55,7 @@ const unnecessaryConditionTest = (
 
 ruleTester.run('no-unnecessary-condition', rule, {
   valid: [
-    {
-      only: true,
-      code: `
+    `
 declare const b1: boolean;
 declare const b2: boolean;
 const t1 = b1 && b2;
@@ -77,12 +75,11 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
-switch (b1 && b2) {
+switch (b1) {
   case true:
   default:
 }
       `,
-    },
     `
 declare function foo(): number | void;
 const result1 = foo() === undefined;
@@ -892,7 +889,6 @@ class ConsistentRand {
   invalid: [
     // Ensure that it's checking in all the right places
     {
-      only: true,
       code: `
 const b1 = true;
 declare const b2: boolean;
@@ -909,7 +905,7 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
-switch (b1 && b2) {
+switch (b1) {
   case true:
   default:
 }
@@ -925,7 +921,7 @@ switch (b1 && b2) {
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
-        ruleError(17, 9, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
     },
     // Ensure that it's complaining about the right things
