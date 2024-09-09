@@ -264,7 +264,7 @@ export default createRule<Options, MessageIds>({
         .join('\n');
 
       if (lastCase) {
-        const isLastCaseDefaultCase = lastCase.test === null;
+        const isLastCaseDefaultCase = lastCase.test == null;
         if (isLastCaseDefaultCase) {
           const beforeFixString = missingCases
             .map(code => `${code}\n${caseIndent}`)
