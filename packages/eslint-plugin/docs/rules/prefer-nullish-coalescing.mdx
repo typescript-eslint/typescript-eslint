@@ -174,7 +174,11 @@ Also, if you would like to ignore all primitives types, you can set `ignorePrimi
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
-Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+:::danger Deprecated
+
+> This option will be removed in the next major version of typescript-eslint.
+> :::
+> Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
 
 Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
 
