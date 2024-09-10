@@ -798,7 +798,7 @@ ruleTester.run('no-misused-spread', rule, {
 
     {
       code: `
-        declare const ref = new WeakRef<{ a: number }>();
+        const ref = new WeakRef({ a: 1 });
         const o = { ...ref };
       `,
       errors: [
@@ -1135,7 +1135,7 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
+          messageId: 'noIterableSpreadInObject',
           line: 12,
           column: 21,
           endColumn: 31,
@@ -1165,9 +1165,9 @@ ruleTester.run('no-misused-spread', rule, {
       errors: [
         {
           messageId: 'noClassInstanceSpreadInObject',
-          line: 2,
+          line: 3,
           column: 21,
-          endColumn: 34,
+          endColumn: 31,
         },
       ],
     },

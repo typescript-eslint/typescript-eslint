@@ -150,6 +150,19 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      if (
+        isIterable(type, checker) &&
+        // Don't report when the type is string, since TS will flag it already
+        !isString(type)
+      ) {
+        context.report({
+          node,
+          messageId: 'noIterableSpreadInObject',
+        });
+
+        return;
+      }
+
       if (isClassInstance(type)) {
         context.report({
           node,
@@ -159,23 +172,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isClassDeclaration(type) && !isClassInstance(type)) {
+      if (isClassDeclaration(type)) {
         context.report({
           node,
           messageId: 'noClassDeclarationSpreadInObject',
-        });
-
-        return;
-      }
-
-      if (
-        isIterable(type, checker) &&
-        // Don't report when the type is string, since TS will flag it already
-        !isString(type)
-      ) {
-        context.report({
-          node,
-          messageId: 'noIterableSpreadInObject',
         });
 
         return;
@@ -257,12 +257,8 @@ function isClassDeclaration(type: ts.Type): boolean {
 }
 
 function isMap(program: ts.Program, type: ts.Type): boolean {
-  return isTypeRecurser(
-    type,
-    t =>
-      isBuiltinSymbolLike(program, t, 'Map') ||
-      isBuiltinSymbolLike(program, t, 'ReadonlyMap') ||
-      isBuiltinSymbolLike(program, t, 'WeakMap'),
+  return isTypeRecurser(type, t =>
+    isBuiltinSymbolLike(program, t, ['Map', 'ReadonlyMap', 'WeakMap']),
   );
 }
 
