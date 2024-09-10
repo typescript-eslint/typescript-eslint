@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Announcing the stable release of typescript-eslint's v8.
 slug: announcing-typescript-eslint-v8
 tags: [breaking changes, typescript-eslint, v7, v8]

@@ -15,6 +15,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import regexpPlugin from 'eslint-plugin-regexp';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
@@ -43,6 +44,7 @@ export default tseslint.config(
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
+      ['regexp']: regexpPlugin,
       ['simple-import-sort']: simpleImportSortPlugin,
       ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
@@ -317,6 +319,15 @@ export default tseslint.config(
       'jsdoc/require-returns': 'off',
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
+
+      'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-useless-character-class': 'error',
+      'regexp/no-useless-flag': 'error',
+      'regexp/no-useless-lazy': 'error',
+      'regexp/no-useless-non-capturing-group': 'error',
+      'regexp/prefer-quantifier': 'error',
+      'regexp/prefer-question-quantifier': 'error',
+      'regexp/prefer-w': 'error',
 
       'sonarjs/no-duplicated-branches': 'error',
 

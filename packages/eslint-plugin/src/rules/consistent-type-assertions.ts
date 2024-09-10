@@ -94,8 +94,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const parserServices = getParserServices(context, true);
-
     function isConst(node: TSESTree.TypeNode): boolean {
       if (node.type !== AST_NODE_TYPES.TSTypeReference) {
         return false;
@@ -126,9 +124,11 @@ export default createRule<Options, MessageIds>({
         fix:
           messageId === 'as'
             ? (fixer): TSESLint.RuleFix => {
-                const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-                  node as TSESTree.TSTypeAssertion,
-                );
+                // lazily access parserServices to avoid crashing on non TS files (#9860)
+                const tsNode = getParserServices(
+                  context,
+                  true,
+                ).esTreeNodeToTSNodeMap.get(node as TSESTree.TSTypeAssertion);
 
                 const expressionCode = context.sourceCode.getText(
                   node.expression,
