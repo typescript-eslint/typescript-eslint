@@ -1909,7 +1909,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysTruthy')],
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
       code: `
@@ -1918,7 +1918,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
     },
     {
       code: `
@@ -1931,7 +1931,7 @@ if (!speech) {
 }
       `,
       output: null,
-      errors: [ruleError(7, 6, 'never')],
+      errors: [ruleError(7, 5, 'never')],
     },
     {
       code: `
@@ -2283,7 +2283,7 @@ foo?.['bar']?.().toExponential();
         if (!!a) {
         }
       `,
-      errors: [ruleError(3, 15, 'alwaysTruthy')],
+      errors: [ruleError(3, 13, 'alwaysTruthy')],
     },
 
     // "branded" types
