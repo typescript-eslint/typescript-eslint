@@ -65,6 +65,18 @@ export function createProjectService(
     setTimeout,
     watchDirectory: createStubFileWatcher,
     watchFile: createStubFileWatcher,
+
+    // We stop loading any TypeScript plugins by default, to prevent them from attaching disk watchers
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/9905
+    ...(!options.loadTypeScriptPlugins && {
+      require: () => ({
+        module: undefined,
+        error: {
+          message:
+            'TypeScript plugins are not required when using parserOptions.projectService.',
+        },
+      }),
+    }),
   };
 
   const logger: ts.server.Logger = {
