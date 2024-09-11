@@ -1374,12 +1374,12 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
-      interface Props {
-        /** @deprecated */
-        foo: Props
-      }
-      declare const x: Props;
-      const { foo = x } = x;
+        interface Props {
+          /** @deprecated */
+          foo: Props;
+        }
+        declare const x: Props;
+        const { foo = x } = x;
       `,
       errors: [
         {
