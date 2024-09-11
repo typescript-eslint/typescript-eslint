@@ -157,6 +157,30 @@ ruleTester.run('no-deprecated', rule, {
 
       export type D = A.C | A.D;
     `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: Props;
+      const { anchor = '' } = x;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: { bar: Props };
+      const {
+        bar: { anchor = '' },
+      } = x;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: [item: Props];
+      const [{ anchor = 'bar' }] = x;
+    `,
+    'function fn(/** @deprecated */ foo = 4) {}',
   ],
   invalid: [
     {
@@ -1282,6 +1306,88 @@ ruleTester.run('no-deprecated', rule, {
           line: 9,
           endLine: 9,
           data: { name: 'B' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          anchor: 'foo';
+        }
+        declare const x: Props;
+        const { anchor = '' } = x;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          line: 7,
+          endLine: 7,
+          data: { name: 'anchor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          anchor: 'foo';
+        }
+        declare const x: { bar: Props };
+        const {
+          bar: { anchor = '' },
+        } = x;
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          line: 8,
+          endLine: 8,
+          data: { name: 'anchor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          anchor: 'foo';
+        }
+        declare const x: [item: Props];
+        const [{ anchor = 'bar' }] = x;
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          line: 7,
+          endLine: 7,
+          data: { name: 'anchor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+      interface Props {
+        /** @deprecated */
+        foo: Props
+      }
+      declare const x: Props;
+      const { foo = x } = x;
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 18,
+          line: 7,
+          endLine: 7,
+          data: { name: 'foo' },
           messageId: 'deprecated',
         },
       ],
