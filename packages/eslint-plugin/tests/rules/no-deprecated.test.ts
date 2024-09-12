@@ -101,6 +101,32 @@ ruleTester.run('no-deprecated', rule, {
       a('b');
     `,
     `
+      class A {
+        a(value: 'b'): void;
+        /** @deprecated */
+        a(value: 'c'): void;
+      }
+      declare const foo: A;
+      foo.a('b');
+    `,
+    `
+      type A = {
+        (value: 'b'): void;
+        /** @deprecated */
+        (value: 'c'): void;
+      }
+      declare const foo: A;
+      foo('b');
+    `,
+    `
+      declare const a: {
+        new (value: 'b'): void;
+        /** @deprecated */
+        new (value: 'c'): void;
+      }
+      new a('b');
+    `,
+    `
       namespace assert {
         export function fail(message?: string | Error): never;
         /** @deprecated since v10.0.0 - use fail([message]) or other assert functions instead. */
@@ -597,6 +623,26 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        declare const A: {
+          /** @deprecated */
+          new (): string
+        };
+
+        new A();
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          line: 7,
+          endLine: 7,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         /** @deprecated */
         declare class A {
           constructor();
@@ -670,6 +716,97 @@ ruleTester.run('no-deprecated', rule, {
 
         a.b();
       `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      only: false,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface A {
+          /** @deprecated */
+          b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      only: false,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          /** @deprecated */
+          b(): string { return ''; }
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      only: false,
       errors: [
         {
           column: 11,
@@ -1095,6 +1232,27 @@ ruleTester.run('no-deprecated', rule, {
           line: 7,
           endLine: 7,
           data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        type A = {
+          (value: 'b'): void;
+          /** @deprecated */
+          (value: 'c'): void;
+        }
+        declare const foo: A;
+        foo('c');
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 8,
+          endLine: 8,
+          data: { name: 'foo' },
           messageId: 'deprecated',
         },
       ],

@@ -174,15 +174,24 @@ export default createRule({
       const signature = checker.getResolvedSignature(
         tsNode as ts.CallLikeExpression,
       );
+      const symbol = services.getSymbolAtLocation(node);
       if (signature) {
         const signatureDeprecation = getJsDocDeprecation(signature);
         if (signatureDeprecation !== undefined) {
           return signatureDeprecation;
         }
+        const symbolDeclarationKind = symbol?.declarations?.[0].kind;
+
+        if (
+          symbolDeclarationKind !== ts.SyntaxKind.MethodDeclaration &&
+          symbolDeclarationKind !== ts.SyntaxKind.FunctionDeclaration &&
+          symbolDeclarationKind !== ts.SyntaxKind.MethodSignature
+        ) {
+          return getJsDocDeprecation(symbol);
+        }
       }
 
       // Or it could be a ClassDeclaration or a variable set to a ClassExpression.
-      const symbol = services.getSymbolAtLocation(node);
       const symbolAtLocation =
         symbol && checker.getTypeOfSymbolAtLocation(symbol, tsNode).getSymbol();
 
