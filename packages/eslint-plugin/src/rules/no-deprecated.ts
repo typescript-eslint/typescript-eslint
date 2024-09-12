@@ -180,8 +180,16 @@ export default createRule({
         if (signatureDeprecation !== undefined) {
           return signatureDeprecation;
         }
-        const symbolDeclarationKind = symbol?.declarations?.[0].kind;
 
+        // Properties with function-like types have "deprecated" jsdoc
+        // on their symbols, not their signatures:
+        //
+        // interface Props {
+        //   /** @deprecated */
+        //   property: () => 'foo'
+        //   ^symbol^  ^signature^
+        // }
+        const symbolDeclarationKind = symbol?.declarations?.[0].kind;
         if (
           symbolDeclarationKind !== ts.SyntaxKind.MethodDeclaration &&
           symbolDeclarationKind !== ts.SyntaxKind.FunctionDeclaration &&
