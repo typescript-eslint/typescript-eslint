@@ -961,5 +961,31 @@ declare function sillyFoo<T, Constant>(
         },
       ],
     },
+    {
+      // This isn't actually an important test case.
+      // However, we use it as an example in the docs of code that is flagged,
+      // but shouldn't necessarily be. So, if you make change to the rule logic
+      // that "resolve" this sort-of-false-positive, please update the docs
+      // accordingly.
+      // Originally discussion in https://github.com/typescript-eslint/typescript-eslint/issues/9709
+      code: `
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends <
+    T2,
+  >() => T2 extends Compute<Y> ? 1 : 2
+    ? true
+    : false;
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+          data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+        },
+        {
+          messageId: 'sole',
+          data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
+        },
+      ],
+    },
   ],
 });
