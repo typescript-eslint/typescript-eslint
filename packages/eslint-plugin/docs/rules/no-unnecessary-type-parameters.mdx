@@ -144,26 +144,27 @@ serialize({ foo: 'bar', anotherProperty: 'baz' });
 This is because TypeScript figures it's _usually_ an error to explicitly provide excess properties in a location that expects a specific type.
 See [the TypeScript handbook's section on excess property checks](https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks) for further discussion.
 
-To resolve this, you have two choices. If it doesn't make sense to accept excess properties in your function, congrats!
-You've found a potential bug in your code, and you can remove the excess property from the call site.
-Otherwise, if you do want your function to accept excess properties, you can modify the parameter type in order to allow excess properties explicitly by using an [index signature](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures):
+To resolve this, you have two approaches to choose from.
 
-```ts
-interface SomeProperties {
-  foo: string;
+1. If it doesn't make sense to accept excess properties in your function, you'll want to fix the errors at the call sites. Usually, you can simply remove any excess properties where the function is called.
+2. Otherwise, if you do want your function to accept excess properties, you can modify the parameter type in order to allow excess properties explicitly by using an [index signature](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures):
 
-  // This allows any other properties.
-  // You may wish to make these types more specific according to your use case.
-  [key: PropertKey]: unknown;
-}
+   ```ts
+   interface SomeProperties {
+     foo: string;
 
-function serialize(x: SomeProperties): string {
-  return JSON.stringify(x);
-}
+     // This allows any other properties.
+     // You may wish to make these types more specific according to your use case.
+     [key: PropertKey]: unknown;
+   }
 
-// No error!
-serialize({ foo: 'bar', anotherProperty: 'baz' });
-```
+   function serialize(x: SomeProperties): string {
+     return JSON.stringify(x);
+   }
+
+   // No error!
+   serialize({ foo: 'bar', anotherProperty: 'baz' });
+   ```
 
 Which solution is appropriate is a case-by-case decision, depending on the intended use case of your function.
 
