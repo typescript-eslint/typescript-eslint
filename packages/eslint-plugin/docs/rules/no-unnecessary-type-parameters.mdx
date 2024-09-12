@@ -87,6 +87,106 @@ This is because the type parameter `T` relates multiple methods in the `T[]` tog
 Therefore, this rule won't report on type parameters used as a type argument.
 That includes type arguments given to global types such as `Array` (including the `T[]` shorthand and in tuples), `Map`, and `Set`.
 
+## FAQ
+
+### I'm using the type parameter inside the function, so why is the rule reporting?
+
+You might be surprised to that the rule reports on a function like this:
+
+```ts
+function f<T extends string>(string1: T): void {
+  const string2: T = string1;
+  console.log(string2);
+}
+```
+
+After all, the type parameter `T` relates the input `string1` and the local variable `string2`, right?
+However, this usage is unnecessary, since we can achieve the same results by replacing all usages of the type parameter with its constraint.
+That is to say, the function can always be rewritten as:
+
+```ts
+function f(string1: string): void {
+  const string2: string = string1;
+  console.log(string2);
+}
+```
+
+Therefore, this rule only counts usages of a type parameter in the _signature_ of a function, method, or class, but not in the implementation.
+
+### Why am I getting TypeScript errors saying "Object literal may only specify known properties" after removing an unnecessary type parameter?
+
+Suppose you have a situation like the following, which will trigger the rule to report.
+
+```ts
+interface SomeProperties {
+  foo: string;
+}
+
+// T is only used once, so the rule will report.
+function serialize<T extends SomeProperties>(x: T): string {
+  return JSON.stringify(x);
+}
+
+serialize({ foo: 'bar', anotherProperty: 'baz' });
+```
+
+If we remove the unnecessary type parameter, we'll get an error:
+
+```ts
+function serialize(x: SomeProperties): string {
+  return JSON.stringify(x);
+}
+
+// TS Error: Object literal may only specify known properties, and 'anotherProperty' does not exist in type 'SomeProperties'.
+serialize({ foo: 'bar', anotherProperty: 'baz' });
+```
+
+This is because TypeScript figures it's _usually_ an error to explicitly provide excess properties in a location that expects a specific type.
+See [the TypeScript handbook's section on excess property checks](https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks) for further discussion.
+
+The bottom line is - if it doesn't make sense to accept excess properties in your function, congrats!
+You've found a bug in your code, and you can remove the excess property from the call site.
+Otherwise, if you do want your function to accept excess properties, you can modify the parameter type in order to allow excess properties explicitly by using an [index signature](https://www.typescriptlang.org/docs/handbook/2/objects.html#index-signatures):
+
+```ts
+interface SomeProperties {
+  foo: string;
+
+  // This allows any other properties.
+  // You may wish to make these types more specific according to your use case.
+  [key: PropertKey]: unknown;
+}
+
+function serialize(x: SomeProperties): string {
+  return JSON.stringify(x);
+}
+
+// No error!
+serialize({ foo: 'bar', anotherProperty: 'baz' });
+```
+
+Which solution is appropriate is a case-by-case decision, depending on the intended use case of your function.
+
+### I have a complex scenario that is reported by the rule, but I can't see how to remove the type parameter. What should I do?
+
+Sometimes, you may be able to rewrite the code by reaching for some niche TypeScript features, such as [the `NoInfer<T>` utility type](https://www.typescriptlang.org/docs/handbook/utility-types.html#noinfertype) (see [#9751](https://github.com/typescript-eslint/typescript-eslint/issues/9751)).
+
+But, quite possibly, you've hit an edge case where the type is being used in a subtle way that the rule doesn't account for.
+For example, the following code is a way of testing that two types are equal, and currently will be reported by the rule (see [#9709](https://github.com/typescript-eslint/typescript-eslint/issues/9709)):
+
+```ts
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends <
+    T2,
+  >() => T2 extends Compute<Y> ? 1 : 2
+    ? true
+    : false;
+```
+
+Use eslint-disable comments as appropriate to suppress the rule in these cases.
+
+{/* TODO - include an FAQ entry regarding instantiation expressions once the conversation in https://github.com/typescript-eslint/typescript-eslint/pull/9536#discussion_r1705850744 is done */}
+
 ## When Not To Use It
 
 This rule will report on functions that use type parameters solely to test types, for example:
