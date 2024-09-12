@@ -52,19 +52,17 @@ export default createRule({
           return parent.key === node;
 
         case AST_NODE_TYPES.Property:
+          // foo in "const { foo } = bar" will be processed twice, as parent.key
+          // and parent.value. The second is treated as a declaration.
           return (
             (parent.shorthand && parent.value === node) ||
             parent.parent.type === AST_NODE_TYPES.ObjectExpression
           );
 
         case AST_NODE_TYPES.AssignmentPattern:
-          return (
-            parent.left === node &&
-            !(
-              parent.parent.type === AST_NODE_TYPES.Property &&
-              parent.parent.shorthand
-            )
-          );
+          // foo in "const { foo = "" } = bar" will be processed twice, as parent.parent.key
+          // and parent.left. The second is treated as a declaration.
+          return parent.left === node;
 
         case AST_NODE_TYPES.ArrowFunctionExpression:
         case AST_NODE_TYPES.FunctionDeclaration:
