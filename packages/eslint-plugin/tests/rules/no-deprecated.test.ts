@@ -114,7 +114,7 @@ ruleTester.run('no-deprecated', rule, {
         (value: 'b'): void;
         /** @deprecated */
         (value: 'c'): void;
-      }
+      };
       declare const foo: A;
       foo('b');
     `,
@@ -123,7 +123,7 @@ ruleTester.run('no-deprecated', rule, {
         new (value: 'b'): void;
         /** @deprecated */
         new (value: 'c'): void;
-      }
+      };
       new a('b');
     `,
     `
@@ -625,9 +625,9 @@ ruleTester.run('no-deprecated', rule, {
       code: `
         declare const A: {
           /** @deprecated */
-          new (): string
+          new (): string;
         };
-
+        
         new A();
       `,
       errors: [
@@ -799,11 +799,13 @@ ruleTester.run('no-deprecated', rule, {
       code: `
         class A {
           /** @deprecated */
-          b(): string { return ''; }
+          b(): string {
+            return '';
+          }
         }
-
+        
         declare const a: A;
-
+        
         a.b();
       `,
       only: false,
@@ -1242,7 +1244,7 @@ ruleTester.run('no-deprecated', rule, {
           (value: 'b'): void;
           /** @deprecated */
           (value: 'c'): void;
-        }
+        };
         declare const foo: A;
         foo('c');
       `,
