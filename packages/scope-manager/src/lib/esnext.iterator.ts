@@ -4,11 +4,11 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE } from './base-config';
+import { TYPE, TYPE_VALUE } from './base-config';
+import { es2015_iterable } from './es2015.iterable';
 
-export const webworker_asynciterable = {
-  FileSystemDirectoryHandleAsyncIterator: TYPE,
-  FileSystemDirectoryHandle: TYPE,
-  ReadableStreamAsyncIterator: TYPE,
-  ReadableStream: TYPE,
+export const esnext_iterator = {
+  ...es2015_iterable,
+  Iterator: TYPE_VALUE,
+  IteratorObjectConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

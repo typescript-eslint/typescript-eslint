@@ -86,6 +86,7 @@ import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
 import { esnext_full } from './esnext.full';
 import { esnext_intl } from './esnext.intl';
+import { esnext_iterator } from './esnext.iterator';
 import { esnext_object } from './esnext.object';
 import { esnext_promise } from './esnext.promise';
 import { esnext_regexp } from './esnext.regexp';
@@ -183,6 +184,7 @@ const lib = {
   'esnext.decorators': esnext_decorators,
   'esnext.object': esnext_object,
   'esnext.regexp': esnext_regexp,
+  'esnext.iterator': esnext_iterator,
   decorators,
   'decorators.legacy': decorators_legacy,
   'es2016.full': es2016_full,

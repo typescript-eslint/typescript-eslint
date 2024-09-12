@@ -15,4 +15,5 @@ export const es2018_asynciterable = {
   AsyncIterator: TYPE,
   AsyncIterable: TYPE,
   AsyncIterableIterator: TYPE,
+  AsyncIteratorObject: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
