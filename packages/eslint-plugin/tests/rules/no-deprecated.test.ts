@@ -1383,8 +1383,8 @@ ruleTester.run('no-deprecated', rule, {
       `,
       errors: [
         {
-          column: 15,
-          endColumn: 18,
+          column: 17,
+          endColumn: 20,
           line: 7,
           endLine: 7,
           data: { name: 'foo' },
