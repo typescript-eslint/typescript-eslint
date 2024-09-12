@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-parameters';
 import { getFixturesRootDir } from '../RuleTester';
@@ -968,13 +968,13 @@ declare function sillyFoo<T, Constant>(
       // that resolves this sort-of-false-positive, please update the docs
       // accordingly.
       // Original discussion in https://github.com/typescript-eslint/typescript-eslint/issues/9709
-      code: `
+      code: noFormat`
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
 type Equal<X, Y> =
-  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends <
-    T2,
-  >() => T2 extends Compute<Y> ? 1 : 2
-    ? true
-    : false;
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
       `,
       errors: [
         {
