@@ -94,7 +94,7 @@ That includes type arguments given to global types such as `Array` (including th
 You might be surprised to that the rule reports on a function like this:
 
 ```ts
-function f<T extends string>(string1: T): void {
+function log<T extends string>(string1: T): void {
   const string2: T = string1;
   console.log(string2);
 }
@@ -105,7 +105,7 @@ However, this usage is unnecessary, since we can achieve the same results by rep
 That is to say, the function can always be rewritten as:
 
 ```ts
-function f(string1: string): void {
+function log(string1: string): void {
   const string2: string = string1;
   console.log(string2);
 }
