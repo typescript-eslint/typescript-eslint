@@ -298,6 +298,38 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
         /** @deprecated */ const a = { b: 1 };
+        const { c = a } = {};
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = { b: 1 };
+        const [c = a] = [];
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 21,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = { b: 1 };
         console.log(a);
       `,
       errors: [
