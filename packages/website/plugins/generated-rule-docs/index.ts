@@ -6,7 +6,6 @@ import { isESLintPluginRuleModule, isVFileWithStem } from '../utils/rules';
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
-import { insertFormattingNotice } from './insertions/insertFormattingNotice';
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
@@ -28,7 +27,6 @@ export const generatedRuleDocs: Plugin = () => {
 
     removeSourceCodeNotice(page);
     insertRuleDescription(page);
-    insertFormattingNotice(page);
 
     const eslintrc = rule.meta.docs.extendsBaseRule
       ? insertBaseRuleReferences(page)
