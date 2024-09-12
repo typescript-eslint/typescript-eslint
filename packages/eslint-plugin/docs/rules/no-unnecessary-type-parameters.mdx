@@ -173,15 +173,16 @@ Which solution is appropriate is a case-by-case decision, depending on the inten
 Sometimes, you may be able to rewrite the code by reaching for some niche TypeScript features, such as [the `NoInfer<T>` utility type](https://www.typescriptlang.org/docs/handbook/utility-types.html#noinfertype) (see [#9751](https://github.com/typescript-eslint/typescript-eslint/issues/9751)).
 
 But, quite possibly, you've hit an edge case where the type is being used in a subtle way that the rule doesn't account for.
-For example, the following code is a way of testing that two types are equal, and currently will be reported by the rule (see [#9709](https://github.com/typescript-eslint/typescript-eslint/issues/9709)):
+For example, the following arcane code is a way of testing that two types are equal, and currently will be reported by the rule (see [#9709](https://github.com/typescript-eslint/typescript-eslint/issues/9709)):
 
+{/* prettier-ignore */}
 ```ts
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
 type Equal<X, Y> =
-  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends <
-    T2,
-  >() => T2 extends Compute<Y> ? 1 : 2
-    ? true
-    : false;
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+      ? true
+      : false;
 ```
 
 Use eslint-disable comments as appropriate to suppress the rule in these cases.
