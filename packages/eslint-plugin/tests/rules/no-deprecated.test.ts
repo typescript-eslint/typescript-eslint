@@ -813,8 +813,8 @@ ruleTester.run('no-deprecated', rule, {
         {
           column: 11,
           endColumn: 12,
-          line: 9,
-          endLine: 9,
+          line: 11,
+          endLine: 11,
           data: { name: 'b' },
           messageId: 'deprecated',
         },

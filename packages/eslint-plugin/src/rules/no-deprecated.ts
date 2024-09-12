@@ -182,7 +182,7 @@ export default createRule({
         }
 
         // Properties with function-like types have "deprecated" jsdoc
-        // on their symbols, not their signatures:
+        // on their symbols, not on their signatures:
         //
         // interface Props {
         //   /** @deprecated */
