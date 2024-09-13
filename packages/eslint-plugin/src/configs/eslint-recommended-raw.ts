@@ -23,6 +23,7 @@ export default (
     'constructor-super': 'off', // ts(2335) & ts(2377)
     'getter-return': 'off', // ts(2378)
     'no-const-assign': 'off', // ts(2588)
+    'no-constant-binary-condition': 'off', // ts(2872) + no-unnecessary-condition
     'no-dupe-args': 'off', // ts(2300)
     'no-dupe-class-members': 'off', // ts(2393) & ts(2300)
     'no-dupe-keys': 'off', // ts(1117)
