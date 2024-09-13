@@ -101,6 +101,32 @@ ruleTester.run('no-deprecated', rule, {
       a('b');
     `,
     `
+      class A {
+        a(value: 'b'): void;
+        /** @deprecated */
+        a(value: 'c'): void;
+      }
+      declare const foo: A;
+      foo.a('b');
+    `,
+    `
+      type A = {
+        (value: 'b'): void;
+        /** @deprecated */
+        (value: 'c'): void;
+      };
+      declare const foo: A;
+      foo('b');
+    `,
+    `
+      declare const a: {
+        new (value: 'b'): void;
+        /** @deprecated */
+        new (value: 'c'): void;
+      };
+      new a('b');
+    `,
+    `
       namespace assert {
         export function fail(message?: string | Error): never;
         /** @deprecated since v10.0.0 - use fail([message]) or other assert functions instead. */
@@ -157,6 +183,30 @@ ruleTester.run('no-deprecated', rule, {
 
       export type D = A.C | A.D;
     `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: Props;
+      const { anchor = '' } = x;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: { bar: Props };
+      const {
+        bar: { anchor = '' },
+      } = x;
+    `,
+    `
+      interface Props {
+        anchor: 'foo';
+      }
+      declare const x: [item: Props];
+      const [{ anchor = 'bar' }] = x;
+    `,
+    'function fn(/** @deprecated */ foo = 4) {}',
   ],
   invalid: [
     {
@@ -268,6 +318,38 @@ ruleTester.run('no-deprecated', rule, {
           endLine: 3,
           data: { name: 'a', reason: 'Reason.' },
           messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = { b: 1 };
+        const { c = a } = {};
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 22,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = { b: 1 };
+        const [c = a] = [];
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 21,
+          line: 3,
+          endLine: 3,
+          data: { name: 'a' },
+          messageId: 'deprecated',
         },
       ],
     },
@@ -597,6 +679,26 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        declare const A: {
+          /** @deprecated */
+          new (): string;
+        };
+        
+        new A();
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          line: 7,
+          endLine: 7,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         /** @deprecated */
         declare class A {
           constructor();
@@ -676,6 +778,99 @@ ruleTester.run('no-deprecated', rule, {
           endColumn: 12,
           line: 9,
           endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b;
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        declare class A {
+          /** @deprecated */
+          b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      only: false,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface A {
+          /** @deprecated */
+          b: () => string;
+        }
+
+        declare const a: A;
+
+        a.b();
+      `,
+      only: false,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 9,
+          endLine: 9,
+          data: { name: 'b' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          /** @deprecated */
+          b(): string {
+            return '';
+          }
+        }
+        
+        declare const a: A;
+        
+        a.b();
+      `,
+      only: false,
+      errors: [
+        {
+          column: 11,
+          endColumn: 12,
+          line: 11,
+          endLine: 11,
           data: { name: 'b' },
           messageId: 'deprecated',
         },
@@ -1101,6 +1296,27 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        type A = {
+          (value: 'b'): void;
+          /** @deprecated */
+          (value: 'c'): void;
+        };
+        declare const foo: A;
+        foo('c');
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 12,
+          line: 8,
+          endLine: 8,
+          data: { name: 'foo' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         function a(
           /** @deprecated */
           b?: boolean,
@@ -1282,6 +1498,88 @@ ruleTester.run('no-deprecated', rule, {
           line: 9,
           endLine: 9,
           data: { name: 'B' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          anchor: 'foo';
+        }
+        declare const x: Props;
+        const { anchor = '' } = x;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 23,
+          line: 7,
+          endLine: 7,
+          data: { name: 'anchor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          anchor: 'foo';
+        }
+        declare const x: { bar: Props };
+        const {
+          bar: { anchor = '' },
+        } = x;
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          line: 8,
+          endLine: 8,
+          data: { name: 'anchor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          anchor: 'foo';
+        }
+        declare const x: [item: Props];
+        const [{ anchor = 'bar' }] = x;
+      `,
+      errors: [
+        {
+          column: 18,
+          endColumn: 24,
+          line: 7,
+          endLine: 7,
+          data: { name: 'anchor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        interface Props {
+          /** @deprecated */
+          foo: Props;
+        }
+        declare const x: Props;
+        const { foo = x } = x;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          line: 7,
+          endLine: 7,
+          data: { name: 'foo' },
           messageId: 'deprecated',
         },
       ],

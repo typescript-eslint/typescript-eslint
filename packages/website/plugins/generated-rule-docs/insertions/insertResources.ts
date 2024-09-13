@@ -1,4 +1,3 @@
-import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import { getUrlForRuleTest, sourceUrlPrefix } from '../../utils/rules';
@@ -9,61 +8,11 @@ export function insertResources(page: RuleDocsPage): void {
   page.spliceChildren(
     page.children.length,
     0,
-    {
-      children: [
-        {
-          type: 'text',
-          value: 'Resources',
-        },
-      ],
-      depth: 2,
-      type: 'heading',
-    } as mdast.Heading,
-    {
-      children: [
-        {
-          children: [
-            {
-              children: [
-                {
-                  type: 'link',
-                  url: `${sourceUrlPrefix}src/rules/${page.file.stem}.ts`,
-                  children: [
-                    {
-                      type: 'text',
-                      value: 'Rule source',
-                    },
-                  ],
-                },
-              ],
-              type: 'paragraph',
-            },
-          ],
-          type: 'listItem',
-        },
-        {
-          children: [
-            {
-              children: [
-                {
-                  type: 'link',
-                  url: getUrlForRuleTest(page.file.stem),
-                  children: [
-                    {
-                      type: 'text',
-                      value: 'Test source',
-                    },
-                  ],
-                },
-              ],
-              type: 'paragraph',
-            },
-          ],
-          type: 'listItem',
-        },
-      ],
-      type: 'list',
-    } as mdast.List,
+    `## Resources
+
+- [Rule source](${sourceUrlPrefix}src/rules/${page.file.stem}.ts)
+- [Test source](${getUrlForRuleTest(page.file.stem)})
+    `,
   );
 
   // Also add a notice about coming from ESLint core for extension rules

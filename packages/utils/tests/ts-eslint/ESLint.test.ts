@@ -13,6 +13,7 @@ describe('ESLint', () => {
       expect(eslint).toBeInstanceOf(FlatESLint);
     });
     it('legacy', () => {
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       const eslint = new ESLint.LegacyESLint({
         // accepts legacy configs
         baseConfig: {
