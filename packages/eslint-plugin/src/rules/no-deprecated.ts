@@ -193,10 +193,7 @@ export default createRule({
     function getSymbol(
       node: IdentifierLike,
     ): ts.Signature | ts.Symbol | undefined {
-      if (
-        node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-        node.parent.type === AST_NODE_TYPES.Property
-      ) {
+      if (node.parent.type === AST_NODE_TYPES.Property) {
         return services
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
