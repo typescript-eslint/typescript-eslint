@@ -145,6 +145,8 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 # 8.0.0 (2024-07-31)
 
+> 👉 See [Announcing typescript-eslint v8](https://typescript-eslint.io/blog/announcing-typescript-eslint-v8) for an upgrade guide and the full list of changes.
+
 ### ⚠️  Breaking Changes
 
 - **typescript-estree:** split TSMappedType typeParameter into constraint and key ([#7065](https://github.com/typescript-eslint/typescript-eslint/pull/7065))
@@ -824,6 +826,7 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 # 7.0.0 (2024-02-12)
 
+> 👉 See [Announcing typescript-eslint v7](https://typescript-eslint.io/blog/announcing-typescript-eslint-v7) for an upgrade guide and the full list of changes.
 
 ### 🚀 Features
 
@@ -1467,6 +1470,8 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 
 # [6.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.62.0...v6.0.0) (2023-07-10)
+
+> 👉 See [Announcing typescript-eslint v6](https://typescript-eslint.io/blog/announcing-typescript-eslint-v6) for an upgrade guide and the full list of changes.
 
 
 ### Bug Fixes
