@@ -13,7 +13,7 @@ declare module 'typescript' {
 
   // add back the deprecated properties that were removed in newer TS versions
   // make sure these properties are marked as @ deprecated so they're flagged
-  // by the `deprecation/deprecation` lint rule
+  // by the `@typescript-eslint/no-deprecated` lint rule
 
   interface PropertySignature {
     /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */

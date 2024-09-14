@@ -44,9 +44,9 @@ ruleTester.run('no-base-to-string', rule, {
     ...literalList.map(i => `\`\${${i}}\`;`),
 
     // operator + +=
-    ...literalListWrapped
-      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
-      .reduce((pre, cur) => [...pre, ...cur]),
+    ...literalListWrapped.flatMap(l =>
+      literalListWrapped.map(r => `${l} + ${r};`),
+    ),
 
     // toString()
     ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),

@@ -69,7 +69,7 @@ export default createRule<[], MessageIds>({
 
         context.report({
           node: reportingNode,
-          messageId: messageId,
+          messageId,
           data: {
             type: isErrorType ? '`error` type' : '`any`',
           },

@@ -349,6 +349,16 @@ const bar = foo.a as string | undefined | bigint;
       `,
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
+    {
+      code: `
+if (Math.random()) {
+  {
+    var x = 1;
+  }
+}
+x!;
+      `,
+    },
   ],
 
   invalid: [
@@ -992,7 +1002,7 @@ const foo =  /* a */ (3 + 5);
       ],
     },
     {
-      code: noFormat`
+      code: `
 const foo = <number /* a */>(3 + 5);
       `,
       output: `
@@ -1076,6 +1086,71 @@ const bar = foo.a;
         },
       ],
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+varDeclarationFromFixture!;
+      `,
+      output: `
+varDeclarationFromFixture;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+x!;
+      `,
+      output: `
+var x = 1;
+x;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+{
+  x!;
+}
+      `,
+      output: `
+var x = 1;
+{
+  x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+const a = '';
+const b: string | undefined = (a ? undefined : a)!;
+      `,
+      output: `
+const a = '';
+const b: string | undefined = (a ? undefined : a);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
     },
   ],
 });

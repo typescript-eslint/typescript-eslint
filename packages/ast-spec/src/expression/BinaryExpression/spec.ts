@@ -8,8 +8,8 @@ import type { BinaryOperatorToText } from './BinaryOperatorToText';
 export * from './BinaryOperatorToText';
 
 export interface BinaryExpression extends BaseNode {
-  type: AST_NODE_TYPES.BinaryExpression;
-  operator: ValueOf<BinaryOperatorToText>;
   left: Expression | PrivateIdentifier;
+  operator: ValueOf<BinaryOperatorToText>;
   right: Expression;
+  type: AST_NODE_TYPES.BinaryExpression;
 }

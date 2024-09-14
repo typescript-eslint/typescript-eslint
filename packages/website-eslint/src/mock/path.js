@@ -51,8 +51,7 @@ function normalizeArray(parts, allowAboveRoot) {
 
 // Split a filename into [root, dir, basename, ext], unix version
 // 'root' is just a slash, or nothing.
-const splitPathRe =
-  /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^/]+?|)(\.[^./]*|))(?:[/]*)$/;
+const splitPathRe = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^/]+?)?(\.[^./]*|))\/*$/;
 const splitPath = function (filename) {
   return splitPathRe.exec(filename).slice(1);
 };
@@ -167,14 +166,10 @@ export function relative(from, to) {
     }
   }
 
-  let outputParts = [];
-  for (let i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
+  return [
+    ...Array(fromParts.length - samePartsLength).fill('..'),
+    ...toParts.slice(samePartsLength),
+  ].join('/');
 }
 
 export const sep = '/';
@@ -212,16 +207,16 @@ export function extname(path) {
 }
 
 export default {
-  extname: extname,
-  basename: basename,
-  dirname: dirname,
-  sep: sep,
-  delimiter: delimiter,
-  relative: relative,
-  join: join,
-  isAbsolute: isAbsolute,
-  normalize: normalize,
-  resolve: resolve,
+  extname,
+  basename,
+  dirname,
+  sep,
+  delimiter,
+  relative,
+  join,
+  isAbsolute,
+  normalize,
+  resolve,
 };
 
 function filter(xs, f) {

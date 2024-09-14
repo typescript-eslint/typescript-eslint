@@ -74,6 +74,7 @@ export default createRule({
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
+        case AST_NODE_TYPES.MethodDefinition:
           return {
             ...getNameFromMember(member, context.sourceCode),
             static: !!member.static,
@@ -90,12 +91,6 @@ export default createRule({
             name: 'new',
             callSignature: false,
             type: MemberNameType.Normal,
-          };
-        case AST_NODE_TYPES.MethodDefinition:
-          return {
-            ...getNameFromMember(member, context.sourceCode),
-            static: !!member.static,
-            callSignature: false,
           };
       }
 

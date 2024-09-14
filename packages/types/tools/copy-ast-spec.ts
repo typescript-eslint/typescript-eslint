@@ -76,11 +76,9 @@ async function main(): Promise<void> {
     await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
   }
 
-  await Promise.all([
-    copyFile('dist', 'ast-spec.ts', code =>
-      code.replace(/export declare enum/g, 'export enum'),
-    ),
-  ]);
+  await copyFile('dist', 'ast-spec.ts', code =>
+    code.replaceAll('export declare enum', 'export enum'),
+  );
 }
 
 main().catch((error: unknown) => {

@@ -89,7 +89,7 @@ async function formatCode(code: string[]): Promise<string> {
 }
 
 function sanitize(name: string): string {
-  return name.replace(/\./g, '_');
+  return name.replaceAll('.', '_');
 }
 
 function getVariablesFromScope(scopeManager: ScopeManager): Variable[] {
@@ -237,7 +237,7 @@ async function main(): Promise<void> {
 
     if (requiredBaseImports.size > 0) {
       imports.push(
-        `import {${Array.from(requiredBaseImports)
+        `import {${[...requiredBaseImports]
           .sort()
           .join(',')}} from './${BASE_CONFIG_MODULE_NAME}';`,
       );
@@ -288,9 +288,7 @@ async function main(): Promise<void> {
   // generate a string union type for the lib names
 
   const libUnionCode = [
-    `type Lib = ${Array.from(libMap.keys())
-      .map(k => `'${k}'`)
-      .join(' | ')};`,
+    `type Lib = ${[...libMap.keys()].map(k => `'${k}'`).join(' | ')};`,
     '',
     'export { Lib };',
   ];

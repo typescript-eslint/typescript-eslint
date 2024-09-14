@@ -1,6 +1,8 @@
-/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+/* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as parser from '@typescript-eslint/parser';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+import type { TSESTree } from '@typescript-eslint/utils';
 
 import type {
   MessageIds,
@@ -143,6 +145,15 @@ ruleTester.run('consistent-type-assertions', rule, {
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
+    },
+    {
+      code: '123;',
+      languageOptions: {
+        // simulate a 3rd party parser that doesn't provide parser services
+        parser: {
+          parse: (): TSESTree.Program => parser.parse('123;'),
+        },
+      },
     },
   ],
   invalid: [
@@ -600,7 +611,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     {
       // prettier wants to remove the parens around the yield expression,
       // but they're required.
-      code: noFormat`
+      code: `
 function* g() {
   const y = <any>(yield a);
 }

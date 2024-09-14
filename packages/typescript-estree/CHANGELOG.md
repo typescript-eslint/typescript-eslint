@@ -1,3 +1,83 @@
+## 8.5.0 (2024-09-09)
+
+
+### 🚀 Features
+
+- **typescript-estree:** default projectService.defaultProject to 'tsconfig.json'
+
+
+### ❤️  Thank You
+
+- f44da958e
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.4.0 (2024-09-02)
+
+
+### 🚀 Features
+
+- **typescript-estree:** make withoutProjectParserOptions generic
+
+
+### ❤️  Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.3.0 (2024-08-26)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-deprecation] add rule
+
+- **typescript-estree:** replace `globby` w/ `fast-glob`
+
+- **typescript-estree:** reload project service once when file config isn't found
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Daichi Kamiyama
+- Josh Goldberg ✨
+- Kim Sang Du
+- Sukka
+- Vida Xie
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.2.0 (2024-08-19)
+
+
+### 🚀 Features
+
+- **typescript-estree:** special-case error for parserOptions.project and project references
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** pass in tsconfigRootDir as cwd to getParsedConfigFile
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Dave
+- Jake Bailey
+- James
+- Josh Goldberg ✨
+- liuxingbaoyu
+- Yukihiro Hasegawa
+- Yutong Zhu
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.1.0 (2024-08-12)
 
 

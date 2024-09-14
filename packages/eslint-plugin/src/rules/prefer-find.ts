@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { RuleFix, Scope } from '@typescript-eslint/utils/ts-eslint';
+import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
 
@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
+  isStaticMemberAccessOfValue,
   nullThrows,
 } from '../util';
 
@@ -89,7 +90,7 @@ export default createRule({
         // or the optional chaining variants.
         if (callee.type === AST_NODE_TYPES.MemberExpression) {
           const isBracketSyntaxForFilter = callee.computed;
-          if (isStaticMemberAccessOfValue(callee, 'filter', globalScope)) {
+          if (isStaticMemberAccessOfValue(callee, context, 'filter')) {
             const filterNode = callee.property;
 
             const filteredObjectType = getConstrainedTypeAtLocation(
@@ -162,7 +163,7 @@ export default createRule({
       if (
         callee.type === AST_NODE_TYPES.MemberExpression &&
         !callee.optional &&
-        isStaticMemberAccessOfValue(callee, 'at', globalScope)
+        isStaticMemberAccessOfValue(callee, context, 'at')
       ) {
         const atArgument = getStaticValue(node.arguments[0], globalScope);
         if (atArgument != null && isTreatedAsZeroByArrayAt(atArgument.value)) {
@@ -321,25 +322,3 @@ export default createRule({
     };
   },
 });
-
-/**
- * Answers whether the member expression looks like
- * `x.memberName`, `x['memberName']`,
- * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
- */
-function isStaticMemberAccessOfValue(
-  memberExpression:
-    | TSESTree.MemberExpressionComputedName
-    | TSESTree.MemberExpressionNonComputedName,
-  value: string,
-  scope?: Scope.Scope | undefined,
-): boolean {
-  if (!memberExpression.computed) {
-    // x.memberName case.
-    return memberExpression.property.name === value;
-  }
-
-  // x['memberName'] cases.
-  const staticValueResult = getStaticValue(memberExpression.property, scope);
-  return staticValueResult != null && value === staticValueResult.value;
-}

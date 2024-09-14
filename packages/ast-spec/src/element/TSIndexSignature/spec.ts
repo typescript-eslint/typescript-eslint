@@ -5,10 +5,10 @@ import type { TSTypeAnnotation } from '../../special/TSTypeAnnotation/spec';
 import type { Parameter } from '../../unions/Parameter';
 
 export interface TSIndexSignature extends BaseNode {
-  type: AST_NODE_TYPES.TSIndexSignature;
-  parameters: Parameter[];
-  typeAnnotation: TSTypeAnnotation | undefined;
-  readonly: boolean;
   accessibility: Accessibility | undefined;
+  parameters: Parameter[];
+  readonly: boolean;
   static: boolean;
+  type: AST_NODE_TYPES.TSIndexSignature;
+  typeAnnotation: TSTypeAnnotation | undefined;
 }

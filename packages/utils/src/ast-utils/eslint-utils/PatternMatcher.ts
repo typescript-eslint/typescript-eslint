@@ -2,20 +2,6 @@ import * as eslintUtils from '@eslint-community/eslint-utils';
 
 interface PatternMatcher {
   /**
-   * Iterate all matched parts in a given string.
-   *
-   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-execall}
-   */
-  execAll(str: string): IterableIterator<RegExpExecArray>;
-
-  /**
-   * Check whether this pattern matches a given string or not.
-   *
-   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-test}
-   */
-  test(str: string): boolean;
-
-  /**
    * Replace all matched parts by a given replacer.
    *
    * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-symbol-replace}
@@ -39,8 +25,22 @@ interface PatternMatcher {
    */
   [Symbol.replace](
     str: string,
-    replacer: string | ((...strs: string[]) => string),
+    replacer: ((...strs: string[]) => string) | string,
   ): string;
+
+  /**
+   * Iterate all matched parts in a given string.
+   *
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-execall}
+   */
+  execAll(str: string): IterableIterator<RegExpExecArray>;
+
+  /**
+   * Check whether this pattern matches a given string or not.
+   *
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-test}
+   */
+  test(str: string): boolean;
 }
 
 /**

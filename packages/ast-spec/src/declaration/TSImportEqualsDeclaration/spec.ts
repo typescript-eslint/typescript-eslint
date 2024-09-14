@@ -6,11 +6,15 @@ import type { TSQualifiedName } from '../../type/TSQualifiedName/spec';
 import type { ImportKind } from '../ExportAndImportKind';
 
 interface TSImportEqualsDeclarationBase extends BaseNode {
-  type: AST_NODE_TYPES.TSImportEqualsDeclaration;
   /**
    * The locally imported name.
    */
   id: Identifier;
+  /**
+   * The kind of the import. Always `'value'` unless `moduleReference` is a
+   * `TSExternalModuleReference`.
+   */
+  importKind: ImportKind;
   /**
    * The value being aliased.
    * @example
@@ -21,15 +25,15 @@ interface TSImportEqualsDeclarationBase extends BaseNode {
    * ```
    */
   moduleReference: Identifier | TSExternalModuleReference | TSQualifiedName;
-  /**
-   * The kind of the import. Always `'value'` unless `moduleReference` is a
-   * `TSExternalModuleReference`.
-   */
-  importKind: ImportKind;
+  type: AST_NODE_TYPES.TSImportEqualsDeclaration;
 }
 
 export interface TSImportEqualsNamespaceDeclaration
   extends TSImportEqualsDeclarationBase {
+  /**
+   * The kind of the import.
+   */
+  importKind: 'value';
   /**
    * The value being aliased.
    * ```
@@ -38,14 +42,14 @@ export interface TSImportEqualsNamespaceDeclaration
    * ```
    */
   moduleReference: Identifier | TSQualifiedName;
-  /**
-   * The kind of the import.
-   */
-  importKind: 'value';
 }
 
 export interface TSImportEqualsRequireDeclaration
   extends TSImportEqualsDeclarationBase {
+  /**
+   * The kind of the import.
+   */
+  importKind: ImportKind;
   /**
    * The value being aliased.
    * ```
@@ -53,10 +57,6 @@ export interface TSImportEqualsRequireDeclaration
    * ```
    */
   moduleReference: TSExternalModuleReference;
-  /**
-   * The kind of the import.
-   */
-  importKind: ImportKind;
 }
 
 export type TSImportEqualsDeclaration =

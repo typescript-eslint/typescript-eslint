@@ -29,6 +29,7 @@ import noArrayDelete from './no-array-delete';
 import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
+import noDeprecated from './no-deprecated';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDuplicateEnumValues from './no-duplicate-enum-values';
 import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
@@ -158,6 +159,7 @@ export default {
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
+  'no-deprecated': noDeprecated,
   'no-dupe-class-members': noDupeClassMembers,
   'no-duplicate-enum-values': noDuplicateEnumValues,
   'no-duplicate-type-constituents': noDuplicateTypeConstituents,
@@ -253,7 +255,7 @@ export default {
   'strict-void-return': strictVoidReturn,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
   'triple-slash-reference': tripleSlashReference,
-  typedef: typedef,
+  typedef,
   'unbound-method': unboundMethod,
   'unified-signatures': unifiedSignatures,
   'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,

@@ -42,6 +42,8 @@ export default createRule<[Options], MessageIds>({
         type: 'object',
         properties: {
           allowInGenericTypeArguments: {
+            description:
+              'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
               { type: 'boolean' },
               {
@@ -52,6 +54,8 @@ export default createRule<[Options], MessageIds>({
             ],
           },
           allowAsThisParameter: {
+            description:
+              'Whether a `this` parameter of a function may be `void`.',
             type: 'boolean',
           },
         },
@@ -103,11 +107,11 @@ export default createRule<[Options], MessageIds>({
       if (Array.isArray(allowInGenericTypeArguments)) {
         const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)
-          .replace(/ /gu, '');
+          .replaceAll(' ', '');
 
         if (
           !allowInGenericTypeArguments
-            .map(s => s.replace(/ /gu, ''))
+            .map(s => s.replaceAll(' ', ''))
             .includes(fullyQualifiedName)
         ) {
           context.report({

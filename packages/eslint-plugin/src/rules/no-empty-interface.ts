@@ -33,6 +33,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowSingleExtends: {
+            description:
+              'Whether to allow empty interfaces that extend a single other interface.',
             type: 'boolean',
           },
         },
@@ -58,56 +60,57 @@ export default createRule<Options, MessageIds>({
             node: node.id,
             messageId: 'noEmpty',
           });
-        } else if (extend.length === 1) {
+        } else if (
+          extend.length === 1 &&
           // interface extends exactly 1 interface --> Report depending on rule setting
-          if (!allowSingleExtends) {
-            const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
-              let typeParam = '';
-              if (node.typeParameters) {
-                typeParam = context.sourceCode.getText(node.typeParameters);
-              }
-              return fixer.replaceText(
-                node,
-                `type ${context.sourceCode.getText(
-                  node.id,
-                )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
-              );
-            };
-            const scope = context.sourceCode.getScope(node);
+          !allowSingleExtends
+        ) {
+          const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
+            let typeParam = '';
+            if (node.typeParameters) {
+              typeParam = context.sourceCode.getText(node.typeParameters);
+            }
+            return fixer.replaceText(
+              node,
+              `type ${context.sourceCode.getText(
+                node.id,
+              )}${typeParam} = ${context.sourceCode.getText(extend[0])}`,
+            );
+          };
+          const scope = context.sourceCode.getScope(node);
 
-            const mergedWithClassDeclaration = scope.set
-              .get(node.id.name)
-              ?.defs.some(
-                def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
-              );
-
-            const isInAmbientDeclaration = !!(
-              isDefinitionFile(context.filename) &&
-              scope.type === ScopeType.tsModule &&
-              scope.block.declare
+          const mergedWithClassDeclaration = scope.set
+            .get(node.id.name)
+            ?.defs.some(
+              def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
             );
 
-            const useAutoFix = !(
-              isInAmbientDeclaration || mergedWithClassDeclaration
-            );
+          const isInAmbientDeclaration = !!(
+            isDefinitionFile(context.filename) &&
+            scope.type === ScopeType.tsModule &&
+            scope.block.declare
+          );
 
-            context.report({
-              node: node.id,
-              messageId: 'noEmptyWithSuper',
-              ...(useAutoFix
-                ? { fix }
-                : !mergedWithClassDeclaration
-                  ? {
-                      suggest: [
-                        {
-                          messageId: 'noEmptyWithSuper',
-                          fix,
-                        },
-                      ],
-                    }
-                  : null),
-            });
-          }
+          const useAutoFix = !(
+            isInAmbientDeclaration || mergedWithClassDeclaration
+          );
+
+          context.report({
+            node: node.id,
+            messageId: 'noEmptyWithSuper',
+            ...(useAutoFix
+              ? { fix }
+              : !mergedWithClassDeclaration
+                ? {
+                    suggest: [
+                      {
+                        messageId: 'noEmptyWithSuper',
+                        fix,
+                      },
+                    ],
+                  }
+                : null),
+          });
         }
       },
     };

@@ -94,7 +94,7 @@ export function createTestCases(cases: Cases): void {
           ): ValidTestCase<Options> => ({
             options: [{ ...options, filter: IGNORED_FILTER }],
             code: `// ${JSON.stringify(options)}\n${test.code
-              .map(code => code.replace(REPLACE_REGEX, preparedName))
+              .map(code => code.replaceAll(REPLACE_REGEX, preparedName))
               .join('\n')}`,
           });
 
@@ -283,9 +283,9 @@ export function createTestCases(cases: Cases): void {
                 },
               ],
               code: `// ${JSON.stringify(options)}\n${test.code
-                .map(code => code.replace(REPLACE_REGEX, preparedName))
+                .map(code => code.replaceAll(REPLACE_REGEX, preparedName))
                 .join('\n')}`,
-              errors: errors,
+              errors,
             };
           };
 
