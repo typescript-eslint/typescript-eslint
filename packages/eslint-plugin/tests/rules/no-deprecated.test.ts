@@ -247,7 +247,8 @@ ruleTester.run('no-deprecated', rule, {
       languageOptions: {
         parserOptions: {
           tsconfigRootDir: rootDir,
-          project: 'tsconfig.moduleResolution-node16.json',
+          projectService: false,
+          project: './tsconfig.moduleResolution-node16.json',
         },
       },
     },
@@ -2300,7 +2301,7 @@ ruleTester.run('no-deprecated', rule, {
     {
       code: `
         import imported from './deprecated';
-        
+
         imported;
       `,
       errors: [
@@ -2324,7 +2325,8 @@ ruleTester.run('no-deprecated', rule, {
       languageOptions: {
         parserOptions: {
           tsconfigRootDir: rootDir,
-          project: 'tsconfig.moduleResolution-node16.json',
+          projectService: false,
+          project: './tsconfig.moduleResolution-node16.json',
         },
       },
       errors: [
