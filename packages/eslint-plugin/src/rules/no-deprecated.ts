@@ -264,6 +264,9 @@ export default createRule({
           // all symbol declarations combined into one array. And AFAIK there is
           // no publicly exported TS function that can tell us if a particular
           // declaration is deprecated or not.
+          //
+          // So, in case of function and method declarations, we don't check original
+          // aliased symbol, but rely on the getJsDocDeprecation(signature) call below.
           false,
         ) ?? getJsDocDeprecation(signature)
       );
