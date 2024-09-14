@@ -35,6 +35,13 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [],
   create(context) {
     const trackedClasses: Map<string, PrivateMember>[] = [];
+
+    /**
+     * The core ESLint rule tracks methods by adding an extra property of
+     * "isUsed" to the method, which obviously violates type safety. Instead, in
+     * our extended rule, we create a separate data structure to track whether a
+     * method is being used.
+     */
     const trackedMembersBeingUsed = new Set<
       | TSESTree.MethodDefinitionComputedName
       | TSESTree.MethodDefinitionNonComputedName
