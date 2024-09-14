@@ -11,14 +11,3 @@ export class Reducable {
 
 // used by no-implied-eval test function imports
 export class Function {}
-
-// used by no-deprecated to test importing deprecated things
-/** @deprecated */
-export class DeprecatedClass {
-  /** @deprecated */
-  foo: string = '';
-}
-/** @deprecated */
-export const deprecatedVariable = 1;
-/** @deprecated */
-export function deprecatedFunction() {}
