@@ -87,7 +87,7 @@ export default {
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
-        '@docusaurus/plugin-content-blog/client',
+        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',

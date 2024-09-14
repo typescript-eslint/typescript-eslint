@@ -3,9 +3,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  getStaticMemberAccessValue,
   getStaticStringValue,
   isAssignee,
   isFunction,
+  isStaticMemberAccessOfValue,
   nullThrows,
 } from '../util';
 
@@ -79,10 +81,6 @@ export default createRule<Options, MessageIds>({
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 
-    function getStringValue(node: TSESTree.Node): string {
-      return getStaticStringValue(node) ?? context.sourceCode.getText(node);
-    }
-
     function enterClassBody(): void {
       propertiesInfoStack.push({
         properties: [],
@@ -102,8 +100,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const name = getStringValue(node.key);
-        if (excludeSet.has(name)) {
+        const name = getStaticMemberAccessValue(node, context);
+        if (name && excludeSet.has(name)) {
           return;
         }
 
@@ -167,15 +165,17 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const name = getStringValue(node.key);
+          const name = getStaticMemberAccessValue(node, context);
 
-          const hasDuplicateKeySetter = node.parent.body.some(element => {
-            return (
-              element.type === AST_NODE_TYPES.MethodDefinition &&
-              element.kind === 'set' &&
-              getStringValue(element.key) === name
-            );
-          });
+          const hasDuplicateKeySetter =
+            name &&
+            node.parent.body.some(element => {
+              return (
+                element.type === AST_NODE_TYPES.MethodDefinition &&
+                element.kind === 'set' &&
+                isStaticMemberAccessOfValue(element, context, name)
+              );
+            });
           if (hasDuplicateKeySetter) {
             return;
           }

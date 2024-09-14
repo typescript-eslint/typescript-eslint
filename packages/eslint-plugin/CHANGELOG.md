@@ -1,3 +1,33 @@
+## 8.5.0 (2024-09-09)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-duplicate-type-constituents] prevent unnecessary `
+
+- **eslint-plugin:** [no-unsafe-argument] differentiate error types
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix TSNonNullExpression fixer
+
+- **eslint-plugin:** [no-misused-promises] handle static method
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] fix AST quick path scope analysis
+
+- **eslint-plugin:** [consistent-type-assertions] access parser services lazily
+
+
+### ❤️  Thank You
+
+- f44da958e
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.4.0 (2024-09-02)
 
 This was a version bump only for eslint-plugin to align it with other projects, there were no code changes.

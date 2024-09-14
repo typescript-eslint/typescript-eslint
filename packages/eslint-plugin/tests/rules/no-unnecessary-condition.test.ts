@@ -868,6 +868,15 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare function foo(): void | { key: string };
+const bar = foo()?.key;
+    `,
+    `
+type fn = () => void;
+declare function foo(): void | fn;
+const bar = foo()?.();
+    `,
     {
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
       code: `
@@ -1909,7 +1918,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysTruthy')],
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
       code: `
@@ -1918,7 +1927,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
     },
     {
       code: `
@@ -1931,7 +1940,7 @@ if (!speech) {
 }
       `,
       output: null,
-      errors: [ruleError(7, 6, 'never')],
+      errors: [ruleError(7, 5, 'never')],
     },
     {
       code: `
@@ -2276,6 +2285,14 @@ foo?.['bar']?.().toExponential();
           endColumn: 19,
         },
       ],
+    },
+    {
+      code: `
+        const a = true;
+        if (!!a) {
+        }
+      `,
+      errors: [ruleError(3, 13, 'alwaysTruthy')],
     },
 
     // "branded" types

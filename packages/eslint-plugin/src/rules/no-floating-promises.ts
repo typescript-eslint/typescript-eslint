@@ -8,6 +8,7 @@ import {
   createRule,
   getOperatorPrecedence,
   getParserServices,
+  getStaticMemberAccessValue,
   isBuiltinSymbolLike,
   OperatorPrecedence,
   readonlynessOptionsDefaults,
@@ -334,27 +335,38 @@ export default createRule<Options, MessageId>({
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
 
-        const catchRejectionHandler = getRejectionHandlerFromCatchCall(node);
-        if (catchRejectionHandler) {
-          if (isValidRejectionHandler(catchRejectionHandler)) {
-            return { isUnhandled: false };
+        const { callee } = node;
+        if (callee.type === AST_NODE_TYPES.MemberExpression) {
+          const methodName = getStaticMemberAccessValue(callee, context);
+          const catchRejectionHandler =
+            methodName === 'catch' && node.arguments.length >= 1
+              ? node.arguments[0]
+              : undefined;
+          if (catchRejectionHandler) {
+            if (isValidRejectionHandler(catchRejectionHandler)) {
+              return { isUnhandled: false };
+            }
+            return { isUnhandled: true, nonFunctionHandler: true };
           }
-          return { isUnhandled: true, nonFunctionHandler: true };
-        }
 
-        const thenRejectionHandler = getRejectionHandlerFromThenCall(node);
-        if (thenRejectionHandler) {
-          if (isValidRejectionHandler(thenRejectionHandler)) {
-            return { isUnhandled: false };
+          const thenRejectionHandler =
+            methodName === 'then' && node.arguments.length >= 2
+              ? node.arguments[1]
+              : undefined;
+          if (thenRejectionHandler) {
+            if (isValidRejectionHandler(thenRejectionHandler)) {
+              return { isUnhandled: false };
+            }
+            return { isUnhandled: true, nonFunctionHandler: true };
           }
-          return { isUnhandled: true, nonFunctionHandler: true };
-        }
 
-        // `x.finally()` is transparent to resolution of the promise, so check `x`.
-        // ("object" in this context is the `x` in `x.finally()`)
-        const promiseFinallyObject = getObjectFromFinallyCall(node);
-        if (promiseFinallyObject) {
-          return isUnhandledPromise(checker, promiseFinallyObject);
+          // `x.finally()` is transparent to resolution of the promise, so check `x`.
+          // ("object" in this context is the `x` in `x.finally()`)
+          const promiseFinallyObject =
+            methodName === 'finally' ? callee.object : undefined;
+          if (promiseFinallyObject) {
+            return isUnhandledPromise(checker, promiseFinallyObject);
+          }
         }
 
         // All other cases are unhandled.
@@ -484,42 +496,4 @@ function isFunctionParam(
     }
   }
   return false;
-}
-
-function getRejectionHandlerFromCatchCall(
-  expression: TSESTree.CallExpression,
-): TSESTree.CallExpressionArgument | undefined {
-  if (
-    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'catch' &&
-    expression.arguments.length >= 1
-  ) {
-    return expression.arguments[0];
-  }
-  return undefined;
-}
-
-function getRejectionHandlerFromThenCall(
-  expression: TSESTree.CallExpression,
-): TSESTree.CallExpressionArgument | undefined {
-  if (
-    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'then' &&
-    expression.arguments.length >= 2
-  ) {
-    return expression.arguments[1];
-  }
-  return undefined;
-}
-
-function getObjectFromFinallyCall(
-  expression: TSESTree.CallExpression,
-): TSESTree.Expression | undefined {
-  return expression.callee.type === AST_NODE_TYPES.MemberExpression &&
-    expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'finally'
-    ? expression.callee.object
-    : undefined;
 }

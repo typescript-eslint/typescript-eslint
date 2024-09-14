@@ -1,3 +1,29 @@
+## 8.5.0 (2024-09-09)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-duplicate-type-constituents] prevent unnecessary ` ([ undefined` for optional parameters (#9479)](https://github.com/typescript-eslint/typescript-eslint/commit/ undefined` for optional parameters (#9479)))
+- **eslint-plugin:** [no-unsafe-argument] differentiate error types ([#9920](https://github.com/typescript-eslint/typescript-eslint/pull/9920))
+- **typescript-estree:** default projectService.defaultProject to 'tsconfig.json' ([#9893](https://github.com/typescript-eslint/typescript-eslint/pull/9893))
+
+### 🩹 Fixes
+
+- **deps:** update dependency prism-react-renderer to v2.4.0 ([#9943](https://github.com/typescript-eslint/typescript-eslint/pull/9943))
+- **eslint-plugin:** [no-unnecessary-type-assertion] fix TSNonNullExpression fixer ([#9898](https://github.com/typescript-eslint/typescript-eslint/pull/9898))
+- **eslint-plugin:** [no-misused-promises] handle static method ([#9951](https://github.com/typescript-eslint/typescript-eslint/pull/9951))
+- **eslint-plugin:** [no-unnecessary-type-parameters] fix AST quick path scope analysis ([#9900](https://github.com/typescript-eslint/typescript-eslint/pull/9900))
+- **eslint-plugin:** [consistent-type-assertions] access parser services lazily ([#9921](https://github.com/typescript-eslint/typescript-eslint/pull/9921))
+
+### ❤️  Thank You
+
+- f44da958e
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.4.0 (2024-09-02)
 
 
