@@ -251,7 +251,7 @@ ruleTester.run('no-deprecated', rule, {
         },
       },
     },
-    'call()',
+    'call();',
   ],
   invalid: [
     {

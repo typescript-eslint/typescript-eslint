@@ -3,12 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import {
-  createRule,
-  getParserServices,
-  nullThrows,
-  NullThrowsReasons,
-} from '../util';
+import { createRule, getParserServices, nullThrows } from '../util';
 
 type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
 
