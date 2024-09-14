@@ -816,7 +816,6 @@ ruleTester.run('no-deprecated', rule, {
 
         a.b();
       `,
-      only: false,
       errors: [
         {
           column: 11,
@@ -839,7 +838,6 @@ ruleTester.run('no-deprecated', rule, {
 
         a.b();
       `,
-      only: false,
       errors: [
         {
           column: 11,
@@ -864,7 +862,6 @@ ruleTester.run('no-deprecated', rule, {
         
         a.b();
       `,
-      only: false,
       errors: [
         {
           column: 11,
@@ -1580,6 +1577,103 @@ ruleTester.run('no-deprecated', rule, {
           line: 7,
           endLine: 7,
           data: { name: 'foo' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { DeprecatedClass } from './class';
+        
+        const foo = new DeprecatedClass();
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 40,
+          line: 4,
+          endLine: 4,
+          data: { name: 'DeprecatedClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { DeprecatedClass } from './class';
+        
+        declare function inject(something: new () => unknown): void;
+        
+        inject(DeprecatedClass);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 31,
+          line: 6,
+          endLine: 6,
+          data: { name: 'DeprecatedClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedVariable } from './class';
+        
+        const foo = deprecatedVariable;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 39,
+          line: 4,
+          endLine: 4,
+          data: { name: 'deprecatedVariable' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { DeprecatedClass } from './class';
+        
+        declare const x: DeprecatedClass;
+        
+        const { foo } = x;
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 41,
+          line: 4,
+          endLine: 4,
+          data: { name: 'DeprecatedClass' },
+          messageId: 'deprecated',
+        },
+        {
+          column: 17,
+          endColumn: 20,
+          line: 6,
+          endLine: 6,
+          data: { name: 'foo' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedFunction } from './class';
+        
+        deprecatedFunction();
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 27,
+          line: 4,
+          endLine: 4,
+          data: { name: 'deprecatedFunction' },
           messageId: 'deprecated',
         },
       ],

@@ -34,6 +34,15 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function tryToGetAliasedSymbol(
+      symbol: ts.Symbol | undefined,
+    ): ts.Symbol | undefined {
+      return symbol !== undefined &&
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+        ? checker.getAliasedSymbol(symbol)
+        : symbol;
+    }
+
     function isDeclaration(node: IdentifierLike): boolean {
       const { parent } = node;
 
@@ -172,7 +181,7 @@ export default createRule({
       const signature = checker.getResolvedSignature(
         tsNode as ts.CallLikeExpression,
       );
-      const symbol = services.getSymbolAtLocation(node);
+      const symbol = tryToGetAliasedSymbol(services.getSymbolAtLocation(node));
       if (signature) {
         const signatureDeprecation = getJsDocDeprecation(signature);
         if (signatureDeprecation !== undefined) {
@@ -207,16 +216,14 @@ export default createRule({
         : undefined;
     }
 
-    function getSymbol(
-      node: IdentifierLike,
-    ): ts.Signature | ts.Symbol | undefined {
+    function getSymbol(node: IdentifierLike): ts.Symbol | undefined {
       if (node.parent.type === AST_NODE_TYPES.Property) {
         return services
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
       }
 
-      return services.getSymbolAtLocation(node);
+      return tryToGetAliasedSymbol(services.getSymbolAtLocation(node));
     }
 
     function getDeprecationReason(node: IdentifierLike): string | undefined {
