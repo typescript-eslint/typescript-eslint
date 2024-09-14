@@ -13450,12 +13450,13 @@ __metadata:
   linkType: hard
 
 "knip@npm:^5.9.4":
-  version: 5.27.0
-  resolution: "knip@npm:5.27.0"
+  version: 5.30.2
+  resolution: "knip@npm:5.30.2"
   dependencies:
     "@nodelib/fs.walk": 1.2.8
     "@snyk/github-codeowners": 1.1.0
     easy-table: 1.2.0
+    enhanced-resolve: ^5.17.1
     fast-glob: ^3.3.2
     jiti: ^1.21.6
     js-yaml: ^4.1.0
@@ -13463,7 +13464,6 @@ __metadata:
     picocolors: ^1.0.0
     picomatch: ^4.0.1
     pretty-ms: ^9.0.0
-    resolve: ^1.22.8
     smol-toml: ^1.1.4
     strip-json-comments: 5.0.1
     summary: 2.1.0
@@ -13475,7 +13475,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: b94273d2ae3cfdddcea7037c036412a303b03449a70e40b4f0ba7dbfcbf19810023c3fa1024b98dd62b701662a5c162dcb309faab2d3aebed593832107c16f11
+  checksum: fafb6ee078c1e9f24e83c08c6b97c7ad82ef78d043eff6a064639e08354a4b81cbb132d705acc53874d0f0d02dc690d960f75efe8783ac349fde491bcbf1b742
   languageName: node
   linkType: hard
 
@@ -17553,7 +17553,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.4, resolve@npm:^1.22.8, resolve@npm:~1.22.1, resolve@npm:~1.22.2":
+"resolve@npm:^1.1.6, resolve@npm:^1.10.0, resolve@npm:^1.12.0, resolve@npm:^1.14.2, resolve@npm:^1.19.0, resolve@npm:^1.20.0, resolve@npm:^1.22.4, resolve@npm:~1.22.1, resolve@npm:~1.22.2":
   version: 1.22.8
   resolution: "resolve@npm:1.22.8"
   dependencies:
@@ -17579,7 +17579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.4#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.8#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.2#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.6#~builtin<compat/resolve>, resolve@patch:resolve@^1.10.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.12.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.14.2#~builtin<compat/resolve>, resolve@patch:resolve@^1.19.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.20.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.4#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@~1.22.2#~builtin<compat/resolve>":
   version: 1.22.8
   resolution: "resolve@patch:resolve@npm%3A1.22.8#~builtin<compat/resolve>::version=1.22.8&hash=c3c19d"
   dependencies:
