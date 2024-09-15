@@ -2299,6 +2299,18 @@ array.every(() => Promise.resolve(true));
     },
     {
       code: `
+const array: (string[] & { foo: 'bar' }) | (number[] & { bar: 'foo' }) = [];
+array.every(() => Promise.resolve(true));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'predicate',
+        },
+      ],
+    },
+    {
+      code: `
 const tuple: [number, number, number] = [1, 2, 3];
 tuple.find(() => Promise.resolve(false));
       `,

@@ -330,7 +330,10 @@ export default createRule<Options, MessageId>({
       const parent = node.parent;
       if (parent.type === AST_NODE_TYPES.CallExpression) {
         const callback = parent.arguments.at(0);
-        if (callback && isArrayMethodCallWithPredicate(services, parent)) {
+        if (
+          callback &&
+          isArrayMethodCallWithPredicate(context, services, parent)
+        ) {
           const type = services.esTreeNodeToTSNodeMap.get(callback);
           if (returnsThenable(checker, type)) {
             context.report({

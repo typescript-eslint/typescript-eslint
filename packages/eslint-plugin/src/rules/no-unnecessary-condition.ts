@@ -462,7 +462,7 @@ export default createRule<Options, MessageId>({
     function checkCallExpression(node: TSESTree.CallExpression): void {
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (
-        isArrayMethodCallWithPredicate(services, node) &&
+        isArrayMethodCallWithPredicate(context, services, node) &&
         node.arguments.length
       ) {
         const callback = node.arguments[0];
