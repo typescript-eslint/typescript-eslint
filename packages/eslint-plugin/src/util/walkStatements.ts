@@ -33,7 +33,8 @@ export function* walkStatements(
       case AST_NODE_TYPES.ForStatement:
       case AST_NODE_TYPES.ForInStatement:
       case AST_NODE_TYPES.ForOfStatement:
-      case AST_NODE_TYPES.WithStatement: {
+      case AST_NODE_TYPES.WithStatement:
+      case AST_NODE_TYPES.LabeledStatement: {
         yield* walkStatements([statement.body]);
         continue;
       }
@@ -45,10 +46,6 @@ export function* walkStatements(
         if (statement.finalizer) {
           yield* walkStatements([statement.finalizer]);
         }
-        continue;
-      }
-      case AST_NODE_TYPES.LabeledStatement: {
-        yield* walkStatements([statement.body]);
         continue;
       }
       default: {

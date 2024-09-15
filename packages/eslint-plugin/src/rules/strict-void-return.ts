@@ -13,9 +13,6 @@ import * as util from '../util';
 
 type Options = [
   {
-    considerOtherOverloads?: boolean;
-    considerBaseClass?: boolean;
-    considerImplementedInterfaces?: boolean;
     allowReturnPromiseIfTryCatch?: boolean;
     allowReturnUndefined?: boolean;
     allowReturnNull?: boolean;
@@ -164,9 +161,6 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          considerOtherOverloads: { type: 'boolean' },
-          considerBaseClass: { type: 'boolean' },
-          considerImplementedInterfaces: { type: 'boolean' },
           allowReturnPromiseIfTryCatch: { type: 'boolean' },
           allowReturnUndefined: { type: 'boolean' },
           allowReturnNull: { type: 'boolean' },
@@ -178,12 +172,9 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      considerOtherOverloads: true,
-      considerBaseClass: true,
-      considerImplementedInterfaces: true,
       allowReturnPromiseIfTryCatch: true,
       allowReturnUndefined: true,
-      allowReturnNull: true,
+      allowReturnNull: false,
     },
   ],
 
@@ -193,11 +184,7 @@ export default util.createRule<Options, MessageId>({
     const checker = parserServices.program.getTypeChecker();
 
     return {
-      'CallExpression, NewExpression': (
-        node: TSESTree.CallExpression | TSESTree.NewExpression,
-      ): void => {
-        checkFunctionCallNode(node);
-      },
+      'CallExpression, NewExpression': checkFunctionCallNode,
       JSXAttribute: (node): void => {
         if (
           node.value?.type === AST_NODE_TYPES.JSXExpressionContainer &&
@@ -258,12 +245,8 @@ export default util.createRule<Options, MessageId>({
           checkExpressionNode(node.argument, 'Return');
         }
       },
-      PropertyDefinition: (node): void => {
-        checkClassPropertyNode(node);
-      },
-      MethodDefinition: (node): void => {
-        checkClassMethodNode(node);
-      },
+      PropertyDefinition: checkClassPropertyNode,
+      MethodDefinition: checkClassMethodNode,
     };
 
     /** Checks whether the type is a void-returning function type. */
@@ -348,46 +331,42 @@ export default util.createRule<Options, MessageId>({
         }
 
         // Check against the types from all of the call signatures
-        if (options.considerOtherOverloads) {
-          const funcType = checker.getTypeAtLocation(callTsNode.expression);
-          const funcSignatures = tsutils
-            .unionTypeParts(funcType)
-            .flatMap(type =>
-              ts.isCallExpression(callTsNode)
-                ? type.getCallSignatures()
-                : type.getConstructSignatures(),
-            );
-          const argExpectedReturnTypes = funcSignatures
-            .map(s => s.parameters[argIdx])
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- Indexing can return undefined
-            .filter(param => param != null)
-            .map(param =>
-              checker.getTypeOfSymbolAtLocation(param, callTsNode.expression),
-            )
-            .flatMap(paramType => tsutils.unionTypeParts(paramType))
-            .flatMap(paramType => paramType.getCallSignatures())
-            .map(paramSignature => paramSignature.getReturnType());
-          if (
-            // At least one return type is void
-            argExpectedReturnTypes.some(type =>
-              tsutils.isTypeFlagSet(type, ts.TypeFlags.Void),
-            ) &&
-            // The rest are nullish or any
-            argExpectedReturnTypes.every(type =>
-              tsutils.isTypeFlagSet(
-                type,
-                ts.TypeFlags.VoidLike |
-                  ts.TypeFlags.Undefined |
-                  ts.TypeFlags.Null |
-                  ts.TypeFlags.Any |
-                  ts.TypeFlags.Never,
-              ),
-            )
-          ) {
-            // We treat this argument as void even though it might be technically any.
-            reportIfNonVoidFunction(argNode, 'ArgOverload', { funcName });
-          }
-          continue;
+        const funcType = checker.getTypeAtLocation(callTsNode.expression);
+        const funcSignatures = tsutils
+          .unionTypeParts(funcType)
+          .flatMap(type =>
+            ts.isCallExpression(callTsNode)
+              ? type.getCallSignatures()
+              : type.getConstructSignatures(),
+          );
+        const argExpectedReturnTypes = funcSignatures
+          .map(s => s.parameters[argIdx])
+          .filter(Boolean)
+          .map(param =>
+            checker.getTypeOfSymbolAtLocation(param, callTsNode.expression),
+          )
+          .flatMap(paramType => tsutils.unionTypeParts(paramType))
+          .flatMap(paramType => paramType.getCallSignatures())
+          .map(paramSignature => paramSignature.getReturnType());
+        if (
+          // At least one return type is void
+          argExpectedReturnTypes.some(type =>
+            tsutils.isTypeFlagSet(type, ts.TypeFlags.Void),
+          ) &&
+          // The rest are nullish or any
+          argExpectedReturnTypes.every(type =>
+            tsutils.isTypeFlagSet(
+              type,
+              ts.TypeFlags.VoidLike |
+                ts.TypeFlags.Undefined |
+                ts.TypeFlags.Null |
+                ts.TypeFlags.Any |
+                ts.TypeFlags.Never,
+            ),
+          )
+        ) {
+          // We treat this argument as void even though it might be technically any.
+          reportIfNonVoidFunction(argNode, 'ArgOverload', { funcName });
         }
       }
     }
@@ -452,8 +431,6 @@ export default util.createRule<Options, MessageId>({
      * In addition to the regular check against the contextual type,
      * we also check against the base class property (when the class extends another class)
      * and the implemented interfaces (when the class implements an interface).
-     *
-     * This can produce multiple errors at once.
      */
     function checkClassPropertyNode(
       propNode: TSESTree.PropertyDefinition,
@@ -465,45 +442,24 @@ export default util.createRule<Options, MessageId>({
       const memberName = sourceCode.getText(propNode.key);
       const className = propNode.parent.parent.id?.name ?? 'class';
 
-      // Check in comparison to the base class property.
-      if (options.considerBaseClass) {
-        for (const {
-          baseType,
-          baseMemberType,
-        } of util.getBaseTypesOfClassMember(
-          checker,
-          propTsNode,
-          ts.SyntaxKind.ExtendsKeyword,
-        )) {
-          const baseName = baseType.getSymbol()?.name ?? 'class';
-          if (isVoidReturningFunctionType(baseMemberType)) {
-            reportIfNonVoidFunction(propNode.value, 'ExtMember', {
-              memberName,
-              className,
-              baseName,
-            });
-          }
-        }
-      }
-
-      // Check in comparison to the implemented interfaces.
-      if (options.considerImplementedInterfaces) {
-        for (const {
-          baseType,
-          baseMemberType,
-        } of util.getBaseTypesOfClassMember(
-          checker,
-          propTsNode,
-          ts.SyntaxKind.ImplementsKeyword,
-        )) {
-          const baseName = baseType.getSymbol()?.name ?? 'interface';
-          if (isVoidReturningFunctionType(baseMemberType)) {
-            reportIfNonVoidFunction(propNode.value, 'ImplMember', {
-              memberName,
-              className,
-              baseName,
-            });
-          }
+      // Check in comparison to the base types.
+      for (const {
+        baseType,
+        baseMemberType,
+        heritageToken,
+      } of util.getBaseTypesOfClassMember(checker, propTsNode)) {
+        const baseName = baseType.getSymbol()?.name ?? 'base';
+        if (isVoidReturningFunctionType(baseMemberType)) {
+          const msgId: ErrorPlaceId =
+            heritageToken === ts.SyntaxKind.ExtendsKeyword
+              ? 'ExtMember'
+              : 'ImplMember';
+          reportIfNonVoidFunction(propNode.value, msgId, {
+            memberName,
+            className,
+            baseName,
+          });
+          return; // Report at most one error.
         }
       }
 
@@ -516,8 +472,6 @@ export default util.createRule<Options, MessageId>({
      *
      * We check against the base class method (when the class extends another class)
      * and the implemented interfaces (when the class implements an interface).
-     *
-     * This can produce multiple errors at once.
      */
     function checkClassMethodNode(methodNode: TSESTree.MethodDefinition): void {
       if (
@@ -536,45 +490,24 @@ export default util.createRule<Options, MessageId>({
       const memberName = sourceCode.getText(methodNode.key);
       const className = methodNode.parent.parent.id?.name ?? 'class';
 
-      // Check in comparison to the base class method.
-      if (options.considerBaseClass) {
-        for (const {
-          baseType,
-          baseMemberType,
-        } of util.getBaseTypesOfClassMember(
-          checker,
-          methodTsNode,
-          ts.SyntaxKind.ExtendsKeyword,
-        )) {
-          const baseName = baseType.getSymbol()?.name ?? 'class';
-          if (isVoidReturningFunctionType(baseMemberType)) {
-            reportIfNonVoidFunction(methodNode.value, 'ExtMember', {
-              memberName,
-              className,
-              baseName,
-            });
-          }
-        }
-      }
-
-      // Check in comparison to the implemented interfaces.
-      if (options.considerImplementedInterfaces) {
-        for (const {
-          baseType,
-          baseMemberType,
-        } of util.getBaseTypesOfClassMember(
-          checker,
-          methodTsNode,
-          ts.SyntaxKind.ImplementsKeyword,
-        )) {
-          const baseName = baseType.getSymbol()?.name ?? 'interface';
-          if (isVoidReturningFunctionType(baseMemberType)) {
-            reportIfNonVoidFunction(methodNode.value, 'ImplMember', {
-              memberName,
-              className,
-              baseName,
-            });
-          }
+      // Check in comparison to the base types.
+      for (const {
+        baseType,
+        baseMemberType,
+        heritageToken,
+      } of util.getBaseTypesOfClassMember(checker, methodTsNode)) {
+        const baseName = baseType.getSymbol()?.name ?? 'base';
+        if (isVoidReturningFunctionType(baseMemberType)) {
+          const msgId: ErrorPlaceId =
+            heritageToken === ts.SyntaxKind.ExtendsKeyword
+              ? 'ExtMember'
+              : 'ImplMember';
+          reportIfNonVoidFunction(methodNode.value, msgId, {
+            memberName,
+            className,
+            baseName,
+          });
+          return; // Report at most one error.
         }
       }
     }

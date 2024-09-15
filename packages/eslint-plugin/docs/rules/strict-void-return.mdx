@@ -16,7 +16,7 @@ Using this feature of TypeScript can lead to bugs or confusing code.
 
 ## Examples
 
-### Unsafety
+### Return type unsafety
 
 Passing a value-returning function in a place expecting a void function can be unsound.
 
@@ -24,26 +24,28 @@ Passing a value-returning function in a place expecting a void function can be u
 <TabItem value="❌ Incorrect">
 
 ```ts
-const bad: () => void = () => 2137;
-const func = Math.random() > 0.1 ? bad : prompt;
-const val = func();
-if (val) console.log(val.toUpperCase()); // ❌ Crash if bad was called
+const getNothing: () => void = () => 2137;
+const getString: () => string = () => 'Hello';
+const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
+const maybeString = getStringMaybe();
+if (maybeString) console.log(maybeString.toUpperCase()); // ❌ Crash if getNothing was called
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-const good: () => void = () => {};
-const func = Math.random() > 0.1 ? good : prompt;
-const val = func();
-if (val) console.log(val.toUpperCase()); // ✅ No crash
+const getNothing: () => void = () => {};
+const getString: () => string = () => 'Hello';
+const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
+const maybeString = getStringMaybe();
+if (maybeString) console.log(maybeString.toUpperCase()); // ✅ No crash
 ```
 
 </TabItem>
 </Tabs>
 
-### Unhandled promises
+### Unhandled returned promises
 
 If a promise is returned from a callback that should return void,
 it probably won't be awaited and its rejection will be silently ignored
@@ -90,7 +92,7 @@ Use [`no-floating-promises`](no-floating-promises.mdx)
 to also enforce error handling of non-awaited promises in statement positions.
 :::
 
-### Ignored generators
+### Ignored returned generators
 
 If a generator is returned from a void function it won't even be started.
 
@@ -148,22 +150,82 @@ This rule will often warn you early when using a function in a wrong way.
 </TabItem>
 </Tabs>
 
-## Options
+### Void context examples
 
-### `considerOtherOverloads`
+Every expression has a contextual (expected) type computed by the TypeScript type system.
+This rule will check expressions where the contextual type is a function returning void.
 
-Whether to assume that an any-returning callback argument should be treated as a void callback,
+The following expressions are checked:
+
+- Function arguments
+- JSX attribute values
+- Right-hand side of assignments
+- Return values
+- Object property values
+- Array elements
+- Class property values
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```tsx
+declare function takesCallback(cb: () => void): void;
+declare function TakesCallback(props: { cb: () => void }): string;
+declare let callback: () => void;
+declare let returnsCallback: () => () => void;
+declare let callbackObj: Record<string, () => void>;
+declare let callbackArr: (() => void)[];
+
+takesCallback(() => 'Hello');
+<TakesCallback cb={() => 'Hello'} />;
+callback = () => 'Hello';
+returnsCallback = () => {
+  return () => 'Hello';
+};
+callbackObj = {
+  hello: () => 'Hello',
+};
+callbackArr = [() => 'Hello'];
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```tsx
+declare function takesCallback(cb: () => void): void;
+declare function TakesCallback(props: { cb: () => void }): string;
+declare let callback: () => void;
+declare let returnsCallback: () => () => void;
+declare let callbackObj: Record<string, () => void>;
+declare let callbackArr: (() => void)[];
+
+takesCallback(() => console.log('Hello'));
+<TakesCallback cb={() => console.log('Hello')} />;
+callback = () => console.log('Hello');
+returnsCallback = () => {
+  return () => console.log('Hello');
+};
+callbackObj = {
+  hello: () => console.log('Hello'),
+};
+callbackArr = [() => console.log('Hello')];
+```
+
+</TabItem>
+</Tabs>
+
+### Void context from overloads
+
+This rule treats an any-returning callback argument as a void context,
 if there exists another overload where it is typed as returning void.
 
 This is required to correctly detect `addEventListener`'s callback as void callback,
 because otherwise the call always resolves to the any-returning signature.
 
-Additional incorrect code when the option is **enabled**:
-
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "considerOtherOverloads": true }'
+```ts
 /// <reference lib="dom" />
 
 document.addEventListener('click', () => {
@@ -174,7 +236,7 @@ document.addEventListener('click', () => {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "considerOtherOverloads": true }'
+```ts
 /// <reference lib="dom" />
 
 document.addEventListener('click', () => {
@@ -185,16 +247,14 @@ document.addEventListener('click', () => {
 </TabItem>
 </Tabs>
 
-### `considerBaseClass`
+### Void context from base class
 
-Whether to enforce class methods which override a void method to also be void.
-
-Additional incorrect code when the option is **enabled**:
+This rule enforces class methods which override a void method to also be void.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "considerBaseClass": true }'
+```ts
 /// <reference lib="dom" />
 
 class MyElement extends HTMLElement {
@@ -208,7 +268,7 @@ class MyElement extends HTMLElement {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "considerBaseClass": true }'
+```ts
 /// <reference lib="dom" />
 
 class MyElement extends HTMLElement {
@@ -222,16 +282,14 @@ class MyElement extends HTMLElement {
 </TabItem>
 </Tabs>
 
-### `considerImplementedInterfaces`
+### Void context from implemented interfaces
 
-Whether to enforce class methods which implement a void method to also be void.
-
-Additional incorrect code when the option is **enabled**:
+This rule enforces class methods which implement a void method to also be void.
 
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "considerImplementedInterfaces": true }'
+```ts
 /// <reference lib="dom" />
 
 class FooListener implements EventListenerObject {
@@ -244,7 +302,7 @@ class FooListener implements EventListenerObject {
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "considerImplementedInterfaces": true }'
+```ts
 /// <reference lib="dom" />
 
 class FooListener implements EventListenerObject {
@@ -256,6 +314,8 @@ class FooListener implements EventListenerObject {
 
 </TabItem>
 </Tabs>
+
+## Options
 
 ### `allowReturnPromiseIfTryCatch`
 

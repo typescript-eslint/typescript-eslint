@@ -9,17 +9,17 @@ import * as ts from 'typescript';
 export function* getBaseTypesOfClassMember(
   checker: ts.TypeChecker,
   memberTsNode: ts.PropertyDeclaration | ts.MethodDeclaration,
-  heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword,
-): Generator<{ baseType: ts.Type; baseMemberType: ts.Type }> {
+): Generator<{
+  baseType: ts.Type;
+  baseMemberType: ts.Type;
+  heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword;
+}> {
   assert(ts.isClassLike(memberTsNode.parent));
   const memberSymbol = checker.getSymbolAtLocation(memberTsNode.name);
   if (memberSymbol == null) {
     return;
   }
   for (const clauseNode of memberTsNode.parent.heritageClauses ?? []) {
-    if (clauseNode.token !== heritageToken) {
-      continue;
-    }
     for (const baseTypeNode of clauseNode.types) {
       const baseType = checker.getTypeAtLocation(baseTypeNode);
       const baseMemberSymbol = checker.getPropertyOfType(
@@ -33,7 +33,8 @@ export function* getBaseTypesOfClassMember(
         baseMemberSymbol,
         memberTsNode,
       );
-      yield { baseType, baseMemberType };
+      const heritageToken = clauseNode.token;
+      yield { baseType, baseMemberType, heritageToken };
     }
   }
 }

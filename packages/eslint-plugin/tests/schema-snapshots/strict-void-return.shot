@@ -19,15 +19,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "allowReturnUndefined": {
         "type": "boolean"
-      },
-      "considerBaseClass": {
-        "type": "boolean"
-      },
-      "considerImplementedInterfaces": {
-        "type": "boolean"
-      },
-      "considerOtherOverloads": {
-        "type": "boolean"
       }
     },
     "type": "object"
@@ -43,9 +34,6 @@ type Options = [
     allowReturnNull?: boolean;
     allowReturnPromiseIfTryCatch?: boolean;
     allowReturnUndefined?: boolean;
-    considerBaseClass?: boolean;
-    considerImplementedInterfaces?: boolean;
-    considerOtherOverloads?: boolean;
   },
 ];
 "

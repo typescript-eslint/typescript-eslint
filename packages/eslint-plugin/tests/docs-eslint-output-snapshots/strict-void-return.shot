@@ -3,21 +3,23 @@
 exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-const bad: () => void = () => 2137;
-                              ~~~~ Value returned in \`bad\` function variable, which expects a void function.
-const func = Math.random() > 0.1 ? bad : prompt;
-const val = func();
-if (val) console.log(val.toUpperCase()); // ❌ Crash if bad was called
+const getNothing: () => void = () => 2137;
+                                     ~~~~ Value returned in \`getNothing\` function variable, which expects a void function.
+const getString: () => string = () => 'Hello';
+const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
+const maybeString = getStringMaybe();
+if (maybeString) console.log(maybeString.toUpperCase()); // ❌ Crash if getNothing was called
 "
 `;
 
 exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 2`] = `
 "Correct
 
-const good: () => void = () => {};
-const func = Math.random() > 0.1 ? good : prompt;
-const val = func();
-if (val) console.log(val.toUpperCase()); // ✅ No crash
+const getNothing: () => void = () => {};
+const getString: () => string = () => 'Hello';
+const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
+const maybeString = getStringMaybe();
+if (maybeString) console.log(maybeString.toUpperCase()); // ✅ No crash
 "
 `;
 
@@ -97,7 +99,58 @@ exports[`Validating rule docs strict-void-return.mdx code examples ESLint output
 
 exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 9`] = `
 "Incorrect
-Options: { "considerOtherOverloads": true }
+
+declare function takesCallback(cb: () => void): void;
+declare function TakesCallback(props: { cb: () => void }): string;
+declare let callback: () => void;
+declare let returnsCallback: () => () => void;
+declare let callbackObj: Record<string, () => void>;
+declare let callbackArr: (() => void)[];
+
+takesCallback(() => 'Hello');
+                    ~~~~~~~ Value returned in a callback argument to \`takesCallback\`, which expects a void callback.
+<TakesCallback cb={() => 'Hello'} />;
+                         ~~~~~~~ Value returned in \`cb\` event handler prop of \`TakesCallback\`, which expects a void \`cb\` event handler.
+callback = () => 'Hello';
+                 ~~~~~~~ Value returned in \`callback\` function variable, which expects a void function.
+returnsCallback = () => {
+  return () => 'Hello';
+               ~~~~~~~ Value returned in a callback returned from a function, which must return a void callback
+};
+callbackObj = {
+  hello: () => 'Hello',
+               ~~~~~~~ Value returned in \`hello\` method of an object, which expects a void \`hello\` method.
+};
+callbackArr = [() => 'Hello'];
+                     ~~~~~~~ Value returned in a context where a void return was expected.
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 10`] = `
+"Correct
+
+declare function takesCallback(cb: () => void): void;
+declare function TakesCallback(props: { cb: () => void }): string;
+declare let callback: () => void;
+declare let returnsCallback: () => () => void;
+declare let callbackObj: Record<string, () => void>;
+declare let callbackArr: (() => void)[];
+
+takesCallback(() => console.log('Hello'));
+<TakesCallback cb={() => console.log('Hello')} />;
+callback = () => console.log('Hello');
+returnsCallback = () => {
+  return () => console.log('Hello');
+};
+callbackObj = {
+  hello: () => console.log('Hello'),
+};
+callbackArr = [() => console.log('Hello')];
+"
+`;
+
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 11`] = `
+"Incorrect
 
 /// <reference lib="dom" />
 
@@ -108,9 +161,8 @@ document.addEventListener('click', () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 10`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 12`] = `
 "Correct
-Options: { "considerOtherOverloads": true }
 
 /// <reference lib="dom" />
 
@@ -120,9 +172,8 @@ document.addEventListener('click', () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 11`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 13`] = `
 "Incorrect
-Options: { "considerBaseClass": true }
 
 /// <reference lib="dom" />
 
@@ -136,9 +187,8 @@ class MyElement extends HTMLElement {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 12`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 14`] = `
 "Correct
-Options: { "considerBaseClass": true }
 
 /// <reference lib="dom" />
 
@@ -151,9 +201,8 @@ class MyElement extends HTMLElement {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 13`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 15`] = `
 "Incorrect
-Options: { "considerImplementedInterfaces": true }
 
 /// <reference lib="dom" />
 
@@ -166,9 +215,8 @@ class FooListener implements EventListenerObject {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 14`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 16`] = `
 "Correct
-Options: { "considerImplementedInterfaces": true }
 
 /// <reference lib="dom" />
 
@@ -180,7 +228,7 @@ class FooListener implements EventListenerObject {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 15`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 17`] = `
 "Incorrect
 Options: { "allowReturnPromiseIfTryCatch": false }
 
@@ -197,7 +245,7 @@ const cb: () => void = async () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 16`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 18`] = `
 "Correct
 Options: { "allowReturnPromiseIfTryCatch": false }
 
@@ -211,7 +259,7 @@ const cb: () => void = () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 17`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 19`] = `
 "Incorrect
 Options: { "allowReturnUndefined": false }
 
@@ -227,7 +275,7 @@ cb = () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 18`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 20`] = `
 "Correct
 Options: { "allowReturnUndefined": false }
 
@@ -241,7 +289,7 @@ cb = () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 19`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 21`] = `
 "Incorrect
 Options: { "allowReturnNull": false }
 
@@ -257,7 +305,7 @@ cb = () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 20`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 22`] = `
 "Correct
 Options: { "allowReturnNull": false }
 
@@ -271,7 +319,7 @@ cb = () => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 21`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 23`] = `
 "Incorrect
 Options: { "allowReturnAny": false }
 
@@ -287,7 +335,7 @@ fn(() => {
 "
 `;
 
-exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 22`] = `
+exports[`Validating rule docs strict-void-return.mdx code examples ESLint output 24`] = `
 "Correct
 Options: { "allowReturnAny": false }
 

@@ -252,39 +252,6 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
-      options: [{ considerOtherOverloads: false }],
-      code: `
-        interface Ev {}
-        interface EvMap {
-          DOMContentLoaded: Ev;
-        }
-        type EvListOrEvListObj = EvList | EvListObj;
-        interface EvList {
-          (evt: Event): void;
-        }
-        interface EvListObj {
-          handleEvent(object: Ev): void;
-        }
-        interface Win {
-          addEventListener<K extends keyof EvMap>(
-            type: K,
-            listener: (ev: EvMap[K]) => any,
-          ): void;
-          addEventListener(type: string, listener: EvListOrEvListObj): void;
-        }
-        declare const win: Win;
-        win.addEventListener('DOMContentLoaded', ev => ev);
-      `,
-    },
-    {
-      options: [{ considerOtherOverloads: false }],
-      code: `
-        declare function foo(x: null, cb: () => void): void;
-        declare function foo(x: unknown, cb: () => any): void;
-        foo({}, async () => {});
-      `,
-    },
-    {
       options: [{ allowReturnAny: true }],
       code: `
         declare function foo(cb: () => void): void;
@@ -318,14 +285,13 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
-      options: [{ allowReturnNull: false }],
       code: `
         declare function foo(cb: () => void): void;
         foo(() => undefined);
       `,
     },
     {
-      options: [{ allowReturnUndefined: false }],
+      options: [{ allowReturnNull: true }],
       code: `
         declare function foo(cb: () => void): void;
         foo(() => null);
@@ -405,6 +371,7 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
+      options: [{ allowReturnNull: true }],
       code: `
         declare function foo(...cbs: Array<() => void>): void;
         foo(
@@ -422,6 +389,7 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
+      options: [{ allowReturnNull: true }],
       code: `
         declare function foo(...cbs: [() => any, () => void, (() => void)?]): void;
         foo(
@@ -470,6 +438,7 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
+      options: [{ allowReturnNull: true }],
       code: `
         type Foo = () => void;
         const foo: Foo = cb;
@@ -586,6 +555,7 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
+      options: [{ allowReturnNull: true }],
       code: `
         declare function foo(cbs: { arg: number; cb: () => void }): void;
         foo({ arg: 1, cb: () => null });
@@ -718,7 +688,7 @@ ruleTester.run('strict-void-return', rule, {
     {
       code: `
         class Foo {
-          foo: () => void = () => null;
+          foo: () => void = () => undefined;
         }
       `,
     },
@@ -877,24 +847,6 @@ ruleTester.run('strict-void-return', rule, {
       `,
     },
     {
-      options: [
-        { considerBaseClass: false, considerImplementedInterfaces: false },
-      ],
-      code: `
-        interface Foo {
-          cb(): void;
-        }
-        class Bar {
-          cb() {}
-        }
-        class Baz extends Bar implements Foo {
-          cb() {
-            return l;
-          }
-        }
-      `,
-    },
-    {
       code: `
         declare let foo: () => () => void;
         foo = () => () => {};
@@ -905,7 +857,7 @@ ruleTester.run('strict-void-return', rule, {
         declare let foo: { f(): () => void };
         foo = {
           f() {
-            return () => null;
+            return () => undefined;
           },
         };
         function cb() {}
@@ -950,7 +902,7 @@ ruleTester.run('strict-void-return', rule, {
     {
       code: `
         declare function foo(cb: () => void): void;
-        foo(() => false);
+        foo(() => null);
       `,
       errors: [
         {
@@ -3041,18 +2993,6 @@ ruleTester.run('strict-void-return', rule, {
         {
           messageId: 'nonVoidFuncInExtMember',
           data: { memberName: 'cb', className: 'Baz', baseName: 'Bar' },
-          line: 10,
-          column: 28,
-        },
-        {
-          messageId: 'nonVoidFuncInImplMember',
-          data: { memberName: 'cb', className: 'Baz', baseName: 'Foo' },
-          line: 10,
-          column: 28,
-        },
-        {
-          messageId: 'nonVoidFuncInProp',
-          data: { propName: 'cb' },
           line: 10,
           column: 28,
         },
