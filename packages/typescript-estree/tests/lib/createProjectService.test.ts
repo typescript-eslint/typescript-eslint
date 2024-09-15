@@ -65,7 +65,7 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error with a local path when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
+  it('does not throw an error when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
       throw new Error('tsconfig.json(1,1): error TS1234: Oh no!');
     });
@@ -78,9 +78,7 @@ describe('createProjectService', () => {
         undefined,
         undefined,
       ),
-    ).toThrow(
-      /Could not read project service default project 'tsconfig.json': .+ error TS1234: Oh no!/,
-    );
+    ).not.toThrow();
   });
 
   it('throws an error with a relative path when options.defaultProject is set to a relative path and getParsedConfigFile throws a diagnostic error', () => {
@@ -132,6 +130,7 @@ describe('createProjectService', () => {
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
+          defaultProject: 'tsconfig.json',
         },
         undefined,
         undefined,
