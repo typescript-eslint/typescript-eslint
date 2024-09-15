@@ -1,13 +1,13 @@
 /**
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
-
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
-import { isParenthesized } from './astUtils';
+import { getStaticValue, isParenthesized } from './astUtils';
 
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
@@ -232,6 +232,46 @@ function isParenlessArrowFunction(
   );
 }
 
+type NodeWithKey =
+  | TSESTree.MemberExpression
+  | TSESTree.MethodDefinition
+  | TSESTree.Property
+  | TSESTree.PropertyDefinition
+  | TSESTree.TSAbstractMethodDefinition
+  | TSESTree.TSAbstractPropertyDefinition;
+function getStaticMemberAccessValue(
+  node: NodeWithKey,
+  { sourceCode }: RuleContext<string, unknown[]>,
+): string | undefined {
+  const key =
+    node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
+  if (!node.computed) {
+    return key.type === AST_NODE_TYPES.Literal
+      ? `${key.value}`
+      : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
+  }
+  const value = getStaticValue(key, sourceCode.getScope(node))?.value as
+    | string
+    | number
+    | null
+    | undefined;
+  return value == null ? undefined : `${value}`;
+}
+
+/**
+ * Answers whether the member expression looks like
+ * `x.memberName`, `x['memberName']`,
+ * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
+ */
+const isStaticMemberAccessOfValue = (
+  memberExpression: NodeWithKey,
+  context: RuleContext<string, unknown[]>,
+  ...values: string[]
+): boolean =>
+  (values as (string | undefined)[]).includes(
+    getStaticMemberAccessValue(memberExpression, context),
+  );
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
@@ -240,11 +280,13 @@ export {
   findFirstResult,
   formatWordList,
   getEnumNames,
+  getStaticMemberAccessValue,
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
   isRestParameterDeclaration,
   isParenlessArrowFunction,
+  isStaticMemberAccessOfValue,
   MemberNameType,
   type RequireKeys,
   typeNodeRequiresParentheses,

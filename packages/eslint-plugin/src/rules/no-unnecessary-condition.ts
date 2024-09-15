@@ -234,21 +234,22 @@ export default createRule<Options, MessageId>({
      * if the type of the node is always true or always false, it's not necessary.
      */
     function checkNode(
-      node: TSESTree.Expression,
+      expression: TSESTree.Expression,
       isUnaryNotArgument = false,
+      node = expression,
     ): void {
       // Check if the node is Unary Negation expression and handle it
       if (
-        node.type === AST_NODE_TYPES.UnaryExpression &&
-        node.operator === '!'
+        expression.type === AST_NODE_TYPES.UnaryExpression &&
+        expression.operator === '!'
       ) {
-        return checkNode(node.argument, true);
+        return checkNode(expression.argument, !isUnaryNotArgument, node);
       }
 
       // Since typescript array index signature types don't represent the
       //  possibility of out-of-bounds access, if we're indexing into an array
       //  just skip the check, to avoid false positives
-      if (isArrayIndexExpression(node)) {
+      if (isArrayIndexExpression(expression)) {
         return;
       }
 
@@ -259,13 +260,13 @@ export default createRule<Options, MessageId>({
       //  boolean checks if we inspect the right here, it'll usually be a constant condition on purpose.
       // In this case it's better to inspect the type of the expression as a whole.
       if (
-        node.type === AST_NODE_TYPES.LogicalExpression &&
-        node.operator !== '??'
+        expression.type === AST_NODE_TYPES.LogicalExpression &&
+        expression.operator !== '??'
       ) {
-        return checkNode(node.right);
+        return checkNode(expression.right);
       }
 
-      const type = getConstrainedTypeAtLocation(services, node);
+      const type = getConstrainedTypeAtLocation(services, expression);
 
       // Conditional is always necessary if it involves:
       //    `any` or `unknown` or a naked type variable
@@ -631,10 +632,9 @@ export default createRule<Options, MessageId>({
             ? !isCallExpressionNullableOriginFromCallee(node)
             : true;
 
-      const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
         isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
-        (isOwnNullable && (isNullableType(type) || possiblyVoid))
+        (isOwnNullable && isNullableType(type))
       );
     }
 

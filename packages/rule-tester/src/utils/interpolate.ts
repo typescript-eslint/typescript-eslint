@@ -6,7 +6,7 @@ import type { ReportDescriptorMessageData } from '@typescript-eslint/utils/ts-es
  * Returns a global expression matching placeholders in messages.
  */
 export function getPlaceholderMatcher(): RegExp {
-  return /\{\{([^{}]+?)\}\}/gu;
+  return /\{\{([^{}]+)\}\}/gu;
 }
 
 export function interpolate(

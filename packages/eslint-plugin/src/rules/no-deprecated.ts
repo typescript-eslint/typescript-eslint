@@ -52,19 +52,17 @@ export default createRule({
           return parent.key === node;
 
         case AST_NODE_TYPES.Property:
+          // foo in "const { foo } = bar" will be processed twice, as parent.key
+          // and parent.value. The second is treated as a declaration.
           return (
             (parent.shorthand && parent.value === node) ||
             parent.parent.type === AST_NODE_TYPES.ObjectExpression
           );
 
         case AST_NODE_TYPES.AssignmentPattern:
-          return (
-            parent.left === node &&
-            !(
-              parent.parent.type === AST_NODE_TYPES.Property &&
-              parent.parent.shorthand
-            )
-          );
+          // foo in "const { foo = "" } = bar" will be processed twice, as parent.parent.key
+          // and parent.left. The second is treated as a declaration.
+          return parent.left === node;
 
         case AST_NODE_TYPES.ArrowFunctionExpression:
         case AST_NODE_TYPES.FunctionDeclaration:
@@ -174,15 +172,32 @@ export default createRule({
       const signature = checker.getResolvedSignature(
         tsNode as ts.CallLikeExpression,
       );
+      const symbol = services.getSymbolAtLocation(node);
       if (signature) {
         const signatureDeprecation = getJsDocDeprecation(signature);
         if (signatureDeprecation !== undefined) {
           return signatureDeprecation;
         }
+
+        // Properties with function-like types have "deprecated" jsdoc
+        // on their symbols, not on their signatures:
+        //
+        // interface Props {
+        //   /** @deprecated */
+        //   property: () => 'foo'
+        //   ^symbol^  ^signature^
+        // }
+        const symbolDeclarationKind = symbol?.declarations?.[0].kind;
+        if (
+          symbolDeclarationKind !== ts.SyntaxKind.MethodDeclaration &&
+          symbolDeclarationKind !== ts.SyntaxKind.FunctionDeclaration &&
+          symbolDeclarationKind !== ts.SyntaxKind.MethodSignature
+        ) {
+          return getJsDocDeprecation(symbol);
+        }
       }
 
       // Or it could be a ClassDeclaration or a variable set to a ClassExpression.
-      const symbol = services.getSymbolAtLocation(node);
       const symbolAtLocation =
         symbol && checker.getTypeOfSymbolAtLocation(symbol, tsNode).getSymbol();
 
@@ -195,10 +210,7 @@ export default createRule({
     function getSymbol(
       node: IdentifierLike,
     ): ts.Signature | ts.Symbol | undefined {
-      if (
-        node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-        node.parent.type === AST_NODE_TYPES.Property
-      ) {
+      if (node.parent.type === AST_NODE_TYPES.Property) {
         return services
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
