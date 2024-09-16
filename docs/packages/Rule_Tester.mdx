@@ -123,7 +123,7 @@ ruleTester.run('my-rule', rule, {
 ### Type-Aware Testing
 
 Type-aware rules can be tested in almost exactly the same way as regular code, using `parserOptions.projectService`.
-Most rule tests specify `parserOptions.allowDefaultProjectForFiles: ["*.ts*"]` to enable type checking on all test files.
+Most rule tests specify `parserOptions.allowDefaultProject: ["*.ts*"]` to enable type checking on all test files.
 
 You can then test your rule by providing the type-aware config:
 

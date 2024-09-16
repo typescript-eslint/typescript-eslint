@@ -55,6 +55,11 @@ interface ProjectServiceOptions {
   defaultProject?: string;
 
   /**
+   * Whether to allow TypeScript plugins as configured in the TSConfig.
+   */
+  loadTypeScriptPlugins?: boolean;
+
+  /**
    * The maximum number of files {@link allowDefaultProject} may match.
    * Each file match slows down linting, so if you do need to use this, please
    * file an informative issue on typescript-eslint explaining why - so we can
