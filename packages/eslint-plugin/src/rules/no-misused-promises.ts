@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isArrayMethodCallWithPredicate,
   isFunction,
   isRestParameterDeclaration,
   nullThrows,
@@ -31,6 +32,7 @@ interface ChecksVoidReturnOptions {
 
 type MessageId =
   | 'conditional'
+  | 'predicate'
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
@@ -91,6 +93,7 @@ export default createRule<Options, MessageId>({
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
       conditional: 'Expected non-Promise value in a boolean conditional.',
+      predicate: 'Expected a non-Promise value to be returned.',
       spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
     schema: [
@@ -175,6 +178,7 @@ export default createRule<Options, MessageId>({
         checkConditional(node.argument, true);
       },
       WhileStatement: checkTestConditional,
+      'CallExpression > MemberExpression': checkArrayPredicates,
     };
 
     checksVoidReturn = parseChecksVoidReturn(checksVoidReturn);
@@ -319,6 +323,25 @@ export default createRule<Options, MessageId>({
           messageId: 'conditional',
           node,
         });
+      }
+    }
+
+    function checkArrayPredicates(node: TSESTree.MemberExpression): void {
+      const parent = node.parent;
+      if (parent.type === AST_NODE_TYPES.CallExpression) {
+        const callback = parent.arguments.at(0);
+        if (
+          callback &&
+          isArrayMethodCallWithPredicate(context, services, parent)
+        ) {
+          const type = services.esTreeNodeToTSNodeMap.get(callback);
+          if (returnsThenable(checker, type)) {
+            context.report({
+              messageId: 'predicate',
+              node: callback,
+            });
+          }
+        }
       }
     }
 

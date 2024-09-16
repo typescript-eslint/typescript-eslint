@@ -21,6 +21,7 @@ export * from './scopeUtils';
 export * from './types';
 export * from './isAssignee';
 export * from './getFixOrSuggest';
+export * from './isArrayMethodCallWithPredicate';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
