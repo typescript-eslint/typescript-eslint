@@ -392,7 +392,6 @@ describe('parseAndGenerateServices', () => {
           ...config,
           sourceType,
           filePath: `file${ext}`,
-          project: './tsconfig.json',
         });
         const expressionType = (
           result.ast.body[0] as parser.TSESTree.ExpressionStatement
