@@ -35,15 +35,7 @@ type MessageIds =
   | 'missingReturnType';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowArgumentsExplicitlyTypedAsAny: false,
-      allowDirectConstAssertionInArrowFunctions: true,
-      allowedNames: [],
-      allowHigherOrderFunctions: true,
-      allowTypedFunctionExpressions: true,
-    },
-  ],
+  name: 'explicit-module-boundary-types',
   meta: {
     type: 'problem',
     docs: {
@@ -99,7 +91,15 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'explicit-module-boundary-types',
+  defaultOptions: [
+    {
+      allowArgumentsExplicitlyTypedAsAny: false,
+      allowDirectConstAssertionInArrowFunctions: true,
+      allowedNames: [],
+      allowHigherOrderFunctions: true,
+      allowTypedFunctionExpressions: true,
+    },
+  ],
   create(context, [options]) {
     // tracks all of the functions we've already checked
     const checkedFunctions = new Set<FunctionNode>();

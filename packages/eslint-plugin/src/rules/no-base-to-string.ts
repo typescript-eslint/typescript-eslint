@@ -19,11 +19,7 @@ type Options = [
 type MessageIds = 'baseToString';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
-    },
-  ],
+  name: 'no-base-to-string',
   meta: {
     type: 'suggestion',
     docs: {
@@ -51,7 +47,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-base-to-string',
+  defaultOptions: [
+    {
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
+    },
+  ],
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

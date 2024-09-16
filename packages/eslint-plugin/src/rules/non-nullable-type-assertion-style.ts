@@ -12,7 +12,7 @@ import {
 } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'non-nullable-type-assertion-style',
   meta: {
     type: 'suggestion',
     docs: {
@@ -27,7 +27,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'non-nullable-type-assertion-style',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
 

@@ -31,12 +31,7 @@ interface BooleanComparisonWithTypeInformation extends BooleanComparison {
 }
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowComparingNullableBooleansToFalse: true,
-      allowComparingNullableBooleansToTrue: true,
-    },
-  ],
+  name: 'no-unnecessary-boolean-literal-compare',
   meta: {
     type: 'suggestion',
     docs: {
@@ -77,7 +72,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-unnecessary-boolean-literal-compare',
+  defaultOptions: [
+    {
+      allowComparingNullableBooleansToFalse: true,
+      allowComparingNullableBooleansToTrue: true,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
 

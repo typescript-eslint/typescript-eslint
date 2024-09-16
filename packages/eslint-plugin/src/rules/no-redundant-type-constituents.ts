@@ -192,7 +192,7 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-redundant-type-constituents',
   meta: {
     type: 'suggestion',
     docs: {
@@ -210,7 +210,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-redundant-type-constituents',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();

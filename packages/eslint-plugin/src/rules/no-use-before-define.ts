@@ -216,17 +216,7 @@ type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowNamedExports: false,
-      classes: true,
-      enums: true,
-      functions: true,
-      ignoreTypeReferences: true,
-      typedefs: true,
-      variables: true,
-    },
-  ],
+  name: 'no-use-before-define',
   meta: {
     type: 'problem',
     docs: {
@@ -260,7 +250,17 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-use-before-define',
+  defaultOptions: [
+    {
+      allowNamedExports: false,
+      classes: true,
+      enums: true,
+      functions: true,
+      ignoreTypeReferences: true,
+      typedefs: true,
+      variables: true,
+    },
+  ],
   create(context, optionsWithDefault) {
     const options = parseOptions(optionsWithDefault[0]);
 

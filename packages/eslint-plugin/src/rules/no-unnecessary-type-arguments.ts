@@ -24,7 +24,7 @@ type ParameterCapableTSNode =
 type MessageIds = 'unnecessaryTypeParameter';
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'no-unnecessary-type-arguments',
   meta: {
     type: 'suggestion',
     docs: {
@@ -39,7 +39,7 @@ export default createRule<[], MessageIds>({
     },
     schema: [],
   },
-  name: 'no-unnecessary-type-arguments',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

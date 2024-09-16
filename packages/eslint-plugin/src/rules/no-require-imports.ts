@@ -13,7 +13,7 @@ type Options = [
 type MessageIds = 'noRequireImports';
 
 export default util.createRule<Options, MessageIds>({
-  defaultOptions: [{ allow: [], allowAsImport: false }],
+  name: 'no-require-imports',
   meta: {
     type: 'problem',
     docs: {
@@ -41,7 +41,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-require-imports',
+  defaultOptions: [{ allow: [], allowAsImport: false }],
   create(context, options) {
     const allowAsImport = options[0].allowAsImport;
     const allowPatterns = options[0].allow?.map(

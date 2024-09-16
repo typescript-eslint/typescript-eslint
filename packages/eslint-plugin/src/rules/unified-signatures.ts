@@ -65,11 +65,7 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      ignoreDifferentlyNamedParameters: false,
-    },
-  ],
+  name: 'unified-signatures',
   meta: {
     type: 'suggestion',
     docs: {
@@ -99,7 +95,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'unified-signatures',
+  defaultOptions: [
+    {
+      ignoreDifferentlyNamedParameters: false,
+    },
+  ],
   create(context, [{ ignoreDifferentlyNamedParameters }]) {
     //----------------------------------------------------------------------
     // Helpers

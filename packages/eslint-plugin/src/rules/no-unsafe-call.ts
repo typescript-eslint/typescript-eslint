@@ -17,7 +17,7 @@ type MessageIds =
   | 'unsafeTemplateTag';
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'no-unsafe-call',
   meta: {
     type: 'problem',
     docs: {
@@ -36,7 +36,7 @@ export default createRule<[], MessageIds>({
     },
     schema: [],
   },
-  name: 'no-unsafe-call',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();

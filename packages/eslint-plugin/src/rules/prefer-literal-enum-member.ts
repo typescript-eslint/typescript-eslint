@@ -5,11 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, getStaticStringValue } from '../util';
 
 export default createRule({
-  defaultOptions: [
-    {
-      allowBitwiseExpressions: false,
-    },
-  ],
+  name: 'prefer-literal-enum-member',
   meta: {
     type: 'suggestion',
     docs: {
@@ -32,7 +28,11 @@ export default createRule({
       },
     ],
   },
-  name: 'prefer-literal-enum-member',
+  defaultOptions: [
+    {
+      allowBitwiseExpressions: false,
+    },
+  ],
   create(context, [{ allowBitwiseExpressions }]) {
     function isIdentifierWithName(node: TSESTree.Node, name: string): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;

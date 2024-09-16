@@ -25,7 +25,7 @@ const exportOrImportNodeTypes = new Set([
 ]);
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-useless-empty-export',
   meta: {
     type: 'suggestion',
     docs: {
@@ -39,7 +39,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-useless-empty-export',
+  defaultOptions: [],
   create(context) {
     // In a definition file, export {} is necessary to make the module properly
     // encapsulated, even when there are other exports

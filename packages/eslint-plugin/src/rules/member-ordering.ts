@@ -718,13 +718,7 @@ function getLowestRank(
 }
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      default: {
-        memberTypes: defaultOrder,
-      },
-    },
-  ],
+  name: 'member-ordering',
   meta: {
     type: 'suggestion',
     docs: {
@@ -808,7 +802,13 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'member-ordering',
+  defaultOptions: [
+    {
+      default: {
+        memberTypes: defaultOrder,
+      },
+    },
+  ],
   create(context, [options]) {
     /**
      * Checks if the member groups are correctly sorted.

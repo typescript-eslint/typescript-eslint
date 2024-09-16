@@ -14,12 +14,7 @@ type Options = [
 type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      ignoreParameters: false,
-      ignoreProperties: false,
-    },
-  ],
+  name: 'no-inferrable-types',
   meta: {
     type: 'suggestion',
     docs: {
@@ -47,7 +42,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-inferrable-types',
+  defaultOptions: [
+    {
+      ignoreParameters: false,
+      ignoreProperties: false,
+    },
+  ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
     function isFunctionCall(
       init: TSESTree.Expression,

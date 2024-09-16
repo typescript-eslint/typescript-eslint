@@ -15,7 +15,7 @@ export type Options = [('method' | 'property')?];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: ['property'],
+  name: 'method-signature-style',
   meta: {
     type: 'suggestion',
     docs: {
@@ -35,7 +35,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'method-signature-style',
+  defaultOptions: ['property'],
   create(context, [mode]) {
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,

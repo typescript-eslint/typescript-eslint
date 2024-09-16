@@ -59,7 +59,7 @@ type VariableType =
   | 'variable';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{}],
+  name: 'no-unused-vars',
   meta: {
     type: 'problem',
     docs: {
@@ -124,7 +124,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-unused-vars',
+  defaultOptions: [{}],
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 

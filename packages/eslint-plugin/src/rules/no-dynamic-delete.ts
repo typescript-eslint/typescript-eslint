@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-dynamic-delete',
   meta: {
     type: 'suggestion',
     docs: {
@@ -19,7 +19,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-dynamic-delete',
+  defaultOptions: [],
   create(context) {
     function createFixer(
       member: TSESTree.MemberExpression,

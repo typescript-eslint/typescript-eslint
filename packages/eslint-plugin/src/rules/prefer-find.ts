@@ -14,7 +14,7 @@ import {
 } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-find',
   meta: {
     type: 'suggestion',
     docs: {
@@ -31,7 +31,7 @@ export default createRule({
     schema: [],
   },
 
-  name: 'prefer-find',
+  defaultOptions: [],
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);

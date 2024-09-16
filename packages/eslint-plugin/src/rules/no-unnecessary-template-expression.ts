@@ -26,7 +26,7 @@ function endsWithUnescapedDollarSign(str: string): boolean {
 }
 
 export default createRule<[], MessageId>({
-  defaultOptions: [],
+  name: 'no-unnecessary-template-expression',
   meta: {
     type: 'suggestion',
     docs: {
@@ -41,7 +41,7 @@ export default createRule<[], MessageId>({
     },
     schema: [],
   },
-  name: 'no-unnecessary-template-expression',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
 

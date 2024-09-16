@@ -28,7 +28,7 @@ export type Options = [
 type MessageIds = 'preferEndsWith' | 'preferStartsWith';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ allowSingleElementEquality: 'never' }],
+  name: 'prefer-string-starts-ends-with',
   meta: {
     type: 'suggestion',
     docs: {
@@ -58,7 +58,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
 
-  name: 'prefer-string-starts-ends-with',
+  defaultOptions: [{ allowSingleElementEquality: 'never' }],
   create(context, [{ allowSingleElementEquality }]) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
 

@@ -13,12 +13,7 @@ export type Options = [
 export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      fixToUnknown: false,
-      ignoreRestArgs: false,
-    },
-  ],
+  name: 'no-explicit-any',
   meta: {
     type: 'suggestion',
     docs: {
@@ -52,7 +47,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-explicit-any',
+  defaultOptions: [
+    {
+      fixToUnknown: false,
+      ignoreRestArgs: false,
+    },
+  ],
   create(context, [{ fixToUnknown, ignoreRestArgs }]) {
     /**
      * Checks if the node is an arrow function, function/constructor declaration or function expression

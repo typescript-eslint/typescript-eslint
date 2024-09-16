@@ -23,7 +23,7 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ countVoidThis: false, max: 3 }],
+  name: 'max-params',
   meta: {
     type: 'suggestion',
     docs: {
@@ -52,7 +52,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'max-params',
+  defaultOptions: [{ countVoidThis: false, max: 3 }],
   create(context, [{ countVoidThis }]) {
     const baseRules = baseRule.create(context);
 

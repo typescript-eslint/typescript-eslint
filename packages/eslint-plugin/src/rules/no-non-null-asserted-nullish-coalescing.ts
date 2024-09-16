@@ -31,7 +31,7 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-non-null-asserted-nullish-coalescing',
   meta: {
     type: 'problem',
     docs: {
@@ -47,7 +47,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-non-null-asserted-nullish-coalescing',
+  defaultOptions: [],
   create(context) {
     return {
       'LogicalExpression[operator = "??"] > TSNonNullExpression.left'(

@@ -12,7 +12,7 @@ type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
 type MessageIds = InferMessageIdsTypeFromRule<NonNullable<typeof baseRule>>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-loss-of-precision',
   meta: {
     type: 'problem',
     deprecated: true,
@@ -24,7 +24,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [],
   },
-  name: 'no-loss-of-precision',
+  defaultOptions: [],
   create(context) {
     return baseRule.create(context);
   },

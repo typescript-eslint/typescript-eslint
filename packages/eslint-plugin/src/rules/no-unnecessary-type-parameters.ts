@@ -15,7 +15,7 @@ type NodeWithTypeParameters = MakeRequired<
 >;
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unnecessary-type-parameters',
   meta: {
     type: 'problem',
     docs: {
@@ -28,7 +28,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unnecessary-type-parameters',
+  defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
 

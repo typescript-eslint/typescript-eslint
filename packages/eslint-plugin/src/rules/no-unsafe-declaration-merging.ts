@@ -6,7 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unsafe-declaration-merging',
   meta: {
     type: 'problem',
     docs: {
@@ -20,7 +20,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unsafe-declaration-merging',
+  defaultOptions: [],
   create(context) {
     function checkUnsafeDeclaration(
       scope: Scope,

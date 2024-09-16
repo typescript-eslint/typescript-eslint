@@ -7,7 +7,7 @@ import * as ts from 'typescript';
 import { createRule, getParserServices } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unnecessary-qualifier',
   meta: {
     type: 'suggestion',
     docs: {
@@ -21,7 +21,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unnecessary-qualifier',
+  defaultOptions: [],
   create(context) {
     const namespacesInScope: ts.Node[] = [];
     let currentFailedNamespaceExpression: TSESTree.Node | null = null;

@@ -7,7 +7,7 @@ type Options = [];
 type MessageIds = 'unaryMinus';
 
 export default util.createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-unsafe-unary-minus',
   meta: {
     type: 'problem',
     docs: {
@@ -21,7 +21,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [],
   },
-  name: 'no-unsafe-unary-minus',
+  defaultOptions: [],
   create(context) {
     return {
       UnaryExpression(node): void {

@@ -14,13 +14,7 @@ type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 type Options = InferOptionsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowShortCircuit: false,
-      allowTaggedTemplates: false,
-      allowTernary: false,
-    },
-  ],
+  name: 'no-unused-expressions',
   meta: {
     type: 'suggestion',
     docs: {
@@ -32,7 +26,13 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  name: 'no-unused-expressions',
+  defaultOptions: [
+    {
+      allowShortCircuit: false,
+      allowTaggedTemplates: false,
+      allowTernary: false,
+    },
+  ],
   create(context, [{ allowShortCircuit = false, allowTernary = false }]) {
     const rules = baseRule.create(context);
 

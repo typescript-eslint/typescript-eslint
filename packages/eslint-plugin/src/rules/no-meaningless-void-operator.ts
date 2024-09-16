@@ -13,7 +13,7 @@ type Options = [
 ];
 
 export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
-  defaultOptions: [{ checkNever: false }],
+  name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',
     docs: {
@@ -42,7 +42,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
       },
     ],
   },
-  name: 'no-meaningless-void-operator',
+  defaultOptions: [{ checkNever: false }],
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();

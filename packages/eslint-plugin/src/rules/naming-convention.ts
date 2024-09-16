@@ -63,7 +63,7 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: defaultCamelCaseAllTheThingsConfig,
+  name: 'naming-convention',
   meta: {
     type: 'suggestion',
     docs: {
@@ -88,7 +88,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: SCHEMA,
   },
-  name: 'naming-convention',
+  defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
     const context =
       contextWithoutDefaults.options.length > 0

@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-extra-non-null-assertion',
   meta: {
     type: 'problem',
     docs: {
@@ -16,7 +16,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-extra-non-null-assertion',
+  defaultOptions: [],
   create(context) {
     function checkExtraNonNullAssertion(
       node: TSESTree.TSNonNullExpression,

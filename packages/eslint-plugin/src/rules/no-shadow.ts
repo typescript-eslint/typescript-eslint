@@ -25,16 +25,7 @@ const allowedFunctionVariableDefTypes = new Set([
 ]);
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allow: [],
-      builtinGlobals: false,
-      hoist: 'functions',
-      ignoreFunctionTypeParameterNameValueShadow: true,
-      ignoreOnInitialization: false,
-      ignoreTypeValueShadow: true,
-    },
-  ],
+  name: 'no-shadow',
   meta: {
     type: 'suggestion',
     docs: {
@@ -78,7 +69,16 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-shadow',
+  defaultOptions: [
+    {
+      allow: [],
+      builtinGlobals: false,
+      hoist: 'functions',
+      ignoreFunctionTypeParameterNameValueShadow: true,
+      ignoreOnInitialization: false,
+      ignoreTypeValueShadow: true,
+    },
+  ],
   create(context, [options]) {
     /**
      * Check if a scope is a TypeScript module augmenting the global namespace.

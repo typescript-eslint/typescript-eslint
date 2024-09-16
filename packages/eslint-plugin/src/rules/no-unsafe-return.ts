@@ -20,7 +20,7 @@ import {
 } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unsafe-return',
   meta: {
     type: 'problem',
     docs: {
@@ -39,7 +39,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unsafe-return',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

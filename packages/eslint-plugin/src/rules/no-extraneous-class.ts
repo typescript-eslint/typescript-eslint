@@ -15,14 +15,7 @@ type Options = [
 type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowConstructorOnly: false,
-      allowEmpty: false,
-      allowStaticOnly: false,
-      allowWithDecorator: false,
-    },
-  ],
+  name: 'no-extraneous-class',
   meta: {
     type: 'suggestion',
     docs: {
@@ -63,7 +56,14 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-extraneous-class',
+  defaultOptions: [
+    {
+      allowConstructorOnly: false,
+      allowEmpty: false,
+      allowStaticOnly: false,
+      allowWithDecorator: false,
+    },
+  ],
   create(
     context,
     [{ allowConstructorOnly, allowEmpty, allowStaticOnly, allowWithDecorator }],

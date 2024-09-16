@@ -68,12 +68,7 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
 };
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      ignoreIntersections: false,
-      ignoreUnions: false,
-    },
-  ],
+  name: 'no-duplicate-type-constituents',
   meta: {
     type: 'suggestion',
     docs: {
@@ -101,7 +96,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-duplicate-type-constituents',
+  defaultOptions: [
+    {
+      ignoreIntersections: false,
+      ignoreUnions: false,
+    },
+  ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
 

@@ -13,12 +13,7 @@ type Options = [
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowDestructuring: true,
-      allowedNames: [],
-    },
-  ],
+  name: 'no-this-alias',
   meta: {
     type: 'suggestion',
     docs: {
@@ -52,7 +47,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-this-alias',
+  defaultOptions: [
+    {
+      allowDestructuring: true,
+      allowedNames: [],
+    },
+  ],
   create(context, [{ allowDestructuring, allowedNames }]) {
     return {
       "VariableDeclarator[init.type='ThisExpression'], AssignmentExpression[right.type='ThisExpression']"(

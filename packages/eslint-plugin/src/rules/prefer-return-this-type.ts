@@ -14,7 +14,7 @@ type FunctionLike =
   | TSESTree.MethodDefinition['value'];
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-return-this-type',
   meta: {
     type: 'suggestion',
     docs: {
@@ -30,7 +30,7 @@ export default createRule({
     schema: [],
   },
 
-  name: 'prefer-return-this-type',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

@@ -15,7 +15,7 @@ enum AllowedType {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-mixed-enums',
   meta: {
     type: 'problem',
     docs: {
@@ -28,7 +28,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-mixed-enums',
+  defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();

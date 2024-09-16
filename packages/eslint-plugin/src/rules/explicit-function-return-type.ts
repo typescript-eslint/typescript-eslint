@@ -31,18 +31,7 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowConciseArrowFunctionExpressionsStartingWithVoid: false,
-      allowDirectConstAssertionInArrowFunctions: true,
-      allowedNames: [],
-      allowExpressions: false,
-      allowFunctionsWithoutTypeParameters: false,
-      allowHigherOrderFunctions: true,
-      allowIIFEs: false,
-      allowTypedFunctionExpressions: true,
-    },
-  ],
+  name: 'explicit-function-return-type',
   meta: {
     type: 'problem',
     docs: {
@@ -104,7 +93,18 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'explicit-function-return-type',
+  defaultOptions: [
+    {
+      allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+      allowDirectConstAssertionInArrowFunctions: true,
+      allowedNames: [],
+      allowExpressions: false,
+      allowFunctionsWithoutTypeParameters: false,
+      allowHigherOrderFunctions: true,
+      allowIIFEs: false,
+      allowTypedFunctionExpressions: true,
+    },
+  ],
   create(context, [options]) {
     const functionInfoStack: FunctionInfo<FunctionNode>[] = [];
 

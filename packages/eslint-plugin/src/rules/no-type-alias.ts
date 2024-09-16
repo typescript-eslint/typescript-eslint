@@ -34,18 +34,7 @@ interface TypeWithLabel {
 }
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowAliases: 'never',
-      allowCallbacks: 'never',
-      allowConditionalTypes: 'never',
-      allowConstructors: 'never',
-      allowGenerics: 'never',
-      allowLiterals: 'never',
-      allowMappedTypes: 'never',
-      allowTupleTypes: 'never',
-    },
-  ],
+  name: 'no-type-alias',
   meta: {
     type: 'suggestion',
     deprecated: true,
@@ -116,7 +105,18 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-type-alias',
+  defaultOptions: [
+    {
+      allowAliases: 'never',
+      allowCallbacks: 'never',
+      allowConditionalTypes: 'never',
+      allowConstructors: 'never',
+      allowGenerics: 'never',
+      allowLiterals: 'never',
+      allowMappedTypes: 'never',
+      allowTupleTypes: 'never',
+    },
+  ],
   create(
     context,
     [

@@ -49,11 +49,7 @@ const schema = deepMerge(
 ) as unknown as JSONSchema4;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allow: [],
-    },
-  ],
+  name: 'no-empty-function',
   meta: {
     type: 'suggestion',
     docs: {
@@ -65,7 +61,11 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [schema],
   },
-  name: 'no-empty-function',
+  defaultOptions: [
+    {
+      allow: [],
+    },
+  ],
   create(context, [{ allow = [] }]) {
     const rules = baseRule.create(context);
 

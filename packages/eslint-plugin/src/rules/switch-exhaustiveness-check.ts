@@ -46,12 +46,7 @@ type MessageIds =
   | 'switchIsNotExhaustive';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowDefaultCaseForExhaustiveSwitch: true,
-      requireDefaultForNonUnion: false,
-    },
-  ],
+  name: 'switch-exhaustiveness-check',
   meta: {
     type: 'suggestion',
     docs: {
@@ -83,7 +78,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'switch-exhaustiveness-check',
+  defaultOptions: [
+    {
+      allowDefaultCaseForExhaustiveSwitch: true,
+      requireDefaultForNonUnion: false,
+    },
+  ],
   create(
     context,
     [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],

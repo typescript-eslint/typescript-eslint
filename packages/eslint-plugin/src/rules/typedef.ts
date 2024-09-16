@@ -20,18 +20,7 @@ type Options = { [k in OptionKeys]?: boolean };
 type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
 export default createRule<[Options], MessageIds>({
-  defaultOptions: [
-    {
-      [OptionKeys.ArrayDestructuring]: false,
-      [OptionKeys.ArrowParameter]: false,
-      [OptionKeys.MemberVariableDeclaration]: false,
-      [OptionKeys.ObjectDestructuring]: false,
-      [OptionKeys.Parameter]: false,
-      [OptionKeys.PropertyDeclaration]: false,
-      [OptionKeys.VariableDeclaration]: false,
-      [OptionKeys.VariableDeclarationIgnoreFunction]: false,
-    },
-  ],
+  name: 'typedef',
   meta: {
     type: 'suggestion',
     docs: {
@@ -58,7 +47,18 @@ export default createRule<[Options], MessageIds>({
       },
     ],
   },
-  name: 'typedef',
+  defaultOptions: [
+    {
+      [OptionKeys.ArrayDestructuring]: false,
+      [OptionKeys.ArrowParameter]: false,
+      [OptionKeys.MemberVariableDeclaration]: false,
+      [OptionKeys.ObjectDestructuring]: false,
+      [OptionKeys.Parameter]: false,
+      [OptionKeys.PropertyDeclaration]: false,
+      [OptionKeys.VariableDeclaration]: false,
+      [OptionKeys.VariableDeclarationIgnoreFunction]: false,
+    },
+  ],
   create(
     context,
     [

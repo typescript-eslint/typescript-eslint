@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'default-param-last',
   meta: {
     type: 'suggestion',
     docs: {
@@ -17,7 +17,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'default-param-last',
+  defaultOptions: [],
   create(context) {
     /**
      * checks if node is optional parameter

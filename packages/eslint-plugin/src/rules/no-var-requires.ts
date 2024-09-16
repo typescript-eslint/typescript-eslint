@@ -12,7 +12,7 @@ type Options = [
 type MessageIds = 'noVarReqs';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ allow: [] }],
+  name: 'no-var-requires',
   meta: {
     type: 'problem',
     deprecated: true,
@@ -37,7 +37,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-var-requires',
+  defaultOptions: [{ allow: [] }],
   create(context, options) {
     const allowPatterns = options[0].allow.map(
       pattern => new RegExp(pattern, 'u'),

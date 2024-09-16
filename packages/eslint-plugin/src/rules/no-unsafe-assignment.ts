@@ -28,7 +28,7 @@ const enum ComparisonType {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unsafe-assignment',
   meta: {
     type: 'problem',
     docs: {
@@ -53,7 +53,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unsafe-assignment',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

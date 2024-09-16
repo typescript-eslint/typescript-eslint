@@ -12,7 +12,7 @@ import {
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'no-non-null-assertion',
   meta: {
     type: 'problem',
     docs: {
@@ -28,7 +28,7 @@ export default createRule<[], MessageIds>({
     },
     schema: [],
   },
-  name: 'no-non-null-assertion',
+  defaultOptions: [],
   create(context) {
     return {
       TSNonNullExpression(node): void {

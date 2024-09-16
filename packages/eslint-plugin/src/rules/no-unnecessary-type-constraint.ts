@@ -14,7 +14,7 @@ type TypeParameterWithConstraint = MakeRequired<
 >;
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unnecessary-type-constraint',
   meta: {
     type: 'suggestion',
     docs: {
@@ -30,7 +30,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unnecessary-type-constraint',
+  defaultOptions: [],
   create(context) {
     // In theory, we could use the type checker for more advanced constraint types...
     // ...but in practice, these types are rare, and likely not worth requiring type info.

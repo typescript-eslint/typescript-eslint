@@ -18,15 +18,7 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowIndexSignaturePropertyAccess: false,
-      allowKeywords: true,
-      allowPattern: '',
-      allowPrivateClassPropertyAccess: false,
-      allowProtectedClassPropertyAccess: false,
-    },
-  ],
+  name: 'dot-notation',
   meta: {
     type: 'suggestion',
     docs: {
@@ -67,7 +59,15 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'dot-notation',
+  defaultOptions: [
+    {
+      allowIndexSignaturePropertyAccess: false,
+      allowKeywords: true,
+      allowPattern: '',
+      allowPrivateClassPropertyAccess: false,
+      allowProtectedClassPropertyAccess: false,
+    },
+  ],
   create(context, [options]) {
     const rules = baseRule.create(context);
     const services = getParserServices(context);

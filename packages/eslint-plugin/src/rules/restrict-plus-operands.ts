@@ -26,16 +26,7 @@ type Options = [
 type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowBoolean: true,
-      allowNullish: true,
-      allowNumberAndString: true,
-      allowRegExp: true,
-      skipCompoundAssignments: false,
-    },
-  ],
+  name: 'restrict-plus-operands',
   meta: {
     type: 'problem',
     docs: {
@@ -98,7 +89,16 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'restrict-plus-operands',
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
+      allowNumberAndString: true,
+      allowRegExp: true,
+      skipCompoundAssignments: false,
+    },
+  ],
   create(
     context,
     [

@@ -29,7 +29,7 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 export default createRule({
-  defaultOptions: [],
+  name: 'require-await',
   meta: {
     type: 'suggestion',
     docs: {
@@ -46,7 +46,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'require-await',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

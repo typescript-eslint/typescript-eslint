@@ -27,18 +27,7 @@ export default createRule<
   [PreferOptionalChainOptions],
   PreferOptionalChainMessageIds
 >({
-  defaultOptions: [
-    {
-      allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
-      checkAny: true,
-      checkBigInt: true,
-      checkBoolean: true,
-      checkNumber: true,
-      checkString: true,
-      checkUnknown: true,
-      requireNullish: false,
-    },
-  ],
+  name: 'prefer-optional-chain',
   meta: {
     type: 'suggestion',
     docs: {
@@ -103,7 +92,18 @@ export default createRule<
       },
     ],
   },
-  name: 'prefer-optional-chain',
+  defaultOptions: [
+    {
+      allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
+      checkAny: true,
+      checkBigInt: true,
+      checkBoolean: true,
+      checkNumber: true,
+      checkString: true,
+      checkUnknown: true,
+      requireNullish: false,
+    },
+  ],
   create(context, [options]) {
     const parserServices = getParserServices(context);
 

@@ -30,7 +30,7 @@ const functionScopeBoundaries = [
 ].join(', ');
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ onlyInlineLambdas: false }],
+  name: 'prefer-readonly',
   meta: {
     type: 'suggestion',
     docs: {
@@ -55,7 +55,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'prefer-readonly',
+  defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

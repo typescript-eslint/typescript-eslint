@@ -13,7 +13,7 @@ import {
 } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'await-thenable',
   meta: {
     type: 'problem',
     docs: {
@@ -28,7 +28,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'await-thenable',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

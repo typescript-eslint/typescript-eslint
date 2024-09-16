@@ -10,7 +10,7 @@ export const phrases = {
 } as const;
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-function-type',
   meta: {
     type: 'suggestion',
     docs: {
@@ -27,7 +27,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'prefer-function-type',
+  defaultOptions: [],
   create(context) {
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'

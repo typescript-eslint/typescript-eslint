@@ -22,7 +22,7 @@ type MemberDeclaration =
   | TSESTree.NamedExportDeclarations;
 
 export default createRule({
-  defaultOptions: [],
+  name: 'adjacent-overload-signatures',
   meta: {
     type: 'suggestion',
     docs: {
@@ -34,7 +34,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'adjacent-overload-signatures',
+  defaultOptions: [],
   create(context) {
     interface Method {
       callSignature: boolean;

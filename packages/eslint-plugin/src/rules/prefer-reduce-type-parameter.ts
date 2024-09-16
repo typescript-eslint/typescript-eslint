@@ -33,7 +33,7 @@ const getMemberExpressionName = (
 };
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-reduce-type-parameter',
   meta: {
     type: 'problem',
     docs: {
@@ -49,7 +49,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'prefer-reduce-type-parameter',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

@@ -71,13 +71,7 @@ function parseChecksVoidReturn(
 }
 
 export default createRule<Options, MessageId>({
-  defaultOptions: [
-    {
-      checksConditionals: true,
-      checksSpreads: true,
-      checksVoidReturn: true,
-    },
-  ],
+  name: 'no-misused-promises',
   meta: {
     type: 'problem',
     docs: {
@@ -133,7 +127,13 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  name: 'no-misused-promises',
+  defaultOptions: [
+    {
+      checksConditionals: true,
+      checksSpreads: true,
+      checksVoidReturn: true,
+    },
+  ],
   create(context, [{ checksConditionals, checksSpreads, checksVoidReturn }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

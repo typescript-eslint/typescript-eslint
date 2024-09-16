@@ -23,7 +23,7 @@ function createDataType(type: ts.Type): '`any`' | '`error` typed' {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unsafe-member-access',
   meta: {
     type: 'problem',
     docs: {
@@ -43,7 +43,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unsafe-member-access',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();

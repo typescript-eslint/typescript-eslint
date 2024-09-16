@@ -22,11 +22,7 @@ export type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowEmptyReject: false,
-    },
-  ],
+  name: 'prefer-promise-reject-errors',
   meta: {
     type: 'suggestion',
     docs: {
@@ -50,7 +46,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'prefer-promise-reject-errors',
+  defaultOptions: [
+    {
+      allowEmptyReject: false,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
 

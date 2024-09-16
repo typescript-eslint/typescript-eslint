@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-misused-new',
   meta: {
     type: 'problem',
     docs: {
@@ -18,7 +18,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-misused-new',
+  defaultOptions: [],
   create(context) {
     /**
      * @param node type to be inspected.

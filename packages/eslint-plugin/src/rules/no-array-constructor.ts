@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isOptionalCallExpression } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-array-constructor',
   meta: {
     type: 'suggestion',
     docs: {
@@ -19,7 +19,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-array-constructor',
+  defaultOptions: [],
   create(context) {
     /**
      * Disallow construction of dense arrays using the Array constructor

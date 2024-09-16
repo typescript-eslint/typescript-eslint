@@ -116,27 +116,7 @@ export type Options = [
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      caseSensitive: false,
-      checkIntersections: true,
-      checkUnions: true,
-      groupOrder: [
-        Group.named,
-        Group.keyword,
-        Group.operator,
-        Group.literal,
-        Group.function,
-        Group.import,
-        Group.conditional,
-        Group.object,
-        Group.tuple,
-        Group.intersection,
-        Group.union,
-        Group.nullish,
-      ],
-    },
-  ],
+  name: 'sort-type-constituents',
   meta: {
     type: 'suggestion',
     deprecated: true,
@@ -184,7 +164,27 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'sort-type-constituents',
+  defaultOptions: [
+    {
+      caseSensitive: false,
+      checkIntersections: true,
+      checkUnions: true,
+      groupOrder: [
+        Group.named,
+        Group.keyword,
+        Group.operator,
+        Group.literal,
+        Group.function,
+        Group.import,
+        Group.conditional,
+        Group.object,
+        Group.tuple,
+        Group.intersection,
+        Group.union,
+        Group.nullish,
+      ],
+    },
+  ],
   create(
     context,
     [{ caseSensitive, checkIntersections, checkUnions, groupOrder }],

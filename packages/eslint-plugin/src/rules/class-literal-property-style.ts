@@ -54,7 +54,7 @@ const isSupportedLiteral = (
 };
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: ['fields'],
+  name: 'class-literal-property-style',
   meta: {
     type: 'problem',
     docs: {
@@ -76,7 +76,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'class-literal-property-style',
+  defaultOptions: ['fields'],
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 

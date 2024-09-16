@@ -38,7 +38,7 @@ type MessageIds =
   | 'unwantedPublicAccessibility';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ accessibility: 'explicit' }],
+  name: 'explicit-member-accessibility',
   meta: {
     type: 'problem',
     docs: {
@@ -106,7 +106,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'explicit-member-accessibility',
+  defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
     const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
     const overrides = option.overrides ?? {};

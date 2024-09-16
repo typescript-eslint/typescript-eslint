@@ -16,11 +16,7 @@ export type Options = [
 export type MessageIds = 'requireCompare';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      ignoreStringArrays: true,
-    },
-  ],
+  name: 'require-array-sort-compare',
   meta: {
     type: 'problem',
     docs: {
@@ -46,7 +42,11 @@ export default createRule<Options, MessageIds>({
     ],
   },
 
-  name: 'require-array-sort-compare',
+  defaultOptions: [
+    {
+      ignoreStringArrays: true,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

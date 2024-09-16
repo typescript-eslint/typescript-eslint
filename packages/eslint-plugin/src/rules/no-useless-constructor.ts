@@ -44,7 +44,7 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
 }
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-useless-constructor',
   meta: {
     type: 'problem',
     docs: {
@@ -56,7 +56,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  name: 'no-useless-constructor',
+  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
     return {

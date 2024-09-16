@@ -88,12 +88,7 @@ export type MessageId =
   | 'noStrictNullCheck';
 
 export default createRule<Options, MessageId>({
-  defaultOptions: [
-    {
-      allowConstantLoopConditions: false,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-    },
-  ],
+  name: 'no-unnecessary-condition',
   meta: {
     type: 'suggestion',
     docs: {
@@ -142,7 +137,12 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  name: 'no-unnecessary-condition',
+  defaultOptions: [
+    {
+      allowConstantLoopConditions: false,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+    },
+  ],
   create(
     context,
     [

@@ -5,7 +5,7 @@ import { createRule } from '../util';
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'prefer-enum-initializers',
   meta: {
     type: 'suggestion',
     docs: {
@@ -21,7 +21,7 @@ export default createRule<[], MessageIds>({
     },
     schema: [],
   },
-  name: 'prefer-enum-initializers',
+  defaultOptions: [],
   create(context) {
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
       const { members } = node.body;

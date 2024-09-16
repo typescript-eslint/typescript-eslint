@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-duplicate-enum-values',
   meta: {
     type: 'problem',
     docs: {
@@ -18,7 +18,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-duplicate-enum-values',
+  defaultOptions: [],
   create(context) {
     function isStringLiteral(
       node: TSESTree.Expression,

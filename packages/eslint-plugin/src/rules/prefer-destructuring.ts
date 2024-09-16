@@ -64,6 +64,19 @@ const schema: readonly JSONSchema4[] = [
 ];
 
 export default createRule<Options, MessageIds>({
+  name: 'prefer-destructuring',
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require destructuring from arrays and/or objects',
+      extendsBaseRule: true,
+      requiresTypeChecking: true,
+    },
+    fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema,
+  },
   defaultOptions: [
     {
       AssignmentExpression: {
@@ -77,19 +90,6 @@ export default createRule<Options, MessageIds>({
     },
     {},
   ],
-  meta: {
-    type: 'suggestion',
-    docs: {
-      description: 'Require destructuring from arrays and/or objects',
-      extendsBaseRule: true,
-      requiresTypeChecking: true,
-    },
-    fixable: baseRule.meta.fixable,
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema,
-  },
-  name: 'prefer-destructuring',
   create(context, [enabledTypes, options]) {
     const {
       enforceForDeclarationWithTypeAnnotation = false,

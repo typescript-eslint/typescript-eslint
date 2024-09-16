@@ -22,7 +22,7 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ treatUndefinedAsUnspecified: false }],
+  name: 'consistent-return',
   meta: {
     type: 'suggestion',
     docs: {
@@ -35,7 +35,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  name: 'consistent-return',
+  defaultOptions: [{ treatUndefinedAsUnspecified: false }],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

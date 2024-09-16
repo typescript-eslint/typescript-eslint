@@ -26,7 +26,7 @@ type Options = [
 type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{}],
+  name: 'no-unnecessary-type-assertion',
   meta: {
     type: 'suggestion',
     docs: {
@@ -58,7 +58,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-unnecessary-type-assertion',
+  defaultOptions: [{}],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

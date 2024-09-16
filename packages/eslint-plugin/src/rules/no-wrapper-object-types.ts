@@ -16,7 +16,7 @@ const classNames = new Set([
 ]);
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-wrapper-object-types',
   meta: {
     type: 'problem',
     docs: {
@@ -30,7 +30,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-wrapper-object-types',
+  defaultOptions: [],
   create(context) {
     function checkBannedTypes(
       node: TSESTree.EntityName | TSESTree.Expression,

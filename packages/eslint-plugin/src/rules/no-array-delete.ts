@@ -12,7 +12,7 @@ import {
 type MessageId = 'noArrayDelete' | 'useSplice';
 
 export default createRule<[], MessageId>({
-  defaultOptions: [],
+  name: 'no-array-delete',
   meta: {
     type: 'problem',
     docs: {
@@ -28,7 +28,7 @@ export default createRule<[], MessageId>({
     },
     schema: [],
   },
-  name: 'no-array-delete',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

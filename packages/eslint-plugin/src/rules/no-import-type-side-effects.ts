@@ -14,7 +14,7 @@ type Options = [];
 type MessageIds = 'useTopLevelQualifier';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-import-type-side-effects',
   meta: {
     type: 'problem',
     docs: {
@@ -28,7 +28,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: [],
   },
-  name: 'no-import-type-side-effects',
+  defaultOptions: [],
   create(context) {
     return {
       'ImportDeclaration[importKind!="type"]'(

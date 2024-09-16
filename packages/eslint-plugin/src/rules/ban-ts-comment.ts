@@ -32,15 +32,7 @@ interface MatchedTSDirective {
 }
 
 export default createRule<[Options], MessageIds>({
-  defaultOptions: [
-    {
-      minimumDescriptionLength: defaultMinimumDescriptionLength,
-      'ts-check': false,
-      'ts-expect-error': 'allow-with-description',
-      'ts-ignore': true,
-      'ts-nocheck': true,
-    },
-  ],
+  name: 'ban-ts-comment',
   meta: {
     type: 'problem',
     docs: {
@@ -102,7 +94,15 @@ export default createRule<[Options], MessageIds>({
       },
     ],
   },
-  name: 'ban-ts-comment',
+  defaultOptions: [
+    {
+      minimumDescriptionLength: defaultMinimumDescriptionLength,
+      'ts-check': false,
+      'ts-expect-error': 'allow-with-description',
+      'ts-ignore': true,
+      'ts-nocheck': true,
+    },
+  ],
   create(context, [options]) {
     // https://github.com/microsoft/TypeScript/blob/6f1ad5ad8bec5671f7e951a3524b62d82ec4be68/src/compiler/parser.ts#L10591
     const singleLinePragmaRegEx =

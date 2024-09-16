@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isAssignee } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-for-of',
   meta: {
     type: 'suggestion',
     docs: {
@@ -19,7 +19,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'prefer-for-of',
+  defaultOptions: [],
   create(context) {
     function isSingleVariableDeclaration(
       node: TSESTree.Node | null,

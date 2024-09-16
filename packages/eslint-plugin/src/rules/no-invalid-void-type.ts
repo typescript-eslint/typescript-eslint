@@ -18,9 +18,7 @@ type MessageIds =
   | 'invalidVoidUnionConstituent';
 
 export default createRule<[Options], MessageIds>({
-  defaultOptions: [
-    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
-  ],
+  name: 'no-invalid-void-type',
   meta: {
     type: 'problem',
     docs: {
@@ -62,7 +60,9 @@ export default createRule<[Options], MessageIds>({
       },
     ],
   },
-  name: 'no-invalid-void-type',
+  defaultOptions: [
+    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
+  ],
   create(context, [{ allowAsThisParameter, allowInGenericTypeArguments }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //

@@ -42,20 +42,7 @@ export type MessageIds =
   | 'suggestNullish';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      ignoreConditionalTests: true,
-      ignoreMixedLogicalExpressions: false,
-      ignorePrimitives: {
-        bigint: false,
-        boolean: false,
-        number: false,
-        string: false,
-      },
-      ignoreTernaryTests: false,
-    },
-  ],
+  name: 'prefer-nullish-coalescing',
   meta: {
     type: 'suggestion',
     docs: {
@@ -112,7 +99,20 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'prefer-nullish-coalescing',
+  defaultOptions: [
+    {
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      ignoreConditionalTests: true,
+      ignoreMixedLogicalExpressions: false,
+      ignorePrimitives: {
+        bigint: false,
+        boolean: false,
+        number: false,
+        string: false,
+      },
+      ignoreTernaryTests: false,
+    },
+  ],
   create(
     context,
     [

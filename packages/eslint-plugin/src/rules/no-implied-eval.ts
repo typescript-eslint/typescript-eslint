@@ -21,7 +21,7 @@ const EVAL_LIKE_METHODS = new Set([
 ]);
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-implied-eval',
   meta: {
     type: 'suggestion',
     docs: {
@@ -37,7 +37,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-implied-eval',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

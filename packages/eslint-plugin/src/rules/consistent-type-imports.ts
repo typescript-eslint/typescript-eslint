@@ -51,13 +51,7 @@ type MessageIds =
   | 'someImportsAreOnlyTypes'
   | 'typeOverValue';
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      disallowTypeAnnotations: true,
-      fixStyle: 'separate-type-imports',
-      prefer: 'type-imports',
-    },
-  ],
+  name: 'consistent-type-imports',
   meta: {
     type: 'suggestion',
     docs: {
@@ -93,7 +87,13 @@ export default createRule<Options, MessageIds>({
     ],
   },
 
-  name: 'consistent-type-imports',
+  defaultOptions: [
+    {
+      disallowTypeAnnotations: true,
+      fixStyle: 'separate-type-imports',
+      prefer: 'type-imports',
+    },
+  ],
   create(context, [option]) {
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;

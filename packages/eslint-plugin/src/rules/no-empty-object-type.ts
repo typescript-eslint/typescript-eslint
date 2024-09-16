@@ -33,12 +33,7 @@ const noEmptyMessage = (emptyType: string): string =>
   ].join('\n');
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowInterfaces: 'never',
-      allowObjectTypes: 'never',
-    },
-  ],
+  name: 'no-empty-object-type',
   meta: {
     type: 'suggestion',
     docs: {
@@ -76,7 +71,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-empty-object-type',
+  defaultOptions: [
+    {
+      allowInterfaces: 'never',
+      allowObjectTypes: 'never',
+    },
+  ],
   create(context, [{ allowInterfaces, allowObjectTypes, allowWithName }]) {
     const allowWithNameTester = allowWithName
       ? new RegExp(allowWithName, 'u')

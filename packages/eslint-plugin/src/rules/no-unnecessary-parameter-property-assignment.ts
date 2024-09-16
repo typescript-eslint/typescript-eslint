@@ -8,7 +8,7 @@ import { createRule, getStaticStringValue, nullThrows } from '../util';
 const UNNECESSARY_OPERATORS = new Set(['=', '&&=', '||=', '??=']);
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unnecessary-parameter-property-assignment',
   meta: {
     type: 'suggestion',
     docs: {
@@ -21,7 +21,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unnecessary-parameter-property-assignment',
+  defaultOptions: [],
   create(context) {
     const reportInfoStack: {
       assignedBeforeConstructor: Set<string>;

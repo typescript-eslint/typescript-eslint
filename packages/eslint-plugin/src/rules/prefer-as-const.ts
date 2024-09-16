@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-as-const',
   meta: {
     type: 'suggestion',
     docs: {
@@ -23,7 +23,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'prefer-as-const',
+  defaultOptions: [],
   create(context) {
     function compareTypes(
       valueNode: TSESTree.Expression,

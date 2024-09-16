@@ -41,7 +41,7 @@ const getStaticMemberAccessKey = (
   computed ? getStaticValue(property, scope) : { value: property.name };
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'use-unknown-in-catch-callback-variable',
   meta: {
     type: 'suggestion',
     docs: {
@@ -70,7 +70,7 @@ export default createRule<[], MessageIds>({
     schema: [],
   },
 
-  name: 'use-unknown-in-catch-callback-variable',
+  defaultOptions: [],
   create(context) {
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const checker = program.getTypeChecker();

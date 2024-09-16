@@ -3,7 +3,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-non-null-asserted-optional-chain',
   meta: {
     type: 'problem',
     docs: {
@@ -19,7 +19,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-non-null-asserted-optional-chain',
+  defaultOptions: [],
   create(context) {
     return {
       // non-nulling a wrapped chain will scrub all nulls introduced by the chain

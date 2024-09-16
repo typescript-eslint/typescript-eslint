@@ -55,15 +55,7 @@ const messagePromiseArrayVoid =
   ' or explicitly marking the expression as ignored with the `void` operator.';
 
 export default createRule<Options, MessageId>({
-  defaultOptions: [
-    {
-      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
-      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
-      checkThenables: false,
-      ignoreIIFE: false,
-      ignoreVoid: true,
-    },
-  ],
+  name: 'no-floating-promises',
   meta: {
     type: 'problem',
     docs: {
@@ -108,7 +100,15 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  name: 'no-floating-promises',
+  defaultOptions: [
+    {
+      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      checkThenables: false,
+      ignoreIIFE: false,
+      ignoreVoid: true,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

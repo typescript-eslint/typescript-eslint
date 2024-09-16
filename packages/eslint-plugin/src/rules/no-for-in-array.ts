@@ -9,7 +9,7 @@ import {
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-for-in-array',
   meta: {
     type: 'problem',
     docs: {
@@ -23,7 +23,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-for-in-array',
+  defaultOptions: [],
   create(context) {
     return {
       ForInStatement(node): void {

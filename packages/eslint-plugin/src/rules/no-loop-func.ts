@@ -16,7 +16,7 @@ type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-loop-func',
   meta: {
     type: 'suggestion',
     docs: {
@@ -28,7 +28,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [],
   },
-  name: 'no-loop-func',
+  defaultOptions: [],
   create(context) {
     /**
      * Reports functions which match the following condition:

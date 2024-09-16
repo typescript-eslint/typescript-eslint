@@ -13,11 +13,7 @@ type Options = [
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowSingleExtends: false,
-    },
-  ],
+  name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
     deprecated: true,
@@ -44,7 +40,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-empty-interface',
+  defaultOptions: [
+    {
+      allowSingleExtends: false,
+    },
+  ],
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {

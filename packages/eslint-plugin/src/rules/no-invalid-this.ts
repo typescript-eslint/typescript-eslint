@@ -16,7 +16,7 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{ capIsConstructor: true }],
+  name: 'no-invalid-this',
   meta: {
     type: 'suggestion',
     docs: {
@@ -28,7 +28,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  name: 'no-invalid-this',
+  defaultOptions: [{ capIsConstructor: true }],
   create(context) {
     const rules = baseRule.create(context);
 

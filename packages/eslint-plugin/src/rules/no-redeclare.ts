@@ -14,12 +14,7 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      builtinGlobals: true,
-      ignoreDeclarationMerge: true,
-    },
-  ],
+  name: 'no-redeclare',
   meta: {
     type: 'suggestion',
     docs: {
@@ -48,7 +43,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-redeclare',
+  defaultOptions: [
+    {
+      builtinGlobals: true,
+      ignoreDeclarationMerge: true,
+    },
+  ],
   create(context, [options]) {
     const CLASS_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSInterfaceDeclaration,

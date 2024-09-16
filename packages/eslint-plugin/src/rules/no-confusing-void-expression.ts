@@ -35,7 +35,7 @@ export type MessageId =
   | 'voidExprWrapVoid';
 
 export default createRule<Options, MessageId>({
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  name: 'no-confusing-void-expression',
   meta: {
     type: 'problem',
     docs: {
@@ -82,7 +82,7 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  name: 'no-confusing-void-expression',
+  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
   create(context, [options]) {
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(

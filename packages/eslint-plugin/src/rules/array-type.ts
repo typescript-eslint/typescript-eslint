@@ -88,11 +88,7 @@ type MessageIds =
   | 'errorStringGenericSimple';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      default: 'array',
-    },
-  ],
+  name: 'array-type',
   meta: {
     type: 'suggestion',
     docs: {
@@ -139,7 +135,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'array-type',
+  defaultOptions: [
+    {
+      default: 'array',
+    },
+  ],
   create(context, [options]) {
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;

@@ -8,7 +8,7 @@ type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: ['constructor'],
+  name: 'consistent-generic-constructors',
   meta: {
     type: 'suggestion',
     docs: {
@@ -30,7 +30,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'consistent-generic-constructors',
+  defaultOptions: ['constructor'],
   create(context, [mode]) {
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(

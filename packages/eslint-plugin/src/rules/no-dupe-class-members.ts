@@ -16,7 +16,7 @@ type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-dupe-class-members',
   meta: {
     type: 'problem',
     docs: {
@@ -27,7 +27,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  name: 'no-dupe-class-members',
+  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
 

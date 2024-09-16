@@ -8,7 +8,7 @@ import { createRule } from '../util';
 type MessageIds = 'preferExpectErrorComment';
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
     deprecated: true,
@@ -23,7 +23,7 @@ export default createRule<[], MessageIds>({
     replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
   },
-  name: 'prefer-ts-expect-error',
+  defaultOptions: [],
   create(context) {
     const tsIgnoreRegExpSingleLine = /^\s*\/?\s*@ts-ignore/;
     const tsIgnoreRegExpMultiLine = /^\s*(?:\/|\*)*\s*@ts-ignore/;

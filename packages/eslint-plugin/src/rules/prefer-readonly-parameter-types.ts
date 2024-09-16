@@ -23,15 +23,7 @@ type Options = [
 type MessageIds = 'shouldBeReadonly';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allow: readonlynessOptionsDefaults.allow,
-      checkParameterProperties: true,
-      ignoreInferredTypes: false,
-      treatMethodsAsReadonly:
-        readonlynessOptionsDefaults.treatMethodsAsReadonly,
-    },
-  ],
+  name: 'prefer-readonly-parameter-types',
   meta: {
     type: 'suggestion',
     docs: {
@@ -60,7 +52,15 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'prefer-readonly-parameter-types',
+  defaultOptions: [
+    {
+      allow: readonlynessOptionsDefaults.allow,
+      checkParameterProperties: true,
+      ignoreInferredTypes: false,
+      treatMethodsAsReadonly:
+        readonlynessOptionsDefaults.treatMethodsAsReadonly,
+    },
+  ],
   create(
     context,
     [

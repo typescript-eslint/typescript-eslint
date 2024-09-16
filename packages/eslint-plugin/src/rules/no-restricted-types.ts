@@ -69,7 +69,7 @@ const TYPE_KEYWORDS = {
 };
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [{}],
+  name: 'no-restricted-types',
   meta: {
     type: 'suggestion',
     docs: {
@@ -132,7 +132,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-restricted-types',
+  defaultOptions: [{}],
   create(context, [{ types = {} }]) {
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),

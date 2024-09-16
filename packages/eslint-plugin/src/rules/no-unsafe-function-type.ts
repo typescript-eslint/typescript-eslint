@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isReferenceToGlobalFunction } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unsafe-function-type',
   meta: {
     type: 'problem',
     docs: {
@@ -21,7 +21,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unsafe-function-type',
+  defaultOptions: [],
   create(context) {
     function checkBannedTypes(node: TSESTree.Node): void {
       if (

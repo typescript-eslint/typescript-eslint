@@ -20,14 +20,7 @@ type Options = [
 type MessageIds = 'missingThis';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      enforceForClassFields: true,
-      exceptMethods: [],
-      ignoreClassesThatImplementAnInterface: false,
-      ignoreOverrideMethods: false,
-    },
-  ],
+  name: 'class-methods-use-this',
   meta: {
     type: 'suggestion',
     docs: {
@@ -81,7 +74,14 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'class-methods-use-this',
+  defaultOptions: [
+    {
+      enforceForClassFields: true,
+      exceptMethods: [],
+      ignoreClassesThatImplementAnInterface: false,
+      ignoreOverrideMethods: false,
+    },
+  ],
   create(
     context,
     [

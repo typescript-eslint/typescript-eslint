@@ -12,7 +12,7 @@ import {
 } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-includes',
   meta: {
     type: 'suggestion',
     docs: {
@@ -29,7 +29,7 @@ export default createRule({
     schema: [],
   },
 
-  name: 'prefer-includes',
+  defaultOptions: [],
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);

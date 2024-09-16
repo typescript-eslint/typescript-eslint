@@ -22,7 +22,7 @@ enum ArgumentType {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-regexp-exec',
   meta: {
     type: 'suggestion',
     docs: {
@@ -38,7 +38,7 @@ export default createRule({
     schema: [],
   },
 
-  name: 'prefer-regexp-exec',
+  defaultOptions: [],
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);

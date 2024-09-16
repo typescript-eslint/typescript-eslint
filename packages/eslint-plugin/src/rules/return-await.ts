@@ -32,7 +32,7 @@ type Option =
   | 'never';
 
 export default createRule({
-  defaultOptions: ['in-try-catch'],
+  name: 'return-await',
   meta: {
     type: 'problem',
     docs: {
@@ -69,7 +69,7 @@ export default createRule({
       },
     ],
   },
-  name: 'return-await',
+  defaultOptions: ['in-try-catch'],
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

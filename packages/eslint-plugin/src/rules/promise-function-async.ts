@@ -26,16 +26,7 @@ type Options = [
 type MessageIds = 'missingAsync';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowedPromiseNames: [],
-      checkArrowFunctions: true,
-      checkFunctionDeclarations: true,
-      checkFunctionExpressions: true,
-      checkMethodDeclarations: true,
-    },
-  ],
+  name: 'promise-function-async',
   meta: {
     type: 'suggestion',
     docs: {
@@ -81,7 +72,16 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'promise-function-async',
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowedPromiseNames: [],
+      checkArrowFunctions: true,
+      checkFunctionDeclarations: true,
+      checkFunctionExpressions: true,
+      checkMethodDeclarations: true,
+    },
+  ],
   create(
     context,
     [

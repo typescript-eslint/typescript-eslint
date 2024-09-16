@@ -56,7 +56,7 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 }
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unsafe-enum-comparison',
   meta: {
     type: 'suggestion',
     docs: {
@@ -74,7 +74,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'no-unsafe-enum-comparison',
+  defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();

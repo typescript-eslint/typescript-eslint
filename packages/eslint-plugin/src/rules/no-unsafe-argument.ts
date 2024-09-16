@@ -141,7 +141,7 @@ class FunctionSignature {
 }
 
 export default createRule<[], MessageIds>({
-  defaultOptions: [],
+  name: 'no-unsafe-argument',
   meta: {
     type: 'problem',
     docs: {
@@ -159,7 +159,7 @@ export default createRule<[], MessageIds>({
     },
     schema: [],
   },
-  name: 'no-unsafe-argument',
+  defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

@@ -21,12 +21,7 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowThrowingAny: true,
-      allowThrowingUnknown: true,
-    },
-  ],
+  name: 'only-throw-error',
   meta: {
     type: 'problem',
     docs: {
@@ -54,7 +49,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'only-throw-error',
+  defaultOptions: [
+    {
+      allowThrowingAny: true,
+      allowThrowingUnknown: true,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
 

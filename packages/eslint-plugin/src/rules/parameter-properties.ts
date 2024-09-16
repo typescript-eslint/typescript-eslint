@@ -25,12 +25,7 @@ type Options = [
 type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allow: [],
-      prefer: 'class-property',
-    },
-  ],
+  name: 'parameter-properties',
   meta: {
     type: 'problem',
     docs: {
@@ -76,7 +71,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'parameter-properties',
+  defaultOptions: [
+    {
+      allow: [],
+      prefer: 'class-property',
+    },
+  ],
   create(context, [{ allow = [], prefer = 'class-property' }]) {
     /**
      * Gets the modifiers of `node`.

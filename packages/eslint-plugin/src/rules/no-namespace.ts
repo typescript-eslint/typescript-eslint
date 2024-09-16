@@ -13,12 +13,7 @@ type Options = [
 type MessageIds = 'moduleSyntaxIsPreferred';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      allowDeclarations: false,
-      allowDefinitionFiles: true,
-    },
-  ],
+  name: 'no-namespace',
   meta: {
     type: 'suggestion',
     docs: {
@@ -48,7 +43,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'no-namespace',
+  defaultOptions: [
+    {
+      allowDeclarations: false,
+      allowDefinitionFiles: true,
+    },
+  ],
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     function isDeclaration(node: TSESTree.Node): boolean {
       if (node.type === AST_NODE_TYPES.TSModuleDeclaration && node.declare) {

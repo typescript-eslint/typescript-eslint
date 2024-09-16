@@ -57,15 +57,7 @@ type Options = [
 type MessageId = 'invalidType';
 
 export default createRule<Options, MessageId>({
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowBoolean: true,
-      allowNullish: true,
-      allowNumber: true,
-      allowRegExp: true,
-    },
-  ],
+  name: 'restrict-template-expressions',
   meta: {
     type: 'problem',
     docs: {
@@ -105,7 +97,15 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  name: 'restrict-template-expressions',
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
+      allowNumber: true,
+      allowRegExp: true,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

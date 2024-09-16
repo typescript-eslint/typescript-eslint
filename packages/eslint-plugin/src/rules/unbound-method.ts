@@ -104,11 +104,7 @@ const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      ignoreStatic: false,
-    },
-  ],
+  name: 'unbound-method',
   meta: {
     type: 'problem',
     docs: {
@@ -135,7 +131,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'unbound-method',
+  defaultOptions: [
+    {
+      ignoreStatic: false,
+    },
+  ],
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(context.filename);

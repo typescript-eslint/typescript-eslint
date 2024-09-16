@@ -55,19 +55,7 @@ export type MessageId =
   | 'noStrictNullCheck';
 
 export default createRule<Options, MessageId>({
-  defaultOptions: [
-    {
-      allowAny: false,
-      allowNullableBoolean: false,
-      allowNullableEnum: false,
-      allowNullableNumber: false,
-      allowNullableObject: true,
-      allowNullableString: false,
-      allowNumber: true,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      allowString: true,
-    },
-  ],
+  name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
     docs: {
@@ -156,7 +144,19 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  name: 'strict-boolean-expressions',
+  defaultOptions: [
+    {
+      allowAny: false,
+      allowNullableBoolean: false,
+      allowNullableEnum: false,
+      allowNullableNumber: false,
+      allowNullableObject: true,
+      allowNullableString: false,
+      allowNumber: true,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      allowString: true,
+    },
+  ],
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

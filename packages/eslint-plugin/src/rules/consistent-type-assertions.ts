@@ -32,12 +32,7 @@ type OptUnion =
 export type Options = readonly [OptUnion];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      assertionStyle: 'as',
-      objectLiteralTypeAssertions: 'allow',
-    },
-  ],
+  name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
     docs: {
@@ -89,7 +84,12 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'consistent-type-assertions',
+  defaultOptions: [
+    {
+      assertionStyle: 'as',
+      objectLiteralTypeAssertions: 'allow',
+    },
+  ],
   create(context, [options]) {
     const parserServices = getParserServices(context, true);
 

@@ -230,7 +230,7 @@ function shouldCreateRule(
 }
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [],
+  name: 'no-restricted-imports',
   meta: {
     type: 'suggestion',
     docs: {
@@ -241,7 +241,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema,
   },
-  name: 'no-restricted-imports',
+  defaultOptions: [],
   create(context) {
     const rules = baseRule.create(context);
     const { options } = context;

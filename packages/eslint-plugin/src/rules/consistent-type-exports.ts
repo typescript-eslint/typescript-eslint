@@ -39,11 +39,7 @@ type MessageIds =
   | 'typeOverValue';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      fixMixedExportsWithInlineTypeSpecifier: false,
-    },
-  ],
+  name: 'consistent-type-exports',
   meta: {
     type: 'suggestion',
     docs: {
@@ -72,7 +68,11 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'consistent-type-exports',
+  defaultOptions: [
+    {
+      fixMixedExportsWithInlineTypeSpecifier: false,
+    },
+  ],
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);

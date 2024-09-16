@@ -3,7 +3,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
-  defaultOptions: [],
+  name: 'prefer-namespace-keyword',
   meta: {
     type: 'suggestion',
     docs: {
@@ -18,7 +18,7 @@ export default createRule({
     },
     schema: [],
   },
-  name: 'prefer-namespace-keyword',
+  defaultOptions: [],
   create(context) {
     return {
       TSModuleDeclaration(node): void {

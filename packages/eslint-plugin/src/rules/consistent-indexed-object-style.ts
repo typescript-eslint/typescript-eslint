@@ -8,7 +8,7 @@ type MessageIds = 'preferIndexSignature' | 'preferRecord';
 type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: ['record'],
+  name: 'consistent-indexed-object-style',
   meta: {
     type: 'suggestion',
     docs: {
@@ -27,7 +27,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'consistent-indexed-object-style',
+  defaultOptions: ['record'],
   create(context, [mode]) {
     function checkMembers(
       members: TSESTree.TypeElement[],

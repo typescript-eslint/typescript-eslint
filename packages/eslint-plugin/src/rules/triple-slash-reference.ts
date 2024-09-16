@@ -14,13 +14,7 @@ type Options = [
 type MessageIds = 'tripleSlashReference';
 
 export default createRule<Options, MessageIds>({
-  defaultOptions: [
-    {
-      lib: 'always',
-      path: 'never',
-      types: 'prefer-import',
-    },
-  ],
+  name: 'triple-slash-reference',
   meta: {
     type: 'suggestion',
     docs: {
@@ -53,7 +47,13 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  name: 'triple-slash-reference',
+  defaultOptions: [
+    {
+      lib: 'always',
+      path: 'never',
+      types: 'prefer-import',
+    },
+  ],
   create(context, [{ lib, path, types }]) {
     let programNode: TSESTree.Node | undefined;
 
