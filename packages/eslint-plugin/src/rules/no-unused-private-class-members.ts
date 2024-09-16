@@ -75,17 +75,17 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      // It is a write-only usage, since we still allow usages on the right for reads
+      // It is a write-only usage, since we still allow usages on the right for
+      // reads.
       if (parentStatement.left !== privateIdentifierNode.parent) {
         return false;
       }
 
-      // For any other operator (such as '+=') we still consider it a read operation
+      // For any other operator (such as '+=') we still consider it a read
+      // operation.
       if (isAssignmentExpression && parentStatement.operator !== '=') {
-        /*
-         * However, if the read operation is "discarded" in an empty statement, then
-         * we consider it write only.
-         */
+        // However, if the read operation is "discarded" in an empty statement,
+        // then we consider it write only.
         return (
           parentStatement.parent.type === AST_NODE_TYPES.ExpressionStatement
         );
@@ -97,6 +97,95 @@ export default createRule<Options, MessageIds>({
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    function processPrivateIdentifier(
+      privateIdentifierNode: TSESTree.PrivateIdentifier,
+    ): void {
+      const classBody = trackedClasses.find(classProperties =>
+        classProperties.has(privateIdentifierNode.name),
+      );
+
+      // Can't happen, as it is a parser error to have a missing class body, but
+      // let's code defensively here.
+      if (classBody === undefined) {
+        return;
+      }
+
+      // In case any other usage was already detected, we can short circuit the
+      // logic here.
+      const memberDefinition = classBody.get(privateIdentifierNode.name);
+      if (memberDefinition === undefined) {
+        return;
+      }
+      if (trackedMembersBeingUsed.has(memberDefinition.declaredNode)) {
+        return;
+      }
+
+      // The definition of the class member itself
+      if (
+        privateIdentifierNode.parent.type ===
+          AST_NODE_TYPES.PropertyDefinition ||
+        privateIdentifierNode.parent.type === AST_NODE_TYPES.MethodDefinition
+      ) {
+        return;
+      }
+
+      // Any usage of an accessor is considered a read, as the getter/setter can
+      // have side-effects in its definition.
+      if (memberDefinition.isAccessor) {
+        trackedMembersBeingUsed.add(memberDefinition.declaredNode);
+        return;
+      }
+
+      // Any assignments to this member, except for assignments that also read
+      if (isWriteOnlyAssignment(privateIdentifierNode)) {
+        return;
+      }
+
+      const wrappingExpressionType = privateIdentifierNode.parent.parent?.type;
+      const parentOfWrappingExpressionType =
+        privateIdentifierNode.parent.parent?.parent?.type;
+
+      // A statement which only increments (`this.#x++;`)
+      if (
+        wrappingExpressionType === AST_NODE_TYPES.UpdateExpression &&
+        parentOfWrappingExpressionType === AST_NODE_TYPES.ExpressionStatement
+      ) {
+        return;
+      }
+
+      /*
+       * ({ x: this.#usedInDestructuring } = bar);
+       *
+       * But should treat the following as a read:
+       * ({ [this.#x]: a } = foo);
+       */
+      if (
+        wrappingExpressionType === AST_NODE_TYPES.Property &&
+        parentOfWrappingExpressionType === AST_NODE_TYPES.ObjectPattern &&
+        privateIdentifierNode.parent.parent?.value ===
+          privateIdentifierNode.parent
+      ) {
+        return;
+      }
+
+      // [...this.#unusedInRestPattern] = bar;
+      if (wrappingExpressionType === AST_NODE_TYPES.RestElement) {
+        return;
+      }
+
+      // [this.#unusedInAssignmentPattern] = bar;
+      if (wrappingExpressionType === AST_NODE_TYPES.ArrayPattern) {
+        return;
+      }
+
+      // We can't delete the memberDefinition, as we need to keep track of which
+      // member we are marking as used. In the case of nested classes, we only
+      // mark the first member we encounter as used. If you were to delete the
+      // member, then any subsequent usage could incorrectly mark the member of
+      // an encapsulating parent class as used, which is incorrect.
+      trackedMembersBeingUsed.add(memberDefinition.declaredNode);
+    }
 
     return {
       // Collect all declared members up front and assume they are all unused
@@ -124,98 +213,22 @@ export default createRule<Options, MessageIds>({
        * Process all usages of the private identifier and remove a member from
        * `declaredAndUnusedPrivateMembers` if we deem it used.
        */
-      // Bug: We have to manually specify the type of the node or it will be
+      // Bug: We have to manually specify the type for the node or it will be
       // inferred to `never` for some reason.
+      // https://github.com/typescript-eslint/typescript-eslint/issues/9988
       PrivateIdentifier(
         privateIdentifierNode: TSESTree.PrivateIdentifier,
       ): void {
-        const classBody = trackedClasses.find(classProperties =>
-          classProperties.has(privateIdentifierNode.name),
-        );
+        processPrivateIdentifier(privateIdentifierNode);
+      },
 
-        // Can't happen, as it is a parser to have a missing class body, but
-        // let's code defensively here.
-        if (classBody === undefined) {
+      /**
+       * We need to repeat the logic from the `PrivateIdentitier` block above
+       */
+      PropertyDefinition(node): void {
+        if (node.accessibility !== 'private') {
           return;
         }
-
-        // In case any other usage was already detected, we can short circuit the logic here.
-        const memberDefinition = classBody.get(privateIdentifierNode.name);
-        if (memberDefinition === undefined) {
-          return;
-        }
-        if (trackedMembersBeingUsed.has(memberDefinition.declaredNode)) {
-          return;
-        }
-
-        // The definition of the class member itself
-        if (
-          privateIdentifierNode.parent.type ===
-            AST_NODE_TYPES.PropertyDefinition ||
-          privateIdentifierNode.parent.type === AST_NODE_TYPES.MethodDefinition
-        ) {
-          return;
-        }
-
-        /*
-         * Any usage of an accessor is considered a read, as the getter/setter can have
-         * side-effects in its definition.
-         */
-        if (memberDefinition.isAccessor) {
-          trackedMembersBeingUsed.add(memberDefinition.declaredNode);
-          return;
-        }
-
-        // Any assignments to this member, except for assignments that also read
-        if (isWriteOnlyAssignment(privateIdentifierNode)) {
-          return;
-        }
-
-        const wrappingExpressionType =
-          privateIdentifierNode.parent.parent?.type;
-        const parentOfWrappingExpressionType =
-          privateIdentifierNode.parent.parent?.parent?.type;
-
-        // A statement which only increments (`this.#x++;`)
-        if (
-          wrappingExpressionType === AST_NODE_TYPES.UpdateExpression &&
-          parentOfWrappingExpressionType === AST_NODE_TYPES.ExpressionStatement
-        ) {
-          return;
-        }
-
-        /*
-         * ({ x: this.#usedInDestructuring } = bar);
-         *
-         * But should treat the following as a read:
-         * ({ [this.#x]: a } = foo);
-         */
-        if (
-          wrappingExpressionType === AST_NODE_TYPES.Property &&
-          parentOfWrappingExpressionType === AST_NODE_TYPES.ObjectPattern &&
-          privateIdentifierNode.parent.parent?.value ===
-            privateIdentifierNode.parent
-        ) {
-          return;
-        }
-
-        // [...this.#unusedInRestPattern] = bar;
-        if (wrappingExpressionType === AST_NODE_TYPES.RestElement) {
-          return;
-        }
-
-        // [this.#unusedInAssignmentPattern] = bar;
-        if (wrappingExpressionType === AST_NODE_TYPES.ArrayPattern) {
-          return;
-        }
-
-        /*
-         * We can't delete the memberDefinition, as we need to keep track of which member we are marking as used.
-         * In the case of nested classes, we only mark the first member we encounter as used. If you were to delete
-         * the member, then any subsequent usage could incorrectly mark the member of an encapsulating parent class
-         * as used, which is incorrect.
-         */
-        trackedMembersBeingUsed.add(memberDefinition.declaredNode);
       },
 
       /*
