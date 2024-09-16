@@ -2,6 +2,7 @@ import type {
   CacheDurationSeconds,
   DebugLevel,
   JSDocParsingMode,
+  SourceType,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
@@ -12,6 +13,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 //////////////////////////////////////////////////////////
 
 interface ParseOptions {
+  /**
+   * Specify the `sourceType`.
+   * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
+   */
+  sourceType?: SourceType;
+
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.

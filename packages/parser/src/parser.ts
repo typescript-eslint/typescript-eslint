@@ -105,6 +105,7 @@ function parseForESLint(
 
   const parserOptions: TSESTreeOptions = {};
   Object.assign(parserOptions, options, {
+    sourceType: options.sourceType,
     jsx: validateBoolean(options.ecmaFeatures.jsx),
     /**
      * Override errorOnTypeScriptSyntacticAndSemanticIssues and set it to false to prevent use from user config

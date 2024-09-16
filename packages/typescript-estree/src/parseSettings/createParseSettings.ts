@@ -106,7 +106,9 @@ export function createParseSettings(
         : [],
     filePath: filePath,
     setExternalModuleIndicator:
-      extension === ts.Extension.Mjs || extension === ts.Extension.Mts
+      options.sourceType === 'module' ||
+      (options.sourceType === undefined && extension === ts.Extension.Mjs) ||
+      (options.sourceType === undefined && extension === ts.Extension.Mts)
         ? (file): void => {
             file.externalModuleIndicator = true;
           }
