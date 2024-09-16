@@ -38,8 +38,8 @@ export default createRule<Options, MessageIds>({
 
       context.report({
         data: {
-          certainty,
           name: context.sourceCode.getText(node),
+          certainty,
         },
         messageId: 'baseToString',
         node,
@@ -154,7 +154,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Require `.toString()` to only be called on objects which provide useful information when stringified',
@@ -167,18 +166,19 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ignoredTypeNames: {
-            type: 'array',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-base-to-string',
 });

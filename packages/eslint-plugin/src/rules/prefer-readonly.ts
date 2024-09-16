@@ -242,7 +242,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
@@ -255,15 +254,16 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           onlyInlineLambdas: {
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'prefer-readonly',
 });

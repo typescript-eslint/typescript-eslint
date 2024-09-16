@@ -188,7 +188,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
       recommended: 'recommended',
@@ -203,6 +202,7 @@ export default createRule({
       replaceValueWithEnum: 'Replace with an enum value comparison.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-unsafe-enum-comparison',
 });

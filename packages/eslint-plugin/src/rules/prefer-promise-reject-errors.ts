@@ -128,7 +128,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require using Error objects as Promise rejection reasons',
       extendsBaseRule: true,
@@ -140,15 +139,16 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowEmptyReject: {
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'prefer-promise-reject-errors',
 });

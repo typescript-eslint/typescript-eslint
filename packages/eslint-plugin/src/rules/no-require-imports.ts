@@ -74,7 +74,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ allow: [], allowAsImport: false }],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow invocation of `require()`',
       recommended: 'recommended',
@@ -84,21 +83,22 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allow: {
-            type: 'array',
             description: 'Patterns of import paths to allow requiring from.',
             items: { type: 'string' },
+            type: 'array',
           },
           allowAsImport: {
-            type: 'boolean',
             description: 'Allows `require` statements in import declarations.',
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'no-require-imports',
 });

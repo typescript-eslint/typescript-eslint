@@ -92,29 +92,28 @@ export type Options = [
 ];
 
 const neverConfig: JSONSchema.JSONSchema4 = {
-  type: 'string',
   enum: ['never'],
+  type: 'string',
 };
 
 const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
-  type: 'array',
   items: {
     oneOf: [
       {
         $ref: memberTypes,
       },
       {
-        type: 'array',
         items: {
           $ref: memberTypes,
         },
+        type: 'array',
       },
     ],
   },
+  type: 'array',
 });
 
 const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
-  type: 'object',
   additionalProperties: false,
   properties: {
     memberTypes: {
@@ -127,6 +126,7 @@ const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
       $ref: '#/items/0/$defs/orderOptions',
     },
   },
+  type: 'object',
 });
 
 export const defaultOrder: MemberType[] = [
@@ -427,7 +427,7 @@ function getMemberRawName(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  const { type, name } = getNameFromMember(member, sourceCode);
+  const { name, type } = getNameFromMember(member, sourceCode);
 
   if (type === MemberNameType.Quoted) {
     return name.slice(1, -1);
@@ -1030,7 +1030,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
     },
@@ -1043,18 +1042,16 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         $defs: {
           allItems: {
-            type: 'string',
             enum: allMemberTypes as string[],
+            type: 'string',
           },
           optionalityOrderOptions: {
-            type: 'string',
             enum: ['optional-first', 'required-first'],
+            type: 'string',
           },
           orderOptions: {
-            type: 'string',
             enum: [
               'alphabetically',
               'alphabetically-case-insensitive',
@@ -1062,9 +1059,9 @@ export default createRule<Options, MessageIds>({
               'natural',
               'natural-case-insensitive',
             ],
+            type: 'string',
           },
           typeItems: {
-            type: 'string',
             enum: [
               'readonly-signature',
               'signature',
@@ -1073,6 +1070,7 @@ export default createRule<Options, MessageIds>({
               'method',
               'constructor',
             ],
+            type: 'string',
           },
 
           // These properties must follow the preceding ones for ajv logic.
@@ -1109,8 +1107,10 @@ export default createRule<Options, MessageIds>({
             $ref: '#/items/0/$defs/typesConfig',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'member-ordering',
 });

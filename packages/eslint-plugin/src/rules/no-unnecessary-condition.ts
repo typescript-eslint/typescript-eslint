@@ -684,7 +684,6 @@ export default createRule<Options, MessageId>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow conditionals where the type is always truthy or always falsy',
@@ -714,22 +713,23 @@ export default createRule<Options, MessageId>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowConstantLoopConditions: {
-            type: 'boolean',
             description:
               'Whether to ignore constant loop conditions, such as `while (true)`.',
+            type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            type: 'boolean',
             description:
               'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-unnecessary-condition',
 });

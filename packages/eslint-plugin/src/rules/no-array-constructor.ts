@@ -46,7 +46,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
       extendsBaseRule: true,
@@ -57,6 +56,7 @@ export default createRule({
       useLiteral: 'The array literal notation [] is preferable.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-array-constructor',
 });

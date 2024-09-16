@@ -405,7 +405,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Disallow assigning a value with type `any` to variables and properties',
@@ -427,6 +426,7 @@ export default createRule({
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unsafe-assignment',
 });

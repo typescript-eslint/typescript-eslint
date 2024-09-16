@@ -587,22 +587,6 @@ export default tseslint.config(
       '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': 'error',
       'perfectionist/sort-enums': 'error',
-      'perfectionist/sort-objects': [
-        'error',
-        {
-          customGroups: {
-            top: [
-              'meta',
-              'defaultOptions',
-              'create',
-              'type',
-              'valid',
-              'invalid',
-            ],
-          },
-          groups: ['top', 'unknown'],
-        },
-      ],
       'perfectionist/sort-union-types': [
         'error',
         {
@@ -617,6 +601,30 @@ export default tseslint.config(
         order: 'asc',
         type: 'natural',
       },
+    },
+  },
+  {
+    files: ['packages/eslint-plugin/src/rules/*.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: { top: ['name', 'meta', 'defaultOptions', 'create'] },
+          groups: ['top', 'unknown'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: { top: ['invalid'] },
+          groups: ['top', 'unknown'],
+        },
+      ],
     },
   },
 );

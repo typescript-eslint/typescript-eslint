@@ -255,7 +255,6 @@ export default createRule<[], MessageId>({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary template expressions',
       recommended: 'strict',
@@ -267,6 +266,7 @@ export default createRule<[], MessageId>({
         'Template literal expression is unnecessary and can be simplified.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-unnecessary-template-expression',
 });

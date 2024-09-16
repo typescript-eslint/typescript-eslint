@@ -26,7 +26,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow extra non-null assertions',
       recommended: 'recommended',
@@ -36,6 +35,7 @@ export default createRule({
       noExtraNonNullAssertion: 'Forbidden extra non-null assertion.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-extra-non-null-assertion',
 });

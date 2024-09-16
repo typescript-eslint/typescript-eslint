@@ -97,7 +97,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow certain triple slash directives in favor of ES6-style import declarations',
@@ -109,24 +108,25 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           lib: {
-            type: 'string',
             enum: ['always', 'never'],
+            type: 'string',
           },
           path: {
-            type: 'string',
             enum: ['always', 'never'],
+            type: 'string',
           },
           types: {
-            type: 'string',
             enum: ['always', 'never', 'prefer-import'],
+            type: 'string',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'triple-slash-reference',
 });

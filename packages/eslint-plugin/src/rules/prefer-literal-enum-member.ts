@@ -127,7 +127,6 @@ export default createRule({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require all enum members to be literal values',
       recommended: 'strict',
@@ -138,15 +137,16 @@ export default createRule({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowBitwiseExpressions: {
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'prefer-literal-enum-member',
 });

@@ -93,8 +93,8 @@ export default createRule<Options, MessageIds>({
         const publicKeyword = findPublicKeyword(methodDefinition);
         context.report({
           data: {
-            type: nodeType,
             name: methodName,
+            type: nodeType,
           },
           fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
           loc: rangeToLoc(context.sourceCode, publicKeyword.range),
@@ -103,8 +103,8 @@ export default createRule<Options, MessageIds>({
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
         context.report({
           data: {
-            type: nodeType,
             name: methodName,
+            type: nodeType,
           },
           loc: getMemberHeadLoc(context.sourceCode, methodDefinition),
           messageId: 'missingAccessibility',
@@ -228,8 +228,8 @@ export default createRule<Options, MessageIds>({
         const publicKeywordRange = findPublicKeyword(propertyDefinition);
         context.report({
           data: {
-            type: nodeType,
             name: propertyName,
+            type: nodeType,
           },
           fix: fixer => fixer.removeRange(publicKeywordRange.rangeToRemove),
           loc: rangeToLoc(context.sourceCode, publicKeywordRange.range),
@@ -241,8 +241,8 @@ export default createRule<Options, MessageIds>({
       ) {
         context.report({
           data: {
-            type: nodeType,
             name: propertyName,
+            type: nodeType,
           },
           loc: getMemberHeadLoc(context.sourceCode, propertyDefinition),
           messageId: 'missingAccessibility',
@@ -278,8 +278,8 @@ export default createRule<Options, MessageIds>({
           if (!node.accessibility) {
             context.report({
               data: {
-                type: nodeType,
                 name: nodeName,
+                type: nodeType,
               },
               loc: getParameterPropertyHeadLoc(
                 context.sourceCode,
@@ -297,8 +297,8 @@ export default createRule<Options, MessageIds>({
             const publicKeyword = findPublicKeyword(node);
             context.report({
               data: {
-                type: nodeType,
                 name: nodeName,
+                type: nodeType,
               },
               fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
               loc: rangeToLoc(context.sourceCode, publicKeyword.range),
@@ -320,7 +320,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Require explicit accessibility modifiers on class properties and methods',
@@ -337,24 +336,23 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         $defs: {
           accessibilityLevel: {
             oneOf: [
               {
-                type: 'string',
                 description: 'Always require an accessor.',
                 enum: ['explicit'],
+                type: 'string',
               },
               {
-                type: 'string',
                 description: 'Require an accessor except when public.',
                 enum: ['no-public'],
+                type: 'string',
               },
               {
-                type: 'string',
                 description: 'Never check whether there is an accessor.',
                 enum: ['off'],
+                type: 'string',
               },
             ],
           },
@@ -363,15 +361,13 @@ export default createRule<Options, MessageIds>({
         properties: {
           accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
           ignoredMethodNames: {
-            type: 'array',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
           overrides: {
-            type: 'object',
             additionalProperties: false,
-
             properties: {
               accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
               constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
@@ -381,10 +377,14 @@ export default createRule<Options, MessageIds>({
               },
               properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
             },
+
+            type: 'object',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'explicit-member-accessibility',
 });

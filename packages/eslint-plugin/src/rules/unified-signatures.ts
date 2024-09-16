@@ -556,7 +556,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
@@ -572,17 +571,18 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreDifferentlyNamedParameters: {
-            type: 'boolean',
             description:
               'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'unified-signatures',
 });

@@ -33,7 +33,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow using the unsafe built-in Function type',
       recommended: 'recommended',
@@ -46,6 +45,7 @@ export default createRule({
       ].join('\n'),
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unsafe-function-type',
 });

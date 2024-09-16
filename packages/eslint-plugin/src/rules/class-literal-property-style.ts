@@ -214,7 +214,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Enforce that literals on classes are exposed in a consistent style',
@@ -229,10 +228,11 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'string',
         enum: ['fields', 'getters'],
+        type: 'string',
       },
     ],
+    type: 'problem',
   },
   name: 'class-literal-property-style',
 });

@@ -67,7 +67,6 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     deprecated: true,
     docs: {
       description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
@@ -79,6 +78,7 @@ export default createRule<[], MessageIds>({
     },
     replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
+    type: 'problem',
   },
   name: 'prefer-ts-expect-error',
 });

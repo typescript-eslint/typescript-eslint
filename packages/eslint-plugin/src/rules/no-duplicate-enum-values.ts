@@ -60,7 +60,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow duplicate enum member values',
       recommended: 'recommended',
@@ -70,6 +69,7 @@ export default createRule({
       duplicateValue: 'Duplicate enum member value {{value}}.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-duplicate-enum-values',
 });

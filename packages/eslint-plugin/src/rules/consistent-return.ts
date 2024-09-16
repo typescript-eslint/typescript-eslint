@@ -115,7 +115,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ treatUndefinedAsUnspecified: false }],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Require `return` statements to either always or never specify values',
@@ -125,6 +124,7 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
+    type: 'suggestion',
   },
   name: 'consistent-return',
 });

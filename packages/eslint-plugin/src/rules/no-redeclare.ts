@@ -52,13 +52,13 @@ export default createRule<Options, MessageIds>({
       ) {
         for (const comment of variable.eslintExplicitGlobalComments) {
           yield {
-            type: 'comment',
             loc: getNameLocationInGlobalDirectiveComment(
               context.sourceCode,
               comment,
               variable.name,
             ),
             node: comment,
+            type: 'comment',
           };
         }
       }
@@ -109,7 +109,7 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one class declaration, which needs to be reported
           for (const { identifier } of classDecls) {
-            yield { type: 'syntax', loc: identifier.loc, node: identifier };
+            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
           }
           return;
         }
@@ -130,7 +130,7 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one function declaration, which needs to be reported
           for (const { identifier } of functionDecls) {
-            yield { type: 'syntax', loc: identifier.loc, node: identifier };
+            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
           }
           return;
         }
@@ -151,14 +151,14 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one enum declaration, which needs to be reported
           for (const { identifier } of enumDecls) {
-            yield { type: 'syntax', loc: identifier.loc, node: identifier };
+            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
           }
           return;
         }
       }
 
       for (const { identifier } of identifiers) {
-        yield { type: 'syntax', loc: identifier.loc, node: identifier };
+        yield { loc: identifier.loc, node: identifier, type: 'syntax' };
       }
     }
 
@@ -183,7 +183,7 @@ export default createRule<Options, MessageIds>({
         const data = { id: variable.name };
 
         // Report extra declarations.
-        for (const { type, loc, node } of extraDeclarations) {
+        for (const { loc, node, type } of extraDeclarations) {
           const messageId =
             type === declaration.type ? 'redeclared' : detailMessageId;
 
@@ -246,7 +246,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow variable redeclaration',
       extendsBaseRule: true,
@@ -260,7 +259,6 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           builtinGlobals: {
@@ -270,8 +268,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-redeclare',
 });

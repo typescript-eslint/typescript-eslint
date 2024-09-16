@@ -55,7 +55,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Disallow non-null assertions after an optional chain expression',
@@ -68,6 +67,7 @@ export default createRule({
       suggestRemovingNonNull: 'You should remove the non-null assertion.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-non-null-asserted-optional-chain',
 });

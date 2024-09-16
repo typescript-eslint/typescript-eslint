@@ -24,7 +24,6 @@ type Options = [BaseOptions[0], EnforcementOptions];
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
-  type: 'object',
   additionalProperties: false,
   properties: {
     array: {
@@ -34,24 +33,24 @@ const destructuringTypeConfig: JSONSchema4 = {
       type: 'boolean',
     },
   },
+  type: 'object',
 };
 
 const schema: readonly JSONSchema4[] = [
   {
     oneOf: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           AssignmentExpression: destructuringTypeConfig,
           VariableDeclarator: destructuringTypeConfig,
         },
+        type: 'object',
       },
       destructuringTypeConfig,
     ],
   },
   {
-    type: 'object',
     properties: {
       enforceForDeclarationWithTypeAnnotation: {
         type: 'boolean',
@@ -60,6 +59,7 @@ const schema: readonly JSONSchema4[] = [
         type: 'boolean',
       },
     },
+    type: 'object',
   },
 ];
 
@@ -169,7 +169,6 @@ export default createRule<Options, MessageIds>({
     {},
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require destructuring from arrays and/or objects',
       extendsBaseRule: true,
@@ -179,6 +178,7 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema,
+    type: 'suggestion',
   },
   name: 'prefer-destructuring',
 });

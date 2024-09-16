@@ -535,7 +535,6 @@ export default createRule<Options, MessageId>({
     },
   ],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow Promises in places not designed to handle them',
       recommended: 'recommended',
@@ -559,7 +558,6 @@ export default createRule<Options, MessageId>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           checksConditionals: {
@@ -572,7 +570,6 @@ export default createRule<Options, MessageId>({
             oneOf: [
               { type: 'boolean' },
               {
-                type: 'object',
                 additionalProperties: false,
                 properties: {
                   arguments: { type: 'boolean' },
@@ -582,12 +579,15 @@ export default createRule<Options, MessageId>({
                   returns: { type: 'boolean' },
                   variables: { type: 'boolean' },
                 },
+                type: 'object',
               },
             ],
           },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'no-misused-promises',
 });

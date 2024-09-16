@@ -91,7 +91,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Enforce dot notation whenever possible',
       extendsBaseRule: true,
@@ -103,32 +102,33 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowIndexSignaturePropertyAccess: {
-            type: 'boolean',
             default: false,
+            type: 'boolean',
           },
           allowKeywords: {
-            type: 'boolean',
             default: true,
+            type: 'boolean',
           },
           allowPattern: {
-            type: 'string',
             default: '',
+            type: 'string',
           },
           allowPrivateClassPropertyAccess: {
-            type: 'boolean',
             default: false,
+            type: 'boolean',
           },
           allowProtectedClassPropertyAccess: {
-            type: 'boolean',
             default: false,
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'dot-notation',
 });

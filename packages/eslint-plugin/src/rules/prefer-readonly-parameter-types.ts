@@ -102,7 +102,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
@@ -113,7 +112,6 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allow: readonlynessOptionsSchema.properties.allow,
@@ -126,8 +124,10 @@ export default createRule<Options, MessageIds>({
           treatMethodsAsReadonly:
             readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'prefer-readonly-parameter-types',
 });

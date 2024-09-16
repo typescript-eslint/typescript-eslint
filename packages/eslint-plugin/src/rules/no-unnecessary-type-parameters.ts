@@ -54,8 +54,8 @@ export default createRule({
 
         context.report({
           data: {
-            descriptor,
             name: typeParameter.name.text,
+            descriptor,
             uses: identifierCounts === 1 ? 'never used' : 'used only once',
           },
           messageId: 'sole',
@@ -88,7 +88,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: "Disallow type parameters that aren't used multiple times",
       recommended: 'strict',
@@ -98,6 +97,7 @@ export default createRule({
       sole: 'Type parameter {{name}} is {{uses}} in the {{descriptor}} signature.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unnecessary-type-parameters',
 });

@@ -200,7 +200,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Require or disallow parameter properties in class constructors',
@@ -213,10 +212,8 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         $defs: {
           modifier: {
-            type: 'string',
             enum: [
               'readonly',
               'private',
@@ -226,23 +223,26 @@ export default createRule<Options, MessageIds>({
               'protected readonly',
               'public readonly',
             ],
+            type: 'string',
           },
         },
         additionalProperties: false,
         properties: {
           allow: {
-            type: 'array',
             items: {
               $ref: '#/items/0/$defs/modifier',
             },
+            type: 'array',
           },
           prefer: {
-            type: 'string',
             enum: ['class-property', 'parameter-property'],
+            type: 'string',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'parameter-properties',
 });

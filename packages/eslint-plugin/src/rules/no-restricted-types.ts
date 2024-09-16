@@ -94,8 +94,8 @@ export default createRule<Options, MessageIds>({
 
       context.report({
         data: {
-          customMessage,
           name,
+          customMessage,
         },
         fix: fixWith
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
@@ -157,7 +157,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow certain types',
     },
@@ -169,39 +168,38 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         $defs: {
           banConfig: {
             oneOf: [
               {
-                type: 'boolean',
                 description: 'Bans the type with the default message',
                 enum: [true],
+                type: 'boolean',
               },
               {
-                type: 'string',
                 description: 'Bans the type with a custom message',
+                type: 'string',
               },
               {
-                type: 'object',
                 additionalProperties: false,
                 description: 'Bans a type',
                 properties: {
                   fixWith: {
-                    type: 'string',
                     description:
                       'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
+                    type: 'string',
                   },
                   message: {
-                    type: 'string',
                     description: 'Custom error message',
+                    type: 'string',
                   },
                   suggest: {
-                    type: 'array',
                     description: 'Types to suggest replacing with.',
                     items: { type: 'string' },
+                    type: 'array',
                   },
                 },
+                type: 'object',
               },
             ],
           },
@@ -209,14 +207,16 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           types: {
-            type: 'object',
             additionalProperties: {
               $ref: '#/items/0/$defs/banConfig',
             },
+            type: 'object',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-restricted-types',
 });

@@ -127,13 +127,13 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow magic numbers',
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,
     schema: [schema],
+    type: 'suggestion',
   },
   name: 'no-magic-numbers',
 });

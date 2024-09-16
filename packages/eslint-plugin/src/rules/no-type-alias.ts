@@ -279,7 +279,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     deprecated: true,
     docs: {
       description: 'Disallow type aliases',
@@ -292,10 +291,8 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         $defs: {
           expandedOptions: {
-            type: 'string',
             enum: [
               'always',
               'never',
@@ -303,10 +300,11 @@ export default createRule<Options, MessageIds>({
               'in-intersections',
               'in-unions-and-intersections',
             ] satisfies Values[],
+            type: 'string',
           },
           simpleOptions: {
-            type: 'string',
             enum: ['always', 'never'],
+            type: 'string',
           },
         },
         additionalProperties: false,
@@ -345,8 +343,10 @@ export default createRule<Options, MessageIds>({
             description: 'Whether to allow type aliases with tuple types.',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-type-alias',
 });

@@ -604,7 +604,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
@@ -617,21 +616,20 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allow: {
-            type: 'array',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
           builtinGlobals: {
             type: 'boolean',
           },
           hoist: {
-            type: 'string',
             enum: ['all', 'functions', 'never'],
+            type: 'string',
           },
           ignoreFunctionTypeParameterNameValueShadow: {
             type: 'boolean',
@@ -643,8 +641,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-shadow',
 });

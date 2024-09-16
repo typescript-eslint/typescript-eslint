@@ -697,7 +697,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Enforce naming conventions for everything across a codebase',
@@ -719,6 +718,7 @@ export default createRule<Options, MessageIds>({
         '{{type}} name `{{name}}` must not have a {{position}} underscore.',
     },
     schema: SCHEMA,
+    type: 'suggestion',
   },
   name: 'naming-convention',
 });

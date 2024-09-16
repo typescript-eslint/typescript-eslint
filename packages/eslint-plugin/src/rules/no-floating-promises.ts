@@ -405,7 +405,6 @@ export default createRule<Options, MessageId>({
     },
   ],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Require Promise-like statements to be handled appropriately',
@@ -425,28 +424,29 @@ export default createRule<Options, MessageId>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
           allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
           checkThenables: {
-            type: 'boolean',
             description:
               'Whether to check all "Thenable"s, not just the built-in Promise type.',
+            type: 'boolean',
           },
           ignoreIIFE: {
-            type: 'boolean',
             description:
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
+            type: 'boolean',
           },
           ignoreVoid: {
-            type: 'boolean',
             description: 'Whether to ignore `void` expressions.',
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'no-floating-promises',
 });

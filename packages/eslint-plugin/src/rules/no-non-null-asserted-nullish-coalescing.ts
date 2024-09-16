@@ -82,7 +82,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Disallow non-null assertions in the left operand of a nullish coalescing operator',
@@ -95,6 +94,7 @@ export default createRule({
       suggestRemovingNonNull: 'Remove the non-null assertion.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-non-null-asserted-nullish-coalescing',
 });

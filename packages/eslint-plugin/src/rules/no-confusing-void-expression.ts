@@ -332,7 +332,6 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
@@ -368,14 +367,15 @@ export default createRule<Options, MessageId>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreArrowShorthand: { type: 'boolean' },
           ignoreVoidOperator: { type: 'boolean' },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'no-confusing-void-expression',
 });

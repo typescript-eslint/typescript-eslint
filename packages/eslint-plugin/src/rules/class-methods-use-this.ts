@@ -232,7 +232,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Enforce that class methods utilize `this`',
       extendsBaseRule: true,
@@ -243,46 +242,47 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           enforceForClassFields: {
-            type: 'boolean',
             default: true,
             description:
               'Enforces that functions used as instance field initializers utilize `this`',
+            type: 'boolean',
           },
           exceptMethods: {
-            type: 'array',
             description:
               'Allows specified method names to be ignored with this rule',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
           ignoreClassesThatImplementAnInterface: {
             description:
               'Ignore classes that specifically implement some interface',
             oneOf: [
               {
-                type: 'boolean',
                 description: 'Ignore all classes that implement an interface',
+                type: 'boolean',
               },
               {
-                type: 'string',
                 description:
                   'Ignore only the public fields of classes that implement an interface',
                 enum: ['public-fields'],
+                type: 'string',
               },
             ],
           },
           ignoreOverrideMethods: {
-            type: 'boolean',
             description: 'Ignore members marked with the `override` modifier',
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'class-methods-use-this',
 });

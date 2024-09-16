@@ -44,7 +44,6 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Require unary negation to take a number',
       recommended: 'recommended',
@@ -55,6 +54,7 @@ export default util.createRule<Options, MessageIds>({
         'Argument of unary negation should be assignable to number | bigint but is {{type}} instead.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unsafe-unary-minus',
 });

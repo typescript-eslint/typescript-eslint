@@ -146,7 +146,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow the use of `eval()`-like methods',
       extendsBaseRule: true,
@@ -159,6 +158,7 @@ export default createRule({
       noImpliedEvalError: 'Implied eval. Consider passing a function.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-implied-eval',
 });

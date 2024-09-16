@@ -360,7 +360,6 @@ export default createRule({
   },
   defaultOptions: ['in-try-catch'],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Enforce consistent awaiting of returned promises',
       extendsBaseRule: 'no-return-await',
@@ -385,15 +384,16 @@ export default createRule({
     },
     schema: [
       {
-        type: 'string',
         enum: [
           'in-try-catch',
           'always',
           'never',
           'error-handling-correctness-only',
         ] satisfies Option[],
+        type: 'string',
       },
     ],
+    type: 'problem',
   },
   name: 'return-await',
 });

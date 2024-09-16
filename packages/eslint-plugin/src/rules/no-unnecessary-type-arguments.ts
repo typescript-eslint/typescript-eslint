@@ -105,7 +105,6 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow type arguments that are equal to the default',
       recommended: 'strict',
@@ -117,6 +116,7 @@ export default createRule<[], MessageIds>({
         'This is the default value for this type parameter, so it can be omitted.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-unnecessary-type-arguments',
 });

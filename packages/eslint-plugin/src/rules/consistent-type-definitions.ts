@@ -117,7 +117,6 @@ export default createRule({
   },
   defaultOptions: ['interface'],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Enforce type definitions to consistently use either `interface` or `type`',
@@ -130,10 +129,11 @@ export default createRule({
     },
     schema: [
       {
-        type: 'string',
         enum: ['interface', 'type'],
+        type: 'string',
       },
     ],
+    type: 'suggestion',
   },
   name: 'consistent-type-definitions',
 });

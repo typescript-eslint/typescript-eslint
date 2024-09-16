@@ -305,7 +305,6 @@ export default createRule({
   defaultOptions: [],
 
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
@@ -318,6 +317,7 @@ export default createRule({
       preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'prefer-find',
 });

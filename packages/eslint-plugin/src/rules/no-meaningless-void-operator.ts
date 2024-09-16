@@ -59,7 +59,6 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   },
   defaultOptions: [{ checkNever: false }],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow the `void` operator except when used to discard a value',
@@ -75,16 +74,17 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           checkNever: {
-            type: 'boolean',
             default: false,
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-meaningless-void-operator',
 });

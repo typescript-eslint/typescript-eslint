@@ -297,7 +297,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require switch-case statements to be exhaustive',
       requiresTypeChecking: true,
@@ -312,20 +311,21 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowDefaultCaseForExhaustiveSwitch: {
-            type: 'boolean',
             description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
+            type: 'boolean',
           },
           requireDefaultForNonUnion: {
-            type: 'boolean',
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'switch-exhaustiveness-check',
 });

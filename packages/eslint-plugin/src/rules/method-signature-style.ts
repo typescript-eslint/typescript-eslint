@@ -221,7 +221,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['property'],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Enforce using a particular method signature syntax',
     },
@@ -234,10 +233,11 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'string',
         enum: ['property', 'method'],
+        type: 'string',
       },
     ],
+    type: 'suggestion',
   },
   name: 'method-signature-style',
 });

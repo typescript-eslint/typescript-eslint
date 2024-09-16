@@ -204,7 +204,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
@@ -216,21 +215,20 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           allowAny: {
-            type: 'boolean',
             description:
               'Whether to consider `any` and `unknown` to be Promises.',
+            type: 'boolean',
           },
           allowedPromiseNames: {
-            type: 'array',
             description:
               'Any extra names of classes or interfaces to be considered Promises.',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
           checkArrowFunctions: {
             type: 'boolean',
@@ -245,8 +243,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'promise-function-async',
 });

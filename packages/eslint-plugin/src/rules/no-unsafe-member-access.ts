@@ -75,8 +75,8 @@ export default createRule({
 
         context.report({
           data: {
-            type: createDataType(type),
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
+            type: createDataType(type),
           },
           messageId,
           node: node.property,
@@ -111,8 +111,8 @@ export default createRule({
           const propertyName = context.sourceCode.getText(node);
           context.report({
             data: {
-              type: createDataType(type),
               property: `[${propertyName}]`,
+              type: createDataType(type),
             },
             messageId: 'unsafeComputedMemberAccess',
             node,
@@ -123,7 +123,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow member access on a value with type `any`',
       recommended: 'recommended',
@@ -140,6 +139,7 @@ export default createRule({
       ].join('\n'),
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unsafe-member-access',
 });

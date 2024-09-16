@@ -130,7 +130,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['record'],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require or disallow the `Record` type',
       recommended: 'stylistic',
@@ -142,10 +141,11 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'string',
         enum: ['record', 'index-signature'],
+        type: 'string',
       },
     ],
+    type: 'suggestion',
   },
   name: 'consistent-indexed-object-style',
 });

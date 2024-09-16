@@ -17,7 +17,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     deprecated: true,
     docs: {
       description: 'Disallow literal numbers that lose precision',
@@ -26,6 +25,7 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: [],
+    type: 'problem',
   },
   name: 'no-loss-of-precision',
 });

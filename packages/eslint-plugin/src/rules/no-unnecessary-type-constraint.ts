@@ -62,8 +62,8 @@ export default createRule({
       if (constraint) {
         context.report({
           data: {
-            constraint,
             name: node.name.name,
+            constraint,
           },
           messageId: 'unnecessaryConstraint',
           node,
@@ -100,7 +100,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary constraints on generic types',
       recommended: 'recommended',
@@ -113,6 +112,7 @@ export default createRule({
         'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-unnecessary-type-constraint',
 });

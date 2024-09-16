@@ -515,7 +515,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
@@ -530,6 +529,7 @@ export default createRule({
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'no-redundant-type-constituents',
 });

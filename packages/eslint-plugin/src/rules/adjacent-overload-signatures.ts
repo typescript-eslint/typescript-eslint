@@ -56,9 +56,9 @@ export default createRule({
             return null;
           }
           return {
-            type: MemberNameType.Normal,
-            callSignature: false,
             name,
+            callSignature: false,
+            type: MemberNameType.Normal,
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
@@ -69,15 +69,15 @@ export default createRule({
           };
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return {
-            type: MemberNameType.Normal,
-            callSignature: true,
             name: 'call',
+            callSignature: true,
+            type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
-            type: MemberNameType.Normal,
-            callSignature: false,
             name: 'new',
+            callSignature: false,
+            type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
@@ -157,7 +157,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Require that function overload signatures be consecutive',
       recommended: 'stylistic',
@@ -166,6 +165,7 @@ export default createRule({
       adjacentSignature: 'All {{name}} signatures should be adjacent.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'adjacent-overload-signatures',
 });

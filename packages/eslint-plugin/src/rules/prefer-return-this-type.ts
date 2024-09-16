@@ -153,7 +153,6 @@ export default createRule({
   defaultOptions: [],
 
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Enforce that `this` is used when only `this` type is returned',
@@ -165,6 +164,7 @@ export default createRule({
       useThisType: 'Use `this` type instead.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'prefer-return-this-type',
 });

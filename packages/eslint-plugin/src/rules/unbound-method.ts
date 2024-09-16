@@ -247,7 +247,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
@@ -260,17 +259,18 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreStatic: {
-            type: 'boolean',
             description:
               'Whether to skip checking whether `static` methods are correctly bound.',
+            type: 'boolean',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'problem',
   },
   name: 'unbound-method',
 });

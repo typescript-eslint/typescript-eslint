@@ -226,7 +226,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow returning a value with type `any` from a function',
       recommended: 'recommended',
@@ -242,6 +241,7 @@ export default createRule({
       ].join('\n'),
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unsafe-return',
 });

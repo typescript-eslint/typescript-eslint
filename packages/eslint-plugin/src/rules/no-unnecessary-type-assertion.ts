@@ -354,7 +354,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   meta: {
-    type: 'suggestion',
     docs: {
       description:
         'Disallow type assertions that do not change the type of an expression',
@@ -370,19 +369,20 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           typesToIgnore: {
-            type: 'array',
             description: 'A list of type names to ignore.',
             items: {
               type: 'string',
             },
+            type: 'array',
           },
         },
+        type: 'object',
       },
     ],
+    type: 'suggestion',
   },
   name: 'no-unnecessary-type-assertion',
 });

@@ -74,7 +74,6 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description: 'Disallow calling a value with type `any`',
       recommended: 'recommended',
@@ -90,6 +89,7 @@ export default createRule<[], MessageIds>({
       unsafeTemplateTag: 'Unsafe any typed template tag.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'no-unsafe-call',
 });

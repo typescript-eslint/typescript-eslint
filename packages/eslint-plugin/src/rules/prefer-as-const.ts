@@ -62,7 +62,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Enforce the use of `as const` over literal type',
       recommended: 'recommended',
@@ -77,6 +76,7 @@ export default createRule({
       variableSuggest: 'You should use `as const` instead of type annotation.',
     },
     schema: [],
+    type: 'suggestion',
   },
   name: 'prefer-as-const',
 });

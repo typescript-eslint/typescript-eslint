@@ -82,18 +82,16 @@ const baseSchema = baseRule.meta.schema as {
 
 const allowTypeImportsOptionSchema: JSONSchema4ObjectSchema['properties'] = {
   allowTypeImports: {
-    type: 'boolean',
     description: 'Disallow value imports, but allow type-only imports.',
+    type: 'boolean',
   },
 };
 
 const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
-  type: 'array',
   items: {
     anyOf: [
       { type: 'string' },
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ...tryAccess(
@@ -110,25 +108,25 @@ const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
               .required,
           undefined,
         ),
+        type: 'object',
       },
     ],
   },
+  type: 'array',
   uniqueItems: true,
 };
 
 const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
   anyOf: [
     {
-      type: 'array',
       items: {
         type: 'string',
       },
+      type: 'array',
       uniqueItems: true,
     },
     {
-      type: 'array',
       items: {
-        type: 'object',
         additionalProperties: false,
         properties: {
           ...tryAccess(
@@ -145,7 +143,9 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
               .required,
           [],
         ),
+        type: 'object',
       },
+      type: 'array',
       uniqueItems: true,
     },
   ],
@@ -155,18 +155,18 @@ const schema: JSONSchema4AnyOfSchema = {
   anyOf: [
     arrayOfStringsOrObjects,
     {
-      type: 'array',
       additionalItems: false,
       items: [
         {
-          type: 'object',
           additionalProperties: false,
           properties: {
             paths: arrayOfStringsOrObjects,
             patterns: arrayOfStringsOrObjectPatterns,
           },
+          type: 'object',
         },
       ],
+      type: 'array',
     },
   ],
 };
@@ -329,19 +329,19 @@ export default createRule<Options, MessageIds>({
         ) {
           const synthesizedImport: TSESTree.ImportDeclaration = {
             ...node,
-            type: AST_NODE_TYPES.ImportDeclaration,
             assertions: [],
             attributes: [],
             source: node.moduleReference.expression,
             specifiers: [
               {
                 ...node.id,
-                type: AST_NODE_TYPES.ImportDefaultSpecifier,
                 local: node.id,
+                type: AST_NODE_TYPES.ImportDefaultSpecifier,
                 // @ts-expect-error -- parent types are incompatible but it's fine for the purposes of this extension
                 parent: node.id.parent,
               },
             ],
+            type: AST_NODE_TYPES.ImportDeclaration,
           };
           return checkImportNode(synthesizedImport);
         }
@@ -350,7 +350,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   meta: {
-    type: 'suggestion',
     docs: {
       description: 'Disallow specified modules when loaded by `import`',
       extendsBaseRule: true,
@@ -358,6 +357,7 @@ export default createRule<Options, MessageIds>({
     fixable: baseRule.meta.fixable,
     messages: baseRule.meta.messages,
     schema,
+    type: 'suggestion',
   },
   name: 'no-restricted-imports',
 });

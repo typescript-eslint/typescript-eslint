@@ -104,7 +104,6 @@ export default createRule({
   },
   defaultOptions: [],
   meta: {
-    type: 'problem',
     docs: {
       description:
         'Enforce using type parameter when calling `Array#reduce` instead of casting',
@@ -117,6 +116,7 @@ export default createRule({
         'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
     },
     schema: [],
+    type: 'problem',
   },
   name: 'prefer-reduce-type-parameter',
 });
