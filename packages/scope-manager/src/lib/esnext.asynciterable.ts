@@ -15,4 +15,5 @@ export const esnext_asynciterable = {
   AsyncIterator: TYPE,
   AsyncIterable: TYPE,
   AsyncIterableIterator: TYPE,
+  AsyncIteratorObject: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

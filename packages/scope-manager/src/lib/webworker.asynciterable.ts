@@ -7,6 +7,8 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const webworker_asynciterable = {
+  FileSystemDirectoryHandleAsyncIterator: TYPE,
   FileSystemDirectoryHandle: TYPE,
+  ReadableStreamAsyncIterator: TYPE,
   ReadableStream: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

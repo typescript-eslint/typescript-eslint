@@ -5,9 +5,9 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
-import { es2015_iterable } from './es2015.iterable';
+import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
 
 export const es2020_string = {
-  ...es2015_iterable,
+  ...es2020_symbol_wellknown,
   String: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
