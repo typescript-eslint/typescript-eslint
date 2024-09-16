@@ -41,6 +41,28 @@ const schema = deepMerge(
 ) as unknown as JSONSchema4;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      detectObjects: false,
+      enforceConst: false,
+      ignore: [],
+      ignoreArrayIndexes: false,
+      ignoreEnums: false,
+      ignoreNumericLiteralTypes: false,
+      ignoreReadonlyClassProperties: false,
+      ignoreTypeIndexes: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow magic numbers',
+      extendsBaseRule: true,
+    },
+    messages: baseRule.meta.messages,
+    schema: [schema],
+  },
+  name: 'no-magic-numbers',
   create(context, [options]) {
     const rules = baseRule.create(context);
 
@@ -114,28 +136,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      detectObjects: false,
-      enforceConst: false,
-      ignore: [],
-      ignoreArrayIndexes: false,
-      ignoreEnums: false,
-      ignoreNumericLiteralTypes: false,
-      ignoreReadonlyClassProperties: false,
-      ignoreTypeIndexes: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow magic numbers',
-      extendsBaseRule: true,
-    },
-    messages: baseRule.meta.messages,
-    schema: [schema],
-    type: 'suggestion',
-  },
-  name: 'no-magic-numbers',
 });
 
 /**

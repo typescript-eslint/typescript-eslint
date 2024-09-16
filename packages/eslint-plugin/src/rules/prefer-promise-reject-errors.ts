@@ -22,6 +22,35 @@ export type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowEmptyReject: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require using Error objects as Promise rejection reasons',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowEmptyReject: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'prefer-promise-reject-errors',
   create(context, [options]) {
     const services = getParserServices(context);
 
@@ -122,33 +151,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowEmptyReject: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Require using Error objects as Promise rejection reasons',
-      extendsBaseRule: true,
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowEmptyReject: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'prefer-promise-reject-errors',
 });

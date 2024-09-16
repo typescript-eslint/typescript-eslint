@@ -32,6 +32,44 @@ type Option =
   | 'never';
 
 export default createRule({
+  defaultOptions: ['in-try-catch'],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Enforce consistent awaiting of returned promises',
+      extendsBaseRule: 'no-return-await',
+      recommended: {
+        strict: ['error-handling-correctness-only'],
+      },
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      disallowedPromiseAwait:
+        'Returning an awaited promise is not allowed in this context.',
+      disallowedPromiseAwaitSuggestion:
+        'Remove `await` before the expression. Use caution as this may impact control flow.',
+      nonPromiseAwait:
+        'Returning an awaited value that is not a promise is not allowed.',
+      requiredPromiseAwait:
+        'Returning an awaited promise is required in this context.',
+      requiredPromiseAwaitSuggestion:
+        'Add `await` before the expression. Use caution as this may impact control flow.',
+    },
+    schema: [
+      {
+        type: 'string',
+        enum: [
+          'in-try-catch',
+          'always',
+          'never',
+          'error-handling-correctness-only',
+        ] satisfies Option[],
+      },
+    ],
+  },
+  name: 'return-await',
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -358,44 +396,6 @@ export default createRule({
       },
     };
   },
-  defaultOptions: ['in-try-catch'],
-  meta: {
-    docs: {
-      description: 'Enforce consistent awaiting of returned promises',
-      extendsBaseRule: 'no-return-await',
-      recommended: {
-        strict: ['error-handling-correctness-only'],
-      },
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      disallowedPromiseAwait:
-        'Returning an awaited promise is not allowed in this context.',
-      disallowedPromiseAwaitSuggestion:
-        'Remove `await` before the expression. Use caution as this may impact control flow.',
-      nonPromiseAwait:
-        'Returning an awaited value that is not a promise is not allowed.',
-      requiredPromiseAwait:
-        'Returning an awaited promise is required in this context.',
-      requiredPromiseAwaitSuggestion:
-        'Add `await` before the expression. Use caution as this may impact control flow.',
-    },
-    schema: [
-      {
-        enum: [
-          'in-try-catch',
-          'always',
-          'never',
-          'error-handling-correctness-only',
-        ] satisfies Option[],
-        type: 'string',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'return-await',
 });
 
 type WhetherToAwait = "don't-care" | 'await' | 'no-await';

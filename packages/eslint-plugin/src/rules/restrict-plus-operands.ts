@@ -26,6 +26,79 @@ type Options = [
 type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
+      allowNumberAndString: true,
+      allowRegExp: true,
+      skipCompoundAssignments: false,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
+      recommended: {
+        recommended: true,
+        strict: [
+          {
+            allowAny: false,
+            allowBoolean: false,
+            allowNullish: false,
+            allowNumberAndString: false,
+            allowRegExp: false,
+          },
+        ],
+      },
+      requiresTypeChecking: true,
+    },
+    messages: {
+      bigintAndNumber:
+        "Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`.",
+      invalid:
+        "Invalid operand for a '+' operation. Operands must each be a number or {{stringLike}}. Got `{{type}}`.",
+      mismatched:
+        "Operands of '+' operations must be a number or {{stringLike}}. Got `{{left}}` + `{{right}}`.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowAny: {
+            type: 'boolean',
+            description: 'Whether to allow `any` typed values.',
+          },
+          allowBoolean: {
+            type: 'boolean',
+            description: 'Whether to allow `boolean` typed values.',
+          },
+          allowNullish: {
+            type: 'boolean',
+            description:
+              'Whether to allow potentially `null` or `undefined` typed values.',
+          },
+          allowNumberAndString: {
+            type: 'boolean',
+            description:
+              'Whether to allow `bigint`/`number` typed values and `string` typed values to be added together.',
+          },
+          allowRegExp: {
+            type: 'boolean',
+            description: 'Whether to allow `regexp` typed values.',
+          },
+          skipCompoundAssignments: {
+            type: 'boolean',
+            description: 'Whether to skip compound assignments such as `+=`.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'restrict-plus-operands',
   create(
     context,
     [
@@ -100,8 +173,8 @@ export default createRule<Options, MessageIds>({
         ) {
           context.report({
             data: {
-              stringLike,
               type: typeChecker.typeToString(baseType),
+              stringLike,
             },
             messageId: 'invalid',
             node: baseNode,
@@ -122,8 +195,8 @@ export default createRule<Options, MessageIds>({
           ) {
             context.report({
               data: {
-                stringLike,
                 type: typeChecker.typeToString(subBaseType),
+                stringLike,
               },
               messageId: 'invalid',
               node: baseNode,
@@ -183,79 +256,6 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowBoolean: true,
-      allowNullish: true,
-      allowNumberAndString: true,
-      allowRegExp: true,
-      skipCompoundAssignments: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
-      recommended: {
-        recommended: true,
-        strict: [
-          {
-            allowAny: false,
-            allowBoolean: false,
-            allowNullish: false,
-            allowNumberAndString: false,
-            allowRegExp: false,
-          },
-        ],
-      },
-      requiresTypeChecking: true,
-    },
-    messages: {
-      bigintAndNumber:
-        "Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`.",
-      invalid:
-        "Invalid operand for a '+' operation. Operands must each be a number or {{stringLike}}. Got `{{type}}`.",
-      mismatched:
-        "Operands of '+' operations must be a number or {{stringLike}}. Got `{{left}}` + `{{right}}`.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowAny: {
-            description: 'Whether to allow `any` typed values.',
-            type: 'boolean',
-          },
-          allowBoolean: {
-            description: 'Whether to allow `boolean` typed values.',
-            type: 'boolean',
-          },
-          allowNullish: {
-            description:
-              'Whether to allow potentially `null` or `undefined` typed values.',
-            type: 'boolean',
-          },
-          allowNumberAndString: {
-            description:
-              'Whether to allow `bigint`/`number` typed values and `string` typed values to be added together.',
-            type: 'boolean',
-          },
-          allowRegExp: {
-            description: 'Whether to allow `regexp` typed values.',
-            type: 'boolean',
-          },
-          skipCompoundAssignments: {
-            description: 'Whether to skip compound assignments such as `+=`.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'restrict-plus-operands',
 });
 
 function isDeeplyObjectType(type: ts.Type): boolean {

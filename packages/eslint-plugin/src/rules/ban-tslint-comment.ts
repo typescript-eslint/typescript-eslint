@@ -16,6 +16,20 @@ const toText = (
     : ['/*', text.trim(), '*/'].join(' ');
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow `// tslint:<rule-flag>` comments',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      commentDetected: 'tslint comment detected: "{{ text }}"',
+    },
+    schema: [],
+  },
+  name: 'ban-tslint-comment',
   create: context => {
     return {
       Program(): void {
@@ -43,18 +57,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow `// tslint:<rule-flag>` comments',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      commentDetected: 'tslint comment detected: "{{ text }}"',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'ban-tslint-comment',
 });

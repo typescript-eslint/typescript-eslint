@@ -33,6 +33,50 @@ const noEmptyMessage = (emptyType: string): string =>
   ].join('\n');
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowInterfaces: 'never',
+      allowObjectTypes: 'never',
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow accidentally using the "empty object" type',
+      recommended: 'recommended',
+    },
+    hasSuggestions: true,
+    messages: {
+      noEmptyInterface: noEmptyMessage('An empty interface declaration'),
+      noEmptyInterfaceWithSuper:
+        'An interface declaring no members is equivalent to its supertype.',
+      noEmptyObject: noEmptyMessage('The `{}` ("empty object") type'),
+      replaceEmptyInterface: 'Replace empty interface with `{{replacement}}`.',
+      replaceEmptyInterfaceWithSuper:
+        'Replace empty interface with a type alias.',
+      replaceEmptyObjectType: 'Replace `{}` with `{{replacement}}`.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowInterfaces: {
+            type: 'string',
+            enum: ['always', 'never', 'with-single-extends'],
+          },
+          allowObjectTypes: {
+            type: 'string',
+            enum: ['always', 'never'],
+          },
+          allowWithName: {
+            type: 'string',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-empty-object-type',
   create(context, [{ allowInterfaces, allowObjectTypes, allowWithName }]) {
     const allowWithNameTester = allowWithName
       ? new RegExp(allowWithName, 'u')
@@ -141,48 +185,4 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: [
-    {
-      allowInterfaces: 'never',
-      allowObjectTypes: 'never',
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow accidentally using the "empty object" type',
-      recommended: 'recommended',
-    },
-    hasSuggestions: true,
-    messages: {
-      noEmptyInterface: noEmptyMessage('An empty interface declaration'),
-      noEmptyInterfaceWithSuper:
-        'An interface declaring no members is equivalent to its supertype.',
-      noEmptyObject: noEmptyMessage('The `{}` ("empty object") type'),
-      replaceEmptyInterface: 'Replace empty interface with `{{replacement}}`.',
-      replaceEmptyInterfaceWithSuper:
-        'Replace empty interface with a type alias.',
-      replaceEmptyObjectType: 'Replace `{}` with `{{replacement}}`.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowInterfaces: {
-            enum: ['always', 'never', 'with-single-extends'],
-            type: 'string',
-          },
-          allowObjectTypes: {
-            enum: ['always', 'never'],
-            type: 'string',
-          },
-          allowWithName: {
-            type: 'string',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-empty-object-type',
 });

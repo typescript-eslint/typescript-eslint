@@ -39,6 +39,40 @@ type MessageIds =
   | 'typeOverValue';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      fixMixedExportsWithInlineTypeSpecifier: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce consistent usage of type exports',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      multipleExportsAreTypes:
+        'Type exports {{exportNames}} are not values and should be exported using `export type`.',
+
+      singleExportIsType:
+        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
+      typeOverValue:
+        'All exports in the declaration are only used as types. Use `export type`.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          fixMixedExportsWithInlineTypeSpecifier: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'consistent-type-exports',
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
@@ -204,40 +238,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      fixMixedExportsWithInlineTypeSpecifier: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Enforce consistent usage of type exports',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      multipleExportsAreTypes:
-        'Type exports {{exportNames}} are not values and should be exported using `export type`.',
-
-      singleExportIsType:
-        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
-      typeOverValue:
-        'All exports in the declaration are only used as types. Use `export type`.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          fixMixedExportsWithInlineTypeSpecifier: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'consistent-type-exports',
 });
 
 /**

@@ -15,6 +15,20 @@ type NodeWithTypeParameters = MakeRequired<
 >;
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: "Disallow type parameters that aren't used multiple times",
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      sole: 'Type parameter {{name}} is {{uses}} in the {{descriptor}} signature.',
+    },
+    schema: [],
+  },
+  name: 'no-unnecessary-type-parameters',
   create(context) {
     const parserServices = getParserServices(context);
 
@@ -86,20 +100,6 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: "Disallow type parameters that aren't used multiple times",
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      sole: 'Type parameter {{name}} is {{uses}} in the {{descriptor}} signature.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-unnecessary-type-parameters',
 });
 
 function isTypeParameterRepeatedInAST(

@@ -5,6 +5,21 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isOptionalCallExpression } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow generic `Array` constructors',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    messages: {
+      useLiteral: 'The array literal notation [] is preferable.',
+    },
+    schema: [],
+  },
+  name: 'no-array-constructor',
   create(context) {
     /**
      * Disallow construction of dense arrays using the Array constructor
@@ -44,19 +59,4 @@ export default createRule({
       NewExpression: check,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow generic `Array` constructors',
-      extendsBaseRule: true,
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    messages: {
-      useLiteral: 'The array literal notation [] is preferable.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-array-constructor',
 });

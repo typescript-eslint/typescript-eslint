@@ -27,6 +27,83 @@ export default createRule<
   [PreferOptionalChainOptions],
   PreferOptionalChainMessageIds
 >({
+  defaultOptions: [
+    {
+      allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
+      checkAny: true,
+      checkBigInt: true,
+      checkBoolean: true,
+      checkNumber: true,
+      checkString: true,
+      checkUnknown: true,
+      requireNullish: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      optionalChainSuggest: 'Change to an optional chain.',
+      preferOptionalChain:
+        "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
+            type: 'boolean',
+            description:
+              'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
+          },
+          checkAny: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `any` when inspecting "loose boolean" operands.',
+          },
+          checkBigInt: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `bigint` when inspecting "loose boolean" operands.',
+          },
+          checkBoolean: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `boolean` when inspecting "loose boolean" operands.',
+          },
+          checkNumber: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `number` when inspecting "loose boolean" operands.',
+          },
+          checkString: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `string` when inspecting "loose boolean" operands.',
+          },
+          checkUnknown: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
+          },
+          requireNullish: {
+            type: 'boolean',
+            description:
+              'Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'prefer-optional-chain',
   create(context, [options]) {
     const parserServices = getParserServices(context);
 
@@ -143,81 +220,4 @@ export default createRule<
       },
     };
   },
-  defaultOptions: [
-    {
-      allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
-      checkAny: true,
-      checkBigInt: true,
-      checkBoolean: true,
-      checkNumber: true,
-      checkString: true,
-      checkUnknown: true,
-      requireNullish: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      optionalChainSuggest: 'Change to an optional chain.',
-      preferOptionalChain:
-        "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
-            description:
-              'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
-            type: 'boolean',
-          },
-          checkAny: {
-            description:
-              'Check operands that are typed as `any` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-          checkBigInt: {
-            description:
-              'Check operands that are typed as `bigint` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-          checkBoolean: {
-            description:
-              'Check operands that are typed as `boolean` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-          checkNumber: {
-            description:
-              'Check operands that are typed as `number` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-          checkString: {
-            description:
-              'Check operands that are typed as `string` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-          checkUnknown: {
-            description:
-              'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-          requireNullish: {
-            description:
-              'Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'prefer-optional-chain',
 });

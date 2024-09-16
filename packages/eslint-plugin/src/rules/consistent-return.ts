@@ -22,6 +22,20 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{ treatUndefinedAsUnspecified: false }],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require `return` statements to either always or never specify values',
+      extendsBaseRule: true,
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
+  },
+  name: 'consistent-return',
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -113,18 +127,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{ treatUndefinedAsUnspecified: false }],
-  meta: {
-    docs: {
-      description:
-        'Require `return` statements to either always or never specify values',
-      extendsBaseRule: true,
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: baseRule.meta.schema,
-    type: 'suggestion',
-  },
-  name: 'consistent-return',
 });

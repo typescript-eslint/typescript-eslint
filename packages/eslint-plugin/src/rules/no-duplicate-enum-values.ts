@@ -5,6 +5,20 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow duplicate enum member values',
+      recommended: 'recommended',
+    },
+    hasSuggestions: false,
+    messages: {
+      duplicateValue: 'Duplicate enum member value {{value}}.',
+    },
+    schema: [],
+  },
+  name: 'no-duplicate-enum-values',
   create(context) {
     function isStringLiteral(
       node: TSESTree.Expression,
@@ -58,18 +72,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow duplicate enum member values',
-      recommended: 'recommended',
-    },
-    hasSuggestions: false,
-    messages: {
-      duplicateValue: 'Duplicate enum member value {{value}}.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-duplicate-enum-values',
 });

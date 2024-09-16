@@ -30,6 +30,32 @@ const functionScopeBoundaries = [
 ].join(', ');
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{ onlyInlineLambdas: false }],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferReadonly:
+        "Member '{{name}}' is never reassigned; mark it as `readonly`.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          onlyInlineLambdas: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'prefer-readonly',
   create(context, [{ onlyInlineLambdas }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -240,32 +266,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{ onlyInlineLambdas: false }],
-  meta: {
-    docs: {
-      description:
-        "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      preferReadonly:
-        "Member '{{name}}' is never reassigned; mark it as `readonly`.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          onlyInlineLambdas: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'prefer-readonly',
 });
 
 type ParameterOrPropertyDeclaration =

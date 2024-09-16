@@ -14,6 +14,46 @@ type Options = [
 type MessageIds = 'tripleSlashReference';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      lib: 'always',
+      path: 'never',
+      types: 'prefer-import',
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow certain triple slash directives in favor of ES6-style import declarations',
+      recommended: 'recommended',
+    },
+    messages: {
+      tripleSlashReference:
+        'Do not use a triple slash reference for {{module}}, use `import` style instead.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          lib: {
+            type: 'string',
+            enum: ['always', 'never'],
+          },
+          path: {
+            type: 'string',
+            enum: ['always', 'never'],
+          },
+          types: {
+            type: 'string',
+            enum: ['always', 'never', 'prefer-import'],
+          },
+        },
+      },
+    ],
+  },
+  name: 'triple-slash-reference',
   create(context, [{ lib, path, types }]) {
     let programNode: TSESTree.Node | undefined;
 
@@ -89,44 +129,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      lib: 'always',
-      path: 'never',
-      types: 'prefer-import',
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow certain triple slash directives in favor of ES6-style import declarations',
-      recommended: 'recommended',
-    },
-    messages: {
-      tripleSlashReference:
-        'Do not use a triple slash reference for {{module}}, use `import` style instead.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          lib: {
-            enum: ['always', 'never'],
-            type: 'string',
-          },
-          path: {
-            enum: ['always', 'never'],
-            type: 'string',
-          },
-          types: {
-            enum: ['always', 'never', 'prefer-import'],
-            type: 'string',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'triple-slash-reference',
 });

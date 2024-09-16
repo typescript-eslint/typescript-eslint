@@ -18,6 +18,51 @@ type MessageIds =
   | 'invalidVoidUnionConstituent';
 
 export default createRule<[Options], MessageIds>({
+  defaultOptions: [
+    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow `void` type outside of generic or return types',
+      recommended: 'strict',
+    },
+    messages: {
+      invalidVoidForGeneric:
+        '{{ generic }} may not have void as a type argument.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
+      invalidVoidNotReturnOrGeneric:
+        'void is only valid as a return type or generic type argument.',
+      invalidVoidNotReturnOrThisParam:
+        'void is only valid as return type or type of `this` parameter.',
+      invalidVoidNotReturnOrThisParamOrGeneric:
+        'void is only valid as a return type or generic type argument or the type of a `this` parameter.',
+      invalidVoidUnionConstituent:
+        'void is not valid as a constituent in a union type',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowAsThisParameter: {
+            type: 'boolean',
+          },
+          allowInGenericTypeArguments: {
+            oneOf: [
+              { type: 'boolean' },
+              {
+                type: 'array',
+                items: { type: 'string' },
+                minItems: 1,
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-invalid-void-type',
   create(context, [{ allowAsThisParameter, allowInGenericTypeArguments }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
@@ -182,51 +227,6 @@ export default createRule<[Options], MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow `void` type outside of generic or return types',
-      recommended: 'strict',
-    },
-    messages: {
-      invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type argument.',
-      invalidVoidNotReturn: 'void is only valid as a return type.',
-      invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type argument.',
-      invalidVoidNotReturnOrThisParam:
-        'void is only valid as return type or type of `this` parameter.',
-      invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type argument or the type of a `this` parameter.',
-      invalidVoidUnionConstituent:
-        'void is not valid as a constituent in a union type',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowAsThisParameter: {
-            type: 'boolean',
-          },
-          allowInGenericTypeArguments: {
-            oneOf: [
-              { type: 'boolean' },
-              {
-                items: { type: 'string' },
-                minItems: 1,
-                type: 'array',
-              },
-            ],
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-invalid-void-type',
 });
 
 function getNotReturnOrGenericMessageId(

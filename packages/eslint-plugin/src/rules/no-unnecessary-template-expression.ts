@@ -26,6 +26,22 @@ function endsWithUnescapedDollarSign(str: string): boolean {
 }
 
 export default createRule<[], MessageId>({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow unnecessary template expressions',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      noUnnecessaryTemplateExpression:
+        'Template literal expression is unnecessary and can be simplified.',
+    },
+    schema: [],
+  },
+  name: 'no-unnecessary-template-expression',
   create(context) {
     const services = getParserServices(context);
 
@@ -253,20 +269,4 @@ export default createRule<[], MessageId>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow unnecessary template expressions',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      noUnnecessaryTemplateExpression:
-        'Template literal expression is unnecessary and can be simplified.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-template-expression',
 });

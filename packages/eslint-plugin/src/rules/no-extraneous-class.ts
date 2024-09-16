@@ -15,6 +15,55 @@ type Options = [
 type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowConstructorOnly: false,
+      allowEmpty: false,
+      allowStaticOnly: false,
+      allowWithDecorator: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow classes used as namespaces',
+      recommended: 'strict',
+    },
+    messages: {
+      empty: 'Unexpected empty class.',
+      onlyConstructor: 'Unexpected class with only a constructor.',
+      onlyStatic: 'Unexpected class with only static properties.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowConstructorOnly: {
+            type: 'boolean',
+            description:
+              'Whether to allow extraneous classes that contain only a constructor.',
+          },
+          allowEmpty: {
+            type: 'boolean',
+            description:
+              'Whether to allow extraneous classes that have no body (i.e. are empty).',
+          },
+          allowStaticOnly: {
+            type: 'boolean',
+            description:
+              'Whether to allow extraneous classes that only contain static members.',
+          },
+          allowWithDecorator: {
+            type: 'boolean',
+            description:
+              'Whether to allow extraneous classes that include a decorator.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-extraneous-class',
   create(
     context,
     [{ allowConstructorOnly, allowEmpty, allowStaticOnly, allowWithDecorator }],
@@ -105,53 +154,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowConstructorOnly: false,
-      allowEmpty: false,
-      allowStaticOnly: false,
-      allowWithDecorator: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow classes used as namespaces',
-      recommended: 'strict',
-    },
-    messages: {
-      empty: 'Unexpected empty class.',
-      onlyConstructor: 'Unexpected class with only a constructor.',
-      onlyStatic: 'Unexpected class with only static properties.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowConstructorOnly: {
-            description:
-              'Whether to allow extraneous classes that contain only a constructor.',
-            type: 'boolean',
-          },
-          allowEmpty: {
-            description:
-              'Whether to allow extraneous classes that have no body (i.e. are empty).',
-            type: 'boolean',
-          },
-          allowStaticOnly: {
-            description:
-              'Whether to allow extraneous classes that only contain static members.',
-            type: 'boolean',
-          },
-          allowWithDecorator: {
-            description:
-              'Whether to allow extraneous classes that include a decorator.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-extraneous-class',
 });

@@ -33,6 +33,23 @@ const getMemberExpressionName = (
 };
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Enforce using type parameter when calling `Array#reduce` instead of casting',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferTypeParameter:
+        'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
+    },
+    schema: [],
+  },
+  name: 'prefer-reduce-type-parameter',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -102,21 +119,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Enforce using type parameter when calling `Array#reduce` instead of casting',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      preferTypeParameter:
-        'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'prefer-reduce-type-parameter',
 });

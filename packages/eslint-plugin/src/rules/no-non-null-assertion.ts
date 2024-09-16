@@ -12,6 +12,23 @@ import {
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow non-null assertions using the `!` postfix operator',
+      recommended: 'strict',
+    },
+    hasSuggestions: true,
+    messages: {
+      noNonNull: 'Forbidden non-null assertion.',
+      suggestOptionalChain:
+        'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
+    },
+    schema: [],
+  },
+  name: 'no-non-null-assertion',
   create(context) {
     return {
       TSNonNullExpression(node): void {
@@ -103,21 +120,4 @@ export default createRule<[], MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow non-null assertions using the `!` postfix operator',
-      recommended: 'strict',
-    },
-    hasSuggestions: true,
-    messages: {
-      noNonNull: 'Forbidden non-null assertion.',
-      suggestOptionalChain:
-        'Consider using the optional chain operator `?.` instead. This operator includes runtime checks, so it is safer than the compile-only non-null assertion operator.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-non-null-assertion',
 });

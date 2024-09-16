@@ -31,6 +31,53 @@ interface BooleanComparisonWithTypeInformation extends BooleanComparison {
 }
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowComparingNullableBooleansToFalse: true,
+      allowComparingNullableBooleansToTrue: true,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow unnecessary equality comparisons against boolean literals',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      comparingNullableToFalse:
+        'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',
+      comparingNullableToTrueDirect:
+        'This expression unnecessarily compares a nullable boolean value to true instead of using it directly.',
+      comparingNullableToTrueNegated:
+        'This expression unnecessarily compares a nullable boolean value to true instead of negating it.',
+      direct:
+        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
+      negated:
+        'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowComparingNullableBooleansToFalse: {
+            type: 'boolean',
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `false`.',
+          },
+          allowComparingNullableBooleansToTrue: {
+            type: 'boolean',
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `true`.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-unnecessary-boolean-literal-compare',
   create(context, [options]) {
     const services = getParserServices(context);
 
@@ -222,53 +269,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowComparingNullableBooleansToFalse: true,
-      allowComparingNullableBooleansToTrue: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow unnecessary equality comparisons against boolean literals',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      comparingNullableToFalse:
-        'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',
-      comparingNullableToTrueDirect:
-        'This expression unnecessarily compares a nullable boolean value to true instead of using it directly.',
-      comparingNullableToTrueNegated:
-        'This expression unnecessarily compares a nullable boolean value to true instead of negating it.',
-      direct:
-        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
-      negated:
-        'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowComparingNullableBooleansToFalse: {
-            description:
-              'Whether to allow comparisons between nullable boolean variables and `false`.',
-            type: 'boolean',
-          },
-          allowComparingNullableBooleansToTrue: {
-            description:
-              'Whether to allow comparisons between nullable boolean variables and `true`.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-boolean-literal-compare',
 });
 
 interface EqualsKind {

@@ -21,6 +21,23 @@ const EVAL_LIKE_METHODS = new Set([
 ]);
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow the use of `eval()`-like methods',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      noFunctionConstructor:
+        'Implied eval. Do not use the Function constructor to create functions.',
+      noImpliedEvalError: 'Implied eval. Consider passing a function.',
+    },
+    schema: [],
+  },
+  name: 'no-implied-eval',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -144,21 +161,4 @@ export default createRule({
       NewExpression: checkImpliedEval,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow the use of `eval()`-like methods',
-      extendsBaseRule: true,
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      noFunctionConstructor:
-        'Implied eval. Do not use the Function constructor to create functions.',
-      noImpliedEvalError: 'Implied eval. Consider passing a function.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-implied-eval',
 });

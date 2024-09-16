@@ -44,6 +44,19 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
 }
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow unnecessary constructors',
+      extendsBaseRule: true,
+      recommended: 'strict',
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
+  },
+  name: 'no-useless-constructor',
   create(context) {
     const rules = baseRule.create(context);
     return {
@@ -58,17 +71,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow unnecessary constructors',
-      extendsBaseRule: true,
-      recommended: 'strict',
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: baseRule.meta.schema,
-    type: 'problem',
-  },
-  name: 'no-useless-constructor',
 });

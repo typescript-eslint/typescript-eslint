@@ -13,6 +13,22 @@ import {
 } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow awaiting a value that is not a Thenable',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      removeAwait: 'Remove unnecessary `await`.',
+    },
+    schema: [],
+  },
+  name: 'await-thenable',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -48,20 +64,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow awaiting a value that is not a Thenable',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
-      removeAwait: 'Remove unnecessary `await`.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'await-thenable',
 });

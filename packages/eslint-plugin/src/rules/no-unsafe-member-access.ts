@@ -23,6 +23,27 @@ function createDataType(type: ts.Type): '`any`' | '`error` typed' {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow member access on a value with type `any`',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unsafeComputedMemberAccess:
+        'Computed name {{property}} resolves to an {{type}} value.',
+      unsafeMemberExpression:
+        'Unsafe member access {{property}} on an {{type}} value.',
+      unsafeThisMemberExpression: [
+        'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+    },
+    schema: [],
+  },
+  name: 'no-unsafe-member-access',
   create(context) {
     const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
@@ -75,8 +96,8 @@ export default createRule({
 
         context.report({
           data: {
-            property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
             type: createDataType(type),
+            property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },
           messageId,
           node: node.property,
@@ -111,8 +132,8 @@ export default createRule({
           const propertyName = context.sourceCode.getText(node);
           context.report({
             data: {
-              property: `[${propertyName}]`,
               type: createDataType(type),
+              property: `[${propertyName}]`,
             },
             messageId: 'unsafeComputedMemberAccess',
             node,
@@ -121,25 +142,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow member access on a value with type `any`',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unsafeComputedMemberAccess:
-        'Computed name {{property}} resolves to an {{type}} value.',
-      unsafeMemberExpression:
-        'Unsafe member access {{property}} on an {{type}} value.',
-      unsafeThisMemberExpression: [
-        'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-unsafe-member-access',
 });

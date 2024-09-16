@@ -13,6 +13,35 @@ type Options = [
 type MessageIds = 'noRequireImports';
 
 export default util.createRule<Options, MessageIds>({
+  defaultOptions: [{ allow: [], allowAsImport: false }],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow invocation of `require()`',
+      recommended: 'recommended',
+    },
+    messages: {
+      noRequireImports: 'A `require()` style import is forbidden.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            type: 'array',
+            description: 'Patterns of import paths to allow requiring from.',
+            items: { type: 'string' },
+          },
+          allowAsImport: {
+            type: 'boolean',
+            description: 'Allows `require` statements in import declarations.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-require-imports',
   create(context, options) {
     const allowAsImport = options[0].allowAsImport;
     const allowPatterns = options[0].allow?.map(
@@ -72,33 +101,4 @@ export default util.createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{ allow: [], allowAsImport: false }],
-  meta: {
-    docs: {
-      description: 'Disallow invocation of `require()`',
-      recommended: 'recommended',
-    },
-    messages: {
-      noRequireImports: 'A `require()` style import is forbidden.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allow: {
-            description: 'Patterns of import paths to allow requiring from.',
-            items: { type: 'string' },
-            type: 'array',
-          },
-          allowAsImport: {
-            description: 'Allows `require` statements in import declarations.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-require-imports',
 });

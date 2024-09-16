@@ -51,6 +51,49 @@ type MessageIds =
   | 'someImportsAreOnlyTypes'
   | 'typeOverValue';
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      disallowTypeAnnotations: true,
+      fixStyle: 'separate-type-imports',
+      prefer: 'type-imports',
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce consistent usage of type imports',
+    },
+    fixable: 'code',
+    messages: {
+      avoidImportType: 'Use an `import` instead of an `import type`.',
+      noImportTypeAnnotations: '`import()` type annotations are forbidden.',
+
+      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
+      typeOverValue:
+        'All imports in the declaration are only used as types. Use `import type`.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          disallowTypeAnnotations: {
+            type: 'boolean',
+          },
+          fixStyle: {
+            type: 'string',
+            enum: ['separate-type-imports', 'inline-type-imports'],
+          },
+          prefer: {
+            type: 'string',
+            enum: ['type-imports', 'no-type-imports'],
+          },
+        },
+      },
+    ],
+  },
+
+  name: 'consistent-type-imports',
   create(context, [option]) {
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
@@ -900,47 +943,4 @@ export default createRule<Options, MessageIds>({
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
     }
   },
-  defaultOptions: [
-    {
-      disallowTypeAnnotations: true,
-      fixStyle: 'separate-type-imports',
-      prefer: 'type-imports',
-    },
-  ],
-
-  meta: {
-    docs: {
-      description: 'Enforce consistent usage of type imports',
-    },
-    fixable: 'code',
-    messages: {
-      avoidImportType: 'Use an `import` instead of an `import type`.',
-      noImportTypeAnnotations: '`import()` type annotations are forbidden.',
-
-      someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
-      typeOverValue:
-        'All imports in the declaration are only used as types. Use `import type`.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          disallowTypeAnnotations: {
-            type: 'boolean',
-          },
-          fixStyle: {
-            enum: ['separate-type-imports', 'inline-type-imports'],
-            type: 'string',
-          },
-          prefer: {
-            enum: ['type-imports', 'no-type-imports'],
-            type: 'string',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'consistent-type-imports',
 });

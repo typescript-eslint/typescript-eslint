@@ -25,6 +25,7 @@ const schema = deepMerge(
     properties: {
       allow: {
         items: {
+          type: 'string',
           enum: [
             'functions',
             'arrowFunctions',
@@ -41,7 +42,6 @@ const schema = deepMerge(
             'decoratedFunctions',
             'overrideMethods',
           ],
-          type: 'string',
         },
       },
     },
@@ -49,6 +49,23 @@ const schema = deepMerge(
 ) as unknown as JSONSchema4;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allow: [],
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow empty functions',
+      extendsBaseRule: true,
+      recommended: 'stylistic',
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: [schema],
+  },
+  name: 'no-empty-function',
   create(context, [{ allow = [] }]) {
     const rules = baseRule.create(context);
 
@@ -159,21 +176,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allow: [],
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow empty functions',
-      extendsBaseRule: true,
-      recommended: 'stylistic',
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: [schema],
-    type: 'suggestion',
-  },
-  name: 'no-empty-function',
 });

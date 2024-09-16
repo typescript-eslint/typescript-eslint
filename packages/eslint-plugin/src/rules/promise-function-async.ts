@@ -26,6 +26,62 @@ type Options = [
 type MessageIds = 'missingAsync';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowAny: true,
+      allowedPromiseNames: [],
+      checkArrowFunctions: true,
+      checkFunctionDeclarations: true,
+      checkFunctionExpressions: true,
+      checkMethodDeclarations: true,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require any function or method that returns a Promise to be marked async',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      missingAsync: 'Functions that return promises must be async.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowAny: {
+            type: 'boolean',
+            description:
+              'Whether to consider `any` and `unknown` to be Promises.',
+          },
+          allowedPromiseNames: {
+            type: 'array',
+            description:
+              'Any extra names of classes or interfaces to be considered Promises.',
+            items: {
+              type: 'string',
+            },
+          },
+          checkArrowFunctions: {
+            type: 'boolean',
+          },
+          checkFunctionDeclarations: {
+            type: 'boolean',
+          },
+          checkFunctionExpressions: {
+            type: 'boolean',
+          },
+          checkMethodDeclarations: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'promise-function-async',
   create(
     context,
     [
@@ -193,60 +249,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowAny: true,
-      allowedPromiseNames: [],
-      checkArrowFunctions: true,
-      checkFunctionDeclarations: true,
-      checkFunctionExpressions: true,
-      checkMethodDeclarations: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require any function or method that returns a Promise to be marked async',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      missingAsync: 'Functions that return promises must be async.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowAny: {
-            description:
-              'Whether to consider `any` and `unknown` to be Promises.',
-            type: 'boolean',
-          },
-          allowedPromiseNames: {
-            description:
-              'Any extra names of classes or interfaces to be considered Promises.',
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-          checkArrowFunctions: {
-            type: 'boolean',
-          },
-          checkFunctionDeclarations: {
-            type: 'boolean',
-          },
-          checkFunctionExpressions: {
-            type: 'boolean',
-          },
-          checkMethodDeclarations: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'promise-function-async',
 });

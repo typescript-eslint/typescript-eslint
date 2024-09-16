@@ -88,6 +88,61 @@ export type MessageId =
   | 'noStrictNullCheck';
 
 export default createRule<Options, MessageId>({
+  defaultOptions: [
+    {
+      allowConstantLoopConditions: false,
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow conditionals where the type is always truthy or always falsy',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      alwaysFalsyFunc:
+        'This callback should return a conditional, but return is always falsy.',
+      alwaysNullish:
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
+      alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
+      alwaysTruthyFunc:
+        'This callback should return a conditional, but return is always truthy.',
+      literalBooleanExpression:
+        'Unnecessary conditional, both sides of the expression are literal values.',
+      never: 'Unnecessary conditional, value is `never`.',
+      neverNullish:
+        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
+      noOverlapBooleanExpression:
+        'Unnecessary conditional, the types have no overlap.',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowConstantLoopConditions: {
+            type: 'boolean',
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
+          },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+            description:
+              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-unnecessary-condition',
   create(
     context,
     [
@@ -677,59 +732,4 @@ export default createRule<Options, MessageId>({
       WhileStatement: checkIfLoopIsNecessaryConditional,
     };
   },
-  defaultOptions: [
-    {
-      allowConstantLoopConditions: false,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow conditionals where the type is always truthy or always falsy',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
-      alwaysFalsyFunc:
-        'This callback should return a conditional, but return is always falsy.',
-      alwaysNullish:
-        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
-      alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
-      alwaysTruthyFunc:
-        'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values.',
-      never: 'Unnecessary conditional, value is `never`.',
-      neverNullish:
-        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
-      noOverlapBooleanExpression:
-        'Unnecessary conditional, the types have no overlap.',
-      noStrictNullCheck:
-        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowConstantLoopConditions: {
-            description:
-              'Whether to ignore constant loop conditions, such as `while (true)`.',
-            type: 'boolean',
-          },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            description:
-              'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-condition',
 });

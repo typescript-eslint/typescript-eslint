@@ -34,6 +34,89 @@ interface TypeWithLabel {
 }
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowAliases: 'never',
+      allowCallbacks: 'never',
+      allowConditionalTypes: 'never',
+      allowConstructors: 'never',
+      allowGenerics: 'never',
+      allowLiterals: 'never',
+      allowMappedTypes: 'never',
+      allowTupleTypes: 'never',
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    deprecated: true,
+    docs: {
+      description: 'Disallow type aliases',
+      // too opinionated to be recommended
+    },
+    messages: {
+      noCompositionAlias:
+        '{{typeName}} in {{compositionType}} types are not allowed.',
+      noTypeAlias: 'Type {{alias}} are not allowed.',
+    },
+    schema: [
+      {
+        type: 'object',
+        $defs: {
+          expandedOptions: {
+            type: 'string',
+            enum: [
+              'always',
+              'never',
+              'in-unions',
+              'in-intersections',
+              'in-unions-and-intersections',
+            ] satisfies Values[],
+          },
+          simpleOptions: {
+            type: 'string',
+            enum: ['always', 'never'],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          allowAliases: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow direct one-to-one type aliases.',
+          },
+          allowCallbacks: {
+            $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases for callbacks.',
+          },
+          allowConditionalTypes: {
+            $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases for conditional types.',
+          },
+          allowConstructors: {
+            $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases with constructors.',
+          },
+          allowGenerics: {
+            $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases with generic types.',
+          },
+          allowLiterals: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description:
+              'Whether to allow type aliases with object literal types.',
+          },
+          allowMappedTypes: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow type aliases with mapped types.',
+          },
+          allowTupleTypes: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow type aliases with tuple types.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-type-alias',
   create(
     context,
     [
@@ -266,87 +349,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowAliases: 'never',
-      allowCallbacks: 'never',
-      allowConditionalTypes: 'never',
-      allowConstructors: 'never',
-      allowGenerics: 'never',
-      allowLiterals: 'never',
-      allowMappedTypes: 'never',
-      allowTupleTypes: 'never',
-    },
-  ],
-  meta: {
-    deprecated: true,
-    docs: {
-      description: 'Disallow type aliases',
-      // too opinionated to be recommended
-    },
-    messages: {
-      noCompositionAlias:
-        '{{typeName}} in {{compositionType}} types are not allowed.',
-      noTypeAlias: 'Type {{alias}} are not allowed.',
-    },
-    schema: [
-      {
-        $defs: {
-          expandedOptions: {
-            enum: [
-              'always',
-              'never',
-              'in-unions',
-              'in-intersections',
-              'in-unions-and-intersections',
-            ] satisfies Values[],
-            type: 'string',
-          },
-          simpleOptions: {
-            enum: ['always', 'never'],
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-        properties: {
-          allowAliases: {
-            $ref: '#/items/0/$defs/expandedOptions',
-            description: 'Whether to allow direct one-to-one type aliases.',
-          },
-          allowCallbacks: {
-            $ref: '#/items/0/$defs/simpleOptions',
-            description: 'Whether to allow type aliases for callbacks.',
-          },
-          allowConditionalTypes: {
-            $ref: '#/items/0/$defs/simpleOptions',
-            description: 'Whether to allow type aliases for conditional types.',
-          },
-          allowConstructors: {
-            $ref: '#/items/0/$defs/simpleOptions',
-            description: 'Whether to allow type aliases with constructors.',
-          },
-          allowGenerics: {
-            $ref: '#/items/0/$defs/simpleOptions',
-            description: 'Whether to allow type aliases with generic types.',
-          },
-          allowLiterals: {
-            $ref: '#/items/0/$defs/expandedOptions',
-            description:
-              'Whether to allow type aliases with object literal types.',
-          },
-          allowMappedTypes: {
-            $ref: '#/items/0/$defs/expandedOptions',
-            description: 'Whether to allow type aliases with mapped types.',
-          },
-          allowTupleTypes: {
-            $ref: '#/items/0/$defs/expandedOptions',
-            description: 'Whether to allow type aliases with tuple types.',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-type-alias',
 });

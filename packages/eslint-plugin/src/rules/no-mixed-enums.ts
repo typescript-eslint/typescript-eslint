@@ -15,6 +15,20 @@ enum AllowedType {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow enums from having both number and string members',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      mixed: `Mixing number and string enums can be confusing.`,
+    },
+    schema: [],
+  },
+  name: 'no-mixed-enums',
   create(context) {
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
@@ -204,18 +218,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow enums from having both number and string members',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      mixed: `Mixing number and string enums can be confusing.`,
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-mixed-enums',
 });

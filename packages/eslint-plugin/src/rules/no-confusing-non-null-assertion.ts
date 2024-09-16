@@ -5,6 +5,29 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow non-null assertion in locations that may be confusing',
+      recommended: 'stylistic',
+    },
+    hasSuggestions: true,
+    messages: {
+      confusingAssign:
+        'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b".',
+      confusingEqual:
+        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',
+      notNeedInAssign:
+        'Unnecessary non-null assertion (!) in assignment left hand.',
+      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test.',
+      wrapUpLeft:
+        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
+    },
+    schema: [],
+  },
+  name: 'no-confusing-non-null-assertion',
   create(context) {
     return {
       'BinaryExpression, AssignmentExpression'(
@@ -64,27 +87,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow non-null assertion in locations that may be confusing',
-      recommended: 'stylistic',
-    },
-    hasSuggestions: true,
-    messages: {
-      confusingAssign:
-        'Confusing combinations of non-null assertion and equal test like "a! = b", which looks very similar to not equal "a != b".',
-      confusingEqual:
-        'Confusing combinations of non-null assertion and equal test like "a! == b", which looks very similar to not equal "a !== b".',
-      notNeedInAssign:
-        'Unnecessary non-null assertion (!) in assignment left hand.',
-      notNeedInEqualTest: 'Unnecessary non-null assertion (!) in equal test.',
-      wrapUpLeft:
-        'Wrap up left hand to avoid putting non-null assertion "!" and "=" together.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-confusing-non-null-assertion',
 });

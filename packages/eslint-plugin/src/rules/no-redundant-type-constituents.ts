@@ -192,6 +192,25 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow members of unions and intersections that do nothing or override type information',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
+      literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
+      overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
+      overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
+    },
+    schema: [],
+  },
+  name: 'no-redundant-type-constituents',
   create(context) {
     const services = getParserServices(context);
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
@@ -513,23 +532,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow members of unions and intersections that do nothing or override type information',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
-      literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
-      overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
-      overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
-      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-redundant-type-constituents',
 });

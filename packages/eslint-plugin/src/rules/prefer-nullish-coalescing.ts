@@ -42,6 +42,77 @@ export type MessageIds =
   | 'suggestNullish';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      ignoreConditionalTests: true,
+      ignoreMixedLogicalExpressions: false,
+      ignorePrimitives: {
+        bigint: false,
+        boolean: false,
+        number: false,
+        string: false,
+      },
+      ignoreTernaryTests: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      preferNullishOverOr:
+        'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
+      preferNullishOverTernary:
+        'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
+      suggestNullish: 'Fix to nullish coalescing operator (`??`).',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+          },
+          ignoreConditionalTests: {
+            type: 'boolean',
+          },
+          ignoreMixedLogicalExpressions: {
+            type: 'boolean',
+          },
+          ignorePrimitives: {
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  bigint: { type: 'boolean' },
+                  boolean: { type: 'boolean' },
+                  number: { type: 'boolean' },
+                  string: { type: 'boolean' },
+                },
+              },
+              {
+                type: 'boolean',
+                enum: [true],
+              },
+            ],
+          },
+          ignoreTernaryTests: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'prefer-nullish-coalescing',
   create(
     context,
     [
@@ -317,77 +388,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      ignoreConditionalTests: true,
-      ignoreMixedLogicalExpressions: false,
-      ignorePrimitives: {
-        bigint: false,
-        boolean: false,
-        number: false,
-        string: false,
-      },
-      ignoreTernaryTests: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      noStrictNullCheck:
-        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-      preferNullishOverOr:
-        'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
-      preferNullishOverTernary:
-        'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
-      suggestNullish: 'Fix to nullish coalescing operator (`??`).',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            type: 'boolean',
-          },
-          ignoreConditionalTests: {
-            type: 'boolean',
-          },
-          ignoreMixedLogicalExpressions: {
-            type: 'boolean',
-          },
-          ignorePrimitives: {
-            oneOf: [
-              {
-                properties: {
-                  bigint: { type: 'boolean' },
-                  boolean: { type: 'boolean' },
-                  number: { type: 'boolean' },
-                  string: { type: 'boolean' },
-                },
-                type: 'object',
-              },
-              {
-                enum: [true],
-                type: 'boolean',
-              },
-            ],
-          },
-          ignoreTernaryTests: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'prefer-nullish-coalescing',
 });
 
 function isConditionalTest(node: TSESTree.Node): boolean {

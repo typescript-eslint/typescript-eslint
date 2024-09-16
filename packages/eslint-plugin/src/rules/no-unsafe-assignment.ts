@@ -28,6 +28,32 @@ const enum ComparisonType {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow assigning a value with type `any` to variables and properties',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
+      anyAssignmentThis: [
+        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+      unsafeArrayPattern:
+        'Unsafe array destructuring of an {{sender}} array value.',
+      unsafeArrayPatternFromTuple:
+        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
+      unsafeAssignment:
+        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
+    },
+    schema: [],
+  },
+  name: 'no-unsafe-assignment',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -403,30 +429,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow assigning a value with type `any` to variables and properties',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      anyAssignment: 'Unsafe assignment of an {{sender}} value.',
-      anyAssignmentThis: [
-        'Unsafe assignment of an {{sender}} value. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
-      unsafeArrayPattern:
-        'Unsafe array destructuring of an {{sender}} array value.',
-      unsafeArrayPatternFromTuple:
-        'Unsafe array destructuring of a tuple element with an {{sender}} value.',
-      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
-      unsafeAssignment:
-        'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-unsafe-assignment',
 });

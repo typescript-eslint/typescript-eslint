@@ -16,6 +16,19 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{ capIsConstructor: true }],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow `this` keywords outside of classes or class-like objects',
+      extendsBaseRule: true,
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
+  },
+  name: 'no-invalid-this',
   create(context) {
     const rules = baseRule.create(context);
 
@@ -83,17 +96,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{ capIsConstructor: true }],
-  meta: {
-    docs: {
-      description:
-        'Disallow `this` keywords outside of classes or class-like objects',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: baseRule.meta.schema,
-    type: 'suggestion',
-  },
-  name: 'no-invalid-this',
 });

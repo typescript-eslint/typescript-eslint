@@ -16,6 +16,19 @@ type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow function declarations that contain unsafe references inside loop statements',
+      extendsBaseRule: true,
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: [],
+  },
+  name: 'no-loop-func',
   create(context) {
     /**
      * Reports functions which match the following condition:
@@ -56,19 +69,6 @@ export default createRule<Options, MessageIds>({
       FunctionExpression: checkForLoops,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow function declarations that contain unsafe references inside loop statements',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-loop-func',
 });
 
 /**

@@ -12,6 +12,23 @@ import {
 type MessageId = 'noArrayDelete' | 'useSplice';
 
 export default createRule<[], MessageId>({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow using the `delete` operator on array values',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      noArrayDelete:
+        'Using the `delete` operator with an array expression is unsafe.',
+      useSplice: 'Use `array.splice()` instead.',
+    },
+    schema: [],
+  },
+  name: 'no-array-delete',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -91,21 +108,4 @@ export default createRule<[], MessageId>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow using the `delete` operator on array values',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      noArrayDelete:
-        'Using the `delete` operator with an array expression is unsafe.',
-      useSplice: 'Use `array.splice()` instead.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-array-delete',
 });

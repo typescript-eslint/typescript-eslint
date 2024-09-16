@@ -5,6 +5,25 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce the use of `as const` over literal type',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      preferConstAssertion:
+        'Expected a `const` instead of a literal type assertion.',
+      variableConstAssertion:
+        'Expected a `const` assertion instead of a literal type annotation.',
+      variableSuggest: 'You should use `as const` instead of type annotation.',
+    },
+    schema: [],
+  },
+  name: 'prefer-as-const',
   create(context) {
     function compareTypes(
       valueNode: TSESTree.Expression,
@@ -60,23 +79,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Enforce the use of `as const` over literal type',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      preferConstAssertion:
-        'Expected a `const` instead of a literal type assertion.',
-      variableConstAssertion:
-        'Expected a `const` assertion instead of a literal type annotation.',
-      variableSuggest: 'You should use `as const` instead of type annotation.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-as-const',
 });

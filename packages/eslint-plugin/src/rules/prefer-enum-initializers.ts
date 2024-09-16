@@ -5,6 +5,23 @@ import { createRule } from '../util';
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
 export default createRule<[], MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require each enum member value to be explicitly initialized',
+    },
+    hasSuggestions: true,
+    messages: {
+      defineInitializer:
+        "The value of the member '{{ name }}' should be explicitly defined.",
+      defineInitializerSuggestion:
+        'Can be fixed to {{ name }} = {{ suggested }}',
+    },
+    schema: [],
+  },
+  name: 'prefer-enum-initializers',
   create(context) {
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
       const { members } = node.body;
@@ -50,21 +67,4 @@ export default createRule<[], MessageIds>({
       TSEnumDeclaration,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Require each enum member value to be explicitly initialized',
-    },
-    hasSuggestions: true,
-    messages: {
-      defineInitializer:
-        "The value of the member '{{ name }}' should be explicitly defined.",
-      defineInitializerSuggestion:
-        'Can be fixed to {{ name }} = {{ suggested }}',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-enum-initializers',
 });

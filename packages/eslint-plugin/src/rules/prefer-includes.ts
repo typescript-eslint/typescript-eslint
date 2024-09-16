@@ -12,6 +12,24 @@ import {
 } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce `includes` method over `indexOf` method',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferIncludes: "Use 'includes()' method instead.",
+      preferStringIncludes:
+        'Use `String#includes()` method with a string instead.',
+    },
+    schema: [],
+  },
+
+  name: 'prefer-includes',
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
@@ -247,22 +265,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-
-  meta: {
-    docs: {
-      description: 'Enforce `includes` method over `indexOf` method',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      preferIncludes: "Use 'includes()' method instead.",
-      preferStringIncludes:
-        'Use `String#includes()` method with a string instead.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-includes',
 });

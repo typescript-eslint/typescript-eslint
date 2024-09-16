@@ -56,6 +56,25 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow comparing an enum value with a non-enum value',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      mismatchedCase:
+        'The case statement does not have a shared enum type with the switch predicate.',
+      mismatchedCondition:
+        'The two values in this comparison do not have a shared enum type.',
+      replaceValueWithEnum: 'Replace with an enum value comparison.',
+    },
+    schema: [],
+  },
+  name: 'no-unsafe-enum-comparison',
   create(context) {
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
@@ -186,23 +205,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow comparing an enum value with a non-enum value',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      mismatchedCase:
-        'The case statement does not have a shared enum type with the switch predicate.',
-      mismatchedCondition:
-        'The two values in this comparison do not have a shared enum type.',
-      replaceValueWithEnum: 'Replace with an enum value comparison.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-unsafe-enum-comparison',
 });

@@ -25,6 +25,60 @@ const allowedFunctionVariableDefTypes = new Set([
 ]);
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allow: [],
+      builtinGlobals: false,
+      hoist: 'functions',
+      ignoreFunctionTypeParameterNameValueShadow: true,
+      ignoreOnInitialization: false,
+      ignoreTypeValueShadow: true,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow variable declarations from shadowing variables declared in the outer scope',
+      extendsBaseRule: true,
+    },
+    messages: {
+      noShadow:
+        "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
+      noShadowGlobal: "'{{name}}' is already a global variable.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          builtinGlobals: {
+            type: 'boolean',
+          },
+          hoist: {
+            type: 'string',
+            enum: ['all', 'functions', 'never'],
+          },
+          ignoreFunctionTypeParameterNameValueShadow: {
+            type: 'boolean',
+          },
+          ignoreOnInitialization: {
+            type: 'boolean',
+          },
+          ignoreTypeValueShadow: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-shadow',
   create(context, [options]) {
     /**
      * Check if a scope is a TypeScript module augmenting the global namespace.
@@ -593,58 +647,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allow: [],
-      builtinGlobals: false,
-      hoist: 'functions',
-      ignoreFunctionTypeParameterNameValueShadow: true,
-      ignoreOnInitialization: false,
-      ignoreTypeValueShadow: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow variable declarations from shadowing variables declared in the outer scope',
-      extendsBaseRule: true,
-    },
-    messages: {
-      noShadow:
-        "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
-      noShadowGlobal: "'{{name}}' is already a global variable.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allow: {
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-          builtinGlobals: {
-            type: 'boolean',
-          },
-          hoist: {
-            enum: ['all', 'functions', 'never'],
-            type: 'string',
-          },
-          ignoreFunctionTypeParameterNameValueShadow: {
-            type: 'boolean',
-          },
-          ignoreOnInitialization: {
-            type: 'boolean',
-          },
-          ignoreTypeValueShadow: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-shadow',
 });

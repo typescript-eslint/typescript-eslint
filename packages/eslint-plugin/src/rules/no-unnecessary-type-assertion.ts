@@ -26,6 +26,39 @@ type Options = [
 type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{}],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow type assertions that do not change the type of an expression',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      contextuallyUnnecessary:
+        'This assertion is unnecessary since the receiver accepts the original type of the expression.',
+      unnecessaryAssertion:
+        'This assertion is unnecessary since it does not change the type of the expression.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          typesToIgnore: {
+            type: 'array',
+            description: 'A list of type names to ignore.',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-unnecessary-type-assertion',
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -352,37 +385,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{}],
-  meta: {
-    docs: {
-      description:
-        'Disallow type assertions that do not change the type of an expression',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      contextuallyUnnecessary:
-        'This assertion is unnecessary since the receiver accepts the original type of the expression.',
-      unnecessaryAssertion:
-        'This assertion is unnecessary since it does not change the type of the expression.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          typesToIgnore: {
-            description: 'A list of type names to ignore.',
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-type-assertion',
 });

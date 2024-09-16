@@ -6,6 +6,21 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow unsafe declaration merging',
+      recommended: 'recommended',
+      requiresTypeChecking: false,
+    },
+    messages: {
+      unsafeMerging:
+        'Unsafe declaration merging between classes and interfaces.',
+    },
+    schema: [],
+  },
+  name: 'no-unsafe-declaration-merging',
   create(context) {
     function checkUnsafeDeclaration(
       scope: Scope,
@@ -56,19 +71,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow unsafe declaration merging',
-      recommended: 'recommended',
-      requiresTypeChecking: false,
-    },
-    messages: {
-      unsafeMerging:
-        'Unsafe declaration merging between classes and interfaces.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-unsafe-declaration-merging',
 });

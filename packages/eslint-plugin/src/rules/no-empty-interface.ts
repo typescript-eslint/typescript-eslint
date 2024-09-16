@@ -13,6 +13,38 @@ type Options = [
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowSingleExtends: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    deprecated: true,
+    docs: {
+      description: 'Disallow the declaration of empty interfaces',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      noEmpty: 'An empty interface is equivalent to `{}`.',
+      noEmptyWithSuper:
+        'An interface declaring no members is equivalent to its supertype.',
+    },
+    replacedBy: ['@typescript-eslint/no-empty-object-type'],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowSingleExtends: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-empty-interface',
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
@@ -81,36 +113,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowSingleExtends: false,
-    },
-  ],
-  meta: {
-    deprecated: true,
-    docs: {
-      description: 'Disallow the declaration of empty interfaces',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      noEmpty: 'An empty interface is equivalent to `{}`.',
-      noEmptyWithSuper:
-        'An interface declaring no members is equivalent to its supertype.',
-    },
-    replacedBy: ['@typescript-eslint/no-empty-object-type'],
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowSingleExtends: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-empty-interface',
 });

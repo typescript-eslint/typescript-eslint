@@ -7,6 +7,21 @@ import * as ts from 'typescript';
 import { createRule, getParserServices } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow unnecessary namespace qualifiers',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      unnecessaryQualifier:
+        "Qualifier is unnecessary since '{{ name }}' is in scope.",
+    },
+    schema: [],
+  },
+  name: 'no-unnecessary-qualifier',
   create(context) {
     const namespacesInScope: ts.Node[] = [];
     let currentFailedNamespaceExpression: TSESTree.Node | null = null;
@@ -174,19 +189,4 @@ export default createRule({
       'TSQualifiedName:exit': resetCurrentNamespaceExpression,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow unnecessary namespace qualifiers',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      unnecessaryQualifier:
-        "Qualifier is unnecessary since '{{ name }}' is in scope.",
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-qualifier',
 });

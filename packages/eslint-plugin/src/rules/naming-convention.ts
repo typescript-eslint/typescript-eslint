@@ -63,6 +63,32 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
 ];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: defaultCamelCaseAllTheThingsConfig,
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce naming conventions for everything across a codebase',
+      // technically only requires type checking if the user uses "type" modifiers
+      requiresTypeChecking: true,
+    },
+    messages: {
+      doesNotMatchFormat:
+        '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
+      doesNotMatchFormatTrimmed:
+        '{{type}} name `{{name}}` trimmed as `{{processedName}}` must match one of the following formats: {{formats}}',
+      missingAffix:
+        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
+      missingUnderscore:
+        '{{type}} name `{{name}}` must have {{count}} {{position}} underscore(s).',
+      satisfyCustom:
+        '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
+      unexpectedUnderscore:
+        '{{type}} name `{{name}}` must not have a {{position}} underscore.',
+    },
+    schema: SCHEMA,
+  },
+  name: 'naming-convention',
   create(contextWithoutDefaults) {
     const context =
       contextWithoutDefaults.options.length > 0
@@ -695,32 +721,6 @@ export default createRule<Options, MessageIds>({
       }),
     );
   },
-  defaultOptions: defaultCamelCaseAllTheThingsConfig,
-  meta: {
-    docs: {
-      description:
-        'Enforce naming conventions for everything across a codebase',
-      // technically only requires type checking if the user uses "type" modifiers
-      requiresTypeChecking: true,
-    },
-    messages: {
-      doesNotMatchFormat:
-        '{{type}} name `{{name}}` must match one of the following formats: {{formats}}',
-      doesNotMatchFormatTrimmed:
-        '{{type}} name `{{name}}` trimmed as `{{processedName}}` must match one of the following formats: {{formats}}',
-      missingAffix:
-        '{{type}} name `{{name}}` must have one of the following {{position}}es: {{affixes}}',
-      missingUnderscore:
-        '{{type}} name `{{name}}` must have {{count}} {{position}} underscore(s).',
-      satisfyCustom:
-        '{{type}} name `{{name}}` must {{regexMatch}} the RegExp: {{regex}}',
-      unexpectedUnderscore:
-        '{{type}} name `{{name}}` must not have a {{position}} underscore.',
-    },
-    schema: SCHEMA,
-    type: 'suggestion',
-  },
-  name: 'naming-convention',
 });
 
 function getIdentifiersFromPattern(

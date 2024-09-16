@@ -41,6 +41,36 @@ const getStaticMemberAccessKey = (
   computed ? getStaticValue(property, scope) : { value: property.name };
 
 export default createRule<[], MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce typing arguments in Promise rejection callbacks as `unknown`',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      addUnknownRestTypeAnnotationSuggestion:
+        'Add an explicit `: [unknown]` type annotation to the rejection callback rest variable.',
+      addUnknownTypeAnnotationSuggestion:
+        'Add an explicit `: unknown` type annotation to the rejection callback variable.',
+      useUnknown: useUnknownMessageBase,
+      useUnknownArrayDestructuringPattern: `${useUnknownMessageBase} The thrown error may not be iterable.`,
+      useUnknownObjectDestructuringPattern: `${
+        useUnknownMessageBase
+      } The thrown error may be nullable, or may not have the expected shape.`,
+      wrongRestTypeAnnotationSuggestion:
+        'Change existing type annotation to `: [unknown]`.',
+      wrongTypeAnnotationSuggestion:
+        'Change existing type annotation to `: unknown`.',
+    },
+    schema: [],
+  },
+
+  name: 'use-unknown-in-catch-callback-variable',
   create(context) {
     const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const checker = program.getTypeChecker();
@@ -278,34 +308,4 @@ export default createRule<[], MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-
-  meta: {
-    docs: {
-      description:
-        'Enforce typing arguments in Promise rejection callbacks as `unknown`',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      addUnknownRestTypeAnnotationSuggestion:
-        'Add an explicit `: [unknown]` type annotation to the rejection callback rest variable.',
-      addUnknownTypeAnnotationSuggestion:
-        'Add an explicit `: unknown` type annotation to the rejection callback variable.',
-      useUnknown: useUnknownMessageBase,
-      useUnknownArrayDestructuringPattern: `${useUnknownMessageBase} The thrown error may not be iterable.`,
-      useUnknownObjectDestructuringPattern: `${
-        useUnknownMessageBase
-      } The thrown error may be nullable, or may not have the expected shape.`,
-      wrongRestTypeAnnotationSuggestion:
-        'Change existing type annotation to `: [unknown]`.',
-      wrongTypeAnnotationSuggestion:
-        'Change existing type annotation to `: unknown`.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'use-unknown-in-catch-callback-variable',
 });

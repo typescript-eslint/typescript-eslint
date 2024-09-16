@@ -14,6 +14,21 @@ type Options = [];
 type MessageIds = 'useTopLevelQualifier';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
+    },
+    fixable: 'code',
+    messages: {
+      useTopLevelQualifier:
+        'TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.',
+    },
+    schema: [],
+  },
+  name: 'no-import-type-side-effects',
   create(context) {
     return {
       'ImportDeclaration[importKind!="type"]'(
@@ -67,19 +82,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
-    },
-    fixable: 'code',
-    messages: {
-      useTopLevelQualifier:
-        'TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-import-type-side-effects',
 });

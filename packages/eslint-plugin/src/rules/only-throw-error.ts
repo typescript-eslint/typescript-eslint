@@ -21,6 +21,40 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowThrowingAny: true,
+      allowThrowingUnknown: true,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow throwing non-`Error` values as exceptions',
+      extendsBaseRule: 'no-throw-literal',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      object: 'Expected an error object to be thrown.',
+      undef: 'Do not throw undefined.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowThrowingAny: {
+            type: 'boolean',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'only-throw-error',
   create(context, [options]) {
     const services = getParserServices(context);
 
@@ -62,38 +96,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowThrowingAny: true,
-      allowThrowingUnknown: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow throwing non-`Error` values as exceptions',
-      extendsBaseRule: 'no-throw-literal',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      object: 'Expected an error object to be thrown.',
-      undef: 'Do not throw undefined.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowThrowingAny: {
-            type: 'boolean',
-          },
-          allowThrowingUnknown: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'only-throw-error',
 });

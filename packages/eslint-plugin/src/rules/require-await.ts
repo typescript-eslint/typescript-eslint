@@ -29,6 +29,24 @@ type FunctionNode =
   | TSESTree.FunctionExpression;
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow async functions which do not return promises and have no `await` expression',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      missingAwait: "{{name}} has no 'await' expression.",
+      removeAsync: "Remove 'async'.",
+    },
+    schema: [],
+  },
+  name: 'require-await',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -289,24 +307,6 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow async functions which do not return promises and have no `await` expression',
-      extendsBaseRule: true,
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      missingAwait: "{{name}} has no 'await' expression.",
-      removeAsync: "Remove 'async'.",
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'require-await',
 });
 
 function isEmptyFunction(node: FunctionNode): boolean {

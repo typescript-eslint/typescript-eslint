@@ -609,7 +609,7 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { top: ['name', 'meta', 'defaultOptions', 'create'] },
+          customGroups: { top: ['type', 'name', 'meta', 'defaultOptions'] },
           groups: ['top', 'unknown'],
         },
       ],

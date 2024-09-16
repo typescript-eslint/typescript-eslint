@@ -5,6 +5,21 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow using the `delete` operator on computed key expressions',
+      recommended: 'strict',
+    },
+    fixable: 'code',
+    messages: {
+      dynamicDelete: 'Do not delete dynamically computed property keys.',
+    },
+    schema: [],
+  },
+  name: 'no-dynamic-delete',
   create(context) {
     function createFixer(
       member: TSESTree.MemberExpression,
@@ -61,21 +76,6 @@ export default createRule({
       ];
     }
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow using the `delete` operator on computed key expressions',
-      recommended: 'strict',
-    },
-    fixable: 'code',
-    messages: {
-      dynamicDelete: 'Do not delete dynamically computed property keys.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-dynamic-delete',
 });
 
 function isAcceptableIndexExpression(property: TSESTree.Expression): boolean {

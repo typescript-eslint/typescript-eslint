@@ -24,6 +24,22 @@ type ParameterCapableTSNode =
 type MessageIds = 'unnecessaryTypeParameter';
 
 export default createRule<[], MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow type arguments that are equal to the default',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      unnecessaryTypeParameter:
+        'This is the default value for this type parameter, so it can be omitted.',
+    },
+    schema: [],
+  },
+  name: 'no-unnecessary-type-arguments',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -103,22 +119,6 @@ export default createRule<[], MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow type arguments that are equal to the default',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      unnecessaryTypeParameter:
-        'This is the default value for this type parameter, so it can be omitted.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-type-arguments',
 });
 
 function getTypeParametersFromNode(

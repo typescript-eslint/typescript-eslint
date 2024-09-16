@@ -92,28 +92,29 @@ export type Options = [
 ];
 
 const neverConfig: JSONSchema.JSONSchema4 = {
-  enum: ['never'],
   type: 'string',
+  enum: ['never'],
 };
 
 const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
+  type: 'array',
   items: {
     oneOf: [
       {
         $ref: memberTypes,
       },
       {
+        type: 'array',
         items: {
           $ref: memberTypes,
         },
-        type: 'array',
       },
     ],
   },
-  type: 'array',
 });
 
 const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
+  type: 'object',
   additionalProperties: false,
   properties: {
     memberTypes: {
@@ -126,7 +127,6 @@ const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
       $ref: '#/items/0/$defs/orderOptions',
     },
   },
-  type: 'object',
 });
 
 export const defaultOrder: MemberType[] = [
@@ -718,6 +718,97 @@ function getLowestRank(
 }
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      default: {
+        memberTypes: defaultOrder,
+      },
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require a consistent member declaration order',
+    },
+    messages: {
+      incorrectGroupOrder:
+        'Member {{name}} should be declared before all {{rank}} definitions.',
+      incorrectOrder:
+        'Member {{member}} should be declared before member {{beforeMember}}.',
+      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
+    },
+    schema: [
+      {
+        type: 'object',
+        $defs: {
+          allItems: {
+            type: 'string',
+            enum: allMemberTypes as string[],
+          },
+          optionalityOrderOptions: {
+            type: 'string',
+            enum: ['optional-first', 'required-first'],
+          },
+          orderOptions: {
+            type: 'string',
+            enum: [
+              'alphabetically',
+              'alphabetically-case-insensitive',
+              'as-written',
+              'natural',
+              'natural-case-insensitive',
+            ],
+          },
+          typeItems: {
+            type: 'string',
+            enum: [
+              'readonly-signature',
+              'signature',
+              'readonly-field',
+              'field',
+              'method',
+              'constructor',
+            ],
+          },
+
+          // These properties must follow the preceding ones for ajv logic.
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
+          },
+          typesConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/typeItems'),
+              objectConfig('#/items/0/$defs/typeItems'),
+            ],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          classes: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          classExpressions: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          default: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          interfaces: {
+            $ref: '#/items/0/$defs/typesConfig',
+          },
+          typeLiterals: {
+            $ref: '#/items/0/$defs/typesConfig',
+          },
+        },
+      },
+    ],
+  },
+  name: 'member-ordering',
   create(context, [options]) {
     /**
      * Checks if the member groups are correctly sorted.
@@ -1022,95 +1113,4 @@ export default createRule<Options, MessageIds>({
     };
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
-  defaultOptions: [
-    {
-      default: {
-        memberTypes: defaultOrder,
-      },
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Require a consistent member declaration order',
-    },
-    messages: {
-      incorrectGroupOrder:
-        'Member {{name}} should be declared before all {{rank}} definitions.',
-      incorrectOrder:
-        'Member {{member}} should be declared before member {{beforeMember}}.',
-      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
-    },
-    schema: [
-      {
-        $defs: {
-          allItems: {
-            enum: allMemberTypes as string[],
-            type: 'string',
-          },
-          optionalityOrderOptions: {
-            enum: ['optional-first', 'required-first'],
-            type: 'string',
-          },
-          orderOptions: {
-            enum: [
-              'alphabetically',
-              'alphabetically-case-insensitive',
-              'as-written',
-              'natural',
-              'natural-case-insensitive',
-            ],
-            type: 'string',
-          },
-          typeItems: {
-            enum: [
-              'readonly-signature',
-              'signature',
-              'readonly-field',
-              'field',
-              'method',
-              'constructor',
-            ],
-            type: 'string',
-          },
-
-          // These properties must follow the preceding ones for ajv logic.
-          baseConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/allItems'),
-              objectConfig('#/items/0/$defs/allItems'),
-            ],
-          },
-          typesConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/typeItems'),
-              objectConfig('#/items/0/$defs/typeItems'),
-            ],
-          },
-        },
-        additionalProperties: false,
-        properties: {
-          classes: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
-          classExpressions: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
-          default: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
-          interfaces: {
-            $ref: '#/items/0/$defs/typesConfig',
-          },
-          typeLiterals: {
-            $ref: '#/items/0/$defs/typesConfig',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'member-ordering',
 });

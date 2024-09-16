@@ -35,6 +35,54 @@ export type MessageId =
   | 'voidExprWrapVoid';
 
 export default createRule<Options, MessageId>({
+  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Require expressions of type void to appear in statement position',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      invalidVoidExpr:
+        'Placing a void expression inside another expression is forbidden. ' +
+        'Move it to its own statement instead.',
+      invalidVoidExprArrow:
+        'Returning a void expression from an arrow function shorthand is forbidden. ' +
+        'Please add braces to the arrow function.',
+      invalidVoidExprArrowWrapVoid:
+        'Void expressions returned from an arrow function shorthand ' +
+        'must be marked explicitly with the `void` operator.',
+      invalidVoidExprReturn:
+        'Returning a void expression from a function is forbidden. ' +
+        'Please move it before the `return` statement.',
+      invalidVoidExprReturnLast:
+        'Returning a void expression from a function is forbidden. ' +
+        'Please remove the `return` statement.',
+      invalidVoidExprReturnWrapVoid:
+        'Void expressions returned from a function ' +
+        'must be marked explicitly with the `void` operator.',
+      invalidVoidExprWrapVoid:
+        'Void expressions used inside another expression ' +
+        'must be moved to its own statement ' +
+        'or marked explicitly with the `void` operator.',
+      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoreArrowShorthand: { type: 'boolean' },
+          ignoreVoidOperator: { type: 'boolean' },
+        },
+      },
+    ],
+  },
+  name: 'no-confusing-void-expression',
   create(context, [options]) {
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -330,52 +378,4 @@ export default createRule<Options, MessageId>({
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
   },
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
-  meta: {
-    docs: {
-      description:
-        'Require expressions of type void to appear in statement position',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      invalidVoidExpr:
-        'Placing a void expression inside another expression is forbidden. ' +
-        'Move it to its own statement instead.',
-      invalidVoidExprArrow:
-        'Returning a void expression from an arrow function shorthand is forbidden. ' +
-        'Please add braces to the arrow function.',
-      invalidVoidExprArrowWrapVoid:
-        'Void expressions returned from an arrow function shorthand ' +
-        'must be marked explicitly with the `void` operator.',
-      invalidVoidExprReturn:
-        'Returning a void expression from a function is forbidden. ' +
-        'Please move it before the `return` statement.',
-      invalidVoidExprReturnLast:
-        'Returning a void expression from a function is forbidden. ' +
-        'Please remove the `return` statement.',
-      invalidVoidExprReturnWrapVoid:
-        'Void expressions returned from a function ' +
-        'must be marked explicitly with the `void` operator.',
-      invalidVoidExprWrapVoid:
-        'Void expressions used inside another expression ' +
-        'must be moved to its own statement ' +
-        'or marked explicitly with the `void` operator.',
-      voidExprWrapVoid: 'Mark with an explicit `void` operator.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoreArrowShorthand: { type: 'boolean' },
-          ignoreVoidOperator: { type: 'boolean' },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-confusing-void-expression',
 });

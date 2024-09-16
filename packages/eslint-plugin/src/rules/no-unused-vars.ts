@@ -59,6 +59,72 @@ type VariableType =
   | 'variable';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{}],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow unused variables',
+      extendsBaseRule: true,
+      recommended: 'recommended',
+    },
+    messages: {
+      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
+      usedIgnoredVar:
+        "'{{varName}}' is marked as ignored but is used{{additional}}.",
+      usedOnlyAsType:
+        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
+    },
+    schema: [
+      {
+        oneOf: [
+          {
+            type: 'string',
+            enum: ['all', 'local'],
+          },
+          {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              args: {
+                type: 'string',
+                enum: ['all', 'after-used', 'none'],
+              },
+              argsIgnorePattern: {
+                type: 'string',
+              },
+              caughtErrors: {
+                type: 'string',
+                enum: ['all', 'none'],
+              },
+              caughtErrorsIgnorePattern: {
+                type: 'string',
+              },
+              destructuredArrayIgnorePattern: {
+                type: 'string',
+              },
+              ignoreClassWithStaticInitBlock: {
+                type: 'boolean',
+              },
+              ignoreRestSiblings: {
+                type: 'boolean',
+              },
+              reportUsedIgnorePattern: {
+                type: 'boolean',
+              },
+              vars: {
+                type: 'string',
+                enum: ['all', 'local'],
+              },
+              varsIgnorePattern: {
+                type: 'string',
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+  name: 'no-unused-vars',
   create(context, [firstOption]) {
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
@@ -682,72 +748,6 @@ export default createRule<Options, MessageIds>({
       visitor.visit(node);
     }
   },
-  defaultOptions: [{}],
-  meta: {
-    docs: {
-      description: 'Disallow unused variables',
-      extendsBaseRule: true,
-      recommended: 'recommended',
-    },
-    messages: {
-      unusedVar: "'{{varName}}' is {{action}} but never used{{additional}}.",
-      usedIgnoredVar:
-        "'{{varName}}' is marked as ignored but is used{{additional}}.",
-      usedOnlyAsType:
-        "'{{varName}}' is {{action}} but only used as a type{{additional}}.",
-    },
-    schema: [
-      {
-        oneOf: [
-          {
-            enum: ['all', 'local'],
-            type: 'string',
-          },
-          {
-            additionalProperties: false,
-            properties: {
-              args: {
-                enum: ['all', 'after-used', 'none'],
-                type: 'string',
-              },
-              argsIgnorePattern: {
-                type: 'string',
-              },
-              caughtErrors: {
-                enum: ['all', 'none'],
-                type: 'string',
-              },
-              caughtErrorsIgnorePattern: {
-                type: 'string',
-              },
-              destructuredArrayIgnorePattern: {
-                type: 'string',
-              },
-              ignoreClassWithStaticInitBlock: {
-                type: 'boolean',
-              },
-              ignoreRestSiblings: {
-                type: 'boolean',
-              },
-              reportUsedIgnorePattern: {
-                type: 'boolean',
-              },
-              vars: {
-                enum: ['all', 'local'],
-                type: 'string',
-              },
-              varsIgnorePattern: {
-                type: 'string',
-              },
-            },
-            type: 'object',
-          },
-        ],
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-unused-vars',
 });
 
 /*

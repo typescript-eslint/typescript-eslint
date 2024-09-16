@@ -88,6 +88,58 @@ type MessageIds =
   | 'errorStringGenericSimple';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      default: 'array',
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require consistently using either `T[]` or `Array<T>` for arrays',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      errorStringArray:
+        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringArrayReadonly:
+        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}' instead.",
+      errorStringArraySimple:
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringArraySimpleReadonly:
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}' instead.",
+      errorStringGeneric:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
+      errorStringGenericSimple:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
+    },
+    schema: [
+      {
+        type: 'object',
+        $defs: {
+          arrayOption: {
+            type: 'string',
+            enum: ['array', 'generic', 'array-simple'],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          default: {
+            $ref: '#/items/0/$defs/arrayOption',
+            description: 'The array type expected for mutable cases.',
+          },
+          readonly: {
+            $ref: '#/items/0/$defs/arrayOption',
+            description:
+              'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'array-type',
   create(context, [options]) {
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
@@ -125,9 +177,9 @@ export default createRule<Options, MessageIds>({
 
         context.report({
           data: {
+            type: getMessageType(node.elementType),
             className: isReadonly ? 'ReadonlyArray' : 'Array',
             readonlyPrefix: isReadonly ? 'readonly ' : '',
-            type: getMessageType(node.elementType),
           },
           fix(fixer) {
             const typeNode = node.elementType;
@@ -193,9 +245,9 @@ export default createRule<Options, MessageIds>({
           // Create an 'any' array
           context.report({
             data: {
+              type: 'any',
               className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
               readonlyPrefix,
-              type: 'any',
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -227,9 +279,9 @@ export default createRule<Options, MessageIds>({
         const end = `${typeParens ? ')' : ''}${isReadonlyWithGenericArrayType ? '' : `[]`}${parentParens ? ')' : ''}`;
         context.report({
           data: {
+            type: getMessageType(type),
             className: isReadonlyArrayType ? node.typeName.name : 'Array',
             readonlyPrefix,
-            type: getMessageType(type),
           },
           fix(fixer) {
             return [
@@ -243,56 +295,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      default: 'array',
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require consistently using either `T[]` or `Array<T>` for arrays',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      errorStringArray:
-        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
-      errorStringArrayReadonly:
-        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}' instead.",
-      errorStringArraySimple:
-        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
-      errorStringArraySimpleReadonly:
-        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}' instead.",
-      errorStringGeneric:
-        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
-      errorStringGenericSimple:
-        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
-    },
-    schema: [
-      {
-        $defs: {
-          arrayOption: {
-            enum: ['array', 'generic', 'array-simple'],
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-        properties: {
-          default: {
-            $ref: '#/items/0/$defs/arrayOption',
-            description: 'The array type expected for mutable cases.',
-          },
-          readonly: {
-            $ref: '#/items/0/$defs/arrayOption',
-            description:
-              'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'array-type',
 });

@@ -54,6 +54,29 @@ const isSupportedLiteral = (
 };
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: ['fields'],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Enforce that literals on classes are exposed in a consistent style',
+      recommended: 'stylistic',
+    },
+    hasSuggestions: true,
+    messages: {
+      preferFieldStyle: 'Literals should be exposed using readonly fields.',
+      preferFieldStyleSuggestion: 'Replace the literals with readonly fields.',
+      preferGetterStyle: 'Literals should be exposed using getters.',
+      preferGetterStyleSuggestion: 'Replace the literals with getters.',
+    },
+    schema: [
+      {
+        type: 'string',
+        enum: ['fields', 'getters'],
+      },
+    ],
+  },
+  name: 'class-literal-property-style',
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 
@@ -212,27 +235,4 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: ['fields'],
-  meta: {
-    docs: {
-      description:
-        'Enforce that literals on classes are exposed in a consistent style',
-      recommended: 'stylistic',
-    },
-    hasSuggestions: true,
-    messages: {
-      preferFieldStyle: 'Literals should be exposed using readonly fields.',
-      preferFieldStyleSuggestion: 'Replace the literals with readonly fields.',
-      preferGetterStyle: 'Literals should be exposed using getters.',
-      preferGetterStyleSuggestion: 'Replace the literals with getters.',
-    },
-    schema: [
-      {
-        enum: ['fields', 'getters'],
-        type: 'string',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'class-literal-property-style',
 });

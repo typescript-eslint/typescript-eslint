@@ -46,6 +46,44 @@ type MessageIds =
   | 'switchIsNotExhaustive';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowDefaultCaseForExhaustiveSwitch: true,
+      requireDefaultForNonUnion: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require switch-case statements to be exhaustive',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      addMissingCases: 'Add branches for missing cases.',
+      dangerousDefaultCase:
+        'The switch statement is exhaustive, so the default case is unnecessary.',
+      switchIsNotExhaustive:
+        'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowDefaultCaseForExhaustiveSwitch: {
+            type: 'boolean',
+            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
+          },
+          requireDefaultForNonUnion: {
+            type: 'boolean',
+            description: `If 'true', require a 'default' clause for switches on non-union types.`,
+          },
+        },
+      },
+    ],
+  },
+  name: 'switch-exhaustiveness-check',
   create(
     context,
     [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
@@ -290,44 +328,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowDefaultCaseForExhaustiveSwitch: true,
-      requireDefaultForNonUnion: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Require switch-case statements to be exhaustive',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      addMissingCases: 'Add branches for missing cases.',
-      dangerousDefaultCase:
-        'The switch statement is exhaustive, so the default case is unnecessary.',
-      switchIsNotExhaustive:
-        'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowDefaultCaseForExhaustiveSwitch: {
-            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
-            type: 'boolean',
-          },
-          requireDefaultForNonUnion: {
-            description: `If 'true', require a 'default' clause for switches on non-union types.`,
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'switch-exhaustiveness-check',
 });
 
 function isTypeLiteralLikeType(type: ts.Type): boolean {

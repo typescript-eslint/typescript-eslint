@@ -8,6 +8,20 @@ import { createRule, getStaticStringValue, nullThrows } from '../util';
 const UNNECESSARY_OPERATORS = new Set(['=', '&&=', '||=', '??=']);
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow unnecessary assignment of constructor property parameter',
+    },
+    messages: {
+      unnecessaryAssign:
+        'This assignment is unnecessary since it is already assigned by a parameter property.',
+    },
+    schema: [],
+  },
+  name: 'no-unnecessary-parameter-property-assignment',
   create(context) {
     const reportInfoStack: {
       assignedBeforeConstructor: Set<string>;
@@ -216,18 +230,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow unnecessary assignment of constructor property parameter',
-    },
-    messages: {
-      unnecessaryAssign:
-        'This assignment is unnecessary since it is already assigned by a parameter property.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-parameter-property-assignment',
 });

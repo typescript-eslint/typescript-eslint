@@ -25,6 +25,21 @@ const exportOrImportNodeTypes = new Set([
 ]);
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        "Disallow empty exports that don't change anything in a module file",
+    },
+    fixable: 'code',
+    hasSuggestions: false,
+    messages: {
+      uselessExport: 'Empty export does nothing and can be removed.',
+    },
+    schema: [],
+  },
+  name: 'no-useless-empty-export',
   create(context) {
     // In a definition file, export {} is necessary to make the module properly
     // encapsulated, even when there are other exports
@@ -66,19 +81,4 @@ export default createRule({
       TSModuleDeclaration: checkNode,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        "Disallow empty exports that don't change anything in a module file",
-    },
-    fixable: 'code',
-    hasSuggestions: false,
-    messages: {
-      uselessExport: 'Empty export does nothing and can be removed.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-useless-empty-export',
 });

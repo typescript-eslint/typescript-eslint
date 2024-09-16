@@ -16,6 +16,19 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: ['always'],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require or disallow initialization in variable declarations',
+      extendsBaseRule: true,
+    },
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
+  },
+  name: 'init-declarations',
   create(context, [mode]) {
     // Make a custom context to adjust the loc of reports where the base
     // rule's behavior is a bit too aggressive with TS-specific syntax (namely,
@@ -97,19 +110,6 @@ export default createRule<Options, MessageIds>({
       return false;
     }
   },
-  defaultOptions: ['always'],
-  meta: {
-    docs: {
-      description:
-        'Require or disallow initialization in variable declarations',
-      extendsBaseRule: true,
-    },
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: baseRule.meta.schema,
-    type: 'suggestion',
-  },
-  name: 'init-declarations',
 });
 
 /**

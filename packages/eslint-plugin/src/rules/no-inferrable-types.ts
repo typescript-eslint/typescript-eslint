@@ -14,6 +14,40 @@ type Options = [
 type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      ignoreParameters: false,
+      ignoreProperties: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      noInferrableType:
+        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoreParameters: {
+            type: 'boolean',
+          },
+          ignoreProperties: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-inferrable-types',
   create(context, [{ ignoreParameters, ignoreProperties }]) {
     function isFunctionCall(
       init: TSESTree.Expression,
@@ -249,38 +283,4 @@ export default createRule<Options, MessageIds>({
       VariableDeclarator: inferrableVariableVisitor,
     };
   },
-  defaultOptions: [
-    {
-      ignoreParameters: false,
-      ignoreProperties: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      noInferrableType:
-        'Type {{type}} trivially inferred from a {{type}} literal, remove type annotation.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoreParameters: {
-            type: 'boolean',
-          },
-          ignoreProperties: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-inferrable-types',
 });

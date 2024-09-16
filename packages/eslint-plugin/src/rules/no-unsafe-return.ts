@@ -20,6 +20,26 @@ import {
 } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow returning a value with type `any` from a function',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unsafeReturn: 'Unsafe return of a value of type {{type}}.',
+      unsafeReturnAssignment:
+        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
+      unsafeReturnThis: [
+        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
+        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
+      ].join('\n'),
+    },
+    schema: [],
+  },
+  name: 'no-unsafe-return',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -224,24 +244,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow returning a value with type `any` from a function',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unsafeReturn: 'Unsafe return of a value of type {{type}}.',
-      unsafeReturnAssignment:
-        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
-      unsafeReturnThis: [
-        'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
-        'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
-      ].join('\n'),
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-unsafe-return',
 });

@@ -19,6 +19,39 @@ type Options = [
 type MessageIds = 'baseToString';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      baseToString:
+        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoredTypeNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-base-to-string',
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -148,37 +181,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require `.toString()` to only be called on objects which provide useful information when stringified',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      baseToString:
-        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoredTypeNames: {
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-base-to-string',
 });

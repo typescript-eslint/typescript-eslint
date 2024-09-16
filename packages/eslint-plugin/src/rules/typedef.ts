@@ -20,6 +20,45 @@ type Options = { [k in OptionKeys]?: boolean };
 type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
 export default createRule<[Options], MessageIds>({
+  defaultOptions: [
+    {
+      [OptionKeys.ArrayDestructuring]: false,
+      [OptionKeys.ArrowParameter]: false,
+      [OptionKeys.MemberVariableDeclaration]: false,
+      [OptionKeys.ObjectDestructuring]: false,
+      [OptionKeys.Parameter]: false,
+      [OptionKeys.PropertyDeclaration]: false,
+      [OptionKeys.VariableDeclaration]: false,
+      [OptionKeys.VariableDeclarationIgnoreFunction]: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require type annotations in certain places',
+    },
+    messages: {
+      expectedTypedef: 'Expected a type annotation.',
+      expectedTypedefNamed: 'Expected {{name}} to have a type annotation.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
+          [OptionKeys.ArrowParameter]: { type: 'boolean' },
+          [OptionKeys.MemberVariableDeclaration]: { type: 'boolean' },
+          [OptionKeys.ObjectDestructuring]: { type: 'boolean' },
+          [OptionKeys.Parameter]: { type: 'boolean' },
+          [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
+          [OptionKeys.VariableDeclaration]: { type: 'boolean' },
+          [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
+        },
+      },
+    ],
+  },
+  name: 'typedef',
   create(
     context,
     [
@@ -237,43 +276,4 @@ export default createRule<[Options], MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      [OptionKeys.ArrayDestructuring]: false,
-      [OptionKeys.ArrowParameter]: false,
-      [OptionKeys.MemberVariableDeclaration]: false,
-      [OptionKeys.ObjectDestructuring]: false,
-      [OptionKeys.Parameter]: false,
-      [OptionKeys.PropertyDeclaration]: false,
-      [OptionKeys.VariableDeclaration]: false,
-      [OptionKeys.VariableDeclarationIgnoreFunction]: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Require type annotations in certain places',
-    },
-    messages: {
-      expectedTypedef: 'Expected a type annotation.',
-      expectedTypedefNamed: 'Expected {{name}} to have a type annotation.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
-          [OptionKeys.ArrowParameter]: { type: 'boolean' },
-          [OptionKeys.MemberVariableDeclaration]: { type: 'boolean' },
-          [OptionKeys.ObjectDestructuring]: { type: 'boolean' },
-          [OptionKeys.Parameter]: { type: 'boolean' },
-          [OptionKeys.PropertyDeclaration]: { type: 'boolean' },
-          [OptionKeys.VariableDeclaration]: { type: 'boolean' },
-          [OptionKeys.VariableDeclarationIgnoreFunction]: { type: 'boolean' },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'typedef',
 });

@@ -25,6 +25,58 @@ type Options = [
 type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allow: [],
+      prefer: 'class-property',
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Require or disallow parameter properties in class constructors',
+    },
+    messages: {
+      preferClassProperty:
+        'Property {{parameter}} should be declared as a class property.',
+      preferParameterProperty:
+        'Property {{parameter}} should be declared as a parameter property.',
+    },
+    schema: [
+      {
+        type: 'object',
+        $defs: {
+          modifier: {
+            type: 'string',
+            enum: [
+              'readonly',
+              'private',
+              'protected',
+              'public',
+              'private readonly',
+              'protected readonly',
+              'public readonly',
+            ],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          allow: {
+            type: 'array',
+            items: {
+              $ref: '#/items/0/$defs/modifier',
+            },
+          },
+          prefer: {
+            type: 'string',
+            enum: ['class-property', 'parameter-property'],
+          },
+        },
+      },
+    ],
+  },
+  name: 'parameter-properties',
   create(context, [{ allow = [], prefer = 'class-property' }]) {
     /**
      * Gets the modifiers of `node`.
@@ -193,56 +245,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allow: [],
-      prefer: 'class-property',
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require or disallow parameter properties in class constructors',
-    },
-    messages: {
-      preferClassProperty:
-        'Property {{parameter}} should be declared as a class property.',
-      preferParameterProperty:
-        'Property {{parameter}} should be declared as a parameter property.',
-    },
-    schema: [
-      {
-        $defs: {
-          modifier: {
-            enum: [
-              'readonly',
-              'private',
-              'protected',
-              'public',
-              'private readonly',
-              'protected readonly',
-              'public readonly',
-            ],
-            type: 'string',
-          },
-        },
-        additionalProperties: false,
-        properties: {
-          allow: {
-            items: {
-              $ref: '#/items/0/$defs/modifier',
-            },
-            type: 'array',
-          },
-          prefer: {
-            enum: ['class-property', 'parameter-property'],
-            type: 'string',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'parameter-properties',
 });

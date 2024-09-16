@@ -35,6 +35,71 @@ type MessageIds =
   | 'missingReturnType';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowArgumentsExplicitlyTypedAsAny: false,
+      allowDirectConstAssertionInArrowFunctions: true,
+      allowedNames: [],
+      allowHigherOrderFunctions: true,
+      allowTypedFunctionExpressions: true,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        "Require explicit return and argument types on exported functions' and classes' public class methods",
+    },
+    messages: {
+      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
+      anyTypedArgUnnamed:
+        '{{type}} argument should be typed with a non-any type.',
+      missingArgType: "Argument '{{name}}' should be typed.",
+      missingArgTypeUnnamed: '{{type}} argument should be typed.',
+      missingReturnType: 'Missing return type on function.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowArgumentsExplicitlyTypedAsAny: {
+            type: 'boolean',
+            description:
+              'Whether to ignore arguments that are explicitly typed as `any`.',
+          },
+          allowDirectConstAssertionInArrowFunctions: {
+            type: 'boolean',
+            description: [
+              'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
+          },
+          allowedNames: {
+            type: 'array',
+            description:
+              'An array of function/method names that will not have their arguments or return values checked.',
+            items: {
+              type: 'string',
+            },
+          },
+          allowHigherOrderFunctions: {
+            type: 'boolean',
+            description: [
+              'Whether to ignore return type annotations on functions immediately returning another function expression.',
+              'You must still type the parameters of the function.',
+            ].join('\n'),
+          },
+          allowTypedFunctionExpressions: {
+            type: 'boolean',
+            description:
+              'Whether to ignore type annotations on the variable of a function expression.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'explicit-module-boundary-types',
   create(context, [options]) {
     // tracks all of the functions we've already checked
     const checkedFunctions = new Set<FunctionNode>();
@@ -450,69 +515,4 @@ export default createRule<Options, MessageIds>({
       checkParameters(node);
     }
   },
-  defaultOptions: [
-    {
-      allowArgumentsExplicitlyTypedAsAny: false,
-      allowDirectConstAssertionInArrowFunctions: true,
-      allowedNames: [],
-      allowHigherOrderFunctions: true,
-      allowTypedFunctionExpressions: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        "Require explicit return and argument types on exported functions' and classes' public class methods",
-    },
-    messages: {
-      anyTypedArg: "Argument '{{name}}' should be typed with a non-any type.",
-      anyTypedArgUnnamed:
-        '{{type}} argument should be typed with a non-any type.',
-      missingArgType: "Argument '{{name}}' should be typed.",
-      missingArgTypeUnnamed: '{{type}} argument should be typed.',
-      missingReturnType: 'Missing return type on function.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowArgumentsExplicitlyTypedAsAny: {
-            description:
-              'Whether to ignore arguments that are explicitly typed as `any`.',
-            type: 'boolean',
-          },
-          allowDirectConstAssertionInArrowFunctions: {
-            description: [
-              'Whether to ignore return type annotations on body-less arrow functions that return an `as const` type assertion.',
-              'You must still type the parameters of the function.',
-            ].join('\n'),
-            type: 'boolean',
-          },
-          allowedNames: {
-            description:
-              'An array of function/method names that will not have their arguments or return values checked.',
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-          allowHigherOrderFunctions: {
-            description: [
-              'Whether to ignore return type annotations on functions immediately returning another function expression.',
-              'You must still type the parameters of the function.',
-            ].join('\n'),
-            type: 'boolean',
-          },
-          allowTypedFunctionExpressions: {
-            description:
-              'Whether to ignore type annotations on the variable of a function expression.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'explicit-module-boundary-types',
 });

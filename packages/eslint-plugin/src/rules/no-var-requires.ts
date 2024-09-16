@@ -12,6 +12,32 @@ type Options = [
 type MessageIds = 'noVarReqs';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{ allow: [] }],
+  meta: {
+    type: 'problem',
+    deprecated: true,
+    docs: {
+      description: 'Disallow `require` statements except in import statements',
+    },
+    messages: {
+      noVarReqs: 'Require statement not part of import statement.',
+    },
+    replacedBy: ['@typescript-eslint/no-require-imports'],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            type: 'array',
+            description: 'Patterns of import paths to allow requiring from.',
+            items: { type: 'string' },
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-var-requires',
   create(context, options) {
     const allowPatterns = options[0].allow.map(
       pattern => new RegExp(pattern, 'u'),
@@ -68,30 +94,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{ allow: [] }],
-  meta: {
-    deprecated: true,
-    docs: {
-      description: 'Disallow `require` statements except in import statements',
-    },
-    messages: {
-      noVarReqs: 'Require statement not part of import statement.',
-    },
-    replacedBy: ['@typescript-eslint/no-require-imports'],
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allow: {
-            description: 'Patterns of import paths to allow requiring from.',
-            items: { type: 'string' },
-            type: 'array',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-var-requires',
 });

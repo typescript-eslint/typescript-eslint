@@ -5,6 +5,20 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Enforce valid definition of `new` and `constructor`',
+      recommended: 'recommended',
+    },
+    messages: {
+      errorMessageClass: 'Class cannot have method named `new`.',
+      errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
+    },
+    schema: [],
+  },
+  name: 'no-misused-new',
   create(context) {
     /**
      * @param node type to be inspected.
@@ -96,18 +110,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Enforce valid definition of `new` and `constructor`',
-      recommended: 'recommended',
-    },
-    messages: {
-      errorMessageClass: 'Class cannot have method named `new`.',
-      errorMessageInterface: 'Interfaces cannot be constructed, only classes.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-misused-new',
 });

@@ -71,6 +71,69 @@ function parseChecksVoidReturn(
 }
 
 export default createRule<Options, MessageId>({
+  defaultOptions: [
+    {
+      checksConditionals: true,
+      checksSpreads: true,
+      checksVoidReturn: true,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow Promises in places not designed to handle them',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      conditional: 'Expected non-Promise value in a boolean conditional.',
+      spread: 'Expected a non-Promise value to be spreaded in an object.',
+      voidReturnArgument:
+        'Promise returned in function argument where a void return was expected.',
+      voidReturnAttribute:
+        'Promise-returning function provided to attribute where a void return was expected.',
+      voidReturnInheritedMethod:
+        "Promise-returning method provided where a void return was expected by extended/implemented type '{{ heritageTypeName }}'.",
+      voidReturnProperty:
+        'Promise-returning function provided to property where a void return was expected.',
+      voidReturnReturnValue:
+        'Promise-returning function provided to return value where a void return was expected.',
+      voidReturnVariable:
+        'Promise-returning function provided to variable where a void return was expected.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          checksConditionals: {
+            type: 'boolean',
+          },
+          checksSpreads: {
+            type: 'boolean',
+          },
+          checksVoidReturn: {
+            oneOf: [
+              { type: 'boolean' },
+              {
+                type: 'object',
+                additionalProperties: false,
+                properties: {
+                  arguments: { type: 'boolean' },
+                  attributes: { type: 'boolean' },
+                  inheritedMethods: { type: 'boolean' },
+                  properties: { type: 'boolean' },
+                  returns: { type: 'boolean' },
+                  variables: { type: 'boolean' },
+                },
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-misused-promises',
   create(context, [{ checksConditionals, checksSpreads, checksVoidReturn }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -527,69 +590,6 @@ export default createRule<Options, MessageId>({
       ...(checksSpreads ? spreadChecks : {}),
     };
   },
-  defaultOptions: [
-    {
-      checksConditionals: true,
-      checksSpreads: true,
-      checksVoidReturn: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow Promises in places not designed to handle them',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      conditional: 'Expected non-Promise value in a boolean conditional.',
-      spread: 'Expected a non-Promise value to be spreaded in an object.',
-      voidReturnArgument:
-        'Promise returned in function argument where a void return was expected.',
-      voidReturnAttribute:
-        'Promise-returning function provided to attribute where a void return was expected.',
-      voidReturnInheritedMethod:
-        "Promise-returning method provided where a void return was expected by extended/implemented type '{{ heritageTypeName }}'.",
-      voidReturnProperty:
-        'Promise-returning function provided to property where a void return was expected.',
-      voidReturnReturnValue:
-        'Promise-returning function provided to return value where a void return was expected.',
-      voidReturnVariable:
-        'Promise-returning function provided to variable where a void return was expected.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          checksConditionals: {
-            type: 'boolean',
-          },
-          checksSpreads: {
-            type: 'boolean',
-          },
-          checksVoidReturn: {
-            oneOf: [
-              { type: 'boolean' },
-              {
-                additionalProperties: false,
-                properties: {
-                  arguments: { type: 'boolean' },
-                  attributes: { type: 'boolean' },
-                  inheritedMethods: { type: 'boolean' },
-                  properties: { type: 'boolean' },
-                  returns: { type: 'boolean' },
-                  variables: { type: 'boolean' },
-                },
-                type: 'object',
-              },
-            ],
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-misused-promises',
 });
 
 function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {

@@ -20,6 +20,68 @@ type Options = [
 type MessageIds = 'missingThis';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      enforceForClassFields: true,
+      exceptMethods: [],
+      ignoreClassesThatImplementAnInterface: false,
+      ignoreOverrideMethods: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce that class methods utilize `this`',
+      extendsBaseRule: true,
+      requiresTypeChecking: false,
+    },
+    messages: {
+      missingThis: "Expected 'this' to be used by class {{name}}.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          enforceForClassFields: {
+            type: 'boolean',
+            default: true,
+            description:
+              'Enforces that functions used as instance field initializers utilize `this`',
+          },
+          exceptMethods: {
+            type: 'array',
+            description:
+              'Allows specified method names to be ignored with this rule',
+            items: {
+              type: 'string',
+            },
+          },
+          ignoreClassesThatImplementAnInterface: {
+            description:
+              'Ignore classes that specifically implement some interface',
+            oneOf: [
+              {
+                type: 'boolean',
+                description: 'Ignore all classes that implement an interface',
+              },
+              {
+                type: 'string',
+                description:
+                  'Ignore only the public fields of classes that implement an interface',
+                enum: ['public-fields'],
+              },
+            ],
+          },
+          ignoreOverrideMethods: {
+            type: 'boolean',
+            description: 'Ignore members marked with the `override` modifier',
+          },
+        },
+      },
+    ],
+  },
+  name: 'class-methods-use-this',
   create(
     context,
     [
@@ -223,66 +285,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      enforceForClassFields: true,
-      exceptMethods: [],
-      ignoreClassesThatImplementAnInterface: false,
-      ignoreOverrideMethods: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Enforce that class methods utilize `this`',
-      extendsBaseRule: true,
-      requiresTypeChecking: false,
-    },
-    messages: {
-      missingThis: "Expected 'this' to be used by class {{name}}.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          enforceForClassFields: {
-            default: true,
-            description:
-              'Enforces that functions used as instance field initializers utilize `this`',
-            type: 'boolean',
-          },
-          exceptMethods: {
-            description:
-              'Allows specified method names to be ignored with this rule',
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-          ignoreClassesThatImplementAnInterface: {
-            description:
-              'Ignore classes that specifically implement some interface',
-            oneOf: [
-              {
-                description: 'Ignore all classes that implement an interface',
-                type: 'boolean',
-              },
-              {
-                description:
-                  'Ignore only the public fields of classes that implement an interface',
-                enum: ['public-fields'],
-                type: 'string',
-              },
-            ],
-          },
-          ignoreOverrideMethods: {
-            description: 'Ignore members marked with the `override` modifier',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'class-methods-use-this',
 });

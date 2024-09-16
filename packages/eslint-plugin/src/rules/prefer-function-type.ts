@@ -10,6 +10,24 @@ export const phrases = {
 } as const;
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce using function types instead of interfaces with call signatures',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      functionTypeOverCallableType:
+        '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
+      unexpectedThisOnFunctionOnlyInterface:
+        "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
+    },
+    schema: [],
+  },
+  name: 'prefer-function-type',
   create(context) {
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
@@ -204,22 +222,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Enforce using function types instead of interfaces with call signatures',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      functionTypeOverCallableType:
-        '{{ literalOrInterface }} only has a call signature, you should use a function type instead.',
-      unexpectedThisOnFunctionOnlyInterface:
-        "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-function-type',
 });

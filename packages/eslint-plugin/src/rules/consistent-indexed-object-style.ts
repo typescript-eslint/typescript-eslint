@@ -8,6 +8,26 @@ type MessageIds = 'preferIndexSignature' | 'preferRecord';
 type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: ['record'],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require or disallow the `Record` type',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      preferIndexSignature: 'An index signature is preferred over a record.',
+      preferRecord: 'A record is preferred over an index signature.',
+    },
+    schema: [
+      {
+        type: 'string',
+        enum: ['record', 'index-signature'],
+      },
+    ],
+  },
+  name: 'consistent-indexed-object-style',
   create(context, [mode]) {
     function checkMembers(
       members: TSESTree.TypeElement[],
@@ -128,26 +148,6 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: ['record'],
-  meta: {
-    docs: {
-      description: 'Require or disallow the `Record` type',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      preferIndexSignature: 'An index signature is preferred over a record.',
-      preferRecord: 'A record is preferred over an index signature.',
-    },
-    schema: [
-      {
-        enum: ['record', 'index-signature'],
-        type: 'string',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'consistent-indexed-object-style',
 });
 
 function findParentDeclaration(

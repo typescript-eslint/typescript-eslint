@@ -12,11 +12,9 @@ type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
 type MessageIds = InferMessageIdsTypeFromRule<NonNullable<typeof baseRule>>;
 
 export default createRule<Options, MessageIds>({
-  create(context) {
-    return baseRule.create(context);
-  },
   defaultOptions: [],
   meta: {
+    type: 'problem',
     deprecated: true,
     docs: {
       description: 'Disallow literal numbers that lose precision',
@@ -25,7 +23,9 @@ export default createRule<Options, MessageIds>({
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
     schema: [],
-    type: 'problem',
   },
   name: 'no-loss-of-precision',
+  create(context) {
+    return baseRule.create(context);
+  },
 });

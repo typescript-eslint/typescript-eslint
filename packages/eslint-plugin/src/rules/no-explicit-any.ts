@@ -13,6 +13,46 @@ export type Options = [
 export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      fixToUnknown: false,
+      ignoreRestArgs: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow the `any` type',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      suggestNever:
+        "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+      suggestUnknown:
+        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
+      unexpectedAny: 'Unexpected any. Specify a different type.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          fixToUnknown: {
+            type: 'boolean',
+            description:
+              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
+          },
+          ignoreRestArgs: {
+            type: 'boolean',
+            description: 'Whether to ignore rest parameter arrays.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-explicit-any',
   create(context, [{ fixToUnknown, ignoreRestArgs }]) {
     /**
      * Checks if the node is an arrow function, function/constructor declaration or function expression
@@ -170,44 +210,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      fixToUnknown: false,
-      ignoreRestArgs: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow the `any` type',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      suggestNever:
-        "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
-      suggestUnknown:
-        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
-      unexpectedAny: 'Unexpected any. Specify a different type.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          fixToUnknown: {
-            description:
-              'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
-            type: 'boolean',
-          },
-          ignoreRestArgs: {
-            description: 'Whether to ignore rest parameter arrays.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-explicit-any',
 });

@@ -18,6 +18,56 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowIndexSignaturePropertyAccess: false,
+      allowKeywords: true,
+      allowPattern: '',
+      allowPrivateClassPropertyAccess: false,
+      allowProtectedClassPropertyAccess: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce dot notation whenever possible',
+      extendsBaseRule: true,
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowIndexSignaturePropertyAccess: {
+            type: 'boolean',
+            default: false,
+          },
+          allowKeywords: {
+            type: 'boolean',
+            default: true,
+          },
+          allowPattern: {
+            type: 'string',
+            default: '',
+          },
+          allowPrivateClassPropertyAccess: {
+            type: 'boolean',
+            default: false,
+          },
+          allowProtectedClassPropertyAccess: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+      },
+    ],
+  },
+  name: 'dot-notation',
   create(context, [options]) {
     const rules = baseRule.create(context);
     const services = getParserServices(context);
@@ -81,54 +131,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowIndexSignaturePropertyAccess: false,
-      allowKeywords: true,
-      allowPattern: '',
-      allowPrivateClassPropertyAccess: false,
-      allowProtectedClassPropertyAccess: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Enforce dot notation whenever possible',
-      extendsBaseRule: true,
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: baseRule.meta.fixable,
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowIndexSignaturePropertyAccess: {
-            default: false,
-            type: 'boolean',
-          },
-          allowKeywords: {
-            default: true,
-            type: 'boolean',
-          },
-          allowPattern: {
-            default: '',
-            type: 'string',
-          },
-          allowPrivateClassPropertyAccess: {
-            default: false,
-            type: 'boolean',
-          },
-          allowProtectedClassPropertyAccess: {
-            default: false,
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'dot-notation',
 });

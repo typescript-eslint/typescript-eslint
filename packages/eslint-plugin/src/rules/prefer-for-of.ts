@@ -5,6 +5,21 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, isAssignee } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce the use of `for-of` loop over the standard `for` loop where possible',
+      recommended: 'stylistic',
+    },
+    messages: {
+      preferForOf:
+        'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
+    },
+    schema: [],
+  },
+  name: 'prefer-for-of',
   create(context) {
     function isSingleVariableDeclaration(
       node: TSESTree.Node | null,
@@ -147,19 +162,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Enforce the use of `for-of` loop over the standard `for` loop where possible',
-      recommended: 'stylistic',
-    },
-    messages: {
-      preferForOf:
-        'Expected a `for-of` loop instead of a `for` loop with this simple iteration.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-for-of',
 });

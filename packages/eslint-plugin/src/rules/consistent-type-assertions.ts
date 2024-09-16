@@ -32,6 +32,64 @@ type OptUnion =
 export type Options = readonly [OptUnion];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      assertionStyle: 'as',
+      objectLiteralTypeAssertions: 'allow',
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce consistent usage of type assertions',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
+      as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
+      never: 'Do not use any type assertions.',
+      replaceObjectTypeAssertionWithAnnotation:
+        'Use const x: {{cast}} = { ... } instead.',
+      replaceObjectTypeAssertionWithSatisfies:
+        'Use const x = { ... } satisfies {{cast}} instead.',
+      unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
+    },
+    schema: [
+      {
+        oneOf: [
+          {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              assertionStyle: {
+                type: 'string',
+                enum: ['never'],
+              },
+            },
+            required: ['assertionStyle'],
+          },
+          {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              assertionStyle: {
+                type: 'string',
+                enum: ['as', 'angle-bracket'],
+              },
+              objectLiteralTypeAssertions: {
+                type: 'string',
+                enum: ['allow', 'allow-as-parameter', 'never'],
+              },
+            },
+            required: ['assertionStyle'],
+          },
+        ],
+      },
+    ],
+  },
+  name: 'consistent-type-assertions',
   create(context, [options]) {
     const parserServices = getParserServices(context, true);
 
@@ -220,62 +278,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      assertionStyle: 'as',
-      objectLiteralTypeAssertions: 'allow',
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Enforce consistent usage of type assertions',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
-      as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
-      never: 'Do not use any type assertions.',
-      replaceObjectTypeAssertionWithAnnotation:
-        'Use const x: {{cast}} = { ... } instead.',
-      replaceObjectTypeAssertionWithSatisfies:
-        'Use const x = { ... } satisfies {{cast}} instead.',
-      unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
-    },
-    schema: [
-      {
-        oneOf: [
-          {
-            additionalProperties: false,
-            properties: {
-              assertionStyle: {
-                enum: ['never'],
-                type: 'string',
-              },
-            },
-            required: ['assertionStyle'],
-            type: 'object',
-          },
-          {
-            additionalProperties: false,
-            properties: {
-              assertionStyle: {
-                enum: ['as', 'angle-bracket'],
-                type: 'string',
-              },
-              objectLiteralTypeAssertions: {
-                enum: ['allow', 'allow-as-parameter', 'never'],
-                type: 'string',
-              },
-            },
-            required: ['assertionStyle'],
-            type: 'object',
-          },
-        ],
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'consistent-type-assertions',
 });

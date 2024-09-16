@@ -5,6 +5,27 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: ['interface'],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce type definitions to consistently use either `interface` or `type`',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      interfaceOverType: 'Use an `interface` instead of a `type`.',
+      typeOverInterface: 'Use a `type` instead of an `interface`.',
+    },
+    schema: [
+      {
+        type: 'string',
+        enum: ['interface', 'type'],
+      },
+    ],
+  },
+  name: 'consistent-type-definitions',
   create(context, [option]) {
     /**
      * Iterates from the highest parent to the currently traversed node
@@ -115,25 +136,4 @@ export default createRule({
       }),
     };
   },
-  defaultOptions: ['interface'],
-  meta: {
-    docs: {
-      description:
-        'Enforce type definitions to consistently use either `interface` or `type`',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      interfaceOverType: 'Use an `interface` instead of a `type`.',
-      typeOverInterface: 'Use a `type` instead of an `interface`.',
-    },
-    schema: [
-      {
-        enum: ['interface', 'type'],
-        type: 'string',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'consistent-type-definitions',
 });

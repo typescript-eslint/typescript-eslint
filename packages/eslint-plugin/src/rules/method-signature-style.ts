@@ -15,6 +15,27 @@ export type Options = [('method' | 'property')?];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: ['property'],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce using a particular method signature syntax',
+    },
+    fixable: 'code',
+    messages: {
+      errorMethod:
+        'Shorthand method signature is forbidden. Use a function property instead.',
+      errorProperty:
+        'Function property signature is forbidden. Use a method shorthand instead.',
+    },
+    schema: [
+      {
+        type: 'string',
+        enum: ['property', 'method'],
+      },
+    ],
+  },
+  name: 'method-signature-style',
   create(context, [mode]) {
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
@@ -219,25 +240,4 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: ['property'],
-  meta: {
-    docs: {
-      description: 'Enforce using a particular method signature syntax',
-    },
-    fixable: 'code',
-    messages: {
-      errorMethod:
-        'Shorthand method signature is forbidden. Use a function property instead.',
-      errorProperty:
-        'Function property signature is forbidden. Use a method shorthand instead.',
-    },
-    schema: [
-      {
-        enum: ['property', 'method'],
-        type: 'string',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'method-signature-style',
 });

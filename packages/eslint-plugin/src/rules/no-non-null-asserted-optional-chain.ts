@@ -3,6 +3,23 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow non-null assertions after an optional chain expression',
+      recommended: 'recommended',
+    },
+    hasSuggestions: true,
+    messages: {
+      noNonNullOptionalChain:
+        'Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.',
+      suggestRemovingNonNull: 'You should remove the non-null assertion.',
+    },
+    schema: [],
+  },
+  name: 'no-non-null-asserted-optional-chain',
   create(context) {
     return {
       // non-nulling a wrapped chain will scrub all nulls introduced by the chain
@@ -53,21 +70,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow non-null assertions after an optional chain expression',
-      recommended: 'recommended',
-    },
-    hasSuggestions: true,
-    messages: {
-      noNonNullOptionalChain:
-        'Optional chain expressions can return undefined by design - using a non-null assertion is unsafe and wrong.',
-      suggestRemovingNonNull: 'You should remove the non-null assertion.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-non-null-asserted-optional-chain',
 });

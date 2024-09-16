@@ -68,6 +68,40 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
 };
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      ignoreIntersections: false,
+      ignoreUnions: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow duplicate constituents of union or intersection types',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoreIntersections: {
+            type: 'boolean',
+          },
+          ignoreUnions: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-duplicate-type-constituents',
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
     const parserServices = getParserServices(context);
 
@@ -144,13 +178,13 @@ export default createRule<Options, MessageIds>({
       };
       context.report({
         data: {
-          previous: context.sourceCode.getText(
-            duplicateConstituent.duplicatePrevious,
-          ),
           type:
             parentNode.type === AST_NODE_TYPES.TSIntersectionType
               ? 'Intersection'
               : 'Union',
+          previous: context.sourceCode.getText(
+            duplicateConstituent.duplicatePrevious,
+          ),
         },
         fix: fixer => {
           return [
@@ -174,38 +208,4 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: [
-    {
-      ignoreIntersections: false,
-      ignoreUnions: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow duplicate constituents of union or intersection types',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoreIntersections: {
-            type: 'boolean',
-          },
-          ignoreUnions: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-duplicate-type-constituents',
 });

@@ -8,6 +8,22 @@ import { createRule } from '../util';
 type MessageIds = 'preferExpectErrorComment';
 
 export default createRule<[], MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    deprecated: true,
+    docs: {
+      description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
+    },
+    fixable: 'code',
+    messages: {
+      preferExpectErrorComment:
+        'Use "@ts-expect-error" to ensure an error is actually being suppressed.',
+    },
+    replacedBy: ['@typescript-eslint/ban-ts-comment'],
+    schema: [],
+  },
+  name: 'prefer-ts-expect-error',
   create(context) {
     const tsIgnoreRegExpSingleLine = /^\s*\/?\s*@ts-ignore/;
     const tsIgnoreRegExpMultiLine = /^\s*(?:\/|\*)*\s*@ts-ignore/;
@@ -65,20 +81,4 @@ export default createRule<[], MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    deprecated: true,
-    docs: {
-      description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
-    },
-    fixable: 'code',
-    messages: {
-      preferExpectErrorComment:
-        'Use "@ts-expect-error" to ensure an error is actually being suppressed.',
-    },
-    replacedBy: ['@typescript-eslint/ban-ts-comment'],
-    schema: [],
-    type: 'problem',
-  },
-  name: 'prefer-ts-expect-error',
 });

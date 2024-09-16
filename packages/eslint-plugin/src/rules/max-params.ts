@@ -23,6 +23,36 @@ export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{ countVoidThis: false, max: 3 }],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce a maximum number of parameters in function definitions',
+      extendsBaseRule: true,
+    },
+    messages: baseRule.meta.messages,
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          countVoidThis: {
+            type: 'boolean',
+          },
+          max: {
+            type: 'integer',
+            minimum: 0,
+          },
+          maximum: {
+            type: 'integer',
+            minimum: 0,
+          },
+        },
+      },
+    ],
+  },
+  name: 'max-params',
   create(context, [{ countVoidThis }]) {
     const baseRules = baseRule.create(context);
 
@@ -61,34 +91,4 @@ export default createRule<Options, MessageIds>({
       FunctionExpression: wrapListener(baseRules.FunctionExpression),
     };
   },
-  defaultOptions: [{ countVoidThis: false, max: 3 }],
-  meta: {
-    docs: {
-      description:
-        'Enforce a maximum number of parameters in function definitions',
-      extendsBaseRule: true,
-    },
-    messages: baseRule.meta.messages,
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          countVoidThis: {
-            type: 'boolean',
-          },
-          max: {
-            minimum: 0,
-            type: 'integer',
-          },
-          maximum: {
-            minimum: 0,
-            type: 'integer',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'max-params',
 });

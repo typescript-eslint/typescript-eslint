@@ -22,6 +22,23 @@ enum ArgumentType {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
+    },
+    schema: [],
+  },
+
+  name: 'prefer-regexp-exec',
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
@@ -162,21 +179,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-
-  meta: {
-    docs: {
-      description:
-        'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-regexp-exec',
 });

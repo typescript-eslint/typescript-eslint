@@ -13,6 +13,42 @@ type Options = [
 type MessageIds = 'moduleSyntaxIsPreferred';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowDeclarations: false,
+      allowDefinitionFiles: true,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow TypeScript namespaces',
+      recommended: 'recommended',
+    },
+    messages: {
+      moduleSyntaxIsPreferred:
+        'ES2015 module syntax is preferred over namespaces.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowDeclarations: {
+            type: 'boolean',
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces.',
+          },
+          allowDefinitionFiles: {
+            type: 'boolean',
+            description:
+              'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-namespace',
   create(context, [{ allowDeclarations, allowDefinitionFiles }]) {
     function isDeclaration(node: TSESTree.Node): boolean {
       if (node.type === AST_NODE_TYPES.TSModuleDeclaration && node.declare) {
@@ -41,40 +77,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowDeclarations: false,
-      allowDefinitionFiles: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow TypeScript namespaces',
-      recommended: 'recommended',
-    },
-    messages: {
-      moduleSyntaxIsPreferred:
-        'ES2015 module syntax is preferred over namespaces.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowDeclarations: {
-            description:
-              'Whether to allow `declare` with custom TypeScript namespaces.',
-            type: 'boolean',
-          },
-          allowDefinitionFiles: {
-            description:
-              'Whether to allow `declare` with custom TypeScript namespaces inside definition files.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-namespace',
 });

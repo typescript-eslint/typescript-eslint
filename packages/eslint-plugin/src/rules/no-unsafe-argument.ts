@@ -73,9 +73,9 @@ class FunctionSignature {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {
+            type: checker.getTypeArguments(type)[0],
             index: i,
             kind: RestTypeKind.Array,
-            type: checker.getTypeArguments(type)[0],
           };
         } else if (checker.isTupleType(type)) {
           restType = {
@@ -85,9 +85,9 @@ class FunctionSignature {
           };
         } else {
           restType = {
+            type,
             index: i,
             kind: RestTypeKind.Other,
-            type,
           };
         }
         break;
@@ -141,6 +141,25 @@ class FunctionSignature {
 }
 
 export default createRule<[], MessageIds>({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow calling a function with a value with type `any`',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unsafeArgument:
+        'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
+      unsafeArraySpread: 'Unsafe spread of an `any` array type.',
+      unsafeSpread: 'Unsafe spread of an `any` type.',
+      unsafeTupleSpread:
+        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
+    },
+    schema: [],
+  },
+  name: 'no-unsafe-argument',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -273,23 +292,4 @@ export default createRule<[], MessageIds>({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow calling a function with a value with type `any`',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unsafeArgument:
-        'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
-      unsafeArraySpread: 'Unsafe spread of an `any` array type.',
-      unsafeSpread: 'Unsafe spread of an `any` type.',
-      unsafeTupleSpread:
-        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-unsafe-argument',
 });

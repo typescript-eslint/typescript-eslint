@@ -13,6 +13,46 @@ type Options = [
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowDestructuring: true,
+      allowedNames: [],
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow aliasing `this`',
+      recommended: 'recommended',
+    },
+    messages: {
+      thisAssignment: "Unexpected aliasing of 'this' to local variable.",
+      thisDestructure:
+        "Unexpected aliasing of members of 'this' to local variables.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowDestructuring: {
+            type: 'boolean',
+            description:
+              'Whether to ignore destructurings, such as `const { props, state } = this`.',
+          },
+          allowedNames: {
+            type: 'array',
+            description:
+              'Names to ignore, such as ["self"] for `const self = this;`.',
+            items: {
+              type: 'string',
+            },
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-this-alias',
   create(context, [{ allowDestructuring, allowedNames }]) {
     return {
       "VariableDeclarator[init.type='ThisExpression'], AssignmentExpression[right.type='ThisExpression']"(
@@ -42,44 +82,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowDestructuring: true,
-      allowedNames: [],
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow aliasing `this`',
-      recommended: 'recommended',
-    },
-    messages: {
-      thisAssignment: "Unexpected aliasing of 'this' to local variable.",
-      thisDestructure:
-        "Unexpected aliasing of members of 'this' to local variables.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowDestructuring: {
-            description:
-              'Whether to ignore destructurings, such as `const { props, state } = this`.',
-            type: 'boolean',
-          },
-          allowedNames: {
-            description:
-              'Names to ignore, such as ["self"] for `const self = this;`.',
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-this-alias',
 });

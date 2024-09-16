@@ -116,6 +116,75 @@ export type Options = [
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      caseSensitive: false,
+      checkIntersections: true,
+      checkUnions: true,
+      groupOrder: [
+        Group.named,
+        Group.keyword,
+        Group.operator,
+        Group.literal,
+        Group.function,
+        Group.import,
+        Group.conditional,
+        Group.object,
+        Group.tuple,
+        Group.intersection,
+        Group.union,
+        Group.nullish,
+      ],
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    deprecated: true,
+    docs: {
+      description:
+        'Enforce constituents of a type union/intersection to be sorted alphabetically',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      notSorted: '{{type}} type constituents must be sorted.',
+      notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
+      suggestFix: 'Sort constituents of type (removes all comments).',
+    },
+    replacedBy: [
+      'perfectionist/sort-intersection-types',
+      'perfectionist/sort-union-types',
+    ],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          caseSensitive: {
+            type: 'boolean',
+            description: 'Whether to sort using case sensitive sorting.',
+          },
+          checkIntersections: {
+            type: 'boolean',
+            description: 'Whether to check intersection types.',
+          },
+          checkUnions: {
+            type: 'boolean',
+            description: 'Whether to check union types.',
+          },
+          groupOrder: {
+            type: 'array',
+            description: 'Ordering of the groups.',
+            items: {
+              type: 'string',
+              enum: getEnumNames(Group),
+            },
+          },
+        },
+      },
+    ],
+  },
+  name: 'sort-type-constituents',
   create(
     context,
     [{ caseSensitive, checkIntersections, checkUnions, groupOrder }],
@@ -222,73 +291,4 @@ export default createRule<Options, MessageIds>({
       }),
     };
   },
-  defaultOptions: [
-    {
-      caseSensitive: false,
-      checkIntersections: true,
-      checkUnions: true,
-      groupOrder: [
-        Group.named,
-        Group.keyword,
-        Group.operator,
-        Group.literal,
-        Group.function,
-        Group.import,
-        Group.conditional,
-        Group.object,
-        Group.tuple,
-        Group.intersection,
-        Group.union,
-        Group.nullish,
-      ],
-    },
-  ],
-  meta: {
-    deprecated: true,
-    docs: {
-      description:
-        'Enforce constituents of a type union/intersection to be sorted alphabetically',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      notSorted: '{{type}} type constituents must be sorted.',
-      notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
-      suggestFix: 'Sort constituents of type (removes all comments).',
-    },
-    replacedBy: [
-      'perfectionist/sort-intersection-types',
-      'perfectionist/sort-union-types',
-    ],
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          caseSensitive: {
-            description: 'Whether to sort using case sensitive sorting.',
-            type: 'boolean',
-          },
-          checkIntersections: {
-            description: 'Whether to check intersection types.',
-            type: 'boolean',
-          },
-          checkUnions: {
-            description: 'Whether to check union types.',
-            type: 'boolean',
-          },
-          groupOrder: {
-            description: 'Ordering of the groups.',
-            items: {
-              enum: getEnumNames(Group),
-              type: 'string',
-            },
-            type: 'array',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'sort-type-constituents',
 });

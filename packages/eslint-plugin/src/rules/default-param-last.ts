@@ -5,6 +5,19 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce default parameters to be last',
+      extendsBaseRule: true,
+    },
+    messages: {
+      shouldBeLast: 'Default parameters should be last.',
+    },
+    schema: [],
+  },
+  name: 'default-param-last',
   create(context) {
     /**
      * checks if node is optional parameter
@@ -70,17 +83,4 @@ export default createRule({
       FunctionExpression: checkDefaultParamLast,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Enforce default parameters to be last',
-      extendsBaseRule: true,
-    },
-    messages: {
-      shouldBeLast: 'Default parameters should be last.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'default-param-last',
 });

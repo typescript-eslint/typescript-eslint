@@ -14,6 +14,41 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      builtinGlobals: true,
+      ignoreDeclarationMerge: true,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow variable redeclaration',
+      extendsBaseRule: true,
+    },
+    messages: {
+      redeclared: "'{{id}}' is already defined.",
+      redeclaredAsBuiltin:
+        "'{{id}}' is already defined as a built-in global variable.",
+      redeclaredBySyntax:
+        "'{{id}}' is already defined by a variable declaration.",
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          builtinGlobals: {
+            type: 'boolean',
+          },
+          ignoreDeclarationMerge: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-redeclare',
   create(context, [options]) {
     const CLASS_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSInterfaceDeclaration,
@@ -52,13 +87,13 @@ export default createRule<Options, MessageIds>({
       ) {
         for (const comment of variable.eslintExplicitGlobalComments) {
           yield {
+            type: 'comment',
             loc: getNameLocationInGlobalDirectiveComment(
               context.sourceCode,
               comment,
               variable.name,
             ),
             node: comment,
-            type: 'comment',
           };
         }
       }
@@ -109,7 +144,7 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one class declaration, which needs to be reported
           for (const { identifier } of classDecls) {
-            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
+            yield { type: 'syntax', loc: identifier.loc, node: identifier };
           }
           return;
         }
@@ -130,7 +165,7 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one function declaration, which needs to be reported
           for (const { identifier } of functionDecls) {
-            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
+            yield { type: 'syntax', loc: identifier.loc, node: identifier };
           }
           return;
         }
@@ -151,14 +186,14 @@ export default createRule<Options, MessageIds>({
 
           // there's more than one enum declaration, which needs to be reported
           for (const { identifier } of enumDecls) {
-            yield { loc: identifier.loc, node: identifier, type: 'syntax' };
+            yield { type: 'syntax', loc: identifier.loc, node: identifier };
           }
           return;
         }
       }
 
       for (const { identifier } of identifiers) {
-        yield { loc: identifier.loc, node: identifier, type: 'syntax' };
+        yield { type: 'syntax', loc: identifier.loc, node: identifier };
       }
     }
 
@@ -183,7 +218,7 @@ export default createRule<Options, MessageIds>({
         const data = { id: variable.name };
 
         // Report extra declarations.
-        for (const { loc, node, type } of extraDeclarations) {
+        for (const { type, loc, node } of extraDeclarations) {
           const messageId =
             type === declaration.type ? 'redeclared' : detailMessageId;
 
@@ -239,39 +274,4 @@ export default createRule<Options, MessageIds>({
       SwitchStatement: checkForBlock,
     };
   },
-  defaultOptions: [
-    {
-      builtinGlobals: true,
-      ignoreDeclarationMerge: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow variable redeclaration',
-      extendsBaseRule: true,
-    },
-    messages: {
-      redeclared: "'{{id}}' is already defined.",
-      redeclaredAsBuiltin:
-        "'{{id}}' is already defined as a built-in global variable.",
-      redeclaredBySyntax:
-        "'{{id}}' is already defined by a variable declaration.",
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          builtinGlobals: {
-            type: 'boolean',
-          },
-          ignoreDeclarationMerge: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-redeclare',
 });

@@ -69,6 +69,70 @@ const TYPE_KEYWORDS = {
 };
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{}],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow certain types',
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
+      bannedTypeReplacement: 'Replace `{{name}}` with `{{replacement}}`.',
+    },
+    schema: [
+      {
+        type: 'object',
+        $defs: {
+          banConfig: {
+            oneOf: [
+              {
+                type: 'boolean',
+                description: 'Bans the type with the default message',
+                enum: [true],
+              },
+              {
+                type: 'string',
+                description: 'Bans the type with a custom message',
+              },
+              {
+                type: 'object',
+                additionalProperties: false,
+                description: 'Bans a type',
+                properties: {
+                  fixWith: {
+                    type: 'string',
+                    description:
+                      'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
+                  },
+                  message: {
+                    type: 'string',
+                    description: 'Custom error message',
+                  },
+                  suggest: {
+                    type: 'array',
+                    description: 'Types to suggest replacing with.',
+                    items: { type: 'string' },
+                  },
+                },
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          types: {
+            type: 'object',
+            additionalProperties: {
+              $ref: '#/items/0/$defs/banConfig',
+            },
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-restricted-types',
   create(context, [{ types = {} }]) {
     const bannedTypes = new Map(
       Object.entries(types).map(([type, data]) => [removeSpaces(type), data]),
@@ -155,68 +219,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [{}],
-  meta: {
-    docs: {
-      description: 'Disallow certain types',
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
-      bannedTypeReplacement: 'Replace `{{name}}` with `{{replacement}}`.',
-    },
-    schema: [
-      {
-        $defs: {
-          banConfig: {
-            oneOf: [
-              {
-                description: 'Bans the type with the default message',
-                enum: [true],
-                type: 'boolean',
-              },
-              {
-                description: 'Bans the type with a custom message',
-                type: 'string',
-              },
-              {
-                additionalProperties: false,
-                description: 'Bans a type',
-                properties: {
-                  fixWith: {
-                    description:
-                      'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
-                    type: 'string',
-                  },
-                  message: {
-                    description: 'Custom error message',
-                    type: 'string',
-                  },
-                  suggest: {
-                    description: 'Types to suggest replacing with.',
-                    items: { type: 'string' },
-                    type: 'array',
-                  },
-                },
-                type: 'object',
-              },
-            ],
-          },
-        },
-        additionalProperties: false,
-        properties: {
-          types: {
-            additionalProperties: {
-              $ref: '#/items/0/$defs/banConfig',
-            },
-            type: 'object',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'no-restricted-types',
 });

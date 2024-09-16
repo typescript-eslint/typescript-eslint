@@ -38,6 +38,75 @@ type MessageIds =
   | 'unwantedPublicAccessibility';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [{ accessibility: 'explicit' }],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Require explicit accessibility modifiers on class properties and methods',
+      // too opinionated to be recommended
+    },
+    fixable: 'code',
+    hasSuggestions: true,
+    messages: {
+      addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
+      missingAccessibility:
+        'Missing accessibility modifier on {{type}} {{name}}.',
+      unwantedPublicAccessibility:
+        'Public accessibility modifier on {{type}} {{name}}.',
+    },
+    schema: [
+      {
+        type: 'object',
+        $defs: {
+          accessibilityLevel: {
+            oneOf: [
+              {
+                type: 'string',
+                description: 'Always require an accessor.',
+                enum: ['explicit'],
+              },
+              {
+                type: 'string',
+                description: 'Require an accessor except when public.',
+                enum: ['no-public'],
+              },
+              {
+                type: 'string',
+                description: 'Never check whether there is an accessor.',
+                enum: ['off'],
+              },
+            ],
+          },
+        },
+        additionalProperties: false,
+        properties: {
+          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
+          ignoredMethodNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          overrides: {
+            type: 'object',
+            additionalProperties: false,
+
+            properties: {
+              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              parameterProperties: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+              },
+              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
+            },
+          },
+        },
+      },
+    ],
+  },
+  name: 'explicit-member-accessibility',
   create(context, [option]) {
     const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
     const overrides = option.overrides ?? {};
@@ -318,75 +387,6 @@ export default createRule<Options, MessageIds>({
       TSParameterProperty: checkParameterPropertyAccessibilityModifier,
     };
   },
-  defaultOptions: [{ accessibility: 'explicit' }],
-  meta: {
-    docs: {
-      description:
-        'Require explicit accessibility modifiers on class properties and methods',
-      // too opinionated to be recommended
-    },
-    fixable: 'code',
-    hasSuggestions: true,
-    messages: {
-      addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
-      missingAccessibility:
-        'Missing accessibility modifier on {{type}} {{name}}.',
-      unwantedPublicAccessibility:
-        'Public accessibility modifier on {{type}} {{name}}.',
-    },
-    schema: [
-      {
-        $defs: {
-          accessibilityLevel: {
-            oneOf: [
-              {
-                description: 'Always require an accessor.',
-                enum: ['explicit'],
-                type: 'string',
-              },
-              {
-                description: 'Require an accessor except when public.',
-                enum: ['no-public'],
-                type: 'string',
-              },
-              {
-                description: 'Never check whether there is an accessor.',
-                enum: ['off'],
-                type: 'string',
-              },
-            ],
-          },
-        },
-        additionalProperties: false,
-        properties: {
-          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
-          ignoredMethodNames: {
-            items: {
-              type: 'string',
-            },
-            type: 'array',
-          },
-          overrides: {
-            additionalProperties: false,
-            properties: {
-              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              parameterProperties: {
-                $ref: '#/items/0/$defs/accessibilityLevel',
-              },
-              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
-            },
-
-            type: 'object',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'explicit-member-accessibility',
 });
 
 function rangeToLoc(

@@ -14,6 +14,24 @@ import {
 } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      preferFind: 'Prefer .find(...) instead of .filter(...)[0].',
+      preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
+    },
+    schema: [],
+  },
+
+  name: 'prefer-find',
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
@@ -302,24 +320,6 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-
-  meta: {
-    docs: {
-      description:
-        'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      preferFind: 'Prefer .find(...) instead of .filter(...)[0].',
-      preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-find',
 });
 
 /**

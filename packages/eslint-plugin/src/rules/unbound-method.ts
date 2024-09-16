@@ -104,6 +104,38 @@ const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      ignoreStatic: false,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Enforce unbound methods are called with their expected scope',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      unbound: BASE_MESSAGE,
+      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoreStatic: {
+            type: 'boolean',
+            description:
+              'Whether to skip checking whether `static` methods are correctly bound.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'unbound-method',
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(context.filename);
@@ -241,38 +273,6 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      ignoreStatic: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Enforce unbound methods are called with their expected scope',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      unbound: BASE_MESSAGE,
-      unboundWithoutThisAnnotation: `${BASE_MESSAGE}\nIf your function does not access \`this\`, you can annotate it with \`this: void\`, or consider using an arrow function instead.`,
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoreStatic: {
-            description:
-              'Whether to skip checking whether `static` methods are correctly bound.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'unbound-method',
 });
 
 function isNodeInsideTypeDeclaration(node: TSESTree.Node): boolean {

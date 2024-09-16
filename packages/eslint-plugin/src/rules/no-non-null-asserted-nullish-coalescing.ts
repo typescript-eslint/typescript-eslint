@@ -31,6 +31,23 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
 }
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Disallow non-null assertions in the left operand of a nullish coalescing operator',
+      recommended: 'strict',
+    },
+    hasSuggestions: true,
+    messages: {
+      noNonNullAssertedNullishCoalescing:
+        'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
+      suggestRemovingNonNull: 'Remove the non-null assertion.',
+    },
+    schema: [],
+  },
+  name: 'no-non-null-asserted-nullish-coalescing',
   create(context) {
     return {
       'LogicalExpression[operator = "??"] > TSNonNullExpression.left'(
@@ -80,21 +97,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description:
-        'Disallow non-null assertions in the left operand of a nullish coalescing operator',
-      recommended: 'strict',
-    },
-    hasSuggestions: true,
-    messages: {
-      noNonNullAssertedNullishCoalescing:
-        'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
-      suggestRemovingNonNull: 'Remove the non-null assertion.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-non-null-asserted-nullish-coalescing',
 });

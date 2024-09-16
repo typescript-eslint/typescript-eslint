@@ -22,6 +22,19 @@ type MemberDeclaration =
   | TSESTree.NamedExportDeclarations;
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require that function overload signatures be consecutive',
+      recommended: 'stylistic',
+    },
+    messages: {
+      adjacentSignature: 'All {{name}} signatures should be adjacent.',
+    },
+    schema: [],
+  },
+  name: 'adjacent-overload-signatures',
   create(context) {
     interface Method {
       callSignature: boolean;
@@ -57,8 +70,8 @@ export default createRule({
           }
           return {
             name,
-            callSignature: false,
             type: MemberNameType.Normal,
+            callSignature: false,
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
@@ -70,14 +83,14 @@ export default createRule({
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return {
             name: 'call',
-            callSignature: true,
             type: MemberNameType.Normal,
+            callSignature: true,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
             name: 'new',
-            callSignature: false,
             type: MemberNameType.Normal,
+            callSignature: false,
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
@@ -155,17 +168,4 @@ export default createRule({
       TSTypeLiteral: checkBodyForOverloadMethods,
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Require that function overload signatures be consecutive',
-      recommended: 'stylistic',
-    },
-    messages: {
-      adjacentSignature: 'All {{name}} signatures should be adjacent.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'adjacent-overload-signatures',
 });

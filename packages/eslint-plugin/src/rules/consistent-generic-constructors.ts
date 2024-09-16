@@ -8,6 +8,29 @@ type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
 type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: ['constructor'],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
+      recommended: 'stylistic',
+    },
+    fixable: 'code',
+    messages: {
+      preferConstructor:
+        'The generic type arguments should be specified as part of the constructor type arguments.',
+      preferTypeAnnotation:
+        'The generic type arguments should be specified as part of the type annotation.',
+    },
+    schema: [
+      {
+        type: 'string',
+        enum: ['type-annotation', 'constructor'],
+      },
+    ],
+  },
+  name: 'consistent-generic-constructors',
   create(context, [mode]) {
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
@@ -123,27 +146,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: ['constructor'],
-  meta: {
-    docs: {
-      description:
-        'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
-      recommended: 'stylistic',
-    },
-    fixable: 'code',
-    messages: {
-      preferConstructor:
-        'The generic type arguments should be specified as part of the constructor type arguments.',
-      preferTypeAnnotation:
-        'The generic type arguments should be specified as part of the type annotation.',
-    },
-    schema: [
-      {
-        enum: ['type-annotation', 'constructor'],
-        type: 'string',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'consistent-generic-constructors',
 });

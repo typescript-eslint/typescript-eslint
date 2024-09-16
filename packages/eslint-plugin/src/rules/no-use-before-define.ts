@@ -216,6 +216,51 @@ type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allowNamedExports: false,
+      classes: true,
+      enums: true,
+      functions: true,
+      ignoreTypeReferences: true,
+      typedefs: true,
+      variables: true,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow the use of variables before they are defined',
+      extendsBaseRule: true,
+    },
+    messages: {
+      noUseBeforeDefine: "'{{name}}' was used before it was defined.",
+    },
+    schema: [
+      {
+        oneOf: [
+          {
+            type: 'string',
+            enum: ['nofunc'],
+          },
+          {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              allowNamedExports: { type: 'boolean' },
+              classes: { type: 'boolean' },
+              enums: { type: 'boolean' },
+              functions: { type: 'boolean' },
+              ignoreTypeReferences: { type: 'boolean' },
+              typedefs: { type: 'boolean' },
+              variables: { type: 'boolean' },
+            },
+          },
+        ],
+      },
+    ],
+  },
+  name: 'no-use-before-define',
   create(context, optionsWithDefault) {
     const options = parseOptions(optionsWithDefault[0]);
 
@@ -321,49 +366,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowNamedExports: false,
-      classes: true,
-      enums: true,
-      functions: true,
-      ignoreTypeReferences: true,
-      typedefs: true,
-      variables: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Disallow the use of variables before they are defined',
-      extendsBaseRule: true,
-    },
-    messages: {
-      noUseBeforeDefine: "'{{name}}' was used before it was defined.",
-    },
-    schema: [
-      {
-        oneOf: [
-          {
-            enum: ['nofunc'],
-            type: 'string',
-          },
-          {
-            additionalProperties: false,
-            properties: {
-              allowNamedExports: { type: 'boolean' },
-              classes: { type: 'boolean' },
-              enums: { type: 'boolean' },
-              functions: { type: 'boolean' },
-              ignoreTypeReferences: { type: 'boolean' },
-              typedefs: { type: 'boolean' },
-              variables: { type: 'boolean' },
-            },
-            type: 'object',
-          },
-        ],
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-use-before-define',
 });

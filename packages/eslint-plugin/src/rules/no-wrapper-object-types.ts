@@ -16,6 +16,21 @@ const classNames = new Set([
 ]);
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'problem',
+    docs: {
+      description: 'Disallow using confusing built-in primitive class wrappers',
+      recommended: 'recommended',
+    },
+    fixable: 'code',
+    messages: {
+      bannedClassType:
+        'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
+    },
+    schema: [],
+  },
+  name: 'no-wrapper-object-types',
   create(context) {
     function checkBannedTypes(
       node: TSESTree.EntityName | TSESTree.Expression,
@@ -54,19 +69,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow using confusing built-in primitive class wrappers',
-      recommended: 'recommended',
-    },
-    fixable: 'code',
-    messages: {
-      bannedClassType:
-        'Prefer using the primitive `{{preferred}}` as a type name, rather than the upper-cased `{{typeName}}`.',
-    },
-    schema: [],
-    type: 'problem',
-  },
-  name: 'no-wrapper-object-types',
 });

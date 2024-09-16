@@ -5,6 +5,34 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, getStaticStringValue } from '../util';
 
 export default createRule({
+  defaultOptions: [
+    {
+      allowBitwiseExpressions: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Require all enum members to be literal values',
+      recommended: 'strict',
+      requiresTypeChecking: false,
+    },
+    messages: {
+      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowBitwiseExpressions: {
+            type: 'boolean',
+          },
+        },
+      },
+    ],
+  },
+  name: 'prefer-literal-enum-member',
   create(context, [{ allowBitwiseExpressions }]) {
     function isIdentifierWithName(node: TSESTree.Node, name: string): boolean {
       return node.type === AST_NODE_TYPES.Identifier && node.name === name;
@@ -121,32 +149,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [
-    {
-      allowBitwiseExpressions: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description: 'Require all enum members to be literal values',
-      recommended: 'strict',
-      requiresTypeChecking: false,
-    },
-    messages: {
-      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowBitwiseExpressions: {
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'prefer-literal-enum-member',
 });

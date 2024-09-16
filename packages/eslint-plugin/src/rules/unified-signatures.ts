@@ -65,6 +65,41 @@ type Options = [
 ];
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      ignoreDifferentlyNamedParameters: false,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
+      // too opinionated to be recommended
+      recommended: 'strict',
+    },
+    messages: {
+      omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
+      omittingSingleParameter:
+        '{{failureStringStart}} with an optional parameter.',
+      singleParameterDifference:
+        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ignoreDifferentlyNamedParameters: {
+            type: 'boolean',
+            description:
+              'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'unified-signatures',
   create(context, [{ ignoreDifferentlyNamedParameters }]) {
     //----------------------------------------------------------------------
     // Helpers
@@ -550,41 +585,6 @@ export default createRule<Options, MessageIds>({
       'TSTypeLiteral:exit': checkScope,
     };
   },
-  defaultOptions: [
-    {
-      ignoreDifferentlyNamedParameters: false,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
-      // too opinionated to be recommended
-      recommended: 'strict',
-    },
-    messages: {
-      omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
-      omittingSingleParameter:
-        '{{failureStringStart}} with an optional parameter.',
-      singleParameterDifference:
-        '{{failureStringStart}} taking `{{type1}} | {{type2}}`.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          ignoreDifferentlyNamedParameters: {
-            description:
-              'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'unified-signatures',
 });
 
 function getExportingNode(

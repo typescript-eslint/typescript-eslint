@@ -14,6 +14,23 @@ type FunctionLike =
   | TSESTree.MethodDefinition['value'];
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Enforce that `this` is used when only `this` type is returned',
+      recommended: 'strict',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      useThisType: 'Use `this` type instead.',
+    },
+    schema: [],
+  },
+
+  name: 'prefer-return-this-type',
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -150,21 +167,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-
-  meta: {
-    docs: {
-      description:
-        'Enforce that `this` is used when only `this` type is returned',
-      recommended: 'strict',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      useThisType: 'Use `this` type instead.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'prefer-return-this-type',
 });

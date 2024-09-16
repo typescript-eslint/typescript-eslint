@@ -12,6 +12,22 @@ import {
 } from '../util';
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Enforce non-null assertions over explicit type casts',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    fixable: 'code',
+    messages: {
+      preferNonNullAssertion:
+        'Use a ! assertion to more succinctly remove null and undefined from the type.',
+    },
+    schema: [],
+  },
+  name: 'non-nullable-type-assertion-style',
   create(context) {
     const services = getParserServices(context);
 
@@ -128,20 +144,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Enforce non-null assertions over explicit type casts',
-      recommended: 'stylistic',
-      requiresTypeChecking: true,
-    },
-    fixable: 'code',
-    messages: {
-      preferNonNullAssertion:
-        'Use a ! assertion to more succinctly remove null and undefined from the type.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'non-nullable-type-assertion-style',
 });

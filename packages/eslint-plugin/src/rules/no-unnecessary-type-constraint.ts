@@ -14,6 +14,23 @@ type TypeParameterWithConstraint = MakeRequired<
 >;
 
 export default createRule({
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description: 'Disallow unnecessary constraints on generic types',
+      recommended: 'recommended',
+    },
+    hasSuggestions: true,
+    messages: {
+      removeUnnecessaryConstraint:
+        'Remove the unnecessary `{{constraint}}` constraint.',
+      unnecessaryConstraint:
+        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
+    },
+    schema: [],
+  },
+  name: 'no-unnecessary-type-constraint',
   create(context) {
     // In theory, we could use the type checker for more advanced constraint types...
     // ...but in practice, these types are rare, and likely not worth requiring type info.
@@ -98,21 +115,4 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
-  meta: {
-    docs: {
-      description: 'Disallow unnecessary constraints on generic types',
-      recommended: 'recommended',
-    },
-    hasSuggestions: true,
-    messages: {
-      removeUnnecessaryConstraint:
-        'Remove the unnecessary `{{constraint}}` constraint.',
-      unnecessaryConstraint:
-        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
-    },
-    schema: [],
-    type: 'suggestion',
-  },
-  name: 'no-unnecessary-type-constraint',
 });

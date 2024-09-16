@@ -23,6 +23,44 @@ type Options = [
 type MessageIds = 'shouldBeReadonly';
 
 export default createRule<Options, MessageIds>({
+  defaultOptions: [
+    {
+      allow: readonlynessOptionsDefaults.allow,
+      checkParameterProperties: true,
+      ignoreInferredTypes: false,
+      treatMethodsAsReadonly:
+        readonlynessOptionsDefaults.treatMethodsAsReadonly,
+    },
+  ],
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      shouldBeReadonly: 'Parameter should be a read only type.',
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: readonlynessOptionsSchema.properties.allow,
+          checkParameterProperties: {
+            type: 'boolean',
+          },
+          ignoreInferredTypes: {
+            type: 'boolean',
+          },
+          treatMethodsAsReadonly:
+            readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
+        },
+      },
+    ],
+  },
+  name: 'prefer-readonly-parameter-types',
   create(
     context,
     [
@@ -92,42 +130,4 @@ export default createRule<Options, MessageIds>({
       },
     };
   },
-  defaultOptions: [
-    {
-      allow: readonlynessOptionsDefaults.allow,
-      checkParameterProperties: true,
-      ignoreInferredTypes: false,
-      treatMethodsAsReadonly:
-        readonlynessOptionsDefaults.treatMethodsAsReadonly,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
-      requiresTypeChecking: true,
-    },
-    messages: {
-      shouldBeReadonly: 'Parameter should be a read only type.',
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allow: readonlynessOptionsSchema.properties.allow,
-          checkParameterProperties: {
-            type: 'boolean',
-          },
-          ignoreInferredTypes: {
-            type: 'boolean',
-          },
-          treatMethodsAsReadonly:
-            readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
-        },
-        type: 'object',
-      },
-    ],
-    type: 'suggestion',
-  },
-  name: 'prefer-readonly-parameter-types',
 });

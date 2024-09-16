@@ -55,6 +55,60 @@ const messagePromiseArrayVoid =
   ' or explicitly marking the expression as ignored with the `void` operator.';
 
 export default createRule<Options, MessageId>({
+  defaultOptions: [
+    {
+      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
+      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
+      checkThenables: false,
+      ignoreIIFE: false,
+      ignoreVoid: true,
+    },
+  ],
+  meta: {
+    type: 'problem',
+    docs: {
+      description:
+        'Require Promise-like statements to be handled appropriately',
+      recommended: 'recommended',
+      requiresTypeChecking: true,
+    },
+    hasSuggestions: true,
+    messages: {
+      floating: messageBase,
+      floatingFixAwait: 'Add await operator.',
+      floatingFixVoid: 'Add void operator to ignore.',
+      floatingPromiseArray: messagePromiseArray,
+      floatingPromiseArrayVoid: messagePromiseArrayVoid,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
+      floatingVoid: messageBaseVoid,
+    },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
+          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
+          checkThenables: {
+            type: 'boolean',
+            description:
+              'Whether to check all "Thenable"s, not just the built-in Promise type.',
+          },
+          ignoreIIFE: {
+            type: 'boolean',
+            description:
+              'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
+          },
+          ignoreVoid: {
+            type: 'boolean',
+            description: 'Whether to ignore `void` expressions.',
+          },
+        },
+      },
+    ],
+  },
+  name: 'no-floating-promises',
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -395,60 +449,6 @@ export default createRule<Options, MessageId>({
       return false;
     }
   },
-  defaultOptions: [
-    {
-      allowForKnownSafeCalls: readonlynessOptionsDefaults.allow,
-      allowForKnownSafePromises: readonlynessOptionsDefaults.allow,
-      checkThenables: false,
-      ignoreIIFE: false,
-      ignoreVoid: true,
-    },
-  ],
-  meta: {
-    docs: {
-      description:
-        'Require Promise-like statements to be handled appropriately',
-      recommended: 'recommended',
-      requiresTypeChecking: true,
-    },
-    hasSuggestions: true,
-    messages: {
-      floating: messageBase,
-      floatingFixAwait: 'Add await operator.',
-      floatingFixVoid: 'Add void operator to ignore.',
-      floatingPromiseArray: messagePromiseArray,
-      floatingPromiseArrayVoid: messagePromiseArrayVoid,
-      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
-      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
-      floatingVoid: messageBaseVoid,
-    },
-    schema: [
-      {
-        additionalProperties: false,
-        properties: {
-          allowForKnownSafeCalls: readonlynessOptionsSchema.properties.allow,
-          allowForKnownSafePromises: readonlynessOptionsSchema.properties.allow,
-          checkThenables: {
-            description:
-              'Whether to check all "Thenable"s, not just the built-in Promise type.',
-            type: 'boolean',
-          },
-          ignoreIIFE: {
-            description:
-              'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
-            type: 'boolean',
-          },
-          ignoreVoid: {
-            description: 'Whether to ignore `void` expressions.',
-            type: 'boolean',
-          },
-        },
-        type: 'object',
-      },
-    ],
-    type: 'problem',
-  },
-  name: 'no-floating-promises',
 });
 
 function hasMatchingSignature(
