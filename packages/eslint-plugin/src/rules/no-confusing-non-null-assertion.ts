@@ -1,11 +1,8 @@
-import { MessagingOptions } from 'node:child_process';
-
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type {
   ReportDescriptor,
   RuleFix,
-  SuggestionReportDescriptor,
 } from '@typescript-eslint/utils/ts-eslint';
 
 import { createRule } from '../util';
