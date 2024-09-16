@@ -117,7 +117,7 @@ export default createRule<Options, MessageIds>({
               ? param.parameter
               : param;
 
-          if (ignoreInferredTypes && actualParam.typeAnnotation == null) {
+          if (ignoreInferredTypes && actualParam.typeAnnotation === undefined) {
             continue;
           }
 
