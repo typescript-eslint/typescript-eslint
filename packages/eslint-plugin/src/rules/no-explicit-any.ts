@@ -183,16 +183,16 @@ export default createRule<Options, MessageIds>({
           fix: null,
           suggest: [
             {
+              messageId: 'suggestUnknown',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.replaceText(node, 'unknown');
               },
-              messageId: 'suggestUnknown',
             },
             {
+              messageId: 'suggestNever',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.replaceText(node, 'never');
               },
-              messageId: 'suggestNever',
             },
           ],
         };
@@ -203,8 +203,8 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          messageId: 'unexpectedAny',
           node,
+          messageId: 'unexpectedAny',
           ...fixOrSuggest,
         });
       },

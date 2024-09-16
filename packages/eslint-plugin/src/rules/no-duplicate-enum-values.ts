@@ -59,11 +59,11 @@ export default createRule({
 
           if (seenValues.has(value)) {
             context.report({
+              node: member,
+              messageId: 'duplicateValue',
               data: {
                 value,
               },
-              messageId: 'duplicateValue',
-              node: member,
             });
           } else {
             seenValues.add(value);

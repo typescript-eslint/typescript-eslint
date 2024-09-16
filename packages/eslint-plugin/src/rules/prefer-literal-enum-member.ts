@@ -143,8 +143,8 @@ export default createRule({
         }
 
         context.report({
-          messageId: 'notLiteral',
           node: node.id,
+          messageId: 'notLiteral',
         });
       },
     };

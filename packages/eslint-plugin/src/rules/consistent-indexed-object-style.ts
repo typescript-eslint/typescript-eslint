@@ -78,6 +78,8 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
+        node,
+        messageId: 'preferRecord',
         fix: safeFix
           ? (fixer): TSESLint.RuleFix => {
               const key = context.sourceCode.getText(keyType.typeAnnotation);
@@ -90,8 +92,6 @@ export default createRule<Options, MessageIds>({
               return fixer.replaceText(node, `${prefix}${record}${postfix}`);
             }
           : null,
-        messageId: 'preferRecord',
-        node,
       });
     }
 
@@ -112,13 +112,13 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
+            node,
+            messageId: 'preferIndexSignature',
             fix(fixer) {
               const key = context.sourceCode.getText(params[0]);
               const type = context.sourceCode.getText(params[1]);
               return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
             },
-            messageId: 'preferIndexSignature',
-            node,
           });
         },
       }),

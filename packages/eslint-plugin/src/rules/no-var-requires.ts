@@ -86,8 +86,8 @@ export default createRule<Options, MessageIds>({
 
           if (!variable?.identifiers.length) {
             context.report({
-              messageId: 'noVarReqs',
               node,
+              messageId: 'noVarReqs',
             });
           }
         }

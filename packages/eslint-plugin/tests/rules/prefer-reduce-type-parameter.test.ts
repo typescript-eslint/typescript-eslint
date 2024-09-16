@@ -15,6 +15,49 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('prefer-reduce-type-parameter', rule, {
+  valid: [
+    `
+      new (class Mine {
+        reduce() {}
+      })().reduce(() => {}, 1 as any);
+    `,
+    `
+      class Mine {
+        reduce() {}
+      }
+
+      new Mine().reduce(() => {}, 1 as any);
+    `,
+    `
+      import { Reducable } from './class';
+
+      new Reducable().reduce(() => {}, 1 as any);
+    `,
+    "[1, 2, 3]['reduce']((sum, num) => sum + num, 0);",
+    '[1, 2, 3][null]((sum, num) => sum + num, 0);',
+    '[1, 2, 3]?.[null]((sum, num) => sum + num, 0);',
+    '[1, 2, 3].reduce((sum, num) => sum + num, 0);',
+    '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
+    '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
+    `
+      declare const tuple: [number, number, number];
+      tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
+    `,
+    `
+      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
+      declare const tuple: [number, number, number] | Reducer;
+      tuple.reduce(a => {
+        return a.concat(1);
+      }, [] as number[]);
+    `,
+    `
+      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
+      declare const arrayOrReducer: number[] & Reducer;
+      arrayOrReducer.reduce(a => {
+        return a.concat(1);
+      }, [] as number[]);
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -232,48 +275,5 @@ declare const tuple: [number, number, number] & number[];
 tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
       `,
     },
-  ],
-  valid: [
-    `
-      new (class Mine {
-        reduce() {}
-      })().reduce(() => {}, 1 as any);
-    `,
-    `
-      class Mine {
-        reduce() {}
-      }
-
-      new Mine().reduce(() => {}, 1 as any);
-    `,
-    `
-      import { Reducable } from './class';
-
-      new Reducable().reduce(() => {}, 1 as any);
-    `,
-    "[1, 2, 3]['reduce']((sum, num) => sum + num, 0);",
-    '[1, 2, 3][null]((sum, num) => sum + num, 0);',
-    '[1, 2, 3]?.[null]((sum, num) => sum + num, 0);',
-    '[1, 2, 3].reduce((sum, num) => sum + num, 0);',
-    '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
-    '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
-    `
-      declare const tuple: [number, number, number];
-      tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
-    `,
-    `
-      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
-      declare const tuple: [number, number, number] | Reducer;
-      tuple.reduce(a => {
-        return a.concat(1);
-      }, [] as number[]);
-    `,
-    `
-      type Reducer = { reduce: (callback: (arg: any) => any, arg: any) => any };
-      declare const arrayOrReducer: number[] & Reducer;
-      arrayOrReducer.reduce(a => {
-        return a.concat(1);
-      }, [] as number[]);
-    `,
   ],
 });

@@ -62,6 +62,319 @@ function nullishTypeInvalidTest(
 }
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
+  valid: [
+    ...typeValidTest(
+      type => `
+declare const x: ${type};
+x || 'foo';
+      `,
+    ),
+    ...nullishTypeValidTest(
+      (nullish, type) => `
+declare const x: ${type} | ${nullish};
+x ?? 'foo';
+      `,
+    ),
+
+    {
+      code: 'x !== undefined && x !== null ? x : y;',
+      options: [{ ignoreTernaryTests: true }],
+    },
+
+    ...[
+      'x !== undefined && x !== null ? "foo" : "bar";',
+      'x !== null && x !== undefined && x !== 5 ? x : y',
+      'x === null || x === undefined || x === 5 ? x : y',
+      'x === undefined && x !== null ? x : y;',
+      'x === undefined && x === null ? x : y;',
+      'x !== undefined && x === null ? x : y;',
+      'x === undefined || x !== null ? x : y;',
+      'x === undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? x : y;',
+      'x !== undefined || x === null ? y : x;',
+      'x === null || x === null ? y : x;',
+      'x === undefined || x === undefined ? y : x;',
+      'x == null ? x : y;',
+      'undefined == null ? x : y;',
+      'undefined != z ? x : y;',
+      'x == undefined ? x : y;',
+      'x != null ? y : x;',
+      'x != undefined ? y : x;',
+      'null == x ? x : y;',
+      'undefined == x ? x : y;',
+      'null != x ? y : x;',
+      'undefined != x ? y : x;',
+      `
+declare const x: string;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | undefined;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | null;
+x === undefined ? x : y;
+      `,
+      `
+declare const x: string | undefined | null;
+x !== undefined ? x : y;
+      `,
+      `
+declare const x: string | undefined | null;
+x !== null ? x : y;
+      `,
+      `
+declare const x: string | null | any;
+x === null ? x : y;
+      `,
+      `
+declare const x: string | null | unknown;
+x === null ? x : y;
+      `,
+    ].map(code => ({
+      code,
+      options: [{ ignoreTernaryTests: false }] as const,
+    })),
+
+    // ignoreConditionalTests
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const x: ${type} | ${nullish};
+x || 'foo' ? null : null;
+      `,
+    })),
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const x: ${type} | ${nullish};
+if (x || 'foo') {}
+      `,
+    })),
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const x: ${type} | ${nullish};
+do {} while (x || 'foo')
+      `,
+    })),
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const x: ${type} | ${nullish};
+for (;x || 'foo';) {}
+      `,
+    })),
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const x: ${type} | ${nullish};
+while (x || 'foo') {}
+      `,
+    })),
+
+    // ignoreMixedLogicalExpressions
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+a || b && c;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+declare const d: ${type} | ${nullish};
+a || b || c && d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...nullishTypeValidTest((nullish, type) => ({
+      code: `
+declare const a: ${type} | ${nullish};
+declare const b: ${type} | ${nullish};
+declare const c: ${type} | ${nullish};
+declare const d: ${type} | ${nullish};
+a && b || c || d;
+      `,
+      options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    `
+      declare const x: any;
+      declare const y: number;
+      x || y;
+    `,
+    `
+      declare const x: unknown;
+      declare const y: number;
+      x || y;
+    `,
+    `
+      declare const x: never;
+      declare const y: number;
+      x || y;
+    `,
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+  ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
       code: `
@@ -1528,319 +1841,6 @@ x ?? y;
         },
       ],
       output: null,
-    },
-  ],
-  valid: [
-    ...typeValidTest(
-      type => `
-declare const x: ${type};
-x || 'foo';
-      `,
-    ),
-    ...nullishTypeValidTest(
-      (nullish, type) => `
-declare const x: ${type} | ${nullish};
-x ?? 'foo';
-      `,
-    ),
-
-    {
-      code: 'x !== undefined && x !== null ? x : y;',
-      options: [{ ignoreTernaryTests: true }],
-    },
-
-    ...[
-      'x !== undefined && x !== null ? "foo" : "bar";',
-      'x !== null && x !== undefined && x !== 5 ? x : y',
-      'x === null || x === undefined || x === 5 ? x : y',
-      'x === undefined && x !== null ? x : y;',
-      'x === undefined && x === null ? x : y;',
-      'x !== undefined && x === null ? x : y;',
-      'x === undefined || x !== null ? x : y;',
-      'x === undefined || x === null ? x : y;',
-      'x !== undefined || x === null ? x : y;',
-      'x !== undefined || x === null ? y : x;',
-      'x === null || x === null ? y : x;',
-      'x === undefined || x === undefined ? y : x;',
-      'x == null ? x : y;',
-      'undefined == null ? x : y;',
-      'undefined != z ? x : y;',
-      'x == undefined ? x : y;',
-      'x != null ? y : x;',
-      'x != undefined ? y : x;',
-      'null == x ? x : y;',
-      'undefined == x ? x : y;',
-      'null != x ? y : x;',
-      'undefined != x ? y : x;',
-      `
-declare const x: string;
-x === null ? x : y;
-      `,
-      `
-declare const x: string | undefined;
-x === null ? x : y;
-      `,
-      `
-declare const x: string | null;
-x === undefined ? x : y;
-      `,
-      `
-declare const x: string | undefined | null;
-x !== undefined ? x : y;
-      `,
-      `
-declare const x: string | undefined | null;
-x !== null ? x : y;
-      `,
-      `
-declare const x: string | null | any;
-x === null ? x : y;
-      `,
-      `
-declare const x: string | null | unknown;
-x === null ? x : y;
-      `,
-    ].map(code => ({
-      code,
-      options: [{ ignoreTernaryTests: false }] as const,
-    })),
-
-    // ignoreConditionalTests
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-x || 'foo' ? null : null;
-      `,
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-if (x || 'foo') {}
-      `,
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-do {} while (x || 'foo')
-      `,
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-for (;x || 'foo';) {}
-      `,
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-while (x || 'foo') {}
-      `,
-    })),
-
-    // ignoreMixedLogicalExpressions
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-a || b && c;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
-a || b || c && d;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...nullishTypeValidTest((nullish, type) => ({
-      code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
-a && b || c || d;
-      `,
-      options: [{ ignoreMixedLogicalExpressions: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare const x: ${type} | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare const x: ${type} | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare const x: (${type} & { __brand?: any }) | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: { [type]: true } }],
-    })),
-    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
-      code: `
-declare const x: (${type} & { __brand?: any }) | undefined;
-x || y;
-      `,
-      options: [{ ignorePrimitives: true }],
-    })),
-    `
-      declare const x: any;
-      declare const y: number;
-      x || y;
-    `,
-    `
-      declare const x: unknown;
-      declare const y: number;
-      x || y;
-    `,
-    `
-      declare const x: never;
-      declare const y: number;
-      x || y;
-    `,
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: true,
-            boolean: true,
-            number: false,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            bigint: false,
-            boolean: true,
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare const x: Enum | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 0,
-  B = 1,
-  C = 2,
-}
-declare const x: Enum.A | Enum.B | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare const x: Enum | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-enum Enum {
-  A = 'a',
-  B = 'b',
-  C = 'c',
-}
-declare const x: Enum.A | Enum.B | undefined;
-x || y;
-      `,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-          },
-        },
-      ],
     },
   ],
 });

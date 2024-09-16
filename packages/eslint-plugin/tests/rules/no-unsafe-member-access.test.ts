@@ -14,6 +14,60 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-member-access', rule, {
+  valid: [
+    `
+function foo(x: { a: number }, y: any) {
+  x[y++];
+}
+    `,
+    `
+function foo(x: { a: number }) {
+  x.a;
+}
+    `,
+    `
+function foo(x?: { a: number }) {
+  x?.a;
+}
+    `,
+    `
+function foo(x: { a: number }) {
+  x['a'];
+}
+    `,
+    `
+function foo(x?: { a: number }) {
+  x?.['a'];
+}
+    `,
+    `
+function foo(x: { a: number }, y: string) {
+  x[y];
+}
+    `,
+    `
+function foo(x?: { a: number }, y: string) {
+  x?.[y];
+}
+    `,
+    `
+function foo(x: string[]) {
+  x[1];
+}
+    `,
+    `
+class B implements FG.A {}
+    `,
+    `
+interface B extends FG.A {}
+    `,
+    `
+class B implements F.S.T.A {}
+    `,
+    `
+interface B extends F.S.T.A {}
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -328,59 +382,5 @@ class C {
         },
       ],
     },
-  ],
-  valid: [
-    `
-function foo(x: { a: number }, y: any) {
-  x[y++];
-}
-    `,
-    `
-function foo(x: { a: number }) {
-  x.a;
-}
-    `,
-    `
-function foo(x?: { a: number }) {
-  x?.a;
-}
-    `,
-    `
-function foo(x: { a: number }) {
-  x['a'];
-}
-    `,
-    `
-function foo(x?: { a: number }) {
-  x?.['a'];
-}
-    `,
-    `
-function foo(x: { a: number }, y: string) {
-  x[y];
-}
-    `,
-    `
-function foo(x?: { a: number }, y: string) {
-  x?.[y];
-}
-    `,
-    `
-function foo(x: string[]) {
-  x[1];
-}
-    `,
-    `
-class B implements FG.A {}
-    `,
-    `
-interface B extends FG.A {}
-    `,
-    `
-class B implements F.S.T.A {}
-    `,
-    `
-interface B extends F.S.T.A {}
-    `,
   ],
 });

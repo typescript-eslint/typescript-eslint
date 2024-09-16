@@ -116,15 +116,17 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
             return context.report({
-              fix: wrapVoidFix,
-              messageId: 'invalidVoidExprArrowWrapVoid',
               node,
+              messageId: 'invalidVoidExprArrowWrapVoid',
+              fix: wrapVoidFix,
             });
           }
 
           // handle wrapping with braces
           const arrowFunction = invalidAncestor;
           return context.report({
+            node,
+            messageId: 'invalidVoidExprArrow',
             fix(fixer) {
               if (!canFix(arrowFunction)) {
                 return null;
@@ -160,8 +162,6 @@ export default createRule<Options, MessageId>({
               }
               return fixer.replaceText(arrowBody, newArrowBodyText);
             },
-            messageId: 'invalidVoidExprArrow',
-            node,
           });
         }
 
@@ -171,15 +171,17 @@ export default createRule<Options, MessageId>({
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
             return context.report({
-              fix: wrapVoidFix,
-              messageId: 'invalidVoidExprReturnWrapVoid',
               node,
+              messageId: 'invalidVoidExprReturnWrapVoid',
+              fix: wrapVoidFix,
             });
           }
 
           if (isFinalReturn(invalidAncestor)) {
             // remove the `return` keyword
             return context.report({
+              node,
+              messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
                 if (!canFix(invalidAncestor)) {
                   return null;
@@ -193,13 +195,13 @@ export default createRule<Options, MessageId>({
                 }
                 return fixer.replaceText(invalidAncestor, newReturnStmtText);
               },
-              messageId: 'invalidVoidExprReturnLast',
-              node,
             });
           }
 
           // move before the `return` keyword
           return context.report({
+            node,
+            messageId: 'invalidVoidExprReturn',
             fix(fixer) {
               const returnValue = invalidAncestor.argument;
               const returnValueText = context.sourceCode.getText(returnValue);
@@ -217,8 +219,6 @@ export default createRule<Options, MessageId>({
               }
               return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
-            messageId: 'invalidVoidExprReturn',
-            node,
           });
         }
 
@@ -226,15 +226,15 @@ export default createRule<Options, MessageId>({
         if (options.ignoreVoidOperator) {
           // this would be reported by this rule btw. such irony
           return context.report({
-            messageId: 'invalidVoidExprWrapVoid',
             node,
-            suggest: [{ fix: wrapVoidFix, messageId: 'voidExprWrapVoid' }],
+            messageId: 'invalidVoidExprWrapVoid',
+            suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
           });
         }
 
         context.report({
-          messageId: 'invalidVoidExpr',
           node,
+          messageId: 'invalidVoidExpr',
         });
       },
     };

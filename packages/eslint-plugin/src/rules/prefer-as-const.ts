@@ -38,21 +38,21 @@ export default createRule({
       ) {
         if (canFix) {
           context.report({
-            fix: fixer => fixer.replaceText(typeNode, 'const'),
-            messageId: 'preferConstAssertion',
             node: typeNode,
+            messageId: 'preferConstAssertion',
+            fix: fixer => fixer.replaceText(typeNode, 'const'),
           });
         } else {
           context.report({
-            messageId: 'variableConstAssertion',
             node: typeNode,
+            messageId: 'variableConstAssertion',
             suggest: [
               {
+                messageId: 'variableSuggest',
                 fix: (fixer): TSESLint.RuleFix[] => [
                   fixer.remove(typeNode.parent),
                   fixer.insertTextAfter(valueNode, ' as const'),
                 ],
-                messageId: 'variableSuggest',
               },
             ],
           });

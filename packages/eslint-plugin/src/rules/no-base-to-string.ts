@@ -70,12 +70,12 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
+        node,
+        messageId: 'baseToString',
         data: {
           name: context.sourceCode.getText(node),
           certainty,
         },
-        messageId: 'baseToString',
-        node,
       });
     }
 

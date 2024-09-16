@@ -5,47 +5,6 @@ import rule from '../../src/rules/max-params';
 const ruleTester = new RuleTester();
 
 ruleTester.run('max-params', rule, {
-  invalid: [
-    { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
-    {
-      code: 'const foo = function (a, b, c, d) {};',
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: 'const foo = (a, b, c, d) => {};',
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: 'const foo = a => {};',
-      errors: [{ messageId: 'exceed' }],
-      options: [{ max: 0 }],
-    },
-    {
-      code: `
-class Foo {
-  method(this: void, a, b, c, d) {}
-}
-      `,
-      errors: [{ messageId: 'exceed' }],
-    },
-    {
-      code: `
-class Foo {
-  method(this: void, a) {}
-}
-      `,
-      errors: [{ messageId: 'exceed' }],
-      options: [{ countVoidThis: true, max: 1 }],
-    },
-    {
-      code: `
-class Foo {
-  method(this: Foo, a, b, c) {}
-}
-      `,
-      errors: [{ messageId: 'exceed' }],
-    },
-  ],
   valid: [
     'function foo() {}',
     'const foo = function () {};',
@@ -97,6 +56,47 @@ class Foo {
 }
       `,
       options: [{ countVoidThis: true, max: 2 }],
+    },
+  ],
+  invalid: [
+    { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
+    {
+      code: 'const foo = function (a, b, c, d) {};',
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: 'const foo = (a, b, c, d) => {};',
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: 'const foo = a => {};',
+      errors: [{ messageId: 'exceed' }],
+      options: [{ max: 0 }],
+    },
+    {
+      code: `
+class Foo {
+  method(this: void, a, b, c, d) {}
+}
+      `,
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: `
+class Foo {
+  method(this: void, a) {}
+}
+      `,
+      errors: [{ messageId: 'exceed' }],
+      options: [{ countVoidThis: true, max: 1 }],
+    },
+    {
+      code: `
+class Foo {
+  method(this: Foo, a, b, c) {}
+}
+      `,
+      errors: [{ messageId: 'exceed' }],
     },
   ],
 });

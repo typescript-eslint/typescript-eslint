@@ -30,8 +30,8 @@ export default createRule({
         isReferenceToGlobalFunction('Function', node, context.sourceCode)
       ) {
         context.report({
-          messageId: 'bannedFunctionType',
           node,
+          messageId: 'bannedFunctionType',
         });
       }
     }

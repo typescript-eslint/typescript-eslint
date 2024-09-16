@@ -66,11 +66,11 @@ export default createRule<Options, MessageIds>({
       references.forEach(reference => {
         if (reference.importName === source.value) {
           context.report({
+            node: reference.comment,
+            messageId: 'tripleSlashReference',
             data: {
               module: reference.importName,
             },
-            messageId: 'tripleSlashReference',
-            node: reference.comment,
           });
         }
       });
@@ -104,11 +104,11 @@ export default createRule<Options, MessageIds>({
               (referenceResult[1] === 'lib' && lib === 'never')
             ) {
               context.report({
+                node: comment,
+                messageId: 'tripleSlashReference',
                 data: {
                   module: referenceResult[2],
                 },
-                messageId: 'tripleSlashReference',
-                node: comment,
               });
               return;
             }

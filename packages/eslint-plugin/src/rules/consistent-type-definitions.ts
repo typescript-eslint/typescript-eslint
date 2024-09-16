@@ -50,6 +50,8 @@ export default createRule({
           node: TSESTree.TSTypeAliasDeclaration,
         ): void {
           context.report({
+            node: node.id,
+            messageId: 'interfaceOverType',
             fix(fixer) {
               const typeNode = node.typeParameters ?? node.id;
               const fixes: TSESLint.RuleFix[] = [];
@@ -78,8 +80,6 @@ export default createRule({
 
               return fixes;
             },
-            messageId: 'interfaceOverType',
-            node: node.id,
           });
         },
       }),
@@ -124,8 +124,8 @@ export default createRule({
                 return fixes;
               };
           context.report({
-            messageId: 'typeOverInterface',
             node: node.id,
+            messageId: 'typeOverInterface',
             /**
              * remove automatically fix when the interface is within a declare global
              * @see {@link https://github.com/typescript-eslint/typescript-eslint/issues/2707}

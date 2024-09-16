@@ -128,9 +128,9 @@ export default createRule<Options, MessageId>({
 
           if (!recursivelyCheckType(expressionType)) {
             context.report({
-              data: { type: checker.typeToString(expressionType) },
-              messageId: 'invalidType',
               node: expression,
+              messageId: 'invalidType',
+              data: { type: checker.typeToString(expressionType) },
             });
           }
         }

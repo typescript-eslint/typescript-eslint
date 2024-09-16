@@ -22,11 +22,11 @@ export default createRule({
       node: TSESTree.TSNonNullExpression,
     ): void {
       context.report({
+        node,
+        messageId: 'noExtraNonNullAssertion',
         fix(fixer) {
           return fixer.removeRange([node.range[1] - 1, node.range[1]]);
         },
-        messageId: 'noExtraNonNullAssertion',
-        node,
       });
     }
 

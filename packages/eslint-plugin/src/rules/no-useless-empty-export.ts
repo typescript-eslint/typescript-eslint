@@ -68,9 +68,9 @@ export default createRule({
       if (foundOtherExport) {
         for (const emptyExport of emptyExports) {
           context.report({
-            fix: fixer => fixer.remove(emptyExport),
-            messageId: 'uselessExport',
             node: emptyExport,
+            messageId: 'uselessExport',
+            fix: fixer => fixer.remove(emptyExport),
           });
         }
       }

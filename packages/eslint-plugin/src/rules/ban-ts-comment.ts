@@ -198,10 +198,11 @@ export default createRule<[Options], MessageIds>({
             if (directive === 'ignore') {
               // Special case to suggest @ts-expect-error instead of @ts-ignore
               context.report({
-                messageId: 'tsIgnoreInsteadOfExpectError',
                 node: comment,
+                messageId: 'tsIgnoreInsteadOfExpectError',
                 suggest: [
                   {
+                    messageId: 'replaceTsIgnoreWithTsExpectError',
                     fix(fixer): TSESLint.RuleFix {
                       const commentText = comment.value.replace(
                         /@ts-ignore/,
@@ -214,15 +215,14 @@ export default createRule<[Options], MessageIds>({
                           : `/*${commentText}*/`,
                       );
                     },
-                    messageId: 'replaceTsIgnoreWithTsExpectError',
                   },
                 ],
               });
             } else {
               context.report({
-                data: { directive },
-                messageId: 'tsDirectiveComment',
                 node: comment,
+                messageId: 'tsDirectiveComment',
+                data: { directive },
               });
             }
           }
@@ -241,15 +241,15 @@ export default createRule<[Options], MessageIds>({
               )
             ) {
               context.report({
-                data: { directive, minimumDescriptionLength },
-                messageId: 'tsDirectiveCommentRequiresDescription',
                 node: comment,
+                messageId: 'tsDirectiveCommentRequiresDescription',
+                data: { directive, minimumDescriptionLength },
               });
             } else if (format && !format.test(description)) {
               context.report({
-                data: { directive, format: format.source },
-                messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
                 node: comment,
+                messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+                data: { directive, format: format.source },
               });
             }
           }

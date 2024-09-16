@@ -15,6 +15,47 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-array-delete', rule, {
+  valid: [
+    `
+      declare const obj: { a: 1; b: 2 };
+      delete obj.a;
+    `,
+
+    `
+      declare const obj: { a: 1; b: 2 };
+      delete obj['a'];
+    `,
+
+    `
+      declare const arr: { a: 1; b: 2 }[][][][];
+      delete arr[0][0][0][0].a;
+    `,
+
+    `
+      declare const maybeArray: any;
+      delete maybeArray[0];
+    `,
+
+    `
+      declare const maybeArray: unknown;
+      delete maybeArray[0];
+    `,
+
+    `
+      declare function getObject<T extends { a: 1; b: 2 }>(): T;
+      delete getObject().a;
+    `,
+
+    `
+      declare function getObject<T extends number>(): { a: T; b: 2 };
+      delete getObject().a;
+    `,
+
+    `
+      declare const test: never;
+      delete test[0];
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -554,47 +595,5 @@ ruleTester.run('no-array-delete', rule, {
         },
       ],
     },
-  ],
-
-  valid: [
-    `
-      declare const obj: { a: 1; b: 2 };
-      delete obj.a;
-    `,
-
-    `
-      declare const obj: { a: 1; b: 2 };
-      delete obj['a'];
-    `,
-
-    `
-      declare const arr: { a: 1; b: 2 }[][][][];
-      delete arr[0][0][0][0].a;
-    `,
-
-    `
-      declare const maybeArray: any;
-      delete maybeArray[0];
-    `,
-
-    `
-      declare const maybeArray: unknown;
-      delete maybeArray[0];
-    `,
-
-    `
-      declare function getObject<T extends { a: 1; b: 2 }>(): T;
-      delete getObject().a;
-    `,
-
-    `
-      declare function getObject<T extends number>(): { a: T; b: 2 };
-      delete getObject().a;
-    `,
-
-    `
-      declare const test: never;
-      delete test[0];
-    `,
   ],
 });

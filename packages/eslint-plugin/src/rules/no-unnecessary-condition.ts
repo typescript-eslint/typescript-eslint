@@ -292,7 +292,7 @@ export default createRule<Options, MessageId>({
       }
 
       if (messageId) {
-        context.report({ messageId, node });
+        context.report({ node, messageId });
       }
     }
 
@@ -340,7 +340,7 @@ export default createRule<Options, MessageId>({
       }
 
       if (messageId) {
-        context.report({ messageId, node });
+        context.report({ node, messageId });
       }
     }
 
@@ -373,7 +373,7 @@ export default createRule<Options, MessageId>({
       const leftType = getConstrainedTypeAtLocation(services, node.left);
       const rightType = getConstrainedTypeAtLocation(services, node.right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
-        context.report({ messageId: 'literalBooleanExpression', node });
+        context.report({ node, messageId: 'literalBooleanExpression' });
         return;
       }
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
@@ -405,7 +405,7 @@ export default createRule<Options, MessageId>({
           (leftType.flags === NULL && !isComparable(rightType, NULL)) ||
           (rightType.flags === NULL && !isComparable(leftType, NULL))
         ) {
-          context.report({ messageId: 'noOverlapBooleanExpression', node });
+          context.report({ node, messageId: 'noOverlapBooleanExpression' });
           return;
         }
       }
@@ -518,14 +518,14 @@ export default createRule<Options, MessageId>({
         }
         if (!returnTypes.some(isPossiblyFalsy)) {
           return context.report({
-            messageId: 'alwaysTruthyFunc',
             node: callback,
+            messageId: 'alwaysTruthyFunc',
           });
         }
         if (!returnTypes.some(isPossiblyTruthy)) {
           return context.report({
-            messageId: 'alwaysFalsyFunc',
             node: callback,
+            messageId: 'alwaysFalsyFunc',
           });
         }
       }
@@ -687,12 +687,12 @@ export default createRule<Options, MessageId>({
       );
 
       context.report({
+        loc: questionDotOperator.loc,
+        node,
+        messageId: 'neverOptionalChain',
         fix(fixer) {
           return fixer.replaceText(questionDotOperator, fix);
         },
-        loc: questionDotOperator.loc,
-        messageId: 'neverOptionalChain',
-        node,
       });
     }
 

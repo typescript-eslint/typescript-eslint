@@ -112,9 +112,9 @@ export default createRule<[Options], MessageIds>({
             .includes(fullyQualifiedName)
         ) {
           context.report({
-            data: { generic: fullyQualifiedName },
-            messageId: 'invalidVoidForGeneric',
             node,
+            messageId: 'invalidVoidForGeneric',
+            data: { generic: fullyQualifiedName },
           });
         }
         return;
@@ -122,10 +122,10 @@ export default createRule<[Options], MessageIds>({
 
       if (!allowInGenericTypeArguments) {
         context.report({
+          node,
           messageId: allowAsThisParameter
             ? 'invalidVoidNotReturnOrThisParam'
             : 'invalidVoidNotReturn',
-          node,
         });
       }
     }
@@ -139,8 +139,8 @@ export default createRule<[Options], MessageIds>({
     ): void {
       if (parentNode.default !== node) {
         context.report({
-          messageId: getNotReturnOrGenericMessageId(node),
           node,
+          messageId: getNotReturnOrGenericMessageId(node),
         });
       }
     }
@@ -214,6 +214,7 @@ export default createRule<[Options], MessageIds>({
         }
 
         context.report({
+          node,
           messageId:
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
@@ -222,7 +223,6 @@ export default createRule<[Options], MessageIds>({
                 : allowAsThisParameter
                   ? 'invalidVoidNotReturnOrThisParam'
                   : 'invalidVoidNotReturn',
-          node,
         });
       },
     };

@@ -278,10 +278,11 @@ export default createRule<Options, MessageIds>({
 
         if (isFixable) {
           context.report({
-            messageId: 'preferNullishOverTernary',
             node,
+            messageId: 'preferNullishOverTernary',
             suggest: [
               {
+                messageId: 'suggestNullish',
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '=='
@@ -295,7 +296,6 @@ export default createRule<Options, MessageIds>({
                     )}`,
                   );
                 },
-                messageId: 'suggestNullish',
               },
             ],
           });
@@ -376,12 +376,12 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          messageId: 'preferNullishOverOr',
           node: barBarOperator,
+          messageId: 'preferNullishOverOr',
           suggest: [
             {
-              fix,
               messageId: 'suggestNullish',
+              fix,
             },
           ],
         });

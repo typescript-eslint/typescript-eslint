@@ -130,6 +130,9 @@ export default createRule<Options, MessageIds>({
               : p1.typeAnnotation;
 
             context.report({
+              loc: p1.loc,
+              node: p1,
+              messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
                 type1: context.sourceCode.getText(
@@ -139,9 +142,6 @@ export default createRule<Options, MessageIds>({
                   typeAnnotation1?.typeAnnotation,
                 ),
               },
-              loc: p1.loc,
-              messageId: 'singleParameterDifference',
-              node: p1,
             });
             break;
           }
@@ -152,15 +152,15 @@ export default createRule<Options, MessageIds>({
               : otherSignature.loc.start.line;
 
             context.report({
-              data: {
-                failureStringStart: failureStringStart(lineOfOtherOverload),
-              },
               loc: extraParameter.loc,
+              node: extraParameter,
               messageId:
                 extraParameter.type === AST_NODE_TYPES.RestElement
                   ? 'omittingRestParameter'
                   : 'omittingSingleParameter',
-              node: extraParameter,
+              data: {
+                failureStringStart: failureStringStart(lineOfOtherOverload),
+              },
             });
           }
         }

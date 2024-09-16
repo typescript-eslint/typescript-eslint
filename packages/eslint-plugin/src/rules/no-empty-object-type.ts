@@ -109,11 +109,12 @@ export default createRule<Options, MessageIds>({
 
           if (extend.length === 0) {
             context.report({
-              data: { option: 'allowInterfaces' },
-              messageId: 'noEmptyInterface',
               node: node.id,
+              messageId: 'noEmptyInterface',
+              data: { option: 'allowInterfaces' },
               ...(!mergedWithClassDeclaration && {
                 suggest: ['object', 'unknown'].map(replacement => ({
+                  messageId: 'replaceEmptyInterface',
                   data: { replacement },
                   fix(fixer): TSESLint.RuleFix {
                     const id = context.sourceCode.getText(node.id);
@@ -126,7 +127,6 @@ export default createRule<Options, MessageIds>({
                       `type ${id}${typeParam} = ${replacement}`,
                     );
                   },
-                  messageId: 'replaceEmptyInterface',
                 })),
               }),
             });
@@ -134,11 +134,12 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            messageId: 'noEmptyInterfaceWithSuper',
             node: node.id,
+            messageId: 'noEmptyInterfaceWithSuper',
             ...(!mergedWithClassDeclaration && {
               suggest: [
                 {
+                  messageId: 'replaceEmptyInterfaceWithSuper',
                   fix(fixer): TSESLint.RuleFix {
                     const extended = context.sourceCode.getText(extend[0]);
                     const id = context.sourceCode.getText(node.id);
@@ -151,7 +152,6 @@ export default createRule<Options, MessageIds>({
                       `type ${id}${typeParam} = ${extended}`,
                     );
                   },
-                  messageId: 'replaceEmptyInterfaceWithSuper',
                 },
               ],
             }),
@@ -171,14 +171,14 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            data: { option: 'allowObjectTypes' },
-            messageId: 'noEmptyObject',
             node,
+            messageId: 'noEmptyObject',
+            data: { option: 'allowObjectTypes' },
             suggest: ['object', 'unknown'].map(replacement => ({
+              messageId: 'replaceEmptyObjectType',
               data: { replacement },
               fix: (fixer): TSESLint.RuleFix =>
                 fixer.replaceText(node, replacement),
-              messageId: 'replaceEmptyObjectType',
             })),
           });
         },

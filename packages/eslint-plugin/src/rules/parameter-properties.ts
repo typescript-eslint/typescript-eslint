@@ -118,11 +118,11 @@ export default createRule<Options, MessageIds>({
                   (node.parameter.left as TSESTree.Identifier).name;
 
             context.report({
+              node,
+              messageId: 'preferClassProperty',
               data: {
                 parameter: name,
               },
-              messageId: 'preferClassProperty',
-              node,
             });
           }
         },
@@ -187,11 +187,11 @@ export default createRule<Options, MessageIds>({
             )
           ) {
             context.report({
+              node: nodes.classProperty,
+              messageId: 'preferParameterProperty',
               data: {
                 parameter: name,
               },
-              messageId: 'preferParameterProperty',
-              node: nodes.classProperty,
             });
           }
         }

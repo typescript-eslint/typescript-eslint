@@ -44,10 +44,11 @@ export default createRule({
 
         if (!tsutils.isThenableType(checker, originalNode.expression, type)) {
           context.report({
-            messageId: 'await',
             node,
+            messageId: 'await',
             suggest: [
               {
+                messageId: 'removeAwait',
                 fix(fixer): TSESLint.RuleFix {
                   const awaitKeyword = nullThrows(
                     context.sourceCode.getFirstToken(node, isAwaitKeyword),
@@ -56,7 +57,6 @@ export default createRule({
 
                   return fixer.remove(awaitKeyword);
                 },
-                messageId: 'removeAwait',
               },
             ],
           });

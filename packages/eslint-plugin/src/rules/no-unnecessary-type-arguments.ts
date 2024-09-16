@@ -97,14 +97,14 @@ export default createRule<[], MessageIds>({
       }
 
       context.report({
+        node: arg,
+        messageId: 'unnecessaryTypeParameter',
         fix: fixer =>
           fixer.removeRange(
             i === 0
               ? esParameters.range
               : [esParameters.params[i - 1].range[1], arg.range[1]],
           ),
-        messageId: 'unnecessaryTypeParameter',
-        node: arg,
       });
     }
 

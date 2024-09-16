@@ -16,6 +16,173 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('promise-function-async', rule, {
+  valid: [
+    `
+const nonAsyncNonPromiseArrowFunction = (n: number) => n;
+    `,
+    `
+function nonAsyncNonPromiseFunctionDeclaration(n: number) {
+  return n;
+}
+    `,
+    `
+const asyncPromiseFunctionExpressionA = async function (p: Promise<void>) {
+  return p;
+};
+    `,
+    `
+const asyncPromiseFunctionExpressionB = async function () {
+  return new Promise<void>();
+};
+    `,
+    `
+class Test {
+  public nonAsyncNonPromiseArrowFunction = (n: number) => n;
+  public nonAsyncNonPromiseMethod() {
+    return 0;
+  }
+
+  public async asyncPromiseMethodA(p: Promise<void>) {
+    return p;
+  }
+
+  public async asyncPromiseMethodB() {
+    return new Promise<void>();
+  }
+}
+    `,
+    `
+class InvalidAsyncModifiers {
+  public constructor() {
+    return new Promise<void>();
+  }
+  public get asyncGetter() {
+    return new Promise<void>();
+  }
+  public set asyncGetter(p: Promise<void>) {
+    return p;
+  }
+  public get asyncGetterFunc() {
+    return async () => new Promise<void>();
+  }
+  public set asyncGetterFunc(p: () => Promise<void>) {
+    return p;
+  }
+}
+    `,
+    `
+const invalidAsyncModifiers = {
+  get asyncGetter() {
+    return new Promise<void>();
+  },
+  set asyncGetter(p: Promise<void>) {
+    return p;
+  },
+  get asyncGetterFunc() {
+    return async () => new Promise<void>();
+  },
+  set asyncGetterFunc(p: () => Promise<void>) {
+    return p;
+  },
+};
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/227
+    `
+      export function valid(n: number) {
+        return n;
+      }
+    `,
+    `
+      export default function invalid(n: number) {
+        return n;
+      }
+    `,
+    `
+      class Foo {
+        constructor() {}
+      }
+    `,
+    `
+class Foo {
+  async catch<T>(arg: Promise<T>) {
+    return arg;
+  }
+}
+    `,
+    {
+      code: `
+function returnsAny(): any {
+  return 0;
+}
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+function returnsUnknown(): unknown {
+  return 0;
+}
+      `,
+      options: [
+        {
+          allowAny: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface ReadableStream {}
+interface Options {
+  stream: ReadableStream;
+}
+
+type Return = ReadableStream | Promise<void>;
+const foo = (options: Options): Return => {
+  return options.stream ? asStream(options) : asPromise(options);
+};
+      `,
+    },
+    {
+      code: `
+function foo(): Promise<string> | boolean {
+  return Math.random() > 0.5 ? Promise.resolve('value') : false;
+}
+      `,
+    },
+    {
+      code: `
+abstract class Test {
+  abstract test1(): Promise<number>;
+
+  // abstract method with body is always an error but it still parses into valid AST
+  abstract test2(): Promise<number> {
+    return Promise.resolve(1);
+  }
+}
+      `,
+    },
+    `
+function promiseInUnionWithExplicitReturnType(
+  p: boolean,
+): Promise<number> | number {
+  return p ? Promise.resolve(5) : 5;
+}
+    `,
+    `
+function explicitReturnWithPromiseInUnion(): Promise<number> | number {
+  return 5;
+}
+    `,
+    `
+async function asyncFunctionReturningUnion(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
+}
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -621,172 +788,5 @@ async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
 }
       `,
     },
-  ],
-  valid: [
-    `
-const nonAsyncNonPromiseArrowFunction = (n: number) => n;
-    `,
-    `
-function nonAsyncNonPromiseFunctionDeclaration(n: number) {
-  return n;
-}
-    `,
-    `
-const asyncPromiseFunctionExpressionA = async function (p: Promise<void>) {
-  return p;
-};
-    `,
-    `
-const asyncPromiseFunctionExpressionB = async function () {
-  return new Promise<void>();
-};
-    `,
-    `
-class Test {
-  public nonAsyncNonPromiseArrowFunction = (n: number) => n;
-  public nonAsyncNonPromiseMethod() {
-    return 0;
-  }
-
-  public async asyncPromiseMethodA(p: Promise<void>) {
-    return p;
-  }
-
-  public async asyncPromiseMethodB() {
-    return new Promise<void>();
-  }
-}
-    `,
-    `
-class InvalidAsyncModifiers {
-  public constructor() {
-    return new Promise<void>();
-  }
-  public get asyncGetter() {
-    return new Promise<void>();
-  }
-  public set asyncGetter(p: Promise<void>) {
-    return p;
-  }
-  public get asyncGetterFunc() {
-    return async () => new Promise<void>();
-  }
-  public set asyncGetterFunc(p: () => Promise<void>) {
-    return p;
-  }
-}
-    `,
-    `
-const invalidAsyncModifiers = {
-  get asyncGetter() {
-    return new Promise<void>();
-  },
-  set asyncGetter(p: Promise<void>) {
-    return p;
-  },
-  get asyncGetterFunc() {
-    return async () => new Promise<void>();
-  },
-  set asyncGetterFunc(p: () => Promise<void>) {
-    return p;
-  },
-};
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/227
-    `
-      export function valid(n: number) {
-        return n;
-      }
-    `,
-    `
-      export default function invalid(n: number) {
-        return n;
-      }
-    `,
-    `
-      class Foo {
-        constructor() {}
-      }
-    `,
-    `
-class Foo {
-  async catch<T>(arg: Promise<T>) {
-    return arg;
-  }
-}
-    `,
-    {
-      code: `
-function returnsAny(): any {
-  return 0;
-}
-      `,
-      options: [
-        {
-          allowAny: true,
-        },
-      ],
-    },
-    {
-      code: `
-function returnsUnknown(): unknown {
-  return 0;
-}
-      `,
-      options: [
-        {
-          allowAny: true,
-        },
-      ],
-    },
-    {
-      code: `
-interface ReadableStream {}
-interface Options {
-  stream: ReadableStream;
-}
-
-type Return = ReadableStream | Promise<void>;
-const foo = (options: Options): Return => {
-  return options.stream ? asStream(options) : asPromise(options);
-};
-      `,
-    },
-    {
-      code: `
-function foo(): Promise<string> | boolean {
-  return Math.random() > 0.5 ? Promise.resolve('value') : false;
-}
-      `,
-    },
-    {
-      code: `
-abstract class Test {
-  abstract test1(): Promise<number>;
-
-  // abstract method with body is always an error but it still parses into valid AST
-  abstract test2(): Promise<number> {
-    return Promise.resolve(1);
-  }
-}
-      `,
-    },
-    `
-function promiseInUnionWithExplicitReturnType(
-  p: boolean,
-): Promise<number> | number {
-  return p ? Promise.resolve(5) : 5;
-}
-    `,
-    `
-function explicitReturnWithPromiseInUnion(): Promise<number> | number {
-  return 5;
-}
-    `,
-    `
-async function asyncFunctionReturningUnion(p: boolean) {
-  return p ? Promise.resolve(5) : 5;
-}
-    `,
   ],
 });

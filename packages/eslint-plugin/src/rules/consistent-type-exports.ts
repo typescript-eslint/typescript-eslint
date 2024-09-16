@@ -157,8 +157,8 @@ export default createRule<Options, MessageIds>({
           (node.exportKind === 'type' && valueSpecifiers.length)
         ) {
           sourceExports.reportValueExports.push({
-            inlineTypeSpecifiers,
             node,
+            inlineTypeSpecifiers,
             typeBasedSpecifiers,
             valueSpecifiers,
           });
@@ -176,6 +176,8 @@ export default createRule<Options, MessageIds>({
             if (report.valueSpecifiers.length === 0) {
               // Export is all type-only with no type specifiers; convert the entire export to `export type`.
               context.report({
+                node: report.node,
+                messageId: 'typeOverValue',
                 *fix(fixer) {
                   yield* fixExportInsertType(
                     fixer,
@@ -183,8 +185,6 @@ export default createRule<Options, MessageIds>({
                     report.node,
                   );
                 },
-                messageId: 'typeOverValue',
-                node: report.node,
               });
               continue;
             }
@@ -198,6 +198,8 @@ export default createRule<Options, MessageIds>({
               const exportNames = allExportNames[0];
 
               context.report({
+                node: report.node,
+                messageId: 'singleExportIsType',
                 data: { exportNames },
                 *fix(fixer) {
                   if (fixMixedExportsWithInlineTypeSpecifier) {
@@ -210,13 +212,13 @@ export default createRule<Options, MessageIds>({
                     );
                   }
                 },
-                messageId: 'singleExportIsType',
-                node: report.node,
               });
             } else {
               const exportNames = formatWordList(allExportNames);
 
               context.report({
+                node: report.node,
+                messageId: 'multipleExportsAreTypes',
                 data: { exportNames },
                 *fix(fixer) {
                   if (fixMixedExportsWithInlineTypeSpecifier) {
@@ -229,8 +231,6 @@ export default createRule<Options, MessageIds>({
                     );
                   }
                 },
-                messageId: 'multipleExportsAreTypes',
-                node: report.node,
               });
             }
           }
@@ -288,7 +288,7 @@ function* fixSeparateNamedExports(
   sourceCode: Readonly<TSESLint.SourceCode>,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
-  const { inlineTypeSpecifiers, node, typeBasedSpecifiers, valueSpecifiers } =
+  const { node, inlineTypeSpecifiers, typeBasedSpecifiers, valueSpecifiers } =
     report;
   const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
   const source = getSourceFromExport(node);

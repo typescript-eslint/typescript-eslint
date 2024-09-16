@@ -314,11 +314,11 @@ export default createRule<Options, MessageIds>({
 
         function report(): void {
           context.report({
+            node: reference.identifier,
+            messageId: 'noUseBeforeDefine',
             data: {
               name: reference.identifier.name,
             },
-            messageId: 'noUseBeforeDefine',
-            node: reference.identifier,
           });
         }
 

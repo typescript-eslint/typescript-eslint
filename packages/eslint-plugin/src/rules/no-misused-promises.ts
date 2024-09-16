@@ -291,8 +291,8 @@ export default createRule<Options, MessageId>({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({
-          messageId: 'conditional',
           node,
+          messageId: 'conditional',
         });
       }
     }
@@ -314,8 +314,8 @@ export default createRule<Options, MessageId>({
         const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
-            messageId: 'voidReturnArgument',
             node: argument,
+            messageId: 'voidReturnArgument',
           });
         }
       }
@@ -330,8 +330,8 @@ export default createRule<Options, MessageId>({
 
       if (returnsThenable(checker, tsNode.right)) {
         context.report({
-          messageId: 'voidReturnVariable',
           node: node.right,
+          messageId: 'voidReturnVariable',
         });
       }
     }
@@ -358,8 +358,8 @@ export default createRule<Options, MessageId>({
 
       if (returnsThenable(checker, tsNode.initializer)) {
         context.report({
-          messageId: 'voidReturnVariable',
           node: node.init,
+          messageId: 'voidReturnVariable',
         });
       }
     }
@@ -378,8 +378,8 @@ export default createRule<Options, MessageId>({
           returnsThenable(checker, tsNode.initializer)
         ) {
           context.report({
-            messageId: 'voidReturnProperty',
             node: node.value,
+            messageId: 'voidReturnProperty',
           });
         }
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
@@ -390,8 +390,8 @@ export default createRule<Options, MessageId>({
           returnsThenable(checker, tsNode.name)
         ) {
           context.report({
-            messageId: 'voidReturnProperty',
             node: node.value,
+            messageId: 'voidReturnProperty',
           });
         }
       } else if (ts.isMethodDeclaration(tsNode)) {
@@ -432,8 +432,8 @@ export default createRule<Options, MessageId>({
 
         if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
           context.report({
-            messageId: 'voidReturnProperty',
             node: node.value,
+            messageId: 'voidReturnProperty',
           });
         }
         return;
@@ -472,8 +472,8 @@ export default createRule<Options, MessageId>({
         returnsThenable(checker, tsNode.expression)
       ) {
         context.report({
-          messageId: 'voidReturnReturnValue',
           node: node.argument,
+          messageId: 'voidReturnReturnValue',
         });
       }
     }
@@ -537,9 +537,9 @@ export default createRule<Options, MessageId>({
         return;
       }
       context.report({
-        data: { heritageTypeName: checker.typeToString(heritageType) },
-        messageId: 'voidReturnInheritedMethod',
         node: services.tsNodeToESTreeNodeMap.get(nodeMember),
+        messageId: 'voidReturnInheritedMethod',
+        data: { heritageTypeName: checker.typeToString(heritageType) },
       });
     }
 
@@ -567,8 +567,8 @@ export default createRule<Options, MessageId>({
         returnsThenable(checker, expression)
       ) {
         context.report({
-          messageId: 'voidReturnAttribute',
           node: node.value,
+          messageId: 'voidReturnAttribute',
         });
       }
     }
@@ -578,8 +578,8 @@ export default createRule<Options, MessageId>({
 
       if (isSometimesThenable(checker, tsNode.expression)) {
         context.report({
-          messageId: 'spread',
           node: node.argument,
+          messageId: 'spread',
         });
       }
     }

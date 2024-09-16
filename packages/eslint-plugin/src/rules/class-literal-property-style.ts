@@ -109,10 +109,11 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          messageId: 'preferGetterStyle',
           node: node.key,
+          messageId: 'preferGetterStyle',
           suggest: [
             {
+              messageId: 'preferGetterStyleSuggestion',
               fix(fixer): TSESLint.RuleFix {
                 const name = context.sourceCode.getText(node.key);
 
@@ -123,7 +124,6 @@ export default createRule<Options, MessageIds>({
 
                 return fixer.replaceText(node, text);
               },
-              messageId: 'preferGetterStyleSuggestion',
             },
           ],
         });
@@ -182,10 +182,11 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            messageId: 'preferFieldStyle',
             node: node.key,
+            messageId: 'preferFieldStyle',
             suggest: [
               {
+                messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
                   const name = context.sourceCode.getText(node.key);
 
@@ -197,7 +198,6 @@ export default createRule<Options, MessageIds>({
 
                   return fixer.replaceText(node, text);
                 },
-                messageId: 'preferFieldStyleSuggestion',
               },
             ],
           });

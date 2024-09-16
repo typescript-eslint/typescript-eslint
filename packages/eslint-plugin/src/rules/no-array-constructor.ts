@@ -36,6 +36,8 @@ export default createRule({
         !isOptionalCallExpression(node)
       ) {
         context.report({
+          node,
+          messageId: 'useLiteral',
           fix(fixer) {
             if (node.arguments.length === 0) {
               return fixer.replaceText(node, '[]');
@@ -48,8 +50,6 @@ export default createRule({
               `[${fullText.slice(preambleLength + 1, -1)}]`,
             );
           },
-          messageId: 'useLiteral',
-          node,
         });
       }
     }

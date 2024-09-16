@@ -56,8 +56,8 @@ export default createRule<Options, MessageIds>({
         const extend = node.extends;
         if (extend.length === 0) {
           context.report({
-            messageId: 'noEmpty',
             node: node.id,
+            messageId: 'noEmpty',
           });
         } else if (extend.length === 1) {
           // interface extends exactly 1 interface --> Report depending on rule setting
@@ -93,16 +93,16 @@ export default createRule<Options, MessageIds>({
             );
 
             context.report({
-              messageId: 'noEmptyWithSuper',
               node: node.id,
+              messageId: 'noEmptyWithSuper',
               ...(useAutoFix
                 ? { fix }
                 : !mergedWithClassDeclaration
                   ? {
                       suggest: [
                         {
-                          fix,
                           messageId: 'noEmptyWithSuper',
+                          fix,
                         },
                       ],
                     }

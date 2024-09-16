@@ -150,8 +150,8 @@ export default createRule({
             return;
           }
           context.report({
-            messageId: 'unnecessaryAssign',
             node,
+            messageId: 'unnecessaryAssign',
           });
         });
       },

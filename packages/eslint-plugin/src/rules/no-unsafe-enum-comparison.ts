@@ -142,10 +142,11 @@ export default createRule({
 
         if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatchedCondition',
             node,
+            messageId: 'mismatchedCondition',
             suggest: [
               {
+                messageId: 'replaceValueWithEnum',
                 fix(fixer): TSESLint.RuleFix | null {
                   // Replace the right side with an enum key if possible:
                   //
@@ -178,7 +179,6 @@ export default createRule({
 
                   return null;
                 },
-                messageId: 'replaceValueWithEnum',
               },
             ],
           });
@@ -198,8 +198,8 @@ export default createRule({
 
         if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatchedCase',
             node,
+            messageId: 'mismatchedCase',
           });
         }
       },

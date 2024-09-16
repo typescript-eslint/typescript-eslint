@@ -87,6 +87,8 @@ export default createRule({
         // Check the owner type of the `reduce` method.
         if (isArrayType(calleeObjType)) {
           context.report({
+            node: secondArg,
+            messageId: 'preferTypeParameter',
             fix: fixer => {
               const fixes = [
                 fixer.removeRange([
@@ -110,8 +112,6 @@ export default createRule({
 
               return fixes;
             },
-            messageId: 'preferTypeParameter',
-            node: secondArg,
           });
 
           return;

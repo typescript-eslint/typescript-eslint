@@ -56,9 +56,9 @@ export default createRule<Options, MessageIds>({
 
       if (unsafeRefs.length > 0) {
         context.report({
-          data: { varNames: `'${unsafeRefs.join("', '")}'` },
-          messageId: 'unsafeRefs',
           node,
+          messageId: 'unsafeRefs',
+          data: { varNames: `'${unsafeRefs.join("', '")}'` },
         });
       }
     }

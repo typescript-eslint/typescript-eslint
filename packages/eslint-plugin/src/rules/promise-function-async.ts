@@ -148,12 +148,15 @@ export default createRule<Options, MessageIds>({
         // Report without auto fixer because the return type is unknown
         return context.report({
           loc: getFunctionHeadLoc(node, context.sourceCode),
-          messageId: 'missingAsync',
           node,
+          messageId: 'missingAsync',
         });
       }
 
       context.report({
+        loc: getFunctionHeadLoc(node, context.sourceCode),
+        node,
+        messageId: 'missingAsync',
         fix: fixer => {
           if (
             node.parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -210,9 +213,6 @@ export default createRule<Options, MessageIds>({
 
           return fixer.insertTextBefore(node, 'async ');
         },
-        loc: getFunctionHeadLoc(node, context.sourceCode),
-        messageId: 'missingAsync',
-        node,
       });
     }
 

@@ -76,8 +76,8 @@ export default util.createRule<Options, MessageIds>({
         // of the commonjs standard
         if (!variable?.identifiers.length) {
           context.report({
-            messageId: 'noRequireImports',
             node,
+            messageId: 'noRequireImports',
           });
         }
       },
@@ -95,8 +95,8 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         context.report({
-          messageId: 'noRequireImports',
           node,
+          messageId: 'noRequireImports',
         });
       },
     };

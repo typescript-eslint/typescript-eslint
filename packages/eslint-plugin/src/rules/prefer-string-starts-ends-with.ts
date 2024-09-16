@@ -435,6 +435,8 @@ export default createRule<Options, MessageIds>({
 
         const eqNode = parentNode;
         context.report({
+          node: parentNode,
+          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           fix(fixer) {
             // Don't fix if it can change the behavior.
             if (!isCharacter(eqNode.right)) {
@@ -448,8 +450,6 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
-          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
-          node: parentNode,
         });
       },
 
@@ -471,6 +471,8 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
+          node: parentNode,
+          messageId: 'preferStartsWith',
           fix(fixer) {
             return fixWithArgument(
               fixer,
@@ -482,8 +484,6 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
-          messageId: 'preferStartsWith',
-          node: parentNode,
         });
       },
 
@@ -509,6 +509,8 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
+          node: parentNode,
+          messageId: 'preferEndsWith',
           fix(fixer) {
             return fixWithArgument(
               fixer,
@@ -520,8 +522,6 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
-          messageId: 'preferEndsWith',
-          node: parentNode,
         });
       },
 
@@ -552,6 +552,8 @@ export default createRule<Options, MessageIds>({
 
         const { isStartsWith, text } = parsed;
         context.report({
+          node: callNode,
+          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           *fix(fixer) {
             if (!parentNode.operator.startsWith('!')) {
               yield fixer.insertTextBefore(parentNode, '!');
@@ -568,8 +570,6 @@ export default createRule<Options, MessageIds>({
             );
             yield fixer.removeRange([callNode.range[1], parentNode.range[1]]);
           },
-          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
-          node: callNode,
         });
       },
 
@@ -638,6 +638,8 @@ export default createRule<Options, MessageIds>({
         const negativeIndexSupported =
           (node.property as TSESTree.Identifier).name === 'slice';
         context.report({
+          node: parentNode,
+          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
           fix(fixer) {
             // Don't fix if it can change the behavior.
             if (
@@ -678,8 +680,6 @@ export default createRule<Options, MessageIds>({
               node.optional,
             );
           },
-          messageId: isStartsWith ? 'preferStartsWith' : 'preferEndsWith',
-          node: parentNode,
         });
       },
 
@@ -699,6 +699,8 @@ export default createRule<Options, MessageIds>({
         const messageId = isStartsWith ? 'preferStartsWith' : 'preferEndsWith';
         const methodName = isStartsWith ? 'startsWith' : 'endsWith';
         context.report({
+          node: callNode,
+          messageId,
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
@@ -720,8 +722,6 @@ export default createRule<Options, MessageIds>({
               )}`,
             );
           },
-          messageId,
-          node: callNode,
         });
       },
     };

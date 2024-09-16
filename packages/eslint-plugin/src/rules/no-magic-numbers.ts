@@ -123,9 +123,9 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            data: { raw },
-            messageId: 'noMagic',
             node: fullNumberNode,
+            messageId: 'noMagic',
+            data: { raw },
           });
 
           return;

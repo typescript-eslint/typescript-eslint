@@ -122,8 +122,8 @@ export default createRule<Options, MessageIds>({
 
           if (!isReadOnly) {
             context.report({
-              messageId: 'shouldBeReadonly',
               node: actualParam,
+              messageId: 'shouldBeReadonly',
             });
           }
         }

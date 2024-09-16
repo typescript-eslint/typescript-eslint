@@ -96,8 +96,8 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
-            messageId: 'empty',
             node: reportNode,
+            messageId: 'empty',
           });
 
           return;
@@ -139,16 +139,16 @@ export default createRule<Options, MessageIds>({
         if (onlyConstructor) {
           if (!allowConstructorOnly) {
             context.report({
-              messageId: 'onlyConstructor',
               node: reportNode,
+              messageId: 'onlyConstructor',
             });
           }
           return;
         }
         if (onlyStatic && !allowStaticOnly) {
           context.report({
-            messageId: 'onlyStatic',
             node: reportNode,
+            messageId: 'onlyStatic',
           });
         }
       },

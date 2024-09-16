@@ -37,6 +37,8 @@ export default createRule({
         comments.forEach(c => {
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
+              node: c,
+              messageId: 'commentDetected',
               data: { text: toText(c.value, c.type) },
               fix(fixer) {
                 const rangeStart = context.sourceCode.getIndexFromLoc({
@@ -49,8 +51,6 @@ export default createRule({
                 });
                 return fixer.removeRange([rangeStart, rangeEnd + 1]);
               },
-              messageId: 'commentDetected',
-              node: c,
             });
           }
         });

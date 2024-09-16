@@ -70,11 +70,11 @@ export default createRule<[], MessageIds>({
               );
 
             context.report({
+              node: comment,
+              messageId: 'preferExpectErrorComment',
               fix: isLineComment(comment)
                 ? lineCommentRuleFixer
                 : blockCommentRuleFixer,
-              messageId: 'preferExpectErrorComment',
-              node: comment,
             });
           }
         });

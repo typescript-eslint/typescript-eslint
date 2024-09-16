@@ -217,6 +217,16 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
+          node,
+          messageId: comparison.expressionIsNullableBoolean
+            ? comparison.literalBooleanInComparison
+              ? comparison.negated
+                ? 'comparingNullableToTrueNegated'
+                : 'comparingNullableToTrueDirect'
+              : 'comparingNullableToFalse'
+            : comparison.negated
+              ? 'negated'
+              : 'direct',
           *fix(fixer) {
             // 1. isUnaryNegation - parent negation
             // 2. literalBooleanInComparison - is compared to literal boolean
@@ -255,16 +265,6 @@ export default createRule<Options, MessageIds>({
               yield fixer.insertTextAfter(mutatedNode, ' ?? true)');
             }
           },
-          messageId: comparison.expressionIsNullableBoolean
-            ? comparison.literalBooleanInComparison
-              ? comparison.negated
-                ? 'comparingNullableToTrueNegated'
-                : 'comparingNullableToTrueDirect'
-              : 'comparingNullableToFalse'
-            : comparison.negated
-              ? 'negated'
-              : 'direct',
-          node,
         });
       },
     };

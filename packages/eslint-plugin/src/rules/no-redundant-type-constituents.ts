@@ -293,15 +293,15 @@ export default createRule({
           ] as const) {
             if (typeFlags === checkFlag) {
               context.report({
-                data: {
-                  container: 'intersection',
-                  typeName,
-                },
+                node: typeNode,
                 messageId:
                   typeFlags === ts.TypeFlags.Any && typeName !== 'any'
                     ? 'errorTypeOverrides'
                     : messageId,
-                node: typeNode,
+                data: {
+                  container: 'intersection',
+                  typeName,
+                },
               });
               return true;
             }
@@ -370,6 +370,8 @@ export default createRule({
             }
             if (Number.isInteger(primitive)) {
               context.report({
+                node: typeRef,
+                messageId: 'primitiveOverridden',
                 data: {
                   literal: typeValues.map(name => name.typeName).join(' | '),
                   primitive:
@@ -377,8 +379,6 @@ export default createRule({
                       primitive as keyof typeof primitiveTypeFlagNames
                     ],
                 },
-                messageId: 'primitiveOverridden',
-                node: typeRef,
               });
             }
           }
@@ -395,12 +395,12 @@ export default createRule({
           if (matchedLiteralTypes) {
             for (const typeNode of typeNodes) {
               context.report({
+                node: typeNode,
+                messageId: 'primitiveOverridden',
                 data: {
                   literal: matchedLiteralTypes.join(' | '),
                   primitive: primitiveTypeFlagNames[primitiveTypeFlag],
                 },
-                messageId: 'primitiveOverridden',
-                node: typeNode,
               });
             }
           }
@@ -423,15 +423,15 @@ export default createRule({
           ] as const) {
             if (typeFlags === checkFlag) {
               context.report({
-                data: {
-                  container: 'union',
-                  typeName,
-                },
+                node: typeNode,
                 messageId:
                   typeFlags === ts.TypeFlags.Any && typeName !== 'any'
                     ? 'errorTypeOverrides'
                     : 'overrides',
-                node: typeNode,
+                data: {
+                  container: 'union',
+                  typeName,
+                },
               });
               return true;
             }
@@ -442,12 +442,12 @@ export default createRule({
             !isNodeInsideReturnType(node)
           ) {
             context.report({
+              node: typeNode,
+              messageId: 'overridden',
               data: {
                 container: 'union',
                 typeName: 'never',
               },
-              messageId: 'overridden',
-              node: typeNode,
             });
             return true;
           }
@@ -520,12 +520,12 @@ export default createRule({
 
           for (const [primitiveTypeFlag, pairs] of grouped) {
             context.report({
+              node: typeNode,
+              messageId: 'literalOverridden',
               data: {
                 literal: pairs.map(pair => pair.literalValue).join(' | '),
                 primitive: primitiveTypeFlagNames[primitiveTypeFlag],
               },
-              messageId: 'literalOverridden',
-              node: typeNode,
             });
           }
         }

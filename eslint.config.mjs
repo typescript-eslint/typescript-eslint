@@ -610,11 +610,12 @@ export default tseslint.config(
         'error',
         {
           customGroups: {
-            primary: ['type', 'name'],
-            secondary: ['meta'],
-            tertiary: ['defaultOptions'],
+            primary: ['loc', 'name', 'node', 'type'],
+            secondary: ['meta', 'messageId'],
+            tertiary: ['defaultOptions', 'data'],
+            quaternary: ['fix'],
           },
-          groups: ['primary', 'secondary', 'tertiary', 'unknown'],
+          groups: ['primary', 'secondary', 'tertiary', 'quaternary', 'unknown'],
         },
       ],
     },
@@ -625,7 +626,7 @@ export default tseslint.config(
       'perfectionist/sort-objects': [
         'error',
         {
-          customGroups: { top: ['invalid'] },
+          customGroups: { top: ['valid'] },
           groups: ['top', 'unknown'],
         },
       ],

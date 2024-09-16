@@ -69,11 +69,11 @@ export default createRule<[], MessageIds>({
         const isErrorType = tsutils.isIntrinsicErrorType(type);
 
         context.report({
+          node: reportingNode,
+          messageId,
           data: {
             type: isErrorType ? '`error` type' : '`any`',
           },
-          messageId,
-          node: reportingNode,
         });
       }
     }

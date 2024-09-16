@@ -5,6 +5,23 @@ import rule from '../../src/rules/no-unnecessary-type-constraint';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-type-constraint', rule, {
+  valid: [
+    'function data() {}',
+    'function data<T>() {}',
+    'function data<T, U>() {}',
+    'function data<T extends number>() {}',
+    'function data<T extends number | string>() {}',
+    'function data<T extends any | number>() {}',
+    `
+type TODO = any;
+function data<T extends TODO>() {}
+    `,
+    'const data = () => {};',
+    'const data = <T,>() => {};',
+    'const data = <T, U>() => {};',
+    'const data = <T extends number>() => {};',
+    'const data = <T extends number | string>() => {};',
+  ],
   invalid: [
     {
       code: 'function data<T extends any>() {}',
@@ -505,22 +522,5 @@ const Data = class {
         },
       ],
     },
-  ],
-  valid: [
-    'function data() {}',
-    'function data<T>() {}',
-    'function data<T, U>() {}',
-    'function data<T extends number>() {}',
-    'function data<T extends number | string>() {}',
-    'function data<T extends any | number>() {}',
-    `
-type TODO = any;
-function data<T extends TODO>() {}
-    `,
-    'const data = () => {};',
-    'const data = <T,>() => {};',
-    'const data = <T, U>() => {};',
-    'const data = <T extends number>() => {};',
-    'const data = <T extends number | string>() => {};',
   ],
 });

@@ -5,6 +5,29 @@ import rule from '../../src/rules/no-invalid-void-type';
 const ruleTester = new RuleTester();
 
 ruleTester.run('allowInGenericTypeArguments: false', rule, {
+  valid: [
+    {
+      code: 'type Generic<T> = [T];',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/1946
+      code: `
+function foo(): void | never {
+  throw new Error('Test');
+}
+      `,
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'type voidNeverUnion = void | never;',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+    {
+      code: 'type neverVoidUnion = never | void;',
+      options: [{ allowInGenericTypeArguments: false }],
+    },
+  ],
   invalid: [
     {
       code: 'type GenericVoid = Generic<void>;',
@@ -72,32 +95,32 @@ ruleTester.run('allowInGenericTypeArguments: false', rule, {
       options: [{ allowInGenericTypeArguments: false }],
     },
   ],
-  valid: [
-    {
-      code: 'type Generic<T> = [T];',
-      options: [{ allowInGenericTypeArguments: false }],
-    },
-    {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/1946
-      code: `
-function foo(): void | never {
-  throw new Error('Test');
-}
-      `,
-      options: [{ allowInGenericTypeArguments: false }],
-    },
-    {
-      code: 'type voidNeverUnion = void | never;',
-      options: [{ allowInGenericTypeArguments: false }],
-    },
-    {
-      code: 'type neverVoidUnion = never | void;',
-      options: [{ allowInGenericTypeArguments: false }],
-    },
-  ],
 });
 
 ruleTester.run('allowInGenericTypeArguments: true', rule, {
+  valid: [
+    'function func(): void {}',
+    'type NormalType = () => void;',
+    'let normalArrow = (): void => {};',
+    'let ughThisThing = void 0;',
+    'function takeThing(thing: undefined) {}',
+    'takeThing(void 0);',
+    'let voidPromise: Promise<void> = new Promise<void>(() => {});',
+    'let voidMap: Map<string, void> = new Map<string, void>();',
+    `
+      function returnsVoidPromiseDirectly(): Promise<void> {
+        return Promise.resolve();
+      }
+    `,
+    'async function returnsVoidPromiseAsync(): Promise<void> {}',
+    'type UnionType = string | number;',
+    'type GenericVoid = Generic<void>;',
+    'type Generic<T> = [T];',
+    'type voidPromiseUnion = void | Promise<void>;',
+    'type promiseNeverUnion = Promise<void> | never;',
+    'const arrowGeneric1 = <T = void,>(arg: T) => {};',
+    'declare function functionDeclaration1<T = void>(arg: T): void;',
+  ],
   invalid: [
     {
       code: 'function takeVoid(thing: void) {}',
@@ -397,69 +420,9 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
       ],
     },
   ],
-  valid: [
-    'function func(): void {}',
-    'type NormalType = () => void;',
-    'let normalArrow = (): void => {};',
-    'let ughThisThing = void 0;',
-    'function takeThing(thing: undefined) {}',
-    'takeThing(void 0);',
-    'let voidPromise: Promise<void> = new Promise<void>(() => {});',
-    'let voidMap: Map<string, void> = new Map<string, void>();',
-    `
-      function returnsVoidPromiseDirectly(): Promise<void> {
-        return Promise.resolve();
-      }
-    `,
-    'async function returnsVoidPromiseAsync(): Promise<void> {}',
-    'type UnionType = string | number;',
-    'type GenericVoid = Generic<void>;',
-    'type Generic<T> = [T];',
-    'type voidPromiseUnion = void | Promise<void>;',
-    'type promiseNeverUnion = Promise<void> | never;',
-    'const arrowGeneric1 = <T = void,>(arg: T) => {};',
-    'declare function functionDeclaration1<T = void>(arg: T): void;',
-  ],
 });
 
 ruleTester.run('allowInGenericTypeArguments: whitelist', rule, {
-  invalid: [
-    {
-      code: 'type BannedVoid = Banned<void>;',
-      errors: [
-        {
-          column: 26,
-          data: { generic: 'Banned' },
-          line: 1,
-          messageId: 'invalidVoidForGeneric',
-        },
-      ],
-      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
-    },
-    {
-      code: 'type BannedVoid = Ex.Mx.Tx<void>;',
-      errors: [
-        {
-          column: 28,
-          data: { generic: 'Ex.Mx.Tx' },
-          line: 1,
-          messageId: 'invalidVoidForGeneric',
-        },
-      ],
-      options: [{ allowInGenericTypeArguments: ['Tx'] }],
-    },
-    {
-      code: 'function takeVoid(thing: void) {}',
-      errors: [
-        {
-          column: 26,
-          line: 1,
-          messageId: 'invalidVoidNotReturnOrGeneric',
-        },
-      ],
-      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
-    },
-  ],
   valid: [
     'type Allowed<T> = [T];',
     'type Banned<T> = [T];',
@@ -511,9 +474,61 @@ async function foo(bar: () => void | Promise<void>) {
       options: [{ allowInGenericTypeArguments: ['Promise'] }],
     },
   ],
+  invalid: [
+    {
+      code: 'type BannedVoid = Banned<void>;',
+      errors: [
+        {
+          column: 26,
+          data: { generic: 'Banned' },
+          line: 1,
+          messageId: 'invalidVoidForGeneric',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
+    },
+    {
+      code: 'type BannedVoid = Ex.Mx.Tx<void>;',
+      errors: [
+        {
+          column: 28,
+          data: { generic: 'Ex.Mx.Tx' },
+          line: 1,
+          messageId: 'invalidVoidForGeneric',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: ['Tx'] }],
+    },
+    {
+      code: 'function takeVoid(thing: void) {}',
+      errors: [
+        {
+          column: 26,
+          line: 1,
+          messageId: 'invalidVoidNotReturnOrGeneric',
+        },
+      ],
+      options: [{ allowInGenericTypeArguments: ['Allowed'] }],
+    },
+  ],
 });
 
 ruleTester.run('allowAsThisParameter: true', rule, {
+  valid: [
+    {
+      code: 'function f(this: void) {}',
+      options: [{ allowAsThisParameter: true }],
+    },
+    {
+      code: `
+class Test {
+  public static helper(this: void) {}
+  method(this: void) {}
+}
+      `,
+      options: [{ allowAsThisParameter: true }],
+    },
+  ],
   invalid: [
     {
       code: 'type alias = void;',
@@ -547,21 +562,6 @@ ruleTester.run('allowAsThisParameter: true', rule, {
       options: [
         { allowAsThisParameter: true, allowInGenericTypeArguments: false },
       ],
-    },
-  ],
-  valid: [
-    {
-      code: 'function f(this: void) {}',
-      options: [{ allowAsThisParameter: true }],
-    },
-    {
-      code: `
-class Test {
-  public static helper(this: void) {}
-  method(this: void) {}
-}
-      `,
-      options: [{ allowAsThisParameter: true }],
     },
   ],
 });

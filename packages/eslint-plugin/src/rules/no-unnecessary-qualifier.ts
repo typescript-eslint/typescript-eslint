@@ -110,14 +110,14 @@ export default createRule({
       ) {
         currentFailedNamespaceExpression = node;
         context.report({
+          node: qualifier,
+          messageId: 'unnecessaryQualifier',
           data: {
             name: context.sourceCode.getText(name),
           },
           fix(fixer) {
             return fixer.removeRange([qualifier.range[0], name.range[0]]);
           },
-          messageId: 'unnecessaryQualifier',
-          node: qualifier,
         });
       }
     }

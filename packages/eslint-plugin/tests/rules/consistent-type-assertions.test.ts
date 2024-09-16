@@ -84,6 +84,68 @@ print\`\${<Foo>{ bar: 5 }}\`
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
+  valid: [
+    ...dedupeTestCases(
+      batchedSingleLineTests<Options>({
+        code: AS_TESTS,
+        options: [
+          { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
+        ],
+      }),
+    ),
+    ...batchedSingleLineTests<Options>({
+      code: ANGLE_BRACKET_TESTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: OBJECT_LITERAL_ARGUMENT_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    }),
+    { code: 'const x = <const>[1];', options: [{ assertionStyle: 'never' }] },
+    { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
+    {
+      code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      options: [
+        {
+          assertionStyle: 'as',
+          objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+  ],
   invalid: [
     ...dedupeTestCases(
       (
@@ -596,68 +658,6 @@ const bs = (x <<= y) as any;
         },
       ],
       output: 'const ternary = (true ? x : y) as any;',
-    },
-  ],
-  valid: [
-    ...dedupeTestCases(
-      batchedSingleLineTests<Options>({
-        code: AS_TESTS,
-        options: [
-          { assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' },
-        ],
-      }),
-    ),
-    ...batchedSingleLineTests<Options>({
-      code: ANGLE_BRACKET_TESTS,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-          objectLiteralTypeAssertions: 'allow',
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
-      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allow' }],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-          objectLiteralTypeAssertions: 'allow',
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: OBJECT_LITERAL_ARGUMENT_AS_CASTS,
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
-    }),
-    ...batchedSingleLineTests<Options>({
-      code: OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
-          objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
-    }),
-    { code: 'const x = <const>[1];', options: [{ assertionStyle: 'never' }] },
-    { code: 'const x = [1] as const;', options: [{ assertionStyle: 'never' }] },
-    {
-      code: 'const bar = <Foo style={{ bar: 5 } as Bar} />;',
-      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
-      options: [
-        {
-          assertionStyle: 'as',
-          objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
     },
   ],
 });

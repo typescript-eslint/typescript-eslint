@@ -5,64 +5,6 @@ import rule from '../../src/rules/no-duplicate-enum-values';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-duplicate-enum-values', rule, {
-  invalid: [
-    {
-      code: `
-enum E {
-  A = 1,
-  B = 1,
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: { value: 1 },
-          line: 4,
-          messageId: 'duplicateValue',
-        },
-      ],
-    },
-    {
-      code: `
-enum E {
-  A = 'A',
-  B = 'A',
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: { value: 'A' },
-          line: 4,
-          messageId: 'duplicateValue',
-        },
-      ],
-    },
-    {
-      code: `
-enum E {
-  A = 'A',
-  B = 'A',
-  C = 1,
-  D = 1,
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: { value: 'A' },
-          line: 4,
-          messageId: 'duplicateValue',
-        },
-        {
-          column: 3,
-          data: { value: 1 },
-          line: 6,
-          messageId: 'duplicateValue',
-        },
-      ],
-    },
-  ],
   valid: [
     `
 enum E {
@@ -131,5 +73,63 @@ enum E {
   C = NaN,
 }
     `,
+  ],
+  invalid: [
+    {
+      code: `
+enum E {
+  A = 1,
+  B = 1,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 1 },
+          line: 4,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
+    {
+      code: `
+enum E {
+  A = 'A',
+  B = 'A',
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
+    {
+      code: `
+enum E {
+  A = 'A',
+  B = 'A',
+  C = 1,
+  D = 1,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
+        },
+        {
+          column: 3,
+          data: { value: 1 },
+          line: 6,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
   ],
 });

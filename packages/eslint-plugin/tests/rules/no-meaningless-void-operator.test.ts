@@ -15,6 +15,25 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-meaningless-void-operator', rule, {
+  valid: [
+    `
+(() => {})();
+
+function foo() {}
+foo(); // nothing to discard
+
+function bar(x: number) {
+  void x;
+  return 2;
+}
+void bar(); // discarding a number
+    `,
+    `
+function bar(x: never) {
+  void x;
+}
+    `,
+  ],
   invalid: [
     {
       code: 'void (() => {})();',
@@ -70,24 +89,5 @@ function bar(x: never) {
       options: [{ checkNever: true }],
       output: null,
     },
-  ],
-  valid: [
-    `
-(() => {})();
-
-function foo() {}
-foo(); // nothing to discard
-
-function bar(x: number) {
-  void x;
-  return 2;
-}
-void bar(); // discarding a number
-    `,
-    `
-function bar(x: never) {
-  void x;
-}
-    `,
   ],
 });

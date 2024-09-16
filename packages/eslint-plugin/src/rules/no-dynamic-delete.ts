@@ -48,9 +48,9 @@ export default createRule({
         }
 
         context.report({
-          fix: createFixer(node.argument),
-          messageId: 'dynamicDelete',
           node: node.argument.property,
+          messageId: 'dynamicDelete',
+          fix: createFixer(node.argument),
         });
       },
     };

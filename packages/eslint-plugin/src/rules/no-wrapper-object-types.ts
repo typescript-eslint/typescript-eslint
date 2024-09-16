@@ -48,12 +48,12 @@ export default createRule({
       const preferred = typeName.toLowerCase();
 
       context.report({
+        node,
+        messageId: 'bannedClassType',
         data: { preferred, typeName },
         fix: includeFix
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(node, preferred)
           : undefined,
-        messageId: 'bannedClassType',
-        node,
       });
     }
 

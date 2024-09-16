@@ -63,8 +63,8 @@ export default createRule({
         }
 
         context.report({
-          messageId: 'noNonNullAssertedNullishCoalescing',
           node,
+          messageId: 'noNonNullAssertedNullishCoalescing',
           /*
           Use a suggestion instead of a fixer, because this can break type checks.
           The resulting type of the nullish coalesce is only influenced by the right operand if the left operand can be `null` or `undefined`.
@@ -80,6 +80,7 @@ export default createRule({
           */
           suggest: [
             {
+              messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
                 const exclamationMark = nullThrows(
                   context.sourceCode.getLastToken(
@@ -90,7 +91,6 @@ export default createRule({
                 );
                 return fixer.remove(exclamationMark);
               },
-              messageId: 'suggestRemovingNonNull',
             },
           ],
         });

@@ -86,11 +86,11 @@ export default createRule({
           // the message can be confusing if we don't point directly to the `this` node instead of the whole member
           // and in favour of generating at most one error we'll only report the first occurrence of `this` if there are multiple
           context.report({
+            node: tsThisTypes[0],
+            messageId: 'unexpectedThisOnFunctionOnlyInterface',
             data: {
               interfaceName: node.id.name,
             },
-            messageId: 'unexpectedThisOnFunctionOnlyInterface',
-            node: tsThisTypes[0],
           });
           return;
         }
@@ -177,12 +177,12 @@ export default createRule({
             };
 
         context.report({
+          node: member,
+          messageId: 'functionTypeOverCallableType',
           data: {
             literalOrInterface: phrases[node.type],
           },
           fix,
-          messageId: 'functionTypeOverCallableType',
-          node: member,
         });
       }
     }

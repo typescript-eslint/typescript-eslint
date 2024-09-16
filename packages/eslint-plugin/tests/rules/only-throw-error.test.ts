@@ -13,6 +13,128 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('only-throw-error', rule, {
+  valid: [
+    'throw new Error();',
+    "throw new Error('error');",
+    "throw Error('error');",
+    `
+const e = new Error();
+throw e;
+    `,
+    `
+try {
+  throw new Error();
+} catch (e) {
+  throw e;
+}
+    `,
+    `
+function foo() {
+  return new Error();
+}
+throw foo();
+    `,
+    `
+const foo = {
+  bar: new Error(),
+};
+throw foo.bar;
+    `,
+    `
+const foo = {
+  bar: new Error(),
+};
+
+throw foo['bar'];
+    `,
+    `
+const foo = {
+  bar: new Error(),
+};
+
+const bar = 'bar';
+throw foo[bar];
+    `,
+    `
+class CustomError extends Error {}
+throw new CustomError();
+    `,
+    `
+class CustomError1 extends Error {}
+class CustomError2 extends CustomError1 {}
+throw new CustomError2();
+    `,
+    'throw (foo = new Error());',
+    'throw (1, 2, new Error());',
+    "throw 'literal' && new Error();",
+    "throw new Error() || 'literal';",
+    'throw foo ? new Error() : new Error();',
+    `
+function* foo() {
+  let index = 0;
+  throw yield index++;
+}
+    `,
+    `
+async function foo() {
+  throw await bar;
+}
+    `,
+    `
+import { Error } from './missing';
+throw Error;
+    `,
+    `
+class CustomError<T, C> extends Error {}
+throw new CustomError<string, string>();
+    `,
+    `
+class CustomError<T = {}> extends Error {}
+throw new CustomError();
+    `,
+    `
+class CustomError<T extends object> extends Error {}
+throw new CustomError();
+    `,
+    `
+function foo() {
+  throw Object.assign(new Error('message'), { foo: 'bar' });
+}
+    `,
+    `
+const foo: Error | SyntaxError = bar();
+function bar() {
+  throw foo;
+}
+    `,
+    `
+declare const foo: Error | string;
+throw foo as Error;
+    `,
+    'throw new Error() as Error;',
+    `
+declare const nullishError: Error | undefined;
+throw nullishError ?? new Error();
+    `,
+    `
+declare const nullishError: Error | undefined;
+throw nullishError || new Error();
+    `,
+    `
+declare const nullishError: Error | undefined;
+throw nullishError ? nullishError : new Error();
+    `,
+    `
+function fun(value: any) {
+  throw value;
+}
+    `,
+    `
+function fun(value: unknown) {
+  throw value;
+}
+    `,
+  ],
   invalid: [
     {
       code: 'throw undefined;',
@@ -346,127 +468,5 @@ function fun(value: unknown) {
         },
       ],
     },
-  ],
-  valid: [
-    'throw new Error();',
-    "throw new Error('error');",
-    "throw Error('error');",
-    `
-const e = new Error();
-throw e;
-    `,
-    `
-try {
-  throw new Error();
-} catch (e) {
-  throw e;
-}
-    `,
-    `
-function foo() {
-  return new Error();
-}
-throw foo();
-    `,
-    `
-const foo = {
-  bar: new Error(),
-};
-throw foo.bar;
-    `,
-    `
-const foo = {
-  bar: new Error(),
-};
-
-throw foo['bar'];
-    `,
-    `
-const foo = {
-  bar: new Error(),
-};
-
-const bar = 'bar';
-throw foo[bar];
-    `,
-    `
-class CustomError extends Error {}
-throw new CustomError();
-    `,
-    `
-class CustomError1 extends Error {}
-class CustomError2 extends CustomError1 {}
-throw new CustomError2();
-    `,
-    'throw (foo = new Error());',
-    'throw (1, 2, new Error());',
-    "throw 'literal' && new Error();",
-    "throw new Error() || 'literal';",
-    'throw foo ? new Error() : new Error();',
-    `
-function* foo() {
-  let index = 0;
-  throw yield index++;
-}
-    `,
-    `
-async function foo() {
-  throw await bar;
-}
-    `,
-    `
-import { Error } from './missing';
-throw Error;
-    `,
-    `
-class CustomError<T, C> extends Error {}
-throw new CustomError<string, string>();
-    `,
-    `
-class CustomError<T = {}> extends Error {}
-throw new CustomError();
-    `,
-    `
-class CustomError<T extends object> extends Error {}
-throw new CustomError();
-    `,
-    `
-function foo() {
-  throw Object.assign(new Error('message'), { foo: 'bar' });
-}
-    `,
-    `
-const foo: Error | SyntaxError = bar();
-function bar() {
-  throw foo;
-}
-    `,
-    `
-declare const foo: Error | string;
-throw foo as Error;
-    `,
-    'throw new Error() as Error;',
-    `
-declare const nullishError: Error | undefined;
-throw nullishError ?? new Error();
-    `,
-    `
-declare const nullishError: Error | undefined;
-throw nullishError || new Error();
-    `,
-    `
-declare const nullishError: Error | undefined;
-throw nullishError ? nullishError : new Error();
-    `,
-    `
-function fun(value: any) {
-  throw value;
-}
-    `,
-    `
-function fun(value: unknown) {
-  throw value;
-}
-    `,
   ],
 });

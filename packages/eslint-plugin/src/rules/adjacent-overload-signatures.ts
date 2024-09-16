@@ -145,11 +145,11 @@ export default createRule({
         );
         if (index > -1 && !isSameMethod(method, lastMethod)) {
           context.report({
+            node: member,
+            messageId: 'adjacentSignature',
             data: {
               name: `${method.static ? 'static ' : ''}${method.name}`,
             },
-            messageId: 'adjacentSignature',
-            node: member,
           });
         } else if (index === -1) {
           seenMethods.push(method);

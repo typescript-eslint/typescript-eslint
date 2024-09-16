@@ -201,16 +201,16 @@ export default createRule<[], MessageIds>({
             if (isTypeAnyType(spreadArgType)) {
               // foo(...any)
               context.report({
-                messageId: 'unsafeSpread',
                 node: argument,
+                messageId: 'unsafeSpread',
               });
             } else if (isTypeAnyArrayType(spreadArgType, checker)) {
               // foo(...any[])
 
               // TODO - we could break down the spread and compare the array type against each argument
               context.report({
-                messageId: 'unsafeArraySpread',
                 node: argument,
+                messageId: 'unsafeArraySpread',
               });
             } else if (checker.isTupleType(spreadArgType)) {
               // foo(...[tuple1, tuple2])
@@ -231,12 +231,12 @@ export default createRule<[], MessageIds>({
                 );
                 if (result) {
                   context.report({
+                    node: argument,
+                    messageId: 'unsafeTupleSpread',
                     data: {
                       receiver: checker.typeToString(parameterType),
                       sender: checker.typeToString(tupleType),
                     },
-                    messageId: 'unsafeTupleSpread',
-                    node: argument,
                   });
                 }
               }
@@ -268,12 +268,12 @@ export default createRule<[], MessageIds>({
             );
             if (result) {
               context.report({
+                node: argument,
+                messageId: 'unsafeArgument',
                 data: {
                   receiver: checker.typeToString(parameterType),
                   sender: checker.typeToString(argumentType),
                 },
-                messageId: 'unsafeArgument',
-                node: argument,
               });
             }
           }

@@ -19,6 +19,37 @@ const arrayDestructureError = {
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-this-alias', rule, {
+  valid: [
+    'const self = foo(this);',
+    {
+      code: `
+const { props, state } = this;
+const { length } = this;
+const { length, toString } = this;
+const [foo] = this;
+const [foo, bar] = this;
+      `,
+      options: [
+        {
+          allowDestructuring: true,
+        },
+      ],
+    },
+    {
+      code: 'const self = this;',
+      options: [
+        {
+          allowedNames: ['self'],
+        },
+      ],
+    },
+    // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
+    `
+declare module 'foo' {
+  declare const aVar: string;
+}
+    `,
+  ],
   invalid: [
     {
       code: 'const self = this;',
@@ -98,37 +129,5 @@ class TestClass {
         },
       ],
     },
-  ],
-
-  valid: [
-    'const self = foo(this);',
-    {
-      code: `
-const { props, state } = this;
-const { length } = this;
-const { length, toString } = this;
-const [foo] = this;
-const [foo, bar] = this;
-      `,
-      options: [
-        {
-          allowDestructuring: true,
-        },
-      ],
-    },
-    {
-      code: 'const self = this;',
-      options: [
-        {
-          allowedNames: ['self'],
-        },
-      ],
-    },
-    // https://github.com/bradzacher/eslint-plugin-typescript/issues/281
-    `
-declare module 'foo' {
-  declare const aVar: string;
-}
-    `,
   ],
 });

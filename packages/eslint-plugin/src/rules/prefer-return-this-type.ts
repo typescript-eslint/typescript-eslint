@@ -140,9 +140,9 @@ export default createRule({
 
       if (isFunctionReturningThis(originalFunc, originalClass)) {
         context.report({
-          fix: fixer => fixer.replaceText(node, 'this'),
-          messageId: 'useThisType',
           node,
+          messageId: 'useThisType',
+          fix: fixer => fixer.replaceText(node, 'this'),
         });
       }
     }

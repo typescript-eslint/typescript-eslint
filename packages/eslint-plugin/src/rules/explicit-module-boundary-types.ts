@@ -186,34 +186,34 @@ export default createRule<Options, MessageIds>({
         ): void {
           if (param.type === AST_NODE_TYPES.Identifier) {
             context.report({
-              data: { name: param.name },
-              messageId: namedMessageId,
               node: param,
+              messageId: namedMessageId,
+              data: { name: param.name },
             });
           } else if (param.type === AST_NODE_TYPES.ArrayPattern) {
             context.report({
-              data: { type: 'Array pattern' },
-              messageId: unnamedMessageId,
               node: param,
+              messageId: unnamedMessageId,
+              data: { type: 'Array pattern' },
             });
           } else if (param.type === AST_NODE_TYPES.ObjectPattern) {
             context.report({
-              data: { type: 'Object pattern' },
-              messageId: unnamedMessageId,
               node: param,
+              messageId: unnamedMessageId,
+              data: { type: 'Object pattern' },
             });
           } else if (param.type === AST_NODE_TYPES.RestElement) {
             if (param.argument.type === AST_NODE_TYPES.Identifier) {
               context.report({
-                data: { name: param.argument.name },
-                messageId: namedMessageId,
                 node: param,
+                messageId: namedMessageId,
+                data: { name: param.argument.name },
               });
             } else {
               context.report({
-                data: { type: 'Rest' },
-                messageId: unnamedMessageId,
                 node: param,
+                messageId: unnamedMessageId,
+                data: { type: 'Rest' },
               });
             }
           }
@@ -445,8 +445,8 @@ export default createRule<Options, MessageIds>({
         node.parent.kind === 'set';
       if (!isConstructor && !isSetAccessor && !node.returnType) {
         context.report({
-          messageId: 'missingReturnType',
           node,
+          messageId: 'missingReturnType',
         });
       }
 
@@ -477,8 +477,8 @@ export default createRule<Options, MessageIds>({
         loc => {
           context.report({
             loc,
-            messageId: 'missingReturnType',
             node,
+            messageId: 'missingReturnType',
           });
         },
       );
@@ -506,8 +506,8 @@ export default createRule<Options, MessageIds>({
         loc => {
           context.report({
             loc,
-            messageId: 'missingReturnType',
             node,
+            messageId: 'missingReturnType',
           });
         },
       );

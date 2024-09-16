@@ -209,8 +209,8 @@ export default createRule({
 
           if (currentType !== desiredType) {
             context.report({
-              messageId: 'mixed',
               node: member.initializer ?? member,
+              messageId: 'mixed',
             });
             return;
           }

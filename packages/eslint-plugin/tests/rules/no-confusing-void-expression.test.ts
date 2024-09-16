@@ -14,6 +14,113 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-confusing-void-expression', rule, {
+  valid: [
+    '() => Math.random();',
+    "console.log('foo');",
+    'foo && console.log(foo);',
+    'foo || console.log(foo);',
+    'foo ? console.log(true) : console.log(false);',
+    "console?.log('foo');",
+
+    {
+      code: `
+        () => console.log('foo');
+      `,
+      options: [{ ignoreArrowShorthand: true }],
+    },
+    {
+      code: `
+        foo => foo && console.log(foo);
+      `,
+      options: [{ ignoreArrowShorthand: true }],
+    },
+    {
+      code: `
+        foo => foo || console.log(foo);
+      `,
+      options: [{ ignoreArrowShorthand: true }],
+    },
+    {
+      code: `
+        foo => (foo ? console.log(true) : console.log(false));
+      `,
+      options: [{ ignoreArrowShorthand: true }],
+    },
+
+    {
+      code: `
+        !void console.log('foo');
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        +void (foo && console.log(foo));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        -void (foo || console.log(foo));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        () => void ((foo && void console.log(true)) || console.log(false));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        const x = void (foo ? console.log(true) : console.log(false));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        !(foo && void console.log(foo));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        !!(foo || void console.log(foo));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        const x = (foo && void console.log(true)) || void console.log(false);
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        () => (foo ? void console.log(true) : void console.log(false));
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+    {
+      code: `
+        return void console.log('foo');
+      `,
+      options: [{ ignoreVoidOperator: true }],
+    },
+
+    `
+function cool(input: string) {
+  return console.log(input), input;
+}
+    `,
+    {
+      code: `
+function cool(input: string) {
+  return input, console.log(input), input;
+}
+      `,
+    },
+  ],
   invalid: [
     {
       code: `
@@ -385,114 +492,6 @@ function notcool(input: string) {
       ],
       options: [{ ignoreVoidOperator: true }],
       output: null,
-    },
-  ],
-
-  valid: [
-    '() => Math.random();',
-    "console.log('foo');",
-    'foo && console.log(foo);',
-    'foo || console.log(foo);',
-    'foo ? console.log(true) : console.log(false);',
-    "console?.log('foo');",
-
-    {
-      code: `
-        () => console.log('foo');
-      `,
-      options: [{ ignoreArrowShorthand: true }],
-    },
-    {
-      code: `
-        foo => foo && console.log(foo);
-      `,
-      options: [{ ignoreArrowShorthand: true }],
-    },
-    {
-      code: `
-        foo => foo || console.log(foo);
-      `,
-      options: [{ ignoreArrowShorthand: true }],
-    },
-    {
-      code: `
-        foo => (foo ? console.log(true) : console.log(false));
-      `,
-      options: [{ ignoreArrowShorthand: true }],
-    },
-
-    {
-      code: `
-        !void console.log('foo');
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        +void (foo && console.log(foo));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        -void (foo || console.log(foo));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        () => void ((foo && void console.log(true)) || console.log(false));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        const x = void (foo ? console.log(true) : console.log(false));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        !(foo && void console.log(foo));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        !!(foo || void console.log(foo));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        const x = (foo && void console.log(true)) || void console.log(false);
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        () => (foo ? void console.log(true) : void console.log(false));
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-    {
-      code: `
-        return void console.log('foo');
-      `,
-      options: [{ ignoreVoidOperator: true }],
-    },
-
-    `
-function cool(input: string) {
-  return console.log(input), input;
-}
-    `,
-    {
-      code: `
-function cool(input: string) {
-  return input, console.log(input), input;
-}
-      `,
     },
   ],
 });

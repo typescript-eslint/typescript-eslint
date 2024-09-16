@@ -114,6 +114,8 @@ export default createRule<Options, MessageIds>({
         return;
       }
       context.report({
+        node,
+        messageId,
         data:
           messageId !== 'never'
             ? { cast: context.sourceCode.getText(node.typeAnnotation) }
@@ -166,8 +168,6 @@ export default createRule<Options, MessageIds>({
                 );
               }
             : undefined,
-        messageId,
-        node,
       });
     }
 
@@ -222,6 +222,7 @@ export default createRule<Options, MessageIds>({
         ) {
           const { parent } = node;
           suggest.push({
+            messageId: 'replaceObjectTypeAssertionWithAnnotation',
             data: { cast: context.sourceCode.getText(node.typeAnnotation) },
             fix: fixer => [
               fixer.insertTextAfter(
@@ -233,10 +234,10 @@ export default createRule<Options, MessageIds>({
                 getTextWithParentheses(context.sourceCode, node.expression),
               ),
             ],
-            messageId: 'replaceObjectTypeAssertionWithAnnotation',
           });
         }
         suggest.push({
+          messageId: 'replaceObjectTypeAssertionWithSatisfies',
           data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
             fixer.replaceText(
@@ -248,12 +249,11 @@ export default createRule<Options, MessageIds>({
               ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
             ),
           ],
-          messageId: 'replaceObjectTypeAssertionWithSatisfies',
         });
 
         context.report({
-          messageId: 'unexpectedObjectTypeAssertion',
           node,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggest,
         });
       }

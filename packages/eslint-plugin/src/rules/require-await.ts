@@ -187,21 +187,21 @@ export default createRule({
         }
 
         context.report({
+          loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
+          messageId: 'missingAwait',
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
-          loc: getFunctionHeadLoc(node, context.sourceCode),
-          messageId: 'missingAwait',
-          node,
           suggest: [
             {
+              messageId: 'removeAsync',
               fix: (fixer): RuleFix[] =>
                 changes.map(change =>
                   change.replacement !== undefined
                     ? fixer.replaceTextRange(change.range, change.replacement)
                     : fixer.removeRange(change.range),
                 ),
-              messageId: 'removeAsync',
             },
           ],
         });

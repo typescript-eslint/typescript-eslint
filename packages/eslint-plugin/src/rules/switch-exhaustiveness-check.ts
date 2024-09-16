@@ -161,6 +161,8 @@ export default createRule<Options, MessageIds>({
       // match the members of a union.
       if (missingLiteralBranchTypes.length > 0 && defaultCase === undefined) {
         context.report({
+          node: node.discriminant,
+          messageId: 'switchIsNotExhaustive',
           data: {
             missingBranches: missingLiteralBranchTypes
               .map(missingType =>
@@ -170,10 +172,9 @@ export default createRule<Options, MessageIds>({
               )
               .join(' | '),
           },
-          messageId: 'switchIsNotExhaustive',
-          node: node.discriminant,
           suggest: [
             {
+              messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix | null {
                 return fixSwitch(
                   fixer,
@@ -182,7 +183,6 @@ export default createRule<Options, MessageIds>({
                   symbolName?.toString(),
                 );
               },
-              messageId: 'addMissingCases',
             },
           ],
         });
@@ -285,8 +285,8 @@ export default createRule<Options, MessageIds>({
         !containsNonLiteralType
       ) {
         context.report({
-          messageId: 'dangerousDefaultCase',
           node: defaultCase,
+          messageId: 'dangerousDefaultCase',
         });
       }
     }
@@ -303,15 +303,15 @@ export default createRule<Options, MessageIds>({
 
       if (containsNonLiteralType && defaultCase === undefined) {
         context.report({
-          data: { missingBranches: 'default' },
-          messageId: 'switchIsNotExhaustive',
           node: node.discriminant,
+          messageId: 'switchIsNotExhaustive',
+          data: { missingBranches: 'default' },
           suggest: [
             {
+              messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix {
                 return fixSwitch(fixer, node, [null]);
               },
-              messageId: 'addMissingCases',
             },
           ],
         });

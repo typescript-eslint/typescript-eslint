@@ -76,9 +76,9 @@ export default createRule<[Options], MessageIds>({
   ) {
     function report(location: TSESTree.Node, name?: string): void {
       context.report({
-        data: { name },
-        messageId: name ? 'expectedTypedefNamed' : 'expectedTypedef',
         node: location,
+        messageId: name ? 'expectedTypedefNamed' : 'expectedTypedef',
+        data: { name },
       });
     }
 

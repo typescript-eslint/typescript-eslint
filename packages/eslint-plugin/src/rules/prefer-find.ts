@@ -251,10 +251,11 @@ export default createRule({
           const filterExpressions = parseArrayFilterExpressions(object);
           if (filterExpressions.length !== 0) {
             context.report({
-              messageId: 'preferFind',
               node,
+              messageId: 'preferFind',
               suggest: [
                 {
+                  messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
                     return [
                       ...filterExpressions.map(filterExpression =>
@@ -271,7 +272,6 @@ export default createRule({
                       ),
                     ];
                   },
-                  messageId: 'preferFindSuggestion',
                 },
               ],
             });
@@ -291,10 +291,11 @@ export default createRule({
           const filterExpressions = parseArrayFilterExpressions(object);
           if (filterExpressions.length !== 0) {
             context.report({
-              messageId: 'preferFind',
               node,
+              messageId: 'preferFind',
               suggest: [
                 {
+                  messageId: 'preferFindSuggestion',
                   fix: (fixer): TSESLint.RuleFix[] => {
                     return [
                       ...filterExpressions.map(filterExpression =>
@@ -311,7 +312,6 @@ export default createRule({
                       ),
                     ];
                   },
-                  messageId: 'preferFindSuggestion',
                 },
               ],
             });

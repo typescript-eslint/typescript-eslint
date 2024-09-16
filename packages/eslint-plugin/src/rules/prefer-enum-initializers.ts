@@ -30,32 +30,32 @@ export default createRule<[], MessageIds>({
         if (member.initializer == null) {
           const name = context.sourceCode.getText(member);
           context.report({
+            node: member,
+            messageId: 'defineInitializer',
             data: {
               name,
             },
-            messageId: 'defineInitializer',
-            node: member,
             suggest: [
               {
+                messageId: 'defineInitializerSuggestion',
                 data: { name, suggested: index },
                 fix: (fixer): TSESLint.RuleFix => {
                   return fixer.replaceText(member, `${name} = ${index}`);
                 },
-                messageId: 'defineInitializerSuggestion',
               },
               {
+                messageId: 'defineInitializerSuggestion',
                 data: { name, suggested: index + 1 },
                 fix: (fixer): TSESLint.RuleFix => {
                   return fixer.replaceText(member, `${name} = ${index + 1}`);
                 },
-                messageId: 'defineInitializerSuggestion',
               },
               {
+                messageId: 'defineInitializerSuggestion',
                 data: { name, suggested: `'${name}'` },
                 fix: (fixer): TSESLint.RuleFix => {
                   return fixer.replaceText(member, `${name} = '${name}'`);
                 },
-                messageId: 'defineInitializerSuggestion',
               },
             ],
           });

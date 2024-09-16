@@ -75,7 +75,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
-        context.report({ messageId: 'requireCompare', node: callee.parent });
+        context.report({ node: callee.parent, messageId: 'requireCompare' });
       }
     }
 

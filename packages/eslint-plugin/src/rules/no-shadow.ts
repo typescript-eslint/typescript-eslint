@@ -614,18 +614,18 @@ export default createRule<Options, MessageIds>({
             node: variable.identifiers[0],
             ...(location.global
               ? {
+                  messageId: 'noShadowGlobal',
                   data: {
                     name: variable.name,
                   },
-                  messageId: 'noShadowGlobal',
                 }
               : {
+                  messageId: 'noShadow',
                   data: {
                     name: variable.name,
                     shadowedColumn: location.column,
                     shadowedLine: location.line,
                   },
-                  messageId: 'noShadow',
                 }),
           });
         }

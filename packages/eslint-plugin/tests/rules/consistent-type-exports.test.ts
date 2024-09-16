@@ -15,6 +15,45 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('consistent-type-exports', rule, {
+  valid: [
+    // unknown module should be ignored
+    "export { Foo } from 'foo';",
+
+    "export type { Type1 } from './consistent-type-exports';",
+    "export { value1 } from './consistent-type-exports';",
+    "export type { value1 } from './consistent-type-exports';",
+    `
+const variable = 1;
+class Class {}
+enum Enum {}
+function Func() {}
+namespace ValueNS {
+  export const x = 1;
+}
+
+export { variable, Class, Enum, Func, ValueNS };
+    `,
+    `
+type Alias = 1;
+interface IFace {}
+namespace TypeNS {
+  export type x = 1;
+}
+
+export type { Alias, IFace, TypeNS };
+    `,
+    `
+const foo = 1;
+export type { foo };
+    `,
+    `
+namespace NonTypeNS {
+  export const x = 1;
+}
+
+export { NonTypeNS };
+    `,
+  ],
   invalid: [
     {
       code: "export { Type1 } from './consistent-type-exports';",
@@ -347,44 +386,5 @@ export {
 } from './consistent-type-exports';
       `,
     },
-  ],
-  valid: [
-    // unknown module should be ignored
-    "export { Foo } from 'foo';",
-
-    "export type { Type1 } from './consistent-type-exports';",
-    "export { value1 } from './consistent-type-exports';",
-    "export type { value1 } from './consistent-type-exports';",
-    `
-const variable = 1;
-class Class {}
-enum Enum {}
-function Func() {}
-namespace ValueNS {
-  export const x = 1;
-}
-
-export { variable, Class, Enum, Func, ValueNS };
-    `,
-    `
-type Alias = 1;
-interface IFace {}
-namespace TypeNS {
-  export type x = 1;
-}
-
-export type { Alias, IFace, TypeNS };
-    `,
-    `
-const foo = 1;
-export type { foo };
-    `,
-    `
-namespace NonTypeNS {
-  export const x = 1;
-}
-
-export { NonTypeNS };
-    `,
   ],
 });

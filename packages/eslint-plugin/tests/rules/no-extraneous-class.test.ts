@@ -16,6 +16,89 @@ const onlyConstructor = {
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-extraneous-class', rule, {
+  valid: [
+    `
+class Foo {
+  public prop = 1;
+  constructor() {}
+}
+    `,
+    `
+export class CClass extends BaseClass {
+  public static helper(): void {}
+  private static privateHelper(): boolean {
+    return true;
+  }
+  constructor() {}
+}
+    `,
+    `
+class Foo {
+  constructor(public bar: string) {}
+}
+    `,
+    {
+      code: 'class Foo {}',
+      options: [{ allowEmpty: true }],
+    },
+    {
+      code: `
+class Foo {
+  constructor() {}
+}
+      `,
+      options: [{ allowConstructorOnly: true }],
+    },
+    {
+      code: `
+export class Bar {
+  public static helper(): void {}
+  private static privateHelper(): boolean {
+    return true;
+  }
+}
+      `,
+      options: [{ allowStaticOnly: true }],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/170
+    `
+export default class {
+  hello() {
+    return 'I am foo!';
+  }
+}
+    `,
+    {
+      code: `
+@FooDecorator
+class Foo {}
+      `,
+      options: [{ allowWithDecorator: true }],
+    },
+    {
+      code: `
+@FooDecorator
+class Foo {
+  constructor(foo: Foo) {
+    foo.subscribe(a => {
+      console.log(a);
+    });
+  }
+}
+      `,
+      options: [{ allowWithDecorator: true }],
+    },
+    `
+abstract class Foo {
+  abstract property: string;
+}
+    `,
+    `
+abstract class Foo {
+  abstract method(): string;
+}
+    `,
+  ],
   invalid: [
     {
       code: 'class Foo {}',
@@ -128,89 +211,5 @@ abstract class Foo {
       `,
       errors: [onlyConstructor],
     },
-  ],
-
-  valid: [
-    `
-class Foo {
-  public prop = 1;
-  constructor() {}
-}
-    `,
-    `
-export class CClass extends BaseClass {
-  public static helper(): void {}
-  private static privateHelper(): boolean {
-    return true;
-  }
-  constructor() {}
-}
-    `,
-    `
-class Foo {
-  constructor(public bar: string) {}
-}
-    `,
-    {
-      code: 'class Foo {}',
-      options: [{ allowEmpty: true }],
-    },
-    {
-      code: `
-class Foo {
-  constructor() {}
-}
-      `,
-      options: [{ allowConstructorOnly: true }],
-    },
-    {
-      code: `
-export class Bar {
-  public static helper(): void {}
-  private static privateHelper(): boolean {
-    return true;
-  }
-}
-      `,
-      options: [{ allowStaticOnly: true }],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/170
-    `
-export default class {
-  hello() {
-    return 'I am foo!';
-  }
-}
-    `,
-    {
-      code: `
-@FooDecorator
-class Foo {}
-      `,
-      options: [{ allowWithDecorator: true }],
-    },
-    {
-      code: `
-@FooDecorator
-class Foo {
-  constructor(foo: Foo) {
-    foo.subscribe(a => {
-      console.log(a);
-    });
-  }
-}
-      `,
-      options: [{ allowWithDecorator: true }],
-    },
-    `
-abstract class Foo {
-  abstract property: string;
-}
-    `,
-    `
-abstract class Foo {
-  abstract method(): string;
-}
-    `,
   ],
 });

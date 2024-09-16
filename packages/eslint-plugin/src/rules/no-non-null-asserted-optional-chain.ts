@@ -31,18 +31,18 @@ export default createRule({
         // selector guarantees this assertion
         const parent = node.parent as TSESTree.TSNonNullExpression;
         context.report({
-          messageId: 'noNonNullOptionalChain',
           node,
+          messageId: 'noNonNullOptionalChain',
           // use a suggestion instead of a fixer, because this can obviously break type checks
           suggest: [
             {
+              messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.removeRange([
                   parent.range[1] - 1,
                   parent.range[1],
                 ]);
               },
-              messageId: 'suggestRemovingNonNull',
             },
           ],
         });
@@ -55,15 +55,15 @@ export default createRule({
         node: TSESTree.TSNonNullExpression,
       ): void {
         context.report({
-          messageId: 'noNonNullOptionalChain',
           node,
+          messageId: 'noNonNullOptionalChain',
           // use a suggestion instead of a fixer, because this can obviously break type checks
           suggest: [
             {
+              messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.removeRange([node.range[1] - 1, node.range[1]]);
               },
-              messageId: 'suggestRemovingNonNull',
             },
           ],
         });

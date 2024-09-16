@@ -59,12 +59,13 @@ export default createRule<[], MessageIds>({
             if (node.parent.computed) {
               // it is x![y]?.z
               suggest.push({
-                fix: replaceTokenWithOptional(),
                 messageId: 'suggestOptionalChain',
+                fix: replaceTokenWithOptional(),
               });
             } else {
               // it is x!.y?.z
               suggest.push({
+                messageId: 'suggestOptionalChain',
                 fix(fixer) {
                   // x!.y?.z
                   //   ^ punctuator
@@ -77,20 +78,19 @@ export default createRule<[], MessageIds>({
                     fixer.insertTextBefore(punctuator, '?'),
                   ];
                 },
-                messageId: 'suggestOptionalChain',
               });
             }
           } else if (node.parent.computed) {
             // it is x!?.[y].z
             suggest.push({
-              fix: removeToken(),
               messageId: 'suggestOptionalChain',
+              fix: removeToken(),
             });
           } else {
             // it is x!?.y.z
             suggest.push({
-              fix: removeToken(),
               messageId: 'suggestOptionalChain',
+              fix: removeToken(),
             });
           }
         } else if (
@@ -100,21 +100,21 @@ export default createRule<[], MessageIds>({
           if (!node.parent.optional) {
             // it is x.y?.z!()
             suggest.push({
-              fix: replaceTokenWithOptional(),
               messageId: 'suggestOptionalChain',
+              fix: replaceTokenWithOptional(),
             });
           } else {
             // it is x.y.z!?.()
             suggest.push({
-              fix: removeToken(),
               messageId: 'suggestOptionalChain',
+              fix: removeToken(),
             });
           }
         }
 
         context.report({
-          messageId: 'noNonNull',
           node,
+          messageId: 'noNonNull',
           suggest,
         });
       },

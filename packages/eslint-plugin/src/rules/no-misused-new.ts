@@ -78,8 +78,8 @@ export default createRule({
         if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
           if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
             context.report({
-              messageId: 'errorMessageClass',
               node,
+              messageId: 'errorMessageClass',
             });
           }
         }
@@ -95,8 +95,8 @@ export default createRule({
         ) {
           // constructor
           context.report({
-            messageId: 'errorMessageInterface',
             node,
+            messageId: 'errorMessageInterface',
           });
         }
       },
@@ -104,8 +104,8 @@ export default createRule({
         node: TSESTree.TSMethodSignature,
       ): void {
         context.report({
-          messageId: 'errorMessageInterface',
           node,
+          messageId: 'errorMessageInterface',
         });
       },
     };

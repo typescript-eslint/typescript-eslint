@@ -434,9 +434,9 @@ export default createRule<Options, MessageIds>({
         ) {
           if (options.reportUsedIgnorePattern && used) {
             context.report({
-              data: getUsedIgnoredMessageData(variable, 'array-destructure'),
-              messageId: 'usedIgnoredVar',
               node: def.name,
+              messageId: 'usedIgnoredVar',
+              data: getUsedIgnoredMessageData(variable, 'array-destructure'),
             });
           }
           continue;
@@ -464,9 +464,9 @@ export default createRule<Options, MessageIds>({
           ) {
             if (options.reportUsedIgnorePattern && used) {
               context.report({
-                data: getUsedIgnoredMessageData(variable, 'catch-clause'),
-                messageId: 'usedIgnoredVar',
                 node: def.name,
+                messageId: 'usedIgnoredVar',
+                data: getUsedIgnoredMessageData(variable, 'catch-clause'),
               });
             }
             continue;
@@ -483,9 +483,9 @@ export default createRule<Options, MessageIds>({
           ) {
             if (options.reportUsedIgnorePattern && used) {
               context.report({
-                data: getUsedIgnoredMessageData(variable, 'parameter'),
-                messageId: 'usedIgnoredVar',
                 node: def.name,
+                messageId: 'usedIgnoredVar',
+                data: getUsedIgnoredMessageData(variable, 'parameter'),
               });
             }
             continue;
@@ -506,9 +506,9 @@ export default createRule<Options, MessageIds>({
         ) {
           if (options.reportUsedIgnorePattern && used) {
             context.report({
-              data: getUsedIgnoredMessageData(variable, 'variable'),
-              messageId: 'usedIgnoredVar',
               node: def.name,
+              messageId: 'usedIgnoredVar',
+              data: getUsedIgnoredMessageData(variable, 'variable'),
             });
           }
           continue;
@@ -617,11 +617,11 @@ export default createRule<Options, MessageIds>({
             };
 
             context.report({
+              loc,
+              messageId,
               data: unusedVar.references.some(ref => ref.isWrite())
                 ? getAssignedMessageData(unusedVar)
                 : getDefinedMessageData(unusedVar),
-              loc,
-              messageId,
             });
 
             // If there are no regular declaration, report the first `/*globals*/` comment directive.
@@ -632,14 +632,14 @@ export default createRule<Options, MessageIds>({
             const directiveComment = unusedVar.eslintExplicitGlobalComments[0];
 
             context.report({
-              data: getDefinedMessageData(unusedVar),
               loc: getNameLocationInGlobalDirectiveComment(
                 context.sourceCode,
                 directiveComment,
                 unusedVar.name,
               ),
-              messageId: 'unusedVar',
               node: programNode,
+              messageId: 'unusedVar',
+              data: getDefinedMessageData(unusedVar),
             });
           }
         }

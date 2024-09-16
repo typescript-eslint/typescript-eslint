@@ -172,12 +172,12 @@ export default createRule<Options, MessageIds>({
             isTypeFlagSet(baseType, ts.TypeFlags.Null | ts.TypeFlags.Undefined))
         ) {
           context.report({
+            node: baseNode,
+            messageId: 'invalid',
             data: {
               type: typeChecker.typeToString(baseType),
               stringLike,
             },
-            messageId: 'invalid',
-            node: baseNode,
           });
           hadIndividualComplaint = true;
           continue;
@@ -194,12 +194,12 @@ export default createRule<Options, MessageIds>({
                 isDeeplyObjectType(subBaseType)
           ) {
             context.report({
+              node: baseNode,
+              messageId: 'invalid',
               data: {
                 type: typeChecker.typeToString(subBaseType),
                 stringLike,
               },
-              messageId: 'invalid',
-              node: baseNode,
             });
             hadIndividualComplaint = true;
             continue;
@@ -221,13 +221,13 @@ export default createRule<Options, MessageIds>({
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
         ) {
           return context.report({
+            node,
+            messageId: 'mismatched',
             data: {
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
               stringLike,
             },
-            messageId: 'mismatched',
-            node,
           });
         }
 
@@ -236,12 +236,12 @@ export default createRule<Options, MessageIds>({
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.BigIntLike)
         ) {
           return context.report({
+            node,
+            messageId: 'bigintAndNumber',
             data: {
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
             },
-            messageId: 'bigintAndNumber',
-            node,
           });
         }
       }

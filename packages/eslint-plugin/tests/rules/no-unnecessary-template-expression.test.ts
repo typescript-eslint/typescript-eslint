@@ -899,123 +899,6 @@ describe('fixer should not change runtime value', () => {
 });
 
 ruleTester.run('no-unnecessary-template-expression', rule, {
-  invalid: [
-    ...invalidCases,
-    {
-      code: `
-        function func<T extends string>(arg: T) {
-          \`\${arg}\`;
-        }
-      `,
-      errors: [
-        {
-          column: 14,
-          endColumn: 17,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        function func<T extends string>(arg: T) {
-          arg;
-        }
-      `,
-    },
-    {
-      code: `
-        declare const b: 'b';
-        \`a\${b}\${'c'}\`;
-      `,
-      errors: [
-        {
-          column: 17,
-          endColumn: 20,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const b: 'b';
-        \`a\${b}c\`;
-      `,
-    },
-    {
-      code: `
-declare const nested: string, interpolation: string;
-\`use\${\`less\${nested}\${interpolation}\`}\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-declare const nested: string, interpolation: string;
-\`useless\${nested}\${interpolation}\`;
-      `,
-    },
-    {
-      code: noFormat`
-        declare const string: 'a';
-        \`\${   string   }\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const string: 'a';
-        string;
-      `,
-    },
-    {
-      code: `
-        declare const string: 'a';
-        \`\${string}\`;
-      `,
-      errors: [
-        {
-          column: 12,
-          endColumn: 18,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const string: 'a';
-        string;
-      `,
-    },
-    {
-      code: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        \`\${intersection}\`;
-      `,
-      errors: [
-        {
-          column: 12,
-          endColumn: 24,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        intersection;
-      `,
-    },
-    {
-      code: "true ? `${'test' || ''}`.trim() : undefined;",
-      errors: [
-        {
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: "true ? ('test' || '').trim() : undefined;",
-    },
-  ],
-
   valid: [
     "const string = 'a';",
     'const string = `a`;',
@@ -1137,5 +1020,122 @@ declare const nested: string, interpolation: string;
     `
 \`not a useless \${String.raw\`nested interpolation \${a}\`}\`;
     `,
+  ],
+
+  invalid: [
+    ...invalidCases,
+    {
+      code: `
+        function func<T extends string>(arg: T) {
+          \`\${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 17,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        function func<T extends string>(arg: T) {
+          arg;
+        }
+      `,
+    },
+    {
+      code: `
+        declare const b: 'b';
+        \`a\${b}\${'c'}\`;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const b: 'b';
+        \`a\${b}c\`;
+      `,
+    },
+    {
+      code: `
+declare const nested: string, interpolation: string;
+\`use\${\`less\${nested}\${interpolation}\`}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+declare const nested: string, interpolation: string;
+\`useless\${nested}\${interpolation}\`;
+      `,
+    },
+    {
+      code: noFormat`
+        declare const string: 'a';
+        \`\${   string   }\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const string: 'a';
+        string;
+      `,
+    },
+    {
+      code: `
+        declare const string: 'a';
+        \`\${string}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 18,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const string: 'a';
+        string;
+      `,
+    },
+    {
+      code: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        \`\${intersection}\`;
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 24,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        intersection;
+      `,
+    },
+    {
+      code: "true ? `${'test' || ''}`.trim() : undefined;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: "true ? ('test' || '').trim() : undefined;",
+    },
   ],
 });

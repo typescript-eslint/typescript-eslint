@@ -88,9 +88,9 @@ export default createRule({
       // const [x] = ([] as any[]);
       if (isTypeAnyArrayType(senderType, checker)) {
         context.report({
-          data: createData(senderType),
-          messageId: 'unsafeArrayPattern',
           node: receiverNode,
+          messageId: 'unsafeArrayPattern',
+          data: createData(senderType),
         });
         return false;
       }
@@ -127,9 +127,9 @@ export default createRule({
         // check for the any type first so we can handle [[[x]]] = [any]
         if (isTypeAnyType(senderType)) {
           context.report({
-            data: createData(senderType),
-            messageId: 'unsafeArrayPatternFromTuple',
             node: receiverElement,
+            messageId: 'unsafeArrayPatternFromTuple',
+            data: createData(senderType),
           });
           // we want to report on every invalid element in the tuple
           didReport = true;
@@ -214,9 +214,9 @@ export default createRule({
         // check for the any type first so we can handle {x: {y: z}} = {x: any}
         if (isTypeAnyType(senderType)) {
           context.report({
-            data: createData(senderType),
-            messageId: 'unsafeArrayPatternFromTuple',
             node: receiverProperty.value,
+            messageId: 'unsafeArrayPatternFromTuple',
+            data: createData(senderType),
           });
           didReport = true;
         } else if (
@@ -278,9 +278,9 @@ export default createRule({
         }
 
         context.report({
-          data: createData(senderType),
-          messageId,
           node: reportingNode,
+          messageId,
+          data: createData(senderType),
         });
 
         return true;
@@ -302,9 +302,9 @@ export default createRule({
 
       const { receiver, sender } = result;
       context.report({
-        data: createData(sender, receiver),
-        messageId: 'unsafeAssignment',
         node: reportingNode,
+        messageId: 'unsafeAssignment',
+        data: createData(sender, receiver),
       });
       return true;
     }
@@ -402,9 +402,9 @@ export default createRule({
         const restType = services.getTypeAtLocation(node.argument);
         if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
           context.report({
-            data: createData(restType),
-            messageId: 'unsafeArraySpread',
             node,
+            messageId: 'unsafeArraySpread',
+            data: createData(restType),
           });
         }
       },

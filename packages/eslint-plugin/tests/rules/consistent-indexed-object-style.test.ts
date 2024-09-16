@@ -5,6 +5,143 @@ import rule from '../../src/rules/consistent-indexed-object-style';
 const ruleTester = new RuleTester();
 
 ruleTester.run('consistent-indexed-object-style', rule, {
+  valid: [
+    // 'record' (default)
+    // Record
+    'type Foo = Record<string, any>;',
+
+    // Interface
+    'interface Foo {}',
+    `
+interface Foo {
+  bar: string;
+}
+    `,
+    `
+interface Foo {
+  bar: string;
+  [key: string]: any;
+}
+    `,
+    `
+interface Foo {
+  [key: string]: any;
+  bar: string;
+}
+    `,
+    // circular
+    'type Foo = { [key: string]: string | Foo };',
+    'type Foo = { [key: string]: Foo };',
+    'type Foo = { [key: string]: Foo } | Foo;',
+    `
+interface Foo {
+  [key: string]: Foo;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T>;
+}
+    `,
+    `
+interface Foo<T> {
+  [key: string]: Foo<T> | string;
+}
+    `,
+    // Type literal
+    'type Foo = {};',
+    `
+type Foo = {
+  bar: string;
+  [key: string]: any;
+};
+    `,
+    `
+type Foo = {
+  bar: string;
+};
+    `,
+    `
+type Foo = {
+  [key: string]: any;
+  bar: string;
+};
+    `,
+
+    // Generic
+    `
+type Foo = Generic<{
+  [key: string]: any;
+  bar: string;
+}>;
+    `,
+
+    // Function types
+    'function foo(arg: { [key: string]: any; bar: string }) {}',
+    'function foo(): { [key: string]: any; bar: string } {}',
+
+    // Invalid syntax allowed by the parser
+    'type Foo = { [key: string] };',
+    'type Foo = { [] };',
+    `
+interface Foo {
+  [key: string];
+}
+    `,
+    `
+interface Foo {
+  [];
+}
+    `,
+    // 'index-signature'
+    // Unhandled type
+    {
+      code: 'type Foo = Misc<string, unknown>;',
+      options: ['index-signature'],
+    },
+
+    // Invalid record
+    {
+      code: 'type Foo = Record;',
+      options: ['index-signature'],
+    },
+    {
+      code: 'type Foo = Record<string>;',
+      options: ['index-signature'],
+    },
+    {
+      code: 'type Foo = Record<string, number, unknown>;',
+      options: ['index-signature'],
+    },
+
+    // Type literal
+    {
+      code: 'type Foo = { [key: string]: any };',
+      options: ['index-signature'],
+    },
+
+    // Generic
+    {
+      code: 'type Foo = Generic<{ [key: string]: any }>;',
+      options: ['index-signature'],
+    },
+
+    // Function types
+    {
+      code: 'function foo(arg: { [key: string]: any }) {}',
+      options: ['index-signature'],
+    },
+    {
+      code: 'function foo(): { [key: string]: any } {}',
+      options: ['index-signature'],
+    },
+
+    // Namespace
+    {
+      code: 'type T = A.B;',
+      options: ['index-signature'],
+    },
+  ],
   invalid: [
     // Interface
     {
@@ -253,143 +390,6 @@ interface Foo {
       errors: [{ column: 17, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'function foo(): { [key: string]: any } {}',
-    },
-  ],
-  valid: [
-    // 'record' (default)
-    // Record
-    'type Foo = Record<string, any>;',
-
-    // Interface
-    'interface Foo {}',
-    `
-interface Foo {
-  bar: string;
-}
-    `,
-    `
-interface Foo {
-  bar: string;
-  [key: string]: any;
-}
-    `,
-    `
-interface Foo {
-  [key: string]: any;
-  bar: string;
-}
-    `,
-    // circular
-    'type Foo = { [key: string]: string | Foo };',
-    'type Foo = { [key: string]: Foo };',
-    'type Foo = { [key: string]: Foo } | Foo;',
-    `
-interface Foo {
-  [key: string]: Foo;
-}
-    `,
-    `
-interface Foo<T> {
-  [key: string]: Foo<T>;
-}
-    `,
-    `
-interface Foo<T> {
-  [key: string]: Foo<T> | string;
-}
-    `,
-    // Type literal
-    'type Foo = {};',
-    `
-type Foo = {
-  bar: string;
-  [key: string]: any;
-};
-    `,
-    `
-type Foo = {
-  bar: string;
-};
-    `,
-    `
-type Foo = {
-  [key: string]: any;
-  bar: string;
-};
-    `,
-
-    // Generic
-    `
-type Foo = Generic<{
-  [key: string]: any;
-  bar: string;
-}>;
-    `,
-
-    // Function types
-    'function foo(arg: { [key: string]: any; bar: string }) {}',
-    'function foo(): { [key: string]: any; bar: string } {}',
-
-    // Invalid syntax allowed by the parser
-    'type Foo = { [key: string] };',
-    'type Foo = { [] };',
-    `
-interface Foo {
-  [key: string];
-}
-    `,
-    `
-interface Foo {
-  [];
-}
-    `,
-    // 'index-signature'
-    // Unhandled type
-    {
-      code: 'type Foo = Misc<string, unknown>;',
-      options: ['index-signature'],
-    },
-
-    // Invalid record
-    {
-      code: 'type Foo = Record;',
-      options: ['index-signature'],
-    },
-    {
-      code: 'type Foo = Record<string>;',
-      options: ['index-signature'],
-    },
-    {
-      code: 'type Foo = Record<string, number, unknown>;',
-      options: ['index-signature'],
-    },
-
-    // Type literal
-    {
-      code: 'type Foo = { [key: string]: any };',
-      options: ['index-signature'],
-    },
-
-    // Generic
-    {
-      code: 'type Foo = Generic<{ [key: string]: any }>;',
-      options: ['index-signature'],
-    },
-
-    // Function types
-    {
-      code: 'function foo(arg: { [key: string]: any }) {}',
-      options: ['index-signature'],
-    },
-    {
-      code: 'function foo(): { [key: string]: any } {}',
-      options: ['index-signature'],
-    },
-
-    // Namespace
-    {
-      code: 'type T = A.B;',
-      options: ['index-signature'],
     },
   ],
 });

@@ -22,6 +22,548 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('strict-boolean-expressions', rule, {
+  valid: [
+    // boolean in boolean context
+    "true ? 'a' : 'b';",
+    `
+if (false) {
+}
+    `,
+    'while (true) {}',
+    'for (; false; ) {}',
+    '!true;',
+    'false || 123;',
+    "true && 'foo';",
+    '!(false || true);',
+    'true && false ? true : false;',
+    '(false && true) || false;',
+    '(false && true) || [];',
+    '(false && 1) || (true && 2);',
+    `
+declare const x: boolean;
+if (x) {
+}
+    `,
+    '(x: boolean) => !x;',
+    '<T extends boolean>(x: T) => (x ? 1 : 0);',
+    `
+declare const x: never;
+if (x) {
+}
+    `,
+
+    // string in boolean context
+    `
+if ('') {
+}
+    `,
+    "while ('x') {}",
+    "for (; ''; ) {}",
+    "('' && '1') || x;",
+    `
+declare const x: string;
+if (x) {
+}
+    `,
+    '(x: string) => !x;',
+    '<T extends string>(x: T) => (x ? 1 : 0);',
+
+    // number in boolean context
+    `
+if (0) {
+}
+    `,
+    'while (1n) {}',
+    'for (; Infinity; ) {}',
+    '(0 / 0 && 1 + 2) || x;',
+    `
+declare const x: number;
+if (x) {
+}
+    `,
+    '(x: bigint) => !x;',
+    '<T extends number>(x: T) => (x ? 1 : 0);',
+
+    // nullable object in boolean context
+    `
+declare const x: null | object;
+if (x) {
+}
+    `,
+    '(x?: { a: any }) => !x;',
+    '<T extends {} | null | undefined>(x: T) => (x ? 1 : 0);',
+
+    // nullable boolean in boolean context
+    {
+      code: `
+        declare const x: boolean | null;
+        if (x) {
+        }
+      `,
+      options: [{ allowNullableBoolean: true }],
+    },
+    {
+      code: `
+        (x?: boolean) => !x;
+      `,
+      options: [{ allowNullableBoolean: true }],
+    },
+    {
+      code: `
+        <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+      options: [{ allowNullableBoolean: true }],
+    },
+
+    // nullable string in boolean context
+    {
+      code: `
+        declare const x: string | null;
+        if (x) {
+        }
+      `,
+      options: [{ allowNullableString: true }],
+    },
+    {
+      code: `
+        (x?: string) => !x;
+      `,
+      options: [{ allowNullableString: true }],
+    },
+    {
+      code: `
+        <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+      options: [{ allowNullableString: true }],
+    },
+
+    // nullable number in boolean context
+    {
+      code: `
+        declare const x: number | null;
+        if (x) {
+        }
+      `,
+      options: [{ allowNullableNumber: true }],
+    },
+    {
+      code: `
+        (x?: number) => !x;
+      `,
+      options: [{ allowNullableNumber: true }],
+    },
+    {
+      code: `
+        <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+      options: [{ allowNullableNumber: true }],
+    },
+
+    // any in boolean context
+    {
+      code: `
+        declare const x: any;
+        if (x) {
+        }
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+        x => !x;
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+        <T extends any>(x: T) => (x ? 1 : 0);
+      `,
+      options: [{ allowAny: true }],
+    },
+
+    // logical operator
+    {
+      code: `
+        1 && true && 'x' && {};
+      `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        let x = 0 || false || '' || null;
+      `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        if (1 && true && 'x') void 0;
+      `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        if (0 || false || '') void 0;
+      `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        1 && true && 'x' ? {} : null;
+      `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        0 || false || '' ? null : {};
+      `,
+      options: [{ allowNumber: true, allowString: true }],
+    },
+
+    // nullable enum in boolean context
+    {
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (theEnum) {
+        }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (!theEnum) {
+        }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      code: `
+        enum ExampleEnum {
+          This = 1,
+          That = 2,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (!theEnum) {
+        }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      code: `
+        enum ExampleEnum {
+          This = 'one',
+          That = 'two',
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (!theEnum) {
+        }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+
+    // nullable mixed enum in boolean context
+    {
+      // falsy number and truthy string
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => (value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // falsy string and truthy number
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // truthy string and truthy number
+      code: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // falsy string and falsy number
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+
+    {
+      code: `
+declare const x: string[] | null;
+// eslint-disable-next-line
+if (x) {
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+    },
+
+    `
+function f(arg: 'a' | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 'a' | 'b' | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    {
+      code: `
+declare const x: 1 | null;
+declare const y: 1;
+if (x) {
+}
+if (y) {
+}
+      `,
+      options: [
+        {
+          allowNumber: true,
+        },
+      ],
+    },
+    `
+function f(arg: 1 | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+function f(arg: 1 | 2 | null) {
+  if (arg) console.log(arg);
+}
+    `,
+    `
+interface Options {
+  readonly enableSomething?: true;
+}
+
+function f(opts: Options): void {
+  if (opts.enableSomething) console.log('Do something');
+}
+    `,
+    `
+declare const x: true | null;
+if (x) {
+}
+    `,
+    {
+      code: `
+declare const x: 'a' | null;
+declare const y: 'a';
+if (x) {
+}
+if (y) {
+}
+      `,
+      options: [
+        {
+          allowString: true,
+        },
+      ],
+    },
+    `
+declare const foo: boolean & { __BRAND: 'Foo' };
+if (foo) {
+}
+    `,
+    `
+declare const foo: true & { __BRAND: 'Foo' };
+if (foo) {
+}
+    `,
+    `
+declare const foo: false & { __BRAND: 'Foo' };
+if (foo) {
+}
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts a;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    `
+declare function assert(a: boolean, b: unknown): asserts b is string;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    // Intentional TS error - cannot assert a parameter in a binding pattern.
+    `
+declare function assert(a: boolean, b: unknown): asserts b;
+declare function assert(a: boolean, { b }: { b: unknown }): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(nullableString, boo);
+    `,
+    `
+declare function assert(a: number, b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(...nullableString, nullableString);
+    `,
+    `
+declare function assert(
+  this: object,
+  a: number,
+  b?: unknown,
+  c?: unknown,
+): asserts c;
+declare const nullableString: string | null;
+declare const foo: number;
+const o: { assert: typeof assert } = {
+  assert,
+};
+o.assert(foo, nullableString);
+    `,
+    {
+      code: `
+declare function assert(x: unknown): x is string;
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+    },
+    {
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+declare const lol: string | number | unknown | null;
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(lol);
+      `,
+    },
+    {
+      code: `
+function assert(this: object, a: number, b: unknown): asserts b;
+function assert(a: bigint, b: unknown): asserts b;
+function assert(this: object, a: string, two: string): asserts two;
+function assert(
+  this: object,
+  a: string,
+  assertee: string,
+  c: bigint,
+  d: object,
+): asserts assertee;
+function assert(...args: any[]): void;
+
+function assert(...args: any[]) {
+  throw new Error('lol');
+}
+
+declare const nullableString: string | null;
+assert(3 as any, nullableString);
+      `,
+    },
+    // Intentional TS error - A rest parameter must be last in a parameter list.
+    // This is just to test that we don't crash or falsely report.
+    `
+declare function assert(...a: boolean[], b: unknown): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    // Intentional TS error - A type predicate cannot reference a rest parameter.
+    // This is just to test that we don't crash or falsely report.
+    `
+declare function assert(a: boolean, ...b: unknown[]): asserts b;
+declare const nullableString: string | null;
+declare const boo: boolean;
+assert(boo, nullableString);
+    `,
+    // Intentional TS error - An assertion function must have a parameter to assert.
+    // This is just to test that we don't crash or falsely report.
+    `
+declare function assert(): asserts x;
+declare const nullableString: string | null;
+assert(nullableString);
+    `,
+    `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString);
+assert('one', nullableString);
+    `,
+    // Intentional use of `any` to test a function call with no call signatures.
+    `
+declare const assert: any;
+declare const nullableString: string | null;
+assert(nullableString);
+    `,
+    // Coverage for absent "test expression".
+    // Ensure that no crash or false positive occurs
+    `
+      for (let x = 0; ; x++) {
+        break;
+      }
+    `,
+  ],
+
   invalid: [
     // non-boolean in RHS of test expression
     ...batchedSingleLineTests<MessageId, Options>({
@@ -2347,547 +2889,5 @@ assert(boo, Boolean(nullableString));
       ],
       output: null,
     },
-  ],
-
-  valid: [
-    // boolean in boolean context
-    "true ? 'a' : 'b';",
-    `
-if (false) {
-}
-    `,
-    'while (true) {}',
-    'for (; false; ) {}',
-    '!true;',
-    'false || 123;',
-    "true && 'foo';",
-    '!(false || true);',
-    'true && false ? true : false;',
-    '(false && true) || false;',
-    '(false && true) || [];',
-    '(false && 1) || (true && 2);',
-    `
-declare const x: boolean;
-if (x) {
-}
-    `,
-    '(x: boolean) => !x;',
-    '<T extends boolean>(x: T) => (x ? 1 : 0);',
-    `
-declare const x: never;
-if (x) {
-}
-    `,
-
-    // string in boolean context
-    `
-if ('') {
-}
-    `,
-    "while ('x') {}",
-    "for (; ''; ) {}",
-    "('' && '1') || x;",
-    `
-declare const x: string;
-if (x) {
-}
-    `,
-    '(x: string) => !x;',
-    '<T extends string>(x: T) => (x ? 1 : 0);',
-
-    // number in boolean context
-    `
-if (0) {
-}
-    `,
-    'while (1n) {}',
-    'for (; Infinity; ) {}',
-    '(0 / 0 && 1 + 2) || x;',
-    `
-declare const x: number;
-if (x) {
-}
-    `,
-    '(x: bigint) => !x;',
-    '<T extends number>(x: T) => (x ? 1 : 0);',
-
-    // nullable object in boolean context
-    `
-declare const x: null | object;
-if (x) {
-}
-    `,
-    '(x?: { a: any }) => !x;',
-    '<T extends {} | null | undefined>(x: T) => (x ? 1 : 0);',
-
-    // nullable boolean in boolean context
-    {
-      code: `
-        declare const x: boolean | null;
-        if (x) {
-        }
-      `,
-      options: [{ allowNullableBoolean: true }],
-    },
-    {
-      code: `
-        (x?: boolean) => !x;
-      `,
-      options: [{ allowNullableBoolean: true }],
-    },
-    {
-      code: `
-        <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
-      `,
-      options: [{ allowNullableBoolean: true }],
-    },
-
-    // nullable string in boolean context
-    {
-      code: `
-        declare const x: string | null;
-        if (x) {
-        }
-      `,
-      options: [{ allowNullableString: true }],
-    },
-    {
-      code: `
-        (x?: string) => !x;
-      `,
-      options: [{ allowNullableString: true }],
-    },
-    {
-      code: `
-        <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
-      `,
-      options: [{ allowNullableString: true }],
-    },
-
-    // nullable number in boolean context
-    {
-      code: `
-        declare const x: number | null;
-        if (x) {
-        }
-      `,
-      options: [{ allowNullableNumber: true }],
-    },
-    {
-      code: `
-        (x?: number) => !x;
-      `,
-      options: [{ allowNullableNumber: true }],
-    },
-    {
-      code: `
-        <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
-      `,
-      options: [{ allowNullableNumber: true }],
-    },
-
-    // any in boolean context
-    {
-      code: `
-        declare const x: any;
-        if (x) {
-        }
-      `,
-      options: [{ allowAny: true }],
-    },
-    {
-      code: `
-        x => !x;
-      `,
-      options: [{ allowAny: true }],
-    },
-    {
-      code: `
-        <T extends any>(x: T) => (x ? 1 : 0);
-      `,
-      options: [{ allowAny: true }],
-    },
-
-    // logical operator
-    {
-      code: `
-        1 && true && 'x' && {};
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-    {
-      code: `
-        let x = 0 || false || '' || null;
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-    {
-      code: `
-        if (1 && true && 'x') void 0;
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-    {
-      code: `
-        if (0 || false || '') void 0;
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-    {
-      code: `
-        1 && true && 'x' ? {} : null;
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-    {
-      code: `
-        0 || false || '' ? null : {};
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-
-    // nullable enum in boolean context
-    {
-      code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (theEnum) {
-        }
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 1,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      code: `
-        enum ExampleEnum {
-          This = 1,
-          That = 2,
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      code: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        const rand = Math.random();
-        let theEnum: ExampleEnum | null = null;
-        if (rand < 0.3) {
-          theEnum = ExampleEnum.This;
-        }
-        if (!theEnum) {
-        }
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-
-    // nullable mixed enum in boolean context
-    {
-      // falsy number and truthy string
-      code: `
-        enum ExampleEnum {
-          This = 0,
-          That = 'one',
-        }
-        (value?: ExampleEnum) => (value ? 1 : 0);
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      // falsy string and truthy number
-      code: `
-        enum ExampleEnum {
-          This = '',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      // truthy string and truthy number
-      code: `
-        enum ExampleEnum {
-          This = 'this',
-          That = 1,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      // falsy string and falsy number
-      code: `
-        enum ExampleEnum {
-          This = '',
-          That = 0,
-        }
-        (value?: ExampleEnum) => (!value ? 1 : 0);
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-
-    {
-      code: `
-declare const x: string[] | null;
-// eslint-disable-next-line
-if (x) {
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
-        },
-      },
-      options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
-      ],
-    },
-
-    `
-function f(arg: 'a' | null) {
-  if (arg) console.log(arg);
-}
-    `,
-    `
-function f(arg: 'a' | 'b' | null) {
-  if (arg) console.log(arg);
-}
-    `,
-    {
-      code: `
-declare const x: 1 | null;
-declare const y: 1;
-if (x) {
-}
-if (y) {
-}
-      `,
-      options: [
-        {
-          allowNumber: true,
-        },
-      ],
-    },
-    `
-function f(arg: 1 | null) {
-  if (arg) console.log(arg);
-}
-    `,
-    `
-function f(arg: 1 | 2 | null) {
-  if (arg) console.log(arg);
-}
-    `,
-    `
-interface Options {
-  readonly enableSomething?: true;
-}
-
-function f(opts: Options): void {
-  if (opts.enableSomething) console.log('Do something');
-}
-    `,
-    `
-declare const x: true | null;
-if (x) {
-}
-    `,
-    {
-      code: `
-declare const x: 'a' | null;
-declare const y: 'a';
-if (x) {
-}
-if (y) {
-}
-      `,
-      options: [
-        {
-          allowString: true,
-        },
-      ],
-    },
-    `
-declare const foo: boolean & { __BRAND: 'Foo' };
-if (foo) {
-}
-    `,
-    `
-declare const foo: true & { __BRAND: 'Foo' };
-if (foo) {
-}
-    `,
-    `
-declare const foo: false & { __BRAND: 'Foo' };
-if (foo) {
-}
-    `,
-    `
-declare function assert(a: number, b: unknown): asserts a;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    `
-declare function assert(a: boolean, b: unknown): asserts b is string;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - cannot assert a parameter in a binding pattern.
-    `
-declare function assert(a: boolean, b: unknown): asserts b;
-declare function assert(a: boolean, { b }: { b: unknown }): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    `
-declare function assert(a: number, b: unknown): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(nullableString, boo);
-    `,
-    `
-declare function assert(a: number, b: unknown): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(...nullableString, nullableString);
-    `,
-    `
-declare function assert(
-  this: object,
-  a: number,
-  b?: unknown,
-  c?: unknown,
-): asserts c;
-declare const nullableString: string | null;
-declare const foo: number;
-const o: { assert: typeof assert } = {
-  assert,
-};
-o.assert(foo, nullableString);
-    `,
-    {
-      code: `
-declare function assert(x: unknown): x is string;
-declare const nullableString: string | null;
-assert(nullableString);
-      `,
-    },
-    {
-      code: `
-class ThisAsserter {
-  assertThis(this: unknown, arg2: unknown): asserts this {}
-}
-
-declare const lol: string | number | unknown | null;
-
-const thisAsserter: ThisAsserter = new ThisAsserter();
-thisAsserter.assertThis(lol);
-      `,
-    },
-    {
-      code: `
-function assert(this: object, a: number, b: unknown): asserts b;
-function assert(a: bigint, b: unknown): asserts b;
-function assert(this: object, a: string, two: string): asserts two;
-function assert(
-  this: object,
-  a: string,
-  assertee: string,
-  c: bigint,
-  d: object,
-): asserts assertee;
-function assert(...args: any[]): void;
-
-function assert(...args: any[]) {
-  throw new Error('lol');
-}
-
-declare const nullableString: string | null;
-assert(3 as any, nullableString);
-      `,
-    },
-    // Intentional TS error - A rest parameter must be last in a parameter list.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(...a: boolean[], b: unknown): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - A type predicate cannot reference a rest parameter.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(a: boolean, ...b: unknown[]): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - An assertion function must have a parameter to assert.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(): asserts x;
-declare const nullableString: string | null;
-assert(nullableString);
-    `,
-    `
-function assert(one: unknown): asserts one;
-function assert(one: unknown, two: unknown): asserts two;
-function assert(...args: unknown[]) {
-  throw new Error('not implemented');
-}
-declare const nullableString: string | null;
-assert(nullableString);
-assert('one', nullableString);
-    `,
-    // Intentional use of `any` to test a function call with no call signatures.
-    `
-declare const assert: any;
-declare const nullableString: string | null;
-assert(nullableString);
-    `,
-    // Coverage for absent "test expression".
-    // Ensure that no crash or false positive occurs
-    `
-      for (let x = 0; ; x++) {
-        break;
-      }
-    `,
   ],
 });

@@ -69,8 +69,8 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
-        messageId: 'rejectAnError',
         node: callExpression,
+        messageId: 'rejectAnError',
       });
     }
 

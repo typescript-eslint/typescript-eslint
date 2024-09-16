@@ -229,6 +229,8 @@ export default createRule<Options, MessageIds>({
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
                 const openingAngleBracket = nullThrows(
@@ -278,8 +280,6 @@ export default createRule<Options, MessageIds>({
               //          ^--remove--^
               return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
             },
-            messageId: 'unnecessaryAssertion',
-            node,
           });
         }
 
@@ -292,14 +292,14 @@ export default createRule<Options, MessageIds>({
         ) {
           if (node.parent.left === node) {
             context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
               fix(fixer) {
                 return fixer.removeRange([
                   node.expression.range[1],
                   node.range[1],
                 ]);
               },
-              messageId: 'contextuallyUnnecessary',
-              node,
             });
           }
           // for all other = assignments we ignore non-null checks
@@ -322,11 +322,11 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
             fix(fixer) {
               return fixer.removeRange([node.range[1] - 1, node.range[1]]);
             },
-            messageId: 'unnecessaryAssertion',
-            node,
           });
         } else {
           // we know it's a nullable type
@@ -370,14 +370,14 @@ export default createRule<Options, MessageIds>({
 
             if (isValidUndefined && isValidNull && isValidVoid) {
               context.report({
+                node,
+                messageId: 'contextuallyUnnecessary',
                 fix(fixer) {
                   return fixer.removeRange([
                     node.expression.range[1],
                     node.range[1],
                   ]);
                 },
-                messageId: 'contextuallyUnnecessary',
-                node,
               });
             }
           }

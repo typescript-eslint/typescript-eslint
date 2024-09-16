@@ -14,6 +14,37 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-unsafe-call', rule, {
+  valid: [
+    `
+function foo(x: () => void) {
+  x();
+}
+    `,
+    `
+function foo(x?: { a: () => void }) {
+  x?.a();
+}
+    `,
+    `
+function foo(x: { a?: () => void }) {
+  x.a?.();
+}
+    `,
+    'new Map();',
+    'String.raw`foo`;',
+    "const x = import('./foo');",
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
+    `
+      let foo: any = 23;
+      String(foo); // ERROR: Unsafe call of an any typed value
+    `,
+    // TS 3.9 changed this to be safe
+    `
+      function foo<T extends any>(x: T) {
+        x();
+      }
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -220,36 +251,5 @@ value();
         },
       ],
     },
-  ],
-  valid: [
-    `
-function foo(x: () => void) {
-  x();
-}
-    `,
-    `
-function foo(x?: { a: () => void }) {
-  x?.a();
-}
-    `,
-    `
-function foo(x: { a?: () => void }) {
-  x.a?.();
-}
-    `,
-    'new Map();',
-    'String.raw`foo`;',
-    "const x = import('./foo');",
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1825
-    `
-      let foo: any = 23;
-      String(foo); // ERROR: Unsafe call of an any typed value
-    `,
-    // TS 3.9 changed this to be safe
-    `
-      function foo<T extends any>(x: T) {
-        x();
-      }
-    `,
   ],
 });

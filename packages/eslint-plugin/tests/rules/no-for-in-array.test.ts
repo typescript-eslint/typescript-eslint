@@ -14,6 +14,18 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('no-for-in-array', rule, {
+  valid: [
+    `
+for (const x of [3, 4, 5]) {
+  console.log(x);
+}
+    `,
+    `
+for (const x in { a: 1, b: 2, c: 3 }) {
+  console.log(x);
+}
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -164,18 +176,5 @@ for (const x
         },
       ],
     },
-  ],
-
-  valid: [
-    `
-for (const x of [3, 4, 5]) {
-  console.log(x);
-}
-    `,
-    `
-for (const x in { a: 1, b: 2, c: 3 }) {
-  console.log(x);
-}
-    `,
   ],
 });

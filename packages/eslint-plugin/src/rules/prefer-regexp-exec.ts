@@ -134,14 +134,14 @@ export default createRule({
             return;
           }
           return context.report({
+            node: memberNode.property,
+            messageId: 'regExpExecOverStringMatch',
             fix: getWrappingFixer({
-              innerNode: [objectNode],
               node: callNode,
+              innerNode: [objectNode],
               sourceCode: context.sourceCode,
               wrap: objectCode => `${regExp.toString()}.exec(${objectCode})`,
             }),
-            messageId: 'regExpExecOverStringMatch',
-            node: memberNode.property,
           });
         }
 
@@ -152,28 +152,28 @@ export default createRule({
         switch (argumentTypes) {
           case ArgumentType.RegExp:
             return context.report({
+              node: memberNode.property,
+              messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                innerNode: [objectNode, argumentNode],
                 node: callNode,
+                innerNode: [objectNode, argumentNode],
                 sourceCode: context.sourceCode,
                 wrap: (objectCode, argumentCode) =>
                   `${argumentCode}.exec(${objectCode})`,
               }),
-              messageId: 'regExpExecOverStringMatch',
-              node: memberNode.property,
             });
 
           case ArgumentType.String:
             return context.report({
+              node: memberNode.property,
+              messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                innerNode: [objectNode, argumentNode],
                 node: callNode,
+                innerNode: [objectNode, argumentNode],
                 sourceCode: context.sourceCode,
                 wrap: (objectCode, argumentCode) =>
                   `RegExp(${argumentCode}).exec(${objectCode})`,
               }),
-              messageId: 'regExpExecOverStringMatch',
-              node: memberNode.property,
             });
         }
       },

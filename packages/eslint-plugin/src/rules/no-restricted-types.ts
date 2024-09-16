@@ -157,6 +157,8 @@ export default createRule<Options, MessageIds>({
           : undefined;
 
       context.report({
+        node: typeNode,
+        messageId: 'bannedTypeMessage',
         data: {
           name,
           customMessage,
@@ -164,16 +166,14 @@ export default createRule<Options, MessageIds>({
         fix: fixWith
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
           : null,
-        messageId: 'bannedTypeMessage',
-        node: typeNode,
         suggest: suggest?.map(replacement => ({
+          messageId: 'bannedTypeReplacement',
           data: {
             name,
             replacement,
           },
           fix: (fixer): TSESLint.RuleFix =>
             fixer.replaceText(typeNode, replacement),
-          messageId: 'bannedTypeReplacement',
         })),
       });
     }

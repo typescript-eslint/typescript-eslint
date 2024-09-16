@@ -192,10 +192,11 @@ export default createRule<
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
         checkNullishAndReport(context, parserServices, options, [leftNode], {
-          messageId: 'preferOptionalChain',
           node: parentNode,
+          messageId: 'preferOptionalChain',
           suggest: [
             {
+              messageId: 'optionalChainSuggest',
               fix: (fixer): RuleFix => {
                 const leftNodeText = context.sourceCode.getText(leftNode);
                 // Any node that is made of an operator with higher or equal precedence,
@@ -213,7 +214,6 @@ export default createRule<
                   `${maybeWrappedLeftNode}?.${maybeWrappedProperty}`,
                 );
               },
-              messageId: 'optionalChainSuggest',
             },
           ],
         });

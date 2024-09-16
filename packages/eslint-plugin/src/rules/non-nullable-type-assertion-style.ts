@@ -129,6 +129,8 @@ export default createRule({
             ) > OperatorPrecedence.Unary;
 
           context.report({
+            node,
+            messageId: 'preferNonNullAssertion',
             fix(fixer) {
               return fixer.replaceText(
                 node,
@@ -137,8 +139,6 @@ export default createRule({
                   : `(${expressionSourceCode})!`,
               );
             },
-            messageId: 'preferNonNullAssertion',
-            node,
           });
         }
       },

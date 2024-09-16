@@ -188,8 +188,8 @@ export default createRule({
 
       // Report it.
       context.report({
-        messageId: 'preferIncludes',
         node: compareNode,
+        messageId: 'preferIncludes',
         ...(allowFixing && {
           *fix(fixer): Generator<TSESLint.RuleFix> {
             if (negative) {
@@ -239,6 +239,8 @@ export default createRule({
         }
 
         context.report({
+          node: callNode,
+          messageId: 'preferStringIncludes',
           *fix(fixer) {
             const argNode = callNode.arguments[0];
             const needsParen =
@@ -259,8 +261,6 @@ export default createRule({
               `${node.optional ? '?.' : '.'}includes('${escapeString(text)}')`,
             );
           },
-          messageId: 'preferStringIncludes',
-          node: callNode,
         });
       },
     };

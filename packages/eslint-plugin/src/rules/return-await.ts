@@ -293,11 +293,11 @@ export default createRule({
           const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
 
           context.report({
-            messageId: 'nonPromiseAwait',
             node,
+            messageId: 'nonPromiseAwait',
             ...fixOrSuggest(useAutoFix, {
-              fix: fixer => removeAwait(fixer, node),
               messageId: 'nonPromiseAwait',
+              fix: fixer => removeAwait(fixer, node),
             }),
           });
         }
@@ -321,16 +321,16 @@ export default createRule({
         case 'await':
           if (!isAwait) {
             context.report({
-              messageId: 'requiredPromiseAwait',
               node,
+              messageId: 'requiredPromiseAwait',
               ...fixOrSuggest(useAutoFix, {
+                messageId: 'requiredPromiseAwaitSuggestion',
                 fix: fixer =>
                   insertAwait(
                     fixer,
                     node,
                     isHigherPrecedenceThanAwait(expression),
                   ),
-                messageId: 'requiredPromiseAwaitSuggestion',
               }),
             });
           }
@@ -340,11 +340,11 @@ export default createRule({
         case 'no-await':
           if (isAwait) {
             context.report({
-              messageId: 'disallowedPromiseAwait',
               node,
+              messageId: 'disallowedPromiseAwait',
               ...fixOrSuggest(useAutoFix, {
-                fix: fixer => removeAwait(fixer, node),
                 messageId: 'disallowedPromiseAwaitSuggestion',
+                fix: fixer => removeAwait(fixer, node),
               }),
             });
           }

@@ -50,6 +50,8 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
+          node,
+          messageId: 'useTopLevelQualifier',
           fix(fixer) {
             const fixes: TSESLint.RuleFix[] = [];
             for (const specifier of specifiers) {
@@ -76,8 +78,6 @@ export default createRule<Options, MessageIds>({
 
             return fixes;
           },
-          messageId: 'useTopLevelQualifier',
-          node,
         });
       },
     };

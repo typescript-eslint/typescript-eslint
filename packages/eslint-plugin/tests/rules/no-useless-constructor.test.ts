@@ -11,94 +11,6 @@ const error = {
 };
 
 ruleTester.run('no-useless-constructor', rule, {
-  invalid: [
-    {
-      code: `
-class A {
-  constructor() {}
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B {
-  constructor() {
-    super();
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B {
-  constructor(foo) {
-    super(foo);
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B {
-  constructor(foo, bar) {
-    super(foo, bar);
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B {
-  constructor(...args) {
-    super(...args);
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B.C {
-  constructor() {
-    super(...arguments);
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B {
-  constructor(a, b, ...c) {
-    super(...arguments);
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A extends B {
-  constructor(a, b, ...c) {
-    super(a, b, ...c);
-  }
-}
-      `,
-      errors: [error],
-    },
-    {
-      code: `
-class A {
-  public constructor() {}
-}
-      `,
-      errors: [error],
-    },
-  ],
   valid: [
     'class A {}',
     `
@@ -300,5 +212,93 @@ class A extends Object {
   }
 }
     `,
+  ],
+  invalid: [
+    {
+      code: `
+class A {
+  constructor() {}
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B {
+  constructor() {
+    super();
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B {
+  constructor(foo) {
+    super(foo);
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B {
+  constructor(foo, bar) {
+    super(foo, bar);
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B {
+  constructor(...args) {
+    super(...args);
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B.C {
+  constructor() {
+    super(...arguments);
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B {
+  constructor(a, b, ...c) {
+    super(...arguments);
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A extends B {
+  constructor(a, b, ...c) {
+    super(a, b, ...c);
+  }
+}
+      `,
+      errors: [error],
+    },
+    {
+      code: `
+class A {
+  public constructor() {}
+}
+      `,
+      errors: [error],
+    },
   ],
 });

@@ -215,12 +215,12 @@ export default createRule<Options, MessageIds>({
 
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
+          loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
+          messageId: 'missingThis',
           data: {
             name: getFunctionNameWithKind(node),
           },
-          loc: getFunctionHeadLoc(node, context.sourceCode),
-          messageId: 'missingThis',
-          node,
         });
       }
     }

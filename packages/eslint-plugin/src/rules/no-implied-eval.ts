@@ -133,11 +133,11 @@ export default createRule({
           if (
             isBuiltinSymbolLike(services.program, type, 'FunctionConstructor')
           ) {
-            context.report({ messageId: 'noFunctionConstructor', node });
+            context.report({ node, messageId: 'noFunctionConstructor' });
             return;
           }
         } else {
-          context.report({ messageId: 'noFunctionConstructor', node });
+          context.report({ node, messageId: 'noFunctionConstructor' });
           return;
         }
       }
@@ -152,7 +152,7 @@ export default createRule({
         !isFunction(handler) &&
         isReferenceToGlobalFunction(calleeName, node, context.sourceCode)
       ) {
-        context.report({ messageId: 'noImpliedEvalError', node: handler });
+        context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }
     }
 

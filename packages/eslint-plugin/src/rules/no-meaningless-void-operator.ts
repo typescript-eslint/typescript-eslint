@@ -64,10 +64,10 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           )
         ) {
           context.report({
+            node,
+            messageId: 'meaninglessVoidOperator',
             data: { type: checker.typeToString(argType) },
             fix,
-            messageId: 'meaninglessVoidOperator',
-            node,
           });
         } else if (
           checkNever &&
@@ -78,10 +78,10 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           )
         ) {
           context.report({
-            data: { type: checker.typeToString(argType) },
-            messageId: 'meaninglessVoidOperator',
             node,
-            suggest: [{ fix, messageId: 'removeVoid' }],
+            messageId: 'meaninglessVoidOperator',
+            data: { type: checker.typeToString(argType) },
+            suggest: [{ messageId: 'removeVoid', fix }],
           });
         }
       },

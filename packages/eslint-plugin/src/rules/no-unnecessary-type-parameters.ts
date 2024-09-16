@@ -67,13 +67,13 @@ export default createRule({
         }
 
         context.report({
+          node: esTypeParameter,
+          messageId: 'sole',
           data: {
             name: typeParameter.name.text,
             descriptor,
             uses: identifierCounts === 1 ? 'never used' : 'used only once',
           },
-          messageId: 'sole',
-          node: esTypeParameter,
         });
       }
     }

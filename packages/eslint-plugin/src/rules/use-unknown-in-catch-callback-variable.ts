@@ -163,6 +163,7 @@ export default createRule<[], MessageIds>({
               node: catchVariableOuter,
               suggest: [
                 {
+                  messageId: 'addUnknownTypeAnnotationSuggestion',
                   fix: (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
                     if (
                       argument.type ===
@@ -179,7 +180,6 @@ export default createRule<[], MessageIds>({
                       fixer.insertTextAfter(catchVariableInner, ': unknown'),
                     ];
                   },
-                  messageId: 'addUnknownTypeAnnotationSuggestion',
                 },
               ],
             };
@@ -189,23 +189,23 @@ export default createRule<[], MessageIds>({
             node: catchVariableOuter,
             suggest: [
               {
+                messageId: 'wrongTypeAnnotationSuggestion',
                 fix: (fixer: TSESLint.RuleFixer): TSESLint.RuleFix =>
                   fixer.replaceText(catchVariableTypeAnnotation, ': unknown'),
-                messageId: 'wrongTypeAnnotationSuggestion',
               },
             ],
           };
         }
         case AST_NODE_TYPES.ArrayPattern: {
           return {
-            messageId: 'useUnknownArrayDestructuringPattern',
             node: catchVariableOuter,
+            messageId: 'useUnknownArrayDestructuringPattern',
           };
         }
         case AST_NODE_TYPES.ObjectPattern: {
           return {
-            messageId: 'useUnknownObjectDestructuringPattern',
             node: catchVariableOuter,
+            messageId: 'useUnknownObjectDestructuringPattern',
           };
         }
         case AST_NODE_TYPES.RestElement: {
@@ -215,9 +215,9 @@ export default createRule<[], MessageIds>({
               node: catchVariableOuter,
               suggest: [
                 {
+                  messageId: 'addUnknownRestTypeAnnotationSuggestion',
                   fix: (fixer): TSESLint.RuleFix =>
                     fixer.insertTextAfter(catchVariableInner, ': [unknown]'),
-                  messageId: 'addUnknownRestTypeAnnotationSuggestion',
                 },
               ],
             };
@@ -226,9 +226,9 @@ export default createRule<[], MessageIds>({
             node: catchVariableOuter,
             suggest: [
               {
+                messageId: 'wrongRestTypeAnnotationSuggestion',
                 fix: (fixer): TSESLint.RuleFix =>
                   fixer.replaceText(catchVariableTypeAnnotation, ': [unknown]'),
-                messageId: 'wrongRestTypeAnnotationSuggestion',
               },
             ],
           };
@@ -299,9 +299,9 @@ export default createRule<[], MessageIds>({
           // to determine exactly where, and whether we can fix it.
           const overrides = refineReportIfPossible(node);
           context.report({
-            data,
-            messageId: 'useUnknown',
             node,
+            messageId: 'useUnknown',
+            data,
             ...overrides,
           });
         }

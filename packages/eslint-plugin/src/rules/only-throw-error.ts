@@ -69,7 +69,7 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
 
       if (type.flags & ts.TypeFlags.Undefined) {
-        context.report({ messageId: 'undef', node });
+        context.report({ node, messageId: 'undef' });
         return;
       }
 
@@ -85,7 +85,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      context.report({ messageId: 'object', node });
+      context.report({ node, messageId: 'object' });
     }
 
     return {

@@ -16,186 +16,6 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run('await-thenable', rule, {
-  invalid: [
-    {
-      code: 'await 0;',
-      errors: [
-        {
-          line: 1,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: ' 0;',
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: "await 'value';",
-      errors: [
-        {
-          line: 1,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: " 'value';",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: "async () => await (Math.random() > 0.5 ? '' : 0);",
-      errors: [
-        {
-          line: 1,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: "async () =>  (Math.random() > 0.5 ? '' : 0);",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: noFormat`async () => await(Math.random() > 0.5 ? '' : 0);`,
-      errors: [
-        {
-          line: 1,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: "async () => (Math.random() > 0.5 ? '' : 0);",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-class NonPromise extends Array {}
-await new NonPromise();
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: `
-class NonPromise extends Array {}
- new NonPromise();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-async function test() {
-  class IncorrectThenable {
-    then() {}
-  }
-  const thenable = new IncorrectThenable();
-
-  await thenable;
-}
-      `,
-      errors: [
-        {
-          line: 8,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: `
-async function test() {
-  class IncorrectThenable {
-    then() {}
-  }
-  const thenable = new IncorrectThenable();
-
-   thenable;
-}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-declare const callback: (() => void) | undefined;
-await callback?.();
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: `
-declare const callback: (() => void) | undefined;
- callback?.();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-declare const obj: { a?: { b?: () => void } };
-await obj.a?.b?.();
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: `
-declare const obj: { a?: { b?: () => void } };
- obj.a?.b?.();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-declare const obj: { a: { b: { c?: () => void } } } | undefined;
-await obj?.a.b.c?.();
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId,
-          suggestions: [
-            {
-              messageId: 'removeAwait',
-              output: `
-declare const obj: { a: { b: { c?: () => void } } } | undefined;
- obj?.a.b.c?.();
-      `,
-            },
-          ],
-        },
-      ],
-    },
-  ],
-
   valid: [
     `
 async function test() {
@@ -378,5 +198,184 @@ const doSomething = async (
   await callback?.();
 };
     `,
+  ],
+  invalid: [
+    {
+      code: 'await 0;',
+      errors: [
+        {
+          line: 1,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: ' 0;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "await 'value';",
+      errors: [
+        {
+          line: 1,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: " 'value';",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "async () => await (Math.random() > 0.5 ? '' : 0);",
+      errors: [
+        {
+          line: 1,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: "async () =>  (Math.random() > 0.5 ? '' : 0);",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`async () => await(Math.random() > 0.5 ? '' : 0);`,
+      errors: [
+        {
+          line: 1,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: "async () => (Math.random() > 0.5 ? '' : 0);",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class NonPromise extends Array {}
+await new NonPromise();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class NonPromise extends Array {}
+ new NonPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  class IncorrectThenable {
+    then() {}
+  }
+  const thenable = new IncorrectThenable();
+
+  await thenable;
+}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function test() {
+  class IncorrectThenable {
+    then() {}
+  }
+  const thenable = new IncorrectThenable();
+
+   thenable;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const callback: (() => void) | undefined;
+await callback?.();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const callback: (() => void) | undefined;
+ callback?.();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const obj: { a?: { b?: () => void } };
+await obj.a?.b?.();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const obj: { a?: { b?: () => void } };
+ obj.a?.b?.();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const obj: { a: { b: { c?: () => void } } } | undefined;
+await obj?.a.b.c?.();
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId,
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const obj: { a: { b: { c?: () => void } } } | undefined;
+ obj?.a.b.c?.();
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

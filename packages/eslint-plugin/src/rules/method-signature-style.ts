@@ -147,11 +147,13 @@ export default createRule<Options, MessageIds>({
           if (duplicatedKeyMethodNodes.length > 0) {
             if (isParentModule) {
               context.report({
-                messageId: 'errorMethod',
                 node: methodNode,
+                messageId: 'errorMethod',
               });
             } else {
               context.report({
+                node: methodNode,
+                messageId: 'errorMethod',
                 *fix(fixer) {
                   const methodNodes = [
                     methodNode,
@@ -185,8 +187,6 @@ export default createRule<Options, MessageIds>({
                     }
                   }
                 },
-                messageId: 'errorMethod',
-                node: methodNode,
               });
             }
             return;
@@ -194,11 +194,13 @@ export default createRule<Options, MessageIds>({
 
           if (isParentModule) {
             context.report({
-              messageId: 'errorMethod',
               node: methodNode,
+              messageId: 'errorMethod',
             });
           } else {
             context.report({
+              node: methodNode,
+              messageId: 'errorMethod',
               fix: fixer => {
                 const key = getMethodKey(methodNode);
                 const params = getMethodParams(methodNode);
@@ -209,8 +211,6 @@ export default createRule<Options, MessageIds>({
                   `${key}: ${params} => ${returnType}${delimiter}`,
                 );
               },
-              messageId: 'errorMethod',
-              node: methodNode,
             });
           }
         },
@@ -223,6 +223,8 @@ export default createRule<Options, MessageIds>({
           }
 
           context.report({
+            node: propertyNode,
+            messageId: 'errorProperty',
             fix: fixer => {
               const key = getMethodKey(propertyNode);
               const params = getMethodParams(typeNode);
@@ -233,8 +235,6 @@ export default createRule<Options, MessageIds>({
                 `${key}${params}: ${returnType}${delimiter}`,
               );
             },
-            messageId: 'errorProperty',
-            node: propertyNode,
           });
         },
       }),

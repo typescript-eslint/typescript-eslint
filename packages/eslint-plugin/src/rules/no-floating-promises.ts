@@ -142,19 +142,20 @@ export default createRule<Options, MessageId>({
         if (isUnhandled) {
           if (promiseArray) {
             context.report({
+              node,
               messageId: options.ignoreVoid
                 ? 'floatingPromiseArrayVoid'
                 : 'floatingPromiseArray',
-              node,
             });
           } else if (options.ignoreVoid) {
             context.report({
+              node,
               messageId: nonFunctionHandler
                 ? 'floatingUselessRejectionHandlerVoid'
                 : 'floatingVoid',
-              node,
               suggest: [
                 {
+                  messageId: 'floatingFixVoid',
                   fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
                     const tsNode = services.esTreeNodeToTSNodeMap.get(
                       node.expression,
@@ -170,26 +171,25 @@ export default createRule<Options, MessageId>({
                       ),
                     ];
                   },
-                  messageId: 'floatingFixVoid',
                 },
                 {
+                  messageId: 'floatingFixAwait',
                   fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
                     addAwait(fixer, expression, node),
-                  messageId: 'floatingFixAwait',
                 },
               ],
             });
           } else {
             context.report({
+              node,
               messageId: nonFunctionHandler
                 ? 'floatingUselessRejectionHandler'
                 : 'floating',
-              node,
               suggest: [
                 {
+                  messageId: 'floatingFixAwait',
                   fix: (fixer): TSESLint.RuleFix | TSESLint.RuleFix[] =>
                     addAwait(fixer, expression, node),
-                  messageId: 'floatingFixAwait',
                 },
               ],
             });

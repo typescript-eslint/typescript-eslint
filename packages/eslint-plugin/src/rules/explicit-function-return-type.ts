@@ -222,8 +222,8 @@ export default createRule<Options, MessageIds>({
       checkFunctionReturnType(info, options, context.sourceCode, loc =>
         context.report({
           loc,
-          messageId: 'missingReturnType',
           node,
+          messageId: 'missingReturnType',
         }),
       );
     }
@@ -244,8 +244,8 @@ export default createRule<Options, MessageIds>({
         checkFunctionReturnType(info, options, context.sourceCode, loc =>
           context.report({
             loc,
-            messageId: 'missingReturnType',
             node,
+            messageId: 'missingReturnType',
           }),
         );
       },

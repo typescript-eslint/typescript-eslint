@@ -190,15 +190,17 @@ export default createRule<Options, MessageIds>({
     ): void {
       if (isRoot) {
         return context.report({
+          node,
+          messageId: 'noTypeAlias',
           data: {
             alias: type.toLowerCase(),
           },
-          messageId: 'noTypeAlias',
-          node,
         });
       }
 
       return context.report({
+        node,
+        messageId: 'noCompositionAlias',
         data: {
           compositionType:
             compositionType === AST_NODE_TYPES.TSUnionType
@@ -206,8 +208,6 @@ export default createRule<Options, MessageIds>({
               : 'intersection',
           typeName: type,
         },
-        messageId: 'noCompositionAlias',
-        node,
       });
     }
 
@@ -331,7 +331,7 @@ export default createRule<Options, MessageIds>({
           return acc;
         }, []);
       }
-      return [{ compositionType, node }];
+      return [{ node, compositionType }];
     }
 
     return {

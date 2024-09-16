@@ -155,8 +155,8 @@ export default createRule({
           isIndexOnlyUsedWithArray(node.body, indexVar, arrayExpression)
         ) {
           context.report({
-            messageId: 'preferForOf',
             node,
+            messageId: 'preferForOf',
           });
         }
       },

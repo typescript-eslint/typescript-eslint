@@ -212,6 +212,8 @@ export default createRule<Options, MessageIds>({
           : keywordMap[typeNode.typeAnnotation.type];
 
       context.report({
+        node,
+        messageId: 'noInferrableType',
         data: {
           type,
         },
@@ -230,8 +232,6 @@ export default createRule<Options, MessageIds>({
           }
           yield fixer.remove(typeNode);
         },
-        messageId: 'noInferrableType',
-        node,
       });
     }
 

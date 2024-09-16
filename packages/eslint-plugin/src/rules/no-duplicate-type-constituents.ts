@@ -177,6 +177,9 @@ export default createRule<Options, MessageIds>({
         start: duplicateConstituent.duplicated.loc.start,
       };
       context.report({
+        loc: reportLocation,
+        node: duplicateConstituent.duplicated,
+        messageId: 'duplicate',
         data: {
           type:
             parentNode.type === AST_NODE_TYPES.TSIntersectionType
@@ -194,9 +197,6 @@ export default createRule<Options, MessageIds>({
             ...bracketAfterTokens,
           ].map(token => fixer.remove(token));
         },
-        loc: reportLocation,
-        messageId: 'duplicate',
-        node: duplicateConstituent.duplicated,
       });
     }
     return {

@@ -5,6 +5,74 @@ import rule from '../../src/rules/no-misused-new';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
+  valid: [
+    `
+declare abstract class C {
+  foo() {}
+  get new();
+  bar();
+}
+    `,
+    `
+class C {
+  constructor();
+}
+    `,
+    `
+const foo = class {
+  constructor();
+};
+    `,
+    `
+const foo = class {
+  new(): X;
+};
+    `,
+    // OK if there's a body
+    `
+class C {
+  new() {}
+}
+    `,
+    `
+class C {
+  constructor() {}
+}
+    `,
+    `
+const foo = class {
+  new() {}
+};
+    `,
+    `
+const foo = class {
+  constructor() {}
+};
+    `,
+    // OK if return type is not the interface.
+    `
+interface I {
+  new (): {};
+}
+    `,
+    // 'new' OK in type literal (we don't know the type name)
+    'type T = { new (): T };',
+    `
+export default class {
+  constructor();
+}
+    `,
+    `
+interface foo {
+  new <T>(): bar<T>;
+}
+    `,
+    `
+interface foo {
+  new <T>(): 'x';
+}
+    `,
+  ],
   invalid: [
     {
       code: `
@@ -98,73 +166,5 @@ interface I {
         },
       ],
     },
-  ],
-  valid: [
-    `
-declare abstract class C {
-  foo() {}
-  get new();
-  bar();
-}
-    `,
-    `
-class C {
-  constructor();
-}
-    `,
-    `
-const foo = class {
-  constructor();
-};
-    `,
-    `
-const foo = class {
-  new(): X;
-};
-    `,
-    // OK if there's a body
-    `
-class C {
-  new() {}
-}
-    `,
-    `
-class C {
-  constructor() {}
-}
-    `,
-    `
-const foo = class {
-  new() {}
-};
-    `,
-    `
-const foo = class {
-  constructor() {}
-};
-    `,
-    // OK if return type is not the interface.
-    `
-interface I {
-  new (): {};
-}
-    `,
-    // 'new' OK in type literal (we don't know the type name)
-    'type T = { new (): T };',
-    `
-export default class {
-  constructor();
-}
-    `,
-    `
-interface foo {
-  new <T>(): bar<T>;
-}
-    `,
-    `
-interface foo {
-  new <T>(): 'x';
-}
-    `,
   ],
 });

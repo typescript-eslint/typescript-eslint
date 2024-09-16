@@ -78,14 +78,15 @@ export default createRule({
 
       if (constraint) {
         context.report({
+          node,
+          messageId: 'unnecessaryConstraint',
           data: {
             name: node.name.name,
             constraint,
           },
-          messageId: 'unnecessaryConstraint',
-          node,
           suggest: [
             {
+              messageId: 'removeUnnecessaryConstraint',
               data: {
                 constraint,
               },
@@ -95,7 +96,6 @@ export default createRule({
                   shouldAddTrailingComma() ? ',' : '',
                 );
               },
-              messageId: 'removeUnnecessaryConstraint',
             },
           ],
         });

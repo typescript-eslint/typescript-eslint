@@ -5,6 +5,74 @@ import rule from '../../src/rules/no-namespace';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-namespace', rule, {
+  valid: [
+    'declare global {}',
+    "declare module 'foo' {}",
+    {
+      code: 'declare module foo {}',
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: 'declare namespace foo {}',
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare global {
+  namespace foo {}
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare module foo {
+  namespace bar {}
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare global {
+  namespace foo {
+    namespace bar {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+declare namespace foo {
+  namespace bar {
+    namespace baz {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: `
+export declare namespace foo {
+  export namespace bar {
+    namespace baz {}
+  }
+}
+      `,
+      options: [{ allowDeclarations: true }],
+    },
+    {
+      code: 'namespace foo {}',
+      filename: 'test.d.ts',
+      options: [{ allowDefinitionFiles: true }],
+    },
+    {
+      code: 'module foo {}',
+      filename: 'test.d.ts',
+      options: [{ allowDefinitionFiles: true }],
+    },
+  ],
   invalid: [
     {
       code: 'module foo {}',
@@ -493,74 +561,6 @@ export namespace A {
         },
       ],
       options: [{ allowDeclarations: true }],
-    },
-  ],
-  valid: [
-    'declare global {}',
-    "declare module 'foo' {}",
-    {
-      code: 'declare module foo {}',
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: 'declare namespace foo {}',
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-declare global {
-  namespace foo {}
-}
-      `,
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-declare module foo {
-  namespace bar {}
-}
-      `,
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-declare global {
-  namespace foo {
-    namespace bar {}
-  }
-}
-      `,
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-declare namespace foo {
-  namespace bar {
-    namespace baz {}
-  }
-}
-      `,
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: `
-export declare namespace foo {
-  export namespace bar {
-    namespace baz {}
-  }
-}
-      `,
-      options: [{ allowDeclarations: true }],
-    },
-    {
-      code: 'namespace foo {}',
-      filename: 'test.d.ts',
-      options: [{ allowDefinitionFiles: true }],
-    },
-    {
-      code: 'module foo {}',
-      filename: 'test.d.ts',
-      options: [{ allowDefinitionFiles: true }],
     },
   ],
 });

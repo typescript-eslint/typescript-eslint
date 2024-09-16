@@ -65,10 +65,11 @@ export default createRule<[], MessageId>({
         }
 
         context.report({
-          messageId: 'noArrayDelete',
           node,
+          messageId: 'noArrayDelete',
           suggest: [
             {
+              messageId: 'useSplice',
               fix(fixer): TSESLint.RuleFix | null {
                 const { object, property } = argument;
 
@@ -101,7 +102,6 @@ export default createRule<[], MessageId>({
 
                 return fixer.replaceText(node, suggestion);
               },
-              messageId: 'useSplice',
             },
           ],
         });

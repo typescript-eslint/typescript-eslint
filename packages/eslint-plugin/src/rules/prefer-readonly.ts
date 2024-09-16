@@ -229,11 +229,11 @@ export default createRule<Options, MessageIds>({
 
           context.report({
             ...reportNodeOrLoc,
+            messageId: 'preferReadonly',
             data: {
               name: context.sourceCode.getText(nameNode),
             },
             fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
-            messageId: 'preferReadonly',
           });
         }
       },

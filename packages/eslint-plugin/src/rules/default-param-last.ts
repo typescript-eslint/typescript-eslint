@@ -72,7 +72,7 @@ export default createRule({
           (isOptionalParam(param) ||
             param.type === AST_NODE_TYPES.AssignmentPattern)
         ) {
-          context.report({ messageId: 'shouldBeLast', node: current });
+          context.report({ node: current, messageId: 'shouldBeLast' });
         }
       }
     }

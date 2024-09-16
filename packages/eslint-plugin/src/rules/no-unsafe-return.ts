@@ -193,6 +193,8 @@ export default createRule({
 
         // If the function return type was not unknown/unknown[], mark usage as unsafeReturn.
         return context.report({
+          node: reportingNode,
+          messageId,
           data: {
             type: isErrorType
               ? 'error'
@@ -202,8 +204,6 @@ export default createRule({
                   ? '`Promise<any>`'
                   : '`any[]`',
           },
-          messageId,
-          node: reportingNode,
         });
       }
 
@@ -222,12 +222,12 @@ export default createRule({
 
         const { receiver, sender } = result;
         return context.report({
+          node: reportingNode,
+          messageId: 'unsafeReturnAssignment',
           data: {
             receiver: checker.typeToString(receiver),
             sender: checker.typeToString(sender),
           },
-          messageId: 'unsafeReturnAssignment',
-          node: reportingNode,
         });
       }
     }

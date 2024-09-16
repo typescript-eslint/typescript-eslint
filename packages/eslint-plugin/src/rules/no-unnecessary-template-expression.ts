@@ -106,6 +106,8 @@ export default createRule<[], MessageId>({
 
         if (hasSingleStringVariable) {
           context.report({
+            node: node.expressions[0],
+            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix | null {
               const wrappingCode = getMovedNodeCode({
                 destinationNode: node,
@@ -115,8 +117,6 @@ export default createRule<[], MessageId>({
 
               return fixer.replaceText(node, wrappingCode);
             },
-            messageId: 'noUnnecessaryTemplateExpression',
-            node: node.expressions[0],
           });
 
           return;
@@ -247,6 +247,8 @@ export default createRule<[], MessageId>({
           }
 
           context.report({
+            node: expression,
+            messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               return [
                 // Remove the quasis' parts that are related to the current expression.
@@ -262,8 +264,6 @@ export default createRule<[], MessageId>({
                 ...fixers.flatMap(cb => cb(fixer)),
               ];
             },
-            messageId: 'noUnnecessaryTemplateExpression',
-            node: expression,
           });
         }
       },

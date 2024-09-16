@@ -54,30 +54,30 @@ export default createRule({
           ) {
             if (isLeftHandPrimaryExpression(node.left)) {
               context.report({
-                messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
                 node,
+                messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
                 suggest: [
                   {
-                    fix: (fixer): TSESLint.RuleFix[] => [
-                      fixer.remove(leftHandFinalToken),
-                    ],
                     messageId: isAssign
                       ? 'notNeedInAssign'
                       : 'notNeedInEqualTest',
+                    fix: (fixer): TSESLint.RuleFix[] => [
+                      fixer.remove(leftHandFinalToken),
+                    ],
                   },
                 ],
               });
             } else {
               context.report({
-                messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
                 node,
+                messageId: isAssign ? 'confusingAssign' : 'confusingEqual',
                 suggest: [
                   {
+                    messageId: 'wrapUpLeft',
                     fix: (fixer): TSESLint.RuleFix[] => [
                       fixer.insertTextBefore(node.left, '('),
                       fixer.insertTextAfter(node.left, ')'),
                     ],
-                    messageId: 'wrapUpLeft',
                   },
                 ],
               });

@@ -161,22 +161,22 @@ export default createRule<Options, MessageIds>({
       ) {
         const publicKeyword = findPublicKeyword(methodDefinition);
         context.report({
+          loc: rangeToLoc(context.sourceCode, publicKeyword.range),
+          messageId: 'unwantedPublicAccessibility',
           data: {
             name: methodName,
             type: nodeType,
           },
           fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
-          loc: rangeToLoc(context.sourceCode, publicKeyword.range),
-          messageId: 'unwantedPublicAccessibility',
         });
       } else if (check === 'explicit' && !methodDefinition.accessibility) {
         context.report({
+          loc: getMemberHeadLoc(context.sourceCode, methodDefinition),
+          messageId: 'missingAccessibility',
           data: {
             name: methodName,
             type: nodeType,
           },
-          loc: getMemberHeadLoc(context.sourceCode, methodDefinition),
-          messageId: 'missingAccessibility',
           suggest: getMissingAccessibilitySuggestions(methodDefinition),
         });
       }
@@ -254,19 +254,19 @@ export default createRule<Options, MessageIds>({
 
       return [
         {
+          messageId: 'addExplicitAccessibility',
           data: { type: 'public' },
           fix: fixer => fix('public', fixer),
-          messageId: 'addExplicitAccessibility',
         },
         {
+          messageId: 'addExplicitAccessibility',
           data: { type: 'private' },
           fix: fixer => fix('private', fixer),
-          messageId: 'addExplicitAccessibility',
         },
         {
+          messageId: 'addExplicitAccessibility',
           data: { type: 'protected' },
           fix: fixer => fix('protected', fixer),
-          messageId: 'addExplicitAccessibility',
         },
       ];
     }
@@ -296,25 +296,25 @@ export default createRule<Options, MessageIds>({
       ) {
         const publicKeywordRange = findPublicKeyword(propertyDefinition);
         context.report({
+          loc: rangeToLoc(context.sourceCode, publicKeywordRange.range),
+          messageId: 'unwantedPublicAccessibility',
           data: {
             name: propertyName,
             type: nodeType,
           },
           fix: fixer => fixer.removeRange(publicKeywordRange.rangeToRemove),
-          loc: rangeToLoc(context.sourceCode, publicKeywordRange.range),
-          messageId: 'unwantedPublicAccessibility',
         });
       } else if (
         propCheck === 'explicit' &&
         !propertyDefinition.accessibility
       ) {
         context.report({
+          loc: getMemberHeadLoc(context.sourceCode, propertyDefinition),
+          messageId: 'missingAccessibility',
           data: {
             name: propertyName,
             type: nodeType,
           },
-          loc: getMemberHeadLoc(context.sourceCode, propertyDefinition),
-          messageId: 'missingAccessibility',
           suggest: getMissingAccessibilitySuggestions(propertyDefinition),
         });
       }
@@ -346,16 +346,16 @@ export default createRule<Options, MessageIds>({
         case 'explicit': {
           if (!node.accessibility) {
             context.report({
-              data: {
-                name: nodeName,
-                type: nodeType,
-              },
               loc: getParameterPropertyHeadLoc(
                 context.sourceCode,
                 node,
                 nodeName,
               ),
               messageId: 'missingAccessibility',
+              data: {
+                name: nodeName,
+                type: nodeType,
+              },
               suggest: getMissingAccessibilitySuggestions(node),
             });
           }
@@ -365,13 +365,13 @@ export default createRule<Options, MessageIds>({
           if (node.accessibility === 'public' && node.readonly) {
             const publicKeyword = findPublicKeyword(node);
             context.report({
+              loc: rangeToLoc(context.sourceCode, publicKeyword.range),
+              messageId: 'unwantedPublicAccessibility',
               data: {
                 name: nodeName,
                 type: nodeType,
               },
               fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
-              loc: rangeToLoc(context.sourceCode, publicKeyword.range),
-              messageId: 'unwantedPublicAccessibility',
             });
           }
           break;

@@ -55,6 +55,834 @@ const unnecessaryConditionTest = (
 });
 
 ruleTester.run('no-unnecessary-condition', rule, {
+  valid: [
+    `
+declare const b1: boolean;
+declare const b2: boolean;
+const t1 = b1 && b2;
+const t2 = b1 || b2;
+if (b1 && b2) {
+}
+while (b1 && b2) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+if (b1 && b2) {
+}
+while (b1 && b2) {}
+for (let i = 0; b1 && b2; i++) {
+  break;
+}
+const t1 = b1 && b2 ? 'yes' : 'no';
+for (;;) {}
+    `,
+    `
+declare function foo(): number | void;
+const result1 = foo() === undefined;
+const result2 = foo() == null;
+    `,
+    necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
+    necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
+    necessaryConditionTest('0 | boolean'), // boolean and falsy literal
+    necessaryConditionTest('boolean | object'), // boolean and always-truthy type
+    necessaryConditionTest('false | object'), // always truthy type and falsy literal
+    // always falsy type and always truthy type
+    necessaryConditionTest('null | object'),
+    necessaryConditionTest('undefined | true'),
+    necessaryConditionTest('void | true'),
+    // "branded" type
+    necessaryConditionTest('string & {}'),
+    necessaryConditionTest('string & { __brand: string }'),
+    necessaryConditionTest('number & { __brand: string }'),
+    necessaryConditionTest('boolean & { __brand: string }'),
+    necessaryConditionTest('bigint & { __brand: string }'),
+    necessaryConditionTest('string & {} & { __brand: string }'),
+    necessaryConditionTest(
+      'string & { __brandA: string } & { __brandB: string }',
+    ),
+    necessaryConditionTest('string & { __brand: string } | number'),
+    necessaryConditionTest('(string | number) & { __brand: string }'),
+    necessaryConditionTest('string & ({ __brand: string } | number)'),
+    necessaryConditionTest('("" | "foo") & { __brand: string }'),
+    necessaryConditionTest(
+      '(string & { __brandA: string }) | (number & { __brandB: string })',
+    ),
+    necessaryConditionTest(
+      '((string & { __brandA: string }) | (number & { __brandB: string }) & ("" | "foo"))',
+    ),
+    necessaryConditionTest(
+      '{ __brandA: string} & (({ __brandB: string } & string) | ({ __brandC: string } & number))',
+    ),
+    necessaryConditionTest(
+      '(string | number) & ("foo" | 123 | { __brandA: string })',
+    ),
+
+    necessaryConditionTest('string & string'),
+
+    necessaryConditionTest('any'), // any
+    necessaryConditionTest('unknown'), // unknown
+
+    // Generic type params
+    `
+function test<T extends string>(t: T) {
+  return t ? 'yes' : 'no';
+}
+    `,
+    `
+// Naked type param
+function test<T>(t: T) {
+  return t ? 'yes' : 'no';
+}
+    `,
+    `
+// Naked type param in union
+function test<T>(t: T | []) {
+  return t ? 'yes' : 'no';
+}
+    `,
+
+    // Boolean expressions
+    `
+function test(a: string) {
+  const t1 = a === 'a';
+  const t2 = 'a' === a;
+}
+    `,
+    `
+function test(a?: string) {
+  const t1 = a === undefined;
+  const t2 = undefined === a;
+  const t1 = a !== undefined;
+  const t2 = undefined !== a;
+}
+    `,
+    `
+function test(a: null | string) {
+  const t1 = a === null;
+  const t2 = null === a;
+  const t1 = a !== null;
+  const t2 = null !== a;
+}
+    `,
+    `
+function test(a?: null | string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a?: string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a: null | string) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+}
+    `,
+    `
+function test(a: any) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+    `,
+    `
+function test(a: unknown) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+    `,
+    `
+function test<T>(a: T) {
+  const t1 = a == null;
+  const t2 = null == a;
+  const t3 = a != null;
+  const t4 = null != a;
+  const t5 = a == undefined;
+  const t6 = undefined == a;
+  const t7 = a != undefined;
+  const t8 = undefined != a;
+  const t9 = a === null;
+  const t10 = null === a;
+  const t11 = a !== null;
+  const t12 = null !== a;
+  const t13 = a === undefined;
+  const t14 = undefined === a;
+  const t15 = a !== undefined;
+  const t16 = undefined !== a;
+}
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] == null;
+}
+    `,
+
+    // Predicate functions
+    `
+// with literal arrow function
+[0, 1, 2].filter(x => x);
+
+// filter with named function
+function length(x: string) {
+  return x.length;
+}
+['a', 'b', ''].filter(length);
+
+// with non-literal array
+function nonEmptyStrings(x: string[]) {
+  return x.filter(length);
+}
+
+// filter-like predicate
+function count(
+  list: string[],
+  predicate: (value: string, index: number, array: string[]) => unknown,
+) {
+  return list.filter(predicate).length;
+}
+    `,
+    // Ignores non-array methods of the same name
+    `
+const notArray = {
+  filter: (func: () => boolean) => func(),
+  find: (func: () => boolean) => func(),
+};
+notArray.filter(() => true);
+notArray.find(() => true);
+    `,
+
+    // Nullish coalescing operator
+    `
+function test(a: string | null) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test(a: string | undefined) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test(a: string | null | undefined) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test(a: unknown) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test<T>(a: T) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test<T extends string | null>(a: T) {
+  return a ?? 'default';
+}
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ?? 'default';
+}
+    `,
+    // Indexing cases
+    `
+declare const arr: object[];
+if (arr[42]) {
+} // looks unnecessary from the types, but isn't
+
+const tuple = [{}] as [object];
+declare const n: number;
+if (tuple[n]) {
+}
+    `,
+    // Optional-chaining indexing
+    `
+declare const arr: Array<{ value: string } & (() => void)>;
+if (arr[42]?.value) {
+}
+arr[41]?.();
+
+// An array access can "infect" deeper into the chain
+declare const arr2: Array<{ x: { y: { z: object } } }>;
+arr2[42]?.x?.y?.z;
+
+const tuple = ['foo'] as const;
+declare const n: number;
+tuple[n]?.toUpperCase();
+    `,
+    `
+if (arr?.[42]) {
+}
+    `,
+    `
+type ItemA = { bar: string; baz: string };
+type ItemB = { bar: string; qux: string };
+declare const foo: ItemA[] | ItemB[];
+foo[0]?.bar;
+    `,
+    `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
+    `,
+    `
+declare const returnsArr: undefined | (() => string[]);
+if (returnsArr?.()[42]) {
+}
+returnsArr?.()[42]?.toUpperCase();
+    `,
+    // nullish + array index
+    `
+declare const arr: string[][];
+arr[x] ?? [];
+    `,
+    // nullish + optional array index
+    `
+declare const arr: { foo: number }[];
+const bar = arr[42]?.foo ?? 0;
+    `,
+    // Doesn't check the right-hand side of a logical expression
+    //  in a non-conditional context
+    {
+      code: `
+declare const b1: boolean;
+declare const b2: true;
+const x = b1 && b2;
+      `,
+    },
+    {
+      code: `
+while (true) {}
+for (; true; ) {}
+do {} while (true);
+      `,
+      options: [{ allowConstantLoopConditions: true }],
+    },
+    `
+let variable = 'abc' as string | void;
+variable?.[0];
+    `,
+    `
+let foo: undefined | { bar: true };
+foo?.bar;
+    `,
+    `
+let foo: null | { bar: true };
+foo?.bar;
+    `,
+    `
+let foo: undefined;
+foo?.bar;
+    `,
+    `
+let foo: undefined;
+foo?.bar.baz;
+    `,
+    `
+let foo: null;
+foo?.bar;
+    `,
+    `
+let anyValue: any;
+anyValue?.foo;
+    `,
+    `
+let unknownValue: unknown;
+unknownValue?.foo;
+    `,
+    `
+let foo: undefined | (() => {});
+foo?.();
+    `,
+    `
+let foo: null | (() => {});
+foo?.();
+    `,
+    `
+let foo: undefined;
+foo?.();
+    `,
+    `
+let foo: undefined;
+foo?.().bar;
+    `,
+    `
+let foo: null;
+foo?.();
+    `,
+    `
+let anyValue: any;
+anyValue?.();
+    `,
+    `
+let unknownValue: unknown;
+unknownValue?.();
+    `,
+    'const foo = [1, 2, 3][0];',
+    `
+declare const foo: { bar?: { baz: { c: string } } } | null;
+foo?.bar?.baz;
+    `,
+    `
+foo?.bar?.baz?.qux;
+    `,
+    `
+declare const foo: { bar: { baz: string } };
+foo.bar.qux?.();
+    `,
+    `
+type Foo = { baz: number } | null;
+type Bar = { baz: null | string | { qux: string } };
+declare const foo: { fooOrBar: Foo | Bar } | null;
+foo?.fooOrBar?.baz?.qux;
+    `,
+    `
+type Foo = { [key: string]: string } | null;
+declare const foo: Foo;
+
+const key = '1';
+foo?.[key]?.trim();
+    `,
+    `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key].trim();
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+  };
+}
+
+function Foo(outer: Outer, key: string): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo';
+
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo' | 'baz';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key]?.trim();
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7700
+    `
+type BrandedKey = string & { __brand: string };
+type Foo = { [key: BrandedKey]: string } | null;
+declare const foo: Foo;
+const key = '1' as BrandedKey;
+foo?.[key]?.trim();
+    `,
+    `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key].trim();
+    `,
+    `
+type BrandedKey = string & { __brand: string };
+interface Outer {
+  inner?: {
+    [key: BrandedKey]: string | undefined;
+  };
+}
+function Foo(outer: Outer, key: BrandedKey): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string & { __brand: string }]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo' & { __brand: string };
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key]?.trim();
+    `,
+    {
+      code: `
+type BrandedKey = string & { __brand: string };
+type Foo = { [key: BrandedKey]: string } | null;
+declare const foo: Foo;
+const key = '1' as BrandedKey;
+foo?.[key]?.trim();
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    {
+      code: `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key].trim();
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    {
+      code: `
+type BrandedKey = string & { __brand: string };
+interface Outer {
+  inner?: {
+    [key: BrandedKey]: string | undefined;
+  };
+}
+function Foo(outer: Outer, key: BrandedKey): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    {
+      code: `
+interface Outer {
+  inner?: {
+    [key: string & { __brand: string }]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo' & { __brand: string };
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    {
+      code: `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key]?.trim();
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (!latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
+    `
+let latencies: number[][] = [];
+
+function recordData(): void {
+  if (latencies[0]) latencies[0] = [];
+  latencies[0].push(4);
+}
+
+recordData();
+    `,
+    `
+function test(testVal?: boolean) {
+  if (testVal ?? true) {
+    console.log('test');
+  }
+}
+    `,
+    `
+declare const x: string[];
+if (!x[0]) {
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/2421
+    `
+const isEven = (val: number) => val % 2 === 0;
+if (!isEven(1)) {
+}
+    `,
+    `
+declare const booleanTyped: boolean;
+declare const unknownTyped: unknown;
+
+if (!(booleanTyped || unknownTyped)) {
+}
+    `,
+    {
+      code: `
+declare const x: string[] | null;
+// eslint-disable-next-line
+if (x) {
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
+      },
+      options: [
+        {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
+        },
+      ],
+    },
+    `
+interface Foo {
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test?.length;
+    `,
+    `
+interface Foo {
+  [key: number]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.[1]?.length;
+    `,
+    `
+declare let foo: number | null;
+foo ??= 1;
+    `,
+    `
+declare let foo: number;
+foo ||= 1;
+    `,
+    `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+    `,
+    `
+enum Keys {
+  A = 'A',
+  B = 'B',
+}
+type Foo = {
+  [Keys.A]: number | null;
+  [Keys.B]: number;
+};
+declare const foo: Foo;
+declare const key: Keys;
+foo[key] ??= 1;
+    `,
+    {
+      code: `
+declare const foo: { bar?: number };
+foo.bar ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number } };
+foo['bar'].baz ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare const foo: { bar: { baz?: number; qux: number } };
+type Key = 'baz' | 'qux';
+declare const key: Key;
+foo.bar[key] ??= 1;
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    `
+declare let foo: number;
+foo &&= 1;
+    `,
+    `
+function foo<T extends object>(arg: T, key: keyof T): void {
+  arg[key] ??= 'default';
+}
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6264
+    `
+function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
+  const value = obj[key];
+  if (value) {
+    return value;
+  }
+  throw new Error('BOOM!');
+}
+
+get({ foo: null }, 'foo');
+    `,
+    {
+      code: `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
+      },
+    },
+    `
+type Foo = { bar: () => number | undefined } | null;
+declare const foo: Foo;
+foo?.bar()?.toExponential();
+    `,
+    `
+type Foo = (() => number | undefined) | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+    `,
+    `
+type FooUndef = () => undefined;
+type FooNum = () => number;
+type Foo = FooUndef | FooNum | null;
+declare const foo: Foo;
+foo?.()?.toExponential();
+    `,
+    `
+type Foo = { [key: string]: () => number | undefined } | null;
+declare const foo: Foo;
+foo?.['bar']()?.toExponential();
+    `,
+    {
+      code: `
+class ConsistentRand {
+  #rand?: number;
+
+  getCachedRand() {
+    this.#rand ??= Math.random();
+    return this.#rand;
+  }
+}
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+  ],
   invalid: [
     // Ensure that it's checking in all the right places
     {
@@ -1482,833 +2310,5 @@ foo?.['bar']?.().toExponential();
       '((string & { __brandA: string }) | (number & { __brandB: string })) & ("foo" | 123)',
       'alwaysTruthy',
     ),
-  ],
-  valid: [
-    `
-declare const b1: boolean;
-declare const b2: boolean;
-const t1 = b1 && b2;
-const t2 = b1 || b2;
-if (b1 && b2) {
-}
-while (b1 && b2) {}
-for (let i = 0; b1 && b2; i++) {
-  break;
-}
-const t1 = b1 && b2 ? 'yes' : 'no';
-if (b1 && b2) {
-}
-while (b1 && b2) {}
-for (let i = 0; b1 && b2; i++) {
-  break;
-}
-const t1 = b1 && b2 ? 'yes' : 'no';
-for (;;) {}
-    `,
-    `
-declare function foo(): number | void;
-const result1 = foo() === undefined;
-const result2 = foo() == null;
-    `,
-    necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
-    necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
-    necessaryConditionTest('0 | boolean'), // boolean and falsy literal
-    necessaryConditionTest('boolean | object'), // boolean and always-truthy type
-    necessaryConditionTest('false | object'), // always truthy type and falsy literal
-    // always falsy type and always truthy type
-    necessaryConditionTest('null | object'),
-    necessaryConditionTest('undefined | true'),
-    necessaryConditionTest('void | true'),
-    // "branded" type
-    necessaryConditionTest('string & {}'),
-    necessaryConditionTest('string & { __brand: string }'),
-    necessaryConditionTest('number & { __brand: string }'),
-    necessaryConditionTest('boolean & { __brand: string }'),
-    necessaryConditionTest('bigint & { __brand: string }'),
-    necessaryConditionTest('string & {} & { __brand: string }'),
-    necessaryConditionTest(
-      'string & { __brandA: string } & { __brandB: string }',
-    ),
-    necessaryConditionTest('string & { __brand: string } | number'),
-    necessaryConditionTest('(string | number) & { __brand: string }'),
-    necessaryConditionTest('string & ({ __brand: string } | number)'),
-    necessaryConditionTest('("" | "foo") & { __brand: string }'),
-    necessaryConditionTest(
-      '(string & { __brandA: string }) | (number & { __brandB: string })',
-    ),
-    necessaryConditionTest(
-      '((string & { __brandA: string }) | (number & { __brandB: string }) & ("" | "foo"))',
-    ),
-    necessaryConditionTest(
-      '{ __brandA: string} & (({ __brandB: string } & string) | ({ __brandC: string } & number))',
-    ),
-    necessaryConditionTest(
-      '(string | number) & ("foo" | 123 | { __brandA: string })',
-    ),
-
-    necessaryConditionTest('string & string'),
-
-    necessaryConditionTest('any'), // any
-    necessaryConditionTest('unknown'), // unknown
-
-    // Generic type params
-    `
-function test<T extends string>(t: T) {
-  return t ? 'yes' : 'no';
-}
-    `,
-    `
-// Naked type param
-function test<T>(t: T) {
-  return t ? 'yes' : 'no';
-}
-    `,
-    `
-// Naked type param in union
-function test<T>(t: T | []) {
-  return t ? 'yes' : 'no';
-}
-    `,
-
-    // Boolean expressions
-    `
-function test(a: string) {
-  const t1 = a === 'a';
-  const t2 = 'a' === a;
-}
-    `,
-    `
-function test(a?: string) {
-  const t1 = a === undefined;
-  const t2 = undefined === a;
-  const t1 = a !== undefined;
-  const t2 = undefined !== a;
-}
-    `,
-    `
-function test(a: null | string) {
-  const t1 = a === null;
-  const t2 = null === a;
-  const t1 = a !== null;
-  const t2 = null !== a;
-}
-    `,
-    `
-function test(a?: null | string) {
-  const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-}
-    `,
-    `
-function test(a?: string) {
-  const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-}
-    `,
-    `
-function test(a: null | string) {
-  const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-}
-    `,
-    `
-function test(a: any) {
-  const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-  const t9 = a === null;
-  const t10 = null === a;
-  const t11 = a !== null;
-  const t12 = null !== a;
-  const t13 = a === undefined;
-  const t14 = undefined === a;
-  const t15 = a !== undefined;
-  const t16 = undefined !== a;
-}
-    `,
-    `
-function test(a: unknown) {
-  const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-  const t9 = a === null;
-  const t10 = null === a;
-  const t11 = a !== null;
-  const t12 = null !== a;
-  const t13 = a === undefined;
-  const t14 = undefined === a;
-  const t15 = a !== undefined;
-  const t16 = undefined !== a;
-}
-    `,
-    `
-function test<T>(a: T) {
-  const t1 = a == null;
-  const t2 = null == a;
-  const t3 = a != null;
-  const t4 = null != a;
-  const t5 = a == undefined;
-  const t6 = undefined == a;
-  const t7 = a != undefined;
-  const t8 = undefined != a;
-  const t9 = a === null;
-  const t10 = null === a;
-  const t11 = a !== null;
-  const t12 = null !== a;
-  const t13 = a === undefined;
-  const t14 = undefined === a;
-  const t15 = a !== undefined;
-  const t16 = undefined !== a;
-}
-    `,
-    `
-function foo<T extends object>(arg: T, key: keyof T): void {
-  arg[key] == null;
-}
-    `,
-
-    // Predicate functions
-    `
-// with literal arrow function
-[0, 1, 2].filter(x => x);
-
-// filter with named function
-function length(x: string) {
-  return x.length;
-}
-['a', 'b', ''].filter(length);
-
-// with non-literal array
-function nonEmptyStrings(x: string[]) {
-  return x.filter(length);
-}
-
-// filter-like predicate
-function count(
-  list: string[],
-  predicate: (value: string, index: number, array: string[]) => unknown,
-) {
-  return list.filter(predicate).length;
-}
-    `,
-    // Ignores non-array methods of the same name
-    `
-const notArray = {
-  filter: (func: () => boolean) => func(),
-  find: (func: () => boolean) => func(),
-};
-notArray.filter(() => true);
-notArray.find(() => true);
-    `,
-
-    // Nullish coalescing operator
-    `
-function test(a: string | null) {
-  return a ?? 'default';
-}
-    `,
-    `
-function test(a: string | undefined) {
-  return a ?? 'default';
-}
-    `,
-    `
-function test(a: string | null | undefined) {
-  return a ?? 'default';
-}
-    `,
-    `
-function test(a: unknown) {
-  return a ?? 'default';
-}
-    `,
-    `
-function test<T>(a: T) {
-  return a ?? 'default';
-}
-    `,
-    `
-function test<T extends string | null>(a: T) {
-  return a ?? 'default';
-}
-    `,
-    `
-function foo<T extends object>(arg: T, key: keyof T): void {
-  arg[key] ?? 'default';
-}
-    `,
-    // Indexing cases
-    `
-declare const arr: object[];
-if (arr[42]) {
-} // looks unnecessary from the types, but isn't
-
-const tuple = [{}] as [object];
-declare const n: number;
-if (tuple[n]) {
-}
-    `,
-    // Optional-chaining indexing
-    `
-declare const arr: Array<{ value: string } & (() => void)>;
-if (arr[42]?.value) {
-}
-arr[41]?.();
-
-// An array access can "infect" deeper into the chain
-declare const arr2: Array<{ x: { y: { z: object } } }>;
-arr2[42]?.x?.y?.z;
-
-const tuple = ['foo'] as const;
-declare const n: number;
-tuple[n]?.toUpperCase();
-    `,
-    `
-if (arr?.[42]) {
-}
-    `,
-    `
-type ItemA = { bar: string; baz: string };
-type ItemB = { bar: string; qux: string };
-declare const foo: ItemA[] | ItemB[];
-foo[0]?.bar;
-    `,
-    `
-type TupleA = [string, number];
-type TupleB = [string, number];
-
-declare const foo: TupleA | TupleB;
-declare const index: number;
-foo[index]?.toString();
-    `,
-    `
-declare const returnsArr: undefined | (() => string[]);
-if (returnsArr?.()[42]) {
-}
-returnsArr?.()[42]?.toUpperCase();
-    `,
-    // nullish + array index
-    `
-declare const arr: string[][];
-arr[x] ?? [];
-    `,
-    // nullish + optional array index
-    `
-declare const arr: { foo: number }[];
-const bar = arr[42]?.foo ?? 0;
-    `,
-    // Doesn't check the right-hand side of a logical expression
-    //  in a non-conditional context
-    {
-      code: `
-declare const b1: boolean;
-declare const b2: true;
-const x = b1 && b2;
-      `,
-    },
-    {
-      code: `
-while (true) {}
-for (; true; ) {}
-do {} while (true);
-      `,
-      options: [{ allowConstantLoopConditions: true }],
-    },
-    `
-let variable = 'abc' as string | void;
-variable?.[0];
-    `,
-    `
-let foo: undefined | { bar: true };
-foo?.bar;
-    `,
-    `
-let foo: null | { bar: true };
-foo?.bar;
-    `,
-    `
-let foo: undefined;
-foo?.bar;
-    `,
-    `
-let foo: undefined;
-foo?.bar.baz;
-    `,
-    `
-let foo: null;
-foo?.bar;
-    `,
-    `
-let anyValue: any;
-anyValue?.foo;
-    `,
-    `
-let unknownValue: unknown;
-unknownValue?.foo;
-    `,
-    `
-let foo: undefined | (() => {});
-foo?.();
-    `,
-    `
-let foo: null | (() => {});
-foo?.();
-    `,
-    `
-let foo: undefined;
-foo?.();
-    `,
-    `
-let foo: undefined;
-foo?.().bar;
-    `,
-    `
-let foo: null;
-foo?.();
-    `,
-    `
-let anyValue: any;
-anyValue?.();
-    `,
-    `
-let unknownValue: unknown;
-unknownValue?.();
-    `,
-    'const foo = [1, 2, 3][0];',
-    `
-declare const foo: { bar?: { baz: { c: string } } } | null;
-foo?.bar?.baz;
-    `,
-    `
-foo?.bar?.baz?.qux;
-    `,
-    `
-declare const foo: { bar: { baz: string } };
-foo.bar.qux?.();
-    `,
-    `
-type Foo = { baz: number } | null;
-type Bar = { baz: null | string | { qux: string } };
-declare const foo: { fooOrBar: Foo | Bar } | null;
-foo?.fooOrBar?.baz?.qux;
-    `,
-    `
-type Foo = { [key: string]: string } | null;
-declare const foo: Foo;
-
-const key = '1';
-foo?.[key]?.trim();
-    `,
-    `
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = 'bar' | 'foo';
-declare const foo: Foo;
-declare const key: Key;
-
-foo?.[key].trim();
-    `,
-    `
-interface Outer {
-  inner?: {
-    [key: string]: string | undefined;
-  };
-}
-
-function Foo(outer: Outer, key: string): number | undefined {
-  return outer.inner?.[key]?.charCodeAt(0);
-}
-    `,
-    `
-interface Outer {
-  inner?: {
-    [key: string]: string | undefined;
-    bar: 'bar';
-  };
-}
-type Foo = 'foo';
-
-function Foo(outer: Outer, key: Foo): number | undefined {
-  return outer.inner?.[key]?.charCodeAt(0);
-}
-    `,
-    `
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = 'bar' | 'foo' | 'baz';
-declare const foo: Foo;
-declare const key: Key;
-
-foo?.[key]?.trim();
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/7700
-    `
-type BrandedKey = string & { __brand: string };
-type Foo = { [key: BrandedKey]: string } | null;
-declare const foo: Foo;
-const key = '1' as BrandedKey;
-foo?.[key]?.trim();
-    `,
-    `
-type BrandedKey<S extends string> = S & { __brand: string };
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
-declare const foo: Foo;
-declare const key: Key;
-foo?.[key].trim();
-    `,
-    `
-type BrandedKey = string & { __brand: string };
-interface Outer {
-  inner?: {
-    [key: BrandedKey]: string | undefined;
-  };
-}
-function Foo(outer: Outer, key: BrandedKey): number | undefined {
-  return outer.inner?.[key]?.charCodeAt(0);
-}
-    `,
-    `
-interface Outer {
-  inner?: {
-    [key: string & { __brand: string }]: string | undefined;
-    bar: 'bar';
-  };
-}
-type Foo = 'foo' & { __brand: string };
-function Foo(outer: Outer, key: Foo): number | undefined {
-  return outer.inner?.[key]?.charCodeAt(0);
-}
-    `,
-    `
-type BrandedKey<S extends string> = S & { __brand: string };
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
-declare const foo: Foo;
-declare const key: Key;
-foo?.[key]?.trim();
-    `,
-    {
-      code: `
-type BrandedKey = string & { __brand: string };
-type Foo = { [key: BrandedKey]: string } | null;
-declare const foo: Foo;
-const key = '1' as BrandedKey;
-foo?.[key]?.trim();
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
-      },
-    },
-    {
-      code: `
-type BrandedKey<S extends string> = S & { __brand: string };
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
-declare const foo: Foo;
-declare const key: Key;
-foo?.[key].trim();
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
-      },
-    },
-    {
-      code: `
-type BrandedKey = string & { __brand: string };
-interface Outer {
-  inner?: {
-    [key: BrandedKey]: string | undefined;
-  };
-}
-function Foo(outer: Outer, key: BrandedKey): number | undefined {
-  return outer.inner?.[key]?.charCodeAt(0);
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
-      },
-    },
-    {
-      code: `
-interface Outer {
-  inner?: {
-    [key: string & { __brand: string }]: string | undefined;
-    bar: 'bar';
-  };
-}
-type Foo = 'foo' & { __brand: string };
-function Foo(outer: Outer, key: Foo): number | undefined {
-  return outer.inner?.[key]?.charCodeAt(0);
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
-      },
-    },
-    {
-      code: `
-type BrandedKey<S extends string> = S & { __brand: string };
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
-declare const foo: Foo;
-declare const key: Key;
-foo?.[key]?.trim();
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
-      },
-    },
-    `
-let latencies: number[][] = [];
-
-function recordData(): void {
-  if (!latencies[0]) latencies[0] = [];
-  latencies[0].push(4);
-}
-
-recordData();
-    `,
-    `
-let latencies: number[][] = [];
-
-function recordData(): void {
-  if (latencies[0]) latencies[0] = [];
-  latencies[0].push(4);
-}
-
-recordData();
-    `,
-    `
-function test(testVal?: boolean) {
-  if (testVal ?? true) {
-    console.log('test');
-  }
-}
-    `,
-    `
-declare const x: string[];
-if (!x[0]) {
-}
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2421
-    `
-const isEven = (val: number) => val % 2 === 0;
-if (!isEven(1)) {
-}
-    `,
-    `
-declare const booleanTyped: boolean;
-declare const unknownTyped: unknown;
-
-if (!(booleanTyped || unknownTyped)) {
-}
-    `,
-    {
-      code: `
-declare const x: string[] | null;
-// eslint-disable-next-line
-if (x) {
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: path.join(rootPath, 'unstrict'),
-        },
-      },
-      options: [
-        {
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
-        },
-      ],
-    },
-    `
-interface Foo {
-  [key: string]: [string] | undefined;
-}
-
-type OptionalFoo = Foo | undefined;
-declare const foo: OptionalFoo;
-foo?.test?.length;
-    `,
-    `
-interface Foo {
-  [key: number]: [string] | undefined;
-}
-
-type OptionalFoo = Foo | undefined;
-declare const foo: OptionalFoo;
-foo?.[1]?.length;
-    `,
-    `
-declare let foo: number | null;
-foo ??= 1;
-    `,
-    `
-declare let foo: number;
-foo ||= 1;
-    `,
-    `
-declare const foo: { bar: { baz?: number; qux: number } };
-type Key = 'baz' | 'qux';
-declare const key: Key;
-foo.bar[key] ??= 1;
-    `,
-    `
-enum Keys {
-  A = 'A',
-  B = 'B',
-}
-type Foo = {
-  [Keys.A]: number | null;
-  [Keys.B]: number;
-};
-declare const foo: Foo;
-declare const key: Keys;
-foo[key] ??= 1;
-    `,
-    {
-      code: `
-declare const foo: { bar?: number };
-foo.bar ??= 1;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-declare const foo: { bar: { baz?: number } };
-foo['bar'].baz ??= 1;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    {
-      code: `
-declare const foo: { bar: { baz?: number; qux: number } };
-type Key = 'baz' | 'qux';
-declare const key: Key;
-foo.bar[key] ??= 1;
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
-    `
-declare let foo: number;
-foo &&= 1;
-    `,
-    `
-function foo<T extends object>(arg: T, key: keyof T): void {
-  arg[key] ??= 'default';
-}
-    `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/6264
-    `
-function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
-  const value = obj[key];
-  if (value) {
-    return value;
-  }
-  throw new Error('BOOM!');
-}
-
-get({ foo: null }, 'foo');
-    `,
-    {
-      code: `
-function getElem(dict: Record<string, { foo: string }>, key: string) {
-  if (dict[key]) {
-    return dict[key].foo;
-  } else {
-    return '';
-  }
-}
-      `,
-      languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
-      },
-    },
-    `
-type Foo = { bar: () => number | undefined } | null;
-declare const foo: Foo;
-foo?.bar()?.toExponential();
-    `,
-    `
-type Foo = (() => number | undefined) | null;
-declare const foo: Foo;
-foo?.()?.toExponential();
-    `,
-    `
-type FooUndef = () => undefined;
-type FooNum = () => number;
-type Foo = FooUndef | FooNum | null;
-declare const foo: Foo;
-foo?.()?.toExponential();
-    `,
-    `
-type Foo = { [key: string]: () => number | undefined } | null;
-declare const foo: Foo;
-foo?.['bar']()?.toExponential();
-    `,
-    {
-      code: `
-class ConsistentRand {
-  #rand?: number;
-
-  getCachedRand() {
-    this.#rand ??= Math.random();
-    return this.#rand;
-  }
-}
-      `,
-      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-    },
   ],
 });

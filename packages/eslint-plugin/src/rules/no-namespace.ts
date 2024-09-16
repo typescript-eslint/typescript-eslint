@@ -71,8 +71,8 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          messageId: 'moduleSyntaxIsPreferred',
           node,
+          messageId: 'moduleSyntaxIsPreferred',
         });
       },
     };

@@ -841,12 +841,12 @@ export default createRule<Options, MessageIds>({
         // Works for 1st item because x < undefined === false for any x (typeof string)
         if (rank < rankLastMember) {
           context.report({
+            node: member,
+            messageId: 'incorrectGroupOrder',
             data: {
               name,
               rank: getLowestRank(previousRanks, rank, groupOrder),
             },
-            messageId: 'incorrectGroupOrder',
-            node: member,
           });
 
           isCorrectlySorted = false;
@@ -886,12 +886,12 @@ export default createRule<Options, MessageIds>({
         if (name) {
           if (naturalOutOfOrder(name, previousName, order)) {
             context.report({
+              node: member,
+              messageId: 'incorrectOrder',
               data: {
                 beforeMember: previousName,
                 member: name,
               },
-              messageId: 'incorrectOrder',
-              node: member,
             });
 
             isCorrectlySorted = false;
@@ -947,13 +947,13 @@ export default createRule<Options, MessageIds>({
 
       const report = (member: Member): void =>
         context.report({
+          loc: member.loc,
+          messageId: 'incorrectRequiredMembersOrder',
           data: {
             member: getMemberName(member, context.sourceCode),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
-          loc: member.loc,
-          messageId: 'incorrectRequiredMembersOrder',
         });
 
       // if the optionality of the first item is correct (based on optionalityOrder)

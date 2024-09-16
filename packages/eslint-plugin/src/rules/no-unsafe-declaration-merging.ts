@@ -39,8 +39,8 @@ export default createRule({
 
       if (defs.some(def => def.node.type === unsafeKind)) {
         context.report({
-          messageId: 'unsafeMerging',
           node,
+          messageId: 'unsafeMerging',
         });
       }
     }

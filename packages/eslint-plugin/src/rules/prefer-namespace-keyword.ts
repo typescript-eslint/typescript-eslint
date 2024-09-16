@@ -35,11 +35,11 @@ export default createRule({
           moduleType.value === 'module'
         ) {
           context.report({
+            node,
+            messageId: 'useNamespace',
             fix(fixer) {
               return fixer.replaceText(moduleType, 'namespace');
             },
-            messageId: 'useNamespace',
-            node,
           });
         }
       },

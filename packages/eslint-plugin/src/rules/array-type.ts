@@ -176,6 +176,8 @@ export default createRule<Options, MessageIds>({
         const errorNode = isReadonly ? node.parent : node;
 
         context.report({
+          node: errorNode,
+          messageId,
           data: {
             type: getMessageType(node.elementType),
             className: isReadonly ? 'ReadonlyArray' : 'Array',
@@ -196,8 +198,6 @@ export default createRule<Options, MessageIds>({
               ),
             ];
           },
-          messageId,
-          node: errorNode,
         });
       },
 
@@ -244,6 +244,8 @@ export default createRule<Options, MessageIds>({
         if (!typeParams || typeParams.length === 0) {
           // Create an 'any' array
           context.report({
+            node,
+            messageId,
             data: {
               type: 'any',
               className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
@@ -252,8 +254,6 @@ export default createRule<Options, MessageIds>({
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
             },
-            messageId,
-            node,
           });
 
           return;
@@ -278,6 +278,8 @@ export default createRule<Options, MessageIds>({
         }`;
         const end = `${typeParens ? ')' : ''}${isReadonlyWithGenericArrayType ? '' : `[]`}${parentParens ? ')' : ''}`;
         context.report({
+          node,
+          messageId,
           data: {
             type: getMessageType(type),
             className: isReadonlyArrayType ? node.typeName.name : 'Array',
@@ -289,8 +291,6 @@ export default createRule<Options, MessageIds>({
               fixer.replaceTextRange([type.range[1], node.range[1]], end),
             ];
           },
-          messageId,
-          node,
         });
       },
     };

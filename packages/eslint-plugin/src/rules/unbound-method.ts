@@ -154,11 +154,11 @@ export default createRule<Options, MessageIds>({
       );
       if (dangerous) {
         context.report({
+          node,
           messageId:
             firstParamIsThis === false
               ? 'unboundWithoutThisAnnotation'
               : 'unbound',
-          node,
         });
         return true;
       }

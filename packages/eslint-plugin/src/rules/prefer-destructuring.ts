@@ -147,9 +147,9 @@ export default createRule<Options, MessageIds>({
             return;
           }
           context.report({
-            data: { type: 'object' },
-            messageId: 'preferDestructuring',
             node: reportNode,
+            messageId: 'preferDestructuring',
+            data: { type: 'object' },
           });
           return;
         }

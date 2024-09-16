@@ -200,8 +200,8 @@ export default createRule<Options, MessageIds>({
       const sourceOrder = node.types.map(type => {
         const group = groupOrder?.indexOf(getGroup(type)) ?? -1;
         return {
-          group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           node: type,
+          group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           text: context.sourceCode.getText(type),
         };
       });
@@ -258,17 +258,17 @@ export default createRule<Options, MessageIds>({
             return fixer.replaceText(node, sorted);
           };
           return context.report({
-            data,
-            messageId,
             node,
+            messageId,
+            data,
             // don't autofix if any of the types have leading/trailing comments
             // the logic for preserving them correctly is a pain - we may implement this later
             ...(hasComments
               ? {
                   suggest: [
                     {
-                      fix,
                       messageId: 'suggestFix',
+                      fix,
                     },
                   ],
                 }

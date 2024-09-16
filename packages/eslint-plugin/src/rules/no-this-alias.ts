@@ -72,11 +72,11 @@ export default createRule<Options, MessageIds>({
             : false;
         if (!hasAllowedName) {
           context.report({
+            node: id,
             messageId:
               id.type === AST_NODE_TYPES.Identifier
                 ? 'thisAssignment'
                 : 'thisDestructure',
-            node: id,
           });
         }
       },

@@ -81,6 +81,8 @@ export default createRule<Options, MessageIds>({
               context.sourceCode.getText(callee) +
               context.sourceCode.getText(typeArguments);
             context.report({
+              node,
+              messageId: 'preferTypeAnnotation',
               fix(fixer) {
                 function getIDToAttachAnnotation():
                   | TSESTree.Node
@@ -106,8 +108,6 @@ export default createRule<Options, MessageIds>({
                   ),
                 ];
               },
-              messageId: 'preferTypeAnnotation',
-              node,
             });
           }
           return;
@@ -123,6 +123,8 @@ export default createRule<Options, MessageIds>({
             .getCommentsInside(lhs.typeArguments)
             .forEach(c => extraComments.delete(c));
           context.report({
+            node,
+            messageId: 'preferConstructor',
             *fix(fixer) {
               yield fixer.remove(lhs.parent);
               for (const comment of extraComments) {
@@ -139,8 +141,6 @@ export default createRule<Options, MessageIds>({
                 yield fixer.insertTextAfter(rhs.callee, '()');
               }
             },
-            messageId: 'preferConstructor',
-            node,
           });
         }
       },

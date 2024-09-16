@@ -103,8 +103,8 @@ export default createRule<Options, MessageIds>({
     if (disallowTypeAnnotations) {
       selectors.TSImportType = (node): void => {
         context.report({
-          messageId: 'noImportTypeAnnotations',
           node,
+          messageId: 'noImportTypeAnnotations',
         });
       };
     }
@@ -116,22 +116,22 @@ export default createRule<Options, MessageIds>({
           node: TSESTree.ImportDeclaration,
         ): void {
           context.report({
+            node,
+            messageId: 'avoidImportType',
             fix(fixer) {
               return fixRemoveTypeSpecifierFromImportDeclaration(fixer, node);
             },
-            messageId: 'avoidImportType',
-            node,
           });
         },
         'ImportSpecifier[importKind = "type"]'(
           node: TSESTree.ImportSpecifier,
         ): void {
           context.report({
+            node,
+            messageId: 'avoidImportType',
             fix(fixer) {
               return fixRemoveTypeSpecifierFromImportSpecifier(fixer, node);
             },
-            messageId: 'avoidImportType',
-            node,
           });
         },
       };
@@ -287,8 +287,8 @@ export default createRule<Options, MessageIds>({
 
         if (node.importKind === 'value' && typeSpecifiers.length) {
           sourceImports.reportValueImports.push({
-            inlineTypeSpecifiers,
             node,
+            inlineTypeSpecifiers,
             typeSpecifiers,
             unusedSpecifiers,
             valueSpecifiers,
@@ -355,6 +355,8 @@ export default createRule<Options, MessageIds>({
                */
               if (report.node.attributes.length === 0) {
                 context.report({
+                  node: report.node,
+                  messageId: 'typeOverValue',
                   *fix(fixer) {
                     yield* fixToTypeImportDeclaration(
                       fixer,
@@ -362,8 +364,6 @@ export default createRule<Options, MessageIds>({
                       sourceImports,
                     );
                   },
-                  messageId: 'typeOverValue',
-                  node: report.node,
                 });
               }
             } else {
@@ -380,17 +380,17 @@ export default createRule<Options, MessageIds>({
 
                 if (importNames.length === 1) {
                   return {
+                    messageId: 'someImportsAreOnlyTypes',
                     data: {
                       typeImports,
                     },
-                    messageId: 'someImportsAreOnlyTypes',
                   };
                 }
                 return {
+                  messageId: 'someImportsAreOnlyTypes',
                   data: {
                     typeImports,
                   },
-                  messageId: 'someImportsAreOnlyTypes',
                 };
               })();
 

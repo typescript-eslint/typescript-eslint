@@ -95,12 +95,12 @@ export default createRule({
         }
 
         context.report({
+          node: node.property,
+          messageId,
           data: {
             type: createDataType(type),
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },
-          messageId,
-          node: node.property,
         });
       }
 
@@ -131,12 +131,12 @@ export default createRule({
         if (isTypeAnyType(type)) {
           const propertyName = context.sourceCode.getText(node);
           context.report({
+            node,
+            messageId: 'unsafeComputedMemberAccess',
             data: {
               type: createDataType(type),
               property: `[${propertyName}]`,
             },
-            messageId: 'unsafeComputedMemberAccess',
-            node,
           });
         }
       },
