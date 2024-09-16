@@ -13,7 +13,7 @@ import {
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
-  typeMatchesSpecifier,
+  typeMatchesSomeSpecifier,
 } from '../util';
 
 type Options = [
@@ -239,8 +239,10 @@ export default createRule<Options, MessageId>({
 
       const type = services.getTypeAtLocation(node.callee);
 
-      return allowForKnownSafeCalls.some(allowedType =>
-        typeMatchesSpecifier(type, allowedType, services.program),
+      return typeMatchesSomeSpecifier(
+        type,
+        allowForKnownSafeCalls,
+        services.program,
       );
     }
 
@@ -419,8 +421,10 @@ export default createRule<Options, MessageId>({
 
       // The highest priority is to allow anything allowlisted
       if (
-        allowForKnownSafePromises.some(allowedType =>
-          typeMatchesSpecifier(type, allowedType, services.program),
+        typeMatchesSomeSpecifier(
+          type,
+          allowForKnownSafePromises,
+          services.program,
         )
       ) {
         return false;
