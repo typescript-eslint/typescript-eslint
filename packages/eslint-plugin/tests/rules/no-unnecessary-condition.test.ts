@@ -75,6 +75,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+switch (b1) {
+  case true:
+  default:
+}
     `,
     `
 declare function foo(): number | void;
@@ -910,6 +914,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
+switch (b1) {
+  case true:
+  default:
+}
       `,
       output: null,
       errors: [
@@ -922,6 +930,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
     },
     // Ensure that it's complaining about the right things
