@@ -327,7 +327,7 @@ describe('createProjectService', () => {
     });
   });
 
-  it('does not provide a require to the host system when loadTypeScriptPlugins is falsy', () => {
+  it('does not provide a require to the host system when loadTypeScriptPlugins is truthy', () => {
     const { service } = createProjectService(
       {
         loadTypeScriptPlugins: true,
