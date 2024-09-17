@@ -266,6 +266,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       declare const foo: PromiseConstructor;
       foo.reject(new Error());
     `,
+    'console[Symbol.iterator]();',
   ],
   invalid: [
     {

@@ -242,7 +242,7 @@ type NodeWithKey =
 function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
-): string | undefined {
+): string | null {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   if (!node.computed) {
@@ -250,12 +250,9 @@ function getStaticMemberAccessValue(
       ? `${key.value}`
       : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
   }
-  const value = getStaticValue(key, sourceCode.getScope(node))?.value as
-    | string
-    | number
-    | null
-    | undefined;
-  return value == null ? undefined : `${value}`;
+  const result = getStaticValue(key, sourceCode.getScope(node));
+  // we must use `String(...)` rather than template literal interpolation, because interpolation throws a runtime error if `value` is a `symbol`
+  return result && String(result.value);
 }
 
 /**
@@ -268,7 +265,7 @@ const isStaticMemberAccessOfValue = (
   context: RuleContext<string, unknown[]>,
   ...values: string[]
 ): boolean =>
-  (values as (string | undefined)[]).includes(
+  (values as (string | null)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
 
