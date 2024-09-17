@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { SymbolFlags } from 'typescript';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -77,34 +78,118 @@ export default createRule<Options, MessageIds>({
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     /**
-     * Helper for identifying if an export specifier resolves to a
+     * Helper for identifying if a symbol resolves to a
      * JavaScript value or a TypeScript type.
      *
      * @returns True/false if is a type or not, or undefined if the specifier
      * can't be resolved.
      */
-    function isSpecifierTypeBased(
-      specifier: TSESTree.ExportSpecifier,
+    function isSymbolTypeBased(
+      symbol: ts.Symbol | undefined,
     ): boolean | undefined {
-      const checker = services.program.getTypeChecker();
-      const symbol = services.getSymbolAtLocation(specifier.exported);
       if (!symbol) {
         return undefined;
       }
 
-      const aliasedSymbol = checker.getAliasedSymbol(symbol);
+      const aliasedSymbol = tsutils.isSymbolFlagSet(
+        symbol,
+        ts.SymbolFlags.Alias,
+      )
+        ? checker.getAliasedSymbol(symbol)
+        : symbol;
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (aliasedSymbol.escapedName === 'unknown') {
+      if (checker.isUnknownSymbol(aliasedSymbol)) {
         return undefined;
       }
 
-      return !(aliasedSymbol.flags & SymbolFlags.Value);
+      return !(aliasedSymbol.flags & ts.SymbolFlags.Value);
     }
 
     return {
+      ExportAllDeclaration(node): void {
+        if (node.exportKind === 'type') {
+          return;
+        }
+
+        const sourceModule = ts.resolveModuleName(
+          node.source.value,
+          context.filename,
+          services.program.getCompilerOptions(),
+          ts.sys,
+        );
+        if (sourceModule.resolvedModule == null) {
+          return;
+        }
+        const sourceFile = services.program.getSourceFile(
+          sourceModule.resolvedModule.resolvedFileName,
+        );
+        if (sourceFile == null) {
+          return;
+        }
+        const sourceFileSymbol = checker.getSymbolAtLocation(sourceFile);
+        if (sourceFileSymbol == null) {
+          return;
+        }
+
+        const sourceFileType = checker.getTypeOfSymbol(sourceFileSymbol);
+        // Module can explicitly export types or values, and it's not difficult
+        // to distinguish one from the other, since we can get the flags of
+        // the exported symbols or check if symbol export declaration has
+        // the "type" keyword in it.
+        //
+        // Things get a lot more complicated when we're dealing with
+        // export * from './module-with-type-only-exports'
+        // export type * from './module-with-type-and-value-exports'
+        //
+        // TS checker has an internal function getExportsOfModuleWorker that
+        // recursively visits all module exports, including "export *". It then
+        // puts type-only-star-exported symbols into the typeOnlyExportStarMap
+        // property of sourceFile's SymbolLinks. Since symbol links aren't
+        // exposed outside the checker, we cannot access it directly.
+        //
+        // Therefore, to filter out value properties, we use the following hack:
+        // checker.getPropertiesOfType returns all exports that were originally
+        // values, but checker.getPropertyOfType returns undefined for
+        // properties that are mentioned in the typeOnlyExportStarMap.
+        const valueProperties = checker
+          .getPropertiesOfType(sourceFileType)
+          .filter(
+            propertyTypeSymbol =>
+              checker.getPropertyOfType(
+                sourceFileType,
+                propertyTypeSymbol.escapedName.toString(),
+              ) != null,
+          );
+
+        const isThereAnyExportedValue = valueProperties.length !== 0;
+        if (isThereAnyExportedValue) {
+          return;
+        }
+
+        context.report({
+          node,
+          messageId: 'typeOverValue',
+          fix(fixer) {
+            const asteriskToken = nullThrows(
+              context.sourceCode.getFirstToken(
+                node,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Punctuator &&
+                  token.value === '*',
+              ),
+              NullThrowsReasons.MissingToken(
+                'asterisk',
+                'export all declaration',
+              ),
+            );
+
+            return fixer.insertTextBefore(asteriskToken, 'type ');
+          },
+        });
+      },
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
         // Coerce the source into a string for use as a lookup entry.
         const source = getSourceFromExport(node) ?? 'undefined';
@@ -142,7 +227,9 @@ export default createRule<Options, MessageIds>({
               continue;
             }
 
-            const isTypeBased = isSpecifierTypeBased(specifier);
+            const isTypeBased = isSymbolTypeBased(
+              services.getSymbolAtLocation(specifier.exported),
+            );
 
             if (isTypeBased === true) {
               typeBasedSpecifiers.push(specifier);
