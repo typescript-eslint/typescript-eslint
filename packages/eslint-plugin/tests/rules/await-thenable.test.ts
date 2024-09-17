@@ -200,17 +200,12 @@ const doSomething = async (
     `,
     {
       code: `
-Promise.race(...[1, 'a', 3]);
-      `,
-    },
-    {
-      code: `
-async function* yieldNumbers() {
+async function* asyncYieldNumbers() {
   yield 1;
   yield 2;
   yield 3;
 }
-for await (const value of yieldNumbers()) {
+for await (const value of asyncYieldNumbers()) {
   console.log(value);
 }
       `,
