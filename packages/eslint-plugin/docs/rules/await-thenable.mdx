@@ -50,8 +50,9 @@ While it is valid JavaScript to use `for await...of` with synchronous iterables 
 Synchronous iteration over thenables and asynchronous iteration are fundamentally different things, and the `for await...of` has several behaviors that are specifically designed for operating on async-iterables, that do not apply to sync-iterables.
 
 For one, the `for await...of` loop accesses its fulfilled values sequentially, which is an appropriate behavior for async-iterables, but is not always desirable for sync-iterables of Thenables.
+For instance, sync-iterables may need to manipulate their Thenable entries directly, without accessing their fulfillment values at all (that is to say, without awaiting them).
 
-Because of this, the error-handling of the `for await...of` loop works properly for async-iterables, but subtly permits unclosed generators and unhandled promise rejections when operating on sync-iterables of Thenables. For detailed examples of this, see the [MDN documentation on using `for await...of` with sync-iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of#iterating_over_sync_iterables_and_generators).
+Because of this, the error-handling protocol of the `for await...of` loop works properly for async-iterables, but subtly permits unclosed generators and unhandled promise rejections when operating on sync-iterables of Thenables. For detailed examples of this, see the [MDN documentation on using `for await...of` with sync-iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of#iterating_over_sync_iterables_and_generators).
 
 Instead of using the `for await...of` loop with sync-iterables of Thenables, or using `await` on promises within the body of a `for...of` (which also permits floating promise rejections), consider instead using one of the [promise concurrency methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#promise_concurrency) for robust behavior.
 
