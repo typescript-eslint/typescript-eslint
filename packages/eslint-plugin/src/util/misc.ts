@@ -253,20 +253,15 @@ function getStaticMemberAccessValue(
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   if (!node.computed) {
     return key.type === AST_NODE_TYPES.Literal
-      ? `${key.value}`
+      ? String(key.value)
       : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
   }
   const result = getStaticValue(key, sourceCode.getScope(node));
   if (!result) {
-    return;
+    return undefined;
   }
   const { value } = result;
-  return typeof value === 'symbol'
-    ? value
-    : /* intentional interpolation of an `unknown` value, because any non-Symbol value is coerced to a string by
-         JavaScript when in a `MemberAccess`. */
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      `${value}`;
+  return typeof value === 'symbol' ? value : String(value);
 }
 
 /**

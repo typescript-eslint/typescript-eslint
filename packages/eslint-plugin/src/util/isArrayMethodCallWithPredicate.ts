@@ -9,7 +9,7 @@ import * as tsutils from 'ts-api-utils';
 
 import { getStaticMemberAccessValue } from './misc';
 
-const ARRAY_PREDICATE_FUNCTIONS = new Set([
+const ARRAY_PREDICATE_FUNCTIONS = new Set<unknown>([
   'filter',
   'find',
   'findIndex',
@@ -30,10 +30,7 @@ export function isArrayMethodCallWithPredicate(
 
   const staticAccessValue = getStaticMemberAccessValue(node.callee, context);
 
-  if (
-    typeof staticAccessValue !== 'string' ||
-    !ARRAY_PREDICATE_FUNCTIONS.has(staticAccessValue)
-  ) {
+  if (!ARRAY_PREDICATE_FUNCTIONS.has(staticAccessValue)) {
     return false;
   }
 
