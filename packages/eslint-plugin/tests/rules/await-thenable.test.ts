@@ -198,6 +198,23 @@ const doSomething = async (
   await callback?.();
 };
     `,
+    {
+      code: `
+Promise.race(...[1, 'a', 3]);
+      `,
+    },
+    {
+      code: `
+async function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for await (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -372,6 +389,74 @@ await obj?.a.b.c?.();
               output: `
 declare const obj: { a: { b: { c?: () => void } } } | undefined;
  obj?.a.b.c?.();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for await (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonThenable',
+          line: 7,
+          endLine: 7,
+          column: 1,
+          endColumn: 42,
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for  (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function* yieldNumberPromises() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+for await (const value of yieldNumberPromises()) {
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonThenable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+function* yieldNumberPromises() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+for  (const value of yieldNumberPromises()) {
+  console.log(value);
+}
       `,
             },
           ],

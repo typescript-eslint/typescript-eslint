@@ -10,9 +10,9 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/await-thenable** for documentation.
 
 A "Thenable" value is an object which has a `then` method, such as a Promise.
-The `await` keyword is generally used to retrieve the result of calling a Thenable's `then` method.
+The [`await` keyword](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await) is generally used to retrieve the result of calling a Thenable's `then` method.
 
-If the `await` keyword is used on a value that is not a Thenable, the value is directly resolved immediately.
+If the `await` keyword is used on a value that is not a Thenable, the value is directly resolved, but will still pause execution until the next microtask.
 While doing so is valid JavaScript, it is often a programmer error, such as forgetting to add parenthesis to call a function that returns a Promise.
 
 ## Examples
@@ -35,6 +35,76 @@ await Promise.resolve('value');
 
 const createValue = async () => 'value';
 await createValue();
+```
+
+</TabItem>
+</Tabs>
+
+## Async Iteration (`for await...of` Loops)
+
+This rule also inspects [`for await...of` statements](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of), which are designed for iterating over async-iterable objects.
+If the value being iterated over is not async-iterable, an ordinary `for...of` statement is preferable, even if the value is an iterable of Thenables.
+
+### Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+async function syncIterable() {
+  const arrayOfValues = [1, 2, 3];
+  for await (const value of arrayOfValues) {
+    console.log(value);
+  }
+}
+
+async function syncIterableOfPromises() {
+  const arrayOfPromises = [
+    Promise.resolve(1),
+    Promise.resolve(2),
+    Promise.resolve(3),
+  ];
+  for await (const promisedValue of arrayOfPromises) {
+    console.log(promisedValue);
+  }
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+async function syncIterable() {
+  const arrayOfValues = [1, 2, 3];
+  for (const value of arrayOfValues) {
+    console.log(value);
+  }
+}
+
+async function syncIterableOfPromises() {
+  const arrayOfPromises = [
+    Promise.resolve(1),
+    Promise.resolve(2),
+    Promise.resolve(3),
+  ];
+  for (const promise of arrayOfPromises) {
+    // Note that the promise must be explicitly awaited if the promised value is needed.
+    const promisedValue = await promise;
+    console.log(promisedValue);
+  }
+}
+
+async function validUseOfForAwaitOnAsyncIterable() {
+  async function* yieldThingsAsynchronously() {
+    yield 1;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    yield 2;
+  }
+
+  for await (const promisedValue of yieldThingsAsynchronously()) {
+    console.log(promisedValue);
+  }
+}
 ```
 
 </TabItem>

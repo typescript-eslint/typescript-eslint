@@ -10,8 +10,15 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
-export default createRule({
+type MessageId =
+  | 'await'
+  | 'forAwaitOfNonThenable'
+  | 'removeAwait'
+  | 'convertToOrdinaryFor';
+
+export default createRule<[], MessageId>({
   name: 'await-thenable',
   meta: {
     docs: {
@@ -22,7 +29,10 @@ export default createRule({
     hasSuggestions: true,
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      forAwaitOfNonThenable:
+        'Unexpected `for await...of` of a value that is not AsyncIterable.',
       removeAwait: 'Remove unnecessary `await`.',
+      convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
     },
     schema: [],
     type: 'problem',
@@ -56,6 +66,45 @@ export default createRule({
                   );
 
                   return fixer.remove(awaitKeyword);
+                },
+              },
+            ],
+          });
+        }
+      },
+
+      ForOfStatement(node): void {
+        if (!node.await) {
+          return;
+        }
+
+        const type = services.getTypeAtLocation(node.right);
+        if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+          return;
+        }
+
+        const asyncIteratorSymbol = tsutils.getWellKnownSymbolPropertyOfType(
+          type,
+          'asyncIterator',
+          checker,
+        );
+
+        // if there is an async iterator symbol, but it doesn't have the correct
+        // shape, TS will report a type error, so we only need to check if the
+        // symbol exists.
+        if (asyncIteratorSymbol == null) {
+          context.report({
+            loc: getForStatementHeadLoc(context.sourceCode, node),
+            messageId: 'forAwaitOfNonThenable',
+            suggest: [
+              {
+                messageId: 'convertToOrdinaryFor',
+                fix(fixer): TSESLint.RuleFix {
+                  const awaitToken = nullThrows(
+                    context.sourceCode.getFirstToken(node, isAwaitKeyword),
+                    NullThrowsReasons.MissingToken('await', 'for await loop'),
+                  );
+                  return fixer.remove(awaitToken);
                 },
               },
             ],
