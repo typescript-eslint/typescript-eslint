@@ -32,21 +32,6 @@ This rule also reports when an Array containing Promises is created and not prop
 See [`no-misused-promises`](./no-misused-promises.mdx) for detecting code that provides Promises to _logical_ locations such as if statements.
 :::
 
-## Handling Promises rejections
-
-Javascript doesn't know the concept of a function that cannot throw as well as of a Promise that cannot be rejected.
-
-Using this rules allows you to get warned when a Promise doesn't _seem_ to be handled. Hence, the opposite is valid: when this rule is active, Promise statements are silenced when _they look like_ to be handled.
-Using the ways listed above, you are going to tell the rule that you likely have handled a possible rejection and hence silence it.
-
-Worth of mention is the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void), which doesn't handle its rejection but just makes the outcome to be ignored. Refer to [`ignoreVoid` option](#ignorevoid) for more details.
-
-More infos about Promise rejection handling can be found on MDN's page [_Using Promises (error handling)_](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises#error_handling).
-
-:::note
-The rule of thumb here is: this rule should be intended as a way of putting reasonable guardrails, instead of blindly trust it into handling all your cases.
-:::
-
 ## Examples
 
 <Tabs>
