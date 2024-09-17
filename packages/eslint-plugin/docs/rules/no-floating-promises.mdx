@@ -28,8 +28,10 @@ This rule also reports when an Array containing Promises is created and not prop
 - `Promise.race()`
 
 :::tip
-`no-floating-promises` only detects unhandled Promise _statements_.
+`no-floating-promises` only detects apparently unhandled Promise _statements_.
 See [`no-misused-promises`](./no-misused-promises.mdx) for detecting code that provides Promises to _logical_ locations such as if statements.
+
+See [_Using promises (error handling) on MDN_](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises#error_handling) for a detailed writeup on promise error-handling.
 :::
 
 ## Examples
