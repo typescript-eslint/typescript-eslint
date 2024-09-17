@@ -97,6 +97,16 @@ export default createRule<[], MessageId>({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forAwaitOfNonThenable',
             suggest: [
+              // This suggestion causes broken code for sync iterables of promises, since
+              // the loop variable will not be awaited.
+              //
+              // Ideally, if the iterable yields promises, we would offer a suggestion to
+              // fix the for loop to `for (const value of await Promise.all(iterable))`.
+              // However, I don't think we can do that with the TS API for now, since we
+              // don't have access to `getIterationTypesOfType` or similar.
+              //
+              // If that becomes available to us, we should provide an alternate suggestion
+              // to fix the code to `for (const value of await Promise.all(iterable))`
               {
                 messageId: 'convertToOrdinaryFor',
                 fix(fixer): TSESLint.RuleFix {
