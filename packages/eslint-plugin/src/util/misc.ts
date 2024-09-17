@@ -240,9 +240,49 @@ type NodeWithKey =
   | TSESTree.TSAbstractPropertyDefinition;
 
 /**
- * Gets the key being accessed or declared, such as `value` in
- * `x.value`, `x['value']`,
- * or even `const v = 'value'; x[v]` (or optional variants thereof).
+ * Gets a member being accessed or declared if its value can be determined statically, and
+ * resolves it to the string or symbol value that will be used as the actual member
+ * access key at runtime. Otherwise, returns `undefined`.
+ *
+ * ```ts
+ * x.member // returns 'member'
+ * ^^^^^^^^
+ *
+ * x?.member // returns 'member' (optional chaining is treated the same)
+ * ^^^^^^^^^
+ *
+ * x['value'] // returns 'value'
+ * ^^^^^^^^^^
+ *
+ * x[Math.random()] // returns undefined (not a static value)
+ * ^^^^^^^^^^^^^^^^
+ *
+ * arr[0] // returns '0' (NOT 0)
+ * ^^^^^^
+ *
+ * arr[0n] // returns '0' (NOT 0n)
+ * ^^^^^^^
+ *
+ * const s = Symbol.for('symbolName')
+ * x[s] // returns `Symbol.for('symbolName')` (since it's a static/global symbol)
+ * ^^^^
+ *
+ * const us = Symbol('symbolName')
+ * x[us] // returns undefined (since it's a unique symbol, so not statically analyzable)
+ * ^^^^^
+ *
+ * var object = {
+ *     1234: '4567', // returns '1234' (NOT 1234)
+ *     ^^^^^^^^^^^^
+ *     method() { } // returns 'method'
+ *     ^^^^^^^^^^^^
+ * }
+ *
+ * class WithMembers {
+ *     foo: string // returns 'foo'
+ *     ^^^^^^^^^^^
+ * }
+ * ```
  */
 function getStaticMemberAccessValue(
   node: NodeWithKey,
@@ -255,8 +295,9 @@ function getStaticMemberAccessValue(
     return String(key.value);
   }
   if (
-    type === AST_NODE_TYPES.Identifier ||
-    type === AST_NODE_TYPES.PrivateIdentifier
+    !node.computed &&
+    (type === AST_NODE_TYPES.Identifier ||
+      type === AST_NODE_TYPES.PrivateIdentifier)
   ) {
     return key.name;
   }
