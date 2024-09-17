@@ -30,7 +30,10 @@ export function isArrayMethodCallWithPredicate(
 
   const staticAccessValue = getStaticMemberAccessValue(node.callee, context);
 
-  if (!staticAccessValue || !ARRAY_PREDICATE_FUNCTIONS.has(staticAccessValue)) {
+  if (
+    typeof staticAccessValue !== 'string' ||
+    !ARRAY_PREDICATE_FUNCTIONS.has(staticAccessValue)
+  ) {
     return false;
   }
 

@@ -242,7 +242,7 @@ type NodeWithKey =
 function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
-): string | null {
+): string | symbol | undefined {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   if (!node.computed) {
@@ -251,10 +251,16 @@ function getStaticMemberAccessValue(
       : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
   }
   const result = getStaticValue(key, sourceCode.getScope(node));
-  /* If a value is returned, coerce it to a string, because that's what JavaScript does with any data type in a
-     `MemberAccess`. We must use `String(...)` rather than template literal interpolation, because interpolation throws
-     a runtime error if `result.value` is a `symbol` */
-  return result && String(result.value);
+  if (!result) {
+    return;
+  }
+  const { value } = result;
+  return typeof value === 'symbol'
+    ? value
+    : /* intentional interpolation of an `unknown` value, because any non-Symbol value is coerced to a string by
+         JavaScript when in a `MemberAccess`. */
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      `${value}`;
 }
 
 /**
@@ -265,9 +271,9 @@ function getStaticMemberAccessValue(
 const isStaticMemberAccessOfValue = (
   memberExpression: NodeWithKey,
   context: RuleContext<string, unknown[]>,
-  ...values: string[]
+  ...values: (string | symbol)[]
 ): boolean =>
-  (values as (string | null)[]).includes(
+  (values as (string | symbol | undefined)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
 

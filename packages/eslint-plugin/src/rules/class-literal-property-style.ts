@@ -25,7 +25,7 @@ interface NodeWithModifiers {
 
 interface PropertiesInfo {
   properties: TSESTree.PropertyDefinition[];
-  excludeSet: Set<string>;
+  excludeSet: Set<string | symbol>;
 }
 
 const printNodeModifiers = (
@@ -132,9 +132,7 @@ export default createRule<Options, MessageIds>({
         const { excludeSet } =
           propertiesInfoStack[propertiesInfoStack.length - 1];
 
-        const name =
-          getStaticStringValue(node.property) ??
-          context.sourceCode.getText(node.property);
+        const name = getStaticMemberAccessValue(node, context);
 
         if (name) {
           excludeSet.add(name);
