@@ -251,7 +251,8 @@ function getStaticMemberAccessValue(
       : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
   }
   const result = getStaticValue(key, sourceCode.getScope(node));
-  // we must use `String(...)` rather than template literal interpolation, because interpolation throws a runtime error if `value` is a `symbol`
+  /* we must use `String(...)` rather than template literal interpolation, because interpolation throws a runtime error
+     if `value` is a `symbol` */
   return result && String(result.value);
 }
 
