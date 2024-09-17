@@ -154,17 +154,15 @@ export default createRule<Options, MessageIds>({
         // checker.getPropertiesOfType returns all exports that were originally
         // values, but checker.getPropertyOfType returns undefined for
         // properties that are mentioned in the typeOnlyExportStarMap.
-        const valueProperties = checker
+        const isThereAnyExportedValue = checker
           .getPropertiesOfType(sourceFileType)
-          .filter(
+          .some(
             propertyTypeSymbol =>
               checker.getPropertyOfType(
                 sourceFileType,
                 propertyTypeSymbol.escapedName.toString(),
               ) != null,
           );
-
-        const isThereAnyExportedValue = valueProperties.length !== 0;
         if (isThereAnyExportedValue) {
           return;
         }
