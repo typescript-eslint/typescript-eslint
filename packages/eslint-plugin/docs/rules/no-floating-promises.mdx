@@ -35,9 +35,8 @@ See [`no-misused-promises`](./no-misused-promises.mdx) for detecting code that p
 ## Handling Promises rejections
 
 Javascript doesn't know the concept of a function that cannot throw as well as of a Promise that cannot be rejected.
-Attempting to handling a Promise rejection in important to attempt preventing unexpected situations and crashes. An unhandled rejection can be intercepted by adding a listener to `"unhandledrejection"` event.[^1]
 
-Using this rules allows you to get warned _when a Promise doesn't seem to be handled_. Hence, the opposite is valid: when this rule is active, Promise statements are silenced when _they look like to be handled_.
+Using this rules allows you to get warned when a Promise doesn't _seem_ to be handled. Hence, the opposite is valid: when this rule is active, Promise statements are silenced when _they look like_ to be handled.
 Using the ways listed above, you are going to tell the rule that you likely have handled a possible rejection and hence silence it.
 
 Worth of mention is the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void), which doesn't handle its rejection but just makes the outcome to be ignored. Refer to [`ignoreVoid` option](#ignorevoid) for more details.
@@ -47,8 +46,6 @@ More infos about Promise rejection handling can be found on MDN's page [_Using P
 :::note
 The rule of thumb here is: this rule should be intended as a way of putting reasonable guardrails, instead of blindly trust it into handling all your cases.
 :::
-
-[^1]: Differences between platforms apply, on both where the listener is registered and event name. Refer to [`"unhandledrejection"` on MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/unhandledrejection_event) for the web and [`"unhandledRejection"`](https://nodejs.org/api/process.html#event-unhandledrejection) for Node.JS.
 
 ## Examples
 
