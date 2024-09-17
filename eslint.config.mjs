@@ -586,7 +586,7 @@ export default tseslint.config(
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
       'perfectionist/sort-classes': 'error',
-      'perfectionist/sort-enums': 'error',
+      'perfectionist/sort-enums': 'off',
       'perfectionist/sort-union-types': [
         'error',
         {
@@ -611,8 +611,8 @@ export default tseslint.config(
         {
           customGroups: {
             primary: ['loc', 'name', 'node', 'type'],
-            secondary: ['meta', 'messageId'],
-            tertiary: ['defaultOptions', 'data'],
+            secondary: ['line', 'meta', 'messageId'],
+            tertiary: ['column', 'defaultOptions', 'data'],
             quaternary: ['fix'],
           },
           groups: ['primary', 'secondary', 'tertiary', 'quaternary', 'unknown'],

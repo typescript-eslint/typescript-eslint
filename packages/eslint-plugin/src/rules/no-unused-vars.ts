@@ -610,8 +610,8 @@ export default createRule<Options, MessageIds>({
 
             const loc = {
               end: {
-                column: start.column + idLength,
                 line: start.line,
+                column: start.column + idLength,
               },
               start,
             };

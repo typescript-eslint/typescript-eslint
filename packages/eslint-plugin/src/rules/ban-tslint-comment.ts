@@ -42,12 +42,12 @@ export default createRule({
               data: { text: toText(c.value, c.type) },
               fix(fixer) {
                 const rangeStart = context.sourceCode.getIndexFromLoc({
-                  column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,
                   line: c.loc.start.line,
+                  column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,
                 });
                 const rangeEnd = context.sourceCode.getIndexFromLoc({
-                  column: c.loc.end.column,
                   line: c.loc.end.line,
+                  column: c.loc.end.column,
                 });
                 return fixer.removeRange([rangeStart, rangeEnd + 1]);
               },
