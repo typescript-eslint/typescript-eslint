@@ -239,6 +239,12 @@ type NodeWithKey =
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractMethodDefinition
   | TSESTree.TSAbstractPropertyDefinition;
+
+/**
+ * Gets the key being accessed or declared, such as `value` in
+ * `x.value`, `x['value']`,
+ * or even `const v = 'value'; x[v]` (or optional variants thereof).
+ */
 function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
@@ -265,8 +271,8 @@ function getStaticMemberAccessValue(
 
 /**
  * Answers whether the member expression looks like
- * `x.memberName`, `x['memberName']`,
- * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
+ * `x.value`, `x['value']`,
+ * or even `const v = 'value'; x[v]` (or optional variants thereof).
  */
 const isStaticMemberAccessOfValue = (
   memberExpression: NodeWithKey,
