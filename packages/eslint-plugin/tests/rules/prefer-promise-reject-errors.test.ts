@@ -267,6 +267,14 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       foo.reject(new Error());
     `,
     'console[Symbol.iterator]();',
+    `
+      class A {
+        a = [];
+        [Symbol.iterator]() {
+          return this.a[Symbol.iterator]();
+        }
+      }
+    `,
   ],
   invalid: [
     {
