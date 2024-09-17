@@ -2,8 +2,7 @@
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
 import { requiresQuoting } from '@typescript-eslint/type-utils';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
@@ -251,10 +250,15 @@ function getStaticMemberAccessValue(
 ): string | symbol | undefined {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
-  if (!node.computed) {
-    return key.type === AST_NODE_TYPES.Literal
-      ? String(key.value)
-      : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
+  const { type } = key;
+  if (type === AST_NODE_TYPES.Literal) {
+    return String(key.value);
+  }
+  if (
+    type === AST_NODE_TYPES.Identifier ||
+    type === AST_NODE_TYPES.PrivateIdentifier
+  ) {
+    return key.name;
   }
   const result = getStaticValue(key, sourceCode.getScope(node));
   if (!result) {
