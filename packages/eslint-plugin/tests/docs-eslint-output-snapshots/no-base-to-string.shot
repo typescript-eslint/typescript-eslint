@@ -15,6 +15,8 @@ value + '';
 // Interpolation and manual .toString() calls too:
 \`Value: \${value}\`;
           ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
+String({});
+       ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 ({}).toString();
  ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 "
@@ -23,11 +25,12 @@ value + '';
 exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 2`] = `
 "Correct
 
-// These types all have useful .toString()s
+// These types all have useful .toString()s.
 'Text' + true;
 \`Value: \${123}\`;
 \`Arrays too: \${[1, 2, 3]}\`;
 (() => {}).toString();
+String(42);
 
 // Defining a custom .toString class is considered acceptable
 class CustomToString {
@@ -54,5 +57,6 @@ exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 
 let value = /regex/;
 value.toString();
 let text = \`\${value}\`;
+String(/regex/);
 "
 `;

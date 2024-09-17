@@ -60,6 +60,8 @@ ruleTester.run('no-base-to-string', rule, {
       `,
     ),
 
+    // String()
+    ...literalList.map(i => `String(${i});`),
     `
 function someFunction() {}
 someFunction.toString();
@@ -118,6 +120,14 @@ tag\`\${{}}\`;
     "'' += new Error();",
     "'' += new URL();",
     "'' += new URLSearchParams();",
+    `
+let numbers = [1, 2, 3];
+String(...a);
+    `,
+    {
+      code: 'String(/regex/);',
+      options: [{ ignoredTypeNames: ['RegExp'] }],
+    },
   ],
   invalid: [
     {
@@ -139,6 +149,33 @@ tag\`\${{}}\`;
           data: {
             certainty: 'will',
             name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: 'String({});',
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+let objects = [{}, {}];
+String(...objects);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '...objects',
           },
           messageId: 'baseToString',
         },

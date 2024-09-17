@@ -58,7 +58,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
+    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
       }
@@ -178,6 +178,14 @@ export default createRule<Options, MessageIds>({
         }
         for (const expression of node.expressions) {
           checkExpression(expression);
+        }
+      },
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (node.callee.type !== AST_NODE_TYPES.Identifier) {
+          return;
+        }
+        if (node.arguments[0]) {
+          checkExpression(node.arguments[0]);
         }
       },
     };
