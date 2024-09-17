@@ -4,7 +4,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   createRule,
   getStaticMemberAccessValue,
-  getStaticStringValue,
   isAssignee,
   isFunction,
   isStaticMemberAccessOfValue,
