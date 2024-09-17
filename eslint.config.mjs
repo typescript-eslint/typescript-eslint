@@ -611,8 +611,8 @@ export default tseslint.config(
         {
           customGroups: {
             primary: ['loc', 'name', 'node', 'type'],
-            secondary: ['line', 'meta', 'messageId'],
-            tertiary: ['column', 'defaultOptions', 'data'],
+            secondary: ['meta', 'messageId', 'start'],
+            tertiary: ['defaultOptions', 'data', 'end'],
             quaternary: ['fix'],
           },
           groups: ['primary', 'secondary', 'tertiary', 'quaternary', 'unknown'],
