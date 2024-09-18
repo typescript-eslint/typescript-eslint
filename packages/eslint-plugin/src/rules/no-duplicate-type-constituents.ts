@@ -170,11 +170,11 @@ export default createRule<Options, MessageIds>({
         { count: bracketBeforeTokens.length },
       );
       const reportLocation: TSESTree.SourceLocation = {
+        start: duplicateConstituent.duplicated.loc.start,
         end:
           bracketAfterTokens.length > 0
             ? bracketAfterTokens[bracketAfterTokens.length - 1].loc.end
             : duplicateConstituent.duplicated.loc.end,
-        start: duplicateConstituent.duplicated.loc.start,
       };
       context.report({
         loc: reportLocation,

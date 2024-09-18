@@ -520,9 +520,9 @@ export default createRule<Options, MessageIds>({
       const identifier = variable.identifiers.at(0);
       if (identifier) {
         return {
-          line: identifier.loc.start.line,
           column: identifier.loc.start.column + 1,
           global: false,
+          line: identifier.loc.start.line,
         };
       }
       return {

@@ -140,8 +140,8 @@ export default createRule<Options, MessageIds>({
     ) {
       context.report({
         loc: {
-          end: { line: 0, column: 0 },
-          start: { line: 0, column: 0 },
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
         },
         messageId: 'noStrictNullCheck',
       });

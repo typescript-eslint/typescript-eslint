@@ -394,7 +394,7 @@ function rangeToLoc(
   range: TSESLint.AST.Range,
 ): TSESTree.SourceLocation {
   return {
-    end: sourceCode.getLocFromIndex(range[1]),
     start: sourceCode.getLocFromIndex(range[0]),
+    end: sourceCode.getLocFromIndex(range[1]),
   };
 }

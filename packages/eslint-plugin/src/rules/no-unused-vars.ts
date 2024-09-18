@@ -609,11 +609,11 @@ export default createRule<Options, MessageIds>({
             const idLength = id.name.length;
 
             const loc = {
-              end: {
-                line: start.line,
-                column: start.column + idLength,
-              },
               start,
+              end: {
+                column: start.column + idLength,
+                line: start.line,
+              },
             };
 
             context.report({

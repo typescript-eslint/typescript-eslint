@@ -130,7 +130,7 @@ function getReportLoc(
   };
 
   return {
-    end,
     start,
+    end,
   };
 }
