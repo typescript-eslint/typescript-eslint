@@ -18,12 +18,14 @@ Using this feature of TypeScript can lead to bugs or confusing code.
 
 ### Return type unsafety
 
-Passing a value-returning function in a place expecting a void function can be unsound. TypeScript generally treats the `void` type as though it has the same runtime behavior as `undefined`, so this pattern will cause a mismatch between the runtime behavior and the types.
+Passing a value-returning function in a place expecting a void function can be unsound.
+TypeScript generally treats the `void` type as though it has the same runtime behavior as `undefined`,
+so this pattern will cause a mismatch between the runtime behavior and the types.
 
 ```ts
 // TypeScript errors on overtly wrong ways of populating the `void` type...
 function returnsVoid(): void {
-    return 1234; // TS Error:  Type 'number' is not assignable to type 'void'.
+  return 1234; // TS Error:  Type 'number' is not assignable to type 'void'.
 }
 
 // ...but allows more subtle ones
@@ -31,20 +33,20 @@ const returnsVoid: () => void = () => 1234;
 
 // Likewise, TypeScript errors on overtly wrong usages of `void` as a runtime value...
 declare const v: void;
-if (v) { // TS Error: An expression of type 'void' cannot be tested for truthiness.
-    // ... do something
+if (v) {
+  // TS Error: An expression of type 'void' cannot be tested for truthiness.
+  // ... do something
 }
 
 // ...but silently treats `void` as `undefined` in more subtle scenarios
 declare const voidOrString: void | string;
 if (voidOrString) {
-     // voidOrString is narrowed to string in this branch, so this is allowed.
-     console.log(voidOrString.toUpperCase());
+  // voidOrString is narrowed to string in this branch, so this is allowed.
+  console.log(voidOrString.toUpperCase());
 }
 ```
 
 Between these two behaviors, examples like the following will throw at runtime, despite not reporting a type error:
-
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -62,8 +64,7 @@ if (maybeString) console.log(maybeString.toUpperCase()); // ❌ Crash if getNoth
 ```ts
 const getNothing: () => void = () => {};
 const getString: () => string = () => 'Hello';
-const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
-const maybeString = getStringMaybe();
+const maybeString = Math.random() > 0.1 ? getNothing() : getString();
 if (maybeString) console.log(maybeString.toUpperCase()); // ✅ No crash
 ```
 
