@@ -49,8 +49,8 @@ function foo(x: { a?: () => void }) {
       // 'Function' in the global script scope.
       {
         type Function = () => void;
-        const badFunction: Function = (() => {}) as Function;
-        badFunction();
+        const notGlobalFunctionType: Function = (() => {}) as Function;
+        notGlobalFunctionType();
       }
     `,
     `
