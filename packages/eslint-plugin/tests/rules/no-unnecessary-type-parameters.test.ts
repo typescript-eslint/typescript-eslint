@@ -420,6 +420,15 @@ declare function sillyFoo<T, Constant>(
   c: Constant,
 ): (data: T) => SillyFoo<T, Constant>;
     `,
+    `
+const f = <T,>(setValue: (v: T) => void, getValue: () => NoInfer<T>) => {};
+    `,
+    `
+const f = <T,>(
+  setValue: (v: T) => NoInfer<T>,
+  getValue: (v: NoInfer<T>) => NoInfer<T>,
+) => {};
+    `,
   ],
 
   invalid: [
