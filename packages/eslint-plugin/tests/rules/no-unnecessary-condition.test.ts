@@ -903,6 +903,14 @@ assert(Math.random() > 0.5);
       options: [{ checkTruthinessAssertions: true }],
     },
     {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(Math.random() > 0.5, true);
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+    },
+    {
       // should not report because option is disabled.
       code: `
 declare function assert(x: unknown): asserts x;
@@ -910,7 +918,47 @@ assert(true);
       `,
       options: [{ checkTruthinessAssertions: false }],
     },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(true);
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(Math.random());
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[]);
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+    },
+    {
+      // ok to report if we start unpacking spread params one day.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[], {});
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+    },
   ],
+
   invalid: [
     // Ensure that it's checking in all the right places
     {
@@ -2328,6 +2376,7 @@ assert(true);
       `,
       errors: [
         {
+          line: 3,
           messageId: 'alwaysTruthy',
         },
       ],
@@ -2340,10 +2389,41 @@ assert(false);
       `,
       errors: [
         {
+          line: 3,
+          column: 8,
           messageId: 'alwaysFalsy',
         },
       ],
       options: [{ checkTruthinessAssertions: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(true, Math.random() > 0.5);
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 4,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert({});
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          column: 8,
+        },
+      ],
     },
 
     // "branded" types
