@@ -345,29 +345,92 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
           tokenType in conditions;
     `,
     `
+      type Foo<T, S> = S extends 'somebody'
+        ? T extends 'once'
+          ? 'told'
+          : 'me'
+        : never;
+
+      declare function foo<T>(data: T): <S>(other: S) => Foo<T, S>;
+    `,
+    `
+      type Foo<T, S> = S extends 'somebody'
+        ? T extends 'once'
+          ? 'told'
+          : 'me'
+        : never;
+
+      declare function foo<T>(data: T): <S>(other: S) => Foo<S, T>;
+    `,
+    `
       declare function mapObj<K extends string, V>(
         obj: { [key in K]?: V },
         fn: (key: K, val: V) => number,
       ): number[];
     `,
     `
-      type A<T> = B<T>;
-      type B<T> = <V>() => A<T | V>;
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return mappedReturnType(x);
+      }
     `,
     `
-      type A<T> = B<T>;
-      type B<T> = <V>() => A<T[]>;
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return () => mappedReturnType(x);
+      }
     `,
-    {
-      only: true,
-      code: `
-        import type { TSESTree } from '@typescript-eslint/types';
-        declare function visitChildren<T extends TSESTree.Node>(
-          node: T | null | undefined,
-          excludeArr: (keyof T)[] = [],
-        ): void;
-      `,
-    },
+    `
+      declare function mappedReturnType<T extends string>(
+        x: T,
+      ): { [K in T]: Capitalize<K> };
+
+      function inferredMappedReturnType<T extends string>(x: T) {
+        return [{ value: () => mappedReturnType(x) }];
+      }
+    `,
+    `
+type Identity<T> = T;
+
+type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
+
+declare function sillyFoo<Data, Value>(
+  c: Value,
+): (data: Data) => Mapped<Data, Value>;
+    `,
+    `
+type Silly<T> = { [P in keyof T]: T[P] };
+
+type SillyFoo<T, Value> = Silly<{ [P in keyof T]: Value }>;
+
+type Foo<T, Value> = { [P in keyof T]: Value };
+
+declare function foo<T, Constant>(data: T, c: Constant): Foo<T, Constant>;
+declare function foo<T, Constant>(c: Constant): (data: T) => Foo<T, Constant>;
+
+declare function sillyFoo<T, Constant>(
+  data: T,
+  c: Constant,
+): SillyFoo<T, Constant>;
+declare function sillyFoo<T, Constant>(
+  c: Constant,
+): (data: T) => SillyFoo<T, Constant>;
+    `,
+    `
+const f = <T,>(setValue: (v: T) => void, getValue: () => NoInfer<T>) => {};
+    `,
+    `
+const f = <T,>(
+  setValue: (v: T) => NoInfer<T>,
+  getValue: (v: NoInfer<T>) => NoInfer<T>,
+) => {};
+    `,
   ],
 
   invalid: [

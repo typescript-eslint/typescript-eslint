@@ -1,4 +1,5 @@
-import path from 'path';
+import path from 'node:path';
+
 import type { Program } from 'typescript';
 import * as ts from 'typescript';
 
@@ -127,12 +128,12 @@ function createHash(content: string): string {
 }
 
 export {
-  ASTAndDefiniteProgram,
-  ASTAndNoProgram,
-  ASTAndProgram,
+  type ASTAndDefiniteProgram,
+  type ASTAndNoProgram,
+  type ASTAndProgram,
   CORE_COMPILER_OPTIONS,
   canonicalDirname,
-  CanonicalPath,
+  type CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
   createHash,
   ensureAbsolutePath,

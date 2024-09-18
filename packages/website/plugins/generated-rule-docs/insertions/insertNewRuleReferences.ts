@@ -1,8 +1,10 @@
+import { EOL } from 'node:os';
+import * as path from 'node:path';
+
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
-import { EOL } from 'os';
-import * as path from 'path';
 import prettier from 'prettier';
 
 import { nodeIsHeading } from '../../utils/nodes';
@@ -61,12 +63,9 @@ export async function insertNewRuleReferences(
   page.spliceChildren(
     firstH2Index,
     0,
-    {
-      lang: 'js',
-      type: 'code',
-      meta: 'title=".eslintrc.cjs"',
-      value: `module.exports = ${eslintrc};`,
-    } as mdast.Code,
+    `\`\`\`js title=".eslintrc.cjs"
+module.exports = ${eslintrc};
+\`\`\``,
     {
       attributes: [
         {
@@ -96,46 +95,18 @@ export async function insertNewRuleReferences(
     : Object.keys(page.rule.meta.schema).length === 0;
 
   if (hasNoConfig) {
-    page.spliceChildren(page.headingIndices.options + 1, 0, {
-      children: [
-        {
-          type: 'text',
-          value: 'This rule is not configurable.',
-        },
-      ],
-      type: 'paragraph',
-    } as mdast.Paragraph);
+    page.spliceChildren(
+      page.headingIndices.options + 1,
+      0,
+      'This rule is not configurable.',
+    );
   } else if (!COMPLICATED_RULE_OPTIONS.has(page.file.stem)) {
     page.spliceChildren(
       page.headingIndices.options + 1,
       0,
-      {
-        children:
-          typeof page.rule.meta.docs.recommended === 'object'
-            ? [
-                {
-                  type: 'text',
-                  value:
-                    'This rule accepts the following options, and has more strict settings in the ',
-                } as mdast.Text,
-                ...linkToConfigs(
-                  page.rule.meta.docs.requiresTypeChecking
-                    ? ['strict', 'strict-type-checked']
-                    : ['strict'],
-                ),
-                {
-                  type: 'text',
-                  value: ` config${page.rule.meta.docs.requiresTypeChecking ? 's' : ''}.`,
-                } as mdast.Text,
-              ]
-            : [
-                {
-                  type: 'text',
-                  value: 'This rule accepts the following options:',
-                } as mdast.Text,
-              ],
-        type: 'paragraph',
-      } as mdast.Paragraph,
+      typeof page.rule.meta.docs.recommended === 'object'
+        ? linkToConfigsForObject(page.rule.meta.docs)
+        : 'This rule accepts the following options:',
       {
         lang: 'ts',
         type: 'code',
@@ -155,30 +126,14 @@ export async function insertNewRuleReferences(
   return eslintrc;
 }
 
-function linkToConfigs(configs: string[]): mdast.Node[] {
-  const links = configs.map(
-    (config): mdast.Link => ({
-      children: [
-        {
-          type: 'inlineCode',
-          value: config,
-        } as mdast.InlineCode,
-      ],
-      type: 'link',
-      url: `/users/configs#${config}`,
-    }),
-  );
-
-  return links.length === 1
-    ? links
-    : [
-        links[0],
-        {
-          type: 'text',
-          value: ' and ',
-        } as mdast.Text,
-        links[1],
-      ];
+function linkToConfigsForObject(docs: ESLintPluginDocs): string {
+  return [
+    'This rule accepts the following options, and has more strict settings in the',
+    (docs.requiresTypeChecking ? ['strict', 'strict-type-checked'] : ['strict'])
+      .map(config => `[${config}](/users/configs#${config})`)
+      .join(' and '),
+    `config${docs.requiresTypeChecking ? 's' : ''}.`,
+  ].join(' ');
 }
 
 function getRuleDefaultOptions(page: RuleDocsPage): string {

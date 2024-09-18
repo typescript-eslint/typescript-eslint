@@ -3,6 +3,7 @@ import type {
   ParserServices,
   ParserServicesWithTypeInformation,
 } from '../ts-estree';
+
 import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
 
 const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =

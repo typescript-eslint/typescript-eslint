@@ -189,7 +189,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
-  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -447,7 +447,7 @@ export function hasJSXAncestor(node: ts.Node): boolean {
  * @returns The unescaped string literal text.
  */
 export function unescapeStringLiteralText(text: string): string {
-  return text.replace(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
+  return text.replaceAll(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
     const item = entity.slice(1, -1);
     if (item[0] === '#') {
       const codePoint =

@@ -399,8 +399,7 @@ const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
       projectService: {
-        allowDefaultProjectForFiles: ['*.ts*'],
-        defaultProject: 'tsconfig.json',
+        allowDefaultProject: ['*.ts*'],
       },
       tsconfigRootDir: __dirname,
     },

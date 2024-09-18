@@ -123,10 +123,7 @@ ruleTester.run('my-rule', rule, {
 ### Type-Aware Testing
 
 Type-aware rules can be tested in almost exactly the same way as regular code, using `parserOptions.projectService`.
-Most rule tests can use settings like:
-
-- `allowDefaultProjectForFiles: ["*.ts*"]`: to include files in your tests
-- `defaultProject: "tsconfig.json"`: to use the same TSConfig as other files
+Most rule tests specify `parserOptions.allowDefaultProject: ["*.ts*"]` to enable type checking on all test files.
 
 You can then test your rule by providing the type-aware config:
 
@@ -135,9 +132,8 @@ const ruleTester = new RuleTester({
   // Added lines start
   languageOptions: {
     parserOptions: {
-      projectServices: {
+      projectService: {
         allowDefaultProject: ['*.ts*'],
-        defaultProject: 'tsconfig.json',
       },
       tsconfigRootDir: './path/to/your/folder/fixture',
     },
@@ -225,6 +221,27 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 RuleTester.afterAll = mocha.after;
 ```
 
+#### Node.js (`node:test`)
+
+Consider setting up `RuleTester`'s static properties in a preloaded module using the [`--import`](https://nodejs.org/api/cli.html#--importmodule) or [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag:
+
+```ts
+// setup.js
+import * as test from 'node:test';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = test.after;
+RuleTester.describe = test.describe;
+RuleTester.it = test.it;
+RuleTester.itOnly = test.it.only;
+```
+
+Tests can then be [run from the command line](https://nodejs.org/api/test.html#running-tests-from-the-command-line) like so:
+
+```sh
+node --import setup.js --test
+```
+
 #### Vitest
 
 Consider setting up `RuleTester`'s static properties in a [`setupFiles` script](https://vitest.dev/config/#setupfiles):
@@ -241,25 +258,26 @@ RuleTester.itOnly = vitest.it.only;
 RuleTester.describe = vitest.describe;
 ```
 
-#### Node built-in test runner
+#### Other Frameworks
 
-Consider setting up `RuleTester`'s static properties in a preloaded module using the [`--import`](https://nodejs.org/api/cli.html#--importmodule) or [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag:
+In general, `RuleTester` can support any test framework that exposes hooks for running code before or after rules.
+From `RuleTester`'s [Static Properties](#static-properties), assign any of the following that the running test framework supports.
+
+- `afterAll`
+- `describe`
+- `it`
+- `itOnly`
+
+I.e.:
 
 ```ts
-// setup.js
-import * as test from 'node:test';
+import * as test from '...';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-RuleTester.afterAll = test.afterAll;
+RuleTester.afterAll = test.after;
 RuleTester.describe = test.describe;
 RuleTester.it = test.it;
 RuleTester.itOnly = test.it.only;
-```
-
-Tests can then be [run from the command line](https://nodejs.org/api/test.html#running-tests-from-the-command-line) like so:
-
-```sh
-node --import setup.js --test
 ```
 
 ## Options
@@ -281,3 +299,41 @@ import ValidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/Val
 import InvalidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/InvalidTestCase.ts';
 
 <CodeBlock language="ts">{InvalidTestCase}</CodeBlock>
+
+## Static Properties
+
+Each of the following properties may be assigned to as static members of the `RuleTester` class.
+
+For example, to assign `afterAll`:
+
+```ts
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = () => {
+  // ...
+};
+```
+
+### `afterAll`
+
+Runs after all the tests in this file have completed.
+
+### `describe`
+
+Creates a test grouping.
+
+### `describeSkip`
+
+Skips running the tests inside this `describe`.
+
+### `it`
+
+Creates a test closure.
+
+### `itOnly`
+
+Skips all other tests in the current file.
+
+### `itSkip`
+
+Skips running this test.

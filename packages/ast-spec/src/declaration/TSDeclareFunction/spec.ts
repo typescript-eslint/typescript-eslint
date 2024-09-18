@@ -2,7 +2,6 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { FunctionBase } from '../../base/FunctionBase';
 
 interface TSDeclareFunctionBase extends FunctionBase {
-  type: AST_NODE_TYPES.TSDeclareFunction;
   /**
    * TS1183: An implementation cannot be declared in ambient contexts.
    */
@@ -12,6 +11,7 @@ interface TSDeclareFunctionBase extends FunctionBase {
    */
   declare: boolean;
   expression: false;
+  type: AST_NODE_TYPES.TSDeclareFunction;
 }
 
 /**

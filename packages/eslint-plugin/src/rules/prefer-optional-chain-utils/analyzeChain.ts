@@ -376,7 +376,7 @@ function getReportDescriptor(
       if (lastOperand.isYoda) {
         const unaryOperator =
           lastOperand.node.right.type === AST_NODE_TYPES.UnaryExpression
-            ? lastOperand.node.right.operator + ' '
+            ? `${lastOperand.node.right.operator} `
             : '';
 
         return {
@@ -386,7 +386,7 @@ function getReportDescriptor(
       }
       const unaryOperator =
         lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
-          ? lastOperand.node.left.operator + ' '
+          ? `${lastOperand.node.left.operator} `
           : '';
       return {
         left: unaryOperator + newCode,

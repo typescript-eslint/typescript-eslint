@@ -48,7 +48,6 @@ export default createRule<Options, MessageIds>({
     messages: {
       typeOverValue:
         'All exports in the declaration are only used as types. Use `export type`.',
-
       singleExportIsType:
         'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
@@ -59,6 +58,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           fixMixedExportsWithInlineTypeSpecifier: {
+            description:
+              'Whether the rule will autofix "mixed" export cases using TS inline type specifiers.',
             type: 'boolean',
           },
         },
@@ -290,7 +291,7 @@ function* fixSeparateNamedExports(
 ): IterableIterator<TSESLint.RuleFix> {
   const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
     report;
-  const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
+  const typeSpecifiers = [...typeBasedSpecifiers, ...inlineTypeSpecifiers];
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 

@@ -20,6 +20,7 @@ export default {
         '@babel/parser',
         '@babel/types',
         '@nx/workspace',
+        'console-fail-test',
         'glob',
         'husky',
         'jest-specific-snapshot',
@@ -64,6 +65,9 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'packages/utils': {
+      ignore: ['tests/**/*.type-test.ts'],
+    },
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
@@ -86,6 +90,7 @@ export default {
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
+        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
@@ -98,7 +103,6 @@ export default {
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
-        'typedoc',
         'typedoc-plugin-markdown',
       ],
     },

@@ -9,7 +9,7 @@
     "types": ["node", "jest"]
   },
   "include": ["src", "typings"],
-  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
+  "exclude": ["**/*.test.ts"],
   "references": [
     { "path": "../types/tsconfig.build.json" },
     { "path": "../visitor-keys/tsconfig.build.json" }

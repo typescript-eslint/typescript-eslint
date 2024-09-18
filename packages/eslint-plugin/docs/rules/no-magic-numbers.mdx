@@ -39,7 +39,7 @@ const defaultOptions: Options = {
 
 ### `ignoreEnums`
 
-A boolean to specify if enums used in TypeScript are considered okay. `false` by default.
+Whether enums used in TypeScript are considered okay. `false` by default.
 
 Examples of **incorrect** code for the `{ "ignoreEnums": false }` option:
 
@@ -59,7 +59,7 @@ enum foo {
 
 ### `ignoreNumericLiteralTypes`
 
-A boolean to specify if numbers used in TypeScript numeric literal types are considered okay. `false` by default.
+Whether numbers used in TypeScript numeric literal types are considered okay. `false` by default.
 
 Examples of **incorrect** code for the `{ "ignoreNumericLiteralTypes": false }` option:
 
@@ -74,6 +74,8 @@ type SmallPrimes = 2 | 3 | 5 | 7 | 11;
 ```
 
 ### `ignoreReadonlyClassProperties`
+
+Whether `readonly` class properties are considered okay.
 
 Examples of **incorrect** code for the `{ "ignoreReadonlyClassProperties": false }` option:
 
@@ -99,7 +101,7 @@ class Foo {
 
 ### `ignoreTypeIndexes`
 
-A boolean to specify if numbers used to index types are okay. `false` by default.
+Whether numbers used to index types are okay. `false` by default.
 
 Examples of **incorrect** code for the `{ "ignoreTypeIndexes": false }` option:
 

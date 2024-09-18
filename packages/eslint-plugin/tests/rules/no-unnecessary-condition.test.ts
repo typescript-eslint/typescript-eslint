@@ -1,9 +1,10 @@
+import * as path from 'node:path';
+
 import type {
   InvalidTestCase,
   TestCaseError,
 } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
 
 import type {
   MessageId,
@@ -74,6 +75,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+switch (b1) {
+  case true:
+  default:
+}
     `,
     `
 declare function foo(): number | void;
@@ -867,6 +872,15 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare function foo(): void | { key: string };
+const bar = foo()?.key;
+    `,
+    `
+type fn = () => void;
+declare function foo(): void | fn;
+const bar = foo()?.();
+    `,
     {
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
       code: `
@@ -900,6 +914,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
+switch (b1) {
+  case true:
+  default:
+}
       `,
       output: null,
       errors: [
@@ -912,6 +930,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
     },
     // Ensure that it's complaining about the right things
@@ -1281,11 +1300,13 @@ function truthy() {
 function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
+[1, 2, 3].findLastIndex(falsy);
       `,
       output: null,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
+        ruleError(8, 25, 'alwaysFalsyFunc'),
       ],
     },
     // Supports generics
@@ -1908,7 +1929,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysTruthy')],
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
       code: `
@@ -1917,7 +1938,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
     },
     {
       code: `
@@ -1930,7 +1951,7 @@ if (!speech) {
 }
       `,
       output: null,
-      errors: [ruleError(7, 6, 'never')],
+      errors: [ruleError(7, 5, 'never')],
     },
     {
       code: `
@@ -2165,7 +2186,7 @@ foo.bar ??= 1;
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar()?.toExponential();
@@ -2186,7 +2207,7 @@ foo?.bar().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux?.toExponential();
@@ -2214,7 +2235,7 @@ foo?.bar?.baz().qux.toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.()?.toExponential();
@@ -2235,7 +2256,7 @@ foo?.().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
@@ -2256,7 +2277,7 @@ foo?.['bar']().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.()?.toExponential();
@@ -2275,6 +2296,14 @@ foo?.['bar']?.().toExponential();
           endColumn: 19,
         },
       ],
+    },
+    {
+      code: `
+        const a = true;
+        if (!!a) {
+        }
+      `,
+      errors: [ruleError(3, 13, 'alwaysTruthy')],
     },
 
     // "branded" types

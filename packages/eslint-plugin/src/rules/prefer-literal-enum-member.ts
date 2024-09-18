@@ -20,6 +20,8 @@ export default createRule({
         type: 'object',
         properties: {
           allowBitwiseExpressions: {
+            description:
+              'Whether to allow using bitwise expressions in enum initializers.',
             type: 'boolean',
           },
         },
