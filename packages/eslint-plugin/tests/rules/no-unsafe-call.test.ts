@@ -67,6 +67,21 @@ interface CallGoodConstructBad extends Function {
 declare const safe: CallGoodConstructBad;
 safe();
     `,
+    `
+interface ConstructSignatureMakesSafe extends Function {
+  new (): ConstructSignatureMakesSafe;
+}
+declare const safe: ConstructSignatureMakesSafe;
+new safe();
+    `,
+    `
+interface SafeWithNonVoidCallSignature extends Function {
+  (): void;
+  (x: string): string;
+}
+declare const safe: SafeWithNonVoidCallSignature;
+safe();
+    `,
     // Function has type FunctionConstructor, so it's not within this rule's purview
     `
       new Function('lol');

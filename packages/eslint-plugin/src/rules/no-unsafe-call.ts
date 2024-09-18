@@ -98,19 +98,16 @@ export default createRule<[], MessageIds>({
 
         const callSignatures = type.getCallSignatures();
         if (messageId === 'unsafeNew') {
-          const nonVoidReturnCallSignatures = callSignatures.filter(
-            signature =>
-              !tsutils.isIntrinsicVoidType(signature.getReturnType()),
-          );
-
-          if (nonVoidReturnCallSignatures.length > 0) {
+          if (
+            callSignatures.some(
+              signature =>
+                !tsutils.isIntrinsicVoidType(signature.getReturnType()),
+            )
+          ) {
             return;
           }
-        } else {
-          // eslint-disable-next-line no-lonely-if
-          if (callSignatures.length > 0) {
-            return;
-          }
+        } else if (callSignatures.length > 0) {
+          return;
         }
 
         context.report({
