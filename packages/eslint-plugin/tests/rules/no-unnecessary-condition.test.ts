@@ -894,6 +894,22 @@ class ConsistentRand {
 }
       `,
     },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+
+assert(Math.random() > 0.5);
+      `,
+      options: [{ checkTruthinessAssertions: true }],
+    },
+    {
+      // should not report because option is disabled.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      options: [{ checkTruthinessAssertions: false }],
+    },
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -2304,6 +2320,30 @@ foo?.['bar']?.().toExponential();
         }
       `,
       errors: [ruleError(3, 13, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTruthinessAssertions: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(false);
+      `,
+      errors: [
+        {
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      options: [{ checkTruthinessAssertions: true }],
     },
 
     // "branded" types

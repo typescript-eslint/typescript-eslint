@@ -18,6 +18,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { findAssertedArgument } from '../util/assertionFunctionUtils';
 
 // Truthiness utilities
 // #region
@@ -71,6 +72,7 @@ export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    checkTruthinessAssertions?: boolean;
   },
 ];
 
@@ -111,6 +113,11 @@ export default createRule<Options, MessageId>({
               'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
+          checkTruthinessAssertions: {
+            description:
+              'Whether to check the assertedof a truthiness assertion function as a conditional context',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -141,6 +148,7 @@ export default createRule<Options, MessageId>({
     {
       allowConstantLoopConditions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      checkTruthinessAssertions: false,
     },
   ],
   create(
@@ -149,6 +157,7 @@ export default createRule<Options, MessageId>({
       {
         allowConstantLoopConditions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        checkTruthinessAssertions,
       },
     ],
   ) {
@@ -463,6 +472,13 @@ export default createRule<Options, MessageId>({
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
+      if (checkTruthinessAssertions) {
+        const assertedArgument = findAssertedArgument(services, node);
+        if (assertedArgument != null) {
+          checkNode(assertedArgument);
+        }
+      }
+
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (
         isArrayMethodCallWithPredicate(context, services, node) &&

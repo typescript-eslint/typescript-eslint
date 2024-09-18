@@ -129,7 +129,7 @@ export default tseslint.config(
       'no-constant-condition': 'off',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
-        { allowConstantLoopConditions: true },
+        { allowConstantLoopConditions: true, checkTruthinessAssertions: true },
       ],
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
