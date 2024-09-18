@@ -30,7 +30,7 @@ export default createRule<[], MessageId>({
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
       forAwaitOfNonThenable:
-        'Unexpected `for await...of` of a value that is not AsyncIterable.',
+        'Unexpected `for await...of` of a value that is not async iterable.',
       removeAwait: 'Remove unnecessary `await`.',
       convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
     },
@@ -89,24 +89,13 @@ export default createRule<[], MessageId>({
           checker,
         );
 
-        // if there is an async iterator symbol, but it doesn't have the correct
-        // shape, TS will report a type error, so we only need to check if the
-        // symbol exists.
         if (asyncIteratorSymbol == null) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forAwaitOfNonThenable',
             suggest: [
-              // This suggestion causes broken code for sync iterables of promises, since
-              // the loop variable will not be awaited.
-              //
-              // Ideally, if the iterable yields promises, we would offer a suggestion to
-              // fix the for loop to `for (const value of await Promise.all(iterable))`.
-              // However, I don't think we can do that with the TS API for now, since we
-              // don't have access to `getIterationTypesOfType` or similar.
-              //
-              // If that becomes available to us, we should provide an alternate suggestion
-              // to fix the code to `for (const value of await Promise.all(iterable))`
+              // Note that this suggestion causes broken code for sync iterables
+              // of promises, since the loop variable is not awaited.
               {
                 messageId: 'convertToOrdinaryFor',
                 fix(fixer): TSESLint.RuleFix {
