@@ -124,6 +124,9 @@ tag\`\${{}}\`;
 let numbers = [1, 2, 3];
 String(...a);
     `,
+    `
+Number(1);
+    `,
     {
       code: 'String(/regex/);',
       options: [{ ignoredTypeNames: ['RegExp'] }],

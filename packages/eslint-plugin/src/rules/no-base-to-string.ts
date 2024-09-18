@@ -181,10 +181,12 @@ export default createRule<Options, MessageIds>({
         }
       },
       CallExpression(node: TSESTree.CallExpression): void {
-        if (node.callee.type !== AST_NODE_TYPES.Identifier) {
-          return;
-        }
-        if (node.arguments[0]) {
+        if (
+          node.callee.type === AST_NODE_TYPES.Identifier &&
+          // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+          node.callee.name === 'String' &&
+          node.arguments[0]
+        ) {
           checkExpression(node.arguments[0]);
         }
       },
