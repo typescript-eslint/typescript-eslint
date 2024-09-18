@@ -172,8 +172,7 @@ describe('semanticInfo', () => {
     ).declarations[0].init!;
     const tsBinaryExpression =
       parseResult.services.esTreeNodeToTSNodeMap.get(binaryExpression);
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-    expectToBeDefined(tsBinaryExpression);
+    expect(tsBinaryExpression).toBeDefined();
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
 
     const computedPropertyString = (
@@ -182,8 +181,7 @@ describe('semanticInfo', () => {
     ).key;
     const tsComputedPropertyString =
       parseResult.services.esTreeNodeToTSNodeMap.get(computedPropertyString);
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-    expectToBeDefined(tsComputedPropertyString);
+    expect(tsComputedPropertyString).toBeDefined();
     expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
   });
 
@@ -212,8 +210,7 @@ describe('semanticInfo', () => {
     expectToHaveParserServices(parseResult.services);
     const tsArrayBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(arrayBoundName);
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-    expectToBeDefined(tsArrayBoundName);
+    expect(tsArrayBoundName).toBeDefined();
     checkNumberArrayType(checker, tsArrayBoundName);
 
     expect(
@@ -238,8 +235,6 @@ describe('semanticInfo', () => {
 
     const tsBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-    expectToBeDefined(tsBoundName);
     expect(tsBoundName).toBeDefined();
 
     expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
@@ -424,8 +419,7 @@ function testIsolatedFile(
   // get type checker
   expectToHaveParserServices(parseResult.services);
   const checker = parseResult.services.program.getTypeChecker();
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-  expectToBeDefined(checker);
+  expect(checker).toBeDefined();
 
   // get number node (ast shape validated by snapshot)
   const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
@@ -436,8 +430,7 @@ function testIsolatedFile(
   // get corresponding TS node
   const tsArrayMember =
     parseResult.services.esTreeNodeToTSNodeMap.get(arrayMember);
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-  expectToBeDefined(tsArrayMember);
+  expect(tsArrayMember).toBeDefined();
   expect(tsArrayMember.kind).toBe(ts.SyntaxKind.NumericLiteral);
   expect((tsArrayMember as ts.NumericLiteral).text).toBe('3');
 
@@ -457,8 +450,7 @@ function testIsolatedFile(
   const boundName = declaration.id as TSESTree.Identifier;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally asserting that the runtime value matches the types.
-  expectToBeDefined(tsBoundName);
+  expect(tsBoundName).toBeDefined();
   checkNumberArrayType(checker, tsBoundName);
   expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
     boundName,
