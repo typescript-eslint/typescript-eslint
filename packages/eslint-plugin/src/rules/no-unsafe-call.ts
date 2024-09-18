@@ -107,7 +107,7 @@ export default createRule<[], MessageIds>({
             return;
           }
         } else {
-          // eslint-disable-next-line no-lonely-if -- readability
+          // eslint-disable-next-line no-lonely-if
           if (callSignatures.length > 0) {
             return;
           }
