@@ -14,7 +14,7 @@ We've been working on a set of breaking changes and general features that we're 
 And now, we're excited to say that typescript-eslint v8 is released as stable! 🎉
 
 We'd previously blogged about v8 in [Announcing typescript-eslint v8 Beta](./2024-05-27-announcing-typescript-eslint-v8-beta.mdx).
-This blog post contains much of the same information as that one.
+This blog post contains much of the same information as that one, and includes the list of steps you'll need to take to upgrade.
 
 <!--truncate-->
 
