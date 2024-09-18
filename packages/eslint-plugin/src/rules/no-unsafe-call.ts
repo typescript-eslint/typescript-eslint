@@ -75,7 +75,44 @@ export default createRule<[], MessageIds>({
             type: isErrorType ? '`error` type' : '`any`',
           },
         });
-      } else if (isBuiltinSymbolLike(services.program, type, 'Function')) {
+        return;
+      }
+
+      if (isBuiltinSymbolLike(services.program, type, 'Function')) {
+        // this also matches subtypes of `Function`, like `interface Foo extends Function {}`.
+        //
+        // For weird TS reasons that I don't understand, these are
+        //
+        // safe to construct if:
+        // - they have at least one call signature _that is not void-returning_,
+        // - OR they have at least one construct signature.
+        //
+        // safe to call (including as template) if:
+        // - they have at least one call signature
+        // - OR they have at least one construct signature.
+
+        const constructSignatures = type.getConstructSignatures();
+        if (constructSignatures.length > 0) {
+          return;
+        }
+
+        const callSignatures = type.getCallSignatures();
+        if (messageId === 'unsafeNew') {
+          const nonVoidReturnCallSignatures = callSignatures.filter(
+            signature =>
+              !tsutils.isIntrinsicVoidType(signature.getReturnType()),
+          );
+
+          if (nonVoidReturnCallSignatures.length > 0) {
+            return;
+          }
+        } else {
+          // eslint-disable-next-line no-lonely-if -- readability
+          if (callSignatures.length > 0) {
+            return;
+          }
+        }
+
         context.report({
           node: reportingNode,
           messageId,
@@ -83,6 +120,7 @@ export default createRule<[], MessageIds>({
             type: '`Function`',
           },
         });
+        return;
       }
     }
 

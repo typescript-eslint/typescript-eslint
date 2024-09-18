@@ -53,6 +53,28 @@ function foo(x: { a?: () => void }) {
         badFunction();
       }
     `,
+    `
+interface SurprisinglySafe extends Function {
+  (): string;
+}
+declare const safe: SurprisinglySafe;
+safe();
+    `,
+    `
+interface CallGoodConstructBad extends Function {
+  (): void;
+}
+declare const safe: CallGoodConstructBad;
+safe();
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      new Function('lol');
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      Function('lol');
+    `,
   ],
   invalid: [
     {
@@ -301,6 +323,90 @@ if (typeof maybeFunction === 'function') {
         {
           messageId: 'unsafeCall',
           line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+unsafe\`bad\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+new unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeNew',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface UnsafeToConstruct extends Function {
+  (): void;
+}
+declare const unsafe: UnsafeToConstruct;
+new unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeNew',
+          line: 6,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface StillUnsafe extends Function {
+  property: string;
+}
+declare const unsafe: StillUnsafe;
+unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 6,
           data: {
             type: '`Function`',
           },
