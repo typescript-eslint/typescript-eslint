@@ -115,7 +115,7 @@ export default createRule<Options, MessageId>({
           },
           checkTruthinessAssertions: {
             description:
-              'Whether to check the assertedof a truthiness assertion function as a conditional context',
+              'Whether to check the asserted argument of a truthiness assertion function as a conditional context',
             type: 'boolean',
           },
         },
