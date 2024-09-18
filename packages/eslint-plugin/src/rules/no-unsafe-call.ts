@@ -1,11 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import type * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
   getThisExpression,
+  isBuiltinSymbolLike,
   isTypeAnyType,
 } from '../util';
 
@@ -25,13 +27,13 @@ export default createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      unsafeCall: 'Unsafe call of an {{type}} typed value.',
+      unsafeCall: 'Unsafe call of a(n) {{type}} typed value.',
       unsafeCallThis: [
-        'Unsafe call of an `any` typed value. `this` is typed as `any`.',
+        'Unsafe call of a(n) {{type}} typed value. `this` is typed as {{type}}.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeNew: 'Unsafe construction of an any type value.',
-      unsafeTemplateTag: 'Unsafe any typed template tag.',
+      unsafeNew: 'Unsafe construction of a(n) {{type}} typed value.',
+      unsafeTemplateTag: 'Unsafe use of a(n) {{type}} typed template tag.',
     },
     schema: [],
   },
@@ -72,6 +74,14 @@ export default createRule<[], MessageIds>({
           messageId,
           data: {
             type: isErrorType ? '`error` type' : '`any`',
+          },
+        });
+      } else if (isBuiltinSymbolLike(services.program, type, 'Function')) {
+        context.report({
+          node: reportingNode,
+          messageId,
+          data: {
+            type: '`Function`',
           },
         });
       }

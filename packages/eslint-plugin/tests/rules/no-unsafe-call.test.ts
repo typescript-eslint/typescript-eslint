@@ -44,6 +44,15 @@ function foo(x: { a?: () => void }) {
         x();
       }
     `,
+    `
+      // create a scope since it's illegal to declare a duplicate identifier
+      // 'Function' in the global script scope.
+      {
+        type Function = () => void;
+        const badFunction: Function = (() => {}) as Function;
+        badFunction();
+      }
+    `,
   ],
   invalid: [
     {
@@ -247,6 +256,53 @@ value();
           endColumn: 6,
           data: {
             type: '`error` type',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const t: Function = () => {};
+t();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const f: Function = () => {};
+f\`oo\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 3,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeFunction: unknown;
+if (typeof maybeFunction === 'function') {
+  maybeFunction('call', 'with', 'any', 'args');
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 4,
+          data: {
+            type: '`Function`',
           },
         },
       ],
