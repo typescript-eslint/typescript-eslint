@@ -136,12 +136,8 @@ This option, which is `true` by default, allows you to stop the rule reporting p
 This can be a good way to explicitly mark a promise as intentionally not awaited.
 
 :::warning
-Voiding a Promise doesn't handle it or change the runtime behavior. The outcome is just ignored, like disabling the rule with a
-
-```
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
-```
-
+Voiding a Promise doesn't handle it or change the runtime behavior.
+The outcome is just ignored, like disabling the rule with an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1).
 Such Promise rejections will still be unhandled.
 :::
 
