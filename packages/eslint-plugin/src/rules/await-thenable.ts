@@ -73,7 +73,7 @@ export default createRule<[], MessageId>({
         }
       },
 
-      ForOfStatement(node): void {
+      'ForOfStatement[await=true]'(node): void {
         if (!node.await) {
           return;
         }
