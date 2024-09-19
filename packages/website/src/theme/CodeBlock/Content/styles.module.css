@@ -43,7 +43,8 @@
   /* rtl:ignore */
   float: left;
   min-width: 100%;
-  padding: var(--ifm-pre-padding);
+  padding: var(--ifm-pre-padding) var(--ifm-pre-padding)
+    calc(var(--ifm-pre-padding) * 2.5);
 }
 
 .codeBlockLinesWithNumbering {
@@ -102,5 +103,9 @@
   .playgroundButton {
     position: static;
     margin: calc(var(--ifm-pre-padding) / 2);
+  }
+
+  .codeBlockLines {
+    padding: var(--ifm-pre-padding);
   }
 }
