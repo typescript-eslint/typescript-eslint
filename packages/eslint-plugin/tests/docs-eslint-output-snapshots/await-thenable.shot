@@ -28,7 +28,7 @@ exports[`Validating rule docs await-thenable.mdx code examples ESLint output 3`]
 async function syncIterable() {
   const arrayOfValues = [1, 2, 3];
   for await (const value of arrayOfValues) {
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not AsyncIterable.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not async iterable.
     console.log(value);
   }
 }
@@ -40,7 +40,7 @@ async function syncIterableOfPromises() {
     Promise.resolve(3),
   ];
   for await (const promisedValue of arrayOfPromises) {
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not AsyncIterable.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not async iterable.
     console.log(promisedValue);
   }
 }
@@ -63,9 +63,7 @@ async function syncIterableOfPromises() {
     Promise.resolve(2),
     Promise.resolve(3),
   ];
-  for (const promise of arrayOfPromises) {
-    // Note that the promise must be explicitly awaited if the promised value is needed.
-    const promisedValue = await promise;
+  for (const promisedValue of await Promise.all(arrayOfPromises)) {
     console.log(promisedValue);
   }
 }
