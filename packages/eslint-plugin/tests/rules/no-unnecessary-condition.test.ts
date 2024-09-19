@@ -1300,11 +1300,13 @@ function truthy() {
 function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
+[1, 2, 3].findLastIndex(falsy);
       `,
       output: null,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
+        ruleError(8, 25, 'alwaysFalsyFunc'),
       ],
     },
     // Supports generics

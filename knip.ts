@@ -65,6 +65,9 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'packages/utils': {
+      ignore: ['tests/**/*.type-test.ts'],
+    },
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
