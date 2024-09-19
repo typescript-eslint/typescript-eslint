@@ -85,7 +85,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                                  |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                                    |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                            |
-| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-error`]                                                                 |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-error`]                                                                   |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                       |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                        |
 | [`no-tautology-expression`]          | 🛑  | N/A                                                                                                       |
