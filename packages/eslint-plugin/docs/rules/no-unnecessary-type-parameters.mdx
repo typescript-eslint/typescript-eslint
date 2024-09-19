@@ -89,6 +89,22 @@ That includes type arguments given to global types such as `Array` (including th
 
 ## FAQ
 
+### The return type is only used as an input, so why isn't the rule reporting?
+
+One common reason that this might be the case is when the return type is not specified explicitly.
+The rule uses uses type information to count implicit usages of the type parameter in the function signature, including in the inferred return type.
+For example, the following function...
+
+```ts
+function identity<T>(arg: T) {
+  return arg;
+}
+```
+
+...implicitly has a return type of `T`. Therefore, the type parameter `T` is used twice, and the rule will not report this function.
+
+For other reasons the rule might not be reporting, be sure to check the [Limitations section](#limitations) and other FAQs.
+
 ### I'm using the type parameter inside the function, so why is the rule reporting?
 
 You might be surprised to that the rule reports on a function like this:
