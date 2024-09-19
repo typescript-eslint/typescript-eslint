@@ -9,6 +9,7 @@ import {
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
+  isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
   isTypeAnyType,
@@ -363,15 +364,18 @@ export default createRule<Options, MessageId>({
       '===',
       '!=',
       '!==',
-    ]);
-    function checkIfBinaryExpressionIsNecessaryConditional(
-      node: TSESTree.BinaryExpression,
+    ] as const);
+    type BoolOperator = Parameters<typeof BOOL_OPERATORS.has>[0];
+    const isBoolOperator = (operator: string): operator is BoolOperator =>
+      (BOOL_OPERATORS as Set<string>).has(operator);
+    function checkIfBoolExpressionIsNecessaryConditional(
+      node: TSESTree.Node,
+      left: TSESTree.Node,
+      right: TSESTree.Node,
+      operator: BoolOperator,
     ): void {
-      if (!BOOL_OPERATORS.has(node.operator)) {
-        return;
-      }
-      const leftType = getConstrainedTypeAtLocation(services, node.left);
-      const rightType = getConstrainedTypeAtLocation(services, node.right);
+      const leftType = getConstrainedTypeAtLocation(services, left);
+      const rightType = getConstrainedTypeAtLocation(services, right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
         context.report({ node, messageId: 'literalBooleanExpression' });
         return;
@@ -390,7 +394,7 @@ export default createRule<Options, MessageId>({
             ts.TypeFlags.TypeVariable;
 
           // Allow loose comparison to nullish values.
-          if (node.operator === '==' || node.operator === '!=') {
+          if (operator === '==' || operator === '!=') {
             flag |= NULL | UNDEFINED | VOID;
           }
 
@@ -458,26 +462,12 @@ export default createRule<Options, MessageId>({
       checkNode(node.test);
     }
 
-    const ARRAY_PREDICATE_FUNCTIONS = new Set([
-      'filter',
-      'find',
-      'some',
-      'every',
-    ]);
-    function isArrayPredicateFunction(node: TSESTree.CallExpression): boolean {
-      const { callee } = node;
-      return (
-        // looks like `something.filter` or `something.find`
-        callee.type === AST_NODE_TYPES.MemberExpression &&
-        callee.property.type === AST_NODE_TYPES.Identifier &&
-        ARRAY_PREDICATE_FUNCTIONS.has(callee.property.name) &&
-        // and the left-hand side is an array, according to the types
-        (nodeIsArrayType(callee.object) || nodeIsTupleType(callee.object))
-      );
-    }
     function checkCallExpression(node: TSESTree.CallExpression): void {
       // If this is something like arr.filter(x => /*condition*/), check `condition`
-      if (isArrayPredicateFunction(node) && node.arguments.length) {
+      if (
+        isArrayMethodCallWithPredicate(context, services, node) &&
+        node.arguments.length
+      ) {
         const callback = node.arguments[0];
         // Inline defined functions
         if (
@@ -719,13 +709,34 @@ export default createRule<Options, MessageId>({
 
     return {
       AssignmentExpression: checkAssignmentExpression,
-      BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
+      BinaryExpression(node): void {
+        const { operator } = node;
+        if (isBoolOperator(operator)) {
+          checkIfBoolExpressionIsNecessaryConditional(
+            node,
+            node.left,
+            node.right,
+            operator,
+          );
+        }
+      },
       CallExpression: checkCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
       IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
+      SwitchCase({ test, parent }): void {
+        // only check `case ...:`, not `default:`
+        if (test) {
+          checkIfBoolExpressionIsNecessaryConditional(
+            test,
+            parent.discriminant,
+            test,
+            '===',
+          );
+        }
+      },
       WhileStatement: checkIfLoopIsNecessaryConditional,
       'MemberExpression[optional = true]': checkOptionalMemberExpression,
       'CallExpression[optional = true]': checkOptionalCallExpression,
