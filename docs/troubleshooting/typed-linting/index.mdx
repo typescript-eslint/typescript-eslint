@@ -36,7 +36,7 @@ export default tseslint.config(
   // ... the rest of your config ...
   {
     files: ['**/*.js'],
-    extends: [tseslint.configs.disableTypeChecked],
+    ...tseslint.configs.disableTypeChecked,
   },
 );
 ```
