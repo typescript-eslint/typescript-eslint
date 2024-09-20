@@ -25,6 +25,11 @@ declare let vegetable: Vegetable;
 
 vegetable === 'asparagus';
 ~~~~~~~~~~~~~~~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
+
+declare let anyString: string;
+
+anyString === Vegetable.Asparagus;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
 "
 `;
 
