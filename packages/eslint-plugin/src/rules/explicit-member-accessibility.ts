@@ -82,7 +82,7 @@ export default createRule<Options, MessageIds>({
           accessibility: {
             $ref: '#/items/0/$defs/accessibilityLevel',
             description:
-              'Which of accessibility modifier is required to exist or not exist.',
+              'Which accessibility modifier is required to exist or not exist.',
           },
           overrides: {
             description:
