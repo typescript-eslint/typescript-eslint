@@ -2,7 +2,7 @@
 authors: joshuakgoldberg
 description: Explaining what linting with type information means, why it's so powerful, and some of the useful rules you can enable that use it.
 slug: typed-linting
-tags: [breaking changes, typescript-eslint, v7, v8]
+tags: [types, type information, typed linting]
 title: 'Typed Linting: The Most Powerful TypeScript Linting Ever'
 ---
 
