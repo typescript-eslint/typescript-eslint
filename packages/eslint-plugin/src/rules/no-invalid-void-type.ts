@@ -45,8 +45,14 @@ export default createRule<[Options], MessageIds>({
             description:
               'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
-              { type: 'boolean' },
               {
+                description:
+                  'Whether `void` can be used as a valid value for all generic type parameters.',
+                type: 'boolean',
+              },
+              {
+                description:
+                  'Allowlist of types that may accept `void` as a generic type parameter.',
                 type: 'array',
                 items: { type: 'string' },
                 minItems: 1,

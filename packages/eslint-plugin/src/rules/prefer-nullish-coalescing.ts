@@ -84,15 +84,29 @@ export default createRule<Options, MessageIds>({
               'Whether to ignore all (`true`) or some (an object with properties) primitive types.',
             oneOf: [
               {
+                description: 'Which primitives types may be ignored.',
                 type: 'object',
                 properties: {
-                  bigint: { type: 'boolean' },
-                  boolean: { type: 'boolean' },
-                  number: { type: 'boolean' },
-                  string: { type: 'boolean' },
+                  bigint: {
+                    description: 'Ignore bigint primitive types.',
+                    type: 'boolean',
+                  },
+                  boolean: {
+                    description: 'Ignore boolean primitive types.',
+                    type: 'boolean',
+                  },
+                  number: {
+                    description: 'Ignore number primitive types.',
+                    type: 'boolean',
+                  },
+                  string: {
+                    description: 'Ignore string primitive types.',
+                    type: 'boolean',
+                  },
                 },
               },
               {
+                description: 'Ignore all primitive types.',
                 type: 'boolean',
                 enum: [true],
               },

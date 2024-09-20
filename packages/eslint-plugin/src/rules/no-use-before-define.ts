@@ -262,7 +262,10 @@ export default createRule<Options, MessageIds>({
                   'Whether to ignore type references, such as in type annotations and assertions.',
                 type: 'boolean',
               },
-              allowNamedExports: { type: 'boolean' },
+              allowNamedExports: {
+                description: 'Whether to ignore named exports.',
+                type: 'boolean',
+              },
             },
             additionalProperties: false,
           },

@@ -21,6 +21,7 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     schema: [
       {
+        description: 'Which indexed object syntax to prefer.',
         type: 'string',
         enum: ['record', 'index-signature'],
       },
