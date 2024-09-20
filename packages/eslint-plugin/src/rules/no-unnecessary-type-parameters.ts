@@ -5,7 +5,7 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, nullThrows } from '../util';
 
 type NodeWithTypeParameters = MakeRequired<
   ts.SignatureDeclaration | ts.ClassLikeDeclaration,
@@ -38,19 +38,33 @@ export default createRule({
       const checker = parserServices.program.getTypeChecker();
       let counts: Map<ts.Identifier, number> | undefined;
 
+      // Get the scope in which the type parameters are declared.
+      const scope = context.sourceCode.getScope(node);
+
       for (const typeParameter of tsNode.typeParameters) {
         const esTypeParameter =
           parserServices.tsNodeToESTreeNodeMap.get<TSESTree.TSTypeParameter>(
             typeParameter,
           );
-        const scope = context.sourceCode.getScope(esTypeParameter);
+
+        const smTypeParameterVariable = nullThrows(
+          (() => {
+            const variable = scope.set.get(esTypeParameter.name.name);
+            return variable != null &&
+              variable.isTypeVariable &&
+              !variable.isValueVariable
+              ? variable
+              : undefined;
+          })(),
+          "Type parameter should be present in scope's variables.",
+        );
 
         // Quick path: if the type parameter is used multiple times in the AST,
         // we don't need to dip into types to know it's repeated.
         if (
           isTypeParameterRepeatedInAST(
             esTypeParameter,
-            scope.references,
+            smTypeParameterVariable.references,
             node.body?.range[0] ?? node.returnType?.range[1],
           )
         ) {
@@ -147,7 +161,7 @@ function isTypeParameterRepeatedInAST(
 
     total += 1;
 
-    if (total > 2) {
+    if (total >= 2) {
       return true;
     }
   }

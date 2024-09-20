@@ -509,7 +509,7 @@ function getRankOrder(
   orderConfig: MemberType[],
 ): number {
   let rank = -1;
-  const stack = memberGroups.slice(); // Get a copy of the member groups
+  const stack = [...memberGroups]; // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

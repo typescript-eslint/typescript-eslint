@@ -15,6 +15,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import regexpPlugin from 'eslint-plugin-regexp';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
@@ -43,6 +44,7 @@ export default tseslint.config(
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
+      ['regexp']: regexpPlugin,
       ['simple-import-sort']: simpleImportSortPlugin,
       ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
@@ -318,19 +320,33 @@ export default tseslint.config(
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
 
+      'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-useless-character-class': 'error',
+      'regexp/no-useless-flag': 'error',
+      'regexp/no-useless-lazy': 'error',
+      'regexp/no-useless-non-capturing-group': 'error',
+      'regexp/prefer-quantifier': 'error',
+      'regexp/prefer-question-quantifier': 'error',
+      'regexp/prefer-w': 'error',
+
       'sonarjs/no-duplicated-branches': 'error',
 
       //
       // eslint-plugin-unicorn
       //
 
+      'unicorn/no-length-as-slice-end': 'error',
       'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-single-promise-in-promise-methods': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-array-some': 'error',
       'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-spread': 'error',
       'unicorn/prefer-string-replace-all': 'error',
+      'unicorn/prefer-structured-clone': 'error',
     },
   },
   {

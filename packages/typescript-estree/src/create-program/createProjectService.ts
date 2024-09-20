@@ -42,8 +42,12 @@ export function createProjectService(
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
   tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {
-  const options = typeof optionsRaw === 'object' ? optionsRaw : {};
-  validateDefaultProjectForFilesGlob(options);
+  const optionsRawObject = typeof optionsRaw === 'object' ? optionsRaw : {};
+  const options = {
+    defaultProject: 'tsconfig.json',
+    ...optionsRawObject,
+  };
+  validateDefaultProjectForFilesGlob(options.allowDefaultProject);
 
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
@@ -62,6 +66,18 @@ export function createProjectService(
     setTimeout,
     watchDirectory: createStubFileWatcher,
     watchFile: createStubFileWatcher,
+
+    // We stop loading any TypeScript plugins by default, to prevent them from attaching disk watchers
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/9905
+    ...(!options.loadTypeScriptPlugins && {
+      require: () => ({
+        module: undefined,
+        error: {
+          message:
+            'TypeScript plugins are not required when using parserOptions.projectService.',
+        },
+      }),
+    }),
   };
 
   const logger: ts.server.Logger = {
@@ -122,22 +138,24 @@ export function createProjectService(
     },
   });
 
-  if (options.defaultProject) {
-    log('Enabling default project: %s', options.defaultProject);
-    let configFile: ts.ParsedCommandLine;
+  log('Enabling default project: %s', options.defaultProject);
+  let configFile: ts.ParsedCommandLine | undefined;
 
-    try {
-      configFile = getParsedConfigFile(
-        tsserver,
-        options.defaultProject,
-        tsconfigRootDir,
-      );
-    } catch (error) {
+  try {
+    configFile = getParsedConfigFile(
+      tsserver,
+      options.defaultProject,
+      tsconfigRootDir,
+    );
+  } catch (error) {
+    if (optionsRawObject.defaultProject) {
       throw new Error(
-        `Could not read default project '${options.defaultProject}': ${(error as Error).message}`,
+        `Could not read project service default project '${options.defaultProject}': ${(error as Error).message}`,
       );
     }
+  }
 
+  if (configFile) {
     service.setCompilerOptionsForInferredProjects(
       // NOTE: The inferred projects API is not intended for source files when a tsconfig
       // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting

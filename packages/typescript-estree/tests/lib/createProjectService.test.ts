@@ -14,13 +14,15 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
   server: {
     ...jest.requireActual('typescript/lib/tsserverlibrary').server,
     ProjectService: class {
-      logger: ts.server.Logger;
       eventHandler: ts.server.ProjectServiceEventHandler | undefined;
+      host: ts.server.ServerHost;
+      logger: ts.server.Logger;
       constructor(
         ...args: ConstructorParameters<typeof ts.server.ProjectService>
       ) {
-        this.logger = args[0].logger;
         this.eventHandler = args[0].eventHandler;
+        this.host = args[0].host;
+        this.logger = args[0].logger;
         if (this.eventHandler) {
           this.eventHandler({
             eventName: 'projectLoadingStart',
@@ -40,6 +42,10 @@ const {
 } = require('../../src/create-program/createProjectService');
 
 describe('createProjectService', () => {
+  beforeEach(() => {
+    mockGetParsedConfigFile.mockReturnValue({ options: {} });
+  });
+
   afterEach(() => {
     jest.resetAllMocks();
   });
@@ -61,41 +67,57 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error with a relative path when options.defaultProject is set to a relative path and getParsedConfigFile throws a diagnostic error', () => {
+  it('does not throw an error when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
-      throw new Error('./tsconfig.json(1,1): error TS1234: Oh no!');
+      throw new Error('tsconfig.json(1,1): error TS1234: Oh no!');
     });
 
     expect(() =>
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
-          defaultProject: './tsconfig.json',
+        },
+        undefined,
+        undefined,
+      ),
+    ).not.toThrow();
+  });
+
+  it('throws an error with a relative path when options.defaultProject is set to a relative path and getParsedConfigFile throws a diagnostic error', () => {
+    mockGetParsedConfigFile.mockImplementation(() => {
+      throw new Error('./tsconfig.eslint.json(1,1): error TS1234: Oh no!');
+    });
+
+    expect(() =>
+      createProjectService(
+        {
+          allowDefaultProject: ['file.js'],
+          defaultProject: './tsconfig.eslint.json',
         },
         undefined,
         undefined,
       ),
     ).toThrow(
-      /Could not read default project '\.\/tsconfig.json': .+ error TS1234: Oh no!/,
+      /Could not read project service default project '\.\/tsconfig.eslint.json': .+ error TS1234: Oh no!/,
     );
   });
 
   it('throws an error with a local path when options.defaultProject is set to a local path and getParsedConfigFile throws a diagnostic error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
-      throw new Error('./tsconfig.json(1,1): error TS1234: Oh no!');
+      throw new Error('./tsconfig.eslint.json(1,1): error TS1234: Oh no!');
     });
 
     expect(() =>
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
-          defaultProject: 'tsconfig.json',
+          defaultProject: 'tsconfig.eslint.json',
         },
         undefined,
         undefined,
       ),
     ).toThrow(
-      /Could not read default project 'tsconfig.json': .+ error TS1234: Oh no!/,
+      /Could not read project service default project 'tsconfig.eslint.json': .+ error TS1234: Oh no!/,
     );
   });
 
@@ -116,18 +138,19 @@ describe('createProjectService', () => {
         undefined,
       ),
     ).toThrow(
-      "Could not read default project 'tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
+      "Could not read project service default project 'tsconfig.json': `getParsedConfigFile` is only supported in a Node-like environment.",
     );
   });
 
-  it('uses the default projects compiler options when options.defaultProject is set and getParsedConfigFile succeeds', () => {
+  it('uses the default project compiler options when options.defaultProject is set and getParsedConfigFile succeeds', () => {
     const compilerOptions = { strict: true };
     mockGetParsedConfigFile.mockReturnValue({ options: compilerOptions });
+    const defaultProject = 'tsconfig.eslint.json';
 
     const { service } = createProjectService(
       {
         allowDefaultProject: ['file.js'],
-        defaultProject: 'tsconfig.json',
+        defaultProject,
       },
       undefined,
       undefined,
@@ -135,6 +158,12 @@ describe('createProjectService', () => {
 
     expect(service.setCompilerOptionsForInferredProjects).toHaveBeenCalledWith(
       compilerOptions,
+    );
+    expect(mockGetParsedConfigFile).toHaveBeenCalledWith(
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      require('typescript/lib/tsserverlibrary'),
+      defaultProject,
+      undefined,
     );
   });
 
@@ -146,7 +175,6 @@ describe('createProjectService', () => {
     const { service } = createProjectService(
       {
         allowDefaultProject: ['file.js'],
-        defaultProject: 'tsconfig.json',
       },
       undefined,
       tsconfigRootDir,
@@ -165,6 +193,7 @@ describe('createProjectService', () => {
 
   it('uses the default projects error debugger for error messages when enabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
+
     const { service } = createProjectService(undefined, undefined, undefined);
     debug.enable('typescript-eslint:typescript-estree:tsserver:err');
     const enabled = service.logger.loggingEnabled();
@@ -181,6 +210,7 @@ describe('createProjectService', () => {
 
   it('does not use the default projects error debugger for error messages when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
+
     const { service } = createProjectService(undefined, undefined, undefined);
     const enabled = service.logger.loggingEnabled();
     service.logger.msg('foo', ts.server.Msg.Err);
@@ -191,6 +221,7 @@ describe('createProjectService', () => {
 
   it('uses the default projects info debugger for info messages when enabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
+
     const { service } = createProjectService(undefined, undefined, undefined);
     debug.enable('typescript-eslint:typescript-estree:tsserver:info');
     const enabled = service.logger.loggingEnabled();
@@ -207,6 +238,7 @@ describe('createProjectService', () => {
 
   it('does not use the default projects info debugger for info messages when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
+
     const { service } = createProjectService(undefined, undefined, undefined);
     const enabled = service.logger.loggingEnabled();
     service.logger.info('foo');
@@ -217,6 +249,7 @@ describe('createProjectService', () => {
 
   it('uses the default projects perf debugger for perf messages when enabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
+
     const { service } = createProjectService(undefined, undefined, undefined);
     debug.enable('typescript-eslint:typescript-estree:tsserver:perf');
     const enabled = service.logger.loggingEnabled();
@@ -233,6 +266,7 @@ describe('createProjectService', () => {
 
   it('does not use the default projects perf debugger for perf messages when disabled', () => {
     jest.spyOn(process.stderr, 'write').mockImplementation();
+
     const { service } = createProjectService(undefined, undefined, undefined);
     const enabled = service.logger.loggingEnabled();
     service.logger.perftrc('foo');
@@ -276,6 +310,34 @@ describe('createProjectService', () => {
     createProjectService(undefined, undefined, undefined);
 
     expect(process.stderr.write).toHaveBeenCalledTimes(0);
+  });
+
+  it('provides a stub require to the host system when loadTypeScriptPlugins is falsy', () => {
+    const { service } = createProjectService({}, undefined, undefined);
+
+    const required = service.host.require();
+
+    expect(required).toEqual({
+      module: undefined,
+      error: {
+        message:
+          'TypeScript plugins are not required when using parserOptions.projectService.',
+      },
+    });
+  });
+
+  it('does not provide a require to the host system when loadTypeScriptPlugins is truthy', () => {
+    const { service } = createProjectService(
+      {
+        loadTypeScriptPlugins: true,
+      },
+      undefined,
+      undefined,
+    );
+
+    expect(service.host.require).toBe(
+      jest.requireActual('typescript/lib/tsserverlibrary').sys.require,
+    );
   });
 
   it('sets a host configuration', () => {

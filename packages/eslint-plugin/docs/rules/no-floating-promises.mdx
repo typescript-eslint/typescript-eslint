@@ -131,7 +131,7 @@ await createMyThenable();
 
 ### `ignoreVoid`
 
-Placing the `void` operator in front of a Promise can be a convenient way to explicitly mark that Promise as intentionally not awaited.
+Placing the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void) in front of a Promise can be a convenient way to explicitly mark that Promise as intentionally not awaited.
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 
@@ -144,7 +144,7 @@ void returnsPromise();
 void Promise.reject('value');
 ```
 
-With this option set to `true`, and if you are using `no-void`, you should turn on the [`allowAsStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
+When this option is set to `true`, and if you are using `no-void`, you should turn on the [`allowAsStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
 
 ### `ignoreIIFE`
 

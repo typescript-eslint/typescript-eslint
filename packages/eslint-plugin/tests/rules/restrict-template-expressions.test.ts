@@ -344,6 +344,12 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allow
+    {
+      options: [{ allow: [{ from: 'lib', name: 'Promise' }] }],
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+    },
+    'const msg = `arg = ${new Error()}`;',
     'const msg = `arg = ${false}`;',
     'const msg = `arg = ${null}`;',
     'const msg = `arg = ${undefined}`;',
@@ -421,6 +427,15 @@ ruleTester.run('restrict-template-expressions', rule, {
         },
       ],
       options: [{ allowNullish: false, allowArray: true }],
+    },
+    {
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+      errors: [{ messageId: 'invalidType' }],
+    },
+    {
+      code: 'const msg = `arg = ${new Error()}`;',
+      options: [{ allow: [] }],
+      errors: [{ messageId: 'invalidType' }],
     },
     {
       code: `

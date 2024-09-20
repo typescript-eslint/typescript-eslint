@@ -103,14 +103,12 @@ export function resolveProjectList(
   }
 
   const uniqueCanonicalProjectPaths = new Map(
-    nonGlobProjects
-      .concat(globProjectPaths)
-      .map(project => [
-        getCanonicalFileName(
-          ensureAbsolutePath(project, options.tsconfigRootDir),
-        ),
+    [...nonGlobProjects, ...globProjectPaths].map(project => [
+      getCanonicalFileName(
         ensureAbsolutePath(project, options.tsconfigRootDir),
-      ]),
+      ),
+      ensureAbsolutePath(project, options.tsconfigRootDir),
+    ]),
   );
 
   log(

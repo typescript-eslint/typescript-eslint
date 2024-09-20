@@ -50,8 +50,14 @@ interface ProjectServiceOptions {
 
   /**
    * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   * @default 'tsconfig.json'
    */
   defaultProject?: string;
+
+  /**
+   * Whether to allow TypeScript plugins as configured in the TSConfig.
+   */
+  loadTypeScriptPlugins?: boolean;
 
   /**
    * The maximum number of files {@link allowDefaultProject} may match.

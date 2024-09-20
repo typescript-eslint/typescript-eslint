@@ -68,7 +68,7 @@ export function getNodeType(value: unknown): ParentNodeType {
 
 export function ucFirst(value: string): string {
   if (value.length > 0) {
-    return value.slice(0, 1).toUpperCase() + value.slice(1, value.length);
+    return value.slice(0, 1).toUpperCase() + value.slice(1);
   }
   return value;
 }

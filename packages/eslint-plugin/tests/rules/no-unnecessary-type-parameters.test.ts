@@ -393,6 +393,42 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return [{ value: () => mappedReturnType(x) }];
       }
     `,
+    `
+type Identity<T> = T;
+
+type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
+
+declare function sillyFoo<Data, Value>(
+  c: Value,
+): (data: Data) => Mapped<Data, Value>;
+    `,
+    `
+type Silly<T> = { [P in keyof T]: T[P] };
+
+type SillyFoo<T, Value> = Silly<{ [P in keyof T]: Value }>;
+
+type Foo<T, Value> = { [P in keyof T]: Value };
+
+declare function foo<T, Constant>(data: T, c: Constant): Foo<T, Constant>;
+declare function foo<T, Constant>(c: Constant): (data: T) => Foo<T, Constant>;
+
+declare function sillyFoo<T, Constant>(
+  data: T,
+  c: Constant,
+): SillyFoo<T, Constant>;
+declare function sillyFoo<T, Constant>(
+  c: Constant,
+): (data: T) => SillyFoo<T, Constant>;
+    `,
+    `
+const f = <T,>(setValue: (v: T) => void, getValue: () => NoInfer<T>) => {};
+    `,
+    `
+const f = <T,>(
+  setValue: (v: T) => NoInfer<T>,
+  getValue: (v: NoInfer<T>) => NoInfer<T>,
+) => {};
+    `,
   ],
 
   invalid: [
