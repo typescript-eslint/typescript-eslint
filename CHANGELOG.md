@@ -71,7 +71,7 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 ### 🚀 Features
 
-- **eslint-plugin:** [no-deprecation] add rule ([#9783](https://github.com/typescript-eslint/typescript-eslint/pull/9783))
+- **eslint-plugin:** [no-deprecated] add rule ([#9783](https://github.com/typescript-eslint/typescript-eslint/pull/9783))
 - **typescript-estree:** replace `globby` w/ `fast-glob` ([#9518](https://github.com/typescript-eslint/typescript-eslint/pull/9518))
 - **typescript-estree:** reload project service once when file config isn't found ([#9853](https://github.com/typescript-eslint/typescript-eslint/pull/9853))
 
