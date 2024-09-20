@@ -200,7 +200,7 @@ See [Developers > Custom Rules](/developers/custom-rules) for more documentation
 
 ## Enabling Typed Linting
 
-You can add typed linting to your ESLint configuration by following the steps in [Linting with Type Information](/getting-started/linting-with-type-information).
+You can add typed linting to your ESLint configuration by following the steps in [Linting with Type Information](/getting-started/typed-linting).
 We recommend doing so by enabling [`parserOptions.projectService`](/packages/parser#projectservice):
 
 ```js title="eslint.config.js"
