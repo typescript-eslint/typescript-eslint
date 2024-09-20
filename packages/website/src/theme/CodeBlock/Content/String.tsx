@@ -90,6 +90,7 @@ export default function CodeBlockString({
               <code
                 className={clsx(
                   styles.codeBlockLines,
+                  eslintrcHash && styles.codeBlockLinesWithPlaygroundButton,
                   showLineNumbers && styles.codeBlockLinesWithNumbering,
                 )}
               >

@@ -46,6 +46,11 @@
   padding: var(--ifm-pre-padding);
 }
 
+.codeBlockLinesWithPlaygroundButton {
+  padding: var(--ifm-pre-padding) var(--ifm-pre-padding)
+    calc(var(--ifm-pre-padding) * 2.5);
+}
+
 .codeBlockLinesWithNumbering {
   display: table;
   padding: var(--ifm-pre-padding) 0;
@@ -102,5 +107,9 @@
   .playgroundButton {
     position: static;
     margin: calc(var(--ifm-pre-padding) / 2);
+  }
+
+  .codeBlockLinesWithPlaygroundButton {
+    padding: var(--ifm-pre-padding);
   }
 }
