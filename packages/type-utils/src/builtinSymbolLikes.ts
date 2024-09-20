@@ -158,6 +158,13 @@ export function isBuiltinSymbolLikeRecurser(
       isBuiltinSymbolLikeRecurser(program, t, predicate),
     );
   }
+  if (type.isTypeParameter()) {
+    const t = type.getConstraint();
+
+    if (t) {
+      return isBuiltinSymbolLikeRecurser(program, t, predicate);
+    }
+  }
 
   const predicateResult = predicate(type);
   if (typeof predicateResult === 'boolean') {
