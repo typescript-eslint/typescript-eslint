@@ -7,9 +7,9 @@ import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
-import { insertRuleOptions } from './insertions/insertRuleOptions';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
+import { insertRuleOptions } from './insertions/insertRuleOptions';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 
