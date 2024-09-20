@@ -1,3 +1,26 @@
+## 8.6.0 (2024-09-16)
+
+
+### 🚀 Features
+
+- **typescript-estree:** disable plugin loading by default in project service
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** don't throw on missing tsconfig.json by default in project service
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Josh Goldberg ✨
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.5.0 (2024-09-09)
 
 
