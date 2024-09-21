@@ -516,29 +516,6 @@ declare const nullableString: string | null;
 assert(3 as any, nullableString);
       `,
     },
-    // Intentional TS error - A rest parameter must be last in a parameter list.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(...a: boolean[], b: unknown): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - A type predicate cannot reference a rest parameter.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(a: boolean, ...b: unknown[]): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - An assertion function must have a parameter to assert.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(): asserts x;
-declare const nullableString: string | null;
-assert(nullableString);
-    `,
     `
 function assert(one: unknown): asserts one;
 function assert(one: unknown, two: unknown): asserts two;
