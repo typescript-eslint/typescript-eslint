@@ -292,9 +292,6 @@ function getStaticMemberAccessValue(
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
   const { type } = key;
-  if (type === AST_NODE_TYPES.Literal) {
-    return String(key.value);
-  }
   if (
     !node.computed &&
     (type === AST_NODE_TYPES.Identifier ||
