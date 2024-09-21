@@ -423,7 +423,6 @@ interface RuleListenerBaseSelectors {
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
   AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
-  BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
   BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
   BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
@@ -451,6 +450,7 @@ interface RuleListenerBaseSelectors {
   FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
+  ImportAttribute?: RuleFunction<TSESTree.ImportAttribute>;
   ImportDeclaration?: RuleFunction<TSESTree.ImportDeclaration>;
   ImportDefaultSpecifier?: RuleFunction<TSESTree.ImportDefaultSpecifier>;
   ImportExpression?: RuleFunction<TSESTree.ImportExpression>;
@@ -465,6 +465,7 @@ interface RuleListenerBaseSelectors {
   JSXFragment?: RuleFunction<TSESTree.JSXFragment>;
   JSXIdentifier?: RuleFunction<TSESTree.JSXIdentifier>;
   JSXMemberExpression?: RuleFunction<TSESTree.JSXMemberExpression>;
+  JSXNamespacedName?: RuleFunction<TSESTree.JSXNamespacedName>;
   JSXOpeningElement?: RuleFunction<TSESTree.JSXOpeningElement>;
   JSXOpeningFragment?: RuleFunction<TSESTree.JSXOpeningFragment>;
   JSXSpreadAttribute?: RuleFunction<TSESTree.JSXSpreadAttribute>;
@@ -479,6 +480,7 @@ interface RuleListenerBaseSelectors {
   NewExpression?: RuleFunction<TSESTree.NewExpression>;
   ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
+  PrivateIdentifier?: RuleFunction<TSESTree.PrivateIdentifier>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
   PropertyDefinition?: RuleFunction<TSESTree.PropertyDefinition>;
@@ -486,6 +488,7 @@ interface RuleListenerBaseSelectors {
   ReturnStatement?: RuleFunction<TSESTree.ReturnStatement>;
   SequenceExpression?: RuleFunction<TSESTree.SequenceExpression>;
   SpreadElement?: RuleFunction<TSESTree.SpreadElement>;
+  StaticBlock?: RuleFunction<TSESTree.StaticBlock>;
   Super?: RuleFunction<TSESTree.Super>;
   SwitchCase?: RuleFunction<TSESTree.SwitchCase>;
   SwitchStatement?: RuleFunction<TSESTree.SwitchStatement>;
@@ -495,6 +498,7 @@ interface RuleListenerBaseSelectors {
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
+  TSAbstractAccessorProperty?: RuleFunction<TSESTree.TSAbstractAccessorProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<TSESTree.TSAbstractMethodDefinition>;
   TSAbstractPropertyDefinition?: RuleFunction<TSESTree.TSAbstractPropertyDefinition>;
@@ -512,6 +516,7 @@ interface RuleListenerBaseSelectors {
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSEmptyBodyFunctionExpression?: RuleFunction<TSESTree.TSEmptyBodyFunctionExpression>;
+  TSEnumBody?: RuleFunction<TSESTree.TSEnumBody>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
@@ -523,15 +528,18 @@ interface RuleListenerBaseSelectors {
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
   TSIndexSignature?: RuleFunction<TSESTree.TSIndexSignature>;
   TSInferType?: RuleFunction<TSESTree.TSInferType>;
+  TSInstantiationExpression?: RuleFunction<TSESTree.TSInstantiationExpression>;
   TSInterfaceBody?: RuleFunction<TSESTree.TSInterfaceBody>;
   TSInterfaceDeclaration?: RuleFunction<TSESTree.TSInterfaceDeclaration>;
   TSInterfaceHeritage?: RuleFunction<TSESTree.TSInterfaceHeritage>;
   TSIntersectionType?: RuleFunction<TSESTree.TSIntersectionType>;
+  TSIntrinsicKeyword?: RuleFunction<TSESTree.TSIntrinsicKeyword>;
   TSLiteralType?: RuleFunction<TSESTree.TSLiteralType>;
   TSMappedType?: RuleFunction<TSESTree.TSMappedType>;
   TSMethodSignature?: RuleFunction<TSESTree.TSMethodSignature>;
   TSModuleBlock?: RuleFunction<TSESTree.TSModuleBlock>;
   TSModuleDeclaration?: RuleFunction<TSESTree.TSModuleDeclaration>;
+  TSNamedTupleMember?: RuleFunction<TSESTree.TSNamedTupleMember>;
   TSNamespaceExportDeclaration?: RuleFunction<TSESTree.TSNamespaceExportDeclaration>;
   TSNeverKeyword?: RuleFunction<TSESTree.TSNeverKeyword>;
   TSNonNullExpression?: RuleFunction<TSESTree.TSNonNullExpression>;
@@ -551,6 +559,7 @@ interface RuleListenerBaseSelectors {
   TSStaticKeyword?: RuleFunction<TSESTree.TSStaticKeyword>;
   TSStringKeyword?: RuleFunction<TSESTree.TSStringKeyword>;
   TSSymbolKeyword?: RuleFunction<TSESTree.TSSymbolKeyword>;
+  TSTemplateLiteralType?: RuleFunction<TSESTree.TSTemplateLiteralType>;
   TSThisType?: RuleFunction<TSESTree.TSThisType>;
   TSTupleType?: RuleFunction<TSESTree.TSTupleType>;
   TSTypeAliasDeclaration?: RuleFunction<TSESTree.TSTypeAliasDeclaration>;
