@@ -1,7 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
-import * as ts from 'typescript';
 
 import {
   createRule,

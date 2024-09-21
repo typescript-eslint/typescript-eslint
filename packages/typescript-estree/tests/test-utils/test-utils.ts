@@ -117,6 +117,7 @@ export function omitDeep(
     oNode: UnknownObject,
     parent: UnknownObject | null,
   ): UnknownObject {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- I don't know if it's safe to change this.
     if (!Array.isArray(oNode) && !isObjectLike(oNode)) {
       return oNode;
     }
@@ -139,6 +140,7 @@ export function omitDeep(
             value.push(visit(el, node));
           }
           node[prop] = value;
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- I don't know if it's safe to change this.
         } else if (isObjectLike(child)) {
           node[prop] = visit(child, node);
         }

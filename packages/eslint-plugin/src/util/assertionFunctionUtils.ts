@@ -92,7 +92,15 @@ export function findTruthinessAssertedArgument(
 export function findTypeGuardAssertedArgument(
   services: ParserServicesWithTypeInformation,
   node: TSESTree.CallExpression,
-): { argument: TSESTree.Expression; type: ts.Type } | undefined {
+):
+  | {
+      predicateKind:
+        | ts.TypePredicateKind.AssertsIdentifier
+        | ts.TypePredicateKind.Identifier;
+      argument: TSESTree.Expression;
+      type: ts.Type | undefined;
+    }
+  | undefined {
   // If the call looks like `assert(expr1, expr2, ...c, d, e, f)`, then we can
   // only care if `expr1` or `expr2` is asserted, since anything that happens
   // within or after a spread argument is out of scope to reason about.
@@ -118,8 +126,15 @@ export function findTypeGuardAssertedArgument(
 
   const checker = services.program.getTypeChecker();
 
-  let predicateInfo: { parameterIndex: number; type: ts.Type } | undefined =
-    undefined;
+  let predicateInfo:
+    | {
+        parameterIndex: number;
+        type: ts.Type | undefined;
+        predicateKind:
+          | ts.TypePredicateKind.AssertsIdentifier
+          | ts.TypePredicateKind.Identifier;
+      }
+    | undefined = undefined;
 
   for (const signature of callSignatures) {
     const thisPredicateInfo = checker.getTypePredicateOfSignature(signature);
@@ -129,16 +144,22 @@ export function findTypeGuardAssertedArgument(
 
     // Be sure we're dealing with a truthiness assertion function, in other words,
     // `asserts x` (but not `asserts x is T`, and also not `asserts this is T`).
-    if (!(thisPredicateInfo.kind === ts.TypePredicateKind.Identifier)) {
+    if (
+      !(
+        thisPredicateInfo.kind === ts.TypePredicateKind.Identifier ||
+        thisPredicateInfo.kind === ts.TypePredicateKind.AssertsIdentifier
+      )
+    ) {
       return undefined;
     }
 
-    const { parameterIndex, type } = thisPredicateInfo;
+    const { parameterIndex, type, kind } = thisPredicateInfo;
 
     if (predicateInfo != null) {
       if (
         predicateInfo.parameterIndex !== parameterIndex ||
-        predicateInfo.type !== type
+        predicateInfo.type !== type ||
+        predicateInfo.predicateKind !== kind
       ) {
         return undefined;
       }
@@ -148,6 +169,7 @@ export function findTypeGuardAssertedArgument(
       }
 
       predicateInfo = {
+        predicateKind: kind,
         parameterIndex,
         type,
       };
@@ -160,6 +182,7 @@ export function findTypeGuardAssertedArgument(
   }
 
   return {
+    predicateKind: predicateInfo.predicateKind,
     argument: checkableArguments[predicateInfo.parameterIndex],
     type: predicateInfo.type,
   };
