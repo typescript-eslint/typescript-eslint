@@ -13,7 +13,7 @@ import {
   getWrappingFixer,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
-import { findAssertedArgument } from '../util/assertionFunctionUtils';
+import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
 export type Options = [
   {
@@ -268,7 +268,7 @@ export default createRule<Options, MessageId>({
     }
 
     function traverseCallExpression(node: TSESTree.CallExpression): void {
-      const assertedArgument = findAssertedArgument(services, node);
+      const assertedArgument = findTruthinessAssertedArgument(services, node);
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
       }

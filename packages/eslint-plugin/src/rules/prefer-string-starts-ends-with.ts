@@ -535,11 +535,7 @@ export default createRule<Options, MessageIds>({
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode) as TSESTree.BinaryExpression;
 
-        if (
-          !isEqualityComparison(parentNode) ||
-          !isNull(parentNode.right) ||
-          !isStringType(node.object)
-        ) {
+        if (!isNull(parentNode.right) || !isStringType(node.object)) {
           return;
         }
 

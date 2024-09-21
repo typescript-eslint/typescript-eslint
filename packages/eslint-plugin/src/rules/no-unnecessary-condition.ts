@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -18,7 +19,10 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
-import { findAssertedArgument } from '../util/assertionFunctionUtils';
+import {
+  findTruthinessAssertedArgument,
+  findTypeGuardAssertedArgument,
+} from '../util/assertionFunctionUtils';
 
 // Truthiness utilities
 // #region
@@ -83,6 +87,8 @@ export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
   | 'literalBooleanExpression'
+  | 'typeGuardAlreadyIsType'
+  | 'replaceWithTrue'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -92,6 +98,7 @@ export type MessageId =
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
   meta: {
+    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description:
@@ -136,12 +143,15 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values.',
+      replaceWithTrue: 'Replace always true expression with `true`.',
       noOverlapBooleanExpression:
         'Unnecessary conditional, the types have no overlap.',
       never: 'Unnecessary conditional, value is `never`.',
       neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      typeGuardAlreadyIsType:
+        'Unnecessary conditional, expression already has the type being checked.',
     },
   },
   defaultOptions: [
@@ -473,9 +483,36 @@ export default createRule<Options, MessageId>({
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
       if (checkTruthinessAssertions) {
-        const assertedArgument = findAssertedArgument(services, node);
-        if (assertedArgument != null) {
-          checkNode(assertedArgument);
+        const truthinessAssertedArgument = findTruthinessAssertedArgument(
+          services,
+          node,
+        );
+        if (truthinessAssertedArgument != null) {
+          checkNode(truthinessAssertedArgument);
+        }
+      }
+
+      const typeGuardAssertedArgument = findTypeGuardAssertedArgument(
+        services,
+        node,
+      );
+      if (typeGuardAssertedArgument != null) {
+        const typeOfArgument = getConstrainedTypeAtLocation(
+          services,
+          typeGuardAssertedArgument.argument,
+        );
+        if (typeOfArgument === typeGuardAssertedArgument.type) {
+          context.report({
+            messageId: 'typeGuardAlreadyIsType',
+            node: typeGuardAssertedArgument.argument,
+            suggest: [
+              {
+                messageId: 'replaceWithTrue',
+                fix: (fixer): ReturnType<ReportFixFunction> =>
+                  fixer.replaceText(node, '(true)'),
+              },
+            ],
+          });
         }
       }
 

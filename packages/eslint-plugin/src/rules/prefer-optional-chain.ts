@@ -130,14 +130,10 @@ export default createRule<
 
         function isLeftSideLowerPrecedence(): boolean {
           const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-
           const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
-          const operator = ts.isBinaryExpression(logicalTsNode)
-            ? logicalTsNode.operatorToken.kind
-            : ts.SyntaxKind.Unknown;
           const leftPrecedence = getOperatorPrecedence(
             leftTsNode.kind,
-            operator,
+            logicalTsNode.operatorToken.kind,
           );
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;

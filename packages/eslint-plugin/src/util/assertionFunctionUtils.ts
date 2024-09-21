@@ -12,7 +12,7 @@ import { getConstrainedTypeAtLocation } from './index';
  * Inspect a call expression to see if it's a call to an assertion function.
  * If it is, return the node of the argument that is asserted.
  */
-export function findAssertedArgument(
+export function findTruthinessAssertedArgument(
   services: ParserServicesWithTypeInformation,
   node: TSESTree.CallExpression,
 ): TSESTree.Expression | undefined {
@@ -83,4 +83,84 @@ export function findAssertedArgument(
   }
 
   return checkableArguments[assertedParameterIndex];
+}
+
+/**
+ * Inspect a call expression to see if it's a call to an assertion function.
+ * If it is, return the node of the argument that is asserted.
+ */
+export function findTypeGuardAssertedArgument(
+  services: ParserServicesWithTypeInformation,
+  node: TSESTree.CallExpression,
+): { argument: TSESTree.Expression; type: ts.Type } | undefined {
+  // If the call looks like `assert(expr1, expr2, ...c, d, e, f)`, then we can
+  // only care if `expr1` or `expr2` is asserted, since anything that happens
+  // within or after a spread argument is out of scope to reason about.
+  const checkableArguments: TSESTree.Expression[] = [];
+  for (const argument of node.arguments) {
+    if (argument.type === AST_NODE_TYPES.SpreadElement) {
+      break;
+    }
+    checkableArguments.push(argument);
+  }
+
+  // nothing to do
+  if (checkableArguments.length === 0) {
+    return undefined;
+  }
+
+  // Game plan: we're going to check the type of the callee. If it has call
+  // signatures and they _ALL_ agree that they assert on a parameter at the
+  // _SAME_ position, we'll consider the argument in that position to be an
+  // asserted argument.
+  const calleeType = getConstrainedTypeAtLocation(services, node.callee);
+  const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
+
+  const checker = services.program.getTypeChecker();
+
+  let predicateInfo: { parameterIndex: number; type: ts.Type } | undefined =
+    undefined;
+
+  for (const signature of callSignatures) {
+    const thisPredicateInfo = checker.getTypePredicateOfSignature(signature);
+    if (thisPredicateInfo == null) {
+      return undefined;
+    }
+
+    // Be sure we're dealing with a truthiness assertion function, in other words,
+    // `asserts x` (but not `asserts x is T`, and also not `asserts this is T`).
+    if (!(thisPredicateInfo.kind === ts.TypePredicateKind.Identifier)) {
+      return undefined;
+    }
+
+    const { parameterIndex, type } = thisPredicateInfo;
+
+    if (predicateInfo != null) {
+      if (
+        predicateInfo.parameterIndex !== parameterIndex ||
+        predicateInfo.type !== type
+      ) {
+        return undefined;
+      }
+    } else {
+      if (parameterIndex >= checkableArguments.length) {
+        return undefined;
+      }
+
+      predicateInfo = {
+        parameterIndex,
+        type,
+      };
+    }
+  }
+
+  // Didn't find a unique assertion index.
+  if (predicateInfo == null) {
+    return undefined;
+  }
+
+  return {
+    argument: checkableArguments[predicateInfo.parameterIndex],
+    type: predicateInfo.type,
+  };
 }
