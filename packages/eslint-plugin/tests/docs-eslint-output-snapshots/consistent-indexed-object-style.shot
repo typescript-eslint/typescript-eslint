@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 1`] = `
+"Incorrect
+Options: "record"
+
+interface Foo {
+~~~~~~~~~~~~~~~ A record is preferred over an index signature.
+  [key: string]: unknown;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+}
+~
+
+type Foo = {
+           ~ A record is preferred over an index signature.
+  [key: string]: unknown;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+"
+`;
+
+exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 2`] = `
+"Correct
+Options: "record"
+
+type Foo = Record<string, unknown>;
+"
+`;
+
+exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: "index-signature"
+
+type Foo = Record<string, unknown>;
+           ~~~~~~~~~~~~~~~~~~~~~~~ An index signature is preferred over a record.
+"
+`;
+
+exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 4`] = `
+"Correct
+Options: "index-signature"
+
+interface Foo {
+  [key: string]: unknown;
+}
+
+type Foo = {
+  [key: string]: unknown;
+};
+"
+`;

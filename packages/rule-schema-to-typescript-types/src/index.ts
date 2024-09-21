@@ -1,31 +1,28 @@
-import prettier from '@prettier/sync';
-import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import path from 'path';
+
+import { TSUtils } from '@typescript-eslint/utils';
+import prettier from 'prettier';
+
+import type { AST } from './types';
 
 import { generateType } from './generateType';
 import { optimizeAST } from './optimizeAST';
 import { printTypeAlias } from './printAST';
-import type { AST } from './types';
 
-const prettierConfig = {
-  ...(prettier.resolveConfig(__filename) ?? {}),
-  filepath: path.join(__dirname, 'schema.ts'),
-};
-
-export function compile(
+export async function compile(
   schemaIn: JSONSchema4 | readonly JSONSchema4[],
-): string {
-  const { schema, isArraySchema } = (() => {
+  prettierConfig: Promise<prettier.Options>,
+): Promise<string> {
+  const { isArraySchema, schema } = (() => {
     if (TSUtils.isArray(schemaIn)) {
       return {
-        schema: schemaIn,
         isArraySchema: true,
+        schema: schemaIn,
       };
     }
     return {
-      schema: [schemaIn],
       isArraySchema: false,
+      schema: [schemaIn],
     };
   })();
 
@@ -43,19 +40,19 @@ export function compile(
 
   const optionsType = isArraySchema
     ? printTypeAlias('Options', {
-        type: 'tuple',
+        commentLines: [],
         elements: types,
         spreadType: null,
-        commentLines: [],
+        type: 'tuple',
       })
     : printTypeAlias('Options', types[0]);
 
   const unformattedCode = [...refTypes, optionsType].join('\n\n');
   try {
-    return prettier.format(unformattedCode, prettierConfig);
+    return await prettier.format(unformattedCode, await prettierConfig);
   } catch (e) {
     if (e instanceof Error) {
-      e.message = e.message + `\n\nUnformatted Code:\n${unformattedCode}`;
+      e.message += `\n\nUnformatted Code:\n${unformattedCode}`;
     }
     throw e;
   }
@@ -64,7 +61,7 @@ export function compile(
 function compileSchema(
   schema: JSONSchema4,
   index: number,
-): { type: AST; refTypes: string[] } {
+): { refTypes: string[]; type: AST } {
   const refTypes: string[] = [];
 
   const refMap = new Map<string, string>();
@@ -86,8 +83,8 @@ function compileSchema(
   optimizeAST(type);
 
   return {
-    type,
     refTypes,
+    type,
   };
 }
 

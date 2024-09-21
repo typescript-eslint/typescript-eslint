@@ -5,16 +5,28 @@ import { Linter as ESLintLinter } from 'eslint';
 import type { ClassicConfig, FlatConfig, SharedConfig } from './Config';
 import type { Parser } from './Parser';
 import type { Processor as ProcessorType } from './Processor';
-import type { RuleCreateFunction, RuleFix, RuleModule } from './Rule';
+import type {
+  AnyRuleCreateFunction,
+  AnyRuleModule,
+  RuleCreateFunction,
+  RuleFix,
+  RuleModule,
+} from './Rule';
 import type { SourceCode } from './SourceCode';
 
 export type MinimalRuleModule<
-  TMessageIds extends string = string,
-  TOptions extends readonly unknown[] = [],
-> = Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>> &
-  Pick<RuleModule<TMessageIds, TOptions>, 'create'>;
+  MessageIds extends string = string,
+  Options extends readonly unknown[] = [],
+> = Partial<Omit<RuleModule<MessageIds, Options>, 'create'>> &
+  Pick<RuleModule<MessageIds, Options>, 'create'>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class LinterBase {
+  /**
+   * The version from package.json.
+   */
+  readonly version: string;
+
   /**
    * Initialize the Linter.
    * @param config the config object
@@ -26,27 +38,27 @@ declare class LinterBase {
    * @param parserId Name of the parser
    * @param parserModule The parser object
    */
-  defineParser(parserId: string, parserModule: Parser.ParserModule): void;
+  defineParser(parserId: string, parserModule: Parser.LooseParserModule): void;
 
   /**
    * Defines a new linting rule.
    * @param ruleId A unique rule identifier
    * @param ruleModule Function from context to object mapping AST node types to event handlers
    */
-  defineRule<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  defineRule<MessageIds extends string, Options extends readonly unknown[]>(
     ruleId: string,
-    ruleModule: MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction,
+    ruleModule: MinimalRuleModule<MessageIds, Options> | RuleCreateFunction,
   ): void;
 
   /**
    * Defines many new linting rules.
    * @param rulesToDefine map from unique rule identifier to rule
    */
-  defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
+  defineRules<MessageIds extends string, Options extends readonly unknown[]>(
     rulesToDefine: Record<
       string,
-      | MinimalRuleModule<TMessageIds, TOptions>
-      | RuleCreateFunction<TMessageIds, TOptions>
+      | MinimalRuleModule<MessageIds, Options>
+      | RuleCreateFunction<MessageIds, Options>
     >,
   ): void;
 
@@ -77,6 +89,15 @@ declare class LinterBase {
     filenameOrOptions?: Linter.VerifyOptions | string,
   ): Linter.LintMessage[];
 
+  ////////////////////
+  // static members //
+  ////////////////////
+
+  /**
+   * The version from package.json.
+   */
+  static readonly version: string;
+
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
    * @param code The source text to apply fixes to.
@@ -89,35 +110,29 @@ declare class LinterBase {
     config: Linter.ConfigType,
     options: Linter.FixOptions,
   ): Linter.FixReport;
-
-  /**
-   * The version from package.json.
-   */
-  readonly version: string;
-
-  ////////////////////
-  // static members //
-  ////////////////////
-
-  /**
-   * The version from package.json.
-   */
-  static readonly version: string;
 }
 
 namespace Linter {
   export interface LinterOptions {
+    /**
+     * Which config format to use.
+     * @default 'flat'
+     */
+    configType?: ConfigTypeSpecifier;
+
     /**
      * path to a directory that should be considered as the current working directory.
      */
     cwd?: string;
   }
 
+  export type ConfigTypeSpecifier = 'eslintrc' | 'flat';
   export type EnvironmentConfig = SharedConfig.EnvironmentConfig;
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
   export type GlobalVariableOption = SharedConfig.GlobalVariableOption;
   export type GlobalVariableOptionBase = SharedConfig.GlobalVariableOptionBase;
   export type ParserOptions = SharedConfig.ParserOptions;
+  export type PluginMeta = SharedConfig.PluginMeta;
   export type RuleEntry = SharedConfig.RuleEntry;
   export type RuleLevel = SharedConfig.RuleLevel;
   export type RuleLevelAndOptions = SharedConfig.RuleLevelAndOptions;
@@ -127,7 +142,10 @@ namespace Linter {
 
   /** @deprecated use Linter.ConfigType instead */
   export type Config = ClassicConfig.Config;
-  export type ConfigType = ClassicConfig.Config | FlatConfig.ConfigArray;
+  export type ConfigType =
+    | ClassicConfig.Config
+    | FlatConfig.Config
+    | FlatConfig.ConfigArray;
   /** @deprecated use ClassicConfig.ConfigOverride instead */
   export type ConfigOverride = ClassicConfig.ConfigOverride;
 
@@ -233,17 +251,17 @@ namespace Linter {
      */
     fixed: boolean;
     /**
-     * Fixed code text (might be the same as input if no fixes were applied).
-     */
-    output: string;
-    /**
      * Collection of all messages for the given code
      */
     messages: LintMessage[];
+    /**
+     * Fixed code text (might be the same as input if no fixes were applied).
+     */
+    output: string;
   }
 
   /** @deprecated use Parser.ParserModule */
-  export type ParserModule = Parser.ParserModule;
+  export type ParserModule = Parser.LooseParserModule;
 
   /** @deprecated use Parser.ParseResult */
   export type ESLintParseResult = Parser.ParseResult;
@@ -262,6 +280,13 @@ namespace Linter {
     parserOptions?: ParserOptions;
   }
 
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
+  export type LegacyPluginRules = Record<
+    string,
+    AnyRuleCreateFunction | AnyRuleModule
+  >;
+  export type PluginRules = Record<string, AnyRuleModule>;
+
   export interface Plugin {
     /**
      * The definition of plugin configs.
@@ -272,13 +297,17 @@ namespace Linter {
      */
     environments?: Record<string, Environment>;
     /**
+     * Metadata about your plugin for easier debugging and more effective caching of plugins.
+     */
+    meta?: PluginMeta;
+    /**
      * The definition of plugin processors.
      */
     processors?: Record<string, ProcessorType.ProcessorModule>;
     /**
      * The definition of plugin rules.
      */
-    rules?: Record<string, RuleCreateFunction | RuleModule<string, unknown[]>>;
+    rules?: LegacyPluginRules;
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "6.20.0",
+  "version": "8.6.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -16,8 +16,9 @@
     },
     "./package.json": "./package.json"
   },
+  "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io/packages/scope-manager",
   "license": "MIT",
   "keywords": [
     "eslint",
@@ -38,19 +40,19 @@
     "clean": "npx nx clean",
     "clean-fixtures": "npx nx clean-fixtures",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "npx nx generate-lib",
+    "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "npx nx test --code-coverage",
     "typecheck": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.20.0",
-    "@typescript-eslint/visitor-keys": "6.20.0"
+    "@typescript-eslint/types": "8.6.0",
+    "@typescript-eslint/visitor-keys": "8.6.0"
   },
   "devDependencies": {
-    "@prettier/sync": "*",
+    "@jest/types": "29.6.3",
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "6.20.0",
+    "@typescript-eslint/typescript-estree": "8.6.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

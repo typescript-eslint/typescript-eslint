@@ -1,11 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
 interface Options {
-  allowInGenericTypeArguments?: string[] | boolean;
+  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
   allowAsThisParameter?: boolean;
 }
 
@@ -43,6 +42,8 @@ export default createRule<[Options], MessageIds>({
         type: 'object',
         properties: {
           allowInGenericTypeArguments: {
+            description:
+              'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
               { type: 'boolean' },
               {
@@ -53,6 +54,8 @@ export default createRule<[Options], MessageIds>({
             ],
           },
           allowAsThisParameter: {
+            description:
+              'Whether a `this` parameter of a function may be `void`.',
             type: 'boolean',
           },
         },
@@ -102,14 +105,13 @@ export default createRule<[Options], MessageIds>({
 
       // check whitelist
       if (Array.isArray(allowInGenericTypeArguments)) {
-        const sourceCode = getSourceCode(context);
-        const fullyQualifiedName = sourceCode
+        const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)
-          .replace(/ /gu, '');
+          .replaceAll(' ', '');
 
         if (
           !allowInGenericTypeArguments
-            .map(s => s.replace(/ /gu, ''))
+            .map(s => s.replaceAll(' ', ''))
             .includes(fullyQualifiedName)
         ) {
           context.report({
@@ -207,6 +209,8 @@ export default createRule<[Options], MessageIds>({
         // default cases
         if (
           validParents.includes(node.parent.type) &&
+          // https://github.com/typescript-eslint/typescript-eslint/issues/6225
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           !invalidGrandParents.includes(node.parent.parent!.type)
         ) {
           return;

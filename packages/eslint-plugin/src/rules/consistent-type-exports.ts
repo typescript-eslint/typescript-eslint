@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import { SymbolFlags } from 'typescript';
 
 import {
@@ -49,7 +48,6 @@ export default createRule<Options, MessageIds>({
     messages: {
       typeOverValue:
         'All exports in the declaration are only used as types. Use `export type`.',
-
       singleExportIsType:
         'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
@@ -60,6 +58,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           fixMixedExportsWithInlineTypeSpecifier: {
+            description:
+              'Whether the rule will autofix "mixed" export cases using TS inline type specifiers.',
             type: 'boolean',
           },
         },
@@ -75,7 +75,6 @@ export default createRule<Options, MessageIds>({
   ],
 
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
-    const sourceCode = getSourceCode(context);
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
 
@@ -181,7 +180,11 @@ export default createRule<Options, MessageIds>({
                 node: report.node,
                 messageId: 'typeOverValue',
                 *fix(fixer) {
-                  yield* fixExportInsertType(fixer, sourceCode, report.node);
+                  yield* fixExportInsertType(
+                    fixer,
+                    context.sourceCode,
+                    report.node,
+                  );
                 },
               });
               continue;
@@ -203,7 +206,11 @@ export default createRule<Options, MessageIds>({
                   if (fixMixedExportsWithInlineTypeSpecifier) {
                     yield* fixAddTypeSpecifierToNamedExports(fixer, report);
                   } else {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                    yield* fixSeparateNamedExports(
+                      fixer,
+                      context.sourceCode,
+                      report,
+                    );
                   }
                 },
               });
@@ -218,7 +225,11 @@ export default createRule<Options, MessageIds>({
                   if (fixMixedExportsWithInlineTypeSpecifier) {
                     yield* fixAddTypeSpecifierToNamedExports(fixer, report);
                   } else {
-                    yield* fixSeparateNamedExports(fixer, sourceCode, report);
+                    yield* fixSeparateNamedExports(
+                      fixer,
+                      context.sourceCode,
+                      report,
+                    );
                   }
                 },
               });
@@ -280,7 +291,7 @@ function* fixSeparateNamedExports(
 ): IterableIterator<TSESLint.RuleFix> {
   const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
     report;
-  const typeSpecifiers = typeBasedSpecifiers.concat(inlineTypeSpecifiers);
+  const typeSpecifiers = [...typeBasedSpecifiers, ...inlineTypeSpecifiers];
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 

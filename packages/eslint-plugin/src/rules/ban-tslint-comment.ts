@@ -1,5 +1,4 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -32,10 +31,9 @@ export default createRule({
   },
   defaultOptions: [],
   create: context => {
-    const sourceCode = getSourceCode(context);
     return {
       Program(): void {
-        const comments = sourceCode.getAllComments();
+        const comments = context.sourceCode.getAllComments();
         comments.forEach(c => {
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
@@ -43,11 +41,11 @@ export default createRule({
               node: c,
               messageId: 'commentDetected',
               fix(fixer) {
-                const rangeStart = sourceCode.getIndexFromLoc({
+                const rangeStart = context.sourceCode.getIndexFromLoc({
                   column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,
                   line: c.loc.start.line,
                 });
-                const rangeEnd = sourceCode.getIndexFromLoc({
+                const rangeEnd = context.sourceCode.getIndexFromLoc({
                   column: c.loc.end.column,
                   line: c.loc.end.line,
                 });

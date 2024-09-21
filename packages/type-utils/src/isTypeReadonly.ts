@@ -6,8 +6,8 @@ import * as ts from 'typescript';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
@@ -31,10 +31,7 @@ export const readonlynessOptionsSchema = {
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: {
-      type: 'array',
-      items: typeOrValueSpecifierSchema,
-    },
+    allow: typeOrValueSpecifiersSchema,
   },
 } satisfies JSONSchema4;
 
@@ -44,7 +41,7 @@ export const readonlynessOptionsDefaults: ReadonlynessOptions = {
 };
 
 function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
-  return Object.prototype.hasOwnProperty.call(node, 'symbol');
+  return Object.hasOwn(node, 'symbol');
 }
 
 function isTypeReadonlyArrayOrTuple(
@@ -232,11 +229,7 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (
-    options.allow?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    )
-  ) {
+  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 

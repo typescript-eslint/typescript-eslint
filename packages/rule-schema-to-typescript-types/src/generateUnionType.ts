@@ -3,9 +3,10 @@ import type {
   JSONSchema4Type,
 } from '@typescript-eslint/utils/json-schema';
 
+import type { AST, RefMap, UnionAST } from './types';
+
 import { NotSupportedError } from './errors';
 import { generateType } from './generateType';
-import type { AST, RefMap, UnionAST } from './types';
 
 export function generateUnionType(
   members: (JSONSchema4 | JSONSchema4Type)[],
@@ -19,17 +20,17 @@ export function generateUnionType(
         switch (typeof memberSchema) {
           case 'string':
             return {
-              type: 'literal',
-              code: `'${memberSchema.replace(/'/g, "\\'")}'`,
+              code: `'${memberSchema.replaceAll("'", "\\'")}'`,
               commentLines: [],
+              type: 'literal',
             };
 
           case 'number':
           case 'boolean':
             return {
-              type: 'literal',
               code: `${memberSchema}`,
               commentLines: [],
+              type: 'literal',
             };
 
           case 'object':
@@ -46,8 +47,8 @@ export function generateUnionType(
   }
 
   return {
-    type: 'union',
-    elements,
     commentLines: [],
+    elements,
+    type: 'union',
   };
 }

@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/explicit-module-boundary-types';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('explicit-module-boundary-types', rule, {
   valid: [
@@ -316,6 +314,28 @@ export default () => () => {
     },
     {
       code: `
+export default () => () => {
+  const foo = 'foo';
+  return (): void => {
+    return;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
+export default () => () => {
+  const foo = () => (): string => 'foo';
+  return (): void => {
+    return;
+  };
+};
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+    },
+    {
+      code: `
 export class Accumulator {
   private count: number = 0;
 
@@ -433,8 +453,10 @@ export const Foo: FC = () => (
   <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
 );
       `,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
       },
     },
     {
@@ -443,8 +465,10 @@ export const Foo: JSX.Element = (
   <div a={e => {}} b={function (e) {}} c={function foo(e) {}}></div>
 );
       `,
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { jsx: true },
+        },
       },
     },
     {
@@ -1722,6 +1746,27 @@ export function foo(outer) {
           messageId: 'missingArgType',
           line: 3,
           column: 20,
+          data: {
+            name: 'inner',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+export function foo(outer: boolean) {
+  if (outer) {
+    return 'string';
+  }
+  return function (inner): void {};
+}
+      `,
+      options: [{ allowHigherOrderFunctions: true }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          column: 8,
           data: {
             name: 'inner',
           },

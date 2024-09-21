@@ -6,12 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: 'module',
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -256,9 +255,6 @@ export { type T, T };
 type T = 1;
 export type { T, T };
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'typeOverValue',
@@ -276,9 +272,6 @@ export { type/* */T, type     /* */T, T };
 type T = 1;
 export type { /* */T, /* */T, T };
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'typeOverValue',
@@ -299,9 +292,6 @@ const x = 1;
 export type { T, T };
 export { x };
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       errors: [
         {
           messageId: 'singleExportIsType',
@@ -321,9 +311,6 @@ type T = 1;
 const x = 1;
 export { type T, x };
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
       errors: [
         {
@@ -342,9 +329,6 @@ export { type T, T };
 type T = 1;
 export type { T, T };
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
       errors: [
         {
@@ -367,9 +351,6 @@ export {
 export type { Type1, Type2 as Foo, value1 as BScope } from './consistent-type-exports';
 export { value2 as CScope } from './consistent-type-exports';
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: false }],
       errors: [
         {
@@ -396,9 +377,6 @@ export {
   value2 as CScope,
 } from './consistent-type-exports';
       `,
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
       errors: [
         {

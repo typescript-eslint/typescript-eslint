@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: https://www.joshuakgoldberg.com/img/josh.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Announcing the release of typescript-eslint's v6 beta, including its changes and timeline.
 slug: announcing-typescript-eslint-v6-beta
 tags: [breaking changes, typescript-eslint, v5, v6]
@@ -33,11 +29,10 @@ If you feel passionately about any of the choices we've made here -positively or
 ## Trying Out v6
 
 Please do try out the typescript-eslint v6 beta!
-Its documentation site is hosted on a preview deploy link: **[v6--typescript-eslint.netlify.app](https://v6--typescript-eslint.netlify.app)**.
 
 ### As A New User
 
-If you don't yet use typescript-eslint, you can go through our [configuration steps on the v6 _Getting Started_ docs](https://v6--typescript-eslint.netlify.app/getting-started).
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the v6 _Getting Started_ docs](/getting-started).
 It'll walk you through setting up typescript-eslint in a project.
 
 To use v6 specifically, see the following section for an updated install command.
@@ -61,12 +56,12 @@ These are the changes that users of typescript-eslint -generally, any developer 
 
 ### Reworked Configuration Names
 
-The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://v6--typescript-eslint.netlify.app/linting/configs).
+The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](/users/configs).
 typescript-eslint v5 provided three recommended configurations:
 
-- [`recommended`](https://v6--typescript-eslint.netlify.app/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
-- [`recommended-requiring-type-checking`](https://v6--typescript-eslint.netlify.app/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
-- [`strict`](https://v6--typescript-eslint.netlify.app/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+- [`recommended`](/users/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
+- [`recommended-requiring-type-checking`](/users/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
+- [`strict`](/users/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
 
 Those configurations worked well for most projects.
 However, some users correctly noted two flaws in that approach:
@@ -121,7 +116,7 @@ module.exports = {
 };
 ```
 
-See [_Configurations_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/linting/configs) for the updated documentation on configurations provided by typescript-eslint.
+See [_Configurations_ on the v6 docs site preview](/users/configs) for the updated documentation on configurations provided by typescript-eslint.
 
 For more information on these changes, see:
 
@@ -165,8 +160,8 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-implicit-any-catch`
   - `@typescript-eslint/no-parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`
-- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://v6--typescript-eslint.netlify.app/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Rewrites the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule to fix numerous false positives, at the cost of making it require type information.
+- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](/rules/prefer-nullish-coalescing) rule to also check `||=` expressions.
+- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Rewrites the [`@typescript-eslint/prefer-optional-chain`](/rules/prefer-optional-chain) rule to fix numerous false positives, at the cost of making it require type information.
 
 ### Tooling Breaking Changes
 
@@ -242,7 +237,7 @@ Rules can still retrieve their full backing TypeScript type checker with `servic
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-See [_Custom Rules_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
+See [_Custom Rules_ on the v6 docs site preview](/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
 
 ### AST Breaking Changes
 
@@ -365,19 +360,11 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
   - [Joshua Chen](https://github.com/Josh-Cena)
 - Community contributors whose PRs were merged into the 6.0.0 release:
-  <!-- cspell:disable -->
   - [Bryan Mishkin](https://github.com/bmish)
   - [fisker Cheung](https://github.com/fisker)
   - [Juan García](https://github.com/juank1809)
   - [Kevin Ball](https://github.com/kball)
   - [Marek Dědič](https://github.com/marekdedic)
   - [Mateusz Burzyński](https://github.com/Andarist)
-  <!-- cspell:enable -->
 
 See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/8) for the list of issues and associated merged pull requests.
-
-## Supporting typescript-eslint
-
-If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
-We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
-Thanks! 💖

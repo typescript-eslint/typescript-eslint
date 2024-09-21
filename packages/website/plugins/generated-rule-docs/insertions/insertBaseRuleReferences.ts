@@ -1,8 +1,8 @@
 import type * as mdast from 'mdast';
-import type * as unist from 'unist';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
+import { convertToPlaygroundHash, getEslintrcString } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { convertToPlaygroundHash, getEslintrcString } from '../utils';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =
@@ -10,33 +10,11 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
       ? page.rule.meta.docs.extendsBaseRule
       : page.file.stem;
 
-  page.spliceChildren(page.headingIndices.options + 1, 0, {
-    children: [
-      {
-        value: 'See ',
-        type: 'text',
-      },
-      {
-        children: [
-          {
-            type: 'inlineCode',
-            value: `eslint/${extendsBaseRuleName}`,
-          },
-          {
-            type: 'text',
-            value: ' options',
-          },
-        ],
-        type: 'link',
-        url: `https://eslint.org/docs/rules/${extendsBaseRuleName}#options`,
-      },
-      {
-        type: 'text',
-        value: '.',
-      },
-    ],
-    type: 'paragraph',
-  } as mdast.Paragraph);
+  page.spliceChildren(
+    page.headingIndices.options + 1,
+    0,
+    `See [\`eslint/${extendsBaseRuleName}\`'s options](https://eslint.org/docs/rules/${extendsBaseRuleName}#options).`,
+  );
 
   const eslintrc = getEslintrcString(
     extendsBaseRuleName,
@@ -59,9 +37,27 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
       )};`,
     } as mdast.Code,
     {
-      value: `<try-in-playground eslintrcHash="${eslintrcHash}">Try this rule in the playground ↗</try-in-playground>`,
-      type: 'jsx',
-    } as unist.Node,
+      attributes: [
+        {
+          type: 'mdxJsxAttribute',
+          name: 'eslintrcHash',
+          value: eslintrcHash,
+        },
+      ],
+      children: [
+        {
+          children: [
+            {
+              value: 'Try this rule in the playground ↗',
+              type: 'text',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      name: 'TryInPlayground',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
   );
 
   return eslintrc;

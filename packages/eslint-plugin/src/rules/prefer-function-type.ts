@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -29,8 +28,6 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = getSourceCode(context);
-
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
      * @param node The node being checked
@@ -105,11 +102,16 @@ export default createRule({
           : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
               const fixes: TSESLint.RuleFix[] = [];
               const start = member.range[0];
+              // https://github.com/microsoft/TypeScript/pull/56908
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               const colonPos = member.returnType!.range[0] - start;
-              const text = sourceCode.getText().slice(start, member.range[1]);
-              const comments = sourceCode
-                .getCommentsBefore(member)
-                .concat(sourceCode.getCommentsAfter(member));
+              const text = context.sourceCode
+                .getText()
+                .slice(start, member.range[1]);
+              const comments = [
+                ...context.sourceCode.getCommentsBefore(member),
+                ...context.sourceCode.getCommentsAfter(member),
+              ];
               let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
                 colonPos + 1,
               )}`;
@@ -123,7 +125,7 @@ export default createRule({
 
               if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
                 if (node.typeParameters !== undefined) {
-                  suggestion = `type ${sourceCode
+                  suggestion = `type ${context.sourceCode
                     .getText()
                     .slice(
                       node.id.range[0],
@@ -141,15 +143,13 @@ export default createRule({
                 node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
                 isParentExported
               ) {
-                const commentsText = comments.reduce((text, comment) => {
-                  return (
-                    text +
-                    (comment.type === AST_TOKEN_TYPES.Line
-                      ? `//${comment.value}`
-                      : `/*${comment.value}*/`) +
-                    '\n'
-                  );
-                }, '');
+                const commentsText = comments
+                  .map(({ type, value }) =>
+                    type === AST_TOKEN_TYPES.Line
+                      ? `//${value}\n`
+                      : `/*${value}*/\n`,
+                  )
+                  .join('');
                 // comments should move before export and not between export and interface declaration
                 fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {

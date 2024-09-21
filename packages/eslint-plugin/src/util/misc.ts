@@ -1,11 +1,13 @@
 /**
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
-
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
+
+import { getStaticValue, isParenthesized } from './astUtils';
 
 const DEFINITION_EXTENSIONS = [
   ts.Extension.Dts,
@@ -108,9 +110,11 @@ enum MemberNameType {
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
+    | TSESTree.AccessorProperty
     | TSESTree.Property
     | TSESTree.PropertyDefinition
     | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
@@ -149,16 +153,16 @@ function getNameFromMember(
 }
 
 type ExcludeKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
-> = { [k in Exclude<keyof TObj, TKeys>]: TObj[k] };
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
+> = { [k in Exclude<keyof Obj, Keys>]: Obj[k] };
 type RequireKeys<
-  TObj extends Record<string, unknown>,
-  TKeys extends keyof TObj,
-> = ExcludeKeys<TObj, TKeys> & { [k in TKeys]-?: Exclude<TObj[k], undefined> };
+  Obj extends Record<string, unknown>,
+  Keys extends keyof Obj,
+> = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
-  return Object.keys(myEnum).filter(x => isNaN(parseInt(x))) as T[];
+  return Object.keys(myEnum).filter(x => isNaN(Number(x))) as T[];
 }
 
 /**
@@ -215,19 +219,76 @@ function typeNodeRequiresParentheses(
   );
 }
 
+function isRestParameterDeclaration(decl: ts.Declaration): boolean {
+  return ts.isParameter(decl) && decl.dotDotDotToken != null;
+}
+
+function isParenlessArrowFunction(
+  node: TSESTree.ArrowFunctionExpression,
+  sourceCode: TSESLint.SourceCode,
+): boolean {
+  return (
+    node.params.length === 1 && !isParenthesized(node.params[0], sourceCode)
+  );
+}
+
+type NodeWithKey =
+  | TSESTree.MemberExpression
+  | TSESTree.MethodDefinition
+  | TSESTree.Property
+  | TSESTree.PropertyDefinition
+  | TSESTree.TSAbstractMethodDefinition
+  | TSESTree.TSAbstractPropertyDefinition;
+function getStaticMemberAccessValue(
+  node: NodeWithKey,
+  { sourceCode }: RuleContext<string, unknown[]>,
+): string | undefined {
+  const key =
+    node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
+  if (!node.computed) {
+    return key.type === AST_NODE_TYPES.Literal
+      ? `${key.value}`
+      : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
+  }
+  const value = getStaticValue(key, sourceCode.getScope(node))?.value as
+    | string
+    | number
+    | null
+    | undefined;
+  return value == null ? undefined : `${value}`;
+}
+
+/**
+ * Answers whether the member expression looks like
+ * `x.memberName`, `x['memberName']`,
+ * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
+ */
+const isStaticMemberAccessOfValue = (
+  memberExpression: NodeWithKey,
+  context: RuleContext<string, unknown[]>,
+  ...values: string[]
+): boolean =>
+  (values as (string | undefined)[]).includes(
+    getStaticMemberAccessValue(memberExpression, context),
+  );
+
 export {
   arrayGroupByToMap,
   arraysAreEqual,
-  Equal,
-  ExcludeKeys,
+  type Equal,
+  type ExcludeKeys,
   findFirstResult,
   formatWordList,
   getEnumNames,
+  getStaticMemberAccessValue,
   getNameFromIndexSignature,
   getNameFromMember,
   isDefinitionFile,
+  isRestParameterDeclaration,
+  isParenlessArrowFunction,
+  isStaticMemberAccessOfValue,
   MemberNameType,
-  RequireKeys,
+  type RequireKeys,
   typeNodeRequiresParentheses,
   upperCaseFirst,
   findLastIndex,

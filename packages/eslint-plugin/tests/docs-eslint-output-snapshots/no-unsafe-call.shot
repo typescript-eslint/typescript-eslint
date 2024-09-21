@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unsafe-call.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare const anyVar: any;
+declare const nestedAny: { prop: any };
+
+anyVar();
+~~~~~~ Unsafe call of an \`any\` typed value.
+anyVar.a.b();
+~~~~~~~~~~ Unsafe call of an \`any\` typed value.
+
+nestedAny.prop();
+~~~~~~~~~~~~~~ Unsafe call of an \`any\` typed value.
+nestedAny.prop['a']();
+~~~~~~~~~~~~~~~~~~~ Unsafe call of an \`any\` typed value.
+
+new anyVar();
+~~~~~~~~~~~~ Unsafe construction of an any type value.
+new nestedAny.prop();
+~~~~~~~~~~~~~~~~~~~~ Unsafe construction of an any type value.
+
+anyVar\`foo\`;
+~~~~~~ Unsafe any typed template tag.
+nestedAny.prop\`foo\`;
+~~~~~~~~~~~~~~ Unsafe any typed template tag.
+"
+`;
+
+exports[`Validating rule docs no-unsafe-call.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare const typedVar: () => void;
+declare const typedNested: { prop: { a: () => void } };
+
+typedVar();
+typedNested.prop.a();
+
+(() => {})();
+
+new Map();
+
+String.raw\`foo\`;
+"
+`;

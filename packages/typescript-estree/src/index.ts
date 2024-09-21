@@ -1,10 +1,10 @@
 export {
-  AST,
+  type AST,
   parse,
   parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
+  type ParseAndGenerateServicesResult,
 } from './parser';
-export {
+export type {
   ParserServices,
   ParserServicesWithTypeInformation,
   ParserServicesWithoutTypeInformation,
@@ -19,6 +19,7 @@ export { typescriptVersionIsAtLeast } from './version-check';
 export * from './getModifiers';
 export { TSError } from './node-utils';
 export * from './clear-caches';
+export { withoutProjectParserOptions } from './withoutProjectParserOptions';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access

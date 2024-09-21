@@ -6,13 +6,12 @@ import type { TSInterfaceHeritage } from '../../special/TSInterfaceHeritage/spec
 import type { TSTypeParameterDeclaration } from '../../special/TSTypeParameterDeclaration/spec';
 
 export interface TSInterfaceDeclaration extends BaseNode {
-  type: AST_NODE_TYPES.TSInterfaceDeclaration;
   /**
    * The body of the interface
    */
   body: TSInterfaceBody;
   /**
-   * Whether the interface was `declare`d, `undefined` otherwise
+   * Whether the interface was `declare`d
    */
   declare: boolean;
   /**
@@ -23,8 +22,10 @@ export interface TSInterfaceDeclaration extends BaseNode {
    * The name of this interface
    */
   id: Identifier;
+  type: AST_NODE_TYPES.TSInterfaceDeclaration;
   /**
-   * The generic type parameters declared for the interface.
+   * The generic type parameters declared for the interface. Empty declaration
+   * (`<>`) is different from no declaration.
    */
   typeParameters: TSTypeParameterDeclaration | undefined;
 }

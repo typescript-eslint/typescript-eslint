@@ -4,9 +4,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../src/rules/member-ordering';
 import rule from '../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 const grouped: RunTests<MessageIds, Options> = {
   valid: [
@@ -30,9 +28,6 @@ interface Foo {
 }
     `,
     {
-      dependencyConstraints: {
-        typescript: '4.5',
-      },
       code: `
 // no accessibility === public
 interface Foo {
@@ -1313,9 +1308,6 @@ class Foo {
   f = 1;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
     },
     {
@@ -1326,9 +1318,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
     },
     {
@@ -1339,9 +1328,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
     },
     `
@@ -2131,6 +2117,32 @@ class Foo {
       options: [
         {
           default: ['accessor', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      options: [
+        {
+          default: ['method', 'get'],
         },
       ],
     },
@@ -4675,9 +4687,6 @@ class Foo {
   f = 1;
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['method', 'field', 'static-initialization'] }],
       errors: [
         {
@@ -4708,9 +4717,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'method', 'field'] }],
       errors: [
         {
@@ -4732,9 +4738,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['static-initialization', 'field', 'method'] }],
       errors: [
         {
@@ -4756,9 +4759,6 @@ class Foo {
   m() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [{ default: ['field', 'static-initialization', 'method'] }],
       errors: [
         {
@@ -4782,9 +4782,6 @@ class Foo {
   md() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [
         { default: ['decorated-method', 'static-initialization', 'method'] },
       ],
@@ -5216,6 +5213,54 @@ class Foo {
             rank: 'accessor',
           },
           line: 5,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  y(): void;
+  get x(): number;
+}
+      `,
+      options: [
+        {
+          default: ['get', 'method'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'x',
+            rank: 'method',
+          },
+          line: 4,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  get x(): number;
+  y(): void;
+}
+      `,
+      options: [
+        {
+          default: ['method', 'get'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectGroupOrder',
+          data: {
+            name: 'y',
+            rank: 'get',
+          },
+          line: 4,
           column: 3,
         },
       ],

@@ -15,7 +15,7 @@ import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
 import * as lz from 'lz-string';
-import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
+import { Highlight } from 'prism-react-renderer';
 import React from 'react';
 
 import { TryInPlayground } from '../../MDXComponents/TryInPlayground';
@@ -74,12 +74,7 @@ export default function CodeBlockString({
     >
       {title && <div className={styles.codeBlockTitle}>{title}</div>}
       <div className={styles.codeBlockContent}>
-        <Highlight
-          {...defaultProps}
-          theme={prismTheme}
-          code={code}
-          language={(language ?? 'text') as Language}
-        >
+        <Highlight theme={prismTheme} code={code} language={language ?? 'text'}>
           {({
             className,
             tokens,
@@ -120,6 +115,7 @@ export default function CodeBlockString({
             )}
             codeHash={lz.compressToEncodedURIComponent(copiedCode)}
             eslintrcHash={eslintrcHash}
+            language={language}
           >
             Open in Playground
           </TryInPlayground>

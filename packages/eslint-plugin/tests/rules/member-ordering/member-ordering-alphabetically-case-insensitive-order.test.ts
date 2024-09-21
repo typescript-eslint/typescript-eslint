@@ -4,9 +4,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { MessageIds, Options } from '../../../src/rules/member-ordering';
 import rule, { defaultOrder } from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 const sortedCiWithoutGrouping: RunTests<MessageIds, Options> = {
   valid: [
@@ -500,9 +498,6 @@ class Foo {
   static {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.4',
-      },
       options: [
         {
           default: {
@@ -542,6 +537,20 @@ interface Foo {
         },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {
@@ -588,6 +597,20 @@ type Foo = {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'call',
@@ -627,6 +650,20 @@ class Foo {
       ],
       errors: [
         {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
+        {
           messageId: 'incorrectGroupOrder',
           data: {
             name: 'd',
@@ -658,6 +695,20 @@ const foo = class Foo {
         },
       ],
       errors: [
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'B',
+            beforeMember: 'c',
+          },
+        },
+        {
+          messageId: 'incorrectOrder',
+          data: {
+            member: 'a',
+            beforeMember: 'B',
+          },
+        },
         {
           messageId: 'incorrectGroupOrder',
           data: {

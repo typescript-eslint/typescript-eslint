@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-var-requires';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-var-requires', rule, {
   valid: [
@@ -34,6 +32,10 @@ const json = require('./some.json');
     },
     {
       code: "const pkg = require('some-package');",
+      options: [{ allow: ['^some-package$'] }],
+    },
+    {
+      code: 'const pkg = require(`some-package`);',
       options: [{ allow: ['^some-package$'] }],
     },
   ],
@@ -200,6 +202,17 @@ configValidator.addSchema(require('./a.json'));
     },
     {
       code: "const pkg = require('./package.json');",
+      options: [{ allow: ['^some-package$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: 'const pkg = require(`./package.json`);',
       options: [{ allow: ['^some-package$'] }],
       errors: [
         {

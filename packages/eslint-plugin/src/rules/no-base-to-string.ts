@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
@@ -29,13 +28,15 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       baseToString:
-        "'{{name}}' {{certainty}} evaluate to '[object Object]' when stringified.",
+        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
     },
     schema: [
       {
         type: 'object',
         properties: {
           ignoredTypeNames: {
+            description:
+              'Stringified regular expressions of type names to ignore.',
             type: 'array',
             items: {
               type: 'string',
@@ -72,7 +73,7 @@ export default createRule<Options, MessageIds>({
       context.report({
         data: {
           certainty,
-          name: getSourceCode(context).getText(node),
+          name: context.sourceCode.getText(node),
         },
         messageId: 'baseToString',
         node,

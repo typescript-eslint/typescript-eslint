@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -29,22 +30,30 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowKeywords: {
+            description: 'Whether to allow keywords such as ["class"]`.',
             type: 'boolean',
             default: true,
           },
           allowPattern: {
+            description: 'Regular expression of names to allow.',
             type: 'string',
             default: '',
           },
           allowPrivateClassPropertyAccess: {
+            description:
+              'Whether to allow accessing class members marked as `private` with array notation.',
             type: 'boolean',
             default: false,
           },
           allowProtectedClassPropertyAccess: {
+            description:
+              'Whether to allow accessing class members marked as `protected` with array notation.',
             type: 'boolean',
             default: false,
           },
           allowIndexSignaturePropertyAccess: {
+            description:
+              'Whether to allow accessing properties matching an index signature with array notation.',
             type: 'boolean',
             default: false,
           },
@@ -89,7 +98,17 @@ export default createRule<Options, MessageIds>({
           node.computed
         ) {
           // for perf reasons - only fetch symbols if we have to
-          const propertySymbol = services.getSymbolAtLocation(node.property);
+          const propertySymbol =
+            services.getSymbolAtLocation(node.property) ??
+            services
+              .getTypeAtLocation(node.object)
+              .getNonNullableType()
+              .getProperties()
+              .find(
+                propertySymbol =>
+                  node.property.type === AST_NODE_TYPES.Literal &&
+                  propertySymbol.escapedName === node.property.value,
+              );
           const modifierKind = getModifiers(
             propertySymbol?.getDeclarations()?.[0],
           )?.[0].kind;

@@ -214,14 +214,13 @@ export default createRule<Options, MessageIds>({
       if (type.node.type === AST_NODE_TYPES.TSTupleType) {
         return true;
       }
-      if (type.node.type === AST_NODE_TYPES.TSTypeOperator) {
-        if (
-          ['keyof', 'readonly'].includes(type.node.operator) &&
-          type.node.typeAnnotation &&
-          type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
-        ) {
-          return true;
-        }
+      if (
+        type.node.type === AST_NODE_TYPES.TSTypeOperator &&
+        ['keyof', 'readonly'].includes(type.node.operator) &&
+        type.node.typeAnnotation &&
+        type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
+      ) {
+        return true;
       }
       return false;
     };
@@ -257,6 +256,8 @@ export default createRule<Options, MessageIds>({
       type: TypeWithLabel,
       isTopLevel = false,
     ): void {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       if (type.node.type === AST_NODE_TYPES.TSFunctionType) {
         // callback
         if (allowCallbacks === 'never') {
@@ -309,6 +310,7 @@ export default createRule<Options, MessageIds>({
         // unhandled type - shouldn't happen
         reportError(type.node, type.compositionType, isTopLevel, 'Unhandled');
       }
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
     }
 
     /**
@@ -322,10 +324,7 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.TSUnionType ||
         node.type === AST_NODE_TYPES.TSIntersectionType
       ) {
-        return node.types.reduce<TypeWithLabel[]>((acc, type) => {
-          acc.push(...getTypes(type, node.type));
-          return acc;
-        }, []);
+        return node.types.flatMap(type => getTypes(type, node.type));
       }
       return [{ node, compositionType }];
     }

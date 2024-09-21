@@ -19,6 +19,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description: 'Disallow unused expressions',
       extendsBaseRule: true,
+      recommended: 'recommended',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
@@ -57,9 +58,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const expressionType = node.expression.type;
+
         if (
-          node.expression.type ===
-          TSESTree.AST_NODE_TYPES.TSInstantiationExpression
+          expressionType ===
+            TSESTree.AST_NODE_TYPES.TSInstantiationExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSAsExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSNonNullExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSTypeAssertion
         ) {
           rules.ExpressionStatement({
             ...node,

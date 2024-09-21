@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/member-ordering';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('member-ordering-natural-order', rule, {
   valid: [
@@ -129,6 +127,24 @@ interface Example {
             member: 'B1',
           },
           line: 10,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'a10',
+            member: 'B1',
+          },
+          line: 14,
+          messageId: 'incorrectOrder',
+        },
+        {
+          column: 3,
+          data: {
+            beforeMember: 'a1',
+            member: 'B5',
+          },
+          line: 16,
           messageId: 'incorrectOrder',
         },
       ],

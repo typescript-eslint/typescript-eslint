@@ -27,8 +27,8 @@ import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
-  sourceType?: SourceType;
   impliedStrict?: boolean;
+  sourceType?: SourceType;
 }
 
 /**
@@ -56,7 +56,7 @@ class ScopeManager {
       scope.childScopes.forEach(recurse);
     }
     this.scopes.forEach(recurse);
-    return Array.from(variables).sort((a, b) => a.$id - b.$id);
+    return [...variables].sort((a, b) => a.$id - b.$id);
   }
 
   constructor(options: ScopeManagerOptions) {

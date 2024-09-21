@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getDeclaredVariables } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -11,6 +10,7 @@ import {
   isPromiseConstructorLike,
   isPromiseLike,
   isReadonlyErrorLike,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -27,7 +27,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require using Error objects as Promise rejection reasons',
-      recommended: 'strict',
+      recommended: 'recommended',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
@@ -36,6 +36,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowEmptyReject: {
+            description:
+              'Whether to allow calls to `Promise.reject()` with no arguments.',
             type: 'boolean',
           },
         },
@@ -98,13 +100,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const rejectMethodCalled = callee.computed
-          ? callee.property.type === AST_NODE_TYPES.Literal &&
-            callee.property.value === 'reject'
-          : callee.property.name === 'reject';
-
         if (
-          !rejectMethodCalled ||
+          !isStaticMemberAccessOfValue(callee, context, 'reject') ||
           !typeAtLocationIsLikePromise(callee.object)
         ) {
           return;
@@ -133,9 +130,10 @@ export default createRule<Options, MessageIds>({
         }
 
         // reject param is always present in variables declared by executor
-        const rejectVariable = getDeclaredVariables(context, executor).find(
-          variable => variable.identifiers.includes(rejectParamNode),
-        )!;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const rejectVariable = context.sourceCode
+          .getDeclaredVariables(executor)
+          .find(variable => variable.identifiers.includes(rejectParamNode))!;
 
         rejectVariable.references.forEach(ref => {
           if (

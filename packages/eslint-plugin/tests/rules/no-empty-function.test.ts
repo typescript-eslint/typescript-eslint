@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-empty-function';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-function', rule, {
   valid: [
@@ -79,9 +77,6 @@ class Foo extends Base {
   override foo() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
       options: [{ allow: ['overrideMethods'] }],
     },
   ],
@@ -194,9 +189,6 @@ class Foo extends Base {
   override foo() {}
 }
       `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
       errors: [
         {
           messageId: 'unexpected',

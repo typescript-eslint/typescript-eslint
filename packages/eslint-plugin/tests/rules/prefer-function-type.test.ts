@@ -3,12 +3,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule, { phrases } from '../../src/rules/prefer-function-type';
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-  },
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
+
 ruleTester.run('prefer-function-type', rule, {
   valid: [
     `
@@ -310,6 +306,7 @@ interface Foo {
   (arg: this): void;
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'unexpectedThisOnFunctionOnlyInterface',
@@ -326,6 +323,7 @@ interface Foo {
   (arg: number): this | undefined;
 }
       `,
+      output: null,
       errors: [
         {
           messageId: 'unexpectedThisOnFunctionOnlyInterface',

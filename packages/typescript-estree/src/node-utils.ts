@@ -83,7 +83,6 @@ type DeclarationKind = TSESTree.VariableDeclaration['kind'];
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
- * @returns is assignment
  */
 function isAssignmentOperator(
   operator: ts.BinaryOperatorToken,
@@ -188,10 +187,9 @@ export function isComment(node: ts.Node): boolean {
 /**
  * Returns true if the given ts.Node is a JSDoc comment
  * @param node the TypeScript node
- * @returns is JSDoc comment
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
-  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -449,7 +447,7 @@ export function hasJSXAncestor(node: ts.Node): boolean {
  * @returns The unescaped string literal text.
  */
 export function unescapeStringLiteralText(text: string): string {
-  return text.replace(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
+  return text.replaceAll(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
     const item = entity.slice(1, -1);
     if (item[0] === '#') {
       const codePoint =
@@ -525,7 +523,7 @@ export function getTokenType(
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
   } else if ('originalKeywordKind' in token) {
-    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    // @ts-expect-error -- intentional fallback for older TS versions <=4.9
     keywordKind = token.originalKeywordKind;
   }
   if (keywordKind) {
@@ -790,9 +788,10 @@ export function firstDefined<T, U>(
 
 export function identifierIsThisKeyword(id: ts.Identifier): boolean {
   return (
-    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
-    (isAtLeast50 ? ts.identifierToKeywordKind(id) : id.originalKeywordKind) ===
-    SyntaxKind.ThisKeyword
+    (isAtLeast50
+      ? ts.identifierToKeywordKind(id)
+      : // @ts-expect-error -- intentional fallback for older TS versions <=4.9
+        id.originalKeywordKind) === SyntaxKind.ThisKeyword
   );
 }
 
@@ -939,6 +938,7 @@ export function isValidAssignmentTarget(node: ts.Node): boolean {
     case SyntaxKind.TypeAssertionExpression:
     case SyntaxKind.AsExpression:
     case SyntaxKind.SatisfiesExpression:
+    case SyntaxKind.ExpressionWithTypeArguments:
     case SyntaxKind.NonNullExpression:
       return isValidAssignmentTarget(
         (
@@ -946,6 +946,7 @@ export function isValidAssignmentTarget(node: ts.Node): boolean {
             | ts.ParenthesizedExpression
             | ts.AssertionExpression
             | ts.SatisfiesExpression
+            | ts.ExpressionWithTypeArguments
             | ts.NonNullExpression
         ).expression,
       );

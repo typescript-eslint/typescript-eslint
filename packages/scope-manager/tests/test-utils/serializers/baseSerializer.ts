@@ -2,20 +2,20 @@ import type { NewPlugin } from 'pretty-format';
 
 type ConstructorSignature = new (...args: never) => unknown;
 
-function createSerializer<TConstructor extends ConstructorSignature>(
-  type: TConstructor,
-  keys: (keyof InstanceType<TConstructor>)[],
+function createSerializer<Constructor extends ConstructorSignature>(
+  type: Constructor,
+  keys: (keyof InstanceType<Constructor>)[],
 ): NewPlugin;
 // A hack of signature to enable this to work with abstract classes
-function createSerializer<TConstructor extends ConstructorSignature>(
+function createSerializer<Constructor extends ConstructorSignature>(
   abstractConstructor: unknown,
-  keys: (keyof InstanceType<TConstructor>)[],
-  instanceConstructorThatsNeverUsed: TConstructor,
+  keys: (keyof InstanceType<Constructor>)[],
+  instanceConstructorThatsNeverUsed: Constructor,
 ): NewPlugin;
 
-function createSerializer<TConstructor extends ConstructorSignature>(
-  type: TConstructor,
-  keys: (keyof InstanceType<TConstructor>)[],
+function createSerializer<Constructor extends ConstructorSignature>(
+  type: Constructor,
+  keys: (keyof InstanceType<Constructor>)[],
 ): NewPlugin {
   const SEEN_THINGS = new Set<unknown>();
 
@@ -33,7 +33,7 @@ function createSerializer<TConstructor extends ConstructorSignature>(
     ): string {
       const id = thing.$id != null ? `$${thing.$id}` : '';
       // If `type` is a base class, we should print out the name of the subclass
-      // eslint-disable-next-line @typescript-eslint/ban-types
+      // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
       const constructorName = (Object.getPrototypeOf(thing) as Object)
         .constructor.name;
 

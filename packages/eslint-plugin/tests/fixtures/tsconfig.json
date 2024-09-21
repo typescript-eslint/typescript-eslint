@@ -1,20 +1,18 @@
 {
   "compilerOptions": {
     "jsx": "preserve",
-    "target": "ES2020",
+    "target": "es5",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "lib": ["es2015", "es2017", "esnext", "dom"],
-    "types": [],
-    "noImplicitAny": false,
-    "experimentalDecorators": true,
-    "skipLibCheck": true
+    "lib": ["es2015", "es2017", "esnext"],
+    "experimentalDecorators": true
   },
   "include": [
     "file.ts",
     "consistent-type-exports.ts",
     "mixed-enums-decl.ts",
-    "react.tsx"
+    "react.tsx",
+    "var-declaration.ts"
   ]
 }

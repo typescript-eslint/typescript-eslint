@@ -1,8 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule, getStaticStringValue } from '../util';
 
 type Options = [
   {
@@ -14,10 +13,11 @@ type MessageIds = 'noVarReqs';
 export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
+    deprecated: true,
+    replacedBy: ['@typescript-eslint/no-require-imports'],
     type: 'problem',
     docs: {
       description: 'Disallow `require` statements except in import statements',
-      recommended: 'recommended',
     },
     messages: {
       noVarReqs: 'Require statement not part of import statement.',
@@ -44,16 +44,24 @@ export default createRule<Options, MessageIds>({
     function isImportPathAllowed(importPath: string): boolean {
       return allowPatterns.some(pattern => importPath.match(pattern));
     }
+
+    function isStringOrTemplateLiteral(node: TSESTree.Node): boolean {
+      return (
+        (node.type === AST_NODE_TYPES.Literal &&
+          typeof node.value === 'string') ||
+        node.type === AST_NODE_TYPES.TemplateLiteral
+      );
+    }
+
     return {
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
-        if (
-          node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
-          typeof node.arguments[0].value === 'string' &&
-          isImportPathAllowed(node.arguments[0].value)
-        ) {
-          return;
+        if (node.arguments[0] && isStringOrTemplateLiteral(node.arguments[0])) {
+          const argValue = getStaticStringValue(node.arguments[0]);
+          if (typeof argValue === 'string' && isImportPathAllowed(argValue)) {
+            return;
+          }
         }
         const parent =
           node.parent.type === AST_NODE_TYPES.ChainExpression
@@ -70,7 +78,10 @@ export default createRule<Options, MessageIds>({
             AST_NODE_TYPES.VariableDeclarator,
           ].includes(parent.type)
         ) {
-          const variable = ASTUtils.findVariable(getScope(context), 'require');
+          const variable = ASTUtils.findVariable(
+            context.sourceCode.getScope(node),
+            'require',
+          );
 
           if (!variable?.identifiers.length) {
             context.report({

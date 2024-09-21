@@ -6,27 +6,28 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
 ruleTester.run('no-array-delete', rule, {
   valid: [
     `
-      declare const obj: { a?: 1; b: 2 };
+      declare const obj: { a: 1; b: 2 };
       delete obj.a;
     `,
 
     `
-      declare const obj: { a?: 1; b: 2 };
+      declare const obj: { a: 1; b: 2 };
       delete obj['a'];
     `,
 
     `
-      declare const arr: { a?: 1; b: 2 }[][][][];
+      declare const arr: { a: 1; b: 2 }[][][][];
       delete arr[0][0][0][0].a;
     `,
 
@@ -35,21 +36,18 @@ ruleTester.run('no-array-delete', rule, {
       delete maybeArray[0];
     `,
 
-    {
-      code: `
-        declare const maybeArray: unknown;
-        delete maybeArray[0];
-      `,
-      ignoreTsErrors: [18046],
-    },
+    `
+      declare const maybeArray: unknown;
+      delete maybeArray[0];
+    `,
 
     `
-      declare function getObject<T extends { a?: 1; b: 2 }>(): T;
+      declare function getObject<T extends { a: 1; b: 2 }>(): T;
       delete getObject().a;
     `,
 
     `
-      declare function getObject<T extends number>(): { a?: T; b: 2 };
+      declare function getObject<T extends number>(): { a: T; b: 2 };
       delete getObject().a;
     `,
 
@@ -463,7 +461,7 @@ ruleTester.run('no-array-delete', rule, {
 
     {
       code: `
-        declare const tuple: [a?: number, b?: string];
+        declare const tuple: [number, string];
         delete tuple[0];
       `,
       errors: [
@@ -476,7 +474,7 @@ ruleTester.run('no-array-delete', rule, {
             {
               messageId: 'useSplice',
               output: `
-        declare const tuple: [a?: number, b?: string];
+        declare const tuple: [number, string];
         tuple.splice(0, 1);
       `,
             },

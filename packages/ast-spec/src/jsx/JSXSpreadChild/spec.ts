@@ -4,6 +4,6 @@ import type { Expression } from '../../unions/Expression';
 import type { JSXEmptyExpression } from '../JSXEmptyExpression/spec';
 
 export interface JSXSpreadChild extends BaseNode {
-  type: AST_NODE_TYPES.JSXSpreadChild;
   expression: Expression | JSXEmptyExpression;
+  type: AST_NODE_TYPES.JSXSpreadChild;
 }

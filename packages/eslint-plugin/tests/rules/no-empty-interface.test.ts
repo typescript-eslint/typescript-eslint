@@ -2,9 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-empty-interface';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-empty-interface', rule, {
   valid: [
@@ -51,6 +49,7 @@ class Bar {}
   invalid: [
     {
       code: 'interface Foo {}',
+      output: null,
       errors: [
         {
           messageId: 'noEmpty',
@@ -61,6 +60,7 @@ class Bar {}
     },
     {
       code: noFormat`interface Foo extends {}`,
+      output: null,
       errors: [
         {
           messageId: 'noEmpty',

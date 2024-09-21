@@ -2,9 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/method-signature-style';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('method-signature-style', rule, {
   valid: [
@@ -33,42 +31,22 @@ interface Test {
   'f!': </* a */>(/* b */ x: any /* c */) => void;
 }
     `,
-    {
-      code: `
+    `
 interface Test {
   get f(): number;
 }
-      `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
-    },
-    {
-      code: `
+    `,
+    `
 interface Test {
   set f(value: number): void;
 }
-      `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
-    },
+    `,
     'type Test = { readonly f: (a: string) => number };',
     "type Test = { ['f']?: (a: boolean) => void };",
     'type Test = { readonly f?: <T>(a?: T) => T };',
     "type Test = { readonly ['f']?: <T>(a: T, b: T) => T };",
-    {
-      code: 'type Test = { get f(): number };',
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
-    },
-    {
-      code: 'type Test = { set f(value: number): void };',
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
-    },
+    'type Test = { get f(): number };',
+    'type Test = { set f(value: number): void };',
     {
       options: ['method'],
       code: `
@@ -133,45 +111,27 @@ interface Test {
         type Test = { ['f']?<T>(a: T, b: T): T };
       `,
     },
-    {
-      options: ['method'],
-      code: `
-        interface Test {
-          get f(): number;
-        }
-      `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
-    },
-    {
-      options: ['method'],
-      code: `
-        interface Test {
-          set f(value: number): void;
-        }
-      `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
-    },
+    `
+      interface Test {
+        get f(): number;
+      }
+    `,
+    `
+      interface Test {
+        set f(value: number): void;
+      }
+    `,
     {
       options: ['method'],
       code: `
         type Test = { get f(): number };
       `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
     },
     {
       options: ['method'],
       code: `
         type Test = { set f(value: number): void };
       `,
-      dependencyConstraints: {
-        typescript: '4.3',
-      },
     },
   ],
   invalid: [
@@ -489,7 +449,7 @@ interface Foo {
       ],
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   foo(): one;
   foo(): two;
@@ -517,7 +477,7 @@ interface Foo {
       ],
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   foo(bar: string): one;
   foo(bar: number, baz: string): two;
@@ -545,7 +505,7 @@ interface Foo {
       ],
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   [foo](bar: string): one;
   [foo](bar: number, baz: string): two;
@@ -573,7 +533,7 @@ interface Foo {
       ],
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   [foo](bar: string): one;
   [foo](bar: number, baz: string): two;
@@ -623,6 +583,7 @@ interface Foo {
           }
         }
       `,
+      output: null,
       errors: [
         {
           messageId: 'errorMethod',

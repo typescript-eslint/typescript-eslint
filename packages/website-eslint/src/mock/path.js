@@ -51,20 +51,19 @@ function normalizeArray(parts, allowAboveRoot) {
 
 // Split a filename into [root, dir, basename, ext], unix version
 // 'root' is just a slash, or nothing.
-const splitPathRe =
-  /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^/]+?|)(\.[^./]*|))(?:[/]*)$/;
+const splitPathRe = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^/]+?)?(\.[^./]*|))\/*$/;
 const splitPath = function (filename) {
   return splitPathRe.exec(filename).slice(1);
 };
 
 // path.resolve([from ...], to)
 // posix version
-export function resolve() {
+export function resolve(...args) {
   let resolvedPath = '';
   let resolvedAbsolute = false;
 
-  for (let i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
-    const path = i >= 0 ? arguments[i] : '/';
+  for (let i = args.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    const path = i >= 0 ? args[i] : '/';
 
     // Skip empty and invalid entries
     if (typeof path !== 'string') {
@@ -73,7 +72,7 @@ export function resolve() {
       continue;
     }
 
-    resolvedPath = path + '/' + resolvedPath;
+    resolvedPath = `${path}/${resolvedPath}`;
     resolvedAbsolute = path.charAt(0) === '/';
   }
 
@@ -82,9 +81,7 @@ export function resolve() {
 
   // Normalize the path
   resolvedPath = normalizeArray(
-    filter(resolvedPath.split('/'), function (p) {
-      return !!p;
-    }),
+    filter(resolvedPath.split('/'), p => !!p),
     !resolvedAbsolute,
   ).join('/');
 
@@ -94,14 +91,12 @@ export function resolve() {
 // path.normalize(path)
 // posix version
 export function normalize(path) {
-  let isPathAbsolute = isAbsolute(path);
-  let trailingSlash = path.endsWith('/');
+  const isPathAbsolute = isAbsolute(path);
+  const trailingSlash = path.endsWith('/');
 
   // Normalize the path
   path = normalizeArray(
-    filter(path.split('/'), function (p) {
-      return !!p;
-    }),
+    filter(path.split('/'), p => !!p),
     !isPathAbsolute,
   ).join('/');
 
@@ -121,10 +116,9 @@ export function isAbsolute(path) {
 }
 
 // posix version
-export function join() {
-  const paths = Array.prototype.slice.call(arguments, 0);
+export function join(...paths) {
   return normalize(
-    filter(paths, function (p) {
+    filter(paths, p => {
       if (typeof p !== 'string') {
         throw new TypeError('Arguments to path.join must be strings');
       }
@@ -147,7 +141,7 @@ export function relative(from, to) {
       }
     }
 
-    var end = arr.length - 1;
+    let end = arr.length - 1;
     for (; end >= 0; end--) {
       if (arr[end] !== '') {
         break;
@@ -172,14 +166,10 @@ export function relative(from, to) {
     }
   }
 
-  let outputParts = [];
-  for (let i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
+  return [
+    ...Array(fromParts.length - samePartsLength).fill('..'),
+    ...toParts.slice(samePartsLength),
+  ].join('/');
 }
 
 export const sep = '/';
@@ -217,16 +207,16 @@ export function extname(path) {
 }
 
 export default {
-  extname: extname,
-  basename: basename,
-  dirname: dirname,
-  sep: sep,
-  delimiter: delimiter,
-  relative: relative,
-  join: join,
-  isAbsolute: isAbsolute,
-  normalize: normalize,
-  resolve: resolve,
+  extname,
+  basename,
+  dirname,
+  sep,
+  delimiter,
+  relative,
+  join,
+  isAbsolute,
+  normalize,
+  resolve,
 };
 
 function filter(xs, f) {

@@ -1,8 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows } from '../util';
 
 type Modifier =
   | 'private readonly'
@@ -57,12 +56,16 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allow: {
+            description:
+              'Whether to allow certain kinds of properties to be ignored.',
             type: 'array',
             items: {
               $ref: '#/items/0/$defs/modifier',
             },
           },
           prefer: {
+            description:
+              'Whether to prefer class properties or parameter properties.',
             type: 'string',
             enum: ['class-property', 'parameter-property'],
           },
@@ -150,8 +153,6 @@ export default createRule<Options, MessageIds>({
       return created;
     }
 
-    const sourceCode = getSourceCode(context);
-
     function typeAnnotationsMatch(
       classProperty: TSESTree.PropertyDefinition,
       constructorParameter: TSESTree.Identifier,
@@ -166,8 +167,8 @@ export default createRule<Options, MessageIds>({
       }
 
       return (
-        sourceCode.getText(classProperty.typeAnnotation) ===
-        sourceCode.getText(constructorParameter.typeAnnotation)
+        context.sourceCode.getText(classProperty.typeAnnotation) ===
+        context.sourceCode.getText(constructorParameter.typeAnnotation)
       );
     }
 
@@ -177,7 +178,10 @@ export default createRule<Options, MessageIds>({
       },
 
       ':matches(ClassDeclaration, ClassExpression):exit'(): void {
-        const propertyNodesByName = propertyNodesByNameStack.pop()!;
+        const propertyNodesByName = nullThrows(
+          propertyNodesByNameStack.pop(),
+          'Stack should exist on class exit',
+        );
 
         for (const [name, nodes] of propertyNodesByName) {
           if (

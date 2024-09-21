@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 type Options = [
   {
@@ -32,9 +31,11 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreParameters: {
+            description: 'Whether to ignore function parameters.',
             type: 'boolean',
           },
           ignoreProperties: {
+            description: 'Whether to ignore class properties.',
             type: 'boolean',
           },
         },
@@ -49,8 +50,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreParameters, ignoreProperties }]) {
-    const sourceCode = getSourceCode(context);
-
     function isFunctionCall(
       init: TSESTree.Expression,
       callName: string,
@@ -123,8 +122,7 @@ export default createRule<Options, MessageIds>({
 
           return (
             isFunctionCall(unwrappedInit, 'BigInt') ||
-            (unwrappedInit.type === AST_NODE_TYPES.Literal &&
-              'bigint' in unwrappedInit)
+            unwrappedInit.type === AST_NODE_TYPES.Literal
           );
         }
 
@@ -226,7 +224,12 @@ export default createRule<Options, MessageIds>({
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
-            yield fixer.remove(sourceCode.getTokenBefore(typeNode)!);
+            yield fixer.remove(
+              nullThrows(
+                context.sourceCode.getTokenBefore(typeNode),
+                NullThrowsReasons.MissingToken('token before', 'type node'),
+              ),
+            );
           }
           yield fixer.remove(typeNode);
         },

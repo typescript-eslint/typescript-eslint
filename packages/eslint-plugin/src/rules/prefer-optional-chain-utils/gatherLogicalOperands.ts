@@ -3,6 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 import {
   isBigIntLiteralType,
   isBooleanLiteralType,
@@ -12,7 +13,7 @@ import {
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isReferenceToGlobalFunction, isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 const enum ComparisonValueType {
@@ -60,18 +61,15 @@ type Operand = ValidOperand | InvalidOperand;
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
-  operator: TSESTree.LogicalExpression['operator'],
-  checkType: 'true' | 'false',
+  disallowFalseyLiteral: boolean,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  const disallowFalseyLiteral =
-    (operator === '||' && checkType === 'false') ||
-    (operator === '&&' && checkType === 'true');
-  if (disallowFalseyLiteral) {
+  if (
+    disallowFalseyLiteral &&
     /*
     ```
     declare const x: false | {a: string};
@@ -82,19 +80,14 @@ function isValidFalseBooleanCheckType(
     We don't want to consider these two cases because the boolean expression
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
-    */
-    if (
-      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
+    */ (types.some(
+      t => isBooleanLiteralType(t) && t.intrinsicName === 'false',
+    ) ||
       types.some(t => isStringLiteralType(t) && t.value === '') ||
       types.some(t => isNumberLiteralType(t) && t.value === 0) ||
-      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
-    ) {
-      return false;
-    }
-  }
-
-  if (options.requireNullish === true) {
-    return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
+      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0'))
+  ) {
+    return false;
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
@@ -122,6 +115,7 @@ function isValidFalseBooleanCheckType(
 export function gatherLogicalOperands(
   node: TSESTree.LogicalExpression,
   parserServices: ParserServicesWithTypeInformation,
+  sourceCode: Readonly<SourceCode>,
   options: PreferOptionalChainOptions,
 ): {
   operands: Operand[];
@@ -131,6 +125,7 @@ export function gatherLogicalOperands(
   const { operands, newlySeenLogicals } = flattenLogicalOperands(node);
 
   for (const operand of operands) {
+    const areMoreOperands = operand !== operands.at(-1);
     switch (operand.type) {
       case AST_NODE_TYPES.BinaryExpression: {
         // check for "yoda" style logical: null != x
@@ -157,7 +152,17 @@ export function gatherLogicalOperands(
             comparedExpression.type === AST_NODE_TYPES.UnaryExpression &&
             comparedExpression.operator === 'typeof'
           ) {
-            // typeof x === 'undefined'
+            const argument = comparedExpression.argument;
+            if (
+              argument.type === AST_NODE_TYPES.Identifier &&
+              // typeof window === 'undefined'
+              isReferenceToGlobalFunction(argument.name, argument, sourceCode)
+            ) {
+              result.push({ type: OperandValidity.Invalid });
+              continue;
+            }
+
+            // typeof x.y === 'undefined'
             result.push({
               type: OperandValidity.Valid,
               comparedName: comparedExpression.argument,
@@ -243,8 +248,7 @@ export function gatherLogicalOperands(
           operand.operator === '!' &&
           isValidFalseBooleanCheckType(
             operand.argument,
-            node.operator,
-            'false',
+            areMoreOperands && node.operator === '||',
             parserServices,
             options,
           )
@@ -270,8 +274,7 @@ export function gatherLogicalOperands(
         if (
           isValidFalseBooleanCheckType(
             operand,
-            node.operator,
-            'true',
+            areMoreOperands && node.operator === '&&',
             parserServices,
             options,
           )

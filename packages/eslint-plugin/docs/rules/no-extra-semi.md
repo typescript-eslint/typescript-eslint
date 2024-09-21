@@ -1,12 +1,15 @@
 ---
-description: 'Disallow unnecessary semicolons.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/no-extra-semi** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/no-extra-semi`](https://eslint.org/docs/rules/no-extra-semi) rule.
-It adds support for class properties.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-Note that this rule is classified as a "Suggestion" rule instead of a "Layout & Formatting" rule because [adding extra semi-colons actually changes the AST of the program](https://typescript-eslint.io/play/#ts=5.1.6&showAST=es&fileType=.ts&code=MYewdgzgLgBAHjAvDAjAbg0A&eslintrc=N4KABGBEBOCuA2BTAzpAXGUEKQHYHsBaRADwBdoBDQ5RAWwEt0p8AzVyAGnG0gAEyATwAOKAMbQGwssWTwGuMgHoCxclRr0mGSImjR80SDwC%2BIE0A&tsconfig=&tokens=false). With that said, modern TypeScript formatters will remove extra semi-colons automatically during the formatting process. Thus, if you [use a formatter](/linting/troubleshooting/formatting), then enabling this rule is probably unnecessary.
+:::
+
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
+
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

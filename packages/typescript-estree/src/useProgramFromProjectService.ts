@@ -1,60 +1,290 @@
+import path from 'node:path';
+import util from 'node:util';
+
+import debug from 'debug';
 import { minimatch } from 'minimatch';
+import * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
-import {
-  type ASTAndDefiniteProgram,
-  ensureAbsolutePath,
-  getCanonicalFileName,
+import { createNoProgram } from './create-program/createSourceFile';
+import type {
+  ASTAndDefiniteProgram,
+  ASTAndNoProgram,
+  ASTAndProgram,
 } from './create-program/shared';
+import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 import type { MutableParseSettings } from './parseSettings';
 
-export function useProgramFromProjectService(
-  { allowDefaultProjectForFiles, service }: ProjectServiceSettings,
-  parseSettings: Readonly<MutableParseSettings>,
-  hasFullTypeInformation: boolean,
-): ASTAndDefiniteProgram | undefined {
-  const filePath = getCanonicalFileName(parseSettings.filePath);
+const RELOAD_THROTTLE_MS = 250;
 
-  const opened = service.openClientFile(
-    ensureAbsolutePath(filePath, service.host.getCurrentDirectory()),
-    parseSettings.codeFullText,
-    /* scriptKind */ undefined,
-    parseSettings.tsconfigRootDir,
+const log = debug(
+  'typescript-eslint:typescript-estree:useProgramFromProjectService',
+);
+
+const serviceFileExtensions = new WeakMap<ts.server.ProjectService, string[]>();
+
+const updateExtraFileExtensions = (
+  service: ts.server.ProjectService,
+  extraFileExtensions: string[],
+): void => {
+  const currentServiceFileExtensions = serviceFileExtensions.get(service) ?? [];
+  if (
+    !util.isDeepStrictEqual(currentServiceFileExtensions, extraFileExtensions)
+  ) {
+    log(
+      'Updating extra file extensions: before=%s: after=%s',
+      currentServiceFileExtensions,
+      extraFileExtensions,
+    );
+    service.setHostConfiguration({
+      extraFileExtensions: extraFileExtensions.map(extension => ({
+        extension,
+        isMixedContent: false,
+        scriptKind: ts.ScriptKind.Deferred,
+      })),
+    });
+    serviceFileExtensions.set(service, extraFileExtensions);
+    log('Extra file extensions updated: %o', extraFileExtensions);
+  }
+};
+
+function openClientFileFromProjectService(
+  defaultProjectMatchedFiles: Set<string>,
+  isDefaultProjectAllowed: boolean,
+  filePathAbsolute: string,
+  parseSettings: Readonly<MutableParseSettings>,
+  serviceSettings: ProjectServiceSettings,
+): ts.server.OpenConfiguredProjectResult {
+  const opened = openClientFileAndMaybeReload();
+
+  log('Result from attempting to open client file: %o', opened);
+
+  log(
+    'Default project allowed path: %s, based on config file: %s',
+    isDefaultProjectAllowed,
+    opened.configFileName,
   );
 
-  if (hasFullTypeInformation) {
-    if (opened.configFileName) {
-      if (filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
-        throw new Error(
-          `${filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
-        );
-      }
-    } else if (!filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
+  if (opened.configFileName) {
+    if (isDefaultProjectAllowed) {
       throw new Error(
-        `${filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
+        `${parseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
+      );
+    }
+  } else if (!isDefaultProjectAllowed) {
+    throw new Error(
+      `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+    );
+  }
+
+  // No a configFileName indicates this file wasn't included in a TSConfig.
+  // That means it must get its type information from the default project.
+  if (!opened.configFileName) {
+    defaultProjectMatchedFiles.add(filePathAbsolute);
+    if (
+      defaultProjectMatchedFiles.size >
+      serviceSettings.maximumDefaultProjectFileMatchCount
+    ) {
+      const filePrintLimit = 20;
+      const filesToPrint = [...defaultProjectMatchedFiles].slice(
+        0,
+        filePrintLimit,
+      );
+      const truncatedFileCount =
+        defaultProjectMatchedFiles.size - filesToPrint.length;
+
+      throw new Error(
+        `Too many files (>${serviceSettings.maximumDefaultProjectFileMatchCount}) have matched the default project.${DEFAULT_PROJECT_FILES_ERROR_EXPLANATION}
+Matching files:
+${filesToPrint.map(file => `- ${file}`).join('\n')}
+${truncatedFileCount ? `...and ${truncatedFileCount} more files\n` : ''}
+If you absolutely need more files included, set parserOptions.projectService.maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING to a larger value.
+`,
       );
     }
   }
 
-  const scriptInfo = service.getScriptInfo(filePath);
-  const program = service
+  return opened;
+
+  function openClientFile(): ts.server.OpenConfiguredProjectResult {
+    return serviceSettings.service.openClientFile(
+      filePathAbsolute,
+      parseSettings.codeFullText,
+      /* scriptKind */ undefined,
+      parseSettings.tsconfigRootDir,
+    );
+  }
+
+  function openClientFileAndMaybeReload(): ts.server.OpenConfiguredProjectResult {
+    log('Opening project service client file at path: %s', filePathAbsolute);
+
+    let opened = openClientFile();
+
+    // If no project included the file and we're not in single-run mode,
+    // we might be running in an editor with outdated file info.
+    // We can try refreshing the project service - debounced for performance.
+    if (
+      !opened.configFileErrors &&
+      !opened.configFileName &&
+      !parseSettings.singleRun &&
+      !isDefaultProjectAllowed &&
+      performance.now() - serviceSettings.lastReloadTimestamp >
+        RELOAD_THROTTLE_MS
+    ) {
+      log('No config file found; reloading project service and retrying.');
+      serviceSettings.service.reloadProjects();
+      opened = openClientFile();
+      serviceSettings.lastReloadTimestamp = performance.now();
+    }
+
+    return opened;
+  }
+}
+
+function createNoProgramWithProjectService(
+  filePathAbsolute: string,
+  parseSettings: Readonly<MutableParseSettings>,
+  service: ts.server.ProjectService,
+): ASTAndNoProgram {
+  log('No project service information available. Creating no program.');
+
+  // If the project service knows about this file, this informs if of changes.
+  // Doing so ensures that:
+  // - if the file is not part of a project, we don't waste time creating a program (fast non-type-aware linting)
+  // - otherwise, we refresh the file in the project service (moderately fast, since the project is already loaded)
+  if (service.getScriptInfo(filePathAbsolute)) {
+    log('Script info available. Opening client file in project service.');
+    service.openClientFile(
+      filePathAbsolute,
+      parseSettings.codeFullText,
+      /* scriptKind */ undefined,
+      parseSettings.tsconfigRootDir,
+    );
+  }
+
+  return createNoProgram(parseSettings);
+}
+
+function retrieveASTAndProgramFor(
+  filePathAbsolute: string,
+  parseSettings: Readonly<MutableParseSettings>,
+  serviceSettings: ProjectServiceSettings,
+): ASTAndDefiniteProgram | undefined {
+  log('Retrieving script info and then program for: %s', filePathAbsolute);
+
+  const scriptInfo = serviceSettings.service.getScriptInfo(filePathAbsolute);
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
+  const program = serviceSettings.service
     .getDefaultProjectForFile(scriptInfo!.fileName, true)!
     .getLanguageService(/*ensureSynchronized*/ true)
     .getProgram();
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   if (!program) {
+    log('Could not find project service program for: %s', filePathAbsolute);
     return undefined;
   }
+
+  log('Found project service program for: %s', filePathAbsolute);
 
   return createProjectProgram(parseSettings, [program]);
 }
 
+export function useProgramFromProjectService(
+  settings: ProjectServiceSettings,
+  parseSettings: Readonly<MutableParseSettings>,
+  hasFullTypeInformation: boolean,
+  defaultProjectMatchedFiles: Set<string>,
+): ASTAndProgram | undefined;
+export function useProgramFromProjectService(
+  settings: ProjectServiceSettings,
+  parseSettings: Readonly<MutableParseSettings>,
+  hasFullTypeInformation: true,
+  defaultProjectMatchedFiles: Set<string>,
+): ASTAndDefiniteProgram | undefined;
+export function useProgramFromProjectService(
+  settings: ProjectServiceSettings,
+  parseSettings: Readonly<MutableParseSettings>,
+  hasFullTypeInformation: false,
+  defaultProjectMatchedFiles: Set<string>,
+): ASTAndNoProgram | undefined;
+export function useProgramFromProjectService(
+  serviceSettings: ProjectServiceSettings,
+  parseSettings: Readonly<MutableParseSettings>,
+  hasFullTypeInformation: boolean,
+  defaultProjectMatchedFiles: Set<string>,
+): ASTAndProgram | undefined {
+  // NOTE: triggers a full project reload when changes are detected
+  updateExtraFileExtensions(
+    serviceSettings.service,
+    parseSettings.extraFileExtensions,
+  );
+
+  // We don't canonicalize the filename because it caused a performance regression.
+  // See https://github.com/typescript-eslint/typescript-eslint/issues/8519
+  const filePathAbsolute = absolutify(parseSettings.filePath, serviceSettings);
+  log(
+    'Opening project service file for: %s at absolute path %s',
+    parseSettings.filePath,
+    filePathAbsolute,
+  );
+
+  const filePathRelative = path.relative(
+    parseSettings.tsconfigRootDir,
+    filePathAbsolute,
+  );
+  const isDefaultProjectAllowed = filePathMatchedBy(
+    filePathRelative,
+    serviceSettings.allowDefaultProject,
+  );
+
+  // Type-aware linting is disabled for this file.
+  // However, type-aware lint rules might still rely on its contents.
+  if (!hasFullTypeInformation && !isDefaultProjectAllowed) {
+    return createNoProgramWithProjectService(
+      filePathAbsolute,
+      parseSettings,
+      serviceSettings.service,
+    );
+  }
+
+  // If type info was requested, we attempt to open it in the project service.
+  // By now, the file is known to be one of:
+  // - in the project service (valid configuration)
+  // - allowlisted in the default project (valid configuration)
+  // - neither, which openClientFileFromProjectService will throw an error for
+  const opened =
+    hasFullTypeInformation &&
+    openClientFileFromProjectService(
+      defaultProjectMatchedFiles,
+      isDefaultProjectAllowed,
+      filePathAbsolute,
+      parseSettings,
+      serviceSettings,
+    );
+
+  log('Opened project service file: %o', opened);
+
+  return retrieveASTAndProgramFor(
+    filePathAbsolute,
+    parseSettings,
+    serviceSettings,
+  );
+}
+
+function absolutify(
+  filePath: string,
+  serviceSettings: ProjectServiceSettings,
+): string {
+  return path.isAbsolute(filePath)
+    ? filePath
+    : path.join(serviceSettings.service.host.getCurrentDirectory(), filePath);
+}
+
 function filePathMatchedBy(
   filePath: string,
-  allowDefaultProjectForFiles: string[] | undefined,
+  allowDefaultProject: string[] | undefined,
 ): boolean {
-  return !!allowDefaultProjectForFiles?.some(pattern =>
-    minimatch(filePath, pattern),
-  );
+  return !!allowDefaultProject?.some(pattern => minimatch(filePath, pattern));
 }

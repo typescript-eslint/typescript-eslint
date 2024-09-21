@@ -6,7 +6,7 @@ describe('applyDefault', () => {
     const user = null;
     const result = ESLintUtils.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual(defaults);
+    expect(result).toEqual(defaults);
     expect(result).not.toBe(defaults);
   });
 
@@ -28,7 +28,7 @@ describe('applyDefault', () => {
     ];
     const result = ESLintUtils.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual([
+    expect(result).toEqual([
       {
         prop: 'new',
         other: 'something',
@@ -55,7 +55,7 @@ describe('applyDefault', () => {
     const user: unknown[] = ['2tbs'];
     const result = ESLintUtils.applyDefault(defaults, user);
 
-    expect(result).toStrictEqual(['2tbs']);
+    expect(result).toEqual(['2tbs']);
     expect(result).not.toBe(defaults);
     expect(result).not.toBe(user);
   });
@@ -69,7 +69,7 @@ describe('applyDefault', () => {
       },
     ];
     const result = ESLintUtils.applyDefault(defaults, user);
-    expect(result).toStrictEqual(user);
+    expect(result).toEqual(user);
     expect(result).not.toBe(defaults);
     expect(result).not.toBe(user);
   });

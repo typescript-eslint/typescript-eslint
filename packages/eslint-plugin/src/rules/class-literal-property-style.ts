@@ -1,8 +1,15 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import { createRule, getStaticStringValue } from '../util';
+import {
+  createRule,
+  getStaticMemberAccessValue,
+  getStaticStringValue,
+  isAssignee,
+  isFunction,
+  isStaticMemberAccessOfValue,
+  nullThrows,
+} from '../util';
 
 type Options = ['fields' | 'getters'];
 type MessageIds =
@@ -16,6 +23,11 @@ interface NodeWithModifiers {
   static: boolean;
 }
 
+interface PropertiesInfo {
+  properties: TSESTree.PropertyDefinition[];
+  excludeSet: Set<string>;
+}
+
 const printNodeModifiers = (
   node: NodeWithModifiers,
   final: 'get' | 'readonly',
@@ -27,18 +39,19 @@ const printNodeModifiers = (
 const isSupportedLiteral = (
   node: TSESTree.Node,
 ): node is TSESTree.LiteralExpression => {
-  if (node.type === AST_NODE_TYPES.Literal) {
-    return true;
-  }
+  switch (node.type) {
+    case AST_NODE_TYPES.Literal:
+      return true;
 
-  if (
-    node.type === AST_NODE_TYPES.TaggedTemplateExpression ||
-    node.type === AST_NODE_TYPES.TemplateLiteral
-  ) {
-    return ('quasi' in node ? node.quasi.quasis : node.quasis).length === 1;
-  }
+    case AST_NODE_TYPES.TaggedTemplateExpression:
+      return node.quasi.quasis.length === 1;
 
-  return false;
+    case AST_NODE_TYPES.TemplateLiteral:
+      return node.quasis.length === 1;
+
+    default:
+      return false;
+  }
 };
 
 export default createRule<Options, MessageIds>({
@@ -66,10 +79,67 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
-    const sourceCode = getSourceCode(context);
+    const propertiesInfoStack: PropertiesInfo[] = [];
 
-    function getMethodName(node: TSESTree.MethodDefinition): string {
-      return getStaticStringValue(node.key) ?? sourceCode.getText(node.key);
+    function enterClassBody(): void {
+      propertiesInfoStack.push({
+        properties: [],
+        excludeSet: new Set(),
+      });
+    }
+
+    function exitClassBody(): void {
+      const { properties, excludeSet } = nullThrows(
+        propertiesInfoStack.pop(),
+        'Stack should exist on class exit',
+      );
+
+      properties.forEach(node => {
+        const { value } = node;
+        if (!value || !isSupportedLiteral(value)) {
+          return;
+        }
+
+        const name = getStaticMemberAccessValue(node, context);
+        if (name && excludeSet.has(name)) {
+          return;
+        }
+
+        context.report({
+          node: node.key,
+          messageId: 'preferGetterStyle',
+          suggest: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              fix(fixer): TSESLint.RuleFix {
+                const name = context.sourceCode.getText(node.key);
+
+                let text = '';
+                text += printNodeModifiers(node, 'get');
+                text += node.computed ? `[${name}]` : name;
+                text += `() { return ${context.sourceCode.getText(value)}; }`;
+
+                return fixer.replaceText(node, text);
+              },
+            },
+          ],
+        });
+      });
+    }
+
+    function excludeAssignedProperty(node: TSESTree.MemberExpression): void {
+      if (isAssignee(node)) {
+        const { excludeSet } =
+          propertiesInfoStack[propertiesInfoStack.length - 1];
+
+        const name =
+          getStaticStringValue(node.property) ??
+          context.sourceCode.getText(node.property);
+
+        if (name) {
+          excludeSet.add(name);
+        }
+      }
     }
 
     return {
@@ -95,19 +165,19 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const name = getMethodName(node);
+          const name = getStaticMemberAccessValue(node, context);
 
-          if (node.parent.type === AST_NODE_TYPES.ClassBody) {
-            const hasDuplicateKeySetter = node.parent.body.some(element => {
+          const hasDuplicateKeySetter =
+            name &&
+            node.parent.body.some(element => {
               return (
                 element.type === AST_NODE_TYPES.MethodDefinition &&
                 element.kind === 'set' &&
-                getMethodName(element) === name
+                isStaticMemberAccessOfValue(element, context, name)
               );
             });
-            if (hasDuplicateKeySetter) {
-              return;
-            }
+          if (hasDuplicateKeySetter) {
+            return;
           }
 
           context.report({
@@ -117,13 +187,13 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'preferFieldStyleSuggestion',
                 fix(fixer): TSESLint.RuleFix {
-                  const name = sourceCode.getText(node.key);
+                  const name = context.sourceCode.getText(node.key);
 
                   let text = '';
 
                   text += printNodeModifiers(node, 'readonly');
                   text += node.computed ? `[${name}]` : name;
-                  text += ` = ${sourceCode.getText(argument)};`;
+                  text += ` = ${context.sourceCode.getText(argument)};`;
 
                   return fixer.replaceText(node, text);
                 },
@@ -133,38 +203,33 @@ export default createRule<Options, MessageIds>({
         },
       }),
       ...(style === 'getters' && {
+        ClassBody: enterClassBody,
+        'ClassBody:exit': exitClassBody,
+        'MethodDefinition[kind="constructor"] ThisExpression'(
+          node: TSESTree.ThisExpression,
+        ): void {
+          if (node.parent.type === AST_NODE_TYPES.MemberExpression) {
+            let parent: TSESTree.Node | undefined = node.parent;
+
+            while (!isFunction(parent)) {
+              parent = parent.parent;
+            }
+
+            if (
+              parent.parent.type === AST_NODE_TYPES.MethodDefinition &&
+              parent.parent.kind === 'constructor'
+            ) {
+              excludeAssignedProperty(node.parent);
+            }
+          }
+        },
         PropertyDefinition(node): void {
           if (!node.readonly || node.declare) {
             return;
           }
-
-          const { value } = node;
-
-          if (!value || !isSupportedLiteral(value)) {
-            return;
-          }
-
-          context.report({
-            node: node.key,
-            messageId: 'preferGetterStyle',
-            suggest: [
-              {
-                messageId: 'preferGetterStyleSuggestion',
-                fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = getSourceCode(context);
-                  const name = sourceCode.getText(node.key);
-
-                  let text = '';
-
-                  text += printNodeModifiers(node, 'get');
-                  text += node.computed ? `[${name}]` : name;
-                  text += `() { return ${sourceCode.getText(value)}; }`;
-
-                  return fixer.replaceText(node, text);
-                },
-              },
-            ],
-          });
+          const { properties } =
+            propertiesInfoStack[propertiesInfoStack.length - 1];
+          properties.push(node);
         },
       }),
     };

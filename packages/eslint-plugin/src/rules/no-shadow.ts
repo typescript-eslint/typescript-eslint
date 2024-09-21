@@ -1,13 +1,9 @@
-import type {
-  Definition,
-  ImportBindingDefinition,
-} from '@typescript-eslint/scope-manager';
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
+import { isTypeImport } from '../util/isTypeImport';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';
 type Options = [
@@ -41,25 +37,36 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           builtinGlobals: {
+            description:
+              'Whether to report shadowing of built-in global variables.',
             type: 'boolean',
           },
           hoist: {
+            description:
+              'Whether to report shadowing before outer functions or variables are defined.',
             type: 'string',
             enum: ['all', 'functions', 'never'],
           },
           allow: {
+            description: 'Identifier names for which shadowing is allowed.',
             type: 'array',
             items: {
               type: 'string',
             },
           },
           ignoreOnInitialization: {
+            description:
+              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
             type: 'boolean',
           },
           ignoreTypeValueShadow: {
+            description:
+              'Whether to ignore types named the same as a variable.',
             type: 'boolean',
           },
           ignoreFunctionTypeParameterNameValueShadow: {
+            description:
+              'Whether to ignore function parameters named the same as a variable.',
             type: 'boolean',
           },
         },
@@ -88,7 +95,7 @@ export default createRule<Options, MessageIds>({
      */
     function isGlobalAugmentation(scope: TSESLint.Scope.Scope): boolean {
       return (
-        (scope.type === ScopeType.tsModule && !!scope.block.global) ||
+        (scope.type === ScopeType.tsModule && scope.block.kind === 'global') ||
         (!!scope.upper && isGlobalAugmentation(scope.upper))
       );
     }
@@ -100,17 +107,6 @@ export default createRule<Options, MessageIds>({
       return (
         variable.defs[0].type === DefinitionType.Parameter &&
         variable.name === 'this'
-      );
-    }
-
-    function isTypeImport(
-      definition?: Definition,
-    ): definition is ImportBindingDefinition {
-      return (
-        definition?.type === DefinitionType.ImportBinding &&
-        (definition.parent.importKind === 'type' ||
-          (definition.node.type === AST_NODE_TYPES.ImportSpecifier &&
-            definition.node.importKind === 'type'))
       );
     }
 
@@ -283,6 +279,7 @@ export default createRule<Options, MessageIds>({
      * @returns Whether or not the variable name is allowed.
      */
     function isAllowed(variable: TSESLint.Scope.Variable): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return options.allow!.includes(variable.name);
     }
 
@@ -421,8 +418,8 @@ export default createRule<Options, MessageIds>({
             return true;
           }
           if (
-            (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
-              node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
+            (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+              node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
             isInRange(node.parent.parent.right, location)
           ) {
             return true;
@@ -646,11 +643,12 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      'Program:exit'(): void {
-        const globalScope = getScope(context);
-        const stack = globalScope.childScopes.slice();
+      'Program:exit'(node): void {
+        const globalScope = context.sourceCode.getScope(node);
+        const stack = [...globalScope.childScopes];
 
         while (stack.length) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const scope = stack.pop()!;
 
           stack.push(...scope.childScopes);

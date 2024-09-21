@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -31,7 +30,6 @@ export default createRule({
 
   create(context) {
     const services = getParserServices(context);
-    const sourceCode = getSourceCode(context);
 
     const getTypesIfNotLoose = (node: TSESTree.Node): ts.Type[] | undefined => {
       const type = services.getTypeAtLocation(node);
@@ -120,7 +118,9 @@ export default createRule({
         }
 
         if (sameTypeWithoutNullish(assertedTypes, originalTypes)) {
-          const expressionSourceCode = sourceCode.getText(node.expression);
+          const expressionSourceCode = context.sourceCode.getText(
+            node.expression,
+          );
 
           const higherPrecedenceThanUnary =
             getOperatorPrecedence(

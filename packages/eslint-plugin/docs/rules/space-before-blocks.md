@@ -1,43 +1,15 @@
 ---
-description: 'Enforce consistent spacing before blocks.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/space-before-blocks** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/space-before-blocks`](https://eslint.org/docs/rules/space-before-blocks) rule.
-It adds support for interfaces and enums.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-<!-- tabs -->
+:::
 
-### ❌ Incorrect
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
 
-<!-- prettier-ignore -->
-```ts
-enum Breakpoint{
-  Large,
-  Medium,
-}
-
-interface State{
-  currentBreakpoint: Breakpoint;
-}
-```
-
-### ✅ Correct
-
-```ts
-enum Breakpoint {
-  Large,
-  Medium,
-}
-
-interface State {
-  currentBreakpoint: Breakpoint;
-}
-```
-
-## Options
-
-In case a more specific options object is passed these blocks will follow `classes` configuration option.
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

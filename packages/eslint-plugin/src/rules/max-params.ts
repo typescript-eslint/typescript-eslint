@@ -1,4 +1,5 @@
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -32,15 +33,21 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          maximum: {
+          max: {
+            description:
+              'A maximum number of parameters in function definitions.',
             type: 'integer',
             minimum: 0,
           },
-          max: {
+          maximum: {
+            description:
+              '(deprecated) A maximum number of parameters in function definitions.',
             type: 'integer',
             minimum: 0,
           },
           countVoidThis: {
+            description:
+              'Whether to count a `this` declaration when the type is `void`.',
             type: 'boolean',
           },
         },

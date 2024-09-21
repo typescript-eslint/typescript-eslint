@@ -6,19 +6,20 @@ import type { ImportClause } from '../../unions/ImportClause';
 import type { ImportKind } from '../ExportAndImportKind';
 
 export interface ImportDeclaration extends BaseNode {
-  type: AST_NODE_TYPES.ImportDeclaration;
   /**
    * The assertions declared for the export.
+   * @example
+   * ```ts
+   * import * from 'mod' assert \{ type: 'json' \};
    * ```
-   * import * from 'mod' assert { type: 'json' };
-   * ```
-   * @deprecated -- Replaced with {@link `attributes`}.
+   * @deprecated Replaced with {@link `attributes`}.
    */
   assertions: ImportAttribute[];
   /**
    * The attributes declared for the export.
-   * ```
-   * import * from 'mod' with { type: 'json' };
+   * @example
+   * ```ts
+   * import * from 'mod' with \{ type: 'json' \};
    * ```
    */
   attributes: ImportAttribute[];
@@ -42,4 +43,5 @@ export interface ImportDeclaration extends BaseNode {
    * ```
    */
   specifiers: ImportClause[];
+  type: AST_NODE_TYPES.ImportDeclaration;
 }

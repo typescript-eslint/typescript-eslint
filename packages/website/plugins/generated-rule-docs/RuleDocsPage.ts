@@ -1,7 +1,9 @@
+import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import { fromMarkdown } from 'mdast-util-from-markdown';
 import type * as unist from 'unist';
 
-import type { RuleModuleWithMetaDocs, VFileWithStem } from './utils';
-import { findH2Index } from './utils';
+import type { VFileWithStem } from '../utils/rules';
+import { findH2Index } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
   howToUse: number;
@@ -24,9 +26,9 @@ export class RuleDocsPage {
   #children: unist.Node[];
   #file: Readonly<VFileWithStem>;
   #headingIndices: RequiredHeadingIndices;
-  #rule: Readonly<RuleModuleWithMetaDocs>;
+  #rule: Readonly<ESLintPluginRuleModule>;
 
-  get children(): Readonly<unist.Node[]> {
+  get children(): readonly unist.Node[] {
     return this.#children;
   }
 
@@ -38,14 +40,14 @@ export class RuleDocsPage {
     return this.#headingIndices;
   }
 
-  get rule(): Readonly<RuleModuleWithMetaDocs> {
+  get rule(): Readonly<ESLintPluginRuleModule> {
     return this.#rule;
   }
 
   constructor(
     children: unist.Node[],
     file: Readonly<VFileWithStem>,
-    rule: Readonly<RuleModuleWithMetaDocs>,
+    rule: Readonly<ESLintPluginRuleModule>,
   ) {
     this.#children = children;
     this.#file = file;
@@ -56,9 +58,15 @@ export class RuleDocsPage {
   spliceChildren(
     start: number,
     deleteCount: number,
-    ...items: unist.Node[]
+    ...items: (string | unist.Node)[]
   ): void {
-    this.#children.splice(start, deleteCount, ...items);
+    this.#children.splice(
+      start,
+      deleteCount,
+      ...items.map(item =>
+        typeof item === 'string' ? fromMarkdown(item) : item,
+      ),
+    );
     this.#headingIndices = this.#recreateHeadingIndices();
   }
 

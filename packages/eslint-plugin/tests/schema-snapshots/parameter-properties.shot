@@ -23,12 +23,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allow": {
+        "description": "Whether to allow certain kinds of properties to be ignored.",
         "items": {
           "$ref": "#/items/0/$defs/modifier"
         },
         "type": "array"
       },
       "prefer": {
+        "description": "Whether to prefer class properties or parameter properties.",
         "enum": ["class-property", "parameter-property"],
         "type": "string"
       }
@@ -51,8 +53,13 @@ type Modifier =
 
 type Options = [
   {
+    /** Whether to allow certain kinds of properties to be ignored. */
     allow?: Modifier[];
-    prefer?: 'class-property' | 'parameter-property';
+    /** Whether to prefer class properties or parameter properties. */
+    prefer?:
+      | 'parameter-property'
+      /** Whether to prefer class properties or parameter properties. */
+      | 'class-property';
   },
 ];
 "

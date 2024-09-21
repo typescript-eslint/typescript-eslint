@@ -1,12 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
   getFunctionHeadLoc,
   getFunctionNameWithKind,
-  getStaticStringValue,
+  getStaticMemberAccessValue,
 } from '../util';
 
 type Options = [
@@ -109,17 +108,13 @@ export default createRule<Options, MessageIds>({
         };
     let stack: Stack | undefined;
 
-    const sourceCode = getSourceCode(context);
-
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
     ): void {
       if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
           member,
-          class: member.parent.parent as
-            | TSESTree.ClassDeclaration
-            | TSESTree.ClassExpression,
+          class: member.parent.parent,
           usesThis: false,
           parent: stack,
         };
@@ -187,10 +182,7 @@ export default createRule<Options, MessageIds>({
 
       const hashIfNeeded =
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
-      const name =
-        node.key.type === AST_NODE_TYPES.Literal
-          ? getStaticStringValue(node.key)
-          : node.key.name || '';
+      const name = getStaticMemberAccessValue(node, context);
 
       return !exceptMethods.has(hashIfNeeded + (name ?? ''));
     }
@@ -220,7 +212,7 @@ export default createRule<Options, MessageIds>({
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           messageId: 'missingThis',
           data: {
             name: getFunctionNameWithKind(node),

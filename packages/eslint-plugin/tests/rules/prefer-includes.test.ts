@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -211,6 +212,7 @@ ruleTester.run('prefer-includes', rule, {
           a?.indexOf(b) === -1;
         }
       `,
+      output: null,
       errors: [{ messageId: 'preferIncludes' }],
     },
     {
@@ -219,6 +221,7 @@ ruleTester.run('prefer-includes', rule, {
           a?.indexOf(b) !== -1;
         }
       `,
+      output: null,
       errors: [{ messageId: 'preferIncludes' }],
     },
 

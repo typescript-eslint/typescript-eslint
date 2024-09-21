@@ -12,21 +12,35 @@ import {
 /**
  * @returns Whether the right type is an unsafe comparison against any left type.
  */
-function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
-  const leftValueKinds = new Set(leftTypeParts.map(getEnumValueType));
+function typeViolates(leftTypeParts: ts.Type[], rightType: ts.Type): boolean {
+  const leftEnumValueTypes = new Set(leftTypeParts.map(getEnumValueType));
 
   return (
-    (leftValueKinds.has(ts.TypeFlags.Number) &&
-      tsutils.isTypeFlagSet(
-        right,
-        ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
-      )) ||
-    (leftValueKinds.has(ts.TypeFlags.String) &&
-      tsutils.isTypeFlagSet(
-        right,
-        ts.TypeFlags.String | ts.TypeFlags.StringLike,
-      ))
+    (leftEnumValueTypes.has(ts.TypeFlags.Number) && isNumberLike(rightType)) ||
+    (leftEnumValueTypes.has(ts.TypeFlags.String) && isStringLike(rightType))
   );
+}
+
+function isNumberLike(type: ts.Type): boolean {
+  const typeParts = tsutils.intersectionTypeParts(type);
+
+  return typeParts.some(typePart => {
+    return tsutils.isTypeFlagSet(
+      typePart,
+      ts.TypeFlags.Number | ts.TypeFlags.NumberLike,
+    );
+  });
+}
+
+function isStringLike(type: ts.Type): boolean {
+  const typeParts = tsutils.intersectionTypeParts(type);
+
+  return typeParts.some(typePart => {
+    return tsutils.isTypeFlagSet(
+      typePart,
+      ts.TypeFlags.String | ts.TypeFlags.StringLike,
+    );
+  });
 }
 
 /**
@@ -90,6 +104,13 @@ export default createRule({
         }
       }
 
+      // We need to split the type into the union type parts in order to find
+      // valid enum comparisons like:
+      //
+      // ```ts
+      // declare const something: Fruit | Vegetable;
+      // something === Fruit.Apple;
+      // ```
       const leftTypeParts = tsutils.unionTypeParts(leftType);
       const rightTypeParts = tsutils.unionTypeParts(rightType);
 
@@ -171,14 +192,7 @@ export default createRule({
 
         const { parent } = node;
 
-        /**
-         * @see https://github.com/typescript-eslint/typescript-eslint/issues/6225
-         */
-        const switchStatement = parent as TSESTree.SwitchStatement;
-
-        const leftType = parserServices.getTypeAtLocation(
-          switchStatement.discriminant,
-        );
+        const leftType = parserServices.getTypeAtLocation(parent.discriminant);
         const rightType = parserServices.getTypeAtLocation(node.test);
 
         if (isMismatchedComparison(leftType, rightType)) {

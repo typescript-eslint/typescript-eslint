@@ -44,6 +44,7 @@ Program {
                   end: { column: 20, line: 3 },
                 },
               },
+              options: null,
               qualifier: Identifier {
                 type: "Identifier",
                 name: "B",

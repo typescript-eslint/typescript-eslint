@@ -146,39 +146,37 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
     description: 'Multiple selectors in one config',
     properties: {
       ...FORMAT_OPTIONS_PROPERTIES,
-      ...{
-        filter: {
-          oneOf: [
-            {
-              type: 'string',
-              minLength: 1,
-            },
-            MATCH_REGEX_SCHEMA,
-          ],
-        },
-        selector: {
-          type: 'array',
-          items: {
+      filter: {
+        oneOf: [
+          {
             type: 'string',
-            enum: [...getEnumNames(MetaSelectors), ...getEnumNames(Selectors)],
+            minLength: 1,
           },
-          additionalItems: false,
+          MATCH_REGEX_SCHEMA,
+        ],
+      },
+      selector: {
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: [...getEnumNames(MetaSelectors), ...getEnumNames(Selectors)],
         },
-        modifiers: {
-          type: 'array',
-          items: {
-            type: 'string',
-            enum: getEnumNames(Modifiers),
-          },
-          additionalItems: false,
+        additionalItems: false,
+      },
+      modifiers: {
+        type: 'array',
+        items: {
+          type: 'string',
+          enum: getEnumNames(Modifiers),
         },
-        types: {
-          type: 'array',
-          items: {
-            $ref: '#/$defs/typeModifiers',
-          },
-          additionalItems: false,
+        additionalItems: false,
+      },
+      types: {
+        type: 'array',
+        items: {
+          $ref: '#/$defs/typeModifiers',
         },
+        additionalItems: false,
       },
     },
     required: ['selector', 'format'],
@@ -289,6 +287,24 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
         'static',
         'override',
         'async',
+      ]),
+      ...selectorSchema('classicAccessor', true, [
+        'abstract',
+        'private',
+        'protected',
+        'public',
+        'requiresQuotes',
+        'static',
+        'override',
+      ]),
+      ...selectorSchema('autoAccessor', true, [
+        'abstract',
+        'private',
+        'protected',
+        'public',
+        'requiresQuotes',
+        'static',
+        'override',
       ]),
       ...selectorSchema('accessor', true, [
         'abstract',
