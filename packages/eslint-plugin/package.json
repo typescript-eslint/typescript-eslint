@@ -5,6 +5,7 @@
   "files": [
     "dist",
     "docs",
+    "eslint-recommended-raw.d.ts",
     "index.d.ts",
     "rules.d.ts",
     "package.json",
@@ -27,6 +28,18 @@
       "default": "./dist/configs/eslint-recommended-raw.js"
     }
   },
+  "typesVersions": {
+    "*": {
+      "use-at-your-own-risk/rules": [
+        "./rules.d.ts"
+      ],
+      "use-at-your-own-risk/eslint-recommended-raw": [
+        "./eslint-recommended-raw.d.ts"
+      ]
+    }
+  },
+  "types": "./index.d.ts",
+  "main": "./dist/index.js",
   "engines": {
     "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
