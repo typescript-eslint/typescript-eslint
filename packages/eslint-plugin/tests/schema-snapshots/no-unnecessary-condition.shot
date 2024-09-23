@@ -16,7 +16,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to not error when running with a tsconfig that has strictNullChecks turned.",
         "type": "boolean"
       },
-      "checkTruthinessAssertions": {
+      "checkTypePredicates": {
         "description": "Whether to check the asserted argument of a truthiness assertion function as a conditional context",
         "type": "boolean"
       }
@@ -35,7 +35,7 @@ type Options = [
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     /** Whether to check the asserted argument of a truthiness assertion function as a conditional context */
-    checkTruthinessAssertions?: boolean;
+    checkTypePredicates?: boolean;
   },
 ];
 "

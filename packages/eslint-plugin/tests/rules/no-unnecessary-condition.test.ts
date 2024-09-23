@@ -900,7 +900,7 @@ declare function assert(x: unknown): asserts x;
 
 assert(Math.random() > 0.5);
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -908,7 +908,7 @@ declare function assert(x: unknown, y: unknown): asserts x;
 
 assert(Math.random() > 0.5, true);
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       // should not report because option is disabled.
@@ -916,7 +916,7 @@ assert(Math.random() > 0.5, true);
 declare function assert(x: unknown): asserts x;
 assert(true);
       `,
-      options: [{ checkTruthinessAssertions: false }],
+      options: [{ checkTypePredicates: false }],
     },
     {
       // could be argued that this should report since `thisAsserter` is truthy.
@@ -928,7 +928,7 @@ class ThisAsserter {
 const thisAsserter: ThisAsserter = new ThisAsserter();
 thisAsserter.assertThis(true);
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       // could be argued that this should report since `thisAsserter` is truthy.
@@ -940,14 +940,14 @@ class ThisAsserter {
 const thisAsserter: ThisAsserter = new ThisAsserter();
 thisAsserter.assertThis(Math.random());
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
 declare function assert(x: unknown): asserts x;
 assert(...[]);
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       // ok to report if we start unpacking spread params one day.
@@ -955,7 +955,39 @@ assert(...[]);
 declare function assert(x: unknown): asserts x;
 assert(...[], {});
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+declare const a: string;
+assertString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+      declare function assertString(x: unknown): asserts x is string;
+      assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
     },
   ],
 
@@ -2380,7 +2412,7 @@ assert(true);
           messageId: 'alwaysTruthy',
         },
       ],
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -2394,7 +2426,7 @@ assert(false);
           messageId: 'alwaysFalsy',
         },
       ],
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
     },
     {
       code: `
@@ -2402,7 +2434,7 @@ declare function assert(x: unknown, y: unknown): asserts x;
 
 assert(true, Math.random() > 0.5);
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
       errors: [
         {
           messageId: 'alwaysTruthy',
@@ -2416,12 +2448,54 @@ assert(true, Math.random() > 0.5);
 declare function assert(x: unknown): asserts x;
 assert({});
       `,
-      options: [{ checkTruthinessAssertions: true }],
+      options: [{ checkTypePredicates: true }],
       errors: [
         {
           messageId: 'alwaysTruthy',
           line: 3,
           column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assertsString(x: unknown): asserts x is string;
+declare const a: string;
+assertsString(a);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString('fa' + 'lafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
         },
       ],
     },

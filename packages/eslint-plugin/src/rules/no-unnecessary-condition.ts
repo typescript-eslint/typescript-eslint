@@ -76,7 +76,7 @@ export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-    checkTruthinessAssertions?: boolean;
+    checkTypePredicates?: boolean;
   },
 ];
 
@@ -120,7 +120,7 @@ export default createRule<Options, MessageId>({
               'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
-          checkTruthinessAssertions: {
+          checkTypePredicates: {
             description:
               'Whether to check the asserted argument of a truthiness assertion function as a conditional context',
             type: 'boolean',
@@ -158,7 +158,7 @@ export default createRule<Options, MessageId>({
     {
       allowConstantLoopConditions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      checkTruthinessAssertions: false,
+      checkTypePredicates: false,
     },
   ],
   create(
@@ -167,7 +167,7 @@ export default createRule<Options, MessageId>({
       {
         allowConstantLoopConditions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
-        checkTruthinessAssertions,
+        checkTypePredicates,
       },
     ],
   ) {
@@ -482,7 +482,7 @@ export default createRule<Options, MessageId>({
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
-      if (checkTruthinessAssertions) {
+      if (checkTypePredicates) {
         const truthinessAssertedArgument = findTruthinessAssertedArgument(
           services,
           node,
@@ -490,29 +490,22 @@ export default createRule<Options, MessageId>({
         if (truthinessAssertedArgument != null) {
           checkNode(truthinessAssertedArgument);
         }
-      }
 
-      const typeGuardAssertedArgument = findTypeGuardAssertedArgument(
-        services,
-        node,
-      );
-      if (typeGuardAssertedArgument != null) {
-        const typeOfArgument = getConstrainedTypeAtLocation(
+        const typeGuardAssertedArgument = findTypeGuardAssertedArgument(
           services,
-          typeGuardAssertedArgument.argument,
+          node,
         );
-        if (typeOfArgument === typeGuardAssertedArgument.type) {
-          context.report({
-            messageId: 'typeGuardAlreadyIsType',
-            node: typeGuardAssertedArgument.argument,
-            suggest: [
-              {
-                messageId: 'replaceWithTrue',
-                fix: (fixer): ReturnType<ReportFixFunction> =>
-                  fixer.replaceText(node, '(true)'),
-              },
-            ],
-          });
+        if (typeGuardAssertedArgument != null) {
+          const typeOfArgument = getConstrainedTypeAtLocation(
+            services,
+            typeGuardAssertedArgument.argument,
+          );
+          if (typeOfArgument === typeGuardAssertedArgument.type) {
+            context.report({
+              messageId: 'typeGuardAlreadyIsType',
+              node: typeGuardAssertedArgument.argument,
+            });
+          }
         }
       }
 

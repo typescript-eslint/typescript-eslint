@@ -39,50 +39,41 @@ export function findTruthinessAssertedArgument(
   const calleeType = getConstrainedTypeAtLocation(services, node.callee);
   const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
 
-  const checker = services.program.getTypeChecker();
-
-  let assertedParameterIndex: number | undefined = undefined;
-  for (const signature of callSignatures) {
-    const predicateInfo = checker.getTypePredicateOfSignature(signature);
-    if (predicateInfo == null) {
-      return undefined;
-    }
-
-    // Be sure we're dealing with a truthiness assertion function, in other words,
-    // `asserts x` (but not `asserts x is T`, and also not `asserts this is T`).
-    if (
-      !(
-        predicateInfo.kind === ts.TypePredicateKind.AssertsIdentifier &&
-        predicateInfo.type == null
-      )
-    ) {
-      return undefined;
-    }
-
-    const assertedParameterIndexForThisSignature = predicateInfo.parameterIndex;
-
-    if (
-      assertedParameterIndex != null &&
-      assertedParameterIndex !== assertedParameterIndexForThisSignature
-    ) {
-      // The asserted parameter we found for this signature didn't match
-      // previous signatures.
-      return undefined;
-    }
-
-    assertedParameterIndex = assertedParameterIndexForThisSignature;
-
-    if (assertedParameterIndex >= checkableArguments.length) {
-      return undefined;
-    }
-  }
-
-  // Didn't find a unique assertion index.
-  if (assertedParameterIndex == null) {
+  if (callSignatures.length === 0) {
     return undefined;
   }
 
-  return checkableArguments[assertedParameterIndex];
+  const checker = services.program.getTypeChecker();
+
+  const typePredicates = callSignatures.map(signature =>
+    checker.getTypePredicateOfSignature(signature),
+  );
+
+  const [firstTypePredicateResult, ...otherTypePredicateResults] =
+    typePredicates;
+  if (firstTypePredicateResult == null) {
+    return undefined;
+  }
+
+  // Ensure all call signatures are asserting the same thing.
+  const { parameterIndex, kind, type } = firstTypePredicateResult;
+  if (!(kind === ts.TypePredicateKind.AssertsIdentifier && type == null)) {
+    return undefined;
+  }
+
+  if (
+    otherTypePredicateResults.some(
+      otherResult =>
+        otherResult == null ||
+        otherResult.parameterIndex !== parameterIndex ||
+        otherResult.kind !== kind ||
+        otherResult.type != null,
+    )
+  ) {
+    return undefined;
+  }
+
+  return checkableArguments.at(parameterIndex);
 }
 
 /**
@@ -94,11 +85,9 @@ export function findTypeGuardAssertedArgument(
   node: TSESTree.CallExpression,
 ):
   | {
-      predicateKind:
-        | ts.TypePredicateKind.AssertsIdentifier
-        | ts.TypePredicateKind.Identifier;
+      asserts: boolean;
       argument: TSESTree.Expression;
-      type: ts.Type | undefined;
+      type: ts.Type;
     }
   | undefined {
   // If the call looks like `assert(expr1, expr2, ...c, d, e, f)`, then we can
@@ -124,66 +113,52 @@ export function findTypeGuardAssertedArgument(
   const calleeType = getConstrainedTypeAtLocation(services, node.callee);
   const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
 
-  const checker = services.program.getTypeChecker();
-
-  let predicateInfo:
-    | {
-        parameterIndex: number;
-        type: ts.Type | undefined;
-        predicateKind:
-          | ts.TypePredicateKind.AssertsIdentifier
-          | ts.TypePredicateKind.Identifier;
-      }
-    | undefined = undefined;
-
-  for (const signature of callSignatures) {
-    const thisPredicateInfo = checker.getTypePredicateOfSignature(signature);
-    if (thisPredicateInfo == null) {
-      return undefined;
-    }
-
-    // Be sure we're dealing with a truthiness assertion function, in other words,
-    // `asserts x` (but not `asserts x is T`, and also not `asserts this is T`).
-    if (
-      !(
-        thisPredicateInfo.kind === ts.TypePredicateKind.Identifier ||
-        thisPredicateInfo.kind === ts.TypePredicateKind.AssertsIdentifier
-      )
-    ) {
-      return undefined;
-    }
-
-    const { parameterIndex, type, kind } = thisPredicateInfo;
-
-    if (predicateInfo != null) {
-      if (
-        predicateInfo.parameterIndex !== parameterIndex ||
-        predicateInfo.type !== type ||
-        predicateInfo.predicateKind !== kind
-      ) {
-        return undefined;
-      }
-    } else {
-      if (parameterIndex >= checkableArguments.length) {
-        return undefined;
-      }
-
-      predicateInfo = {
-        predicateKind: kind,
-        parameterIndex,
-        type,
-      };
-    }
+  if (callSignatures.length === 0) {
+    return undefined;
   }
 
-  // Didn't find a unique assertion index.
-  if (predicateInfo == null) {
+  const checker = services.program.getTypeChecker();
+
+  const typePredicates = callSignatures.map(signature =>
+    checker.getTypePredicateOfSignature(signature),
+  );
+
+  const [firstTypePredicateResult, ...otherTypePredicateResults] =
+    typePredicates;
+  if (firstTypePredicateResult == null) {
+    return undefined;
+  }
+
+  // Ensure all call signatures are asserting the same thing.
+  const { parameterIndex, kind, type } = firstTypePredicateResult;
+  if (
+    !(
+      (kind === ts.TypePredicateKind.AssertsIdentifier && type != null) ||
+      (kind === ts.TypePredicateKind.Identifier && type != null)
+    )
+  ) {
+    return undefined;
+  }
+
+  if (
+    otherTypePredicateResults.some(
+      otherResult =>
+        otherResult == null ||
+        otherResult.parameterIndex !== parameterIndex ||
+        otherResult.kind !== kind ||
+        otherResult.type !== type,
+    )
+  ) {
+    return undefined;
+  }
+
+  if (parameterIndex >= checkableArguments.length) {
     return undefined;
   }
 
   return {
-    predicateKind: predicateInfo.predicateKind,
-    argument: checkableArguments[predicateInfo.parameterIndex],
-    type: predicateInfo.type,
+    type,
+    asserts: kind === ts.TypePredicateKind.AssertsIdentifier,
+    argument: checkableArguments[parameterIndex],
   };
 }

@@ -90,11 +90,11 @@ for (; true; ) {}
 do {} while (true);
 ```
 
-### `checkTruthinessAssertions`
+### `checkTypePredicates`
 
-Example of additional incorrect code with `{ checkTruthinessAssertions: true }`:
+Example of additional incorrect code with `{ checkTypePredicates: true }`:
 
-```ts option='{ "checkTruthinessAssertions": true }' showPlaygroundButton
+```ts option='{ "checkTypePredicates": true }' showPlaygroundButton
 function assert(condition: unknown): asserts condition {
   if (!condition) {
     throw new Error('Condition is falsy');

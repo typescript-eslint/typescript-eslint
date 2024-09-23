@@ -68,7 +68,7 @@ do {} while (true);
 `;
 
 exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 4`] = `
-"Options: { "checkTruthinessAssertions": true }
+"Options: { "checkTypePredicates": true }
 
 function assert(condition: unknown): asserts condition {
   if (!condition) {
