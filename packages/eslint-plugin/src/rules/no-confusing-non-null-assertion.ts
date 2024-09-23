@@ -82,6 +82,7 @@ export default createRule<[], MessageId>({
             messageId: 'confusingOperator',
             data: { operator },
           };
+        // istanbul ignore next
         default:
           operator satisfies never;
           throw new Error(`Unexpected operator ${operator as string}`);
@@ -143,6 +144,7 @@ export default createRule<[], MessageId>({
                   ];
                   break;
 
+                // istanbul ignore next
                 default:
                   operator satisfies never;
                   return;
