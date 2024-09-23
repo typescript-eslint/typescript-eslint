@@ -2380,7 +2380,7 @@ foo(async () => {});
       `,
       errors: [
         {
-          line: 6,
+          line: 8,
           messageId: 'voidReturnArgument',
         },
       ],
