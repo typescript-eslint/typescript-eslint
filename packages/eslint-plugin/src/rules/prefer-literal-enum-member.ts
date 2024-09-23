@@ -104,8 +104,8 @@ export default createRule({
             case AST_NODE_TYPES.TemplateLiteral:
               return node.expressions.length === 0;
 
-            // +123, -123, etc.
             case AST_NODE_TYPES.UnaryExpression:
+              // +123, -123, etc.
               if (['+', '-'].includes(node.operator)) {
                 return isAllowedInitializerExpressionRecursive(
                   node.argument,
