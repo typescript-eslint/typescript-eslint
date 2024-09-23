@@ -253,7 +253,6 @@ export default createRule<[], MessageId>({
           const warnLocEnd = nextQuasi.range[0] + 1;
 
           context.report({
-            node: expression,
             loc: rangeToLoc(context.sourceCode, [warnLocStart, warnLocEnd]),
             messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
