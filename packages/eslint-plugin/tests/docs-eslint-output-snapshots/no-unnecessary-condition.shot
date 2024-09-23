@@ -82,5 +82,25 @@ assert(false); // Unnecessary; condition is always falsy.
 const neverNull = {};
 assert(neverNull); // Unnecessary; condition is always truthy.
        ~~~~~~~~~ Unnecessary conditional, value is always truthy.
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string';
+}
+
+declare const s: string;
+
+// Unnecessary; s is always a string.
+if (isString(s)) {
+             ~ Unnecessary conditional, expression already has the type being checked by the type guard.
+}
+
+function assertIsString(value: unknown): asserts value is string {
+  if (!isString(value)) {
+    throw new Error('Value is not a string');
+  }
+}
+
+assertIsString(s); // Unnecessary; s is always a string.
+               ~ Unnecessary conditional, expression already has the type being checked by the assertion function.
 "
 `;
