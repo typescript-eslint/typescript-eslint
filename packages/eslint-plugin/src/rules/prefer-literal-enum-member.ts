@@ -113,20 +113,18 @@ export default createRule({
                 );
               }
 
-              if (allowBitwiseExpressions && node.operator === '~') {
-                return isAllowedInitializerExpressionRecursive(
-                  node.argument,
-                  true,
+              if (allowBitwiseExpressions) {
+                return (
+                  node.operator === '~' &&
+                  isAllowedInitializerExpressionRecursive(node.argument, true)
                 );
               }
               return false;
 
             case AST_NODE_TYPES.BinaryExpression:
-              if (
-                allowBitwiseExpressions &&
-                ['|', '&', '^', '<<', '>>', '>>>'].includes(node.operator)
-              ) {
+              if (allowBitwiseExpressions) {
                 return (
+                  ['|', '&', '^', '<<', '>>', '>>>'].includes(node.operator) &&
                   isAllowedInitializerExpressionRecursive(node.left, true) &&
                   isAllowedInitializerExpressionRecursive(node.right, true)
                 );
