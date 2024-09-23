@@ -37,8 +37,9 @@ import { work } from './worker';
 work();
 ```
 
-_Type information_ refers to the cross-file information that a type checker such as TypeScript can generate to understand your code.
-TypeScript and tools that call to TypeScript's APIs can use that type information to understand the project's code.
+_Type information_ refers to the information a type checker such as TypeScript generates to understand your code.
+Type checkers read code, determine what types each value may be, and store that "type information".
+TypeScript and tools that call to TypeScript's APIs can then use that type information to understand the project's code.
 
 In the earlier example, type information would be able to inform a lint rule running in `index.ts` that the `work` import resolves to a function in another file:
 
@@ -131,7 +132,7 @@ import { readFromCache } from './caching';
 
 const filePath = './data.json';
 
-readFromCache(filePath);)
+readFromCache(filePath);
 
 await fs.rm(filePath);
 ```
