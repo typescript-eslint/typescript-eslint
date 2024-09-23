@@ -976,8 +976,8 @@ isString(a);
     {
       // Technically, this has type 'falafel' and not string.
       code: `
-      declare function assertString(x: unknown): asserts x is string;
-      assertString('falafel');
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
       `,
       options: [{ checkTypePredicates: true }],
     },
