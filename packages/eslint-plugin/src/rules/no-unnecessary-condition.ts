@@ -1,6 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -98,7 +97,6 @@ export type MessageId =
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
   meta: {
-    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description:
@@ -151,7 +149,7 @@ export default createRule<Options, MessageId>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       typeGuardAlreadyIsType:
-        'Unnecessary conditional, expression already has the type being checked.',
+        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
   },
   defaultOptions: [
@@ -502,8 +500,13 @@ export default createRule<Options, MessageId>({
           );
           if (typeOfArgument === typeGuardAssertedArgument.type) {
             context.report({
-              messageId: 'typeGuardAlreadyIsType',
               node: typeGuardAssertedArgument.argument,
+              messageId: 'typeGuardAlreadyIsType',
+              data: {
+                typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
+                  ? 'assertion function'
+                  : 'type guard',
+              },
             });
           }
         }

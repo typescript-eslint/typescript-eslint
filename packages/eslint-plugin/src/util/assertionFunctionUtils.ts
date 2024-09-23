@@ -78,7 +78,7 @@ export function findTruthinessAssertedArgument(
 
 /**
  * Inspect a call expression to see if it's a call to an assertion function.
- * If it is, return the node of the argument that is asserted.
+ * If it is, return the node of the argument that is asserted and other useful info.
  */
 export function findTypeGuardAssertedArgument(
   services: ParserServicesWithTypeInformation,
