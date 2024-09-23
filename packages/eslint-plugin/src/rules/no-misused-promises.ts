@@ -826,6 +826,20 @@ function voidFunctionArguments(
             thenableReturnIndices,
             voidReturnIndices,
           );
+          const contextualType = checker.getContextualTypeForArgumentAtIndex(
+            node,
+            index,
+          );
+          if (contextualType !== type) {
+            checkThenableOrVoidArgument(
+              checker,
+              node,
+              contextualType,
+              index,
+              thenableReturnIndices,
+              voidReturnIndices,
+            );
+          }
         }
       }
     }
