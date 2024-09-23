@@ -146,9 +146,11 @@ Set this to `true` at your own risk.
 
 :::danger Deprecated
 
-> This option will be removed in the next major version of typescript-eslint.
-> :::
-> If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+This option will be removed in the next major version of typescript-eslint.
+
+:::
+
+If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
 
 Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule a lot less useful.
 
