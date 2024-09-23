@@ -170,17 +170,19 @@ It can be used in community ESLint plugins, as well as custom rules specific to 
 One common example used by teams is to codemod from a deprecated API to its replacement.
 Typed linting is often necessary to determine which pieces of code call to the old API.
 
-As an example, consider the following `fetch()` POST call that sends data to an intake API in an old format.
-Suppose the intake endpoint is migrating from sending string arrays to sending key-value pairs.
+As an example, consider the following `fetch()` POST call that sends data to an intake API.
+Suppose the intake endpoint is migrating from sending `[string, string]` tuples to sending key-value pairs.
 A typed lint rule could determine that the data is in the old format:
 
 ```ts
 import { endpoints } from "~/api";
 
+const rawData = ["key", "value"] as const;
+
 await fetch(endpoints.intake, {
-  data: JSON.stringify(["key", "value"])
-  //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // Don't pass an array to endpoints.intake. Pass a key-value object instead.
+  data: JSON.stringify(rawData)
+  //                   ~~~~~~~
+  // Don't pass a tuple to endpoints.intake. Pass a key-value object instead.
   // eslint(@my-team/custom-rule)
   // ...
   method: "POST",
@@ -192,15 +194,17 @@ await fetch(endpoints.intake, {
 ```diff
 import { endpoints } from "~/api";
 
+const rawData = ["key", "value"] as const;
+
 await fetch(endpoints.intake, {
-- data: JSON.stringify(["key", "value"])
-+ data: JSON.stringify({ key: value })
+- data: JSON.stringify(rawData)
++ data: JSON.stringify(Object.fromEntries(rawData))
   // ...
   method: "POST",
 });
 ```
 
-Knowing that the `fetch()` call was being sent to `endpoints.intake` and that the type of the data was a `string[]` instead of `Record<string, string>` takes typed linting.
+Knowing that the `fetch()` call was being sent to `endpoints.intake` and that the type of the data was a tuple takes typed linting.
 
 That kind of migration codemod is one of the ways typed linting can be utilized for project- or team-specific rules.
 See [Developers > Custom Rules](/developers/custom-rules) for more documentation on building your own ESLint rules with typescript-eslint.
