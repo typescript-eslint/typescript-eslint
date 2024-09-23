@@ -114,6 +114,50 @@ enum Foo {
       `,
       options: [{ allowBitwiseExpressions: true }],
     },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = A | B | C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | Foo.B | Foo.C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | (Foo.B & ~Foo.C),
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | -Foo.B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
   ],
   invalid: [
     {
@@ -430,6 +474,20 @@ enum Foo {
           messageId: 'notLiteral',
           line: 6,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+  B = +A,
+}
+      `,
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 4,
         },
       ],
     },
