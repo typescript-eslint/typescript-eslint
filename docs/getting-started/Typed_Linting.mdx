@@ -16,6 +16,7 @@ To tap into TypeScript's additional powers, there are two small changes you need
 2. Add `languageOptions.parserOptions` to tell our parser how to find the TSConfig for each source file.
 
 ```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(

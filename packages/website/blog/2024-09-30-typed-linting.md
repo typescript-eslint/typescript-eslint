@@ -72,7 +72,7 @@ For example, the following code that logs a member of an object parsed from a st
 However, [`@typescript-eslint/no-unsafe-member-access`](/rules/no-unsafe-member-access) would report `[key]` might not be a property on the object:
 
 ```ts
-function logDataKey(rawData: string, key: string): string {
+function getDataKey(rawData: string, key: string): string {
   return JSON.parse(rawData)[key];
   //                        ~~~~~
   // Unsafe member access [key] on an `any` value.
@@ -81,11 +81,11 @@ function logDataKey(rawData: string, key: string): string {
 ```
 
 The lint rule is right to report.
-Calls to the `logDataKey` function can return a value that's not a `string`, despite the function's explicit return type annotation.
+Calls to the `getDataKey` function can return a value that's not a `string`, despite the function's explicit return type annotation.
 That can lead to unexpected behavior at runtime:
 
 ```ts
-console.log(logDataKey(`{ "blue": "cheese" }`, 'bleu').toUpperCase());
+console.log(getDataKey(`{ "blue": "cheese" }`, 'bleu').toUpperCase());
 // Uncaught TypeError: Cannot read properties of undefined (reading 'toUpperCase')
 ```
 
@@ -170,31 +170,37 @@ It can be used in community ESLint plugins, as well as custom rules specific to 
 One common example used by teams is to codemod from a deprecated API to its replacement.
 Typed linting is often necessary to determine which pieces of code call to the old API.
 
-As an example, consider the following `fetch()` network call.
-A typed lint rule could determine that `endpoint` is a string referring to an old endpoint:
+As an example, consider the following `fetch()` POST call that sends data to an intake API in an old format.
+Suppose the intake endpoint is migrating from sending string arrays to sending key-value pairs.
+A typed lint rule could determine that the data is in the old format:
 
 ```ts
-import { endpoint } from '~/api/v1';
+import { endpoints } from "~/api";
 
-await fetch(endpoint, {
-  //        ~~~~~~~~
-  // Don't pass the deprecated endpoint to fetch().
+await fetch(endpoints.intake, {
+  data: JSON.stringify(["key", "value"])
+  //    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  // Don't pass an array to endpoints.intake. Pass a key-value object instead.
   // eslint(@my-team/custom-rule)
   // ...
+  method: "POST",
 });
 ```
 
-...and provide a code fix to automatically move to the new endpoint:
+...and provide a code fix to automatically migrate to the new format:
 
 ```diff
-import { endpoint } from '~/api/v1';
-+ import { endpointv2 } from '~/api/v2';
+import { endpoints } from "~/api";
 
-- await fetch(endpoint, {
-+ await fetch(endpointV2, {
+await fetch(endpoints.intake, {
+- data: JSON.stringify(["key", "value"])
++ data: JSON.stringify({ key: value })
   // ...
+  method: "POST",
 });
 ```
+
+Knowing that the `fetch()` call was being sent to `endpoints.intake` and that the type of the data was a `string[]` instead of `Record<string, string>` takes typed linting.
 
 That kind of migration codemod is one of the ways typed linting can be utilized for project- or team-specific rules.
 See [Developers > Custom Rules](/developers/custom-rules) for more documentation on building your own ESLint rules with typescript-eslint.
