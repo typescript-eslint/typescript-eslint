@@ -106,7 +106,6 @@ export default createRule<[], MessageId>({
 
         if (hasSingleStringVariable) {
           context.report({
-            node: node.expressions[0],
             loc: rangeToLoc(context.sourceCode, [
               node.expressions[0].range[0] - 2,
               node.expressions[0].range[1] + 1,
