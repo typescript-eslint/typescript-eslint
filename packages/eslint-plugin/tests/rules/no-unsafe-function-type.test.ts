@@ -9,8 +9,12 @@ ruleTester.run('no-unsafe-function-type', rule, {
     'let value: () => void;',
     'let value: <T>(t: T) => T;',
     `
-      type Function = () => void;
-      let value: Function;
+      // create a scope since it's illegal to declare a duplicate identifier
+      // 'Function' in the global script scope.
+      {
+        type Function = () => void;
+        let value: Function;
+      }
     `,
   ],
   invalid: [
