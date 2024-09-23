@@ -152,9 +152,14 @@ export default createRule({
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
-      const tag = symbol
-        ?.getJsDocTags(checker)
-        .find(tag => tag.name === 'deprecated');
+      let jsDocTags: ts.JSDocTagInfo[] | undefined;
+      try {
+        jsDocTags = symbol?.getJsDocTags(checker);
+      } catch {
+        // workaround for https://github.com/microsoft/TypeScript/issues/60024
+        return;
+      }
+      const tag = jsDocTags?.find(tag => tag.name === 'deprecated');
 
       if (!tag) {
         return undefined;
