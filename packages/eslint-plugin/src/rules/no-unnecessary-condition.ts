@@ -120,7 +120,7 @@ export default createRule<Options, MessageId>({
           },
           checkTypePredicates: {
             description:
-              'Whether to check the asserted argument of a truthiness assertion function as a conditional context',
+              'Whether to check the asserted argument of a type predicate function for unnecessary conditions',
             type: 'boolean',
           },
         },
