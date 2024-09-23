@@ -239,36 +239,85 @@ type NodeWithKey =
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractMethodDefinition
   | TSESTree.TSAbstractPropertyDefinition;
+
+/**
+ * Gets a member being accessed or declared if its value can be determined statically, and
+ * resolves it to the string or symbol value that will be used as the actual member
+ * access key at runtime. Otherwise, returns `undefined`.
+ *
+ * ```ts
+ * x.member // returns 'member'
+ * ^^^^^^^^
+ *
+ * x?.member // returns 'member' (optional chaining is treated the same)
+ * ^^^^^^^^^
+ *
+ * x['value'] // returns 'value'
+ * ^^^^^^^^^^
+ *
+ * x[Math.random()] // returns undefined (not a static value)
+ * ^^^^^^^^^^^^^^^^
+ *
+ * arr[0] // returns '0' (NOT 0)
+ * ^^^^^^
+ *
+ * arr[0n] // returns '0' (NOT 0n)
+ * ^^^^^^^
+ *
+ * const s = Symbol.for('symbolName')
+ * x[s] // returns `Symbol.for('symbolName')` (since it's a static/global symbol)
+ * ^^^^
+ *
+ * const us = Symbol('symbolName')
+ * x[us] // returns undefined (since it's a unique symbol, so not statically analyzable)
+ * ^^^^^
+ *
+ * var object = {
+ *     1234: '4567', // returns '1234' (NOT 1234)
+ *     ^^^^^^^^^^^^
+ *     method() { } // returns 'method'
+ *     ^^^^^^^^^^^^
+ * }
+ *
+ * class WithMembers {
+ *     foo: string // returns 'foo'
+ *     ^^^^^^^^^^^
+ * }
+ * ```
+ */
 function getStaticMemberAccessValue(
   node: NodeWithKey,
   { sourceCode }: RuleContext<string, unknown[]>,
-): string | undefined {
+): string | symbol | undefined {
   const key =
     node.type === AST_NODE_TYPES.MemberExpression ? node.property : node.key;
-  if (!node.computed) {
-    return key.type === AST_NODE_TYPES.Literal
-      ? `${key.value}`
-      : (key as TSESTree.Identifier | TSESTree.PrivateIdentifier).name;
+  const { type } = key;
+  if (
+    !node.computed &&
+    (type === AST_NODE_TYPES.Identifier ||
+      type === AST_NODE_TYPES.PrivateIdentifier)
+  ) {
+    return key.name;
   }
-  const value = getStaticValue(key, sourceCode.getScope(node))?.value as
-    | string
-    | number
-    | null
-    | undefined;
-  return value == null ? undefined : `${value}`;
+  const result = getStaticValue(key, sourceCode.getScope(node));
+  if (!result) {
+    return undefined;
+  }
+  const { value } = result;
+  return typeof value === 'symbol' ? value : String(value);
 }
 
 /**
  * Answers whether the member expression looks like
- * `x.memberName`, `x['memberName']`,
- * or even `const mn = 'memberName'; x[mn]` (or optional variants thereof).
+ * `x.value`, `x['value']`,
+ * or even `const v = 'value'; x[v]` (or optional variants thereof).
  */
 const isStaticMemberAccessOfValue = (
   memberExpression: NodeWithKey,
   context: RuleContext<string, unknown[]>,
-  ...values: string[]
+  ...values: (string | symbol)[]
 ): boolean =>
-  (values as (string | undefined)[]).includes(
+  (values as (string | symbol | undefined)[]).includes(
     getStaticMemberAccessValue(memberExpression, context),
   );
 

@@ -407,6 +407,7 @@ export class Test {
   'method'() {}
   ['prop']() {}
   [\`prop\`]() {}
+  [null]() {}
   [\`\${v}\`](): void {}
 
   foo = () => {
@@ -416,7 +417,7 @@ export class Test {
       `,
       options: [
         {
-          allowedNames: ['prop', 'method', 'foo'],
+          allowedNames: ['prop', 'method', 'null', 'foo'],
         },
       ],
     },

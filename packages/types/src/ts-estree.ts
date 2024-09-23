@@ -138,6 +138,7 @@ declare module './generated/ast-spec' {
     parent:
       | TSESTree.ArrayExpression
       | TSESTree.CallExpression
+      | TSESTree.NewExpression
       | TSESTree.ObjectExpression;
   }
 
