@@ -10,7 +10,7 @@ const string2 = 'string2';
 enum Invalid {
   A = str, // Variable assignment
   ~ Explicit enum value must only be a literal value (string or number).
-  B = \`A template literal string that interpolates \${string1} and \${string2}\`, // Template literal with interpolation
+  B = \`Interpolates \${string1} and \${string2}\`, // Template literal with interpolation
   ~ Explicit enum value must only be a literal value (string or number).
   C = 2 + 2, // Expression assignment
   ~ Explicit enum value must only be a literal value (string or number).
