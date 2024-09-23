@@ -1,3 +1,28 @@
+## 8.7.0 (2024-09-23)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-call] check calls of Function ([#10010](https://github.com/typescript-eslint/typescript-eslint/pull/10010))
+- **eslint-plugin:** [consistent-type-exports] check `export *` exports to see if all exported members are types ([#10006](https://github.com/typescript-eslint/typescript-eslint/pull/10006))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** properly coerce all types to string in `getStaticMemberAccessValue` ([#10004](https://github.com/typescript-eslint/typescript-eslint/pull/10004))
+- **eslint-plugin:** [no-deprecated] report on imported deprecated variables ([#9987](https://github.com/typescript-eslint/typescript-eslint/pull/9987))
+- **eslint-plugin:** [no-confusing-non-null-assertion] check !in and !instanceof ([#9994](https://github.com/typescript-eslint/typescript-eslint/pull/9994))
+- **types:** add `NewExpression` as a parent of `SpreadElement` ([#10024](https://github.com/typescript-eslint/typescript-eslint/pull/10024))
+- **utils:** add missing entries to the RuleListener selectors list ([#9992](https://github.com/typescript-eslint/typescript-eslint/pull/9992))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Brian Donovan @eventualbuddha
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.6.0 (2024-09-16)
 
 
