@@ -75,6 +75,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+switch (b1) {
+  case true:
+  default:
+}
     `,
     `
 declare function foo(): number | void;
@@ -910,6 +914,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
+switch (b1) {
+  case true:
+  default:
+}
       `,
       output: null,
       errors: [
@@ -922,6 +930,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
     },
     // Ensure that it's complaining about the right things
@@ -1291,11 +1300,13 @@ function truthy() {
 function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
+[1, 2, 3].findLastIndex(falsy);
       `,
       output: null,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
+        ruleError(8, 25, 'alwaysFalsyFunc'),
       ],
     },
     // Supports generics

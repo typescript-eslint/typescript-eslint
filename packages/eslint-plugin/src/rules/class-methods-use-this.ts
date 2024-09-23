@@ -184,7 +184,9 @@ export default createRule<Options, MessageIds>({
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
       const name = getStaticMemberAccessValue(node, context);
 
-      return !exceptMethods.has(hashIfNeeded + (name ?? ''));
+      return (
+        typeof name !== 'string' || !exceptMethods.has(hashIfNeeded + name)
+      );
     }
 
     /**

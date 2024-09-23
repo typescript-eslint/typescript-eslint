@@ -1,3 +1,21 @@
+## 8.6.0 (2024-09-16)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] report on deprecated properties with function-like types
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Josh Goldberg ✨
+- Kim Sang Du
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.5.0 (2024-09-09)
 
 This was a version bump only for utils to align it with other projects, there were no code changes.
