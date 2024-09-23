@@ -30,6 +30,14 @@ ruleTester.run('ts-expect-error', rule, {
 /* @ts-expect-error
  * not on the last line */
     `,
+    `
+const a = 1;
+
+// @ts-nocheck - should not be reported
+
+// TS error is not actually suppressed
+const b: string = a;
+    `,
     {
       code: '// @ts-expect-error',
       options: [{ 'ts-expect-error': false }],
@@ -1025,22 +1033,6 @@ ruleTester.run('ts-nocheck', rule, {
           messageId: 'tsDirectiveComment',
           line: 1,
           column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-if (false) {
-  // @ts-nocheck: Unreachable code error
-  console.log('hello');
-}
-      `,
-      errors: [
-        {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 3,
-          column: 3,
         },
       ],
     },
