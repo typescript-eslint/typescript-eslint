@@ -3,10 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
-
-import { getConstrainedTypeAtLocation } from './index';
 
 /**
  * Inspect a call expression to see if it's a call to an assertion function.
@@ -32,44 +29,23 @@ export function findTruthinessAssertedArgument(
     return undefined;
   }
 
-  // Game plan: we're going to check the type of the callee. If it has call
-  // signatures and they _ALL_ agree that they assert on a parameter at the
-  // _SAME_ position, we'll consider the argument in that position to be an
-  // asserted argument.
-  const calleeType = getConstrainedTypeAtLocation(services, node.callee);
-  const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
+  const checker = services.program.getTypeChecker();
+  const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+  const signature = checker.getResolvedSignature(tsNode);
 
-  if (callSignatures.length === 0) {
+  if (signature == null) {
     return undefined;
   }
 
-  const checker = services.program.getTypeChecker();
+  const firstTypePredicateResult =
+    checker.getTypePredicateOfSignature(signature);
 
-  const typePredicates = callSignatures.map(signature =>
-    checker.getTypePredicateOfSignature(signature),
-  );
-
-  const [firstTypePredicateResult, ...otherTypePredicateResults] =
-    typePredicates;
   if (firstTypePredicateResult == null) {
     return undefined;
   }
 
-  // Ensure all call signatures are asserting the same thing.
   const { parameterIndex, kind, type } = firstTypePredicateResult;
   if (!(kind === ts.TypePredicateKind.AssertsIdentifier && type == null)) {
-    return undefined;
-  }
-
-  if (
-    otherTypePredicateResults.some(
-      otherResult =>
-        otherResult == null ||
-        otherResult.parameterIndex !== parameterIndex ||
-        otherResult.kind !== kind ||
-        otherResult.type != null,
-    )
-  ) {
     return undefined;
   }
 
@@ -106,47 +82,26 @@ export function findTypeGuardAssertedArgument(
     return undefined;
   }
 
-  // Game plan: we're going to check the type of the callee. If it has call
-  // signatures and they _ALL_ agree that they assert on a parameter at the
-  // _SAME_ position, we'll consider the argument in that position to be an
-  // asserted argument.
-  const calleeType = getConstrainedTypeAtLocation(services, node.callee);
-  const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
-
-  if (callSignatures.length === 0) {
-    return undefined;
-  }
-
   const checker = services.program.getTypeChecker();
+  const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+  const callSignature = checker.getResolvedSignature(tsNode);
 
-  const typePredicates = callSignatures.map(signature =>
-    checker.getTypePredicateOfSignature(signature),
-  );
-
-  const [firstTypePredicateResult, ...otherTypePredicateResults] =
-    typePredicates;
-  if (firstTypePredicateResult == null) {
+  if (callSignature == null) {
     return undefined;
   }
 
-  // Ensure all call signatures are asserting the same thing.
-  const { parameterIndex, kind, type } = firstTypePredicateResult;
+  const typePredicateInfo = checker.getTypePredicateOfSignature(callSignature);
+
+  if (typePredicateInfo == null) {
+    return undefined;
+  }
+
+  const { parameterIndex, kind, type } = typePredicateInfo;
   if (
     !(
-      (kind === ts.TypePredicateKind.AssertsIdentifier && type != null) ||
-      (kind === ts.TypePredicateKind.Identifier && type != null)
-    )
-  ) {
-    return undefined;
-  }
-
-  if (
-    otherTypePredicateResults.some(
-      otherResult =>
-        otherResult == null ||
-        otherResult.parameterIndex !== parameterIndex ||
-        otherResult.kind !== kind ||
-        otherResult.type !== type,
+      (kind === ts.TypePredicateKind.AssertsIdentifier ||
+        kind === ts.TypePredicateKind.Identifier) &&
+      type != null
     )
   ) {
     return undefined;
