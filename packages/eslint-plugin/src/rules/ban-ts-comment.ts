@@ -190,9 +190,7 @@ export default createRule<[Options], MessageIds>({
 
     return {
       Program(node): void {
-        const firstStatement = node.body[0] as
-          | TSESTree.ProgramStatement
-          | undefined;
+        const firstStatement = node.body.at(0);
 
         const comments = context.sourceCode.getAllComments();
 
