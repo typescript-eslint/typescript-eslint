@@ -163,7 +163,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isClassInstance(type)) {
+      if (isClassInstance(services.program, type)) {
         context.report({
           node,
           messageId: 'noClassInstanceSpreadInObject',
@@ -229,8 +229,26 @@ function isPromise(program: ts.Program, type: ts.Type): boolean {
   return isTypeRecurser(type, t => isPromiseLike(program, t));
 }
 
-function isClassInstance(type: ts.Type): boolean {
+// Builtin classes that are known to be problematic when spread,
+// but can't be detected in a reliable way.
+const BUILTIN_CLASSES = ['WeakRef'];
+
+function isClassInstance(program: ts.Program, type: ts.Type): boolean {
   return isTypeRecurser(type, t => {
+    const symbol = t.getSymbol();
+
+    if (!symbol) {
+      return false;
+    }
+
+    const isBuiltinProblematic = BUILTIN_CLASSES.some(name =>
+      isBuiltinSymbolLike(program, t, name),
+    );
+
+    if (isBuiltinProblematic) {
+      return true;
+    }
+
     return (
       t.isClassOrInterface() &&
       tsutils.isSymbolFlagSet(t.symbol, ts.SymbolFlags.Value)
