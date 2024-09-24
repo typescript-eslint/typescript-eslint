@@ -146,16 +146,39 @@ interface Foo {
   bar: number;
   bas: string;
 }
+
 var foo = {} as Foo;
       `,
       errors: [
         {
           messageId: 'unsafeTypeAssertion',
-          line: 6,
+          line: 7,
           column: 11,
           endColumn: 20,
           data: {
             type: '{}',
+            asserted: 'Foo',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: number;
+}
+
+// no additional properties are allowed
+export const foo = { bar: 1, bazz: 1 } as Foo;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 7,
+          column: 20,
+          endColumn: 46,
+          data: {
+            type: '{ bar: number; bazz: number; }',
             asserted: 'Foo',
           },
         },
