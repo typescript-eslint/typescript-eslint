@@ -5,7 +5,7 @@ import {
   createRule,
   getFunctionHeadLoc,
   getFunctionNameWithKind,
-  getStaticStringValue,
+  getStaticMemberAccessValue,
 } from '../util';
 
 type Options = [
@@ -182,12 +182,11 @@ export default createRule<Options, MessageIds>({
 
       const hashIfNeeded =
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
-      const name =
-        node.key.type === AST_NODE_TYPES.Literal
-          ? getStaticStringValue(node.key)
-          : node.key.name || '';
+      const name = getStaticMemberAccessValue(node, context);
 
-      return !exceptMethods.has(hashIfNeeded + (name ?? ''));
+      return (
+        typeof name !== 'string' || !exceptMethods.has(hashIfNeeded + name)
+      );
     }
 
     /**

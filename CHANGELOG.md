@@ -1,3 +1,57 @@
+## 8.7.0 (2024-09-23)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-call] check calls of Function ([#10010](https://github.com/typescript-eslint/typescript-eslint/pull/10010))
+- **eslint-plugin:** [consistent-type-exports] check `export *` exports to see if all exported members are types ([#10006](https://github.com/typescript-eslint/typescript-eslint/pull/10006))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** properly coerce all types to string in `getStaticMemberAccessValue` ([#10004](https://github.com/typescript-eslint/typescript-eslint/pull/10004))
+- **eslint-plugin:** [no-deprecated] report on imported deprecated variables ([#9987](https://github.com/typescript-eslint/typescript-eslint/pull/9987))
+- **eslint-plugin:** [no-confusing-non-null-assertion] check !in and !instanceof ([#9994](https://github.com/typescript-eslint/typescript-eslint/pull/9994))
+- **types:** add `NewExpression` as a parent of `SpreadElement` ([#10024](https://github.com/typescript-eslint/typescript-eslint/pull/10024))
+- **utils:** add missing entries to the RuleListener selectors list ([#9992](https://github.com/typescript-eslint/typescript-eslint/pull/9992))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Brian Donovan @eventualbuddha
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.6.0 (2024-09-16)
+
+
+### 🚀 Features
+
+- add `allow` option for `restrict-template-expressions` ([#8556](https://github.com/typescript-eslint/typescript-eslint/pull/8556))
+- **eslint-plugin:** [no-unnecessary-condition] check switch cases ([#9912](https://github.com/typescript-eslint/typescript-eslint/pull/9912))
+- **eslint-plugin:** [no-misused-promises] check array predicate return ([#9955](https://github.com/typescript-eslint/typescript-eslint/pull/9955))
+- **type-utils:** isNullableType add Void logic ([#9937](https://github.com/typescript-eslint/typescript-eslint/pull/9937))
+- **typescript-estree:** disable plugin loading by default in project service ([#9964](https://github.com/typescript-eslint/typescript-eslint/pull/9964))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] don't report recursive types in destructuring assignment twice ([#9969](https://github.com/typescript-eslint/typescript-eslint/pull/9969))
+- **eslint-plugin:** [no-deprecated] report on deprecated variables used in destructuring assignment ([#9978](https://github.com/typescript-eslint/typescript-eslint/pull/9978))
+- **eslint-plugin:** [no-deprecated] report on deprecated properties with function-like types ([#9977](https://github.com/typescript-eslint/typescript-eslint/pull/9977))
+- **eslint-plugin:** [no-unnecessary-condition] properly reflect multiple negations in message ([#9940](https://github.com/typescript-eslint/typescript-eslint/pull/9940))
+- **typescript-estree:** don't throw on missing tsconfig.json by default in project service ([#9989](https://github.com/typescript-eslint/typescript-eslint/pull/9989))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred @auvred
+- Josh Goldberg ✨
+- Kim Sang Du @developer-bandi
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.5.0 (2024-09-09)
 
 
@@ -42,7 +96,7 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 ### 🚀 Features
 
-- **eslint-plugin:** [no-deprecation] add rule ([#9783](https://github.com/typescript-eslint/typescript-eslint/pull/9783))
+- **eslint-plugin:** [no-deprecated] add rule ([#9783](https://github.com/typescript-eslint/typescript-eslint/pull/9783))
 - **typescript-estree:** replace `globby` w/ `fast-glob` ([#9518](https://github.com/typescript-eslint/typescript-eslint/pull/9518))
 - **typescript-estree:** reload project service once when file config isn't found ([#9853](https://github.com/typescript-eslint/typescript-eslint/pull/9853))
 
@@ -144,6 +198,8 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
 
 # 8.0.0 (2024-07-31)
+
+> 👉 See [Announcing typescript-eslint v8](https://typescript-eslint.io/blog/announcing-typescript-eslint-v8) for an upgrade guide and the full list of changes.
 
 ### ⚠️  Breaking Changes
 
@@ -824,6 +880,7 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 # 7.0.0 (2024-02-12)
 
+> 👉 See [Announcing typescript-eslint v7](https://typescript-eslint.io/blog/announcing-typescript-eslint-v7) for an upgrade guide and the full list of changes.
 
 ### 🚀 Features
 
@@ -1467,6 +1524,8 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 
 # [6.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.62.0...v6.0.0) (2023-07-10)
+
+> 👉 See [Announcing typescript-eslint v6](https://typescript-eslint.io/blog/announcing-typescript-eslint-v6) for an upgrade guide and the full list of changes.
 
 
 ### Bug Fixes

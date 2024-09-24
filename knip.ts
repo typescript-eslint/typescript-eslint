@@ -65,6 +65,9 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'packages/utils': {
+      ignore: ['tests/**/*.type-test.ts'],
+    },
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
@@ -87,7 +90,7 @@ export default {
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
-        '@docusaurus/plugin-content-blog/client',
+        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',

@@ -369,6 +369,24 @@ It takes in a string path that will be resolved relative to the [`tsconfigRootDi
 
 `projectService.defaultProject` only impacts the "out-of-project" files included by [`allowDefaultProject`](#allowdefaultproject).
 
+##### `loadTypeScriptPlugins`
+
+> Default `false`
+
+Whether the project service should be allowed to load [TypeScript plugins](https://www.typescriptlang.org/tsconfig/plugins.html).
+This is `false` by default to prevent plugins from registering persistent file watchers or other operations that might prevent ESLint processes from exiting when run on the command-line.
+
+If your project is configured with custom rules that interact with TypeScript plugins, it may be useful to turn this on in your editor.
+For example, only enabling this option when running within VS Code:
+
+```js
+parserOptions: {
+  projectService: {
+    loadTypeScriptPlugins: !!process.env.VSCODE_PID,
+  }
+}
+```
+
 ##### `maximumDefaultProjectFileMatchCount_THIS_WILL_SLOW_DOWN_LINTING`
 
 > Default: `8`.
