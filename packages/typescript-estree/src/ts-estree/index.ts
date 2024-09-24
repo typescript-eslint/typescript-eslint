@@ -4,5 +4,5 @@ export {
   AST_TOKEN_TYPES,
   TSESTree,
 } from '@typescript-eslint/types';
-export * from './ts-nodes';
-export * from './estree-to-ts-node-types';
+export type * from './ts-nodes';
+export type * from './estree-to-ts-node-types';
