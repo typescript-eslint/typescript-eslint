@@ -1,5 +1,5 @@
 ---
-description: 'Disallow type assertions that widen a type'
+description: 'Disallow type assertions that widen a type.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -50,9 +50,11 @@ const number = items[0] as number | string | undefined;
 
 ## When Not To Use It
 
-If your codebase has many unsafe type assertions then it may be difficult to enable this rule.
+If your codebase has many unsafe type assertions, then it may be difficult to enable this rule.
 It may be easier to skip the `no-unsafe-*` rules pending increasing type safety in unsafe areas of your project.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+This rule requires TypeScript v5.4 or above; you should not use it if your TypeScript version is lower.
 
 ## Further Reading
 

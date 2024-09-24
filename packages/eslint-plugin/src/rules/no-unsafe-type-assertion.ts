@@ -4,7 +4,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  getTypeName,
 } from '../util';
 
 export default createRule({
@@ -17,7 +16,7 @@ export default createRule({
     },
     messages: {
       unsafeTypeAssertion:
-        'Unsafe type assertion, type `{{type}}` is not assignable to type `{{asserted}}`',
+        'Unsafe type assertion: type `{{type}}` is not assignable to type `{{asserted}}`',
     },
     schema: [],
   },
@@ -45,8 +44,8 @@ export default createRule({
           node,
           messageId: 'unsafeTypeAssertion',
           data: {
-            type: getTypeName(checker, nodeType),
-            asserted: getTypeName(checker, assertedType),
+            type: checker.typeToString(nodeType),
+            asserted: checker.typeToString(assertedType),
           },
         });
       }

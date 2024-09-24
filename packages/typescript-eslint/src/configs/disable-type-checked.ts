@@ -47,6 +47,7 @@ export default (
     '@typescript-eslint/no-unsafe-enum-comparison': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-type-assertion': 'off',
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/only-throw-error': 'off',
