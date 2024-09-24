@@ -53,6 +53,15 @@ namespace NonTypeNS {
 
 export { NonTypeNS };
     `,
+    "export * from './unknown-module';",
+    "export * from './consistent-type-exports';",
+    "export type * from './consistent-type-exports/type-only-exports';",
+    "export type * from './consistent-type-exports/type-only-reexport';",
+    "export * from './consistent-type-exports/value-reexport';",
+    "export * as foo from './consistent-type-exports';",
+    "export type * as foo from './consistent-type-exports/type-only-exports';",
+    "export type * as foo from './consistent-type-exports/type-only-reexport';",
+    "export * as foo from './consistent-type-exports/value-reexport';",
   ],
   invalid: [
     {
@@ -383,6 +392,80 @@ export {
           messageId: 'multipleExportsAreTypes',
           line: 2,
           column: 1,
+        },
+      ],
+    },
+    {
+      code: `
+        export * from './consistent-type-exports/type-only-exports';
+      `,
+      output: `
+        export type * from './consistent-type-exports/type-only-exports';
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 69,
+          line: 2,
+          endLine: 2,
+          messageId: 'typeOverValue',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+        /* comment 1 */ export
+          /* comment 2 */ *
+            // comment 3
+            from './consistent-type-exports/type-only-exports';
+      `,
+      output: `
+        /* comment 1 */ export
+          /* comment 2 */ type *
+            // comment 3
+            from './consistent-type-exports/type-only-exports';
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 64,
+          line: 2,
+          endLine: 5,
+          messageId: 'typeOverValue',
+        },
+      ],
+    },
+    {
+      code: `
+        export * from './consistent-type-exports/type-only-reexport';
+      `,
+      output: `
+        export type * from './consistent-type-exports/type-only-reexport';
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 70,
+          line: 2,
+          endLine: 2,
+          messageId: 'typeOverValue',
+        },
+      ],
+    },
+    {
+      code: `
+        export * as foo from './consistent-type-exports/type-only-reexport';
+      `,
+      output: `
+        export type * as foo from './consistent-type-exports/type-only-reexport';
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 77,
+          line: 2,
+          endLine: 2,
+          messageId: 'typeOverValue',
         },
       ],
     },
