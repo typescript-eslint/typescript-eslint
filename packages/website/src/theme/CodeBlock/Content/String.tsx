@@ -92,7 +92,9 @@ export default function CodeBlockString({
               <code
                 className={clsx(
                   styles.codeBlockLines,
-                  needsMorePadding && styles.codeBlockLinesMorePadding,
+                  eslintrcHash &&
+                    needsMorePadding &&
+                    styles.codeBlockLinesMorePadding,
                   showLineNumbers && styles.codeBlockLinesWithNumbering,
                 )}
               >
