@@ -83,7 +83,7 @@ export function deeplyCopy<T extends NonNullable<unknown>>(ast: T): T {
 
 type UnknownObject = Record<string, unknown>;
 
-function isObjectLike(value: unknown): value is UnknownObject {
+function isObjectLike(value: unknown): boolean {
   return (
     typeof value === 'object' && !(value instanceof RegExp) && value != null
   );
@@ -117,7 +117,6 @@ export function omitDeep(
     oNode: UnknownObject,
     parent: UnknownObject | null,
   ): UnknownObject {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- I don't know if it's safe to change this.
     if (!Array.isArray(oNode) && !isObjectLike(oNode)) {
       return oNode;
     }
@@ -140,7 +139,6 @@ export function omitDeep(
             value.push(visit(el, node));
           }
           node[prop] = value;
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- I don't know if it's safe to change this.
         } else if (isObjectLike(child)) {
           node[prop] = visit(child, node);
         }
