@@ -1,3 +1,20 @@
+## 8.7.0 (2024-09-23)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [consistent-type-exports] check `export *` exports to see if all exported members are types
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brian Donovan
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.6.0 (2024-09-16)
 
 

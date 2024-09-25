@@ -18,7 +18,7 @@ export * from './misc';
 export * from './needsPrecedingSemiColon';
 export * from './objectIterators';
 export * from './scopeUtils';
-export * from './types';
+export type * from './types';
 export * from './isAssignee';
 export * from './getFixOrSuggest';
 export * from './isArrayMethodCallWithPredicate';

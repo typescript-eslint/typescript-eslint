@@ -12,14 +12,13 @@ import TabItem from '@theme/TabItem';
 A "floating" Promise is one that is created without any code set up to handle any errors it might throw.
 Floating Promises can cause several issues, such as improperly sequenced operations, ignored Promise rejections, and more.
 
-This rule reports when a Promise is created and not properly handled.
-Valid ways of handling a Promise-valued statement include:
+This rule will report Promise-valued statements that are not treated in one of the following ways:
 
-- `await`ing it
-- `return`ing it
-- `void`ing it
 - Calling its `.then()` with two arguments
 - Calling its `.catch()` with one argument
+- `await`ing it
+- `return`ing it
+- [`void`ing it](#ignorevoid)
 
 This rule also reports when an Array containing Promises is created and not properly handled. The main way to resolve this is by using one of the Promise concurrency methods to create a single Promise, then handling that according to the procedure above. These methods include:
 
@@ -29,8 +28,10 @@ This rule also reports when an Array containing Promises is created and not prop
 - `Promise.race()`
 
 :::tip
-`no-floating-promises` only detects unhandled Promise _statements_.
+`no-floating-promises` only detects apparently unhandled Promise _statements_.
 See [`no-misused-promises`](./no-misused-promises.mdx) for detecting code that provides Promises to _logical_ locations such as if statements.
+
+See [_Using promises (error handling) on MDN_](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises#error_handling) for a detailed writeup on Promise error-handling.
 :::
 
 ## Examples
@@ -133,6 +134,12 @@ await createMyThenable();
 
 This option, which is `true` by default, allows you to stop the rule reporting promises consumed with the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void).
 This can be a good way to explicitly mark a promise as intentionally not awaited.
+
+:::warning
+Voiding a Promise doesn't handle it or change the runtime behavior.
+The outcome is just ignored, like disabling the rule with an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1).
+Such Promise rejections will still be unhandled.
+:::
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 

@@ -10,7 +10,7 @@ export * from './FunctionTypeScope';
 export * from './GlobalScope';
 export * from './MappedTypeScope';
 export * from './ModuleScope';
-export * from './Scope';
+export type * from './Scope';
 export * from './ScopeType';
 export * from './SwitchScope';
 export * from './TSEnumScope';
