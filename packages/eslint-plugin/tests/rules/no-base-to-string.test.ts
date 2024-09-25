@@ -131,6 +131,17 @@ Number(1);
       code: 'String(/regex/);',
       options: [{ ignoredTypeNames: ['RegExp'] }],
     },
+    `
+function String(value) {
+  return value;
+}
+declare const myValue: object;
+String(myValue);
+    `,
+    `
+import { String } from 'foo';
+String({});
+    `,
   ],
   invalid: [
     {
