@@ -181,13 +181,6 @@ export default createRule<[Options], MessageIds>({
       );
     }
 
-    function isPositionEarlierThan(
-      a: TSESTree.Position,
-      b: TSESTree.Position,
-    ): boolean {
-      return a.line <= b.line || a.column < b.column;
-    }
-
     return {
       Program(node): void {
         const firstStatement = node.body.at(0);
@@ -204,7 +197,7 @@ export default createRule<[Options], MessageIds>({
           if (
             directive === 'nocheck' &&
             firstStatement &&
-            isPositionEarlierThan(firstStatement.loc.start, comment.loc.start)
+            firstStatement.loc.start.line <= comment.loc.start.line
           ) {
             return;
           }
