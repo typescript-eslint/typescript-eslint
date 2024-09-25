@@ -743,6 +743,20 @@ function checkThenableOrVoidArgument(
   ) {
     voidReturnIndices.add(index);
   }
+  const contextualType = checker.getContextualTypeForArgumentAtIndex(
+    node,
+    index,
+  );
+  if (contextualType !== type) {
+    checkThenableOrVoidArgument(
+      checker,
+      node,
+      contextualType,
+      index,
+      thenableReturnIndices,
+      voidReturnIndices,
+    );
+  }
 }
 
 // Get the positions of arguments which are void functions (and not also
@@ -826,20 +840,6 @@ function voidFunctionArguments(
             thenableReturnIndices,
             voidReturnIndices,
           );
-          const contextualType = checker.getContextualTypeForArgumentAtIndex(
-            node,
-            index,
-          );
-          if (contextualType !== type) {
-            checkThenableOrVoidArgument(
-              checker,
-              node,
-              contextualType,
-              index,
-              thenableReturnIndices,
-              voidReturnIndices,
-            );
-          }
         }
       }
     }

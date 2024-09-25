@@ -2385,5 +2385,49 @@ foo(async () => {});
         },
       ],
     },
+    {
+      code: `
+declare function tupleFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: [T, string, T]
+): void;
+tupleFn<() => void>(
+  async () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function arrayFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: (T | string)[]
+): void;
+arrayFn<() => void>(
+  async () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
   ],
 });
