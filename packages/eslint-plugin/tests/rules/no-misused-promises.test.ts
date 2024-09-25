@@ -2344,7 +2344,7 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
   fn: T,
 ) => T;
 declare const useCallbackReturningVoid: typeof useCallback<ReturnsVoid>;
-useCallbackReturningVoid(async () => {}); // correct
+useCallbackReturningVoid(async () => {});
       `,
       errors: [
         {
