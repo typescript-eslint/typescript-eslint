@@ -3,17 +3,18 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../src/rules/no-unsafe-type-assertion';
 import { getFixturesRootDir } from '../RuleTester';
 
+const rootPath = getFixturesRootDir();
+
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      project: './tsconfig.noImplicitThis.json',
-      projectService: false,
-      tsconfigRootDir: getFixturesRootDir(),
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
     },
   },
 });
 
-ruleTester.run('no-unsafe-member-access', rule, {
+ruleTester.run('no-unsafe-type-assertion', rule, {
   valid: [
     `
 declare const a: string;
