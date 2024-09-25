@@ -78,12 +78,58 @@ Note that whereas [no-unsafe-function-type](./no-unsafe-function-type.mdx) helps
 See, for example, the following code:
 
 ```ts
-function unsafe(maybeFunction: unknown): string {
+function callUnsafe(maybeFunction: unknown): string {
   if (typeof maybeFunction === 'function') {
     // TypeScript allows this, but it's completely unsound.
     return maybeFunction('call', 'with', 'any', 'args');
   }
   // etc
+}
+```
+
+Note that even if you check the number of arguments of a function, it may _still_ not be safe to call it, due to the following quirks:
+
+- User-defined `class`es/constructors are functions, but cannot be called without the `new` keyword.
+- Checking a function's arity with [`.length`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/length) is not reliable in cases where the function uses rest parameters.
+
+```ts
+function callUnsafe(maybeFunction: unknown): void {
+  if (typeof maybeFunction === 'function' && maybeFunction.length === 0) {
+    // This is a function that takes no arguments, so, surely, it's safe to call, right?
+    maybeFunction();
+  }
+}
+
+callUnsafe(() => console.log('Hello, world!')); // ✅ logs 'Hello, world!' - good!
+callUnsafe('string'); // ✅ does nothing - good!
+
+class Foo {}
+
+callUnsafe(Foo); // ❌ Uncaught TypeError: Class constructors cannot be invoked without 'new'
+
+function takes3Args(...args: [string, number, boolean]) {
+  const [a, b, c] = args;
+  console.log(c.valueOf());
+}
+
+callUnsafe(takes3Args); // ❌ Uncaught TypeError: Cannot read properties of undefined (reading 'valueOf')
+```
+
+If you _really_ want to call a value whose type you don't know, your best best is to use a `try`/`catch` and suppress any TypeScript or linter errors that get in your way.
+
+```ts
+function callSafe(maybeFunction: unknown): void {
+  if (typeof maybeFunction === 'function') {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      maybeFunction();
+    } catch (e) {
+      console.error(
+        'Function either could not be called or threw an error when called:',
+        e,
+      );
+    }
+  }
 }
 ```
 
