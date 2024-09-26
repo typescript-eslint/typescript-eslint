@@ -17,7 +17,10 @@ const ruleTester = new RuleTester({
 ruleTester.run('consistent-type-exports', rule, {
   valid: [
     // unknown module should be ignored
-    "export { Foo } from 'foo';",
+    {
+      code: "export { Foo } from 'foo';",
+      runTSC: false,
+    },
 
     "export type { Type1 } from './consistent-type-exports';",
     "export { value1 } from './consistent-type-exports';",
@@ -53,7 +56,10 @@ namespace NonTypeNS {
 
 export { NonTypeNS };
     `,
-    "export * from './unknown-module';",
+    {
+      code: "export * from './unknown-module';",
+      runTSC: false,
+    },
     "export * from './consistent-type-exports';",
     "export type * from './consistent-type-exports/type-only-exports';",
     "export type * from './consistent-type-exports/type-only-reexport';",
@@ -271,6 +277,26 @@ export type { T, T };
           column: 1,
         },
       ],
+      runTSC: false,
+    },
+    {
+      code: `
+type S = 1;
+type T = 1;
+export { type S, T };
+      `,
+      output: `
+type S = 1;
+type T = 1;
+export type { S, T };
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 4,
+          column: 1,
+        },
+      ],
     },
     {
       code: noFormat`
@@ -285,6 +311,28 @@ export type { /* */T, /* */T, T };
         {
           messageId: 'typeOverValue',
           line: 3,
+          column: 1,
+        },
+      ],
+      runTSC: false,
+    },
+    {
+      code: noFormat`
+type R = 1;
+type S = 1;
+type T = 1;
+export { type/* */R, type     /* */S, T };
+      `,
+      output: `
+type R = 1;
+type S = 1;
+type T = 1;
+export type { /* */R, /* */S, T };
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 5,
           column: 1,
         },
       ],
@@ -305,6 +353,29 @@ export { x };
         {
           messageId: 'singleExportIsType',
           line: 4,
+          column: 1,
+        },
+      ],
+      runTSC: false,
+    },
+    {
+      code: `
+type S = 1;
+type T = 1;
+const x = 1;
+export { type S, T, x };
+      `,
+      output: `
+type S = 1;
+type T = 1;
+const x = 1;
+export type { T, S };
+export { x };
+      `,
+      errors: [
+        {
+          messageId: 'singleExportIsType',
+          line: 5,
           column: 1,
         },
       ],
@@ -343,6 +414,27 @@ export type { T, T };
         {
           messageId: 'typeOverValue',
           line: 3,
+          column: 1,
+        },
+      ],
+      runTSC: false,
+    },
+    {
+      code: `
+type S = 1;
+type T = 1;
+export { type S, T };
+      `,
+      output: `
+type S = 1;
+type T = 1;
+export type { S, T };
+      `,
+      options: [{ fixMixedExportsWithInlineTypeSpecifier: true }],
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 4,
           column: 1,
         },
       ],

@@ -55,8 +55,8 @@ async function test() {
 }
     `,
     `
+declare const numberPromise: Promise<number>;
 async function test() {
-  const numberPromise: Promise<number>;
   await numberPromise;
 }
     `,
@@ -72,12 +72,14 @@ async function test() {
 }
     `,
     `
+declare const numberPromise: Promise<number>;
 async function test() {
   await (Math.random() > 0.5 ? numberPromise : 0);
-  await (Math.random() > 0.5 ? foo : 0);
-  await (Math.random() > 0.5 ? bar : 0);
-
-  const intersectionPromise: Promise<number> & number;
+}
+    `,
+    `
+declare const intersectionPromise: Promise<number> & number;
+async function test() {
   await intersectionPromise;
 }
     `,
@@ -111,7 +113,8 @@ async function test() {
   await promise;
 }
     `,
-    `
+    {
+      code: `
 // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/bluebird/index.d.ts
 // Type definitions for bluebird 3.5
 // Project: https://github.com/petkaantonov/bluebird
@@ -177,7 +180,9 @@ declare const bluebird: Bluebird;
 async function test() {
   await bluebird;
 }
-    `,
+      `,
+      runTSC: false,
+    },
     `
 const doSomething = async (
   obj1: { a?: { b?: { c?: () => Promise<void> } } },
@@ -290,12 +295,13 @@ async function test() {
   }
   const thenable = new IncorrectThenable();
 
+  // @ts-expect-error
   await thenable;
 }
       `,
       errors: [
         {
-          line: 8,
+          line: 9,
           messageId,
           suggestions: [
             {
@@ -307,6 +313,7 @@ async function test() {
   }
   const thenable = new IncorrectThenable();
 
+  // @ts-expect-error
    thenable;
 }
       `,

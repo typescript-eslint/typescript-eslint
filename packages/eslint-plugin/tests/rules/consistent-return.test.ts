@@ -31,7 +31,7 @@ ruleTester.run('consistent-return', rule, {
     `
       class A {
         foo() {
-          if (a) return true;
+          if (Math.random() > 0.5) return true;
           return false;
         }
       }
@@ -86,7 +86,17 @@ ruleTester.run('consistent-return', rule, {
       class Foo {
         baz(): void {}
         bar(flag: boolean): void {
+          // @ts-expect-error
           if (flag) return baz();
+          return;
+        }
+      }
+    `,
+    `
+      class Foo {
+        baz(): void {}
+        bar(flag: boolean): void {
+          if (flag) return this.baz();
           return;
         }
       }
@@ -108,10 +118,25 @@ ruleTester.run('consistent-return', rule, {
         foo(flag: boolean): void {
           const bar = (): void => {
             if (flag) return;
-            return this.foo();
+            return this.foo(false);
           };
           if (flag) {
+            // @ts-expect-error
             return this.bar();
+          }
+          return;
+        }
+      }
+    `,
+    `
+      class Foo {
+        foo(flag: boolean): void {
+          const bar = (): void => {
+            if (flag) return;
+            return this.foo(false);
+          };
+          if (flag) {
+            return bar();
           }
           return;
         }
@@ -157,7 +182,17 @@ ruleTester.run('consistent-return', rule, {
       class Foo {
         baz(): void {}
         async bar(flag: boolean): Promise<void> {
+          // @ts-expect-error
           if (flag) return baz();
+          return;
+        }
+      }
+    `,
+    `
+      class Foo {
+        baz(): void {}
+        async bar(flag: boolean): Promise<void> {
+          if (flag) return this.baz();
           return;
         }
       }
@@ -287,6 +322,7 @@ ruleTester.run('consistent-return', rule, {
       code: `
         function foo(flag: boolean): Promise<void> {
           if (flag) return Promise.resolve(void 0);
+          // @ts-expect-error
           else return;
         }
       `,
@@ -295,9 +331,9 @@ ruleTester.run('consistent-return', rule, {
           messageId: 'missingReturnValue',
           data: { name: "Function 'foo'" },
           type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
+          line: 5,
           column: 16,
-          endLine: 4,
+          endLine: 5,
           endColumn: 23,
         },
       ],
@@ -305,6 +341,7 @@ ruleTester.run('consistent-return', rule, {
     {
       code: `
         async function foo(flag: boolean): Promise<string> {
+          // @ts-expect-error
           if (flag) return;
           else return 'value';
         }
@@ -314,9 +351,9 @@ ruleTester.run('consistent-return', rule, {
           messageId: 'unexpectedReturnValue',
           data: { name: "Async function 'foo'" },
           type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
+          line: 5,
           column: 16,
-          endLine: 4,
+          endLine: 5,
           endColumn: 31,
         },
       ],
@@ -366,6 +403,7 @@ ruleTester.run('consistent-return', rule, {
           else return 'value';
         }
       `,
+      runTSC: false,
       errors: [
         {
           messageId: 'unexpectedReturnValue',
@@ -385,6 +423,7 @@ ruleTester.run('consistent-return', rule, {
           if (flag) {
             return bar();
           }
+          // @ts-expect-error
           return;
         }
       `,
@@ -393,9 +432,9 @@ ruleTester.run('consistent-return', rule, {
           messageId: 'missingReturnValue',
           data: { name: "Function 'foo'" },
           type: AST_NODE_TYPES.ReturnStatement,
-          line: 7,
+          line: 8,
           column: 11,
-          endLine: 7,
+          endLine: 8,
           endColumn: 18,
         },
       ],

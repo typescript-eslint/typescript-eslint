@@ -56,6 +56,10 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly options?: Readonly<Options>;
   /**
+   * TODO: add description (or maybe even give a better name?)
+   */
+  readonly runTSC?: boolean;
+  /**
    * Settings for the test case.
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;
@@ -63,8 +67,4 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    * Skip this case in supported test frameworks.
    */
   readonly skip?: boolean;
-  /**
-   * TODO: add description (or maybe even give a better name?)
-   */
-  // readonly ignoreTsErrors?: number[] | boolean;
 }
