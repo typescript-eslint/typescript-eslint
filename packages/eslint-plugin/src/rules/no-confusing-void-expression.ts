@@ -7,7 +7,6 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
-  getContextualType,
   getParserServices,
   isClosingParenToken,
   isOpeningParenToken,
@@ -147,7 +146,7 @@ export default createRule<Options, MessageId>({
       const functionType =
         ts.isFunctionExpression(functionTSNode) ||
         ts.isArrowFunction(functionTSNode)
-          ? getContextualType(checker, functionTSNode)
+          ? checker.getContextualType(functionTSNode)
           : services.getTypeAtLocation(functionNode);
 
       if (!functionType) {
