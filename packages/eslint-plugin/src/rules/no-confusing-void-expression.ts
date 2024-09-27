@@ -84,7 +84,7 @@ export default createRule<Options, MessageId>({
           },
           ignoreVoidReturningFunctions: {
             description:
-              'Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types',
+              'Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types.',
             type: 'boolean',
           },
         },
