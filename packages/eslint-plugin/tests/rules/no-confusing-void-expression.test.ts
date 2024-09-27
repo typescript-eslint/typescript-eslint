@@ -145,9 +145,160 @@ const f = (): void => console.log('bar');
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
+function test(): void {
+  {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const data = {
+  test(): void {
+    return console.log('foo');
+  },
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+class Foo {
+  test(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test() {
+  function nestedTest(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      code: `
+type Foo = () => void;
+const test = (() => console.log()) as Foo;
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: () => void;
+};
+const test: Foo = {
+  foo: () => console.log(),
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+const test = {
+  foo: () => console.log(),
+} as {
+  foo: () => void;
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+const test: {
+  foo: () => void;
+} = {
+  foo: () => console.log(),
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: { bar: () => void };
+};
+const test = {
+  foo: { bar: () => console.log() },
+} as Foo;
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: { bar: () => void };
+};
+const test: Foo = {
+  foo: { bar: () => console.log() },
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type MethodType = () => void;
+class App {
+  private method: MethodType = () => console.log();
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+interface Foo {
+  foo: () => void;
+}
+function bar(): Foo {
+  return {
+    foo: () => console.log(),
+  };
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type HigherOrderType = () => () => () => void;
+const x: HigherOrderType = () => () => () => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: () => void;
+};
+const test = {
+  foo: () => console.log(),
+} as Foo;
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
 type Foo = () => void;
 const test: Foo = () => console.log('foo');
       `,
+    },
+    {
+      code: 'const foo = <button onClick={() => console.log()} />;',
+      options: [{ ignoreVoidReturningFunctions: true }],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
     },
     {
       options: [{ ignoreVoidReturningFunctions: true }],
@@ -206,13 +357,6 @@ function bar(): Foo {
     foo: () => console.log(),
   };
 }
-      `,
-    },
-    {
-      options: [{ ignoreVoidReturningFunctions: true }],
-      code: `
-type HigherOrderType = () => () => () => void;
-const x: HigherOrderType = () => () => () => console.log();
       `,
     },
     {
