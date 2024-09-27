@@ -118,19 +118,25 @@ export default createRule<Options, MessageId>({
       return null;
     }
 
-    function functionTypeReturnsVoid(functionType: ts.Type): boolean {
+    function isVoidReturningFunctionType(functionType: ts.Type): boolean {
       const callSignatures = tsutils.getCallSignaturesOfType(functionType);
 
       return callSignatures.some(signature => {
         const returnType = signature.getReturnType();
 
+        if (tsutils.isIntersectionType(returnType)) {
+          return tsutils
+            .unionTypeParts(returnType)
+            .every(tsutils.isIntrinsicVoidType);
+        }
+
         return tsutils
           .unionTypeParts(returnType)
-          .some(part => tsutils.isTypeFlagSet(part, ts.TypeFlags.VoidLike));
+          .some(tsutils.isIntrinsicVoidType);
       });
     }
 
-    function functionReturnsVoid(
+    function isVoidReturningFunctionNode(
       functionNode:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
@@ -138,29 +144,35 @@ export default createRule<Options, MessageId>({
     ): boolean {
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
-      let functionType =
+      const functionType =
         ts.isFunctionExpression(functionTSNode) ||
         ts.isArrowFunction(functionTSNode)
           ? getContextualType(checker, functionTSNode)
           : services.getTypeAtLocation(functionNode);
 
       if (!functionType) {
-        functionType = services.getTypeAtLocation(functionNode);
+        if (!functionTSNode.type) {
+          return false;
+        }
+
+        const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
+
+        return tsutils
+          .intersectionTypeParts(returnType)
+          .some(tsutils.isIntrinsicVoidType);
       }
 
       const functionTypeParts = tsutils.unionTypeParts(functionType);
 
-      const returnsVoid = functionTypeParts.some(part => {
+      return functionTypeParts.some(part => {
         if (tsutils.isIntersectionType(part)) {
           return tsutils
             .intersectionTypeParts(part)
-            .every(functionTypeReturnsVoid);
+            .every(isVoidReturningFunctionType);
         }
 
-        return functionTypeReturnsVoid(part);
+        return isVoidReturningFunctionType(part);
       });
-
-      return returnsVoid;
     }
 
     return {
@@ -191,7 +203,7 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
 
-          const returnsVoid = functionReturnsVoid(invalidAncestor);
+          const returnsVoid = isVoidReturningFunctionNode(invalidAncestor);
 
           if (returnsVoid) {
             return;
@@ -258,7 +270,7 @@ export default createRule<Options, MessageId>({
             return;
           }
 
-          const returnsVoid = functionReturnsVoid(functionNode);
+          const returnsVoid = isVoidReturningFunctionNode(functionNode);
 
           if (returnsVoid) {
             return;
