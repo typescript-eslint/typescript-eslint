@@ -96,7 +96,10 @@ export default tseslint.config(
     },
     linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
-      '@typescript-eslint/no-confusing-void-expression': 'error',
+      '@typescript-eslint/no-confusing-void-expression': [
+        'error',
+        { ignoreVoidReturningFunctions: true },
+      ],
 
       //
       // our plugin :D
