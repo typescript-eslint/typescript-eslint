@@ -7,6 +7,7 @@ import type { MakeRequired } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getContextualType,
   getParserServices,
   isClosingParenToken,
   isOpeningParenToken,
@@ -91,6 +92,77 @@ export default createRule<Options, MessageId>({
   defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
 
   create(context, [options]) {
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
+
+    function getParentFunctionNode(
+      node: TSESTree.Node,
+    ):
+      | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression
+      | null {
+      let current = node.parent;
+      while (current) {
+        if (
+          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          current.type === AST_NODE_TYPES.FunctionDeclaration ||
+          current.type === AST_NODE_TYPES.FunctionExpression
+        ) {
+          return current;
+        }
+
+        current = current.parent;
+      }
+
+      return null;
+    }
+
+    function functionTypeReturnsVoid(functionType: ts.Type): boolean {
+      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
+
+      return callSignatures.some(signature => {
+        const returnType = signature.getReturnType();
+
+        return tsutils
+          .unionTypeParts(returnType)
+          .some(part => tsutils.isTypeFlagSet(part, ts.TypeFlags.VoidLike));
+      });
+    }
+
+    function functionReturnsVoid(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
+
+      let functionType =
+        ts.isFunctionExpression(functionTSNode) ||
+        ts.isArrowFunction(functionTSNode)
+          ? getContextualType(checker, functionTSNode)
+          : services.getTypeAtLocation(functionNode);
+
+      if (!functionType) {
+        functionType = services.getTypeAtLocation(functionNode);
+      }
+
+      const functionTypeParts = tsutils.unionTypeParts(functionType);
+
+      const returnsVoid = functionTypeParts.some(part => {
+        if (tsutils.isIntersectionType(part)) {
+          return tsutils
+            .intersectionTypeParts(part)
+            .every(functionTypeReturnsVoid);
+        }
+
+        return functionTypeReturnsVoid(part);
+      });
+
+      return returnsVoid;
+    }
+
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
         node:
@@ -98,7 +170,6 @@ export default createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const services = getParserServices(context);
         const type = getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
@@ -119,6 +190,12 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
+
+          const returnsVoid = functionReturnsVoid(invalidAncestor);
+
+          if (returnsVoid) {
+            return;
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
@@ -174,6 +251,18 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
+
+          const functionNode = getParentFunctionNode(invalidAncestor);
+
+          if (!functionNode) {
+            return;
+          }
+
+          const returnsVoid = functionReturnsVoid(functionNode);
+
+          if (returnsVoid) {
+            return;
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
@@ -378,8 +467,6 @@ export default createRule<Options, MessageId>({
     function canFix(
       node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
     ): boolean {
-      const services = getParserServices(context);
-
       const targetNode =
         node.type === AST_NODE_TYPES.ReturnStatement
           ? node.argument
