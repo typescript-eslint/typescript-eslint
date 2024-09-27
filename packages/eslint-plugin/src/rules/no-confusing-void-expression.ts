@@ -143,17 +143,7 @@ export default createRule<Options, MessageId>({
     ): boolean {
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
-      const functionType =
-        ts.isFunctionExpression(functionTSNode) ||
-        ts.isArrowFunction(functionTSNode)
-          ? checker.getContextualType(functionTSNode)
-          : services.getTypeAtLocation(functionNode);
-
-      if (!functionType) {
-        if (!functionTSNode.type) {
-          return false;
-        }
-
+      if (functionTSNode.type) {
         const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
 
         return tsutils
@@ -161,17 +151,30 @@ export default createRule<Options, MessageId>({
           .some(tsutils.isIntrinsicVoidType);
       }
 
-      const functionTypeParts = tsutils.unionTypeParts(functionType);
+      if (
+        ts.isFunctionExpression(functionTSNode) ||
+        ts.isArrowFunction(functionTSNode)
+      ) {
+        const functionType = checker.getContextualType(functionTSNode);
 
-      return functionTypeParts.some(part => {
-        if (tsutils.isIntersectionType(part)) {
-          return tsutils
-            .intersectionTypeParts(part)
-            .every(isVoidReturningFunctionType);
+        if (!functionType) {
+          return false;
         }
 
-        return isVoidReturningFunctionType(part);
-      });
+        const functionTypeParts = tsutils.unionTypeParts(functionType);
+
+        return functionTypeParts.some(part => {
+          if (tsutils.isIntersectionType(part)) {
+            return tsutils
+              .intersectionTypeParts(part)
+              .every(isVoidReturningFunctionType);
+          }
+
+          return isVoidReturningFunctionType(part);
+        });
+      }
+
+      return false;
     }
 
     return {
@@ -265,14 +268,12 @@ export default createRule<Options, MessageId>({
 
           const functionNode = getParentFunctionNode(invalidAncestor);
 
-          if (!functionNode) {
-            return;
-          }
+          if (functionNode) {
+            const returnsVoid = isVoidReturningFunctionNode(functionNode);
 
-          const returnsVoid = isVoidReturningFunctionNode(functionNode);
-
-          if (returnsVoid) {
-            return;
+            if (returnsVoid) {
+              return;
+            }
           }
 
           if (options.ignoreVoidOperator) {
