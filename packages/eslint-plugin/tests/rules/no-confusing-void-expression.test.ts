@@ -215,6 +215,31 @@ type HigherOrderType = () => () => () => void;
 const x: HigherOrderType = () => () => () => console.log();
       `,
     },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): void & void {
+  return console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = void;
+declare function foo(): Foo;
+function test(): Foo {
+  return foo();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = void;
+const test = (): Foo => console.log('err');
+      `,
+    },
   ],
 
   invalid: [
@@ -586,6 +611,114 @@ function notcool(input: string) {
               output: "!!void console.log('foo');",
             },
           ],
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = () => void;
+
+const test1: Foo = function () {
+  function testtt() {
+    return console.log();
+  }
+};
+      `,
+      output: `
+type Foo = () => void;
+
+const test1: Foo = function () {
+  function testtt() {
+    console.log();
+  }
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const test2 = function () {
+  function testtt() {
+    return console.log();
+  }
+};
+      `,
+      output: `
+const test2 = function () {
+  function testtt() {
+    console.log();
+  }
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+return console.log('foo');
+      `,
+      output: `
+{ console.log('foo'); return; }
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 8,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function foo(): void {
+  () => () => console.log();
+}
+      `,
+      output: `
+function foo(): void {
+  () => () => { console.log(); };
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 15,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function foo(): any {
+  () => () => console.log();
+}
+      `,
+      output: `
+function foo(): any {
+  () => () => { console.log(); };
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 15,
+          messageId: 'invalidVoidExprArrow',
         },
       ],
     },
