@@ -96,8 +96,7 @@ export default tseslint.config(
     },
     linterOptions: { reportUnusedDisableDirectives: 'error' },
     rules: {
-      // TODO: https://github.com/typescript-eslint/typescript-eslint/issues/8538
-      '@typescript-eslint/no-confusing-void-expression': 'off',
+      '@typescript-eslint/no-confusing-void-expression': 'error',
 
       //
       // our plugin :D
