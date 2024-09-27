@@ -80,7 +80,7 @@
     "id": "GitBook",
     "image": "https://images.opencollective.com/gitbook/820419f/logo.png",
     "name": "GitBook",
-    "totalDonations": 150000,
+    "totalDonations": 160000,
     "website": "https://www.gitbook.com"
   },
   {
@@ -245,6 +245,13 @@
     "website": "https://www.0x.se"
   },
   {
+    "id": "Trevor Burnham",
+    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
+    "name": "Trevor Burnham",
+    "totalDonations": 21000,
+    "website": "https://trevorburnham.com"
+  },
+  {
     "id": "David Johnston",
     "image": "https://images.opencollective.com/blacksheepcode/f186c05/avatar.png",
     "name": "David Johnston",
@@ -257,13 +264,6 @@
     "name": "Corellium",
     "totalDonations": 20400,
     "website": "https://www.corellium.com"
-  },
-  {
-    "id": "Trevor Burnham",
-    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
-    "name": "Trevor Burnham",
-    "totalDonations": 20000,
-    "website": "https://trevorburnham.com"
   },
   {
     "id": "kartenmacherei",
