@@ -867,7 +867,7 @@ function foo(): void {
     },
     {
       code: `
-function foo(): void {
+function test(): void {
   () => () => console.log();
 }
       `,
@@ -880,7 +880,7 @@ function foo(): void {
         },
       ],
       output: `
-function foo(): void {
+function test(): void {
   () => () => { console.log(); };
 }
       `,
@@ -923,7 +923,7 @@ type Foo = unknown;
     },
     {
       code: `
-function foo(): any {
+function test(): any {
   () => () => console.log();
 }
       `,
@@ -936,7 +936,7 @@ function foo(): any {
         },
       ],
       output: `
-function foo(): any {
+function test(): any {
   () => () => { console.log(); };
 }
       `,
@@ -983,74 +983,74 @@ function test(): any {
     },
     {
       code: `
-type HigherOrderType = () => any;
-(): HigherOrderType => () => console.log();
+type Foo = () => any;
+(): Foo => () => console.log();
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
       errors: [
         {
           line: 3,
-          column: 30,
+          column: 18,
           messageId: 'invalidVoidExprArrow',
         },
       ],
       output: `
-type HigherOrderType = () => any;
-(): HigherOrderType => () => { console.log(); };
+type Foo = () => any;
+(): Foo => () => { console.log(); };
       `,
     },
     {
       code: `
-type HigherOrderType = () => unknown;
-(): HigherOrderType => () => console.log();
+type Foo = () => unknown;
+(): Foo => () => console.log();
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
       errors: [
         {
           line: 3,
-          column: 30,
+          column: 18,
           messageId: 'invalidVoidExprArrow',
         },
       ],
       output: `
-type HigherOrderType = () => unknown;
-(): HigherOrderType => () => { console.log(); };
+type Foo = () => unknown;
+(): Foo => () => { console.log(); };
       `,
     },
     {
       code: `
-type HigherOrderType = () => any;
-const x: HigherOrderType = () => console.log();
+type Foo = () => any;
+const test: Foo = () => console.log();
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
       errors: [
         {
           line: 3,
-          column: 34,
+          column: 25,
           messageId: 'invalidVoidExprArrow',
         },
       ],
       output: `
-type HigherOrderType = () => any;
-const x: HigherOrderType = () => { console.log(); };
+type Foo = () => any;
+const test: Foo = () => { console.log(); };
       `,
     },
     {
       code: `
-type HigherOrderType = () => unknown;
-const x: HigherOrderType = () => console.log();
+type Foo = () => unknown;
+const test: Foo = () => console.log();
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
       errors: [
         {
           line: 3,
-          column: 34,
+          column: 25,
           messageId: 'invalidVoidExprArrow',
         },
       ],
       output: `
-type HigherOrderType = () => unknown;
-const x: HigherOrderType = () => { console.log(); };
+type Foo = () => unknown;
+const test: Foo = () => { console.log(); };
       `,
     },
     {
@@ -1058,8 +1058,8 @@ const x: HigherOrderType = () => { console.log(); };
       code: `
 type Foo = () => void;
 
-const test1: Foo = function () {
-  function testtt() {
+const foo: Foo = function () {
+  function bar() {
     return console.log();
   }
 };
@@ -1067,8 +1067,8 @@ const test1: Foo = function () {
       output: `
 type Foo = () => void;
 
-const test1: Foo = function () {
-  function testtt() {
+const foo: Foo = function () {
+  function bar() {
     console.log();
   }
 };
@@ -1084,15 +1084,15 @@ const test1: Foo = function () {
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-const test2 = function () {
-  function testtt() {
+const foo = function () {
+  function bar() {
     return console.log();
   }
 };
       `,
       output: `
-const test2 = function () {
-  function testtt() {
+const foo = function () {
+  function bar() {
     console.log();
   }
 };
@@ -1124,9 +1124,9 @@ return console.log('foo');
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-export function test(): void;
-export function test(arg: string): any;
-export function test(arg?: string): any | void {
+function test(): void;
+function test(arg: string): any;
+function test(arg?: string): any | void {
   if (arg) {
     return arg;
   }
@@ -1134,9 +1134,9 @@ export function test(arg?: string): any | void {
 }
       `,
       output: `
-export function test(): void;
-export function test(arg: string): any;
-export function test(arg?: string): any | void {
+function test(): void;
+function test(arg: string): any;
+function test(arg?: string): any | void {
   if (arg) {
     return arg;
   }
