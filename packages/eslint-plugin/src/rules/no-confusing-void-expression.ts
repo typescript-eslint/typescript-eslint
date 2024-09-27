@@ -14,11 +14,13 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { getParentFunctionNode } from '../util/getParentFunctionNode';
 
 export type Options = [
   {
     ignoreArrowShorthand?: boolean;
     ignoreVoidOperator?: boolean;
+    ignoreVoidReturningFunctions?: boolean;
   },
 ];
 
@@ -80,6 +82,11 @@ export default createRule<Options, MessageId>({
               'Whether to ignore returns that start with the `void` operator.',
             type: 'boolean',
           },
+          ignoreVoidReturningFunctions: {
+            description:
+              'Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -93,89 +100,6 @@ export default createRule<Options, MessageId>({
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-
-    function getParentFunctionNode(
-      node: TSESTree.Node,
-    ):
-      | TSESTree.ArrowFunctionExpression
-      | TSESTree.FunctionDeclaration
-      | TSESTree.FunctionExpression
-      | null {
-      let current = node.parent;
-      while (current) {
-        if (
-          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          current.type === AST_NODE_TYPES.FunctionDeclaration ||
-          current.type === AST_NODE_TYPES.FunctionExpression
-        ) {
-          return current;
-        }
-
-        current = current.parent;
-      }
-
-      return null;
-    }
-
-    function isVoidReturningFunctionType(functionType: ts.Type): boolean {
-      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
-
-      return callSignatures.some(signature => {
-        const returnType = signature.getReturnType();
-
-        if (tsutils.isIntersectionType(returnType)) {
-          return tsutils
-            .unionTypeParts(returnType)
-            .every(tsutils.isIntrinsicVoidType);
-        }
-
-        return tsutils
-          .unionTypeParts(returnType)
-          .some(tsutils.isIntrinsicVoidType);
-      });
-    }
-
-    function isVoidReturningFunctionNode(
-      functionNode:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
-    ): boolean {
-      const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
-
-      if (functionTSNode.type) {
-        const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
-
-        return tsutils
-          .intersectionTypeParts(returnType)
-          .some(tsutils.isIntrinsicVoidType);
-      }
-
-      if (
-        ts.isFunctionExpression(functionTSNode) ||
-        ts.isArrowFunction(functionTSNode)
-      ) {
-        const functionType = checker.getContextualType(functionTSNode);
-
-        if (!functionType) {
-          return false;
-        }
-
-        const functionTypeParts = tsutils.unionTypeParts(functionType);
-
-        return functionTypeParts.some(part => {
-          if (tsutils.isIntersectionType(part)) {
-            return tsutils
-              .intersectionTypeParts(part)
-              .every(isVoidReturningFunctionType);
-          }
-
-          return isVoidReturningFunctionType(part);
-        });
-      }
-
-      return false;
-    }
 
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
@@ -205,10 +129,12 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
 
-          const returnsVoid = isVoidReturningFunctionNode(invalidAncestor);
+          if (options.ignoreVoidReturningFunctions) {
+            const returnsVoid = isVoidReturningFunctionNode(invalidAncestor);
 
-          if (returnsVoid) {
-            return;
+            if (returnsVoid) {
+              return;
+            }
           }
 
           if (options.ignoreVoidOperator) {
@@ -266,13 +192,15 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
 
-          const functionNode = getParentFunctionNode(invalidAncestor);
+          if (options.ignoreVoidReturningFunctions) {
+            const functionNode = getParentFunctionNode(invalidAncestor);
 
-          if (functionNode) {
-            const returnsVoid = isVoidReturningFunctionNode(functionNode);
+            if (functionNode) {
+              const returnsVoid = isVoidReturningFunctionNode(functionNode);
 
-            if (returnsVoid) {
-              return;
+              if (returnsVoid) {
+                return;
+              }
             }
           }
 
@@ -486,6 +414,57 @@ export default createRule<Options, MessageId>({
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+    }
+
+    function isVoidReturningFunctionType(functionType: ts.Type): boolean {
+      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
+
+      return callSignatures.some(signature => {
+        const returnType = signature.getReturnType();
+
+        return tsutils
+          .unionTypeParts(returnType)
+          .some(tsutils.isIntrinsicVoidType);
+      });
+    }
+
+    function isVoidReturningFunctionNode(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      // Game plan:
+      //   - If the function has a type annotation, check if it includes `void`
+      //   - Otherwise, check if a function is a function expression or an arrow function
+      //   - If it is, get its contextual type, bail if we cannot get its contextual type
+      //   - Return based on whether the contextual type includes `void`
+      //   - Otherwise, report the function as a non `void` returning function
+
+      const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
+
+      if (functionTSNode.type) {
+        const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
+
+        return tsutils
+          .unionTypeParts(returnType)
+          .some(tsutils.isIntrinsicVoidType);
+      }
+
+      if (
+        ts.isFunctionExpression(functionTSNode) ||
+        ts.isArrowFunction(functionTSNode)
+      ) {
+        const functionType = checker.getContextualType(functionTSNode);
+
+        if (functionType) {
+          return tsutils
+            .unionTypeParts(functionType)
+            .some(isVoidReturningFunctionType);
+        }
+      }
+
+      return false;
     }
   },
 });

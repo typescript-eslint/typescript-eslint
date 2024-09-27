@@ -1,5 +1,4 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -17,6 +16,7 @@ import {
   isTypeUnknownType,
   isUnsafeAssignment,
 } from '../util';
+import { getParentFunctionNode } from '../util/getParentFunctionNode';
 
 export default createRule({
   name: 'no-unsafe-return',
@@ -47,31 +47,6 @@ export default createRule({
       compilerOptions,
       'noImplicitThis',
     );
-
-    function getParentFunctionNode(
-      node: TSESTree.Node,
-    ):
-      | TSESTree.ArrowFunctionExpression
-      | TSESTree.FunctionDeclaration
-      | TSESTree.FunctionExpression
-      | null {
-      let current = node.parent;
-      while (current) {
-        if (
-          current.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          current.type === AST_NODE_TYPES.FunctionDeclaration ||
-          current.type === AST_NODE_TYPES.FunctionExpression
-        ) {
-          return current;
-        }
-
-        current = current.parent;
-      }
-
-      // this shouldn't happen in correct code, but someone may attempt to parse bad code
-      // the parser won't error, so we shouldn't throw here
-      /* istanbul ignore next */ return null;
-    }
 
     function checkReturn(
       returnNode: TSESTree.Node,
