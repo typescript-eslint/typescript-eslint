@@ -416,7 +416,7 @@ export default createRule<Options, MessageId>({
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
 
-    function isVoidReturningFunctionType(functionType: ts.Type): boolean {
+    function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
       const callSignatures = tsutils.getCallSignaturesOfType(functionType);
 
       return callSignatures.some(signature => {
@@ -460,7 +460,7 @@ export default createRule<Options, MessageId>({
         if (functionType) {
           return tsutils
             .unionTypeParts(functionType)
-            .some(isVoidReturningFunctionType);
+            .some(isFunctionReturnTypeIncludesVoid);
         }
       }
 
