@@ -123,7 +123,7 @@ function cool(input: string) {
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-function f(): void {
+function test(): void {
   return console.log('bar');
 }
       `,
@@ -131,7 +131,7 @@ function f(): void {
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-const f = (): void => {
+const test = (): void => {
   return console.log('bar');
 };
       `,
@@ -139,7 +139,7 @@ const f = (): void => {
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-const f = (): void => console.log('bar');
+const test = (): void => console.log('bar');
       `,
     },
     {
@@ -155,7 +155,7 @@ function test(): void {
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-const data = {
+const obj = {
   test(): void {
     return console.log('foo');
   },
@@ -225,6 +225,7 @@ const test: {
 type Foo = {
   foo: { bar: () => void };
 };
+
 const test = {
   foo: { bar: () => console.log() },
 } as Foo;
@@ -236,6 +237,7 @@ const test = {
 type Foo = {
   foo: { bar: () => void };
 };
+
 const test: Foo = {
   foo: { bar: () => console.log() },
 };
@@ -245,6 +247,7 @@ const test: Foo = {
     {
       code: `
 type MethodType = () => void;
+
 class App {
   private method: MethodType = () => console.log();
 }
@@ -256,6 +259,7 @@ class App {
 interface Foo {
   foo: () => void;
 }
+
 function bar(): Foo {
   return {
     foo: () => console.log(),
@@ -266,8 +270,8 @@ function bar(): Foo {
     },
     {
       code: `
-type HigherOrderType = () => () => () => void;
-const x: HigherOrderType = () => () => () => console.log();
+type Foo = () => () => () => void;
+const x: Foo = () => () => () => console.log();
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
     },
@@ -276,6 +280,7 @@ const x: HigherOrderType = () => () => () => console.log();
 type Foo = {
   foo: () => void;
 };
+
 const test = {
   foo: () => console.log(),
 } as Foo;
@@ -338,25 +343,11 @@ foo({ cb: () => console.log() });
     {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
-const q = {
+const obj = {
   foo: { bar: () => console.log() },
 } as {
   foo: { bar: () => void };
 };
-      `,
-    },
-    {
-      options: [{ ignoreVoidReturningFunctions: true }],
-      code: `
-interface Foo {
-  foo: () => void;
-}
-
-function bar(): Foo {
-  return {
-    foo: () => console.log(),
-  };
-}
       `,
     },
     {
@@ -371,7 +362,9 @@ function test(): void & void {
       options: [{ ignoreVoidReturningFunctions: true }],
       code: `
 type Foo = void;
+
 declare function foo(): Foo;
+
 function test(): Foo {
   return foo();
 }
