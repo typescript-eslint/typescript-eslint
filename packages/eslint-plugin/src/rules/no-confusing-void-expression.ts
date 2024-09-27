@@ -436,9 +436,9 @@ export default createRule<Options, MessageId>({
     ): boolean {
       // Game plan:
       //   - If the function node has a type annotation, check if it includes `void`.
-      //     - If it does, then the function is safe to return `void` expressions in.
+      //     - If it does then the function is safe to return `void` expressions in.
       //   - Otherwise, check if the function is a function-expression or an arrow-function.
-      //   -   If it is, get its contextual type and bail if we cannot get it.
+      //   -   If it is, get its contextual type and bail if we cannot.
       //   - Return based on whether the contextual type includes `void` or not
 
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
