@@ -4,16 +4,18 @@ exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLin
 "Incorrect
 
 const str = 'Test';
+const string1 = 'string1';
+const string2 = 'string2';
+
 enum Invalid {
   A = str, // Variable assignment
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
-  B = {}, // Object assignment
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
-  C = \`A template literal string\`, // Template literal
-  D = new Set(1, 2, 3), // Constructor in assignment
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
-  E = 2 + 2, // Expression assignment
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
+  B = \`Interpolates \${string1} and \${string2}\`, // Template literal with interpolation
+  ~ Explicit enum value must only be a literal value (string or number).
+  C = 2 + 2, // Expression assignment
+  ~ Explicit enum value must only be a literal value (string or number).
+  D = C, // Assignment to another enum member
+  ~ Explicit enum value must only be a literal value (string or number).
 }
 "
 `;
@@ -22,11 +24,10 @@ exports[`Validating rule docs prefer-literal-enum-member.mdx code examples ESLin
 "Correct
 
 enum Valid {
-  A,
+  A, // No initializer; initialized with ascending integers starting from 0
   B = 'TestStr', // A regular string
-  C = 4, // A number
-  D = null,
-  E = /some_regex/,
+  C = \`A template literal string\`, // A template literal without interpolation
+  D = 4, // A number
 }
 "
 `;
@@ -38,19 +39,19 @@ Options: { "allowBitwiseExpressions": true }
 const x = 1;
 enum Foo {
   A = x << 0,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
   B = x >> 0,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
   C = x >>> 0,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
   D = x | 0,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
   E = x & 0,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
   F = x ^ 0,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
   G = ~x,
-  ~ Explicit enum value must only be a literal value (string, number, boolean, etc).
+  ~ Explicit enum value must only be a literal value (string or number).
 }
 "
 `;
