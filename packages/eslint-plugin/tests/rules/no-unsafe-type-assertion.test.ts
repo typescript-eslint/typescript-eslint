@@ -25,12 +25,79 @@ declare const a: string;
 const b = a as unknown;
     `,
     `
+declare const a: string;
+const b = a as any;
+    `,
+    `
+declare const a: string;
+const b = a as string | number as string | number | boolean;
+    `,
+    `
+declare const a: string;
+const b = a as any as number;
+    `,
+    `
 declare const a: () => boolean;
-const b = a() as boolean | number | string;
+const b = a() as boolean | number;
+    `,
+    `
+declare const a: () => boolean;
+const b = a() as boolean | number as boolean | number | string;
     `,
     `
 declare const a: string;
 const b = a as string;
+    `,
+    `
+declare const a: () => string;
+const b = a() as string;
+    `,
+    `
+declare const a: () => string;
+const b = a as (() => string) | (() => number);
+    `,
+    `
+declare const a: () => string;
+const b = a as (() => string) | ((x: number) => string);
+    `,
+    `
+declare const a: () => string;
+const b = a as () => string | number;
+    `,
+    `
+declare const a: { hello: 'world' };
+const b = a as { hello: string };
+    `,
+    `
+declare const foo = 'hello' as const;
+foo() as string;
+    `,
+    `
+declare const foo: () => string | undefined;
+foo()!;
+    `,
+    `
+declare const foo: { bar?: { bazz: string } };
+(foo.bar as { bazz: string | boolean } | undefined)?.bazz;
+    `,
+    `
+function foo(a: string) {
+  return a as string | number;
+}
+    `,
+    `
+function foo<T extends boolean>(a: T) {
+  return a as boolean | number;
+}
+    `,
+    `
+function foo<T extends boolean>(a: T) {
+  return a as T | number;
+}
+    `,
+    `
+declare const a: { hello: string } & { world: string };
+const b = a as { hello: string };
     `,
     `
 declare const a: string;
@@ -41,24 +108,75 @@ declare const a: string;
 const b = <unknown>a;
     `,
     `
+declare const a: string;
+const b = <any>a;
+    `,
+    `
+declare const a: string;
+const b = <string | number | boolean>(<string | number>a);
+    `,
+    `
+declare const a: string;
+const b = <number>(<any>a);
+    `,
+    `
 declare const a: () => boolean;
-const b = <boolean | number | string>a();
+const b = <boolean | number>a();
+    `,
+    `
+declare const a: () => boolean;
+const b = boolean | number | string(<boolean | number>a());
     `,
     `
 declare const a: string;
 const b = <string>a;
     `,
     `
-declare const foo: () => string | undefined;
-foo()!;
+declare const a: () => string;
+const b = <string>a();
     `,
     `
-declare const foo = 'hello' as const;
-foo() as string;
+declare const a: () => string;
+const b = <(() => string) | (() => number)>a;
+    `,
+    `
+declare const a: () => string;
+const b = <(() => string) | ((x: number) => string)>a;
+    `,
+    `
+declare const a: () => string;
+const b = <() => string | number>a;
+    `,
+    `
+declare const a: { hello: 'world' };
+const b = <{ hello: string }>a;
+    `,
+    `
+declare const foo = <const>'hello';
+<string>foo();
     `,
     `
 declare const foo: { bar?: { bazz: string } };
-(foo.bar as { bazz: string | boolean } | undefined)?.bazz;
+(<{ bazz: string | boolean } | undefined>foo.bar)?.bazz;
+    `,
+    `
+function foo(a: string) {
+  return <string | number>a;
+}
+    `,
+    `
+function foo<T extends boolean>(a: T) {
+  return <boolean | number>a;
+}
+    `,
+    `
+function foo<T extends boolean>(a: T) {
+  return <T | number>a;
+}
+    `,
+    `
+declare const a: { hello: string } & { world: string };
+const b = <{ hello: string }>a;
     `,
   ],
   invalid: [
@@ -118,6 +236,52 @@ const b = a as string | boolean;
     },
     {
       code: `
+declare const a: string;
+const b = a as string | boolean as boolean;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 43,
+          data: {
+            type: 'string | boolean',
+            asserted: 'boolean',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: string;
+const b = a as 'foo' as 'bar';
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 30,
+          data: {
+            type: '"foo"',
+            asserted: '"bar"',
+          },
+        },
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 21,
+          data: {
+            type: 'string',
+            asserted: '"foo"',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 function f(t: number | string) {
   return t as number | boolean;
 }
@@ -131,6 +295,62 @@ function f(t: number | string) {
           data: {
             type: 'string | number',
             asserted: 'number | boolean',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends number | string>(t: T) {
+  return t as number | boolean;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 10,
+          endColumn: 31,
+          data: {
+            type: 'string | number',
+            asserted: 'number | boolean',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends number | string>(t: T) {
+  return t as Omit<T, number>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 10,
+          endColumn: 30,
+          data: {
+            type: 'string | number',
+            asserted: 'Omit<T, number>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: () => string | boolean;
+const b = a as () => string | number;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 37,
+          data: {
+            type: '() => string | boolean',
+            asserted: '() => string | number',
           },
         },
       ],
@@ -311,6 +531,24 @@ const bar = foo as number[];
     },
     {
       code: `
+declare const foo: { hello: string } & { world: string };
+const bar = foo as { hello: string; world: 'world' };
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 13,
+          endColumn: 53,
+          data: {
+            type: '{ hello: string; } & { world: string; }',
+            asserted: '{ hello: string; world: "world"; }',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 declare const a: string | number;
 const b = <string>a;
       `,
@@ -365,6 +603,52 @@ const b = <string | boolean>a;
     },
     {
       code: `
+declare const a: string;
+const b = <boolean>(<string | boolean>a);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 41,
+          data: {
+            type: 'string | boolean',
+            asserted: 'boolean',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: string;
+const b = <'bar'>(<'foo'>a);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 28,
+          data: {
+            type: '"foo"',
+            asserted: '"bar"',
+          },
+        },
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 19,
+          endColumn: 27,
+          data: {
+            type: 'string',
+            asserted: '"foo"',
+          },
+        },
+      ],
+    },
+    {
+      code: `
 function f(t: number | string) {
   return <number | boolean>t;
 }
@@ -378,6 +662,62 @@ function f(t: number | string) {
           data: {
             type: 'string | number',
             asserted: 'number | boolean',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends number | string>(t: T) {
+  return <number | boolean>t;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 10,
+          endColumn: 29,
+          data: {
+            type: 'string | number',
+            asserted: 'number | boolean',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends number | string>(t: T) {
+  return <Omit<T, number>>t;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 10,
+          endColumn: 28,
+          data: {
+            type: 'string | number',
+            asserted: 'Omit<T, number>',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: () => string | boolean;
+const b = <() => string | number>a;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 11,
+          endColumn: 35,
+          data: {
+            type: '() => string | boolean',
+            asserted: '() => string | number',
           },
         },
       ],
@@ -552,6 +892,24 @@ const bar = <number[]>foo;
           data: {
             type: 'readonly number[]',
             asserted: 'number[]',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: { hello: string } & { world: string };
+const bar = <{ hello: string; world: 'world' }>foo;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTypeAssertion',
+          line: 3,
+          column: 13,
+          endColumn: 51,
+          data: {
+            type: '{ hello: string; } & { world: string; }',
+            asserted: '{ hello: string; world: "world"; }',
           },
         },
       ],
