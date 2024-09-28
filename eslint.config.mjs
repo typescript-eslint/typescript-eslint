@@ -113,8 +113,10 @@ export default tseslint.config(
           minimumDescriptionLength: 5,
         },
       ],
+      // TODO: enable it once we drop support for TS<5.0
+      // https://github.com/typescript-eslint/typescript-eslint/issues/10065
       '@typescript-eslint/consistent-type-exports': [
-        'error',
+        'off', // 'error',
         { fixMixedExportsWithInlineTypeSpecifier: true },
       ],
       '@typescript-eslint/consistent-type-imports': [
