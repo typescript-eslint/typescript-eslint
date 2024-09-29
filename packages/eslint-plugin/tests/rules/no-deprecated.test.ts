@@ -253,6 +253,20 @@ ruleTester.run('no-deprecated', rule, {
       },
     },
     'call();',
+
+    // this test is to ensure the rule doesn't crash when class implements itself
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10031
+    `
+      class Foo implements Foo {
+        get bar(): number {
+          return 42;
+        }
+
+        baz(): number {
+          return this.bar;
+        }
+      }
+    `,
   ],
   invalid: [
     {
