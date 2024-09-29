@@ -514,7 +514,7 @@ describe('parseAndGenerateServices', () => {
         it('extension matching the file name but not a file on disk', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', [
-              'unknown',
+              '.unknown',
             ]),
           ).toThrow(
             /unknownFileType\.unknown was not found by the project service/,
