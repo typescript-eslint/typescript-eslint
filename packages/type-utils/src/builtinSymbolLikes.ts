@@ -1,3 +1,4 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
@@ -157,6 +158,16 @@ export function isBuiltinSymbolLikeRecurser(
     return type.types.every(t =>
       isBuiltinSymbolLikeRecurser(program, t, predicate),
     );
+  }
+  // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
+  if ((tsutils.isTypeParameter as (type: ts.Type) => boolean)(type)) {
+    const t = type.getConstraint();
+
+    if (t) {
+      return isBuiltinSymbolLikeRecurser(program, t, predicate);
+    }
+
+    return false;
   }
 
   const predicateResult = predicate(type);

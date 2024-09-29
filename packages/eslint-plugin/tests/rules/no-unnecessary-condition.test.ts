@@ -894,7 +894,103 @@ class ConsistentRand {
 }
       `,
     },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+
+assert(Math.random() > 0.5);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(Math.random() > 0.5, true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // should not report because option is disabled.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(Math.random());
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[]);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // ok to report if we start unpacking spread params one day.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[], {});
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+declare const a: string;
+assertString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
   ],
+
   invalid: [
     // Ensure that it's checking in all the right places
     {
@@ -2304,6 +2400,104 @@ foo?.['bar']?.().toExponential();
         }
       `,
       errors: [ruleError(3, 13, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(false);
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 8,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(true, Math.random() > 0.5);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 4,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert({});
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assertsString(x: unknown): asserts x is string;
+declare const a: string;
+assertsString(a);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString('fa' + 'lafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
     },
 
     // "branded" types

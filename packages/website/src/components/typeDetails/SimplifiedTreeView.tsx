@@ -6,7 +6,7 @@ import styles from '../ast/ASTViewer.module.css';
 import PropertyName from '../ast/PropertyName';
 import { tsEnumToString } from '../ast/tsUtils';
 import type { OnHoverNodeFn } from '../ast/types';
-import { getRange, isTSNode } from '../ast/utils';
+import { getRange } from '../ast/utils';
 
 export interface SimplifiedTreeViewProps {
   readonly value: ts.Node;
@@ -31,7 +31,7 @@ function SimplifiedItem({
 
   const onHover = useCallback(
     (v: boolean) => {
-      if (isTSNode(value) && onHoverNode) {
+      if (onHoverNode) {
         return onHoverNode(v ? getRange(value, 'tsNode') : undefined);
       }
     },

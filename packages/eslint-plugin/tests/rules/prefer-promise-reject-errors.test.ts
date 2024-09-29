@@ -275,6 +275,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
         }
       }
     `,
+    `
+      declare const foo: PromiseConstructor;
+      function fun<T extends Error>(t: T): void {
+        foo.reject(t);
+      }
+    `,
   ],
   invalid: [
     {
@@ -1440,6 +1446,24 @@ Bar.reject(5);
           endLine: 4,
           column: 1,
           endColumn: 14,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: PromiseConstructor;
+function fun<T extends number>(t: T): void {
+  foo.reject(t);
+}
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
+          column: 3,
+          endColumn: 16,
         },
       ],
     },

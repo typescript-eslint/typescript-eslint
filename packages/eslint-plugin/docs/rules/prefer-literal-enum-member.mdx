@@ -38,12 +38,14 @@ This rule reports when an enum member is given a value that is not a literal.
 
 ```ts
 const str = 'Test';
+const string1 = 'string1';
+const string2 = 'string2';
+
 enum Invalid {
   A = str, // Variable assignment
-  B = {}, // Object assignment
-  C = `A template literal string`, // Template literal
-  D = new Set(1, 2, 3), // Constructor in assignment
-  E = 2 + 2, // Expression assignment
+  B = `Interpolates ${string1} and ${string2}`, // Template literal with interpolation
+  C = 2 + 2, // Expression assignment
+  D = C, // Assignment to another enum member
 }
 ```
 
@@ -52,11 +54,10 @@ enum Invalid {
 
 ```ts
 enum Valid {
-  A,
+  A, // No initializer; initialized with ascending integers starting from 0
   B = 'TestStr', // A regular string
-  C = 4, // A number
-  D = null,
-  E = /some_regex/,
+  C = `A template literal string`, // A template literal without interpolation
+  D = 4, // A number
 }
 ```
 
