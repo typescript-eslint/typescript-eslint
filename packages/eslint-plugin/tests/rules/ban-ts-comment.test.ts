@@ -1120,7 +1120,7 @@ const b: string = a;
       ],
     },
     {
-      // comment's colum > first statement's column
+      // comment's column > first statement's column
       // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
       code: `
  // @ts-nocheck
