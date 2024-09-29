@@ -10,81 +10,26 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/no-unsafe-enum-comparison** for documentation.
 
 The TypeScript compiler can be surprisingly lenient when working with enums.
-While overt unsafety problems with enums were [resolved in TypeScript 5.0](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#all-enums-are-union-enums), some logical pitfalls remain permitted:
+While overt unsafety problems with enums were [resolved in TypeScript 5.0](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#all-enums-are-union-enums), some logical pitfalls remain permitted.
+For example, it is allowed to compare enum values against non-enum values:
 
-1. Comparing an enum to its literal runtime value:
+```ts
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
 
-   ```ts
-   enum Vegetable {
-     Arugula = 0,
-     Spinach = 1,
-   }
+declare const vegetable: Vegetable;
 
-   function makeSalad(vegetable: Vegetable) {
-     switch (vegetable) {
-       case 0:
-         console.log('Making Arugula Salad');
-         break;
-       case 1:
-         console.log('Making Spinach Salad');
-         break;
-     }
-   }
-   ```
+vegetable === 'asparagus'; // No error
+```
 
-   The above code will break if the enum values change...
+The above code snippet should instead be written as `vegetable === Vegetable.Asparagus`.
+Allowing non-enums in comparisons subverts the point of using enums in the first place.
+By enforcing comparisons with properly typed enums:
 
-   ```ts
-   enum Vegetable {
-     Arugula = 1,
-     Spinach = 0,
-   }
-
-   makeSalad(Vegetable.Spinach); // Prints 'Making Arugula Salad'
-   ```
-
-   ...whereas the code would have continued to work if written without explicit reference to the enum values:
-
-   ```ts
-   function makeSalad(vegetable: Vegetable) {
-     switch (vegetable) {
-       case Vegetable.Arugula:
-         console.log('Making Arugula Salad');
-         break;
-       case Vegetable.Spinach:
-         console.log('Making Spinach Salad');
-         break;
-     }
-   }
-   ```
-
-   Note that using this style of comparison also allows for better IDE support, such as the "Rename Symbol" feature.
-
-2. Comparing an enum to a non-enum type:
-
-   ```ts
-   enum HandleAction {
-     Open = 'OPEN',
-     Close = 'CLOSE',
-   }
-
-   function handleAction(action: string) {
-     if (action === HandleAction.Open) {
-       openFile();
-     } else if (action === HandleAction.Close) {
-       closeFile();
-     }
-   }
-   ```
-
-   This pattern is extremely brittle.
-   It will break without complaints from the compiler if the enum values change, as before, or if the caller makes a typo:
-
-   ```ts
-   handleAction('open'); // No error, but completely useless.
-   ```
-
-This rule enforces the proper enum semantics of referring to them by name and treating their values as implementation details.
+- It makes a codebase more resilient to enum members changing values.
+- It allows for code IDEs to use the "Rename Symbol" feature to quickly rename an enum.
+- It aligns code to the proper enum semantics of referring to them by name and treating their values as implementation details.
 
 ## Examples
 
@@ -98,20 +43,21 @@ enum Fruit {
 
 declare let fruit: Fruit;
 
+// bad - comparison between enum and explicit value instead of named enum member
 fruit === 0;
-```
 
-```ts
 enum Vegetable {
   Asparagus = 'asparagus',
 }
 
 declare let vegetable: Vegetable;
 
+// bad - comparison between enum and explicit value instead of named enum member
 vegetable === 'asparagus';
 
 declare let anyString: string;
 
+// bad - comparison between enum and non-enum value
 anyString === Vegetable.Asparagus;
 ```
 
@@ -126,9 +72,7 @@ enum Fruit {
 declare let fruit: Fruit;
 
 fruit === Fruit.Apple;
-```
 
-```ts
 enum Vegetable {
   Asparagus = 'asparagus',
 }
@@ -146,23 +90,7 @@ vegetable === Vegetable.Asparagus;
 If you don't mind enums being treated as a namespaced bag of values, rather than opaque identifiers, you likely don't need this rule.
 
 Sometimes, you may want to ingest a value from an API or user input, then use it as an enum throughout your application.
-While validating the input, it may be appropriate to disable the rule; use your judgement as to what makes sense in your application.
-For example:
-
-```ts
-/* eslint-disable @typescript-eslint/no-unsafe-enum-comparison */
-function toVegetable(vegetable: string): Vegetable {
-  if (vegetable === Vegetable.Asparagus) {
-    return Vegetable.Asparagus;
-  } else if (vegetable === Vegetable.Broccoli) {
-    return Vegetable.Broccoli;
-  } /* etc */ else {
-    throw new Error('Invalid vegetable');
-  }
-}
-/* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
-```
-
+While validating the input, it may be appropriate to disable the rule.
 Alternately, you might consider making use of a validation library like [Zod](https://zod.dev/?id=native-enums).
 See further discussion of this topic in [#8557](https://github.com/typescript-eslint/typescript-eslint/issues/8557).
 
