@@ -314,10 +314,7 @@ export default createRule({
           context.report({
             messageId: 'nonPromiseAwait',
             node,
-            ...fixOrSuggest(true, {
-              messageId: 'nonPromiseAwait',
-              fix: fixer => removeAwait(fixer, node),
-            }),
+            fix: fixer => removeAwait(fixer, node),
           });
         }
         return;
