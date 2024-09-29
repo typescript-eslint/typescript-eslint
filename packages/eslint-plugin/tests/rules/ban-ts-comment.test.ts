@@ -30,14 +30,6 @@ ruleTester.run('ts-expect-error', rule, {
 /* @ts-expect-error
  * not on the last line */
     `,
-    `
-const a = 1;
-
-// @ts-nocheck - should not be reported
-
-// TS error is not actually suppressed
-const b: string = a;
-    `,
     {
       code: '// @ts-expect-error',
       options: [{ 'ts-expect-error': false }],
@@ -1000,6 +992,14 @@ ruleTester.run('ts-nocheck', rule, {
     `,
     '/** @ts-nocheck */',
     '/* @ts-nocheck */',
+    `
+const a = 1;
+
+// @ts-nocheck - should not be reported
+
+// TS error is not actually suppressed
+const b: string = a;
+    `,
   ],
   invalid: [
     {
@@ -1116,6 +1116,22 @@ ruleTester.run('ts-nocheck', rule, {
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
+        },
+      ],
+    },
+    {
+      // comment's colum > first statement's column
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+ // @ts-nocheck
+const a: true = false;
+      `,
+      errors: [
+        {
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 2,
         },
       ],
     },
