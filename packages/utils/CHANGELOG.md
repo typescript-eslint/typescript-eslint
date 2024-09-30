@@ -1,3 +1,24 @@
+## 8.8.0 (2024-09-30)
+
+
+### 🩹 Fixes
+
+- remove `export type *` in d.ts to support TS<5.0
+
+- **utils:** update missing type information message
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Ronen Amiel
+- Tarun Chauhan
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.7.0 (2024-09-23)
 
 

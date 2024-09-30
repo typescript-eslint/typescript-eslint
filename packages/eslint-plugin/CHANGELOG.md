@@ -1,3 +1,39 @@
+## 8.8.0 (2024-09-30)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-condition] add checkTypePredicates
+
+- **eslint-plugin:** [return-await] check for-await loop iteree
+
+
+### 🩹 Fixes
+
+- remove `export type *` in d.ts to support TS<5.0
+
+- **eslint-plugin:** [no-unnecessary-template-expression] should underline template syntax with squiggly lines
+
+- **type-utils:** check for type parameters on `isBuiltinSymbolLikeRecurser()`
+
+- **eslint-plugin:** [no-deprecated] max callstack exceeded when class implements itself
+
+- **eslint-plugin:** [no-misused-promises] check contextual type
+
+- **eslint-plugin:** [prefer-literal-enum-member] allow nested bitwise operations
+
+
+### ❤️  Thank You
+
+- auvred
+- Josh Goldberg ✨
+- Kirk Waiblinger
+- Ronen Amiel
+- Tarun Chauhan
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.7.0 (2024-09-23)
 
 

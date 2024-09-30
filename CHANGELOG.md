@@ -1,3 +1,32 @@
+## 8.8.0 (2024-09-30)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-condition] add checkTypePredicates ([#10009](https://github.com/typescript-eslint/typescript-eslint/pull/10009))
+- **eslint-plugin:** [return-await] check for-await loop iteree ([#10008](https://github.com/typescript-eslint/typescript-eslint/pull/10008))
+
+### 🩹 Fixes
+
+- remove `export type *` in d.ts to support TS<5.0 ([#10070](https://github.com/typescript-eslint/typescript-eslint/pull/10070))
+- **eslint-plugin:** [no-unnecessary-template-expression] should underline template syntax with squiggly lines ([#10044](https://github.com/typescript-eslint/typescript-eslint/pull/10044))
+- **eslint-plugin:** [no-deprecated] max callstack exceeded when class implements itself ([#10040](https://github.com/typescript-eslint/typescript-eslint/pull/10040))
+- **eslint-plugin:** [no-misused-promises] check contextual type ([#10042](https://github.com/typescript-eslint/typescript-eslint/pull/10042))
+- **eslint-plugin:** [prefer-literal-enum-member] allow nested bitwise operations ([#10037](https://github.com/typescript-eslint/typescript-eslint/pull/10037))
+- **type-utils:** check for type parameters on `isBuiltinSymbolLikeRecurser()` ([#10026](https://github.com/typescript-eslint/typescript-eslint/pull/10026))
+- **utils:** update missing type information message ([#10043](https://github.com/typescript-eslint/typescript-eslint/pull/10043))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- Ronen Amiel
+- Tarun Chauhan @tarunrajput
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.7.0 (2024-09-23)
 
 
