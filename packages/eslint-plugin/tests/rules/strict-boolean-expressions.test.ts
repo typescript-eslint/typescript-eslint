@@ -441,14 +441,6 @@ declare const nullableString: string | null;
 declare const boo: boolean;
 assert(boo, nullableString);
     `,
-    // Intentional TS error - cannot assert a parameter in a binding pattern.
-    `
-declare function assert(a: boolean, b: unknown): asserts b;
-declare function assert(a: boolean, { b }: { b: unknown }): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
     `
 declare function assert(a: number, b: unknown): asserts b;
 declare const nullableString: string | null;
@@ -516,39 +508,6 @@ declare const nullableString: string | null;
 assert(3 as any, nullableString);
       `,
     },
-    // Intentional TS error - A rest parameter must be last in a parameter list.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(...a: boolean[], b: unknown): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - A type predicate cannot reference a rest parameter.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(a: boolean, ...b: unknown[]): asserts b;
-declare const nullableString: string | null;
-declare const boo: boolean;
-assert(boo, nullableString);
-    `,
-    // Intentional TS error - An assertion function must have a parameter to assert.
-    // This is just to test that we don't crash or falsely report.
-    `
-declare function assert(): asserts x;
-declare const nullableString: string | null;
-assert(nullableString);
-    `,
-    `
-function assert(one: unknown): asserts one;
-function assert(one: unknown, two: unknown): asserts two;
-function assert(...args: unknown[]) {
-  throw new Error('not implemented');
-}
-declare const nullableString: string | null;
-assert(nullableString);
-assert('one', nullableString);
-    `,
     // Intentional use of `any` to test a function call with no call signatures.
     `
 declare const assert: any;
@@ -2578,6 +2537,12 @@ assert(foo, Boolean(nullableString));
       ],
     },
     {
+      // This should be checkable, but the TS API doesn't currently report
+      // `someAssert(maybeString)` as a type predicate call, which appears to be
+      // a bug.
+      //
+      // See https://github.com/microsoft/TypeScript/issues/59707
+      skip: true,
       code: `
 function asserts1(x: string | number | undefined): asserts x {}
 function asserts2(x: string | number | undefined): asserts x {}
@@ -2883,6 +2848,62 @@ declare function assert({ a }: { a: boolean }, b: unknown): asserts b;
 declare const nullableString: string | null;
 declare const boo: boolean;
 assert(boo, Boolean(nullableString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // This report matches TS's analysis, which selects the assertion overload.
+      code: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString);
+      `,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 8,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(nullableString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+function assert(one: unknown): asserts one;
+function assert(one: unknown, two: unknown): asserts two;
+function assert(...args: unknown[]) {
+  throw new Error('not implemented');
+}
+declare const nullableString: string | null;
+assert(Boolean(nullableString));
       `,
             },
           ],

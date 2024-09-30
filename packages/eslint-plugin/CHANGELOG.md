@@ -1,3 +1,31 @@
+## 8.7.0 (2024-09-23)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unsafe-call] check calls of Function
+
+- **eslint-plugin:** [consistent-type-exports] check `export *` exports to see if all exported members are types
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** properly coerce all types to string in `getStaticMemberAccessValue`
+
+- **eslint-plugin:** [no-deprecated] report on imported deprecated variables
+
+- **eslint-plugin:** [no-confusing-non-null-assertion] check !in and !instanceof
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- auvred
+- Brian Donovan
+- Kirk Waiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.6.0 (2024-09-16)
 
 
