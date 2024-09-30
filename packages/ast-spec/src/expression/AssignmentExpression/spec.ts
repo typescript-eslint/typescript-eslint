@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 import type { ValueOf } from '../../utils';
 import type { AssignmentOperatorToText } from './AssignmentOperatorToText';
 
-export type * from './AssignmentOperatorToText';
+export * from './AssignmentOperatorToText';
 
 export interface AssignmentExpression extends BaseNode {
   left: Expression;

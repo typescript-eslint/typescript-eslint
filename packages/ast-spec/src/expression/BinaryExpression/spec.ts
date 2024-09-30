@@ -5,7 +5,7 @@ import type { Expression } from '../../unions/Expression';
 import type { ValueOf } from '../../utils';
 import type { BinaryOperatorToText } from './BinaryOperatorToText';
 
-export type * from './BinaryOperatorToText';
+export * from './BinaryOperatorToText';
 
 export interface BinaryExpression extends BaseNode {
   left: Expression | PrivateIdentifier;
