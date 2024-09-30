@@ -210,6 +210,16 @@ for await (const value of asyncYieldNumbers()) {
 }
       `,
     },
+    {
+      code: `
+declare const anee: any;
+async function forAwait() {
+  for await (const value of anee) {
+    console.log(value);
+  }
+}
+      `,
+    },
   ],
 
   invalid: [

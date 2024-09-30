@@ -75,7 +75,7 @@ export default createRule<[], MessageId>({
 
       'ForOfStatement[await=true]'(node: TSESTree.ForOfStatement): void {
         const type = services.getTypeAtLocation(node.right);
-        if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+        if (isTypeAnyType(type)) {
           return;
         }
 
