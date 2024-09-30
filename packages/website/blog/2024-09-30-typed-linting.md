@@ -28,7 +28,7 @@ Lint rules that rely only on the file's AST don't have a way to understand code 
 Not being able to understand code from other files severely limits lint rules.
 
 As an example, suppose you enable a lint rule like [`@typescript-eslint/no-deprecated`](/rules/no-deprecated) to prevent calling to code with a `@deprecated` JSDoc.
-Using just the following `index.ts` file's AST, the lint rule would have no way of knowing whether `work` is deprecated:
+Using just the following file's AST, the lint rule would have no way of knowing whether `work` is deprecated:
 
 ```ts title="index.ts"
 import { work } from './worker';
@@ -53,7 +53,7 @@ export function work() {
 ...which would allow the lint rule to report a complaint that the `work()` call is to a function marked as `@deprecated`.
 
 typescript-eslint allows lint rules to retrieve type information using TypeScript's APIs.
-In doing so, they can make decisions on linted files using information outside each individual file.
+In doing so, they can even make decisions on linted files using information outside each individual file.
 
 ## Common Uses for Typed Linting
 
