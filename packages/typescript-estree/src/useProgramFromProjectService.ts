@@ -13,6 +13,7 @@ import type {
   ASTAndNoProgram,
   ASTAndProgram,
 } from './create-program/shared';
+import { DEFAULT_EXTRA_FILE_EXTENSIONS } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 import type { MutableParseSettings } from './parseSettings';
 
@@ -23,17 +24,6 @@ const log = debug(
 );
 
 const serviceFileExtensions = new WeakMap<ts.server.ProjectService, string[]>();
-
-const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
-  ts.Extension.Ts,
-  ts.Extension.Tsx,
-  ts.Extension.Js,
-  ts.Extension.Jsx,
-  ts.Extension.Mjs,
-  ts.Extension.Mts,
-  ts.Extension.Cjs,
-  ts.Extension.Cts,
-]);
 
 const updateExtraFileExtensions = (
   service: ts.server.ProjectService,
