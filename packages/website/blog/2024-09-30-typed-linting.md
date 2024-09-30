@@ -117,7 +117,7 @@ getItem('...');
 // Uncaught TypeError: Illegal invocation
 ```
 
-Without type information to indicate the types of `localStorage` and its `getItem` property, there would have been no way to determine that the `const { getItem }` access was unsafe.
+Without type information to indicate the types of `localStorage` and its `getItem` property, there would have been no reliable way to determine that the `const { getItem }` access was unsafe.
 
 ### Async Race Conditions
 
