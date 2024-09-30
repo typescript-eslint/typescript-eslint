@@ -307,7 +307,7 @@ export default createRule({
 
       if (!isThenable) {
         if (isAwait) {
-          // sync behavior with return-await
+          // any/unknown could be thenable; do not enforce whether they are `await`ed.
           if (isTypeAnyType(type) || isTypeUnknownType(type)) {
             return;
           }
