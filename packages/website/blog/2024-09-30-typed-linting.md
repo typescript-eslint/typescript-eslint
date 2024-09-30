@@ -15,7 +15,7 @@ In this blog post, we'll give a high-level overview of how linting with type inf
 
 ## Recap: Type Information?
 
-Traditional lint rules operate on one file at a time.
+Traditional JavaScript lint rules operate on one file at a time.
 They look at a description of code in each file and report complaints if that file seems to contain bad practices.
 That description is called an Abstract Syntax Tree, or AST.
 
