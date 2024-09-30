@@ -1,4 +1,4 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -10,8 +10,15 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
-export default createRule({
+type MessageId =
+  | 'await'
+  | 'forAwaitOfNonThenable'
+  | 'removeAwait'
+  | 'convertToOrdinaryFor';
+
+export default createRule<[], MessageId>({
   name: 'await-thenable',
   meta: {
     docs: {
@@ -22,7 +29,10 @@ export default createRule({
     hasSuggestions: true,
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      forAwaitOfNonThenable:
+        'Unexpected `for await...of` of a value that is not async iterable.',
       removeAwait: 'Remove unnecessary `await`.',
+      convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
     },
     schema: [],
     type: 'problem',
@@ -56,6 +66,40 @@ export default createRule({
                   );
 
                   return fixer.remove(awaitKeyword);
+                },
+              },
+            ],
+          });
+        }
+      },
+
+      'ForOfStatement[await=true]'(node: TSESTree.ForOfStatement): void {
+        const type = services.getTypeAtLocation(node.right);
+        if (isTypeAnyType(type)) {
+          return;
+        }
+
+        const asyncIteratorSymbol = tsutils.getWellKnownSymbolPropertyOfType(
+          type,
+          'asyncIterator',
+          checker,
+        );
+
+        if (asyncIteratorSymbol == null) {
+          context.report({
+            loc: getForStatementHeadLoc(context.sourceCode, node),
+            messageId: 'forAwaitOfNonThenable',
+            suggest: [
+              // Note that this suggestion causes broken code for sync iterables
+              // of promises, since the loop variable is not awaited.
+              {
+                messageId: 'convertToOrdinaryFor',
+                fix(fixer): TSESLint.RuleFix {
+                  const awaitToken = nullThrows(
+                    context.sourceCode.getFirstToken(node, isAwaitKeyword),
+                    NullThrowsReasons.MissingToken('await', 'for await loop'),
+                  );
+                  return fixer.remove(awaitToken);
                 },
               },
             ],
