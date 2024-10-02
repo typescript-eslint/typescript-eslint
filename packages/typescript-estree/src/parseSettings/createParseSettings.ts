@@ -1,5 +1,6 @@
+import path from 'node:path';
+
 import debug from 'debug';
-import path from 'path';
 import * as ts from 'typescript';
 
 import type { ProjectServiceSettings } from '../create-program/createProjectService';
@@ -90,7 +91,7 @@ export function createParseSettings(
       tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')
         ? tsestreeOptions.extraFileExtensions
         : [],
-    filePath: filePath,
+    filePath,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
       (tsestreeOptions.sourceType === undefined &&

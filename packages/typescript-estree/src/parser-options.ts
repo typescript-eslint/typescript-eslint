@@ -2,8 +2,8 @@ import type {
   CacheDurationSeconds,
   DebugLevel,
   JSDocParsingMode,
-  SourceType,
   ProjectServiceOptions,
+  SourceType,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
