@@ -80,19 +80,11 @@ export default createRule<[], MessageIds>({
               });
             }
           } else {
-            if (node.parent.computed) {
-              // it is x!?.[y].z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            } else {
-              // it is x!?.y.z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            }
+            // it is x!?.[y].z or  x!?.y.z
+            suggest.push({
+              messageId: 'suggestOptionalChain',
+              fix: removeToken(),
+            });
           }
         } else if (
           node.parent.type === AST_NODE_TYPES.CallExpression &&

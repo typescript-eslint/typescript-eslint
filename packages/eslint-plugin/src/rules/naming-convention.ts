@@ -1,10 +1,13 @@
+// This rule was feature-frozen before we enabled no-property-in-node.
+/* eslint-disable eslint-plugin/no-property-in-node */
+
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import type { ScriptTarget } from 'typescript';
 
 import {
-  collectUnusedVariables,
+  collectVariables,
   createRule,
   getParserServices,
   requiresQuoting as _requiresQuoting,
@@ -159,7 +162,7 @@ export default createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = collectUnusedVariables(context);
+    const { unusedVariables } = collectVariables(context);
     function isUnused(
       name: string,
       initialScope: TSESLint.Scope.Scope | null,
@@ -273,14 +276,12 @@ export default createRule<Options, MessageIds>({
 
           const baseModifiers = new Set<Modifiers>();
           const parent = node.parent;
-          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
-            if (parent.kind === 'const') {
-              baseModifiers.add(Modifiers.const);
-            }
+          if (parent.kind === 'const') {
+            baseModifiers.add(Modifiers.const);
+          }
 
-            if (isGlobal(context.sourceCode.getScope(node))) {
-              baseModifiers.add(Modifiers.global);
-            }
+          if (isGlobal(context.sourceCode.getScope(node))) {
+            baseModifiers.add(Modifiers.global);
           }
 
           identifiers.forEach(id => {
@@ -784,4 +785,4 @@ function requiresQuoting(
   return _requiresQuoting(name, target);
 }
 
-export { MessageIds, Options };
+export type { MessageIds, Options };

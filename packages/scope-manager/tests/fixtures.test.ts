@@ -1,7 +1,8 @@
-import fs from 'fs';
-import glob = require('glob');
+import fs from 'node:fs';
+import path from 'node:path';
+
+import * as glob from 'glob';
 import makeDir from 'make-dir';
-import path from 'path';
 
 import type { AnalyzeOptions } from './test-utils';
 import { parseAndAnalyze } from './test-utils';
@@ -35,7 +36,7 @@ const fixtures = glob
     };
   });
 
-const FOUR_SLASH = /^\/\/\/\/[ ]+@(\w+)[ ]*=[ ]*(.+)$/;
+const FOUR_SLASH = /^\/{4} +@(\w+) *= *(.+)$/;
 const QUOTED_STRING = /^["'](.+?)['"]$/;
 type ALLOWED_VALUE = ['boolean' | 'number' | 'string', Set<unknown>?];
 const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
@@ -124,7 +125,7 @@ function nestDescribe(
 
         if (type[1] && !type[1].has(value)) {
           throw new Error(
-            `Expected value for ${key} to be one of (${Array.from(type[1]).join(
+            `Expected value for ${key} to be one of (${[...type[1]].join(
               ' | ',
             )}), but got ${value as string}`,
           );

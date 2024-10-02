@@ -6,12 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('prefer-promise-reject-errors', rule, {
@@ -265,6 +265,21 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `
       declare const foo: PromiseConstructor;
       foo.reject(new Error());
+    `,
+    'console[Symbol.iterator]();',
+    `
+      class A {
+        a = [];
+        [Symbol.iterator]() {
+          return this.a[Symbol.iterator]();
+        }
+      }
+    `,
+    `
+      declare const foo: PromiseConstructor;
+      function fun<T extends Error>(t: T): void {
+        foo.reject(t);
+      }
     `,
   ],
   invalid: [
@@ -1431,6 +1446,24 @@ Bar.reject(5);
           endLine: 4,
           column: 1,
           endColumn: 14,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: PromiseConstructor;
+function fun<T extends number>(t: T): void {
+  foo.reject(t);
+}
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
+          column: 3,
+          endColumn: 16,
         },
       ],
     },

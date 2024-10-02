@@ -5,11 +5,11 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootDir,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -44,9 +44,9 @@ ruleTester.run('no-base-to-string', rule, {
     ...literalList.map(i => `\`\${${i}}\`;`),
 
     // operator + +=
-    ...literalListWrapped
-      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
-      .reduce((pre, cur) => [...pre, ...cur]),
+    ...literalListWrapped.flatMap(l =>
+      literalListWrapped.map(r => `${l} + ${r};`),
+    ),
 
     // toString()
     ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),

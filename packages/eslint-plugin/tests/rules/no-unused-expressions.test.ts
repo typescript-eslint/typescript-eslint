@@ -1,22 +1,21 @@
+import type { TestCaseError } from '@typescript-eslint/rule-tester';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-unused-expressions';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
-type TestCaseError = Omit<TSESLint.TestCaseError<string>, 'messageId'>;
+type RuleTestCaseError = Omit<TestCaseError<string>, 'messageId'>;
 
 // the base rule doesn't have messageIds
 function error(
-  messages: TestCaseError[],
+  messages: RuleTestCaseError[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[] {
   return messages.map(message => ({
@@ -301,7 +300,7 @@ function foo() {
       ]),
     },
     {
-      code: noFormat`
+      code: `
 class Foo<T> {}
 Foo<string>;
       `,

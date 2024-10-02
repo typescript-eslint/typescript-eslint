@@ -40,8 +40,10 @@ export const isNodeOfTypeWithConditions = <
 
 export const isTokenOfTypeWithConditions = <
   TokenType extends AST_TOKEN_TYPES,
+  // This is technically unsafe, but we find it useful to extract out the type
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
   ExtractedToken extends Extract<TSESTree.Token, { type: TokenType }>,
-  Conditions extends Partial<TSESTree.Token & { type: TokenType }>,
+  Conditions extends Partial<{ type: TokenType } & TSESTree.Token>,
 >(
   tokenType: TokenType,
   conditions: Conditions,

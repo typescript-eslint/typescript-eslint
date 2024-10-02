@@ -3,13 +3,11 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-confusing-non-null-assertion';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-confusing-non-null-assertion', rule, {
   valid: [
@@ -20,6 +18,8 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
     'a != b;',
     '(a + b!) == c;',
     '(a + b!) = c;',
+    '(a + b!) in c;',
+    '(a || b!) instanceof c;',
   ],
   invalid: [
     {
@@ -145,6 +145,75 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
             {
               messageId: 'notNeedInAssign',
               output: '(a=b) =c;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a! in b;',
+      errors: [
+        {
+          messageId: 'confusingOperator',
+          data: { operator: 'in' },
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInOperator',
+              output: 'a in b;',
+            },
+            {
+              messageId: 'wrapUpLeft',
+              output: '(a!) in b;',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+a !in b;
+      `,
+      errors: [
+        {
+          messageId: 'confusingOperator',
+          data: { operator: 'in' },
+          line: 2,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInOperator',
+              output: `
+a in b;
+      `,
+            },
+            {
+              messageId: 'wrapUpLeft',
+              output: `
+(a !)in b;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'a! instanceof b;',
+      errors: [
+        {
+          messageId: 'confusingOperator',
+          data: { operator: 'instanceof' },
+          line: 1,
+          column: 1,
+          suggestions: [
+            {
+              messageId: 'notNeedInOperator',
+              output: 'a instanceof b;',
+            },
+            {
+              messageId: 'wrapUpLeft',
+              output: '(a!) instanceof b;',
             },
           ],
         },

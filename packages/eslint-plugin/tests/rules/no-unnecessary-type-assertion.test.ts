@@ -1,17 +1,18 @@
+import path from 'node:path';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
 
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
-  parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
-    sourceType: 'module',
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      projectService: false,
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 const optionsWithOnUncheckedIndexedAccess = {
@@ -153,6 +154,10 @@ class Foo {
   prop: number = x!;
 }
     `,
+    `
+      declare const y: number | null;
+      console.log(y!);
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/529
     `
 declare function foo(str?: string): void;
@@ -197,9 +202,11 @@ function Test(props: { id?: null | string | number }) {
   return <div key={props.id!} />;
 }
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -284,18 +291,19 @@ function bar(items: string[]) {
   }
 }
       `,
-      parserOptions: optionsWithOnUncheckedIndexedAccess,
+      languageOptions: { parserOptions: optionsWithOnUncheckedIndexedAccess },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-const myString = 'foo';
+let myString = 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-const myString = 'foo';
+let myString = 'foo';
 const templateLiteral = <const>\`\${myString}-somethingElse\`;
     `,
+    'let a = `a` as const;',
     {
       code: `
 declare const foo: {
@@ -303,7 +311,7 @@ declare const foo: {
 };
 const bar = foo.a as string;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -312,7 +320,7 @@ declare const foo: {
 };
 const bar = foo.a as string;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -321,7 +329,7 @@ declare const foo: {
 };
 const bar = foo.a as string | undefined;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -330,7 +338,7 @@ declare const foo: {
 };
 const bar = foo.a as string | undefined;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -339,7 +347,17 @@ declare const foo: {
 };
 const bar = foo.a as string | undefined | bigint;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+if (Math.random()) {
+  {
+    var x = 1;
+  }
+}
+x!;
+      `,
     },
   ],
 
@@ -527,6 +545,22 @@ bar + 1;
     },
     {
       code: `
+        declare const y: number;
+        console.log(y!);
+      `,
+      output: `
+        declare const y: number;
+        console.log(y);
+      `,
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+    },
+    {
+      code: 'Proxy!;',
+      output: 'Proxy;',
+      errors: [{ messageId: 'unnecessaryAssertion' }],
+    },
+    {
+      code: `
 function foo<T extends string>(bar: T) {
   return bar!;
 }
@@ -668,9 +702,11 @@ function Test(props: { id?: string | number }) {
           line: 9,
         },
       ],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -966,7 +1002,7 @@ const foo =  /* a */ (3 + 5);
       ],
     },
     {
-      code: noFormat`
+      code: `
 const foo = <number /* a */>(3 + 5);
       `,
       output: `
@@ -1027,7 +1063,7 @@ const bar = foo.a;
           column: 13,
         },
       ],
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -1049,7 +1085,72 @@ const bar = foo.a;
           column: 13,
         },
       ],
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+varDeclarationFromFixture!;
+      `,
+      output: `
+varDeclarationFromFixture;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 2,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+x!;
+      `,
+      output: `
+var x = 1;
+x;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+{
+  x!;
+}
+      `,
+      output: `
+var x = 1;
+{
+  x;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+const a = '';
+const b: string | undefined = (a ? undefined : a)!;
+      `,
+      output: `
+const a = '';
+const b: string | undefined = (a ? undefined : a);
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
     },
   ],
 });

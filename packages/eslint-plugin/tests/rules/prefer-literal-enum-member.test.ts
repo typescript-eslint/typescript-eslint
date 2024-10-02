@@ -1,10 +1,8 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-literal-enum-member';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-literal-enum-member', rule, {
   valid: [
@@ -58,7 +56,7 @@ enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }
     `,
-    noFormat`
+    `
 enum ValidKeyWithComputedSyntaxButNoComputedKey {
   ['a'],
 }
@@ -73,6 +71,89 @@ enum Foo {
   E = 1 & 0,
   F = 1 ^ 0,
   G = ~1,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = A | B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = Foo.A | Foo.B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = Foo['A'] | B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  ['A-1'] = 1 << 0,
+  C = ~Foo['A-1'],
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = A | B | C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | Foo.B | Foo.C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | (Foo.B & ~Foo.C),
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | -Foo.B,
 }
       `,
       options: [{ allowBitwiseExpressions: true }],
@@ -370,6 +451,43 @@ enum Foo {
           messageId: 'notLiteral',
           line: 10,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+const x = 1;
+enum Foo {
+  A = 1 << 0,
+  B = x >> Foo.A,
+  C = x >> A,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 5,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 6,
+          column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+  B = +A,
+}
+      `,
+      errors: [
+        {
+          messageId: 'notLiteral',
+          line: 4,
         },
       ],
     },

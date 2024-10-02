@@ -3,12 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../../src/rules/no-shadow';
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-  },
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow TS tests', rule, {
   valid: [
@@ -98,8 +93,10 @@ const x = 1;
 type Foo = 1;
       `,
       options: [{ ignoreTypeValueShadow: true }],
-      globals: {
-        Foo: 'writable',
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
       },
     },
     {
@@ -112,8 +109,10 @@ type Foo = 1;
           builtinGlobals: false,
         },
       ],
-      globals: {
-        Foo: 'writable',
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
       },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2360
@@ -141,8 +140,10 @@ type Fn = (Foo: string) => typeof Foo;
           builtinGlobals: false,
         },
       ],
-      globals: {
-        Foo: 'writable',
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
       },
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/6098
@@ -354,7 +355,7 @@ const person = [].find(match);
     {
       code: "const person = { ...people.find(person => person.firstName.startsWith('s')) };",
       options: [{ ignoreOnInitialization: true }],
-      parserOptions: { ecmaVersion: 2021 },
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
     },
     {
       code: `
@@ -365,7 +366,7 @@ const person = {
 };
       `,
       options: [{ ignoreOnInitialization: true }],
-      parserOptions: { ecmaVersion: 2021 },
+      languageOptions: { parserOptions: { ecmaVersion: 2021 } },
     },
     {
       code: `
@@ -502,8 +503,10 @@ type Foo = 1;
           builtinGlobals: true,
         },
       ],
-      globals: {
-        Foo: 'writable',
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
       },
       errors: [
         {
@@ -542,8 +545,10 @@ type Fn = (Foo: string) => typeof Foo;
           builtinGlobals: true,
         },
       ],
-      globals: {
-        Foo: 'writable',
+      languageOptions: {
+        globals: {
+          Foo: 'writable',
+        },
       },
       errors: [
         {
@@ -805,7 +810,7 @@ declare module 'bar' {
 let x = foo((x, y) => {});
 let y;
       `,
-      parserOptions: { ecmaVersion: 6 },
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [{ hoist: 'all' }],
       errors: [
         {
@@ -838,8 +843,10 @@ function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
           builtinGlobals: true,
         },
       ],
-      globals: {
-        args: 'writable',
+      languageOptions: {
+        globals: {
+          args: 'writable',
+        },
       },
       errors: [
         {

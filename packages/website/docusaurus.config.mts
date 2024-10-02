@@ -7,8 +7,9 @@ import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
+import { version } from '@typescript-eslint/parser/package.json';
 
-import { version } from './package.json';
+import { blogFooter } from './plugins/blog-footer';
 import { generatedRuleDocs } from './plugins/generated-rule-docs';
 import { rulesMeta } from './rulesMeta';
 
@@ -19,6 +20,8 @@ const githubUrl = 'https://github.com/typescript-eslint/typescript-eslint';
 const presetClassicOptions: PresetClassicOptions = {
   blog: {
     blogSidebarCount: 'ALL',
+    // Allow Docusaurus TOC remark plugin to pick up the injected H2
+    beforeDefaultRemarkPlugins: [blogFooter],
     remarkPlugins,
   },
   docs: {
@@ -100,8 +103,14 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       {
         href: githubUrl,
         position: 'right',
-        className: 'github-link image-link header-github-link',
+        className: 'github-link image-link header-image-link',
         'aria-label': 'GitHub repository',
+      },
+      {
+        href: 'https://discord.com/invite/FSxKq8Tdyg',
+        position: 'right',
+        className: 'discord-link image-link header-image-link',
+        'aria-label': 'Discord',
       },
     ],
   },
@@ -153,6 +162,11 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             label: 'Report issue',
             href: `${githubUrl}/issues/new/choose`,
             className: 'bug-report-link image-link social-link-icon',
+          },
+          {
+            label: 'Open Collective',
+            href: 'https://opencollective.com/typescript-eslint/contribute',
+            className: 'open-collective-link image-link social-link-icon',
           },
         ],
       },
@@ -249,32 +263,60 @@ const pluginPwaOptions: PluginPwaOptions = {
 const redirects: PluginRedirectOptions = {
   redirects: [
     {
+      from: '/getting-started/typed-linting/monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
+    },
+    {
       from: '/linting/configs',
       to: '/users/configs',
     },
     {
       from: '/linting/troubleshooting',
-      to: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
     },
     {
       from: '/linting/troubleshooting/formatting',
-      to: '/troubleshooting/formatting',
+      to: '/users/what-about-formatting',
     },
     {
-      from: '/linting/troubleshooting/performance-troubleshooting',
-      to: '/troubleshooting/performance-troubleshooting',
+      from: '/linting/troubleshooting/typed-linting/Performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
     },
     {
       from: '/linting/troubleshooting/tslint',
-      to: '/troubleshooting/tslint',
+      to: '/users/what-about-tslint',
     },
     {
       from: '/linting/typed-linting',
       to: '/getting-started/typed-linting',
     },
     {
-      from: '/linting/typed-linting/monorepos',
-      to: '/getting-started/typed-linting/monorepos',
+      from: '/troubleshooting',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/faqs',
+      to: '/troubleshooting/faqs/general',
+    },
+    {
+      from: '/troubleshooting/formatting',
+      to: '/users/what-about-formatting',
+    },
+    {
+      from: '/troubleshooting/tslint',
+      to: '/users/what-about-tslint',
+    },
+    {
+      from: '/troubleshooting/performance-troubleshooting',
+      to: '/troubleshooting/typed-linting/performance',
+    },
+    {
+      from: '/linting/troubleshooting/typed-linting/Monorepos',
+      to: '/troubleshooting/typed-linting/monorepos',
+    },
+    {
+      from: '/maintenance/issues/rule-deprecations',
+      to: '/maintenance/issues/rule-deprecations-and-deletions',
     },
   ],
 };
@@ -300,6 +342,28 @@ const config: Config = {
     rules: rulesMeta,
   },
   plugins: [
+    ...['ast-spec', 'type-utils'].map(packageName => [
+      'docusaurus-plugin-typedoc',
+      {
+        entryPoints: [`../${packageName}/src/index.ts`],
+        enumMembersFormat: 'table',
+        exclude: '**/*.d.ts',
+        excludeExternals: true,
+        groupOrder: ['Functions', 'Variables', '*'],
+        hidePageTitle: true,
+        id: `typedoc-generated-${packageName}`,
+        indexFormat: 'table',
+        out: `../../docs/packages/${packageName}/generated`,
+        outputFileStrategy: 'modules',
+        parametersFormat: 'table',
+        plugin: [require.resolve('./tools/typedoc-plugin-no-inherit-fork.mjs')],
+        propertiesFormat: 'table',
+        readme: 'none',
+        tsconfig: `../${packageName}/tsconfig.json`,
+        typeDeclarationFormat: 'table',
+        useCodeBlocks: true,
+      },
+    ]),
     require.resolve('./webpack.plugin'),
     ['@docusaurus/plugin-content-docs', pluginContentDocsOptions],
     ['@docusaurus/plugin-pwa', pluginPwaOptions],

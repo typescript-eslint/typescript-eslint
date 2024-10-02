@@ -13,6 +13,7 @@ import {
   getWrappingFixer,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
+import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
 export type Options = [
   {
@@ -67,14 +68,43 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         properties: {
-          allowString: { type: 'boolean' },
-          allowNumber: { type: 'boolean' },
-          allowNullableObject: { type: 'boolean' },
-          allowNullableBoolean: { type: 'boolean' },
-          allowNullableString: { type: 'boolean' },
-          allowNullableNumber: { type: 'boolean' },
-          allowNullableEnum: { type: 'boolean' },
-          allowAny: { type: 'boolean' },
+          allowString: {
+            description: 'Whether to allow `string` in a boolean context.',
+            type: 'boolean',
+          },
+          allowNumber: {
+            description: 'Whether to allow `number` in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableObject: {
+            description:
+              'Whether to allow nullable `object`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableBoolean: {
+            description:
+              'Whether to allow nullable `boolean`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableString: {
+            description:
+              'Whether to allow nullable `string`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableNumber: {
+            description:
+              'Whether to allow nullable `number`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowNullableEnum: {
+            description:
+              'Whether to allow nullable `enum`s in a boolean context.',
+            type: 'boolean',
+          },
+          allowAny: {
+            description: 'Whether to allow `any` in a boolean context.',
+            type: 'boolean',
+          },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
@@ -189,6 +219,7 @@ export default createRule<Options, MessageId>({
       WhileStatement: traverseTestExpression,
       'LogicalExpression[operator!="??"]': traverseLogicalExpression,
       'UnaryExpression[operator="!"]': traverseUnaryLogicalExpression,
+      CallExpression: traverseCallExpression,
     };
 
     type TestExpression =
@@ -232,8 +263,15 @@ export default createRule<Options, MessageId>({
       // left argument is always treated as a condition
       traverseNode(node.left, true);
       // if the logical expression is used for control flow,
-      // then it's right argument is used for it's side effects only
+      // then its right argument is used for its side effects only
       traverseNode(node.right, isCondition);
+    }
+
+    function traverseCallExpression(node: TSESTree.CallExpression): void {
+      const assertedArgument = findTruthinessAssertedArgument(services, node);
+      if (assertedArgument != null) {
+        traverseNode(assertedArgument, true);
+      }
     }
 
     /**
@@ -848,9 +886,9 @@ export default createRule<Options, MessageId>({
       // If incoming type is boolean, there will be two type objects with
       // intrinsicName set "true" and "false" each because of ts-api-utils.unionTypeParts()
       if (booleans.length === 1) {
-        tsutils.isTrueLiteralType(booleans[0])
-          ? variantTypes.add('truthy boolean')
-          : variantTypes.add('boolean');
+        variantTypes.add(
+          tsutils.isTrueLiteralType(booleans[0]) ? 'truthy boolean' : 'boolean',
+        );
       } else if (booleans.length === 2) {
         variantTypes.add('boolean');
       }
@@ -909,7 +947,7 @@ export default createRule<Options, MessageId>({
             ),
         )
       ) {
-        variantTypes.add('object');
+        variantTypes.add(types.some(isBrandedBoolean) ? 'boolean' : 'object');
       }
 
       if (
@@ -956,4 +994,21 @@ function isArrayLengthExpression(
   }
   const objectType = getConstrainedTypeAtLocation(services, node.object);
   return isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
+}
+
+/**
+ * Verify is the type is a branded boolean (e.g. `type Foo = boolean & { __brand: 'Foo' }`)
+ *
+ * @param type The type checked
+ */
+function isBrandedBoolean(type: ts.Type): boolean {
+  return (
+    type.isIntersection() &&
+    type.types.some(childType =>
+      tsutils.isTypeFlagSet(
+        childType,
+        ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
+      ),
+    )
+  );
 }

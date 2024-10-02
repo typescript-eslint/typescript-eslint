@@ -2,7 +2,7 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isFunction } from '../util';
+import { createRule, isFunction, isStaticMemberAccessOfValue } from '../util';
 import type {
   FunctionExpression,
   FunctionInfo,
@@ -268,21 +268,11 @@ export default createRule<Options, MessageIds>({
         (node.type === AST_NODE_TYPES.Property && node.method) ||
         node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
-        if (
-          node.key.type === AST_NODE_TYPES.Literal &&
-          typeof node.key.value === 'string'
-        ) {
-          return options.allowedNames.includes(node.key.value);
-        }
-        if (
-          node.key.type === AST_NODE_TYPES.TemplateLiteral &&
-          node.key.expressions.length === 0
-        ) {
-          return options.allowedNames.includes(node.key.quasis[0].value.raw);
-        }
-        if (!node.computed && node.key.type === AST_NODE_TYPES.Identifier) {
-          return options.allowedNames.includes(node.key.name);
-        }
+        return isStaticMemberAccessOfValue(
+          node,
+          context,
+          ...options.allowedNames,
+        );
       }
 
       return false;
@@ -375,6 +365,8 @@ export default createRule<Options, MessageIds>({
           return;
 
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.MethodDefinition:
+        case AST_NODE_TYPES.TSAbstractMethodDefinition:
           if (
             node.accessibility === 'private' ||
             node.key.type === AST_NODE_TYPES.PrivateIdentifier
@@ -394,16 +386,6 @@ export default createRule<Options, MessageIds>({
           const returns = getReturnsInFunction(node);
           return checkFunction({ node, returns });
         }
-
-        case AST_NODE_TYPES.MethodDefinition:
-        case AST_NODE_TYPES.TSAbstractMethodDefinition:
-          if (
-            node.accessibility === 'private' ||
-            node.key.type === AST_NODE_TYPES.PrivateIdentifier
-          ) {
-            return;
-          }
-          return checkNode(node.value);
 
         case AST_NODE_TYPES.Identifier:
           return followReference(node);

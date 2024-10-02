@@ -108,9 +108,10 @@ export default createRule({
               const text = context.sourceCode
                 .getText()
                 .slice(start, member.range[1]);
-              const comments = context.sourceCode
-                .getCommentsBefore(member)
-                .concat(context.sourceCode.getCommentsAfter(member));
+              const comments = [
+                ...context.sourceCode.getCommentsBefore(member),
+                ...context.sourceCode.getCommentsAfter(member),
+              ];
               let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
                 colonPos + 1,
               )}`;
@@ -142,15 +143,13 @@ export default createRule({
                 node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
                 isParentExported
               ) {
-                const commentsText = comments.reduce((text, comment) => {
-                  return (
-                    text +
-                    (comment.type === AST_TOKEN_TYPES.Line
-                      ? `//${comment.value}`
-                      : `/*${comment.value}*/`) +
-                    '\n'
-                  );
-                }, '');
+                const commentsText = comments
+                  .map(({ type, value }) =>
+                    type === AST_TOKEN_TYPES.Line
+                      ? `//${value}\n`
+                      : `/*${value}*/\n`,
+                  )
+                  .join('');
                 // comments should move before export and not between export and interface declaration
                 fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {

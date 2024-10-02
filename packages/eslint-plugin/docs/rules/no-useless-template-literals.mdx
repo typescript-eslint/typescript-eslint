@@ -1,61 +1,9 @@
 ---
-description: 'Disallow unnecessary template literals.'
+displayed_sidebar: rulesSidebar
 ---
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+:::danger Deprecated
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/no-useless-template-literals** for documentation.
+This rule has been renamed to [`no-unnecessary-template-expression`](./no-unnecessary-template-expression.mdx). See [#8544](https://github.com/typescript-eslint/typescript-eslint/issues/8544) for more information.
 
-This rule reports template literals that can be simplified to a normal string literal.
-
-## Examples
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts
-const ab1 = `${'a'}${'b'}`;
-const ab2 = `a${'b'}`;
-
-const stringWithNumber = `${'1 + 1 = '}${2}`;
-
-const stringWithBoolean = `${'true is '}${true}`;
-
-const text = 'a';
-const wrappedText = `${text}`;
-
-declare const intersectionWithString: string & { _brand: 'test-brand' };
-const wrappedIntersection = `${intersectionWithString}`;
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts
-const ab1 = 'ab';
-const ab2 = 'ab';
-
-const stringWithNumber = `1 + 1 = 2`;
-
-const stringWithBoolean = `true is true`;
-
-const text = 'a';
-const wrappedText = text;
-
-declare const intersectionWithString: string & { _brand: 'test-brand' };
-const wrappedIntersection = intersectionWithString;
-```
-
-</TabItem>
-</Tabs>
-
-## When Not To Use It
-
-When you want to allow string expressions inside template literals.
-
-## Related To
-
-- [`restrict-template-expressions`](./restrict-template-expressions.mdx)
+:::

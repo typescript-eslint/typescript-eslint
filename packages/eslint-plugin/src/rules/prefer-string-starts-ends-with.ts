@@ -1,4 +1,3 @@
-import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -10,6 +9,7 @@ import {
   getStaticValue,
   getTypeName,
   isNotClosingParenToken,
+  isStaticMemberAccessOfValue,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -270,9 +270,7 @@ export default createRule<Options, MessageIds>({
       }
 
       // To string.
-      return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value),
-      );
+      return String.fromCodePoint(...chars.map(c => c.value));
     }
 
     /**
@@ -537,11 +535,7 @@ export default createRule<Options, MessageIds>({
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode) as TSESTree.BinaryExpression;
 
-        if (
-          !isEqualityComparison(parentNode) ||
-          !isNull(parentNode.right) ||
-          !isStringType(node.object)
-        ) {
+        if (!isNull(parentNode.right) || !isStringType(node.object)) {
           return;
         }
 
@@ -583,11 +577,12 @@ export default createRule<Options, MessageIds>({
       // foo.substring(foo.length - 3) === 'bar'
       // foo.substring(foo.length - 3, foo.length) === 'bar'
       [[
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="slice"][computed=false]',
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="substring"][computed=false]',
-        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name="slice"][computed=false]',
-        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name="substring"][computed=false]',
+        'BinaryExpression > CallExpression.left > MemberExpression',
+        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression',
       ].join(', ')](node: TSESTree.MemberExpression): void {
+        if (!isStaticMemberAccessOfValue(node, context, 'slice', 'substring')) {
+          return;
+        }
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode);
 

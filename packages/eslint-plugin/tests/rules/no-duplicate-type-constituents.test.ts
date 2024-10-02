@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -71,6 +72,9 @@ ruleTester.run('no-duplicate-type-constituents', rule, {
     },
     {
       code: 'type T = (arg: string | number) => void;',
+    },
+    {
+      code: 'type T = A | A;',
     },
     {
       code: `
@@ -150,6 +154,13 @@ type T = Record<string, A | B>;
         },
       ],
     },
+    {
+      code: 'type T = Class<string> | Class<string>;',
+    },
+    {
+      code: 'type T = A | A | string;',
+    },
+    { code: '(a: string | undefined) => {};' },
   ],
   invalid: [
     {
@@ -271,19 +282,6 @@ type ActuallyDuplicated = IsArray<number>  ;
           data: {
             type: 'Union',
             previous: 'IsArray<number>',
-          },
-        },
-      ],
-    },
-    {
-      code: 'type T = Class<string> | Class<string>;',
-      output: `type T = Class<string>  ;`,
-      errors: [
-        {
-          messageId: 'duplicate',
-          data: {
-            type: 'Union',
-            previous: 'Class<string>',
           },
         },
       ],
@@ -663,6 +661,125 @@ type T = Record<string, A  >;
           },
         },
       ],
+    },
+    {
+      code: 'type T = A | A | string | string;',
+      output: 'type T = A | A | string  ;',
+      errors: [
+        {
+          messageId: 'duplicate',
+          data: {
+            type: 'Union',
+            previous: 'string',
+          },
+        },
+      ],
+    },
+    {
+      code: '(a?: string | undefined) => {};',
+      errors: [{ messageId: 'unnecessary' }],
+      output: '(a?: string  ) => {};',
+    },
+    {
+      code: `
+        type T = undefined;
+        (arg?: T | string) => {};
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        type T = undefined;
+        (arg?:   string) => {};
+      `,
+    },
+    {
+      code: `
+        interface F {
+          (a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        interface F {
+          (a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: 'type fn = new (a?: string | undefined) => void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'type fn = new (a?: string  ) => void;',
+    },
+    {
+      code: 'function f(a?: string | undefined) {}',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'function f(a?: string  ) {}',
+    },
+    {
+      code: 'f = function (a?: string | undefined) {};',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'f = function (a?: string  ) {};',
+    },
+    {
+      code: 'declare function f(a?: string | undefined): void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'declare function f(a?: string  ): void;',
+    },
+    {
+      code: `
+        declare class bb {
+          f(a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        declare class bb {
+          f(a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: `
+        interface ee {
+          f(a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        interface ee {
+          f(a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: `
+        interface ee {
+          new (a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        interface ee {
+          new (a?: string  ): void;
+        }
+      `,
+    },
+    {
+      code: 'type fn = (a?: string | undefined) => void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'type fn = (a?: string  ) => void;',
+    },
+    {
+      code: `
+        abstract class cc {
+          abstract f(a?: string | undefined): void;
+        }
+      `,
+      errors: [{ messageId: 'unnecessary' }],
+      output: `
+        abstract class cc {
+          abstract f(a?: string  ): void;
+        }
+      `,
     },
   ],
 });

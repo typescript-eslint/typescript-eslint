@@ -28,13 +28,15 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       baseToString:
-        "'{{name}}' {{certainty}} evaluate to '[object Object]' when stringified.",
+        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
     },
     schema: [
       {
         type: 'object',
         properties: {
           ignoredTypeNames: {
+            description:
+              'Stringified regular expressions of type names to ignore.',
             type: 'array',
             items: {
               type: 'string',

@@ -1,8 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { tsEnumFlagToString, tsEnumToString } from './tsUtils';
 import type { ParentNodeType } from './types';
+
+import { tsEnumFlagToString, tsEnumToString } from './tsUtils';
 
 export function objType(obj: unknown): string {
   const type = Object.prototype.toString.call(obj).slice(8, -1);
@@ -60,11 +61,6 @@ export function getNodeType(value: unknown): ParentNodeType {
       return 'tsSymbol';
     } else if ('getParameters' in value && value.getParameters != null) {
       return 'tsSignature';
-    } else if (
-      'flags' in value &&
-      ('antecedent' in value || 'antecedents' in value || 'consequent' in value)
-    ) {
-      return 'tsFlow';
     }
   }
   return undefined;
@@ -72,7 +68,7 @@ export function getNodeType(value: unknown): ParentNodeType {
 
 export function ucFirst(value: string): string {
   if (value.length > 0) {
-    return value.slice(0, 1).toUpperCase() + value.slice(1, value.length);
+    return value.slice(0, 1).toUpperCase() + value.slice(1);
   }
   return value;
 }
@@ -84,28 +80,26 @@ export function getTypeName(
   switch (valueType) {
     case 'esNode':
       return String(value.type);
-    case 'tsNode':
-      return tsEnumToString('SyntaxKind', Number(value.kind));
-    case 'scopeManager':
-      return 'ScopeManager';
     case 'scope':
       return `${ucFirst(String(value.type))}Scope$${String(value.$id)}`;
     case 'scopeDefinition':
       return `Definition#${String(value.type)}$${String(value.$id)}`;
-    case 'scopeVariable':
-      return `Variable#${String(value.name)}$${String(value.$id)}`;
+    case 'scopeManager':
+      return 'ScopeManager';
     case 'scopeReference':
       return `Reference#${String(
         isRecord(value.identifier) ? value.identifier.name : 'unknown',
       )}$${String(value.$id)}`;
-    case 'tsType':
-      return '[Type]';
-    case 'tsSymbol':
-      return `Symbol(${String(value.escapedName)})`;
+    case 'scopeVariable':
+      return `Variable#${String(value.name)}$${String(value.$id)}`;
+    case 'tsNode':
+      return tsEnumToString('SyntaxKind', Number(value.kind));
     case 'tsSignature':
       return '[Signature]';
-    case 'tsFlow':
-      return '[FlowNode]';
+    case 'tsSymbol':
+      return `Symbol(${String(value.escapedName)})`;
+    case 'tsType':
+      return '[Type]';
   }
   return undefined;
 }
@@ -121,23 +115,23 @@ export function getTooltipLabel(
         switch (propName) {
           case 'flags':
             return tsEnumFlagToString('NodeFlags', value);
-          case 'numericLiteralFlags':
-            return tsEnumFlagToString('TokenFlags', value);
-          case 'modifierFlagsCache':
-            return tsEnumFlagToString('ModifierFlags', value);
-          case 'scriptKind':
-            return `ScriptKind.${tsEnumToString('ScriptKind', value)}`;
-          case 'transformFlags':
-            return tsEnumFlagToString('TransformFlags', value);
           case 'kind':
             return `SyntaxKind.${tsEnumToString('SyntaxKind', value)}`;
-          case 'languageVersion':
-            return `ScriptTarget.${tsEnumToString('ScriptTarget', value)}`;
           case 'languageVariant':
             return `LanguageVariant.${tsEnumToString(
               'LanguageVariant',
               value,
             )}`;
+          case 'languageVersion':
+            return `ScriptTarget.${tsEnumToString('ScriptTarget', value)}`;
+          case 'modifierFlagsCache':
+            return tsEnumFlagToString('ModifierFlags', value);
+          case 'numericLiteralFlags':
+            return tsEnumFlagToString('TokenFlags', value);
+          case 'scriptKind':
+            return `ScriptKind.${tsEnumToString('ScriptKind', value)}`;
+          case 'transformFlags':
+            return tsEnumFlagToString('TransformFlags', value);
         }
         break;
       }
@@ -151,11 +145,6 @@ export function getTooltipLabel(
       case 'tsSymbol':
         if (propName === 'flags') {
           return tsEnumFlagToString('SymbolFlags', value);
-        }
-        break;
-      case 'tsFlow':
-        if (propName === 'flags') {
-          return tsEnumFlagToString('FlowFlags', value);
         }
         break;
     }
@@ -182,20 +171,9 @@ export function getRange(
     switch (valueType) {
       case 'esNode':
         return getValidRange(value.range);
-      case 'tsNode':
-        return getValidRange([value.pos, value.end]);
       case 'scope':
         if (isRecord(value.block)) {
           return getValidRange(value.block.range);
-        }
-        break;
-      case 'scopeVariable':
-        if (
-          Array.isArray(value.identifiers) &&
-          value.identifiers.length > 0 &&
-          isRecord(value.identifiers[0])
-        ) {
-          return getValidRange(value.identifiers[0].range);
         }
         break;
       case 'scopeDefinition':
@@ -208,6 +186,17 @@ export function getRange(
           return getValidRange(value.identifier.range);
         }
         break;
+      case 'scopeVariable':
+        if (
+          Array.isArray(value.identifiers) &&
+          value.identifiers.length > 0 &&
+          isRecord(value.identifiers[0])
+        ) {
+          return getValidRange(value.identifiers[0].range);
+        }
+        break;
+      case 'tsNode':
+        return getValidRange([value.pos, value.end]);
     }
   }
   return undefined;

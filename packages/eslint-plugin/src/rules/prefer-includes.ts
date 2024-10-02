@@ -1,4 +1,3 @@
-import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -9,6 +8,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export default createRule({
@@ -19,7 +19,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce `includes` method over `indexOf` method',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -119,9 +119,7 @@ export default createRule({
       }
 
       // To string.
-      return String.fromCodePoint(
-        ...chars.map(c => (c as RegExpAST.Character).value),
-      );
+      return String.fromCodePoint(...chars.map(c => c.value));
     }
 
     function escapeString(str: string): string {
@@ -139,7 +137,7 @@ export default createRule({
       };
       const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
 
-      return str.replace(
+      return str.replaceAll(
         replaceRegex,
         char => EscapeMap[char as keyof typeof EscapeMap],
       );
@@ -149,6 +147,9 @@ export default createRule({
       node: TSESTree.MemberExpression,
       allowFixing: boolean,
     ): void {
+      if (!isStaticMemberAccessOfValue(node, context, 'indexOf')) {
+        return;
+      }
       // Check if the comparison is equivalent to `includes()`.
       const callNode = node.parent as TSESTree.CallExpression;
       const compareNode = (
@@ -207,14 +208,14 @@ export default createRule({
 
     return {
       // a.indexOf(b) !== 1
-      "BinaryExpression > CallExpression.left > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+      'BinaryExpression > CallExpression.left > MemberExpression'(
         node: TSESTree.MemberExpression,
       ): void {
         checkArrayIndexOf(node, /* allowFixing */ true);
       },
 
       // a?.indexOf(b) !== 1
-      "BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name='indexOf'][computed=false]"(
+      'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression'(
         node: TSESTree.MemberExpression,
       ): void {
         checkArrayIndexOf(node, /* allowFixing */ false);

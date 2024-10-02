@@ -499,7 +499,9 @@ export default createRule<Options, MessageIds>({
       parent: ScopeNode,
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): void {
-      currentScope && scopes.push(currentScope);
+      if (currentScope) {
+        scopes.push(currentScope);
+      }
       currentScope = {
         overloads: new Map<string, OverloadNode[]>(),
         parent,
@@ -513,7 +515,7 @@ export default createRule<Options, MessageIds>({
         'checkScope() called without a current scope',
       );
       const failures = checkOverloads(
-        Array.from(scope.overloads.values()),
+        [...scope.overloads.values()],
         scope.typeParameters,
       );
       addFailures(failures);

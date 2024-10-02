@@ -1,12 +1,17 @@
+import path from 'node:path';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'path';
 
 import rule, {
   PACKAGES_DIR,
 } from '../../src/rules/no-relative-paths-to-internal-packages';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: PACKAGES_DIR,
+    },
+  },
 });
 
 ruleTester.run('no-relative-paths-to-internal-packages', rule, {

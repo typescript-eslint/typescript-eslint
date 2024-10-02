@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -149,11 +150,39 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       options: [{ allowArray: true }],
       code: `
-        const arg = [];
         function test<T extends string[]>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        declare const arg: [number, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        const arg = [1, 'a'] as const;
+        const msg = \`arg = \${arg || 'default'}\`;
+      `,
+    },
+    {
+      options: [{ allowArray: true }],
+      code: `
+        function test<T extends [string, string]>(arg: T) {
+          return \`arg = \${arg}\`;
+        }
+      `,
+    },
+    {
+      code: `
+        declare const arg: [number | undefined, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+      options: [{ allowNullish: true, allowArray: true }],
     },
     // allowAny
     {
@@ -315,6 +344,12 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allow
+    {
+      options: [{ allow: [{ from: 'lib', name: 'Promise' }] }],
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+    },
+    'const msg = `arg = ${new Error()}`;',
     'const msg = `arg = ${false}`;',
     'const msg = `arg = ${null}`;',
     'const msg = `arg = ${undefined}`;',
@@ -367,6 +402,20 @@ ruleTester.run('restrict-template-expressions', rule, {
     },
     {
       code: `
+        declare const arg: number[];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'number[]' },
+          line: 3,
+          column: 30,
+        },
+      ],
+    },
+    {
+      code: `
         const msg = \`arg = \${[, 2]}\`;
       `,
       errors: [
@@ -374,6 +423,30 @@ ruleTester.run('restrict-template-expressions', rule, {
           messageId: 'invalidType',
           data: { type: '(number | undefined)[]' },
           line: 2,
+          column: 30,
+        },
+      ],
+      options: [{ allowNullish: false, allowArray: true }],
+    },
+    {
+      code: 'const msg = `arg = ${Promise.resolve()}`;',
+      errors: [{ messageId: 'invalidType' }],
+    },
+    {
+      code: 'const msg = `arg = ${new Error()}`;',
+      options: [{ allow: [] }],
+      errors: [{ messageId: 'invalidType' }],
+    },
+    {
+      code: `
+        declare const arg: [number | undefined, string];
+        const msg = \`arg = \${arg}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: '[number | undefined, string]' },
+          line: 3,
           column: 30,
         },
       ],

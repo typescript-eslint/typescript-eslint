@@ -20,7 +20,13 @@ export type MinimalRuleModule<
 > = Partial<Omit<RuleModule<MessageIds, Options>, 'create'>> &
   Pick<RuleModule<MessageIds, Options>, 'create'>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class LinterBase {
+  /**
+   * The version from package.json.
+   */
+  readonly version: string;
+
   /**
    * Initialize the Linter.
    * @param config the config object
@@ -83,6 +89,15 @@ declare class LinterBase {
     filenameOrOptions?: Linter.VerifyOptions | string,
   ): Linter.LintMessage[];
 
+  ////////////////////
+  // static members //
+  ////////////////////
+
+  /**
+   * The version from package.json.
+   */
+  static readonly version: string;
+
   /**
    * Performs multiple autofix passes over the text until as many fixes as possible have been applied.
    * @param code The source text to apply fixes to.
@@ -95,30 +110,23 @@ declare class LinterBase {
     config: Linter.ConfigType,
     options: Linter.FixOptions,
   ): Linter.FixReport;
-
-  /**
-   * The version from package.json.
-   */
-  readonly version: string;
-
-  ////////////////////
-  // static members //
-  ////////////////////
-
-  /**
-   * The version from package.json.
-   */
-  static readonly version: string;
 }
 
 namespace Linter {
   export interface LinterOptions {
+    /**
+     * Which config format to use.
+     * @default 'flat'
+     */
+    configType?: ConfigTypeSpecifier;
+
     /**
      * path to a directory that should be considered as the current working directory.
      */
     cwd?: string;
   }
 
+  export type ConfigTypeSpecifier = 'eslintrc' | 'flat';
   export type EnvironmentConfig = SharedConfig.EnvironmentConfig;
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
   export type GlobalVariableOption = SharedConfig.GlobalVariableOption;
@@ -134,7 +142,10 @@ namespace Linter {
 
   /** @deprecated use Linter.ConfigType instead */
   export type Config = ClassicConfig.Config;
-  export type ConfigType = ClassicConfig.Config | FlatConfig.ConfigArray;
+  export type ConfigType =
+    | ClassicConfig.Config
+    | FlatConfig.Config
+    | FlatConfig.ConfigArray;
   /** @deprecated use ClassicConfig.ConfigOverride instead */
   export type ConfigOverride = ClassicConfig.ConfigOverride;
 
@@ -240,13 +251,13 @@ namespace Linter {
      */
     fixed: boolean;
     /**
-     * Fixed code text (might be the same as input if no fixes were applied).
-     */
-    output: string;
-    /**
      * Collection of all messages for the given code
      */
     messages: LintMessage[];
+    /**
+     * Fixed code text (might be the same as input if no fixes were applied).
+     */
+    output: string;
   }
 
   /** @deprecated use Parser.ParserModule */
@@ -269,7 +280,7 @@ namespace Linter {
     parserOptions?: ParserOptions;
   }
 
-  // TODO - RuleCreateFunction is no longer supported in ESLint v9
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
   export type LegacyPluginRules = Record<
     string,
     AnyRuleCreateFunction | AnyRuleModule

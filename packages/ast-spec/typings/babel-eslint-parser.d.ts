@@ -14,9 +14,9 @@ declare module '@babel/eslint-parser' {
   }
 
   export interface BabelAST {
-    readonly tokens: unknown;
     readonly comments: unknown;
     readonly [k: string]: unknown;
+    readonly tokens: unknown;
   }
 
   export function parse(code: string, options: Options): BabelAST;

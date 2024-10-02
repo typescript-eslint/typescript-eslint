@@ -146,4 +146,9 @@ class Reference {
   }
 }
 
-export { Reference, ReferenceFlag, ReferenceTypeFlag, ReferenceImplicitGlobal };
+export {
+  Reference,
+  ReferenceFlag,
+  ReferenceTypeFlag,
+  type ReferenceImplicitGlobal,
+};

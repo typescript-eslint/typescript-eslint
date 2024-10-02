@@ -13,7 +13,7 @@ import {
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
+import { isReferenceToGlobalFunction, isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 const enum ComparisonValueType {
@@ -68,7 +68,8 @@ function isValidFalseBooleanCheckType(
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  if (disallowFalseyLiteral) {
+  if (
+    disallowFalseyLiteral &&
     /*
     ```
     declare const x: false | {a: string};
@@ -79,15 +80,14 @@ function isValidFalseBooleanCheckType(
     We don't want to consider these two cases because the boolean expression
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
-    */
-    if (
-      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
+    */ (types.some(
+      t => isBooleanLiteralType(t) && t.intrinsicName === 'false',
+    ) ||
       types.some(t => isStringLiteralType(t) && t.value === '') ||
       types.some(t => isNumberLiteralType(t) && t.value === 0) ||
-      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
-    ) {
-      return false;
-    }
+      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0'))
+  ) {
+    return false;
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
@@ -153,16 +153,13 @@ export function gatherLogicalOperands(
             comparedExpression.operator === 'typeof'
           ) {
             const argument = comparedExpression.argument;
-            if (argument.type === AST_NODE_TYPES.Identifier) {
-              const reference = sourceCode
-                .getScope(argument)
-                .references.find(ref => ref.identifier.name === argument.name);
-
-              if (!reference?.resolved?.defs.length) {
-                // typeof window === 'undefined'
-                result.push({ type: OperandValidity.Invalid });
-                continue;
-              }
+            if (
+              argument.type === AST_NODE_TYPES.Identifier &&
+              // typeof window === 'undefined'
+              isReferenceToGlobalFunction(argument.name, argument, sourceCode)
+            ) {
+              result.push({ type: OperandValidity.Invalid });
+              continue;
             }
 
             // typeof x.y === 'undefined'

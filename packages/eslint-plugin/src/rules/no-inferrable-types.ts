@@ -31,9 +31,11 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           ignoreParameters: {
+            description: 'Whether to ignore function parameters.',
             type: 'boolean',
           },
           ignoreProperties: {
+            description: 'Whether to ignore class properties.',
             type: 'boolean',
           },
         },
@@ -120,8 +122,7 @@ export default createRule<Options, MessageIds>({
 
           return (
             isFunctionCall(unwrappedInit, 'BigInt') ||
-            (unwrappedInit.type === AST_NODE_TYPES.Literal &&
-              'bigint' in unwrappedInit)
+            unwrappedInit.type === AST_NODE_TYPES.Literal
           );
         }
 

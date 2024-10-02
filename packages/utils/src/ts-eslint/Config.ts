@@ -16,8 +16,18 @@ export namespace SharedConfig {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
-  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
+  export type GlobalVariableOptionBase =
+    | 'off'
+    | /** @deprecated use `'readonly'` */ 'readable'
+    | 'readonly'
+    | 'writable'
+    | /** @deprecated use `'writable'` */ 'writeable';
+  export type GlobalVariableOptionBoolean =
+    | /** @deprecated use `'readonly'` */ false
+    | /** @deprecated use `'writable'` */ true;
+  export type GlobalVariableOption =
+    | GlobalVariableOptionBase
+    | GlobalVariableOptionBoolean;
 
   export interface GlobalsConfig {
     [name: string]: GlobalVariableOption;
@@ -137,7 +147,7 @@ export namespace FlatConfig {
   export type Settings = SharedConfigurationSettings;
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
-  export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
+  export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
     [key: string]: Config;
@@ -199,7 +209,7 @@ export namespace FlatConfig {
      * Set to `"latest"` for the most recent supported version.
      * @default "latest"
      */
-    ecmaVersion?: EcmaVersion;
+    ecmaVersion?: EcmaVersion | undefined;
     /**
      * An object specifying additional objects that should be added to the global scope during linting.
      */
@@ -212,7 +222,7 @@ export namespace FlatConfig {
      * require('espree')
      * ```
      */
-    parser?: Parser;
+    parser?: Parser | undefined;
     /**
      * An object specifying additional options that are passed directly to the parser.
      * The available options are parser-dependent.
@@ -229,24 +239,19 @@ export namespace FlatConfig {
      * "commonjs"
      * ```
      */
-    sourceType?: SourceType;
+    sourceType?: SourceType | undefined;
   }
 
   // it's not a json schema so it's nowhere near as nice to read and convert...
   // https://github.com/eslint/eslint/blob/v8.45.0/lib/config/flat-config-schema.js
   export interface Config {
     /**
-     * An string to identify the configuration object. Used in error messages and inspection tools.
-     */
-    name?: string;
-    /**
      * An array of glob patterns indicating the files that the configuration object should apply to.
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
+      | string[] // yes, a single layer of array nesting is supported
       | string
-      // yes, a single layer of array nesting is supported
-      | string[]
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
@@ -262,6 +267,10 @@ export namespace FlatConfig {
      */
     linterOptions?: LinterOptions;
     /**
+     * An string to identify the configuration object. Used in error messages and inspection tools.
+     */
+    name?: string;
+    /**
      * An object containing a name-value mapping of plugin names to plugin objects.
      * When `files` is specified, these plugins are only available to the matching files.
      */
@@ -271,7 +280,7 @@ export namespace FlatConfig {
      * a string indicating the name of a processor inside of a plugin
      * (i.e., `"pluginName/processorName"`).
      */
-    processor?: string | Processor;
+    processor?: Processor | string;
     /**
      * An object containing the configured rules.
      * When `files` or `ignores` are specified, these rule configurations are only available to the matching files.

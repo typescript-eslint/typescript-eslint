@@ -5,10 +5,10 @@ import type { TSTypeParameterDeclaration } from '../../special/TSTypeParameterDe
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTypeAliasDeclaration extends BaseNode {
-  type: AST_NODE_TYPES.TSTypeAliasDeclaration;
   /**
    * Whether the type was `declare`d.
-   * ```
+   * @example
+   * ```ts
    * declare type T = 1;
    * ```
    */
@@ -17,12 +17,14 @@ export interface TSTypeAliasDeclaration extends BaseNode {
    * The name of the type.
    */
   id: Identifier;
+  type: AST_NODE_TYPES.TSTypeAliasDeclaration;
   /**
    * The "value" (type) of the declaration
    */
   typeAnnotation: TypeNode;
   /**
-   * The generic type parameters declared for the type.
+   * The generic type parameters declared for the type. Empty declaration
+   * (`<>`) is different from no declaration.
    */
   typeParameters: TSTypeParameterDeclaration | undefined;
 }

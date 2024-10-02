@@ -1,8 +1,13 @@
+import {
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
+} from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type, TypeChecker } from 'typescript';
 import { TypeFlags } from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -30,7 +35,7 @@ const optionTesters = (
     [
       'Array',
       (type, checker, recursivelyCheckType): boolean =>
-        checker.isArrayType(type) &&
+        (checker.isArrayType(type) || checker.isTupleType(type)) &&
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         recursivelyCheckType(type.getNumberIndexType()!),
     ],
@@ -43,14 +48,16 @@ const optionTesters = (
       (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
     ],
     ['Never', isTypeNeverType],
-  ] satisfies [string, OptionTester][]
+  ] as const satisfies [string, OptionTester][]
 ).map(([type, tester]) => ({
   type,
   option: `allow${type}` as const,
   tester,
 }));
 type Options = [
-  { [Type in (typeof optionTesters)[number]['option']]?: boolean },
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
+    allow?: TypeOrValueSpecifier[];
+  },
 ];
 
 type MessageId = 'invalidType';
@@ -84,15 +91,21 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         additionalProperties: false,
-        properties: Object.fromEntries(
-          optionTesters.map(({ option, type }) => [
-            option,
-            {
-              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
-              type: 'boolean',
-            },
-          ]),
-        ),
+        properties: {
+          ...Object.fromEntries(
+            optionTesters.map(({ option, type }) => [
+              option,
+              {
+                description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+                type: 'boolean',
+              },
+            ]),
+          ),
+          allow: {
+            description: `Types to allow in template expressions.`,
+            ...typeOrValueSpecifiersSchema,
+          },
+        },
       },
     ],
   },
@@ -103,11 +116,13 @@ export default createRule<Options, MessageId>({
       allowNullish: true,
       allowNumber: true,
       allowRegExp: true,
+      allow: [{ from: 'lib', name: ['Error', 'URL', 'URLSearchParams'] }],
     },
   ],
-  create(context, [options]) {
+  create(context, [{ allow, ...options }]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const enabledOptionTesters = optionTesters.filter(
       ({ option }) => options[option],
     );
@@ -147,6 +162,7 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
+        typeMatchesSomeSpecifier(innerType, allow, program) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )

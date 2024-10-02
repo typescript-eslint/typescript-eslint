@@ -1,4 +1,4 @@
-import type { KnipConfig } from 'knip';
+import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
@@ -20,20 +20,15 @@ export default {
         '@babel/parser',
         '@babel/types',
         '@nx/workspace',
-        'cross-fetch',
+        'console-fail-test',
         'glob',
         'husky',
         'jest-specific-snapshot',
         'make-dir',
         'ncp',
         'tmp',
-
-        // imported in eslint.config.js
-        '@typescript-eslint/utils',
-        // imported in eslint.config.mjs
-        '@typescript-eslint/eslint-plugin-internal',
       ],
-      entry: ['tools/release/changelog-renderer.js'],
+      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreBinaries: [
         // https://github.com/webpro/knip/issues/433
         'stylelint',
@@ -70,6 +65,9 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'packages/utils': {
+      ignore: ['tests/**/*.type-test.ts'],
+    },
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
@@ -89,10 +87,10 @@ export default {
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
 
-        '@babel/runtime',
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
+        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
@@ -104,6 +102,8 @@ export default {
         '@generated/docusaurus.config',
         '^@theme/.*',
         '^@theme-original/.*',
+        'docusaurus-plugin-typedoc',
+        'typedoc-plugin-markdown',
       ],
     },
     'packages/website-eslint': {

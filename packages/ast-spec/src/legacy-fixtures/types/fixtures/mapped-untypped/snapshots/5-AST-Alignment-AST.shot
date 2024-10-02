@@ -23,41 +23,40 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
                   type: 'TSMappedType',
-                  nameType: null,
-                  typeParameter: TSTypeParameter {
-                    type: 'TSTypeParameter',
--                   const: false,
-                    constraint: TSStringKeyword {
-                      type: 'TSStringKeyword',
+-                 constraint: TSStringKeyword {
+-                   type: 'TSStringKeyword',
++                 nameType: null,
++                 typeParameter: TSTypeParameter {
++                   type: 'TSTypeParameter',
++                   constraint: TSStringKeyword {
++                     type: 'TSStringKeyword',
 
-                      range: [90, 96],
-                      loc: {
-                        start: { column: 17, line: 3 },
-                        end: { column: 23, line: 3 },
-                      },
+-                   range: [90, 96],
+-                   loc: {
+-                     start: { column: 17, line: 3 },
+-                     end: { column: 23, line: 3 },
++                     range: [90, 96],
++                     loc: {
++                       start: { column: 17, line: 3 },
++                       end: { column: 23, line: 3 },
++                     },
                     },
--                   in: false,
--                   name: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'P',
--                     optional: false,
-+                   name: 'P',
+-                 },
+-                 key: Identifier {
+-                   type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'P',
+-                   optional: false,
 
--                     range: [85, 86],
--                     loc: {
--                       start: { column: 12, line: 3 },
--                       end: { column: 13, line: 3 },
--                     },
--                   },
--                   out: false,
--
-                    range: [85, 96],
+-                   range: [85, 86],
++                   range: [85, 96],
                     loc: {
                       start: { column: 12, line: 3 },
-                      end: { column: 23, line: 3 },
+-                     end: { column: 13, line: 3 },
++                     end: { column: 23, line: 3 },
                     },
                   },
+-                 nameType: null,
 
                   range: [82, 99],
                   loc: {

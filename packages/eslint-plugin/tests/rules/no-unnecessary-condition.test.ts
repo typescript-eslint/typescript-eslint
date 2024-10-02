@@ -1,9 +1,10 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
+
 import type {
   InvalidTestCase,
   TestCaseError,
-} from '@typescript-eslint/utils/ts-eslint';
-import * as path from 'path';
+} from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import type {
   MessageId,
@@ -15,10 +16,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -73,6 +75,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+switch (b1) {
+  case true:
+  default:
+}
     `,
     `
 declare function foo(): number | void;
@@ -591,10 +597,12 @@ declare const foo: Foo;
 const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -606,10 +614,12 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key].trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -624,10 +634,12 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -643,10 +655,12 @@ function Foo(outer: Outer, key: Foo): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -658,10 +672,12 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key]?.trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     `
@@ -721,8 +737,10 @@ if (x) {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
     `
@@ -775,14 +793,14 @@ foo[key] ??= 1;
 declare const foo: { bar?: number };
 foo.bar ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
 declare const foo: { bar: { baz?: number } };
 foo['bar'].baz ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -791,7 +809,7 @@ type Key = 'baz' | 'qux';
 declare const key: Key;
 foo.bar[key] ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     `
 declare let foo: number;
@@ -824,10 +842,12 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
   }
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     `
@@ -852,7 +872,125 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare function foo(): void | { key: string };
+const bar = foo()?.key;
+    `,
+    `
+type fn = () => void;
+declare function foo(): void | fn;
+const bar = foo()?.();
+    `,
+    {
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+      code: `
+class ConsistentRand {
+  #rand?: number;
+
+  getCachedRand() {
+    this.#rand ??= Math.random();
+    return this.#rand;
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+
+assert(Math.random() > 0.5);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(Math.random() > 0.5, true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // should not report because option is disabled.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(Math.random());
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[]);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // ok to report if we start unpacking spread params one day.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[], {});
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+declare const a: string;
+assertString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
   ],
+
   invalid: [
     // Ensure that it's checking in all the right places
     {
@@ -872,6 +1010,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
+switch (b1) {
+  case true:
+  default:
+}
       `,
       output: null,
       errors: [
@@ -884,6 +1026,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
     },
     // Ensure that it's complaining about the right things
@@ -1253,11 +1396,13 @@ function truthy() {
 function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
+[1, 2, 3].findLastIndex(falsy);
       `,
       output: null,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
+        ruleError(8, 25, 'alwaysFalsyFunc'),
       ],
     },
     // Supports generics
@@ -1880,7 +2025,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysTruthy')],
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
     },
     {
       code: `
@@ -1889,7 +2034,7 @@ if (!a) {
 }
       `,
       output: null,
-      errors: [ruleError(3, 6, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
     },
     {
       code: `
@@ -1902,7 +2047,7 @@ if (!speech) {
 }
       `,
       output: null,
-      errors: [ruleError(7, 6, 'never')],
+      errors: [ruleError(7, 5, 'never')],
     },
     {
       code: `
@@ -1923,8 +2068,10 @@ if (x) {
           column: 5,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
     {
@@ -2123,7 +2270,7 @@ declare const foo: { bar: number };
 foo.bar ??= 1;
       `,
       output: null,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
       errors: [
         {
           messageId: 'neverNullish',
@@ -2135,7 +2282,7 @@ foo.bar ??= 1;
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar()?.toExponential();
@@ -2156,7 +2303,7 @@ foo?.bar().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux?.toExponential();
@@ -2184,7 +2331,7 @@ foo?.bar?.baz().qux.toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.()?.toExponential();
@@ -2205,7 +2352,7 @@ foo?.().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
@@ -2226,7 +2373,7 @@ foo?.['bar']().toExponential();
       ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.()?.toExponential();
@@ -2243,6 +2390,112 @@ foo?.['bar']?.().toExponential();
           column: 17,
           endLine: 4,
           endColumn: 19,
+        },
+      ],
+    },
+    {
+      code: `
+        const a = true;
+        if (!!a) {
+        }
+      `,
+      errors: [ruleError(3, 13, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(false);
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 8,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(true, Math.random() > 0.5);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 4,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert({});
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          column: 8,
+        },
+      ],
+    },
+    {
+      code: `
+declare function assertsString(x: unknown): asserts x is string;
+declare const a: string;
+assertsString(a);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString('fa' + 'lafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+      errors: [
+        {
+          messageId: 'typeGuardAlreadyIsType',
+          line: 4,
         },
       ],
     },

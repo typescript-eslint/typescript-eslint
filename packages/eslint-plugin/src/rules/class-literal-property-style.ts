@@ -3,9 +3,10 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
-  getStaticStringValue,
+  getStaticMemberAccessValue,
   isAssignee,
   isFunction,
+  isStaticMemberAccessOfValue,
   nullThrows,
 } from '../util';
 
@@ -23,7 +24,7 @@ interface NodeWithModifiers {
 
 interface PropertiesInfo {
   properties: TSESTree.PropertyDefinition[];
-  excludeSet: Set<string>;
+  excludeSet: Set<string | symbol>;
 }
 
 const printNodeModifiers = (
@@ -37,18 +38,19 @@ const printNodeModifiers = (
 const isSupportedLiteral = (
   node: TSESTree.Node,
 ): node is TSESTree.LiteralExpression => {
-  if (node.type === AST_NODE_TYPES.Literal) {
-    return true;
-  }
+  switch (node.type) {
+    case AST_NODE_TYPES.Literal:
+      return true;
 
-  if (
-    node.type === AST_NODE_TYPES.TaggedTemplateExpression ||
-    node.type === AST_NODE_TYPES.TemplateLiteral
-  ) {
-    return ('quasi' in node ? node.quasi.quasis : node.quasis).length === 1;
-  }
+    case AST_NODE_TYPES.TaggedTemplateExpression:
+      return node.quasi.quasis.length === 1;
 
-  return false;
+    case AST_NODE_TYPES.TemplateLiteral:
+      return node.quasis.length === 1;
+
+    default:
+      return false;
+  }
 };
 
 export default createRule<Options, MessageIds>({
@@ -78,10 +80,6 @@ export default createRule<Options, MessageIds>({
   create(context, [style]) {
     const propertiesInfoStack: PropertiesInfo[] = [];
 
-    function getStringValue(node: TSESTree.Node): string {
-      return getStaticStringValue(node) ?? context.sourceCode.getText(node);
-    }
-
     function enterClassBody(): void {
       propertiesInfoStack.push({
         properties: [],
@@ -101,8 +99,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const name = getStringValue(node.key);
-        if (excludeSet.has(name)) {
+        const name = getStaticMemberAccessValue(node, context);
+        if (name && excludeSet.has(name)) {
           return;
         }
 
@@ -133,9 +131,7 @@ export default createRule<Options, MessageIds>({
         const { excludeSet } =
           propertiesInfoStack[propertiesInfoStack.length - 1];
 
-        const name =
-          getStaticStringValue(node.property) ??
-          context.sourceCode.getText(node.property);
+        const name = getStaticMemberAccessValue(node, context);
 
         if (name) {
           excludeSet.add(name);
@@ -166,19 +162,19 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const name = getStringValue(node.key);
+          const name = getStaticMemberAccessValue(node, context);
 
-          if (node.parent.type === AST_NODE_TYPES.ClassBody) {
-            const hasDuplicateKeySetter = node.parent.body.some(element => {
+          const hasDuplicateKeySetter =
+            name &&
+            node.parent.body.some(element => {
               return (
                 element.type === AST_NODE_TYPES.MethodDefinition &&
                 element.kind === 'set' &&
-                getStringValue(element.key) === name
+                isStaticMemberAccessOfValue(element, context, name)
               );
             });
-            if (hasDuplicateKeySetter) {
-              return;
-            }
+          if (hasDuplicateKeySetter) {
+            return;
           }
 
           context.report({

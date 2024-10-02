@@ -4,14 +4,7 @@ import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
 
 const rule = getESLintCoreRule('no-undef');
 
-const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
-  },
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-undef', rule, {
   valid: [
@@ -47,8 +40,10 @@ const links = document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
 /*globals document, selector */
 const links = document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
       `,
-      parserOptions: {
-        lib: ['dom'],
+      languageOptions: {
+        parserOptions: {
+          lib: ['dom'],
+        },
       },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/437
@@ -155,9 +150,11 @@ let test: unknown;
 function Foo() {}
 <Foo />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -167,9 +164,11 @@ type T = 1;
 function Foo() {}
 <Foo<T> />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -179,9 +178,11 @@ const x = 1;
 function Foo() {}
 <Foo attr={x} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -191,9 +192,11 @@ const x = {};
 function Foo() {}
 <Foo {...x} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -203,9 +206,11 @@ const x = {};
 function Foo() {}
 <Foo>{x}</Foo>;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -214,9 +219,11 @@ function Foo() {}
       code: `
 <div />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -224,9 +231,11 @@ function Foo() {}
       code: `
 <span></span>;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -258,6 +267,11 @@ const obj = {
     let self: typeof this;
   },
 };
+    `,
+    `
+class Foo {
+  [x: string]: any;
+}
     `,
   ],
   invalid: [
@@ -296,9 +310,11 @@ const obj = {
     },
     {
       code: '<Foo />;',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -317,9 +333,11 @@ const obj = {
 function Foo() {}
 <Foo attr={x} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -338,9 +356,11 @@ function Foo() {}
 function Foo() {}
 <Foo {...x} />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -359,9 +379,11 @@ function Foo() {}
 function Foo() {}
 <Foo<T> />;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -380,9 +402,11 @@ function Foo() {}
 function Foo() {}
 <Foo>{x}</Foo>;
       `,
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
       errors: [
@@ -393,6 +417,36 @@ function Foo() {}
           },
           line: 3,
           column: 7,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [x: Bar]: string;
+}
+      `,
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Bar',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  [x: string]: Bar;
+}
+      `,
+      errors: [
+        {
+          messageId: 'undef',
+          data: {
+            name: 'Bar',
+          },
         },
       ],
     },

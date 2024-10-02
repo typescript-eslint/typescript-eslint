@@ -4,11 +4,12 @@ import rule from '../../src/rules/no-unsafe-call';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
-    project: './tsconfig.noImplicitThis.json',
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.noImplicitThis.json',
+      projectService: false,
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -43,6 +44,52 @@ function foo(x: { a?: () => void }) {
         x();
       }
     `,
+    `
+      // create a scope since it's illegal to declare a duplicate identifier
+      // 'Function' in the global script scope.
+      {
+        type Function = () => void;
+        const notGlobalFunctionType: Function = (() => {}) as Function;
+        notGlobalFunctionType();
+      }
+    `,
+    `
+interface SurprisinglySafe extends Function {
+  (): string;
+}
+declare const safe: SurprisinglySafe;
+safe();
+    `,
+    `
+interface CallGoodConstructBad extends Function {
+  (): void;
+}
+declare const safe: CallGoodConstructBad;
+safe();
+    `,
+    `
+interface ConstructSignatureMakesSafe extends Function {
+  new (): ConstructSignatureMakesSafe;
+}
+declare const safe: ConstructSignatureMakesSafe;
+new safe();
+    `,
+    `
+interface SafeWithNonVoidCallSignature extends Function {
+  (): void;
+  (x: string): string;
+}
+declare const safe: SafeWithNonVoidCallSignature;
+safe();
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      new Function('lol');
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      Function('lol');
+    `,
   ],
   invalid: [
     {
@@ -51,7 +98,17 @@ function foo(x: any) {
   x();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 4,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -59,7 +116,17 @@ function foo(x: any) {
   x?.();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 4,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -67,7 +134,17 @@ function foo(x: any) {
   x.a.b.c.d.e.f.g();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 18,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -75,7 +152,17 @@ function foo(x: any) {
   x.a.b.c.d.e.f.g?.();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 18,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -83,7 +170,17 @@ function foo(x: { a: any }) {
   x.a();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 6,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -91,7 +188,17 @@ function foo(x: { a: any }) {
   x?.a();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 7,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -99,7 +206,17 @@ function foo(x: { a: any }) {
   x.a?.();
 }
       `,
-      errors: [{ messageId: 'unsafeCall' }],
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 3,
+          endColumn: 6,
+          data: {
+            type: '`any`',
+          },
+        },
+      ],
     },
     {
       code: `
@@ -160,6 +277,154 @@ const methods = {
           line: 10,
           column: 12,
           endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+let value: NotKnown;
+value();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          column: 1,
+          endColumn: 6,
+          data: {
+            type: '`error` type',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const t: Function = () => {};
+t();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 3,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const f: Function = () => {};
+f\`oo\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 3,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeFunction: unknown;
+if (typeof maybeFunction === 'function') {
+  maybeFunction('call', 'with', 'any', 'args');
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+unsafe\`bad\`;
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTemplateTag',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+new unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeNew',
+          line: 4,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface UnsafeToConstruct extends Function {
+  (): void;
+}
+declare const unsafe: UnsafeToConstruct;
+new unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeNew',
+          line: 6,
+          data: {
+            type: '`Function`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface StillUnsafe extends Function {
+  property: string;
+}
+declare const unsafe: StillUnsafe;
+unsafe();
+      `,
+      errors: [
+        {
+          messageId: 'unsafeCall',
+          line: 6,
+          data: {
+            type: '`Function`',
+          },
         },
       ],
     },

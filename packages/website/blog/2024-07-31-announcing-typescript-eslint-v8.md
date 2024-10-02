@@ -1,0 +1,750 @@
+---
+authors: joshuakgoldberg
+description: Announcing the stable release of typescript-eslint's v8.
+slug: announcing-typescript-eslint-v8
+tags: [breaking changes, typescript-eslint, v7, v8]
+title: Announcing typescript-eslint v8
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+[typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
+We've been working on a set of breaking changes and general features that we're excited to get in front of users.
+And now, we're excited to say that typescript-eslint v8 is released as stable! 🎉
+
+We'd previously blogged about v8 in [Announcing typescript-eslint v8 Beta](./2024-05-27-announcing-typescript-eslint-v8-beta.mdx).
+This blog post contains much of the same information as that one, and includes the list of steps you'll need to take to upgrade.
+
+<!--truncate-->
+
+## Trying Out v8
+
+Whether you're new to linting your TypeScript code or a returning user, please do upgrade to the latest major version of typescript-eslint!
+V8 comes with a suite of quality-of-life improvements we think you'll appreciate.
+
+### As A New User
+
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the v8 _Getting Started_ docs](/getting-started).
+It'll walk you through setting up typescript-eslint in a project.
+
+### As An Existing User
+
+If you already use typescript-eslint, you'll need to first replace your package's previous versions with `@8`:
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+```shell
+npm i typescript-eslint@8 --save-dev
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```shell
+npm i @typescript-eslint/eslint-plugin@8 @typescript-eslint/parser@8 --save-dev
+```
+
+</TabItem>
+</Tabs>
+
+We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations](/users/configs) — especially if it's been a while since you've reworked your linter config.
+
+## User-Facing Changes
+
+These are the changes that users of typescript-eslint —generally, any developer running ESLint on TypeScript code— should pay attention to when upgrading typescript-eslint from v7 to v8.
+
+### ESLint v9 Support
+
+typescript-eslint v8 ships with full support for ESLint v9.
+
+typescript-eslint v7 was our first version that supported ESLint's [new "flat" config file format](https://eslint.org/docs/latest/use/configure/configuration-files), which was already available in ESLint v8.
+ESLint v9 still supports ESLint's [older legacy config file format](https://eslint.org/docs/latest/use/configure/configuration-files-deprecated) so our tooling does as well.
+However, ESLint v9 also includes a set of breaking changes that we added support for in typescript-eslint v8.
+See the [ESLint v9 release blog post](https://eslint.org/blog/2024/04/eslint-v9.0.0-released) for more details.
+
+### Project Service
+
+The biggest new feature added in this version is the stability of our new "project service".
+In short, the project service is a new way to enable [typed linting](/getting-started/typed-linting) that is generally _easier to configure_ and _faster at runtime_ than our previous offerings.
+It's been experimentally available since v6.1.0 under the name `EXPERIMENTAL_useProjectService`; now, we've renamed it to `projectService`.
+
+You can use the new project service in your configuration instead of the previous `parserOptions.project`:
+
+```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        // Remove this line
+        project: true,
+        // Add this line
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+);
+```
+
+The project service will automatically find the closest `tsconfig.json` for each file (like `project: true`).
+It also allows enabling typed linting for files not explicitly included in a `tsconfig.json`.
+This should remove the need for custom `tsconfig.eslint.json` files to lint files like `eslint.config.mjs`!
+
+Typed linting for out-of-project files can be done by specifying two properties of a `parserOptions.projectService` object:
+
+- `allowDefaultProject`: a glob of a small number of out-of-project files to enable a slower default project on
+- `defaultProject`: path to a TypeScript configuration file to use for the slower default project
+
+```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  {
+    languageOptions: {
+      parserOptions: {
+        // Remove this line
+        project: ['packages/*/tsconfig.json', 'tsconfig.eslint.json'],
+        // Added lines start
+        projectService: {
+          allowDefaultProject: ['*.js'],
+          defaultProject: 'tsconfig.json',
+        },
+        // Added lines end
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+);
+```
+
+Internally, the project service uses the same TypeScript APIs that editors such as VS Code use.
+Doing so should make it harder to accidentally configure different type information for ESLint than what you see in day-to-day editing.
+
+We're thrilled to have the project service option promoted to stable in v8.
+We'll soon release a [dedicated `parserOptions` blog post](https://github.com/typescript-eslint/typescript-eslint/pull/8031) walking through the new option in more details.
+🚀
+
+### Updated Configuration Rules
+
+Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations and with which options.
+See the table in [Changes to configurations for 8.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/8914) for more context on the changes.
+
+Please do try out the new rule configurations presets and let us know in that discussion!
+
+:::tip
+If your ESLint configuration contains many `rules` configurations, we suggest the following strategy to start anew:
+
+1. Remove all your rules configurations
+2. Extend from the preset configs that make sense for you
+3. Run ESLint on your project
+4. In your ESLint configuration, turn off any rules creating errors that don't make sense for your project — with comments explaining why
+5. In your ESLint configuration and/or with inline `eslint-disable` comments, turn off / downgrade to "warn" any rules creating too many errors for you to fix — with _"TODO"_ comments linking to tracking issues/tickets to re-enable them
+
+:::
+
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>recommended</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
++  '@typescript-eslint/no-require-imports': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
+   '@typescript-eslint/prefer-as-const': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>recommended-type-checked</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/await-thenable': '...',
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
++  '@typescript-eslint/no-array-delete': '...',
+   '@typescript-eslint/no-base-to-string': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
+   '@typescript-eslint/no-duplicate-type-constituents': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+   '@typescript-eslint/no-floating-promises': '...',
+   '@typescript-eslint/no-for-in-array': '...',
+   'no-implied-eval': '...',
+   '@typescript-eslint/no-implied-eval': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-misused-promises': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+   '@typescript-eslint/no-redundant-type-constituents': '...',
++  '@typescript-eslint/no-require-imports': '...',
+   '@typescript-eslint/no-this-alias': '...',
++  'no-throw-literal': '...',
+   '@typescript-eslint/no-unnecessary-type-assertion': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-argument': '...',
+   '@typescript-eslint/no-unsafe-assignment': '...',
+   '@typescript-eslint/no-unsafe-call': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
+   '@typescript-eslint/no-unsafe-enum-comparison': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
+   '@typescript-eslint/no-unsafe-member-access': '...',
+   '@typescript-eslint/no-unsafe-return': '...',
++  '@typescript-eslint/no-unsafe-unary-minus': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
++  '@typescript-eslint/only-throw-error': '...',
+   '@typescript-eslint/prefer-as-const': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
++  'prefer-promise-reject-errors': '...',
++  '@typescript-eslint/prefer-promise-reject-errors': '...',
+   'require-await': '...',
+   '@typescript-eslint/require-await': '...',
+   '@typescript-eslint/restrict-plus-operands': '...',
+   '@typescript-eslint/restrict-template-expressions': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unbound-method': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>strict</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
+   '@typescript-eslint/no-dynamic-delete': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+   '@typescript-eslint/no-extraneous-class': '...',
+   '@typescript-eslint/no-invalid-void-type': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-nullish-coalescing': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+   '@typescript-eslint/no-non-null-assertion': '...',
++  '@typescript-eslint/no-require-imports': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+   'no-useless-constructor': '...',
+   '@typescript-eslint/no-useless-constructor': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
+   '@typescript-eslint/prefer-as-const': '...',
+   '@typescript-eslint/prefer-literal-enum-member': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unified-signatures': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>strict-type-checked</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/await-thenable': '...',
+   '@typescript-eslint/ban-ts-comment': '...',
+-  '@typescript-eslint/ban-types': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
+   '@typescript-eslint/no-array-delete': '...',
+   '@typescript-eslint/no-base-to-string': '...',
+   '@typescript-eslint/no-confusing-void-expression': '...',
+   '@typescript-eslint/no-duplicate-enum-values': '...',
+   '@typescript-eslint/no-duplicate-type-constituents': '...',
+   '@typescript-eslint/no-dynamic-delete': '...',
++  '@typescript-eslint/no-empty-object-type': '...',
+   '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+   '@typescript-eslint/no-extraneous-class': '...',
+   '@typescript-eslint/no-floating-promises': '...',
+   '@typescript-eslint/no-for-in-array': '...',
+   'no-implied-eval': '...',
+   '@typescript-eslint/no-implied-eval': '...',
+   '@typescript-eslint/no-invalid-void-type': '...',
+-  'no-loss-of-precision': '...',
+-  '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-meaningless-void-operator': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-misused-promises': '...',
+   '@typescript-eslint/no-mixed-enums': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-nullish-coalescing': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+   '@typescript-eslint/no-non-null-assertion': '...',
+   '@typescript-eslint/no-redundant-type-constituents': '...',
++  '@typescript-eslint/no-require-imports': '...',
++  'no-return-await': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   'no-throw-literal': '...',
+   '@typescript-eslint/no-unnecessary-boolean-literal-compare': '...',
+   '@typescript-eslint/no-unnecessary-condition': '...',
+   '@typescript-eslint/no-unnecessary-template-expression': '...',
+   '@typescript-eslint/no-unnecessary-type-arguments': '...',
+   '@typescript-eslint/no-unnecessary-type-assertion': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
++  '@typescript-eslint/no-unnecessary-type-parameters': '...',
+   '@typescript-eslint/no-unsafe-argument': '...',
+   '@typescript-eslint/no-unsafe-assignment': '...',
+   '@typescript-eslint/no-unsafe-call': '...',
+   '@typescript-eslint/no-unsafe-declaration-merging': '...',
+   '@typescript-eslint/no-unsafe-enum-comparison': '...',
++  '@typescript-eslint/no-unsafe-function-type': '...',
+   '@typescript-eslint/no-unsafe-member-access': '...',
+   '@typescript-eslint/no-unsafe-return': '...',
++  '@typescript-eslint/no-unsafe-unary-minus': '...',
++  'no-unused-expressions': '...',
++  '@typescript-eslint/no-unused-expressions': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+   'no-useless-constructor': '...',
+   '@typescript-eslint/no-useless-constructor': '...',
+-  '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/no-wrapper-object-types': '...',
+   '@typescript-eslint/only-throw-error': '...',
+   '@typescript-eslint/prefer-as-const': '...',
+-  '@typescript-eslint/prefer-includes': '...',
+   '@typescript-eslint/prefer-literal-enum-member': '...',
++  '@typescript-eslint/prefer-namespace-keyword': '...',
+   'prefer-promise-reject-errors': '...',
+   '@typescript-eslint/prefer-promise-reject-errors': '...',
+   '@typescript-eslint/prefer-reduce-type-parameter': '...',
+   '@typescript-eslint/prefer-return-this-type': '...',
+   'require-await': '...',
+   '@typescript-eslint/require-await': '...',
+   '@typescript-eslint/restrict-plus-operands': '...',
+   '@typescript-eslint/restrict-template-expressions': '...',
++  '@typescript-eslint/return-await': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unbound-method': '...',
+   '@typescript-eslint/unified-signatures': '...',
+   '@typescript-eslint/use-unknown-in-catch-callback-variable': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>stylistic</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/adjacent-overload-signatures': '...',
+   '@typescript-eslint/array-type': '...',
+   '@typescript-eslint/ban-tslint-comment': '...',
+   '@typescript-eslint/class-literal-property-style': '...',
+   '@typescript-eslint/consistent-generic-constructors': '...',
+   '@typescript-eslint/consistent-indexed-object-style': '...',
+   '@typescript-eslint/consistent-type-assertions': '...',
+   '@typescript-eslint/consistent-type-definitions': '...',
+   '@typescript-eslint/no-confusing-non-null-assertion': '...',
+   'no-empty-function': '...',
+   '@typescript-eslint/no-empty-function': '...',
+-  '@typescript-eslint/no-empty-interface': '...',
+   '@typescript-eslint/no-inferrable-types': '...',
+   '@typescript-eslint/prefer-for-of': '...',
+   '@typescript-eslint/prefer-function-type': '...',
+-  '@typescript-eslint/prefer-namespace-keyword': '...',
+}
+```
+
+</details>
+<details>
+<summary>Diff patch from v7 to v8 for <em><code>stylistic-type-checked</code></em></summary>
+
+```diff
+{
+   '@typescript-eslint/adjacent-overload-signatures': '...',
+   '@typescript-eslint/array-type': '...',
+   '@typescript-eslint/ban-tslint-comment': '...',
+   '@typescript-eslint/class-literal-property-style': '...',
+   '@typescript-eslint/consistent-generic-constructors': '...',
+   '@typescript-eslint/consistent-indexed-object-style': '...',
+   '@typescript-eslint/consistent-type-assertions': '...',
+   '@typescript-eslint/consistent-type-definitions': '...',
+   'dot-notation': '...',
+   '@typescript-eslint/dot-notation': '...',
+   '@typescript-eslint/no-confusing-non-null-assertion': '...',
+   'no-empty-function': '...',
+   '@typescript-eslint/no-empty-function': '...',
+-  '@typescript-eslint/no-empty-interface': '...',
+   '@typescript-eslint/no-inferrable-types': '...',
+   '@typescript-eslint/non-nullable-type-assertion-style': '...',
++  '@typescript-eslint/prefer-find': '...',
+   '@typescript-eslint/prefer-for-of': '...',
+   '@typescript-eslint/prefer-function-type': '...',
++  '@typescript-eslint/prefer-includes': '...',
+-  '@typescript-eslint/prefer-namespace-keyword': '...',
+   '@typescript-eslint/prefer-nullish-coalescing': '...',
+   '@typescript-eslint/prefer-optional-chain': '...',
++  '@typescript-eslint/prefer-regexp-exec': '...',
+   '@typescript-eslint/prefer-string-starts-ends-with': '...',
+}
+```
+
+</details>
+
+<!-- markdownlint-enable MD033 -->
+
+### Rule Breaking Changes
+
+Several rules are changed in significant enough ways to be considered breaking changes:
+
+- [Rules: Deprecate prefer-ts-expect-error in favor of ban-ts-comment](https://github.com/typescript-eslint/typescript-eslint/issues/8333)
+  - If you have [`@typescript-eslint/prefer-ts-expect-error`](/rules/prefer-ts-expect-error) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/ban-ts-comment`](/rules/ban-ts-comment).
+- [chore(eslint-plugin): deprecate no-var-requires in favor of no-require-imports](https://github.com/typescript-eslint/typescript-eslint/pull/8334)
+  - If you have [`@typescript-eslint/no-var-requires`](/rules/no-var-requires) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-require-imports`](/rules/no-require-imports).
+- [feat(eslint-plugin): remove deprecated no-throw-literal rule](https://github.com/typescript-eslint/typescript-eslint/issues/9083)
+  - If you have [`@typescript-eslint/no-throw-literal`](https://typescript-eslint.io/rules/no-throw-literal) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/only-throw-error`](/rules/only-throw-error).
+- [feat(eslint-plugin): [no-useless-template-literals] rename to no-useless-template-expression (deprecate no-useless-template-literals)](https://github.com/typescript-eslint/typescript-eslint/pull/8821) and [fix: no-useless-template-expression -> no-unnecessary-template-expression](https://github.com/typescript-eslint/typescript-eslint/pull/9174)
+  - Find-and-replace text from `no-useless-template-literals` to `no-unnecessary-template-expression`
+- [feat(eslint-plugin): deprecate no-loss-of-precision extension rule](https://github.com/typescript-eslint/typescript-eslint/pull/8832)
+  - If you have [`@typescript-eslint/no-loss-of-precision`](/rules/no-loss-of-precision) manually enabled, replace it with the base rule `no-loss-of-precision`.
+- [feat(eslint-plugin): remove formatting/layout rules](https://github.com/typescript-eslint/typescript-eslint/pull/8833)
+  - If you're using any of the old deprecated formatting rules, see [eslint.style](https://eslint.style) for their new equivalents
+- [feat(eslint-plugin): [prefer-nullish-coalescing] change ignoreConditionalTests default to true](https://github.com/typescript-eslint/typescript-eslint/pull/8872)
+  - If you want to have the rule check conditional tests, set its [`ignoreConditionalTests` option](/rules/prefer-nullish-coalescing/#ignoreconditionaltests) to `false` in your ESLint config
+- [feat(eslint-plugin): [no-unused-vars] align catch behavior to ESLint 9](https://github.com/typescript-eslint/typescript-eslint/pull/8971)
+  - If you want [`@typescript-eslint/no-unused-vars`](/rules/no-unused-vars) to ignore caught errors, enable its `caughtErrors` option to `'none'` in your ESLint config
+
+#### Replacement of `ban-types`
+
+[`@typescript-eslint/ban-types`](https://typescript-eslint.io/rules/ban-types) has long been one of the more controversial rules in typescript-eslint.
+It served two purposes:
+
+- Allowing users to ban a configurable list of types from being used in type annotations
+- Banning confusing or dangerous built-in types such as `Function` and `Number`
+
+Notably, `ban-types` banned the built-in `{}` ("empty object") type in TypeScript.
+The `{}` type is a common source of confusion for TypeScript developers because it matches _any non-nullable_ value, including primitives like `""`.
+
+Banning `{}` in `ban-types` was helpful to prevent developers from accidentally using it instead of a more safe type such as `object`.
+On the other hand, there are legitimate uses for `{}`, and banning it by default was harmful in those cases.
+
+typescript-eslint v8 deletes the `ban-types` rule and replaces it with several more targeted rules:
+
+- [`@typescript-eslint/no-restricted-types`](/rules/no-restricted-types) is the new rule for banning a configurable list of type names.
+  It has no options enabled by default.
+- [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type) bans the built-in `{}` type in confusing locations.
+- [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type) bans the built-in `Function` type
+- [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types) bans `Object` and built-in class wrappers such as `Number`.
+
+To migrate to the new rules:
+
+- If you were disabling the ban on `{}`, consider enabling [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type), as it allows some cases of `{}` that were previously banned.
+- If you were banning any configurable types lists, provide a similar configuration to [`no-restricted-types`](/rules/no-restricted-types).
+- If you have [`@typescript-eslint/ban-types`](/rules/ban-types) manually enabled, it will no longer ban:
+  - `{}`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
+  - `Function`: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type).
+  - `Number` or other built-in uppercase types: use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-wrapper-object-types`](/rules/no-wrapper-object-types).
+- If you have [`@typescript-eslint/no-empty-interface`](/rules/no-empty-interface) manually enabled, remove that, and instead either use a [recommended config](/users/configs) or manually enable [`@typescript-eslint/no-empty-object-type`](/rules/no-empty-object-type).
+
+For more details, see the issues and pull requests that split apart the `ban-types` rule:
+
+- [Enhancement: [ban-types] Split the {} ban into a separate, better-phrased rule](https://github.com/typescript-eslint/typescript-eslint/issues/8700)
+- [feat(eslint-plugin): split no-empty-object-type out from ban-types and no-empty-interface](https://github.com/typescript-eslint/typescript-eslint/pull/8977)
+- [Enhancement: [ban-types] Split into default-less no-restricted-types and more targeted type ban rule(s)](https://github.com/typescript-eslint/typescript-eslint/issues/8978)
+- [feat(eslint-plugin): replace ban-types with no-restricted-types, no-unsafe-function-type, no-wrapper-object-types](https://github.com/typescript-eslint/typescript-eslint/pull/9102)
+
+### Tooling Breaking Changes
+
+- [fix(typescript-estree): enable dot globs for project by default](https://github.com/typescript-eslint/typescript-eslint/pull/8818)
+  - This will cause any `parserOptions.project` globs to match dot (`.`) directories.
+    If you don't want to match them then use a more specific set of globs, or switch to `parserOptions.projectService`.
+- [feat(typescript-estree): remove slow deprecated and isolated programs](https://github.com/typescript-eslint/typescript-eslint/pull/8834)
+  - If you were still using `parserOptions.DEPRECATED__createDefaultProgram`, switch to `parserOptions.projectService` _(recommended)_ or `parserOptions.project`.
+- [feat(typescript-estree): rename automaticSingleRunInference to disallowAutomaticSingleRunInference](https://github.com/typescript-eslint/typescript-eslint/pull/8922)
+  - We've updated the default to be an opt-out - meaning you no longer need to enable it:
+    ```js
+    parserOptions: {
+      // Remove this line
+      automaticSingleRunInference: true,
+      // ...
+    }
+    ```
+- [chore: bump minimum versions for v8](https://github.com/typescript-eslint/typescript-eslint/pull/8973)
+  - ESLint support range was changed from `^8.56.0` to `^8.57.0`
+  - Node.js support range was changed from `^18.18.0 || >=20.0.0` to `^18.18.0 || ^20.9.0 || >=21.1.0`
+  - TypeScript support range was changed from `>=4.7.4 <5.5.0` to `>=4.8.4 <5.5.0`
+- [Parser: remove EXPERIMENTAL_useSourceOfProjectReferenceRedirect in favor of project service](https://github.com/typescript-eslint/typescript-eslint/issues/9088)
+  - We now recommend using the new [`parserOptions.projectService`](#project-service) instead
+
+## Developer-Facing Changes
+
+typescript-eslint v8 comes with a suite of cleanups and improvements for developers using its Node.js APIs as well.
+If you author any ESLint plugins or other tools that interact with TypeScript syntax, then we recommend you try out typescript-eslint v8 soon.
+It includes some breaking changes that you may need to accommodate for.
+
+:::tip
+If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v8` channel!
+:::
+
+### AST Breaking Changes
+
+These changes are to the AST shapes generated by typescript-eslint when parsing code.
+If you author any ESLint rules that refer to the syntax mentioned by them, these are relevant to you.
+
+- [Enhancement: add strict parent types for nodes that have well-defined parents](https://github.com/typescript-eslint/typescript-eslint/issues/6225)
+  - This will help you remove some unnecessary conditions - we suggest using `@typescript-eslint/no-unnecessary-condition` to help find the unnecessary checks!
+- [feat(typescript-estree): split TSMappedType typeParameter into constraint and key](https://github.com/typescript-eslint/typescript-eslint/pull/7065)
+  - If your code handles mapped types, change from `node.typeParameter.constraint` to `node.constraint` and from `node.typeParameter.name` to `node.key`
+- [feat(ast-spec): remove deprecated type params](https://github.com/typescript-eslint/typescript-eslint/pull/8933)
+  - If you haven't already you must stop using those removed AST properties that were already marked as `@deprecated`
+- [fix(typescript-estree): add TSEnumBody node for TSEnumDeclaration body #8920](https://github.com/typescript-eslint/typescript-eslint/pull/8920)
+  - If your code handles enums, switch from `node.members` to `node.body.members`
+
+### Custom Rule `meta.docs` Types
+
+`@typescript-eslint/utils` has long exported a [`RuleCreator` utility](https://typescript-eslint.io/developers/custom-rules#rulecreator) for making custom well-typed custom ESLint rules.
+That `RuleCreator` is used internally by `@typescript-eslint/eslint-plugin` — and in fact, up through typescript-eslint v7, it hardcoded the same types for rules' `meta.docs` as `@typescript-eslint/eslint-plugin`!
+
+In typescript-eslint v8, we've made two changes to `RuleCreator`:
+
+- Rule `meta.docs` by default only allows the properties defined in ESLint's [Custom Rules > Rule Structure docs](https://eslint.org/docs/latest/extend/custom-rules#rule-structure): `description` and `url`
+- `RuleCreator` allows an optional type parameter to specify additional allowed properties
+
+For example, this rule includes the common `meta.docs.recommended` property as a `boolean`:
+
+```ts
+interface MyPluginDocs {
+  recommended: boolean;
+}
+
+const createRule = ESLintUtils.RuleCreator<MyPluginDocs>(
+  name => `https://example.com/rule/${name}`,
+);
+
+createRule({
+  // ...
+  meta: {
+    docs: {
+      description: '...',
+      recommended: true,
+    },
+    // ...
+  },
+});
+```
+
+See [feat(utils): allow specifying additional rule meta.docs in RuleCreator](https://github.com/typescript-eslint/typescript-eslint/pull/9025) for more details.
+
+### Flat Configuration `RuleTester`
+
+The `RuleTester` provided by [`@typescript-eslint/rule-tester`](/packages/rule-tester) is a fork of ESLint's `RuleTester`.
+In typescript-eslint v7 and earlier, `RuleTester`'s constructor allowed providing legacy "eslintrc" options -- mirroring ESLint v8 and earlier.
+In typescript-eslint v8, `RuleTester`'s constructor now instead allows providing new "flat" config options -- mirroring ESLint v9.
+
+Per ESLint flat configs, any parser configurations you provide will need to be inside a `languageOptions` property:
+
+```ts title="rule.test.ts"
+import { RuleTester } from '@typescript-eslint/rule-tester
+
+const ruleTester = new RuleTester({
+  // Add this line
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: import.meta.dirname,
+    },
+  // Add this line
+  },
+});
+```
+
+Any `parser` you provide will need to be the parser itself, rather than a string name of the package:
+
+```ts title="rule.test.ts"
+import { RuleTester } from '@typescript-eslint/rule-tester
+// Add this line
+import jsoncParser from "jsonc-eslint-parser";
+
+const ruleTester = new RuleTester({
+  // Add this line
+  languageOptions: {
+    // Add this line
+    parser: jsoncParser,
+    // Remove this line
+    parser: "jsonc-eslint-parser",
+  // Add this line
+  },
+});
+```
+
+This change brings typescript-eslint's `RuleTester` in line with ESLint's `RuleTester` and flat config.
+In doing so, it changes two `parserOptions` defaults:
+
+- `ecmaVersion`: from `5` to `'latest'`
+- `sourceType`: from `'script'` to `'module'`
+
+If you were specifying either or both of those in your tests, you likely can now omit them:
+
+```ts title="rule.test.ts"
+import { RuleTester } from '@typescript-eslint/rule-tester
+
+// Add this line
+const ruleTester = new RuleTester();
+// Removed lines start
+const ruleTester = new RuleTester({
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
+});
+// Removed lines end
+```
+
+For more details, see:
+
+- [ESLint > Migrate to 9.0.0 > `FlatRuleTester` is now `RuleTester`](https://eslint.org/docs/latest/use/migrate-to-9.0.0#-flatruletester-is-now-ruletester)
+- [typescript-eslint > feat(rule-tester): switched to flat config](https://github.com/typescript-eslint/typescript-eslint/pull/9603)
+
+### Support for multi-pass fixes in `RuleTester`
+
+One limitation of ESLint's `RuleTester` is that it is not possible to verify the individual applied fixes when a rule provides multiple rounds of fixes.
+[ESLint's `RuleTester` applies only the first fix](https://eslint.org/docs/latest/integrate/nodejs-api#testing-fixes) when there is conflict between two fixes.
+
+In typescript-eslint v8, our `RuleTester` tries to apply all possible fixes for each test case.
+
+If your rule tests had some test cases that required multi-pass fixes, you will see some test failures.
+To fix these failures, provide an array of strings for `output` which specifies the output after each fix pass.
+
+```ts
+import { RuleTester } from '@typescript-eslint/rule-tester';
+import rule from '../src/rules/my-rule.ts';
+
+const ruleTester = new RuleTester();
+
+ruleTester.run('my-rule', rule, {
+  valid: [
+    /* ... */
+  ],
+  invalid: [
+    {
+      code: 'const a = 1;',
+      // Remove the line with string form of `output`
+      output: 'const b = 1;',
+      // Add the line with array form of `output`
+      output: ['const b = 1;', 'const c = 1;'],
+      errors: [
+        /* ... */
+      ],
+    },
+  ],
+});
+```
+
+See [[rule-tester] support multipass fixes](https://github.com/typescript-eslint/typescript-eslint/issues/8554) for more details.
+
+### Other Developer-Facing Breaking Changes
+
+- [feat(parser): always enable comment, loc, range, tokens](https://github.com/typescript-eslint/typescript-eslint/pull/8617)
+  - If you were manually calling `@typescript-eslint/parser` functions, those options are no longer necessary to provide
+- [chore(type-utils)!: remove IsNullableTypeOptions interface](https://github.com/typescript-eslint/typescript-eslint/pull/8934)
+  - If you were using `isNullableType`, you can omit its section parameter
+- [feat(utils): swap LegacyESLint out for FlatESLint as ESLint export](https://github.com/typescript-eslint/typescript-eslint/pull/8972)
+  - If you still need to use the class corresponding to legacy ("eslintrc") configs, switch from importing `ESLint` to `LegacyESLint`
+- [chore(type-utils): remove getTypeArguments](https://github.com/typescript-eslint/typescript-eslint/pull/8938)
+  - If you were using `getTypeArguments`, call a TypeScript type checker's `checker.getTypeArguments` instead
+- [feat(utils): remove deprecated context helpers](https://github.com/typescript-eslint/typescript-eslint/pull/9000)
+  - You should consider dropping support for older ESLint versions and migrate to the new APIs.
+
+## Appreciation
+
+We'd like to extend a sincere _thank you_ to everybody who pitched in to make typescript-eslint v8 possible.
+
+- Ourselves on the maintenance team:
+  - [Auvred](https://github.com/auvred)
+  - [Armano](https://github.com/armano2)
+  - [Brad Zacher](https://github.com/bradzacher)
+  - [James Henry](https://github.com/JamesHenry)
+  - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
+  - [Joshua Chen](https://github.com/Josh-Cena)
+  - [Kirk Waiblinger](https://github.com/kirkwaiblinger)
+- Community contributors whose PRs were merged into the 8.0.0 release:
+  - [Abraham Guo](https://github.com/abrahamguo)
+  - [Arka Pratim Chaudhuri](https://github.com/arka1002)
+  - [Christopher Aubut](https://github.com/higherorderfunctor)
+  - [Collin Bachman](https://github.com/bachmacintosh)
+  - [Thomas Huchedé](https://github.com/thuchede)
+  - [Victor Lin](https://github.com/yepitschunked)
+  - [Yukihiro Hasegawa](https://github.com/y-hsgw)
+- Community maintainers and projects who worked with us to try out the v8 beta:
+  - [Babel](https://github.com/babel/babel/pull/16557) with [Nicolò Ribaudo](https://github.com/nicolo-ribaudo)
+  - [create-t3-app](https://github.com/t3-oss/create-t3-app/pull/1936) with [Julius Marminge](https://github.com/juliusmarminge)
+  - [postcss-plugins](https://github.com/csstools/postcss-plugins/pull/1412) with [Romain Menke](https://github.com/romainmenke)
+  - [Prettier](https://github.com/prettier/prettier/pull/16333) with [fisker Cheung](https://github.com/fisker)
+  - [RedwoodJS](https://github.com/redwoodjs/redwood/pull/10911) with [Tobbe Lundberg](https://github.com/Tobbe)
+  - [SvelteKit](https://github.com/sveltejs/kit/pull/12268) with [Ben McCann](https://github.com/benmccann)
+  - [tRPC](https://github.com/trpc/trpc/pull/5868) with [Alex Katt](https://github.com/KATT)
+  - [Vite](https://github.com/vitejs/vite/pull/17624) with [Bjorn Lu](https://github.com/bluwy)
+- Community plugins and projects who worked with us to try out the v8 beta:
+  - [eslint-plugin-functional](https://github.com/eslint-functional/eslint-plugin-functional/pull/809) with [Rebecca Stevens](https://github.com/RebeccaStevens)
+  - [eslint-plugin-import-x](https://github.com/un-ts/eslint-plugin-import-x/pull/112) with [Sukka](https://github.com/SukkaW)
+  - [eslint-plugin-jest](https://github.com/jest-community/eslint-plugin-jest/pull/1623) with [Simen Bekkhus](https://github.com/SimenB)
+  - [eslint-plugin-vitest](https://github.com/veritem/eslint-plugin-vitest/pull/479) with [Verité Mugabo](https://github.com/veritem)
+  - [eslint-react](https://github.com/Rel1cx/eslint-react/pull/561) with [Eva1ent](https://github.com/Rel1cx)
+  - [eslint-angular](https://github.com/angular-eslint/angular-eslint/pull/1845) with [James Henry](https://github.com/JamesHenry)
+  - [eslint-stylistic](https://github.com/eslint-stylistic/eslint-stylistic/pull/452) with [Anthony Fu](https://github.com/antfu)
+- Members of the TypeScript team who helped with performance issues:
+  - [Daniel Rosenwasser](https://github.com/DanielRosenwasser)
+  - [Jake Bailey](https://github.com/jakebailey)
+  - [Sheetal Nandi](https://github.com/sheetalkamat)
+
+See the [v8.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/9) for the list of issues and associated merged pull requests.

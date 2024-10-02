@@ -27,10 +27,12 @@ export function getTypeFlags(type: ts.Type): ts.TypeFlags {
 export function isTypeFlagSet(
   type: ts.Type,
   flagsToCheck: ts.TypeFlags,
+  /** @deprecated This params is not used and will be removed in the future.*/
   isReceiver?: boolean,
 ): boolean {
   const flags = getTypeFlags(type);
 
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- not used
   if (isReceiver && flags & ANY_OR_UNKNOWN) {
     return true;
   }

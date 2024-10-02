@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getTextWithParentheses,
   getTypeFlags,
   isLogicalOrOperator,
   isNodeEqual,
@@ -64,15 +65,23 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
             type: 'boolean',
           },
           ignoreConditionalTests: {
+            description:
+              'Whether to ignore cases that are located within a conditional test.',
             type: 'boolean',
           },
           ignoreMixedLogicalExpressions: {
+            description:
+              'Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).',
             type: 'boolean',
           },
           ignorePrimitives: {
+            description:
+              'Whether to ignore all (`true`) or some (an object with properties) primitive types.',
             oneOf: [
               {
                 type: 'object',
@@ -90,6 +99,8 @@ export default createRule<Options, MessageIds>({
             ],
           },
           ignoreTernaryTests: {
+            description:
+              'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
             type: 'boolean',
           },
         },
@@ -100,7 +111,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      ignoreConditionalTests: false,
+      ignoreConditionalTests: true,
       ignoreTernaryTests: false,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
@@ -288,12 +299,9 @@ export default createRule<Options, MessageIds>({
                       : [node.consequent, node.alternate];
                   return fixer.replaceText(
                     node,
-                    `${context.sourceCode.text.slice(
-                      left.range[0],
-                      left.range[1],
-                    )} ?? ${context.sourceCode.text.slice(
-                      right.range[0],
-                      right.range[1],
+                    `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
+                      context.sourceCode,
+                      right,
                     )}`,
                   );
                 },
@@ -325,13 +333,13 @@ export default createRule<Options, MessageIds>({
         /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const ignorableFlags = [
           (ignorePrimitives === true || ignorePrimitives!.bigint) &&
-            ts.TypeFlags.BigInt,
+            ts.TypeFlags.BigIntLike,
           (ignorePrimitives === true || ignorePrimitives!.boolean) &&
-            ts.TypeFlags.BooleanLiteral,
+            ts.TypeFlags.BooleanLike,
           (ignorePrimitives === true || ignorePrimitives!.number) &&
-            ts.TypeFlags.Number,
+            ts.TypeFlags.NumberLike,
           (ignorePrimitives === true || ignorePrimitives!.string) &&
-            ts.TypeFlags.String,
+            ts.TypeFlags.StringLike,
         ]
           .filter((flag): flag is number => typeof flag === 'number')
           .reduce((previous, flag) => previous | flag, 0);
@@ -339,7 +347,9 @@ export default createRule<Options, MessageIds>({
           type.flags !== ts.TypeFlags.Null &&
           type.flags !== ts.TypeFlags.Undefined &&
           (type as ts.UnionOrIntersectionType).types.some(t =>
-            tsutils.isTypeFlagSet(t, ignorableFlags),
+            tsutils
+              .intersectionTypeParts(t)
+              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
           )
         ) {
           return;

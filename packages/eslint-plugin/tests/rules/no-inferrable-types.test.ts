@@ -1,5 +1,5 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-inferrable-types';
 import type {
@@ -10,9 +10,6 @@ import type {
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
 
-function flatten<T>(arr: T[][]): T[] {
-  return arr.reduce((acc, a) => acc.concat(a), []);
-}
 const testCases = [
   {
     type: 'bigint',
@@ -70,32 +67,28 @@ const testCases = [
     code: ['undefined', 'void someValue'],
   },
 ];
-const validTestCases = flatten(
-  testCases.map(c => c.code.map(code => `const a = ${code}`)),
+const validTestCases = testCases.flatMap(c =>
+  c.code.map(code => `const a = ${code}`),
 );
-const invalidTestCases: TSESLint.InvalidTestCase<MessageIds, Options>[] =
-  flatten(
-    testCases.map(cas =>
-      cas.code.map(code => ({
-        code: `const a: ${cas.type} = ${code}`,
-        output: `const a = ${code}`,
-        errors: [
-          {
-            messageId: 'noInferrableType',
-            data: {
-              type: cas.type,
-            },
-            line: 1,
-            column: 7,
+const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
+  testCases.flatMap(cas =>
+    cas.code.map(code => ({
+      code: `const a: ${cas.type} = ${code}`,
+      output: `const a = ${code}`,
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: cas.type,
           },
-        ],
-      })),
-    ),
+          line: 1,
+          column: 7,
+        },
+      ],
+    })),
   );
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-inferrable-types', rule, {
   valid: [

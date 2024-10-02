@@ -1,6 +1,10 @@
+import * as path from 'node:path';
+
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
-import * as path from 'path';
 
 import type {
   MessageIds,
@@ -12,10 +16,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      tsconfigRootDir: rootPath,
+      project: './tsconfig.json',
+    },
   },
 });
 
@@ -24,41 +29,17 @@ const nullishTypes = ['null', 'undefined', 'null | undefined'];
 const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
 
 function typeValidTest(
-  cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
-): (TSESLint.ValidTestCase<Options> | string)[] {
+  cb: (type: string) => ValidTestCase<Options> | string,
+): (ValidTestCase<Options> | string)[] {
   return types.map(type => cb(type));
 }
-function nullishTypeValidTest(
-  cb: (
-    nullish: string,
-    type: string,
-  ) => TSESLint.ValidTestCase<Options> | string,
-): (TSESLint.ValidTestCase<Options> | string)[] {
-  return nullishTypes.reduce<(TSESLint.ValidTestCase<Options> | string)[]>(
-    (acc, nullish) => {
-      types.forEach(type => {
-        acc.push(cb(nullish, type));
-      });
-      return acc;
-    },
-    [],
-  );
-}
-function nullishTypeInvalidTest(
-  cb: (
-    nullish: string,
-    type: string,
-  ) => TSESLint.InvalidTestCase<MessageIds, Options>,
-): TSESLint.InvalidTestCase<MessageIds, Options>[] {
-  return nullishTypes.reduce<TSESLint.InvalidTestCase<MessageIds, Options>[]>(
-    (acc, nullish) => {
-      types.forEach(type => {
-        acc.push(cb(nullish, type));
-      });
-      return acc;
-    },
-    [],
-  );
+function nullishTypeTest<
+  T extends
+    | ValidTestCase<Options>
+    | InvalidTestCase<MessageIds, Options>
+    | string,
+>(cb: (nullish: string, type: string) => T): T[] {
+  return nullishTypes.flatMap(nullish => types.map(type => cb(nullish, type)));
 }
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
@@ -69,7 +50,7 @@ declare const x: ${type};
 x || 'foo';
       `,
     ),
-    ...nullishTypeValidTest(
+    ...nullishTypeTest(
       (nullish, type) => `
 declare const x: ${type} | ${nullish};
 x ?? 'foo';
@@ -132,54 +113,45 @@ x === null ? x : y;
 declare const x: string | null | unknown;
 x === null ? x : y;
       `,
-      `
-declare const x: string | undefined;
-x === null ? x : y;
-      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
     })),
 
     // ignoreConditionalTests
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
       `,
-      options: [{ ignoreConditionalTests: true }],
     })),
 
     // ignoreMixedLogicalExpressions
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -188,7 +160,7 @@ a || b && c;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -198,7 +170,7 @@ a || b || c && d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
-    ...nullishTypeValidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -208,16 +180,30 @@ a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
-    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
 declare const x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: (${type} & { __brand?: any }) | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
@@ -237,9 +223,141 @@ x || y;
       declare const y: number;
       x || y;
     `,
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
   ],
   invalid: [
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo';
@@ -317,7 +435,7 @@ x ?? 'foo';
         ],
       },
       {
-        code: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]'),
+        code: code.replaceAll('x', 'x.z[1][this[this.o]]["3"][a.b.c]'),
         output: null,
         options: [{ ignoreTernaryTests: false }] as const,
         errors: [
@@ -326,12 +444,32 @@ x ?? 'foo';
             line: 1,
             column: 1,
             endLine: 1,
-            endColumn: code.replace(/x/g, 'x.z[1][this[this.o]]["3"][a.b.c]')
+            endColumn: code.replaceAll('x', 'x.z[1][this[this.o]]["3"][a.b.c]')
               .length,
             suggestions: [
               {
                 messageId: 'suggestNullish' as const,
                 output: 'x.z[1][this[this.o]]["3"][a.b.c] ?? y;',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: code.replaceAll('y', '(z = y)'),
+        output: null,
+        options: [{ ignoreTernaryTests: false }] as const,
+        errors: [
+          {
+            messageId: 'preferNullishOverTernary' as const,
+            line: 1,
+            column: 1,
+            endLine: 1,
+            endColumn: code.replaceAll('y', '(z = y)').length,
+            suggestions: [
+              {
+                messageId: 'suggestNullish' as const,
+                output: 'x ?? (z = y);',
               },
             ],
           },
@@ -371,7 +509,7 @@ undefined !== x ? x : y;
       `,
       `
 declare const x: string | undefined;
-undefined === x ? y : x;
+x === undefined ? y : x;
       `,
       `
 declare const x: string | undefined;
@@ -387,7 +525,7 @@ null !== x ? x : y;
       `,
       `
 declare const x: string | null;
-null === x ? y : x;
+x === null ? y : x;
       `,
       `
 declare const x: string | null;
@@ -432,13 +570,15 @@ if (x) {
           column: 1,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
     },
 
     // ignoreConditionalTests
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 x || 'foo' ? null : null;
@@ -464,7 +604,7 @@ x ?? 'foo' ? null : null;
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (x || 'foo') {}
@@ -490,7 +630,7 @@ if (x ?? 'foo') {}
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 do {} while (x || 'foo')
@@ -516,7 +656,7 @@ do {} while (x ?? 'foo')
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 for (;x || 'foo';) {}
@@ -542,7 +682,7 @@ for (;x ?? 'foo';) {}
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 while (x || 'foo') {}
@@ -570,7 +710,7 @@ while (x ?? 'foo') {}
     })),
 
     // ignoreMixedLogicalExpressions
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -599,7 +739,7 @@ a ?? b && c;
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -649,7 +789,7 @@ a || b ?? c && d;
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type} | ${nullish};
@@ -701,13 +841,12 @@ a && b || c ?? d;
     })),
 
     // should not false positive for functions inside conditional tests
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (() => x || 'foo') {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -727,13 +866,12 @@ if (() => x ?? 'foo') {}
         },
       ],
     })),
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const x: ${type} | ${nullish};
 if (function werid() { return x || 'foo' }) {}
       `,
       output: null,
-      options: [{ ignoreConditionalTests: true }],
       errors: [
         {
           messageId: 'preferNullishOverOr',
@@ -754,7 +892,7 @@ if (function werid() { return x ?? 'foo' }) {}
       ],
     })),
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
-    ...nullishTypeInvalidTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type) => ({
       code: `
 declare const a: ${type} | ${nullish};
 declare const b: ${type};
@@ -795,7 +933,20 @@ x || y;
           ignorePrimitives: { number: true, boolean: true, bigint: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: string | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -808,7 +959,20 @@ x || y;
           ignorePrimitives: { string: true, boolean: true, bigint: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: number | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -821,7 +985,20 @@ x || y;
           ignorePrimitives: { string: true, number: true, bigint: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: boolean | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -834,7 +1011,20 @@ x || y;
           ignorePrimitives: { string: true, number: true, boolean: true },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: bigint | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // falsy
     {
@@ -853,7 +1043,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: '' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -871,7 +1074,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: \`\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -889,7 +1105,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -907,7 +1136,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -925,7 +1167,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // truthy
     {
@@ -944,7 +1199,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 'a' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -962,7 +1230,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: \`hello\${'string'}\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -980,7 +1261,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -998,7 +1292,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1016,7 +1323,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: true | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // Unions of same primitive
     {
@@ -1035,7 +1355,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1053,7 +1386,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1071,7 +1417,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1089,7 +1448,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1107,7 +1479,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1125,7 +1510,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -1143,7 +1541,20 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: true | false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
     },
     // Mixed unions
     {
@@ -1158,47 +1569,24 @@ x || y;
             string: true,
             number: false,
             boolean: true,
-            bigint: true,
-          },
-        },
-      ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            string: true,
-            number: true,
-            boolean: true,
             bigint: false,
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
+      errors: [
         {
-          ignorePrimitives: {
-            string: true,
-            number: false,
-            boolean: true,
-            bigint: false,
-          },
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
     },
     {
       code: `
@@ -1216,45 +1604,18 @@ x || y;
           },
         },
       ],
-      errors: [{ messageId: 'preferNullishOverOr' }],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
-      `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: true,
-          },
-        },
-      ],
       errors: [
         {
           messageId: 'preferNullishOverOr',
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: 0 | 'foo' | undefined;
-x || y;
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: true | false | null | undefined;
+x ?? y;
       `,
-      output: null,
-      options: [
-        {
-          ignorePrimitives: {
-            number: true,
-            string: false,
-          },
-        },
-      ],
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
+            },
+          ],
         },
       ],
     },
@@ -1267,6 +1628,15 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: null;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1279,6 +1649,15 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+const x = undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1290,6 +1669,14 @@ null || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+null ?? y;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1301,6 +1688,138 @@ undefined || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+undefined ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare const x: Enum.A | Enum.B | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x || y;
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare const x: Enum.A | Enum.B | undefined;
+x ?? y;
+      `,
+            },
+          ],
         },
       ],
     },

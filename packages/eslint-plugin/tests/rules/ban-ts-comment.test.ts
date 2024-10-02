@@ -2,9 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/ban-ts-comment';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('ts-expect-error', rule, {
   valid: [
@@ -102,7 +100,7 @@ ruleTester.run('ts-expect-error', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-expect-error': 'allow-with-description',
@@ -407,7 +405,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-expect-error    : TS1234 because xyz`,
+      code: '// @ts-expect-error    : TS1234 because xyz',
       options: [
         {
           'ts-expect-error': {
@@ -425,7 +423,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦`,
+      code: '// @ts-expect-error 👨‍👩‍👧‍👦',
       options: [
         {
           'ts-expect-error': 'allow-with-description',
@@ -502,7 +500,7 @@ ruleTester.run('ts-ignore', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-ignore': 'allow-with-description',
@@ -902,7 +900,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-ignore    : TS1234 because xyz`,
+      code: '// @ts-ignore    : TS1234 because xyz',
       options: [
         {
           'ts-ignore': {
@@ -920,7 +918,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦`,
+      code: '// @ts-ignore 👨‍👩‍👧‍👦',
       options: [
         {
           'ts-ignore': 'allow-with-description',
@@ -974,7 +972,7 @@ ruleTester.run('ts-nocheck', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-nocheck': 'allow-with-description',
@@ -1096,7 +1094,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-nocheck    : TS1234 because xyz`,
+      code: '// @ts-nocheck    : TS1234 because xyz',
       options: [
         {
           'ts-nocheck': {
@@ -1114,7 +1112,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦`,
+      code: '// @ts-nocheck 👨‍👩‍👧‍👦',
       options: [
         {
           'ts-nocheck': 'allow-with-description',
@@ -1162,7 +1160,7 @@ ruleTester.run('ts-check', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-check': 'allow-with-description',
@@ -1290,7 +1288,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-check    : TS1234 because xyz`,
+      code: '// @ts-check    : TS1234 because xyz',
       options: [
         {
           'ts-check': {
@@ -1308,7 +1306,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-check 👨‍👩‍👧‍👦`,
+      code: '// @ts-check 👨‍👩‍👧‍👦',
       options: [
         {
           'ts-check': 'allow-with-description',

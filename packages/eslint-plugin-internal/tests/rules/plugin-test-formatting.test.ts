@@ -4,11 +4,11 @@ import rule from '../../src/rules/plugin-test-formatting';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: getFixturesRootDir(),
-    sourceType: 'module',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -53,7 +53,6 @@ ${PARENT_INDENT}\``,
     wrap`\`
 const a = 1;
 ${PARENT_INDENT}\``,
-    wrap`noFormat\`const a = 1;\``,
     // sanity check suggestion validation
     // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
@@ -130,7 +129,7 @@ const a = 1;
       ],
     },
 
-    // empty linems are valid when everything else is indented
+    // empty lines are valid when everything else is indented
     wrap`\`
 ${CODE_INDENT}const a = 1;
 
@@ -160,7 +159,7 @@ const test2 = {
 
     // TODO - figure out how to handle this pattern
     `
-import { TSESLint } from '@typescript-eslint/utils';
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
 const test = [
   {
@@ -169,7 +168,7 @@ const test = [
   {
     code: 'const badlyFormatted         = "code2"',
   },
-].map<TSESLint.InvalidTestCase<[]>>(test => ({
+].map<InvalidTestCase<[]>>(test => ({
   code: test.code,
   errors: [],
 }));
@@ -206,8 +205,18 @@ const test = [
     },
     {
       code: wrap`'for (const x of y) {}'`,
-      output: wrap`\`for (const x of y) {
+      output: [
+        wrap`\`for (const x of y) {
 }\``,
+        wrap`\`
+for (const x of y) {
+}
+\``,
+        wrap`\`
+for (const x of y) {
+}
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'invalidFormatting',
@@ -217,8 +226,18 @@ const test = [
     {
       code: wrap`'for (const x of \`asdf\`) {}'`,
       // make sure it escapes the backticks
-      output: wrap`\`for (const x of \\\`asdf\\\`) {
+      output: [
+        wrap`\`for (const x of \\\`asdf\\\`) {
 }\``,
+        wrap`\`
+for (const x of \\\`asdf\\\`) {
+}
+\``,
+        wrap`\`
+for (const x of \\\`asdf\\\`) {
+}
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'invalidFormatting',
@@ -238,7 +257,7 @@ const test = [
     },
     {
       code: wrap`\`const a = '1'\``,
-      output: wrap`"const a = '1'"`,
+      output: [wrap`"const a = '1'"`, wrap`"const a = '1';"`],
       errors: [
         {
           messageId: 'singleLineQuotes',
@@ -247,7 +266,7 @@ const test = [
     },
     {
       code: wrap`\`const a = "1";\``,
-      output: wrap`'const a = "1";'`,
+      output: [wrap`'const a = "1";'`, wrap`"const a = '1';"`],
       errors: [
         {
           messageId: 'singleLineQuotes',
@@ -258,9 +277,14 @@ const test = [
     {
       code: wrap`\`const a = "1";
 ${PARENT_INDENT}\``,
-      output: wrap`\`
+      output: [
+        wrap`\`
 const a = "1";
 ${PARENT_INDENT}\``,
+        wrap`\`
+const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralEmptyEnds',
@@ -270,9 +294,17 @@ ${PARENT_INDENT}\``,
     {
       code: wrap`\`
 ${CODE_INDENT}const a = "1";\``,
-      output: wrap`\`
+      output: [
+        wrap`\`
 ${CODE_INDENT}const a = "1";
 \``,
+        wrap`\`
+${CODE_INDENT}const a = "1";
+${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralEmptyEnds',
@@ -282,10 +314,20 @@ ${CODE_INDENT}const a = "1";
     {
       code: wrap`\`const a = "1";
 ${CODE_INDENT}const b = "2";\``,
-      output: wrap`\`
+      output: [
+        wrap`\`
 const a = "1";
 ${CODE_INDENT}const b = "2";
 \``,
+        wrap`\`
+const a = "1";
+${CODE_INDENT}const b = "2";
+${PARENT_INDENT}\``,
+        wrap`\`
+const a = '1';
+const b = '2';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralEmptyEnds',
@@ -297,9 +339,14 @@ ${CODE_INDENT}const b = "2";
       code: wrap`\`
 ${CODE_INDENT}const a = "1";
 \``,
-      output: wrap`\`
+      output: [
+        wrap`\`
 ${CODE_INDENT}const a = "1";
 ${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralLastLineIndent',
@@ -310,9 +357,14 @@ ${PARENT_INDENT}\``,
       code: wrap`\`
 ${CODE_INDENT}const a = "1";
                       \``,
-      output: wrap`\`
+      output: [
+        wrap`\`
 ${CODE_INDENT}const a = "1";
 ${PARENT_INDENT}\``,
+        wrap`\`
+${CODE_INDENT}const a = '1';
+${PARENT_INDENT}\``,
+      ],
       errors: [
         {
           messageId: 'templateLiteralLastLineIndent',
@@ -399,7 +451,50 @@ ${PARENT_INDENT}\``,
         },
       ],
     },
-
+    // noUnnecessaryNoFormat
+    {
+      code: wrap`noFormat\`const a = 1;\``,
+      output: wrap`'const a = 1;'`,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
+    {
+      code: wrap`
+noFormat\`
+async function foo() {}
+async function bar() {}
+\``,
+      output: wrap`
+\`
+async function foo() {}
+async function bar() {}
+\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
+    {
+      code: wrap`
+${PARENT_INDENT}noFormat\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+      output: wrap`
+${PARENT_INDENT}\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
     // sanity check that it handles suggestion output
     {
       code: `
@@ -483,7 +578,8 @@ ruleTester.run({
   ],
 });
       `,
-      output: `
+      output: [
+        `
 ruleTester.run({
   valid: [
     {
@@ -517,6 +613,75 @@ foo
   ],
 });
       `,
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+});
+      `,
+        `
+ruleTester.run({
+  valid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo;
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+  invalid: [
+    {
+      code: 'foo;',
+    },
+    {
+      code: \`
+foo;
+      \`,
+    },
+    {
+      code: \`
+      foo
+      \`,
+    },
+  ],
+});
+      `,
+      ],
       errors: [
         {
           messageId: 'singleLineQuotes',
@@ -601,9 +766,9 @@ const test: RunTests = {
     },
     {
       code: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { RunTests } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.RunTests<'', []> = {
+const test: RunTests<'', []> = {
   valid: [
     'const badlyFormatted         = "code"',
     {
@@ -619,9 +784,9 @@ const test: TSESLint.RunTests<'', []> = {
 };
       `,
       output: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { RunTests } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.RunTests<'', []> = {
+const test: RunTests<'', []> = {
   valid: [
     "const badlyFormatted = 'code';",
     {
@@ -650,16 +815,16 @@ const test: TSESLint.RunTests<'', []> = {
     },
     {
       code: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { ValidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.ValidTestCase<[]> = {
+const test: ValidTestCase<[]> = {
   code: 'const badlyFormatted         = "code"',
 };
       `,
       output: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { ValidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.ValidTestCase<[]> = {
+const test: ValidTestCase<[]> = {
   code: "const badlyFormatted = 'code';",
 };
       `,
@@ -671,9 +836,9 @@ const test: TSESLint.ValidTestCase<[]> = {
     },
     {
       code: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.InvalidTestCase<'', []> = {
+const test: InvalidTestCase<'', []> = {
   code: 'const badlyFormatted         = "code1"',
   errors: [
     {
@@ -692,9 +857,9 @@ const test: TSESLint.InvalidTestCase<'', []> = {
 };
       `,
       output: `
-import { TSESLint } from '@typescript-eslint/utils';
+import { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
-const test: TSESLint.InvalidTestCase<'', []> = {
+const test: InvalidTestCase<'', []> = {
   code: "const badlyFormatted = 'code1';",
   errors: [
     {

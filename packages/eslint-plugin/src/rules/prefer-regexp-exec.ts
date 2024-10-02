@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/prefer-literal-enum-member */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -10,6 +9,7 @@ import {
   getStaticValue,
   getTypeName,
   getWrappingFixer,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 enum ArgumentType {
@@ -29,6 +29,7 @@ export default createRule({
     docs: {
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     messages: {
@@ -98,9 +99,12 @@ export default createRule({
     }
 
     return {
-      "CallExpression[arguments.length=1] > MemberExpression.callee[property.name='match'][computed=false]"(
+      'CallExpression[arguments.length=1] > MemberExpression'(
         memberNode: TSESTree.MemberExpression,
       ): void {
+        if (!isStaticMemberAccessOfValue(memberNode, context, 'match')) {
+          return;
+        }
         const objectNode = memberNode.object;
         const callNode = memberNode.parent as TSESTree.CallExpression;
         const [argumentNode] = callNode.arguments;

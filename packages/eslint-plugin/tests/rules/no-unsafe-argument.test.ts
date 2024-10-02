@@ -4,10 +4,11 @@ import rule from '../../src/rules/no-unsafe-argument';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: getFixturesRootDir(),
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 
@@ -131,8 +132,26 @@ foo(1 as any);
           column: 5,
           endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: number): void;
+foo(error);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeArgument',
+          line: 3,
+          column: 5,
+          endColumn: 10,
+          data: {
+            sender: 'error typed',
+            receiver: '`number`',
           },
         },
       ],
@@ -149,8 +168,8 @@ foo(1, 1 as any);
           column: 8,
           endColumn: 16,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
       ],
@@ -167,8 +186,8 @@ foo(1, 2, 3, 1 as any);
           column: 14,
           endColumn: 22,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
           },
         },
       ],
@@ -185,8 +204,8 @@ foo(1 as any, 1 as any);
           column: 5,
           endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
         {
@@ -195,8 +214,8 @@ foo(1 as any, 1 as any);
           column: 15,
           endColumn: 23,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
           },
         },
       ],
@@ -224,10 +243,29 @@ foo(...(x as any[]));
       `,
       errors: [
         {
+          data: { sender: '`any[]`' },
           messageId: 'unsafeArraySpread',
           line: 4,
           column: 5,
           endColumn: 20,
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+
+declare const errors: error[];
+
+foo(...errors);
+      `,
+      errors: [
+        {
+          data: { sender: 'error' },
+          messageId: 'unsafeArraySpread',
+          line: 6,
+          column: 5,
+          endColumn: 14,
         },
       ],
     },
@@ -245,8 +283,28 @@ foo(...x);
           column: 5,
           endColumn: 9,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: 'of type `any`',
+            receiver: '`number`',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+
+const x = ['a', error] as const;
+foo(...x);
+      `,
+      errors: [
+        {
+          messageId: 'unsafeTupleSpread',
+          line: 5,
+          column: 5,
+          endColumn: 9,
+          data: {
+            sender: 'error typed',
+            receiver: '`number`',
           },
         },
       ],
@@ -258,6 +316,10 @@ foo(...(['foo', 1, 2] as [string, any, number]));
       `,
       errors: [
         {
+          data: {
+            sender: 'of type `any`',
+            receiver: '`number`',
+          },
           messageId: 'unsafeTupleSpread',
           line: 3,
           column: 5,
@@ -279,8 +341,8 @@ foo('a', ...x, 1 as any);
           column: 16,
           endColumn: 24,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
       ],
@@ -299,8 +361,8 @@ foo('a', ...x, 1 as any);
           column: 16,
           endColumn: 24,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
       ],
@@ -319,8 +381,8 @@ foo(new Set<any>(), ...x);
           column: 5,
           endColumn: 19,
           data: {
-            sender: 'Set<any>',
-            receiver: 'Set<string>',
+            sender: '`Set<any>`',
+            receiver: '`Set<string>`',
           },
         },
         {
@@ -329,8 +391,8 @@ foo(new Set<any>(), ...x);
           column: 21,
           endColumn: 25,
           data: {
-            sender: 'Map<any, string>',
-            receiver: 'Map<string, string>',
+            sender: 'of type `Map<any, string>`',
+            receiver: '`Map<string, string>`',
           },
         },
       ],
@@ -347,8 +409,8 @@ foo(1 as any, 'a' as any, 1 as any);
           column: 5,
           endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
           },
         },
         {
@@ -357,8 +419,8 @@ foo(1 as any, 'a' as any, 1 as any);
           column: 15,
           endColumn: 25,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
       ],
@@ -375,8 +437,8 @@ foo('a', 1 as any, 'a' as any, 1 as any);
           column: 10,
           endColumn: 18,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
           },
         },
         {
@@ -385,8 +447,8 @@ foo('a', 1 as any, 'a' as any, 1 as any);
           column: 20,
           endColumn: 30,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
       ],
@@ -405,8 +467,8 @@ foo(t as any);
           column: 5,
           endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'T',
+            sender: '`any`',
+            receiver: '`T`',
           },
         },
       ],
@@ -429,8 +491,8 @@ foo<number>\`\${arg}\${arg}\${arg}\`;
           column: 15,
           endColumn: 18,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
           },
         },
         {
@@ -439,8 +501,8 @@ foo<number>\`\${arg}\${arg}\${arg}\`;
           column: 27,
           endColumn: 30,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            sender: '`any`',
+            receiver: '`string`',
           },
         },
       ],
@@ -458,8 +520,8 @@ foo\`\${arg}\`;
           column: 7,
           endColumn: 10,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            sender: '`any`',
+            receiver: '`number`',
           },
         },
       ],
@@ -478,8 +540,8 @@ foo\`\${arg}\`;
           column: 7,
           endColumn: 10,
           data: {
-            sender: 'any',
-            receiver: 'T',
+            sender: '`any`',
+            receiver: '`T`',
           },
         },
       ],

@@ -1,7 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
-import * as ts from 'typescript';
 
 import {
   createRule,
@@ -130,14 +129,10 @@ export default createRule<
 
         function isLeftSideLowerPrecedence(): boolean {
           const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-
           const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
-          const operator = ts.isBinaryExpression(logicalTsNode)
-            ? logicalTsNode.operatorToken.kind
-            : ts.SyntaxKind.Unknown;
           const leftPrecedence = getOperatorPrecedence(
             leftTsNode.kind,
-            operator,
+            logicalTsNode.operatorToken.kind,
           );
 
           return leftPrecedence < OperatorPrecedence.LeftHandSide;
@@ -183,7 +178,6 @@ export default createRule<
           context.sourceCode,
           options,
         );
-
         for (const logical of newlySeenLogicals) {
           seenLogicals.add(logical);
         }
@@ -195,6 +189,7 @@ export default createRule<
               context,
               parserServices,
               options,
+              node,
               node.operator,
               currentChain,
             );
@@ -210,6 +205,7 @@ export default createRule<
             context,
             parserServices,
             options,
+            node,
             node.operator,
             currentChain,
           );

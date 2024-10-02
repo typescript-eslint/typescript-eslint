@@ -7,6 +7,8 @@ import CodeBlock from '@theme/CodeBlock';
 
 # `@typescript-eslint/rule-tester`
 
+<PackageLink packageName="rule-tester" scope="@typescript-eslint" />
+
 > A utility for testing ESLint rules
 
 This is a fork of ESLint's built-in `RuleTester` to provide some better types and additional features for testing TypeScript rules.
@@ -34,9 +36,11 @@ ruleTester.run('my-rule', rule, {
     // you can enable JSX parsing by passing parserOptions.ecmaFeatures.jsx = true
     {
       code: 'const z = <div />;',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
@@ -75,6 +79,15 @@ ruleTester.run('my-rule', rule, {
         /* ... */
       ],
     },
+    // Multi-pass fixes can be tested using the array form of output.
+    // Note: this is unique to typescript-eslint, and doesn't exist in ESLint core.
+    {
+      code: 'const d = 1;',
+      output: ['const e = 1;', 'const f = 1;'],
+      errors: [
+        /* ... */
+      ],
+    },
 
     // suggestions can be tested via errors
     {
@@ -109,41 +122,32 @@ ruleTester.run('my-rule', rule, {
 
 ### Type-Aware Testing
 
-Type-aware rules can be tested in almost exactly the same way, except you need to create some files on disk.
-We require files on disk due to a limitation with TypeScript in that it requires physical files on disk to initialize the project.
-We suggest creating a `fixture` folder nearby that contains three files:
-
-1. `file.ts` - this should be an empty file.
-2. `react.tsx` - this should be an empty file.
-3. `tsconfig.json` - this should be the config to use for your test, for example:
-   ```json
-   {
-     "compilerOptions": {
-       "strict": true
-     },
-     "include": ["file.ts", "react.tsx"]
-   }
-   ```
-
-:::caution
-It's important to note that both `file.ts` and `react.tsx` must both be empty files!
-The rule tester will automatically use the string content from your tests - the empty files are just there for initialization.
-:::
+Type-aware rules can be tested in almost exactly the same way as regular code, using `parserOptions.projectService`.
+Most rule tests specify `parserOptions.allowDefaultProject: ["*.ts*"]` to enable type checking on all test files.
 
 You can then test your rule by providing the type-aware config:
 
 ```ts
 const ruleTester = new RuleTester({
   // Added lines start
-  parserOptions: {
-    tsconfigRootDir: './path/to/your/folder/fixture',
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      projectService: {
+        allowDefaultProject: ['*.ts*'],
+      },
+      tsconfigRootDir: './path/to/your/folder/fixture',
+    },
   },
   // Added lines end
 });
 ```
 
 With that config the parser will automatically run in type-aware mode and you can write tests just like before.
+
+When not specified with a `filename` option, `RuleTester` uses the following test file names:
+
+- `file.ts`: by default
+- `react.tsx`: if `parserOptions.ecmaFeatures.jsx` is enabled
 
 ### Test Dependency Constraints
 
@@ -217,6 +221,27 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 RuleTester.afterAll = mocha.after;
 ```
 
+#### Node.js (`node:test`)
+
+Consider setting up `RuleTester`'s static properties in a preloaded module using the [`--import`](https://nodejs.org/api/cli.html#--importmodule) or [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag:
+
+```ts
+// setup.js
+import * as test from 'node:test';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = test.after;
+RuleTester.describe = test.describe;
+RuleTester.it = test.it;
+RuleTester.itOnly = test.it.only;
+```
+
+Tests can then be [run from the command line](https://nodejs.org/api/test.html#running-tests-from-the-command-line) like so:
+
+```sh
+node --import setup.js --test
+```
+
 #### Vitest
 
 Consider setting up `RuleTester`'s static properties in a [`setupFiles` script](https://vitest.dev/config/#setupfiles):
@@ -233,25 +258,26 @@ RuleTester.itOnly = vitest.it.only;
 RuleTester.describe = vitest.describe;
 ```
 
-#### Node built-in test runner
+#### Other Frameworks
 
-Consider setting up `RuleTester`'s static properties in a preloaded module using the [`--import`](https://nodejs.org/api/cli.html#--importmodule) or [`--require`](https://nodejs.org/api/cli.html#-r---require-module) flag:
+In general, `RuleTester` can support any test framework that exposes hooks for running code before or after rules.
+From `RuleTester`'s [Static Properties](#static-properties), assign any of the following that the running test framework supports.
+
+- `afterAll`
+- `describe`
+- `it`
+- `itOnly`
+
+I.e.:
 
 ```ts
-// setup.js
-import * as test from 'node:test';
+import * as test from '...';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-RuleTester.afterAll = test.afterAll;
+RuleTester.afterAll = test.after;
 RuleTester.describe = test.describe;
 RuleTester.it = test.it;
 RuleTester.itOnly = test.it.only;
-```
-
-Tests can then be [run from the command line](https://nodejs.org/api/test.html#running-tests-from-the-command-line) like so:
-
-```sh
-node --import setup.js --test
 ```
 
 ## Options
@@ -273,3 +299,41 @@ import ValidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/Val
 import InvalidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/InvalidTestCase.ts';
 
 <CodeBlock language="ts">{InvalidTestCase}</CodeBlock>
+
+## Static Properties
+
+Each of the following properties may be assigned to as static members of the `RuleTester` class.
+
+For example, to assign `afterAll`:
+
+```ts
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = () => {
+  // ...
+};
+```
+
+### `afterAll`
+
+Runs after all the tests in this file have completed.
+
+### `describe`
+
+Creates a test grouping.
+
+### `describeSkip`
+
+Skips running the tests inside this `describe`.
+
+### `it`
+
+Creates a test closure.
+
+### `itOnly`
+
+Skips all other tests in the current file.
+
+### `itSkip`
+
+Skips running this test.
