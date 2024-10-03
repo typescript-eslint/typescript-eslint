@@ -372,6 +372,10 @@ describe('TypeOrValueSpecifier', () => {
         `,
         { from: 'package', name: 'Buffer', package: 'node' },
       ],
+      [
+        'type Test = Buffer;',
+        { from: 'package', name: 'Buffer', package: 'node' },
+      ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([

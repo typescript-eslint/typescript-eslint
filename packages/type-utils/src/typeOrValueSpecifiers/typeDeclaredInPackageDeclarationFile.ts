@@ -1,5 +1,3 @@
-import console from 'node:console';
-
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
