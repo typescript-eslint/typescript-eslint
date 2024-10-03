@@ -418,37 +418,37 @@ enum Foo {
       options: [{ allowBitwiseExpressions: true }],
       errors: [
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 4,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 5,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 6,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 7,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 8,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 9,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 10,
           column: 3,
         },
@@ -466,12 +466,12 @@ enum Foo {
       options: [{ allowBitwiseExpressions: true }],
       errors: [
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 5,
           column: 3,
         },
         {
-          messageId: 'notLiteral',
+          messageId: 'notLiteralOrBitwiseExpression',
           line: 6,
           column: 3,
         },

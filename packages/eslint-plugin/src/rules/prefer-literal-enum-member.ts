@@ -14,6 +14,7 @@ export default createRule({
     },
     messages: {
       notLiteral: `Explicit enum value must only be a literal value (string or number).`,
+      notLiteralOrBitwiseExpression: `Explicit enum value must only be a literal value (string or number) or a bitwise expression.`,
     },
     schema: [
       {
@@ -142,7 +143,9 @@ export default createRule({
 
         context.report({
           node: node.id,
-          messageId: 'notLiteral',
+          messageId: allowBitwiseExpressions
+            ? 'notLiteralOrBitwiseExpression'
+            : 'notLiteral',
         });
       },
     };
