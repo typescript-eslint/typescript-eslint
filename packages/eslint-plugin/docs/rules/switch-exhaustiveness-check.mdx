@@ -55,9 +55,11 @@ Since `value` is a non-union type it requires the switch case to have a default 
 
 ### `allowDefaultCaseMatchUnionMember`
 
-Defaults to true. If set to `true`, the `default` clause is used to determine whether the switch statement is Exhaustive for union type.
+Defaults to true. Whether a `default` clause will be considered as making a switch statement over a union type exhaustive.
 
-In a switch case, if you enter the default statement, it can be considered that Exhaustive is satisfied, but if you think that entering the default statement did not solve the exhaustive problem of the union type, please set to option `true`.
+By default, if a `switch` statement over a union type includes a `default` case, then it's considered exhaustive.
+`allowDefaultCaseMatchUnionMember` enforces explicitly handling every constituent of the union type with their own explicit `case`.
+This can be useful if you want to make sure every value added to the union receives explicit handling, with the `default` case reserved for reporting an error.
 
 Examples of additional **incorrect** code for this rule with `{ allowDefaultCaseMatchUnionMember: true }`:
 

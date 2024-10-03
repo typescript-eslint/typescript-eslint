@@ -38,11 +38,11 @@ type Options = [
     requireDefaultForNonUnion?: boolean;
 
     /**
-     * If `true`, the `default` clause is used to determine whether the switch statement is Exhaustive for union type.
+     * If `true`, the `default` clause is used to determine whether the switch statement is exhaustive for union types.
      *
-     * @default true
+     * @default false
      */
-    allowDefaultCaseMatchUnionMember?: boolean;
+    requireDefaultCaseForUnions?: boolean;
   },
 ];
 
@@ -72,7 +72,7 @@ export default createRule<Options, MessageIds>({
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
             type: 'boolean',
           },
-          allowDefaultCaseMatchUnionMember: {
+          requireDefaultCaseForUnions: {
             description: `If 'true', the 'default' clause is used to determine whether the switch statement is Exhaustive for union type`,
             type: 'boolean',
           },
@@ -92,7 +92,7 @@ export default createRule<Options, MessageIds>({
     {
       allowDefaultCaseForExhaustiveSwitch: true,
       requireDefaultForNonUnion: false,
-      allowDefaultCaseMatchUnionMember: true,
+      requireDefaultCaseForUnions: false,
     },
   ],
   create(
@@ -101,7 +101,7 @@ export default createRule<Options, MessageIds>({
       {
         allowDefaultCaseForExhaustiveSwitch,
         requireDefaultForNonUnion,
-        allowDefaultCaseMatchUnionMember,
+        requireDefaultCaseForUnions,
       },
     ],
   ) {
@@ -173,12 +173,12 @@ export default createRule<Options, MessageIds>({
       const { missingLiteralBranchTypes, symbolName, defaultCase } =
         switchMetadata;
 
-      // We only trigger the rule if a `default` case does not exist when allowDefaultCaseMatchUnionMember option
+      // We only trigger the rule if a `default` case does not exist when requireDefaultCaseForUnions option
       // is `true`. because that would disqualify the switch statement from having cases that exactly
       // match the members of a union.
       if (
         missingLiteralBranchTypes.length > 0 &&
-        (allowDefaultCaseMatchUnionMember ? defaultCase === undefined : true)
+        (!requireDefaultCaseForUnions ? defaultCase === undefined : true)
       ) {
         context.report({
           node: node.discriminant,

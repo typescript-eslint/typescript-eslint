@@ -823,7 +823,7 @@ switch (literal) {
       `,
       options: [
         {
-          allowDefaultCaseMatchUnionMember: true,
+          requireDefaultCaseForUnions: true,
         },
       ],
     },
@@ -841,7 +841,7 @@ switch (literal) {
       `,
       options: [
         {
-          allowDefaultCaseMatchUnionMember: true,
+          requireDefaultCaseForUnions: true,
         },
       ],
     },
@@ -857,8 +857,55 @@ switch (literal) {
       `,
       options: [
         {
-          allowDefaultCaseMatchUnionMember: true,
+          requireDefaultCaseForUnions: true,
           allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar:
+    break;
+  case MyEnum.Baz:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  case false:
+    break;
+  case true:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
         },
       ],
     },
@@ -2438,7 +2485,7 @@ switch (literal) {
       `,
       options: [
         {
-          allowDefaultCaseMatchUnionMember: false,
+          requireDefaultCaseForUnions: true,
         },
       ],
       errors: [
@@ -2478,7 +2525,7 @@ switch (literal) {
       `,
       options: [
         {
-          allowDefaultCaseMatchUnionMember: false,
+          requireDefaultCaseForUnions: true,
         },
       ],
       errors: [
@@ -2499,6 +2546,98 @@ switch (literal) {
   case "c": { throw new Error('Not implemented yet: "c" case') }
   default:
     break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 10,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar: { throw new Error('Not implemented yet: MyEnum.Bar case') }
+  case MyEnum.Baz: { throw new Error('Not implemented yet: MyEnum.Baz case') }
+  default: {
+    break;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean;
+switch (value) {
+  case false: { throw new Error('Not implemented yet: false case') }
+  case true: { throw new Error('Not implemented yet: true case') }
+  default: {
+    break;
+  }
 }
       `,
             },
