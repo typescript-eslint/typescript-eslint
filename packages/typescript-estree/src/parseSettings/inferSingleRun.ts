@@ -51,6 +51,7 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
       process.env.CI === 'true' ||
       // This will be true for invocations such as `npx eslint ...` and `./node_modules/.bin/eslint ...`
       possibleEslintBinPaths.some(binPath =>
+        process.argv.length > 1 &&
         process.argv[1].endsWith(path.normalize(binPath)),
       )
     ) {
