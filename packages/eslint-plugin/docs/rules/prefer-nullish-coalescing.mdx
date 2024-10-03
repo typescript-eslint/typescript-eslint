@@ -172,15 +172,13 @@ foo ?? 'a string';
 
 Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
-### `ignoreMakeBoolean`
+### `ignoreBooleanCoercion`
 
-Whether to ignore any make boolean type value like `Boolan`, `!` .
+Whether to ignore expressions that coerce a value into a boolean: `Boolean(...)` and `!(...)`.
 
-like !, Boolean, etc. You can use this when you do not want to apply the rule to cases that make the value a boolean.
+Incorrect code for `ignoreBooleanCoercion: false`, and correct code for `ignoreBooleanCoercion: true`:
 
-Incorrect code for `ignoreMakeBoolean: false`, and correct code for `ignoreMakeBoolean: true`:
-
-```ts option='{ "ignoreMakeBoolean": true }' showPlaygroundButton
+```ts option='{ "ignoreBooleanCoercion": true }' showPlaygroundButton
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
@@ -189,9 +187,9 @@ const y = !!(a || b);
 const z = Boolean(a || b);
 ```
 
-Correct code for `ignoreMakeBoolean: false`:
+Correct code for `ignoreBooleanCoercion: false`:
 
-```ts option='{ "ignoreMakeBoolean": false }' showPlaygroundButton
+```ts option='{ "ignoreBooleanCoercion": false }' showPlaygroundButton
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 

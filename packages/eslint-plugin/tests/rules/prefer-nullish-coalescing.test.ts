@@ -365,7 +365,7 @@ const x = Boolean(a || b);
       `,
       options: [
         {
-          ignoreMakeBoolean: true,
+          ignoreBooleanCoercion: true,
         },
       ],
     },
@@ -378,7 +378,7 @@ const x = !!(a || b);
       `,
       options: [
         {
-          ignoreMakeBoolean: true,
+          ignoreBooleanCoercion: true,
         },
       ],
     },
@@ -391,7 +391,20 @@ const x = !(a || b);
       `,
       options: [
         {
-          ignoreMakeBoolean: true,
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(1 + (a || b));
+    `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
         },
       ],
     },
@@ -1873,7 +1886,7 @@ const x = Boolean(a || b);
       `,
       options: [
         {
-          ignoreMakeBoolean: false,
+          ignoreBooleanCoercion: false,
         },
       ],
       errors: [
@@ -1904,7 +1917,7 @@ const x = !!(a || b);
       `,
       options: [
         {
-          ignoreMakeBoolean: false,
+          ignoreBooleanCoercion: false,
         },
       ],
       errors: [
@@ -1934,7 +1947,7 @@ const x = !(a || b);
       `,
       options: [
         {
-          ignoreMakeBoolean: false,
+          ignoreBooleanCoercion: false,
         },
       ],
       errors: [
@@ -1949,6 +1962,130 @@ let b: string | boolean | undefined;
 
 const x = !(a ?? b);
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+function Boolean(value){
+  return !!value
+}
+
+const x = Boolean(a || b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+function Boolean(value){
+  return !!value
+}
+
+const x = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = String(a || b);
+    `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = String(a ?? b);
+    `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(()=> a || b);
+    `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(()=> a ?? b);
+    `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(function weird(){ return a || b});
+    `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(function weird(){ return a ?? b});
+    `,
             },
           ],
         },

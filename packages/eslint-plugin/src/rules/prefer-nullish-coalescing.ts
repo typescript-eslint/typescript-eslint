@@ -31,7 +31,7 @@ export type Options = [
         }
       | true;
     ignoreTernaryTests?: boolean;
-    ignoreMakeBoolean?: boolean;
+    ignoreBooleanCoercion?: boolean;
   },
 ];
 
@@ -104,7 +104,7 @@ export default createRule<Options, MessageIds>({
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
             type: 'boolean',
           },
-          ignoreMakeBoolean: {
+          ignoreBooleanCoercion: {
             description:
               'Whether to ignore any make boolean type value like `Boolan`, `!`',
             type: 'boolean',
@@ -126,7 +126,7 @@ export default createRule<Options, MessageIds>({
         number: false,
         string: false,
       },
-      ignoreMakeBoolean: false,
+      ignoreBooleanCoercion: false,
     },
   ],
   create(
@@ -138,7 +138,7 @@ export default createRule<Options, MessageIds>({
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
-        ignoreMakeBoolean,
+        ignoreBooleanCoercion,
       },
     ],
   ) {
@@ -332,7 +332,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (ignoreMakeBoolean === true && isMakeBoolean(node)) {
+        if (ignoreBooleanCoercion === true && isMakeBoolean(node, context)) {
           return;
         }
 
@@ -448,7 +448,10 @@ function isConditionalTest(node: TSESTree.Node): boolean {
   return false;
 }
 
-function isMakeBoolean(node: TSESTree.Node): boolean {
+function isMakeBoolean(
+  node: TSESTree.Node,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): boolean {
   const parents = new Set<TSESTree.Node | null>([node]);
   let current = node.parent;
   while (current) {
@@ -458,9 +461,7 @@ function isMakeBoolean(node: TSESTree.Node): boolean {
       (current.type === AST_NODE_TYPES.UnaryExpression &&
         current.operator === '!') ||
       (current.type === AST_NODE_TYPES.CallExpression &&
-        current.callee.type === AST_NODE_TYPES.Identifier &&
-        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-        current.callee.name === 'Boolean')
+        isBuiltInBoolanCall(current, context))
     ) {
       return true;
     }
@@ -473,8 +474,8 @@ function isMakeBoolean(node: TSESTree.Node): boolean {
     ) {
       /**
        * This is a weird situation like:
-       * `if (() => a || b) {}`
-       * `if (function () { return a || b }) {}`
+       * `Boolean(() => a || b)`
+       * `Boolean(function () { return a || b })`
        */
       return false;
     }
@@ -482,6 +483,22 @@ function isMakeBoolean(node: TSESTree.Node): boolean {
     current = current.parent;
   }
 
+  return false;
+}
+
+function isBuiltInBoolanCall(
+  node: TSESTree.CallExpression,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): boolean {
+  if (
+    node.callee.type === AST_NODE_TYPES.Identifier &&
+    node.callee.name === 'Boolean' &&
+    node.arguments[0]
+  ) {
+    const scope = context.sourceCode.getScope(node);
+    const variable = scope.set.get('Boolean');
+    return !variable?.defs.length;
+  }
   return false;
 }
 
