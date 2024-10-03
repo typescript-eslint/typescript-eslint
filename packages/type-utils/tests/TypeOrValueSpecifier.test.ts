@@ -365,6 +365,13 @@ describe('TypeOrValueSpecifier', () => {
           package: 'node:test',
         },
       ],
+      [
+        `
+          import { Buffer } from 'node:buffer';
+          type Test = Buffer;
+        `,
+        { from: 'package', name: 'Buffer', package: 'node' },
+      ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([

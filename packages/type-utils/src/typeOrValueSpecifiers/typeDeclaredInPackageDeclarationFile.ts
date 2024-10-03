@@ -1,3 +1,5 @@
+import console from 'node:console';
+
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
@@ -33,12 +35,16 @@ function typeDeclaredInDeclarationFile(
   // Handle scoped packages: if the name starts with @, remove it and replace / with __
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
+  const packageNameMatcher = new RegExp(`${packageName}|${typesPackageName}`);
+  const fileNameMatcher = new RegExp(
+    `node_modules/(?:${packageName}|@types/${typesPackageName})/`,
+  );
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
-      packageIdName !== undefined &&
-      matcher.test(packageIdName) &&
+      (packageIdName == null
+        ? fileNameMatcher.test(declaration.fileName)
+        : packageNameMatcher.test(packageIdName)) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
