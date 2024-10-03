@@ -94,6 +94,7 @@ export function config(
     const extension = {
       ...(config.files && { files: config.files }),
       ...(config.ignores && { ignores: config.ignores }),
+      ...(config.name && { name: config.name }),
     };
 
     return [

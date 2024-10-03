@@ -367,4 +367,35 @@ describe('config helper', () => {
       },
     ]);
   });
+
+  it('flattens extended configs with config name', () => {
+    expect(
+      plugin.config({
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      }),
+    ).toEqual([
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule2: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      },
+    ]);
+  });
 });
