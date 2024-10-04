@@ -8,9 +8,11 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  forEachReturnStatement,
   getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
+  isArrayMethodCallWithPredicate,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
@@ -271,6 +273,36 @@ export default createRule<Options, MessageId>({
       const assertedArgument = findTruthinessAssertedArgument(services, node);
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
+      }
+      if (isArrayMethodCallWithPredicate(context, services, node)) {
+        const predicate = node.arguments[0];
+
+        // Shorthand arrow function expression
+        if (
+          predicate.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+          predicate.body.type !== AST_NODE_TYPES.BlockStatement
+        ) {
+          traverseNode(predicate.body, true);
+        }
+
+        // Any other function expression with a block body
+        if (
+          (predicate.type === AST_NODE_TYPES.FunctionExpression ||
+            predicate.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+          predicate.body.type === AST_NODE_TYPES.BlockStatement
+        ) {
+          const tsBody = services.esTreeNodeToTSNodeMap.get(predicate.body);
+
+          forEachReturnStatement(tsBody, tsStatement => {
+            const statement = services.tsNodeToESTreeNodeMap.get(tsStatement);
+            if (
+              statement.type === AST_NODE_TYPES.ReturnStatement &&
+              statement.argument
+            ) {
+              traverseNode(statement.argument, true);
+            }
+          });
+        }
       }
     }
 
