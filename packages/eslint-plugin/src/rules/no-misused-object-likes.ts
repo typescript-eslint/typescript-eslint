@@ -41,13 +41,16 @@ export default createRule({
         return;
       }
       const method = getStaticMemberAccessValue(callee, context);
-      if (method && !['keys', 'values', 'entries'].includes(method)) {
+      if (
+        typeof method !== 'string' ||
+        !['keys', 'values', 'entries'].includes(method)
+      ) {
         return;
       }
       const objectClass = getParserServices(context)
         .getTypeAtLocation(args[0])
         .getSymbol()?.name;
-      if (objectClass && /^(Weak)?(Map|Set)$/.test(objectClass)) {
+      if (objectClass && /^(Readonly|Weak)?(Map|Set)$/.test(objectClass)) {
         context.report({
           node,
           messageId: 'misusedObjectLike',
