@@ -57,7 +57,7 @@ for (let i = 0; i < 10; i += 1) {
   invalid: [],
 });
 
-// Forked from https://github.com/eslint/eslint/blob/bf2e367bf4f6fde9930af9de8b8d8bc3d8b5782f/tests/lib/rules/no-loop-func.js
+// Forked from https://github.com/eslint/eslint/blob/89a4a0a260b8eb11487fe3d5d4d80f4630933eb3/tests/lib/rules/no-loop-func.js
 ruleTester.run('no-loop-func ESLint tests', rule, {
   valid: [
     "string = 'function a() {}';",
