@@ -101,6 +101,26 @@ ruleTester.run('no-deprecated', rule, {
       a('b');
     `,
     `
+      import { deprecatedFunctionWithOverloads } from './deprecated';
+
+      const foo = deprecatedFunctionWithOverloads();
+    `,
+    `
+      import * as imported from './deprecated';
+
+      const foo = imported.deprecatedFunctionWithOverloads();
+    `,
+    `
+      import { ClassWithDeprecatedConstructor } from './deprecated';
+
+      const foo = new ClassWithDeprecatedConstructor();
+    `,
+    `
+      import * as imported from './deprecated';
+
+      const foo = new imported.ClassWithDeprecatedConstructor();
+    `,
+    `
       class A {
         a(value: 'b'): void;
         /** @deprecated */
@@ -108,6 +128,16 @@ ruleTester.run('no-deprecated', rule, {
       }
       declare const foo: A;
       foo.a('b');
+    `,
+    `
+      const A = class {
+        /** @deprecated */
+        constructor();
+        constructor(arg: string);
+        constructor(arg?: string) {}
+      };
+
+      new A('a');
     `,
     `
       type A = {
@@ -207,6 +237,36 @@ ruleTester.run('no-deprecated', rule, {
       const [{ anchor = 'bar' }] = x;
     `,
     'function fn(/** @deprecated */ foo = 4) {}',
+    {
+      code: `
+        async function fn() {
+          const d = await import('./deprecated.js');
+          d.default;
+        }
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: rootDir,
+          projectService: false,
+          project: './tsconfig.moduleResolution-node16.json',
+        },
+      },
+    },
+    'call();',
+
+    // this test is to ensure the rule doesn't crash when class implements itself
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10031
+    `
+      class Foo implements Foo {
+        get bar(): number {
+          return 42;
+        }
+
+        baz(): number {
+          return this.bar;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -679,11 +739,33 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        const A = class {
+          /** @deprecated */
+          constructor();
+          constructor(arg: string);
+          constructor(arg?: string) {}
+        };
+
+        new A();
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          line: 9,
+          endLine: 9,
+          data: { name: 'A' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         declare const A: {
           /** @deprecated */
           new (): string;
         };
-        
+
         new A();
       `,
       errors: [
@@ -816,7 +898,6 @@ ruleTester.run('no-deprecated', rule, {
 
         a.b();
       `,
-      only: false,
       errors: [
         {
           column: 11,
@@ -839,7 +920,6 @@ ruleTester.run('no-deprecated', rule, {
 
         a.b();
       `,
-      only: false,
       errors: [
         {
           column: 11,
@@ -859,12 +939,11 @@ ruleTester.run('no-deprecated', rule, {
             return '';
           }
         }
-        
+
         declare const a: A;
-        
+
         a.b();
       `,
-      only: false,
       errors: [
         {
           column: 11,
@@ -1580,6 +1659,697 @@ ruleTester.run('no-deprecated', rule, {
           line: 7,
           endLine: 7,
           data: { name: 'foo' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { DeprecatedClass } from './deprecated';
+
+        const foo = new DeprecatedClass();
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 40,
+          line: 4,
+          endLine: 4,
+          data: { name: 'DeprecatedClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { DeprecatedClass } from './deprecated';
+
+        declare function inject(something: new () => unknown): void;
+
+        inject(DeprecatedClass);
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 31,
+          line: 6,
+          endLine: 6,
+          data: { name: 'DeprecatedClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedVariable } from './deprecated';
+
+        const foo = deprecatedVariable;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 39,
+          line: 4,
+          endLine: 4,
+          data: { name: 'deprecatedVariable' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { DeprecatedClass } from './deprecated';
+
+        declare const x: DeprecatedClass;
+
+        const { foo } = x;
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 41,
+          line: 4,
+          endLine: 4,
+          data: { name: 'DeprecatedClass' },
+          messageId: 'deprecated',
+        },
+        {
+          column: 17,
+          endColumn: 20,
+          line: 6,
+          endLine: 6,
+          data: { name: 'foo' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedFunction } from './deprecated';
+
+        deprecatedFunction();
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 27,
+          line: 4,
+          endLine: 4,
+          data: { name: 'deprecatedFunction' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = new imported.NormalClass();
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 45,
+          line: 4,
+          endLine: 4,
+          data: { name: 'NormalClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { NormalClass } from './deprecated';
+
+        const foo = new NormalClass();
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 36,
+          line: 4,
+          endLine: 4,
+          data: { name: 'NormalClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.NormalClass;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 41,
+          line: 4,
+          endLine: 4,
+          data: { name: 'NormalClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { NormalClass } from './deprecated';
+
+        const foo = NormalClass;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 32,
+          line: 4,
+          endLine: 4,
+          data: { name: 'NormalClass' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { normalVariable } from './deprecated';
+
+        const foo = normalVariable;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 35,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalVariable' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.normalVariable;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 44,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalVariable' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const { normalVariable } = imported;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 31,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalVariable' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { normalFunction } from './deprecated';
+
+        const foo = normalFunction;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 35,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalFunction' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.normalFunction;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 44,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalFunction' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const { normalFunction } = imported;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 31,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalFunction' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { normalFunction } from './deprecated';
+
+        const foo = normalFunction();
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 35,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalFunction' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.normalFunction();
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 44,
+          line: 4,
+          endLine: 4,
+          data: { name: 'normalFunction' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { deprecatedFunctionWithOverloads } from './deprecated';
+
+        const foo = deprecatedFunctionWithOverloads('a');
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 52,
+          line: 4,
+          endLine: 4,
+          data: { name: 'deprecatedFunctionWithOverloads' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.deprecatedFunctionWithOverloads('a');
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 61,
+          line: 4,
+          endLine: 4,
+          data: { name: 'deprecatedFunctionWithOverloads' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { reexportedDeprecatedFunctionWithOverloads } from './deprecated';
+
+        const foo = reexportedDeprecatedFunctionWithOverloads;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 62,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.reexportedDeprecatedFunctionWithOverloads;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 71,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const { reexportedDeprecatedFunctionWithOverloads } = imported;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 58,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import { reexportedDeprecatedFunctionWithOverloads } from './deprecated';
+
+        const foo = reexportedDeprecatedFunctionWithOverloads();
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 62,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.reexportedDeprecatedFunctionWithOverloads();
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 71,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import { reexportedDeprecatedFunctionWithOverloads } from './deprecated';
+
+        const foo = reexportedDeprecatedFunctionWithOverloads('a');
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 62,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.reexportedDeprecatedFunctionWithOverloads('a');
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 71,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'reexportedDeprecatedFunctionWithOverloads',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import { ClassWithDeprecatedConstructor } from './deprecated';
+
+        const foo = new ClassWithDeprecatedConstructor('a');
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 55,
+          line: 4,
+          endLine: 4,
+          data: { name: 'ClassWithDeprecatedConstructor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = new imported.ClassWithDeprecatedConstructor('a');
+      `,
+      errors: [
+        {
+          column: 34,
+          endColumn: 64,
+          line: 4,
+          endLine: 4,
+          data: { name: 'ClassWithDeprecatedConstructor' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import { ReexportedClassWithDeprecatedConstructor } from './deprecated';
+
+        const foo = ReexportedClassWithDeprecatedConstructor;
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 61,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.ReexportedClassWithDeprecatedConstructor;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 70,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const { ReexportedClassWithDeprecatedConstructor } = imported;
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 57,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import { ReexportedClassWithDeprecatedConstructor } from './deprecated';
+
+        const foo = ReexportedClassWithDeprecatedConstructor();
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 61,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.ReexportedClassWithDeprecatedConstructor();
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 70,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import { ReexportedClassWithDeprecatedConstructor } from './deprecated';
+
+        const foo = ReexportedClassWithDeprecatedConstructor('a');
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 61,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as imported from './deprecated';
+
+        const foo = imported.ReexportedClassWithDeprecatedConstructor('a');
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 70,
+          line: 4,
+          endLine: 4,
+          data: {
+            name: 'ReexportedClassWithDeprecatedConstructor',
+            reason: 'Reason',
+          },
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        import imported from './deprecated';
+
+        imported;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 17,
+          line: 4,
+          endLine: 4,
+          data: { name: 'imported' },
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        async function fn() {
+          const d = await import('./deprecated.js');
+          d.default.default;
+        }
+      `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: rootDir,
+          projectService: false,
+          project: './tsconfig.moduleResolution-node16.json',
+        },
+      },
+      errors: [
+        {
+          column: 21,
+          endColumn: 28,
+          line: 4,
+          endLine: 4,
+          data: { name: 'default' },
           messageId: 'deprecated',
         },
       ],

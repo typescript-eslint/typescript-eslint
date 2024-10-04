@@ -18,6 +18,10 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import {
+  findTruthinessAssertedArgument,
+  findTypeGuardAssertedArgument,
+} from '../util/assertionFunctionUtils';
 
 // Truthiness utilities
 // #region
@@ -71,6 +75,7 @@ export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    checkTypePredicates?: boolean;
   },
 ];
 
@@ -81,6 +86,8 @@ export type MessageId =
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
   | 'literalBooleanExpression'
+  | 'typeGuardAlreadyIsType'
+  | 'replaceWithTrue'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -111,6 +118,11 @@ export default createRule<Options, MessageId>({
               'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
             type: 'boolean',
           },
+          checkTypePredicates: {
+            description:
+              'Whether to check the asserted argument of a type predicate function for unnecessary conditions',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -129,18 +141,22 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
       literalBooleanExpression:
         'Unnecessary conditional, both sides of the expression are literal values.',
+      replaceWithTrue: 'Replace always true expression with `true`.',
       noOverlapBooleanExpression:
         'Unnecessary conditional, the types have no overlap.',
       never: 'Unnecessary conditional, value is `never`.',
       neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      typeGuardAlreadyIsType:
+        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
   },
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      checkTypePredicates: false,
     },
   ],
   create(
@@ -149,6 +165,7 @@ export default createRule<Options, MessageId>({
       {
         allowConstantLoopConditions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        checkTypePredicates,
       },
     ],
   ) {
@@ -463,6 +480,38 @@ export default createRule<Options, MessageId>({
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
+      if (checkTypePredicates) {
+        const truthinessAssertedArgument = findTruthinessAssertedArgument(
+          services,
+          node,
+        );
+        if (truthinessAssertedArgument != null) {
+          checkNode(truthinessAssertedArgument);
+        }
+
+        const typeGuardAssertedArgument = findTypeGuardAssertedArgument(
+          services,
+          node,
+        );
+        if (typeGuardAssertedArgument != null) {
+          const typeOfArgument = getConstrainedTypeAtLocation(
+            services,
+            typeGuardAssertedArgument.argument,
+          );
+          if (typeOfArgument === typeGuardAssertedArgument.type) {
+            context.report({
+              node: typeGuardAssertedArgument.argument,
+              messageId: 'typeGuardAlreadyIsType',
+              data: {
+                typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
+                  ? 'assertion function'
+                  : 'type guard',
+              },
+            });
+          }
+        }
+      }
+
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (
         isArrayMethodCallWithPredicate(context, services, node) &&

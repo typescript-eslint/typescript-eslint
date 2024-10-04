@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import { createRule, getParserServices, nullThrows } from '../util';
 
 type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
 
@@ -33,6 +33,42 @@ export default createRule({
 
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+
+    // Deprecated jsdoc tags can be added on some symbol alias, e.g.
+    //
+    // export { /** @deprecated */ foo }
+    //
+    // When we import foo, its symbol is an alias of the exported foo (the one
+    // with the deprecated tag), which is itself an alias of the original foo.
+    // Therefore, we carefully go through the chain of aliases and check each
+    // immediate alias for deprecated tags
+    function searchForDeprecationInAliasesChain(
+      symbol: ts.Symbol | undefined,
+      checkDeprecationsOfAliasedSymbol: boolean,
+    ): string | undefined {
+      if (!symbol || !tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+        return checkDeprecationsOfAliasedSymbol
+          ? getJsDocDeprecation(symbol)
+          : undefined;
+      }
+      const targetSymbol = checker.getAliasedSymbol(symbol);
+      while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
+        const reason = getJsDocDeprecation(symbol);
+        if (reason !== undefined) {
+          return reason;
+        }
+        const immediateAliasedSymbol: ts.Symbol | undefined =
+          symbol.getDeclarations() && checker.getImmediateAliasedSymbol(symbol);
+        if (!immediateAliasedSymbol) {
+          break;
+        }
+        symbol = immediateAliasedSymbol;
+        if (checkDeprecationsOfAliasedSymbol && symbol === targetSymbol) {
+          return getJsDocDeprecation(symbol);
+        }
+      }
+      return undefined;
+    }
 
     function isDeclaration(node: IdentifierLike): boolean {
       const { parent } = node;
@@ -116,9 +152,14 @@ export default createRule({
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
-      const tag = symbol
-        ?.getJsDocTags(checker)
-        .find(tag => tag.name === 'deprecated');
+      let jsDocTags: ts.JSDocTagInfo[] | undefined;
+      try {
+        jsDocTags = symbol?.getJsDocTags(checker);
+      } catch {
+        // workaround for https://github.com/microsoft/TypeScript/issues/60024
+        return;
+      }
+      const tag = jsDocTags?.find(tag => tag.name === 'deprecated');
 
       if (!tag) {
         return undefined;
@@ -169,61 +210,82 @@ export default createRule({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
 
       // If the node is a direct function call, we look for its signature.
-      const signature = checker.getResolvedSignature(
-        tsNode as ts.CallLikeExpression,
+      const signature = nullThrows(
+        checker.getResolvedSignature(tsNode as ts.CallLikeExpression),
+        'Expected call like node to have signature',
       );
+
       const symbol = services.getSymbolAtLocation(node);
-      if (signature) {
-        const signatureDeprecation = getJsDocDeprecation(signature);
-        if (signatureDeprecation !== undefined) {
-          return signatureDeprecation;
-        }
-
-        // Properties with function-like types have "deprecated" jsdoc
-        // on their symbols, not on their signatures:
-        //
-        // interface Props {
-        //   /** @deprecated */
-        //   property: () => 'foo'
-        //   ^symbol^  ^signature^
-        // }
-        const symbolDeclarationKind = symbol?.declarations?.[0].kind;
-        if (
-          symbolDeclarationKind !== ts.SyntaxKind.MethodDeclaration &&
-          symbolDeclarationKind !== ts.SyntaxKind.FunctionDeclaration &&
-          symbolDeclarationKind !== ts.SyntaxKind.MethodSignature
-        ) {
-          return getJsDocDeprecation(symbol);
-        }
+      const aliasedSymbol =
+        symbol !== undefined &&
+        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+          ? checker.getAliasedSymbol(symbol)
+          : symbol;
+      const symbolDeclarationKind = aliasedSymbol?.declarations?.[0].kind;
+      // Properties with function-like types have "deprecated" jsdoc
+      // on their symbols, not on their signatures:
+      //
+      // interface Props {
+      //   /** @deprecated */
+      //   property: () => 'foo'
+      //   ^symbol^  ^signature^
+      // }
+      if (
+        symbolDeclarationKind !== ts.SyntaxKind.MethodDeclaration &&
+        symbolDeclarationKind !== ts.SyntaxKind.FunctionDeclaration &&
+        symbolDeclarationKind !== ts.SyntaxKind.MethodSignature
+      ) {
+        return (
+          searchForDeprecationInAliasesChain(symbol, true) ??
+          getJsDocDeprecation(signature) ??
+          getJsDocDeprecation(aliasedSymbol)
+        );
       }
-
-      // Or it could be a ClassDeclaration or a variable set to a ClassExpression.
-      const symbolAtLocation =
-        symbol && checker.getTypeOfSymbolAtLocation(symbol, tsNode).getSymbol();
-
-      return symbolAtLocation &&
-        tsutils.isSymbolFlagSet(symbolAtLocation, ts.SymbolFlags.Class)
-        ? getJsDocDeprecation(symbolAtLocation)
-        : undefined;
-    }
-
-    function getSymbol(
-      node: IdentifierLike,
-    ): ts.Signature | ts.Symbol | undefined {
-      if (node.parent.type === AST_NODE_TYPES.Property) {
-        return services
-          .getTypeAtLocation(node.parent.parent)
-          .getProperty(node.name);
-      }
-
-      return services.getSymbolAtLocation(node);
+      return (
+        searchForDeprecationInAliasesChain(
+          symbol,
+          // Here we're working with a function declaration or method.
+          // Both can have 1 or more overloads, each overload creates one
+          // ts.Declaration which is placed in symbol.declarations.
+          //
+          // Imagine the following code:
+          //
+          // function foo(): void
+          // /** @deprecated Some Reason */
+          // function foo(arg: string): void
+          // function foo(arg?: string): void {}
+          //
+          // foo()    // <- foo is our symbol
+          //
+          // If we call getJsDocDeprecation(checker.getAliasedSymbol(symbol)),
+          // we get 'Some Reason', but after all, we are calling foo with
+          // a signature that is not deprecated!
+          // It works this way because symbol.getJsDocTags returns tags from
+          // all symbol declarations combined into one array. And AFAIK there is
+          // no publicly exported TS function that can tell us if a particular
+          // declaration is deprecated or not.
+          //
+          // So, in case of function and method declarations, we don't check original
+          // aliased symbol, but rely on the getJsDocDeprecation(signature) call below.
+          false,
+        ) ?? getJsDocDeprecation(signature)
+      );
     }
 
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
-      return callLikeNode
-        ? getCallLikeDeprecation(callLikeNode)
-        : getJsDocDeprecation(getSymbol(node));
+      if (callLikeNode) {
+        return getCallLikeDeprecation(callLikeNode);
+      }
+      if (node.parent.type === AST_NODE_TYPES.Property) {
+        return getJsDocDeprecation(
+          services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
+        );
+      }
+      return searchForDeprecationInAliasesChain(
+        services.getSymbolAtLocation(node),
+        true,
+      );
     }
 
     function checkIdentifier(node: IdentifierLike): void {

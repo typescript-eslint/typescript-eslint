@@ -13,6 +13,7 @@ describe('isSourceFile', () => {
   it('returns true when given a real source file', () => {
     const input = ts.createSourceFile('test.ts', '', ts.ScriptTarget.ESNext);
 
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- intentionally testing that the types match reality
     expect(isSourceFile(input)).toBe(true);
   });
 });

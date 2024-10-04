@@ -113,8 +113,10 @@ export default tseslint.config(
           minimumDescriptionLength: 5,
         },
       ],
+      // TODO: enable it once we drop support for TS<5.0
+      // https://github.com/typescript-eslint/typescript-eslint/issues/10065
       '@typescript-eslint/consistent-type-exports': [
-        'error',
+        'off', // 'error',
         { fixMixedExportsWithInlineTypeSpecifier: true },
       ],
       '@typescript-eslint/consistent-type-imports': [
@@ -129,7 +131,7 @@ export default tseslint.config(
       'no-constant-condition': 'off',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
-        { allowConstantLoopConditions: true },
+        { allowConstantLoopConditions: true, checkTypePredicates: true },
       ],
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
