@@ -6,6 +6,8 @@ import {
   getStaticMemberAccessValue,
 } from '../util';
 
+const METHODS = ['assign', 'entries', 'hasOwn', 'keys', 'values'];
+
 export default createRule({
   name: 'no-misused-object-likes',
   defaultOptions: [],
@@ -13,8 +15,7 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description:
-        'Enforce check `Object.values(...)`, `Object.keys(...)`, `Object.entries(...)` usage with Map/Set objects',
+      description: `Disallow using \`Object.${METHODS.join(`|`)}(...)\` on Map/Set objects`,
       requiresTypeChecking: true,
     },
     messages: {
@@ -41,10 +42,7 @@ export default createRule({
         return;
       }
       const method = getStaticMemberAccessValue(callee, context);
-      if (
-        typeof method !== 'string' ||
-        !['keys', 'values', 'entries'].includes(method)
-      ) {
+      if (typeof method !== 'string' || !METHODS.includes(method)) {
         return;
       }
       const objectClass = getParserServices(context)
