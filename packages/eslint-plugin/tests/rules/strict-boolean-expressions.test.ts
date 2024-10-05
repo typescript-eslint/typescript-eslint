@@ -2703,6 +2703,107 @@ if (x) {
         },
       ],
     },
+    // multi line predicate function
+    {
+      code: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return x;
+  }
+
+  return !x;
+});
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 4,
+          column: 12,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return x != null;
+  }
+
+  return !x;
+});
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return x ?? "";
+  }
+
+  return !x;
+});
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return Boolean(x);
+  }
+
+  return !x;
+});
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 7,
+          column: 11,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return x;
+  }
+
+  return x == null;
+});
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return x;
+  }
+
+  return !(x ?? "");
+});
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return x;
+  }
+
+  return !Boolean(x);
+});
+      `,
+            },
+          ],
+        },
+      ],
+    },
     {
       code: `
 declare function assert(x: unknown): asserts x;
