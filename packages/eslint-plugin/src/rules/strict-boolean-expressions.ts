@@ -269,39 +269,47 @@ export default createRule<Options, MessageId>({
       traverseNode(node.right, isCondition);
     }
 
+    function traverseArrayPredicateReturnStatements(
+      node: TSESTree.CallExpressionArgument,
+    ): void {
+      // Shorthand arrow function expression
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        node.body.type !== AST_NODE_TYPES.BlockStatement
+      ) {
+        traverseNode(node.body, true);
+      }
+
+      // Any other function expression with a block body
+      else if (
+        (node.type === AST_NODE_TYPES.FunctionExpression ||
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+        node.body.type === AST_NODE_TYPES.BlockStatement
+      ) {
+        const tsBody = services.esTreeNodeToTSNodeMap.get(node.body);
+
+        forEachReturnStatement(tsBody, tsStatement => {
+          const statement = services.tsNodeToESTreeNodeMap.get(tsStatement);
+          if (
+            statement.type === AST_NODE_TYPES.ReturnStatement &&
+            statement.argument
+          ) {
+            traverseNode(statement.argument, true);
+          }
+        });
+      }
+    }
+
     function traverseCallExpression(node: TSESTree.CallExpression): void {
       const assertedArgument = findTruthinessAssertedArgument(services, node);
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
       }
       if (isArrayMethodCallWithPredicate(context, services, node)) {
-        const predicate = node.arguments[0];
+        const predicate = node.arguments.at(0);
 
-        // Shorthand arrow function expression
-        if (
-          predicate.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-          predicate.body.type !== AST_NODE_TYPES.BlockStatement
-        ) {
-          traverseNode(predicate.body, true);
-        }
-
-        // Any other function expression with a block body
-        if (
-          (predicate.type === AST_NODE_TYPES.FunctionExpression ||
-            predicate.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
-          predicate.body.type === AST_NODE_TYPES.BlockStatement
-        ) {
-          const tsBody = services.esTreeNodeToTSNodeMap.get(predicate.body);
-
-          forEachReturnStatement(tsBody, tsStatement => {
-            const statement = services.tsNodeToESTreeNodeMap.get(tsStatement);
-            if (
-              statement.type === AST_NODE_TYPES.ReturnStatement &&
-              statement.argument
-            ) {
-              traverseNode(statement.argument, true);
-            }
-          });
+        if (predicate != null) {
+          traverseArrayPredicateReturnStatements(predicate);
         }
       }
     }
