@@ -1100,6 +1100,35 @@ describe('RuleTester - hooks', () => {
     },
   );
 
+  it.each(['before', 'after'])(
+    '%s should throw when not a function is assigned',
+    hookName => {
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'bar',
+              [hookName]: 42,
+            },
+          ],
+        }),
+      ).toThrow(/is not a function/);
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              [hookName]: 42,
+            },
+          ],
+          valid: [],
+        }),
+      ).toThrow(/is not a function/);
+    },
+  );
+
   it('should call both before() and after() hooks even when the case failed', () => {
     const hookBefore = jest.fn();
     const hookAfter = jest.fn();
