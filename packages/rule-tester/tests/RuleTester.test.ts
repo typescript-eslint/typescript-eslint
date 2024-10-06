@@ -1133,6 +1133,41 @@ describe('RuleTester - hooks', () => {
     expect(hookBefore).toHaveBeenCalledTimes(2);
     expect(hookAfter).toHaveBeenCalledTimes(2);
   });
+
+  it('should call both before() and after() hooks regardless syntax errors', () => {
+    const hookBefore = jest.fn();
+    const hookAfter = jest.fn();
+
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'invalid javascript code',
+          },
+        ],
+      }),
+    ).toThrow(/parsing error/);
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'invalid javascript code',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow(/parsing error/);
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe('RuleTester - multipass fixer', () => {
