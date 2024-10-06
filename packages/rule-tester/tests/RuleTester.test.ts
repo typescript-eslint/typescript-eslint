@@ -325,57 +325,63 @@ describe('RuleTester', () => {
     });
   });
 
-  describe.each(['before', 'after'] as const)('%s hook', hookName => {
-    it('should be called when assigned', () => {
-      const hookForValid = jest.fn();
-      const hookForInvalid = jest.fn();
-      new RuleTester().run('my-rule', NOOP_RULE, {
-        invalid: [
-          {
-            code: 'should work for invalid ones as well',
-            errors: [{ messageId: 'error' }],
-            [hookName]: hookForInvalid,
-          },
-        ],
-        valid: [
-          {
-            code: 'should work for valid cases',
-            [hookName]: hookForValid,
-          },
-        ],
-      });
-      expect(hookForValid).toHaveBeenCalledTimes(1);
-      expect(hookForInvalid).toHaveBeenCalledTimes(1);
-    });
-
-    it('should cause test to fail when it throws error', () => {
-      const hook = jest.fn(() => {
-        throw new Error('Something happened');
-      });
-      expect(() =>
+  describe('Hooks', () => {
+    it.each(['before', 'after'])(
+      '%s should be called when assigned',
+      hookName => {
+        const hookForValid = jest.fn();
+        const hookForInvalid = jest.fn();
         new RuleTester().run('my-rule', NOOP_RULE, {
           invalid: [
             {
               code: 'should work for invalid ones as well',
               errors: [{ messageId: 'error' }],
-              [hookName]: hook,
+              [hookName]: hookForInvalid,
             },
           ],
-          valid: [],
-        }),
-      ).toThrow('Something happened');
-      expect(() =>
-        new RuleTester().run('my-rule', NOOP_RULE, {
-          invalid: [],
           valid: [
             {
               code: 'should work for valid cases',
-              [hookName]: hook,
+              [hookName]: hookForValid,
             },
           ],
-        }),
-      ).toThrow('Something happened');
-    });
+        });
+        expect(hookForValid).toHaveBeenCalledTimes(1);
+        expect(hookForInvalid).toHaveBeenCalledTimes(1);
+      },
+    );
+
+    it.each(['before', 'after'])(
+      '%s should cause test to fail when it throws error',
+      hookName => {
+        const hook = jest.fn(() => {
+          throw new Error('Something happened');
+        });
+        expect(() =>
+          new RuleTester().run('my-rule', NOOP_RULE, {
+            invalid: [
+              {
+                code: 'should work for invalid ones as well',
+                errors: [{ messageId: 'error' }],
+                [hookName]: hook,
+              },
+            ],
+            valid: [],
+          }),
+        ).toThrow('Something happened');
+        expect(() =>
+          new RuleTester().run('my-rule', NOOP_RULE, {
+            invalid: [],
+            valid: [
+              {
+                code: 'should work for valid cases',
+                [hookName]: hook,
+              },
+            ],
+          }),
+        ).toThrow('Something happened');
+      },
+    );
   });
 
   it('schedules the parser caches to be cleared afterAll', () => {
