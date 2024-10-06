@@ -347,6 +347,35 @@ describe('RuleTester', () => {
       expect(hookForValid).toHaveBeenCalledTimes(1);
       expect(hookForInvalid).toHaveBeenCalledTimes(1);
     });
+
+    it('should cause test to fail when it throws error', () => {
+      const hook = jest.fn(() => {
+        throw new Error('Something happened');
+      });
+      expect(() =>
+        new RuleTester().run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'should work for invalid ones as well',
+              errors: [{ messageId: 'error' }],
+              [hookName]: hook,
+            },
+          ],
+          valid: [],
+        }),
+      ).toThrow('Something happened');
+      expect(() =>
+        new RuleTester().run('my-rule', NOOP_RULE, {
+          invalid: [],
+          valid: [
+            {
+              code: 'should work for valid cases',
+              [hookName]: hook,
+            },
+          ],
+        }),
+      ).toThrow('Something happened');
+    });
   });
 
   it('schedules the parser caches to be cleared afterAll', () => {
