@@ -79,11 +79,18 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const asyncIteratorSymbol = tsutils.getWellKnownSymbolPropertyOfType(
-          type,
-          'asyncIterator',
-          checker,
-        );
+        const types = type.isUnion() ? type.types : [type];
+
+        const asyncIteratorSymbol =
+          types
+            .map(t =>
+              tsutils.getWellKnownSymbolPropertyOfType(
+                t,
+                'asyncIterator',
+                checker,
+              ),
+            )
+            .find(symbol => symbol) ?? null;
 
         if (asyncIteratorSymbol == null) {
           context.report({
