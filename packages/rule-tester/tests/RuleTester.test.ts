@@ -325,6 +325,30 @@ describe('RuleTester', () => {
     });
   });
 
+  describe.each(['before', 'after'] as const)('%s hook', hookName => {
+    it('should be called when assigned', () => {
+      const hookForValid = jest.fn();
+      const hookForInvalid = jest.fn();
+      new RuleTester().run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'should work for invalid ones as well',
+            errors: [{ messageId: 'error' }],
+            [hookName]: hookForInvalid,
+          },
+        ],
+        valid: [
+          {
+            code: 'should work for valid cases',
+            [hookName]: hookForValid,
+          },
+        ],
+      });
+      expect(hookForValid).toHaveBeenCalledTimes(1);
+      expect(hookForInvalid).toHaveBeenCalledTimes(1);
+    });
+  });
+
   it('schedules the parser caches to be cleared afterAll', () => {
     // it should schedule the afterAll
     expect(mockedAfterAll).toHaveBeenCalledTimes(0);
