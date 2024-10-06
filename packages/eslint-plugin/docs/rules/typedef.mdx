@@ -62,8 +62,6 @@ For example, with the following configuration:
 
 ### `arrayDestructuring`
 
-Whether to enforce type annotations on variables declared using array destructuring.
-
 Examples of code with `{ "arrayDestructuring": true }`:
 
 <Tabs>
@@ -90,8 +88,6 @@ for (const [key, val] of new Map([['key', 1]])) {
 </Tabs>
 
 ### `arrowParameter`
-
-Whether to enforce type annotations for parameters of arrow functions.
 
 Examples of code with `{ "arrowParameter": true }`:
 
@@ -126,8 +122,6 @@ const mapper = {
 
 ### `memberVariableDeclaration`
 
-Whether to enforce type annotations on member variables of classes.
-
 Examples of code with `{ "memberVariableDeclaration": true }`:
 
 <Tabs>
@@ -155,8 +149,6 @@ class ContainsText {
 
 ### `objectDestructuring`
 
-Whether to enforce type annotations on variables declared using object destructuring.
-
 Examples of code with `{ "objectDestructuring": true }`:
 
 <Tabs>
@@ -182,8 +174,6 @@ for (const { key, val } of [{ key: 'key', val: 1 }]) {
 </Tabs>
 
 ### `parameter`
-
-Whether to enforce type annotations for parameters of functions and methods.
 
 Examples of code with `{ "parameter": true }`:
 
@@ -250,8 +240,6 @@ class Logger {
 
 ### `propertyDeclaration`
 
-Whether to enforce type annotations for properties of interfaces and types.
-
 Examples of code with `{ "propertyDeclaration": true }`:
 
 <Tabs>
@@ -279,8 +267,6 @@ type Members = {
 
 ### `variableDeclaration`
 
-Whether to enforce type annotations for variable declarations, excluding array and object destructuring.
-
 Examples of code with `{ "variableDeclaration": true }`:
 
 <Tabs>
@@ -305,8 +291,6 @@ let delayedText: string;
 </Tabs>
 
 ### `variableDeclarationIgnoreFunction`
-
-Whether to ignore variable declarations for non-arrow and arrow functions.
 
 Examples of code with `{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }`:
 

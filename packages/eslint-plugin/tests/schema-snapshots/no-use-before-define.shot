@@ -15,6 +15,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "allowNamedExports": {
+            "description": "Whether to ignore named exports.",
             "type": "boolean"
           },
           "classes": {
@@ -54,6 +55,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | 'nofunc'
   | {
+      /** Whether to ignore named exports. */
       allowNamedExports?: boolean;
       /** Whether to ignore references to class declarations. */
       classes?: boolean;

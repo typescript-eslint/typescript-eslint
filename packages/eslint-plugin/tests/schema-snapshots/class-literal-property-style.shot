@@ -6,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
+    "description": "Which literal class member syntax to prefer.",
     "enum": ["fields", "getters"],
     "type": "string"
   }
@@ -14,6 +15,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['fields' | 'getters'];
+type Options = [
+  /** Which literal class member syntax to prefer. */
+  | 'getters'
+  /** Which literal class member syntax to prefer. */
+  | 'fields',
+];
 "
 `;

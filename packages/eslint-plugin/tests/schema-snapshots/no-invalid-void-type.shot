@@ -16,9 +16,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether \`void\` can be used as a valid value for generic type parameters.",
         "oneOf": [
           {
+            "description": "Whether \`void\` can be used as a valid value for all generic type parameters.",
             "type": "boolean"
           },
           {
+            "description": "Allowlist of types that may accept \`void\` as a generic type parameter.",
             "items": {
               "type": "string"
             },
@@ -40,10 +42,13 @@ type Options = [
     /** Whether a \`this\` parameter of a function may be \`void\`. */
     allowAsThisParameter?: boolean;
     /** Whether \`void\` can be used as a valid value for generic type parameters. */
-    allowInGenericTypeArguments?:
-      | [string, ...string[]]
-      /** Whether \`void\` can be used as a valid value for generic type parameters. */
-      | boolean;
+    allowInGenericTypeArguments?: /**
+     * Whether \`void\` can be used as a valid value for generic type parameters.
+     * Whether \`void\` can be used as a valid value for all generic type parameters.
+     */
+    | boolean
+      /** Allowlist of types that may accept \`void\` as a generic type parameter. */
+      | [string, ...string[]];
   },
 ];
 "

@@ -3,7 +3,7 @@ import { fromMarkdown } from 'mdast-util-from-markdown';
 import type * as unist from 'unist';
 
 import type { VFileWithStem } from '../utils/rules';
-import { findH2Index } from '../utils/rules';
+import { findHeadingIndex } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
   howToUse: number;
@@ -72,9 +72,13 @@ export class RuleDocsPage {
 
   #recreateHeadingIndices(): RequiredHeadingIndices {
     return {
-      howToUse: findH2Index(this.#children, requiredHeadingNames[0]),
-      options: findH2Index(this.#children, requiredHeadingNames[1]),
-      whenNotToUseIt: findH2Index(this.#children, requiredHeadingNames[2]),
+      howToUse: findHeadingIndex(this.#children, 2, requiredHeadingNames[0]),
+      options: findHeadingIndex(this.#children, 2, requiredHeadingNames[1]),
+      whenNotToUseIt: findHeadingIndex(
+        this.#children,
+        2,
+        requiredHeadingNames[2],
+      ),
     };
   }
 }

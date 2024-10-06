@@ -81,7 +81,7 @@ const baseSchema = baseRule.meta.schema as {
 const allowTypeImportsOptionSchema: JSONSchema4ObjectSchema['properties'] = {
   allowTypeImports: {
     type: 'boolean',
-    description: 'Disallow value imports, but allow type-only imports.',
+    description: 'Whether to allow type-only imports for a path.',
   },
 };
 

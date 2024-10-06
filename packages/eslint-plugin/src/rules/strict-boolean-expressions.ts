@@ -69,16 +69,16 @@ export default createRule<Options, MessageId>({
         type: 'object',
         properties: {
           allowString: {
-            description: 'Whether to allow `string` in a boolean context.',
+            description: 'Whether to allow `string`s in a boolean context.',
             type: 'boolean',
           },
           allowNumber: {
-            description: 'Whether to allow `number` in a boolean context.',
+            description: 'Whether to allow `number`s in a boolean context.',
             type: 'boolean',
           },
           allowNullableObject: {
             description:
-              'Whether to allow nullable `object`s in a boolean context.',
+              'Whether to allow nullable `object`s, `symbol`s, and functions in a boolean context.',
             type: 'boolean',
           },
           allowNullableBoolean: {
@@ -102,10 +102,12 @@ export default createRule<Options, MessageId>({
             type: 'boolean',
           },
           allowAny: {
-            description: 'Whether to allow `any` in a boolean context.',
+            description: 'Whether to allow `any`s in a boolean context.',
             type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
             type: 'boolean',
           },
         },

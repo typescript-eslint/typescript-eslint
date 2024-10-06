@@ -49,6 +49,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": {
           "$ref": "#/items/0/$defs/banConfig"
         },
+        "description": "An object whose keys are the types you want to ban, and the values are error messages.",
         "type": "object"
       }
     },
@@ -76,6 +77,7 @@ type BanConfig =
 
 type Options = [
   {
+    /** An object whose keys are the types you want to ban, and the values are error messages. */
     types?: {
       [k: string]: BanConfig;
     };

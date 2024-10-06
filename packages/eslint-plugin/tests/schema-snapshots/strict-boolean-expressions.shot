@@ -9,7 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowAny": {
-        "description": "Whether to allow \`any\` in a boolean context.",
+        "description": "Whether to allow \`any\`s in a boolean context.",
         "type": "boolean"
       },
       "allowNullableBoolean": {
@@ -25,7 +25,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "allowNullableObject": {
-        "description": "Whether to allow nullable \`object\`s in a boolean context.",
+        "description": "Whether to allow nullable \`object\`s, \`symbol\`s, and functions in a boolean context.",
         "type": "boolean"
       },
       "allowNullableString": {
@@ -33,14 +33,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "allowNumber": {
-        "description": "Whether to allow \`number\` in a boolean context.",
+        "description": "Whether to allow \`number\`s in a boolean context.",
         "type": "boolean"
       },
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
+        "description": "Unless this is set to \`true\`, the rule will error on every file whose \`tsconfig.json\` does _not_ have the \`strictNullChecks\` compiler option (or \`strict\`) set to \`true\`.",
         "type": "boolean"
       },
       "allowString": {
-        "description": "Whether to allow \`string\` in a boolean context.",
+        "description": "Whether to allow \`string\`s in a boolean context.",
         "type": "boolean"
       }
     },
@@ -53,7 +54,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to allow \`any\` in a boolean context. */
+    /** Whether to allow \`any\`s in a boolean context. */
     allowAny?: boolean;
     /** Whether to allow nullable \`boolean\`s in a boolean context. */
     allowNullableBoolean?: boolean;
@@ -61,14 +62,15 @@ type Options = [
     allowNullableEnum?: boolean;
     /** Whether to allow nullable \`number\`s in a boolean context. */
     allowNullableNumber?: boolean;
-    /** Whether to allow nullable \`object\`s in a boolean context. */
+    /** Whether to allow nullable \`object\`s, \`symbol\`s, and functions in a boolean context. */
     allowNullableObject?: boolean;
     /** Whether to allow nullable \`string\`s in a boolean context. */
     allowNullableString?: boolean;
-    /** Whether to allow \`number\` in a boolean context. */
+    /** Whether to allow \`number\`s in a boolean context. */
     allowNumber?: boolean;
+    /** Unless this is set to \`true\`, the rule will error on every file whose \`tsconfig.json\` does _not_ have the \`strictNullChecks\` compiler option (or \`strict\`) set to \`true\`. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
-    /** Whether to allow \`string\` in a boolean context. */
+    /** Whether to allow \`string\`s in a boolean context. */
     allowString?: boolean;
   },
 ];

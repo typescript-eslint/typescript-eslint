@@ -114,8 +114,6 @@ and simplified types (primitives, tuples, unions, intersections, etc).
 
 ### `allowAliases`
 
-This applies to primitive types and reference types.
-
 The setting accepts the following values:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -268,8 +266,6 @@ type Foo = Bar & Baz;
 
 ### `allowCallbacks`
 
-This applies to function types.
-
 The setting accepts the following values:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -290,8 +286,6 @@ type Foo = (name: string, age: number) => string & Person;
 
 ### `allowConditionalTypes`
 
-This applies to conditional types.
-
 Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` option:
 
 ```ts option='{ "allowConditionalTypes": "always" }' showPlaygroundButton
@@ -299,8 +293,6 @@ type Foo<T> = T extends number ? number : null;
 ```
 
 ### `allowConstructors`
-
-This applies to constructor types.
 
 The setting accepts the following values:
 
@@ -313,8 +305,6 @@ type Foo = new () => void;
 ```
 
 ### `allowLiterals`
-
-This applies to literal types (`type Foo = { ... }`).
 
 The setting accepts the following options:
 
@@ -421,8 +411,6 @@ type Foo = { name: string } & { age: number };
 
 ### `allowMappedTypes`
 
-This applies to literal types.
-
 The setting accepts the following values:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -524,8 +512,6 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 
 ### `allowTupleTypes`
 
-This applies to tuple types (`type Foo = [number]`).
-
 The setting accepts the following options:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -598,8 +584,6 @@ type Foo = [string] | [number];
 ```
 
 ### `allowGenerics`
-
-This applies to generic types, including TypeScript provided global utility types (`type Foo = Record<string, number>`).
 
 The setting accepts the following options:
 

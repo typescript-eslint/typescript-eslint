@@ -102,13 +102,23 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           checksConditionals: {
+            description:
+              'Whether to warn when a Promise is provided to conditional statements.',
             type: 'boolean',
           },
           checksVoidReturn: {
+            description:
+              'Whether to warn when a Promise is returned from a function typed as returning `void`.',
             oneOf: [
-              { type: 'boolean' },
+              {
+                description:
+                  'Whether to disable checking all asynchronous functions.',
+                type: 'boolean',
+              },
               {
                 additionalProperties: false,
+                description:
+                  'Which forms of functions may have checking disabled.',
                 properties: {
                   arguments: {
                     description:

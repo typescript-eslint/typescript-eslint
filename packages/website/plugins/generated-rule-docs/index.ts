@@ -9,6 +9,7 @@ import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences'
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
+import { insertRuleOptions } from './insertions/insertRuleOptions';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 
@@ -34,6 +35,7 @@ export const generatedRuleDocs: Plugin = () => {
 
     insertWhenNotToUseIt(page);
     insertResources(page);
+    insertRuleOptions(page);
     addESLintHashToCodeBlocksMeta(page, eslintrc);
   };
 };

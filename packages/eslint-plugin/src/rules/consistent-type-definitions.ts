@@ -18,6 +18,7 @@ export default createRule({
     },
     schema: [
       {
+        description: 'Which type definition syntax to prefer.',
         type: 'string',
         enum: ['interface', 'type'],
       },

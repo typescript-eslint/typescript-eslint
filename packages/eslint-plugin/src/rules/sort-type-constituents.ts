@@ -140,15 +140,16 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           checkIntersections: {
-            description: 'Whether to check intersection types.',
+            description: 'Whether to check intersection types (`&`).',
             type: 'boolean',
           },
           checkUnions: {
-            description: 'Whether to check union types.',
+            description: 'Whether to check union types (`|`).',
             type: 'boolean',
           },
           caseSensitive: {
-            description: 'Whether to sort using case sensitive sorting.',
+            description:
+              'Whether to sort using case sensitive string comparisons.',
             type: 'boolean',
           },
           groupOrder: {
