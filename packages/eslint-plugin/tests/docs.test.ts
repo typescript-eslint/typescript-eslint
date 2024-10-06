@@ -6,6 +6,7 @@ import path from 'node:path';
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import * as tseslintParser from '@typescript-eslint/parser';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { marked } from 'marked';
 import type * as mdast from 'mdast';
@@ -575,6 +576,29 @@ describe('Validating rule metadata', () => {
         expect(requiresFullTypeInformation(ruleFileContents)).toEqual(
           rule.meta.docs?.requiresTypeChecking ?? false,
         );
+      });
+
+      it('all properties of the rule options schema must include a description', () => {
+        const getPathsMissingDescription = (
+          schema: unknown,
+          path: string,
+        ): string[] =>
+          Array.isArray(schema)
+            ? (schema as readonly JSONSchema4[]).flatMap((schema, i) =>
+                getPathsMissingDescription(schema, `${path}.${i}`),
+              )
+            : Object.entries(schema as JSONSchema4).flatMap(([key, value]) =>
+                key === 'properties'
+                  ? Object.entries(value as Record<string, JSONSchema4>)
+                      .filter(
+                        ([, { $ref, description }]) => !$ref && !description,
+                      )
+                      .map(([key]) => `${path}.${key}`)
+                  : typeof value === 'object'
+                    ? getPathsMissingDescription(value, `${path}.${key}`)
+                    : [],
+              );
+        expect(getPathsMissingDescription(rule.meta.schema, ``)).toEqual([]);
       });
     });
   }
