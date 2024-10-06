@@ -28,6 +28,14 @@ export interface TestLanguageOptions {
 
 export interface ValidTestCase<Options extends readonly unknown[]> {
   /**
+   * Function to execute after testing the case regardless of its result.
+   */
+  readonly after?: () => void;
+  /**
+   * Function to execute before testing the case.
+   */
+  readonly before?: () => void;
+  /**
    * Code for the test case.
    */
   readonly code: string;
@@ -63,12 +71,4 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    * Skip this case in supported test frameworks.
    */
   readonly skip?: boolean;
-  /**
-   * Function to execute before testing the case.
-   * */
-  readonly before?: () => void;
-  /**
-   * Function to execute after testing the case regardless of its result.
-   * */
-  readonly after?: () => void;
 }
