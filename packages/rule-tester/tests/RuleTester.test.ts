@@ -1168,6 +1168,43 @@ describe('RuleTester - hooks', () => {
     expect(hookBefore).toHaveBeenCalledTimes(2);
     expect(hookAfter).toHaveBeenCalledTimes(2);
   });
+
+  it('should call after() hook even when before() throws', () => {
+    const hookBefore = jest.fn(() => {
+      throw new Error('Something happened in before()');
+    });
+    const hookAfter = jest.fn();
+
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'bar',
+          },
+        ],
+      }),
+    ).toThrow('Something happened in before()');
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'foo',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow('Something happened in before()');
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe('RuleTester - multipass fixer', () => {
