@@ -79,9 +79,8 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const types = tsutils.unionTypeParts(type);
-
-        const asyncIteratorSymbol = types
+        const asyncIteratorSymbol = tsutils
+          .unionTypeParts(type)
           .map(t =>
             tsutils.getWellKnownSymbolPropertyOfType(
               t,
@@ -91,7 +90,7 @@ export default createRule<[], MessageId>({
           )
           .find(symbol => symbol != null);
 
-        if (asyncIteratorSymbol === undefined) {
+        if (asyncIteratorSymbol == null) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forAwaitOfNonThenable',
