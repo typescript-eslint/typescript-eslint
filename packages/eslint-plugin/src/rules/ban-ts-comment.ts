@@ -182,7 +182,9 @@ export default createRule<[Options], MessageIds>({
     }
 
     return {
-      Program(): void {
+      Program(node): void {
+        const firstStatement = node.body.at(0);
+
         const comments = context.sourceCode.getAllComments();
 
         comments.forEach(comment => {
@@ -191,6 +193,14 @@ export default createRule<[Options], MessageIds>({
             return;
           }
           const { directive, description } = match;
+
+          if (
+            directive === 'nocheck' &&
+            firstStatement &&
+            firstStatement.loc.start.line <= comment.loc.start.line
+          ) {
+            return;
+          }
 
           const fullDirective = `ts-${directive}` as keyof Options;
 
