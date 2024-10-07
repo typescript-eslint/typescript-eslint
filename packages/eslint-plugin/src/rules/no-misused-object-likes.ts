@@ -11,7 +11,6 @@ const METHODS = ['assign', 'entries', 'hasOwn', 'keys', 'values'];
 export default createRule({
   name: 'no-misused-object-likes',
   defaultOptions: [],
-
   meta: {
     type: 'problem',
     docs: {
