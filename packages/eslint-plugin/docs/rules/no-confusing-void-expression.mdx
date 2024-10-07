@@ -119,6 +119,24 @@ function doSomething() {
 console.log(void alert('Hello, world!'));
 ```
 
+### `ignoreVoidReturningFunctions`
+
+Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types.
+
+It may be preferable to allow functions that explicitly return `void` to return `void` expressions. This exception will also apply to functions with an implicit contextual return type of `void`.
+
+```ts option='{ "ignoreVoidReturningFunctions": true }' showPlaygroundButton
+function foo(): void {
+  return console.log();
+}
+
+function onError(callback: () => void): void {
+  callback();
+}
+
+onError(() => console.log('oops'));
+```
+
 ## When Not To Use It
 
 The return type of a function can be inspected by going to its definition or hovering over it in an IDE.

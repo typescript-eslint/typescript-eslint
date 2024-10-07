@@ -120,6 +120,269 @@ function cool(input: string) {
 }
       `,
     },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): void {
+  return console.log('bar');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const test = (): void => {
+  return console.log('bar');
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const test = (): void => console.log('bar');
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): void {
+  {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const obj = {
+  test(): void {
+    return console.log('foo');
+  },
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+class Foo {
+  test(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test() {
+  function nestedTest(): void {
+    return console.log('foo');
+  }
+}
+      `,
+    },
+    {
+      code: `
+type Foo = () => void;
+const test = (() => console.log()) as Foo;
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: () => void;
+};
+const test: Foo = {
+  foo: () => console.log(),
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+const test = {
+  foo: () => console.log(),
+} as {
+  foo: () => void;
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+const test: {
+  foo: () => void;
+} = {
+  foo: () => console.log(),
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: { bar: () => void };
+};
+
+const test = {
+  foo: { bar: () => console.log() },
+} as Foo;
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: { bar: () => void };
+};
+
+const test: Foo = {
+  foo: { bar: () => console.log() },
+};
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type MethodType = () => void;
+
+class App {
+  private method: MethodType = () => console.log();
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+interface Foo {
+  foo: () => void;
+}
+
+function bar(): Foo {
+  return {
+    foo: () => console.log(),
+  };
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = () => () => () => void;
+const x: Foo = () => () => () => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      code: `
+type Foo = {
+  foo: () => void;
+};
+
+const test = {
+  foo: () => console.log(),
+} as Foo;
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = () => void;
+const test: Foo = () => console.log('foo');
+      `,
+    },
+    {
+      code: 'const foo = <button onClick={() => console.log()} />;',
+      options: [{ ignoreVoidReturningFunctions: true }],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+declare function foo(arg: () => void): void;
+foo(() => console.log());
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+declare function foo(arg: (() => void) | (() => string)): void;
+foo(() => console.log());
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+declare function foo(arg: (() => void) | (() => string) | string): void;
+foo(() => console.log());
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+declare function foo(arg: () => void | string): void;
+foo(() => console.log());
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+declare function foo(options: { cb: () => void }): void;
+foo({ cb: () => console.log() });
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const obj = {
+  foo: { bar: () => console.log() },
+} as {
+  foo: { bar: () => void };
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): void & void {
+  return console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = void;
+
+declare function foo(): Foo;
+
+function test(): Foo {
+  return foo();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = void;
+const test = (): Foo => console.log('err');
+      `,
+    },
+    {
+      code: `
+const test: () => any = (): void => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
   ],
 
   invalid: [
@@ -491,6 +754,430 @@ function notcool(input: string) {
               output: "!!void console.log('foo');",
             },
           ],
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test() {
+  return console.log('foo');
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function test() {
+  console.log('foo');
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: "const test = () => console.log('foo');",
+      errors: [
+        {
+          line: 1,
+          column: 20,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: "const test = () => { console.log('foo'); };",
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const test = () => {
+  return console.log('foo');
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+const test = () => {
+  console.log('foo');
+};
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function foo(): void {
+  const bar = () => {
+    return console.log();
+  };
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function foo(): void {
+  const bar = () => {
+    console.log();
+  };
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+        (): any => console.log('foo');
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 20,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+        (): any => { console.log('foo'); };
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+        (): unknown => console.log('foo');
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 24,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+        (): unknown => { console.log('foo'); };
+      `,
+    },
+    {
+      code: `
+function test(): void {
+  () => () => console.log();
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 15,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+function test(): void {
+  () => () => { console.log(); };
+}
+      `,
+    },
+    {
+      code: `
+type Foo = any;
+(): Foo => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 12,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = any;
+(): Foo => { console.log(); };
+      `,
+    },
+    {
+      code: `
+type Foo = unknown;
+(): Foo => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 12,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = unknown;
+(): Foo => { console.log(); };
+      `,
+    },
+    {
+      code: `
+function test(): any {
+  () => () => console.log();
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 15,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+function test(): any {
+  () => () => { console.log(); };
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): unknown {
+  return console.log();
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function test(): unknown {
+  console.log();
+}
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): any {
+  return console.log();
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+      output: `
+function test(): any {
+  console.log();
+}
+      `,
+    },
+    {
+      code: `
+type Foo = () => any;
+(): Foo => () => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 18,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = () => any;
+(): Foo => () => { console.log(); };
+      `,
+    },
+    {
+      code: `
+type Foo = () => unknown;
+(): Foo => () => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 18,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = () => unknown;
+(): Foo => () => { console.log(); };
+      `,
+    },
+    {
+      code: `
+type Foo = () => any;
+const test: Foo = () => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 25,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = () => any;
+const test: Foo = () => { console.log(); };
+      `,
+    },
+    {
+      code: `
+type Foo = () => unknown;
+const test: Foo = () => console.log();
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+      errors: [
+        {
+          line: 3,
+          column: 25,
+          messageId: 'invalidVoidExprArrow',
+        },
+      ],
+      output: `
+type Foo = () => unknown;
+const test: Foo = () => { console.log(); };
+      `,
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+type Foo = () => void;
+
+const foo: Foo = function () {
+  function bar() {
+    return console.log();
+  }
+};
+      `,
+      output: `
+type Foo = () => void;
+
+const foo: Foo = function () {
+  function bar() {
+    console.log();
+  }
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+const foo = function () {
+  function bar() {
+    return console.log();
+  }
+};
+      `,
+      output: `
+const foo = function () {
+  function bar() {
+    console.log();
+  }
+};
+      `,
+      errors: [
+        {
+          line: 4,
+          column: 12,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+return console.log('foo');
+      `,
+      output: `
+{ console.log('foo'); return; }
+      `,
+      errors: [
+        {
+          line: 2,
+          column: 8,
+          messageId: 'invalidVoidExprReturn',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(): void;
+function test(arg: string): any;
+function test(arg?: string): any | void {
+  if (arg) {
+    return arg;
+  }
+  return console.log();
+}
+      `,
+      output: `
+function test(): void;
+function test(arg: string): any;
+function test(arg?: string): any | void {
+  if (arg) {
+    return arg;
+  }
+  console.log();
+}
+      `,
+      errors: [
+        {
+          line: 8,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
+        },
+      ],
+    },
+    {
+      options: [{ ignoreVoidReturningFunctions: true }],
+      code: `
+function test(arg: string): any;
+function test(): void;
+function test(arg?: string): any | void {
+  if (arg) {
+    return arg;
+  }
+  return console.log();
+}
+      `,
+      output: `
+function test(arg: string): any;
+function test(): void;
+function test(arg?: string): any | void {
+  if (arg) {
+    return arg;
+  }
+  console.log();
+}
+      `,
+      errors: [
+        {
+          line: 8,
+          column: 10,
+          messageId: 'invalidVoidExprReturnLast',
         },
       ],
     },
