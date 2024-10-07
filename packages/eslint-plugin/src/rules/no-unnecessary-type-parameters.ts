@@ -5,7 +5,12 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
-import { createRule, getParserServices, nullThrows } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isRestParameterDeclaration,
+  nullThrows,
+} from '../util';
 
 type NodeWithTypeParameters = MakeRequired<
   ts.SignatureDeclaration | ts.ClassLikeDeclaration,
@@ -373,7 +378,10 @@ function collectTypeParameterUsageCounts(
     }
 
     for (const parameter of signature.parameters) {
-      visitType(checker.getTypeOfSymbol(parameter), false);
+      const isRestParameter = (parameter.getDeclarations() ?? []).every(
+        declaration => isRestParameterDeclaration(declaration),
+      );
+      visitType(checker.getTypeOfSymbol(parameter), isRestParameter);
     }
 
     for (const typeParameter of signature.getTypeParameters() ?? []) {

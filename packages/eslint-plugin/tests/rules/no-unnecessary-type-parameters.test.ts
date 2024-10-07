@@ -167,6 +167,9 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         };
       }
     `,
+    'function fn<T extends unknown[]>(...args: T) {}',
+    'function fn<T extends unknown[]>(cb: (...args: T) => void) {}',
+    'function fn<U, T extends U[]>(firstArg: U, ...restArgs: T) {}',
     `
       function lengthyIdentity<T extends { length: number }>(x: T) {
         return x;
