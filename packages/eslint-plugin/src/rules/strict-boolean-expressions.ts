@@ -8,9 +8,11 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  forEachReturnStatement,
   getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
+  isArrayMethodCallWithPredicate,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
@@ -267,10 +269,48 @@ export default createRule<Options, MessageId>({
       traverseNode(node.right, isCondition);
     }
 
+    function traverseArrayPredicateReturnStatements(
+      node: TSESTree.CallExpressionArgument,
+    ): void {
+      // Shorthand arrow function expression
+      if (
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        node.body.type !== AST_NODE_TYPES.BlockStatement
+      ) {
+        traverseNode(node.body, true);
+      }
+
+      // Any other function expression with a block body
+      else if (
+        (node.type === AST_NODE_TYPES.FunctionExpression ||
+          node.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+        node.body.type === AST_NODE_TYPES.BlockStatement
+      ) {
+        const tsBody = services.esTreeNodeToTSNodeMap.get(node.body);
+
+        forEachReturnStatement(tsBody, tsStatement => {
+          const statement = services.tsNodeToESTreeNodeMap.get(tsStatement);
+          if (
+            statement.type === AST_NODE_TYPES.ReturnStatement &&
+            statement.argument
+          ) {
+            traverseNode(statement.argument, true);
+          }
+        });
+      }
+    }
+
     function traverseCallExpression(node: TSESTree.CallExpression): void {
       const assertedArgument = findTruthinessAssertedArgument(services, node);
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
+      }
+      if (isArrayMethodCallWithPredicate(context, services, node)) {
+        const predicate = node.arguments.at(0);
+
+        if (predicate != null) {
+          traverseArrayPredicateReturnStatements(predicate);
+        }
       }
     }
 
