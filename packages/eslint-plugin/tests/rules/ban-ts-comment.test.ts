@@ -992,6 +992,14 @@ ruleTester.run('ts-nocheck', rule, {
     `,
     '/** @ts-nocheck */',
     '/* @ts-nocheck */',
+    `
+const a = 1;
+
+// @ts-nocheck - should not be reported
+
+// TS error is not actually suppressed
+const b: string = a;
+    `,
   ],
   invalid: [
     {
@@ -1025,22 +1033,6 @@ ruleTester.run('ts-nocheck', rule, {
           messageId: 'tsDirectiveComment',
           line: 1,
           column: 1,
-        },
-      ],
-    },
-    {
-      code: `
-if (false) {
-  // @ts-nocheck: Unreachable code error
-  console.log('hello');
-}
-      `,
-      errors: [
-        {
-          data: { directive: 'nocheck' },
-          messageId: 'tsDirectiveComment',
-          line: 3,
-          column: 3,
         },
       ],
     },
@@ -1124,6 +1116,22 @@ if (false) {
           messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
+        },
+      ],
+    },
+    {
+      // comment's column > first statement's column
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+ // @ts-nocheck
+const a: true = false;
+      `,
+      errors: [
+        {
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveComment',
+          line: 2,
+          column: 2,
         },
       ],
     },
