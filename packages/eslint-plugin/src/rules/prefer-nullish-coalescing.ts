@@ -31,6 +31,7 @@ export type Options = [
         }
       | true;
     ignoreTernaryTests?: boolean;
+    ignoreBooleanCoercion?: boolean;
   },
 ];
 
@@ -103,6 +104,11 @@ export default createRule<Options, MessageIds>({
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
             type: 'boolean',
           },
+          ignoreBooleanCoercion: {
+            description:
+              'Whether to ignore any make boolean type value like `Boolan`, `!`',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -120,6 +126,7 @@ export default createRule<Options, MessageIds>({
         number: false,
         string: false,
       },
+      ignoreBooleanCoercion: false,
     },
   ],
   create(
@@ -131,6 +138,7 @@ export default createRule<Options, MessageIds>({
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
+        ignoreBooleanCoercion,
       },
     ],
   ) {
@@ -324,6 +332,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        if (ignoreBooleanCoercion === true && isMakeBoolean(node, context)) {
+          return;
+        }
+
         const isMixedLogical = isMixedLogicalExpression(node);
         if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
           return;
@@ -433,6 +445,60 @@ function isConditionalTest(node: TSESTree.Node): boolean {
     current = current.parent;
   }
 
+  return false;
+}
+
+function isMakeBoolean(
+  node: TSESTree.Node,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): boolean {
+  const parents = new Set<TSESTree.Node | null>([node]);
+  let current = node.parent;
+  while (current) {
+    parents.add(current);
+
+    if (
+      (current.type === AST_NODE_TYPES.UnaryExpression &&
+        current.operator === '!') ||
+      (current.type === AST_NODE_TYPES.CallExpression &&
+        isBuiltInBoolanCall(current, context))
+    ) {
+      return true;
+    }
+
+    if (
+      [
+        AST_NODE_TYPES.ArrowFunctionExpression,
+        AST_NODE_TYPES.FunctionExpression,
+      ].includes(current.type)
+    ) {
+      /**
+       * This is a weird situation like:
+       * `Boolean(() => a || b)`
+       * `Boolean(function () { return a || b })`
+       */
+      return false;
+    }
+
+    current = current.parent;
+  }
+
+  return false;
+}
+
+function isBuiltInBoolanCall(
+  node: TSESTree.CallExpression,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): boolean {
+  if (
+    node.callee.type === AST_NODE_TYPES.Identifier &&
+    node.callee.name === 'Boolean' &&
+    node.arguments[0]
+  ) {
+    const scope = context.sourceCode.getScope(node);
+    const variable = scope.set.get('Boolean');
+    return !variable?.defs.length;
+  }
   return false;
 }
 
