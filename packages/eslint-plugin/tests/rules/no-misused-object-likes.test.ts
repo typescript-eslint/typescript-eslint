@@ -59,6 +59,7 @@ ruleTester.run('no-misused-object-likes', rule, {
       const test = 123;
       Object.keys(test);
     `,
+    'Object.values(new (class Map {})());',
   ],
   invalid: [
     {

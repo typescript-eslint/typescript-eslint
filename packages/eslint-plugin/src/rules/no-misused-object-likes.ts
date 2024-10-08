@@ -1,3 +1,4 @@
+import { isSymbolFromDefaultLibrary } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -27,9 +28,12 @@ export default createRule({
 
   create(context) {
     const checkClassAndReport = (node: TSESTree.Node, used: string): void => {
-      const objectClass = getParserServices(context)
-        .getTypeAtLocation(node)
-        .getSymbol()?.name;
+      const services = getParserServices(context);
+      const symbol = services.getTypeAtLocation(node).getSymbol();
+      if (!isSymbolFromDefaultLibrary(services.program, symbol)) {
+        return;
+      }
+      const objectClass = symbol?.name;
       if (objectClass && /^(Readonly|Weak)?(Map|Set)$/.test(objectClass)) {
         context.report({
           node,
