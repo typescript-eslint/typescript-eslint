@@ -18,6 +18,7 @@ export const RULE_TESTER_PARAMETERS = [
   'options',
   'output',
   'skip',
+  'runTSC',
 ] as const;
 
 /*

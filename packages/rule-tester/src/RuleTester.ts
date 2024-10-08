@@ -7,16 +7,21 @@ import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
   ParserOptions,
+  RuleContext,
   RuleListener,
   RuleModule,
 } from '@typescript-eslint/utils/ts-eslint';
 
 import * as parser from '@typescript-eslint/parser';
-import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
+import {
+  deepMerge,
+  getParserServices,
+} from '@typescript-eslint/utils/eslint-utils';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import assert from 'node:assert';
 import path from 'node:path';
 import util from 'node:util';
+import * as ts from 'typescript';
 // we intentionally import from eslint here because we need to use the same class
 // that ESLint uses, not our custom override typed version
 import { SourceCode } from 'eslint';
@@ -181,7 +186,10 @@ export class RuleTester extends TestFramework {
      * configuration and the default configuration.
      */
     this.#testerConfig = merge({}, defaultConfig, testerConfig, {
-      rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
+      rules: {
+        [`${RULE_TESTER_PLUGIN_PREFIX}collect-ts-diagnostics`]: 'error',
+        [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error',
+      },
     });
 
     this.#linter = new Linter({
@@ -553,11 +561,33 @@ export class RuleTester extends TestFramework {
   } {
     this.defineRule(ruleName, rule);
 
+    const shouldCollectTSDiagnostics =
+      item.runTSC === true ||
+      (item.runTSC !== false &&
+        rule.meta.docs &&
+        'requiresTypeChecking' in rule.meta.docs &&
+        !!rule.meta.docs.requiresTypeChecking);
+    let tsDiagnostics = null as readonly ts.Diagnostic[] | null;
     let config: TesterConfigWithDefaults = merge({}, this.#testerConfig, {
       files: ['**'],
       plugins: {
         [RULE_TESTER_PLUGIN]: {
           rules: {
+            'collect-ts-diagnostics': {
+              create(
+                context: Readonly<RuleContext<string, unknown[]>>,
+              ): RuleListener {
+                if (!shouldCollectTSDiagnostics) {
+                  return {};
+                }
+                const services = getParserServices(context);
+                return {
+                  Program(): void {
+                    tsDiagnostics ??= services.program.getSemanticDiagnostics();
+                  },
+                };
+              },
+            },
             /**
              * Setup AST getters.
              * The goal is to check whether or not AST was modified when
@@ -579,7 +609,7 @@ export class RuleTester extends TestFramework {
           },
         },
       },
-    });
+    } satisfies RuleTesterConfig);
 
     // Unlike other properties, we don't want to spread props between different parsers.
     config.languageOptions.parser =
@@ -756,6 +786,29 @@ export class RuleTester extends TestFramework {
         ].join('\n'),
       );
     } while (fixedResult.fixed && passNumber < 10);
+    if (tsDiagnostics) {
+      const codesToIgnore = [
+        1375 /* 'await' expressions are only allowed at the top level of a file when that file is a module, but this file has no imports or exports. Consider adding an empty 'export {}' to make this file a module. */,
+        1378 /* Top-level 'await' expressions are only allowed when the 'module' option is set to 'es2022', 'esnext', 'system', 'node16', 'nodenext', or 'preserve', and the 'target' option is set to 'es2017' or higher. */,
+        6133 /* '{0}' is declared but its value is never read. */,
+        6138 /* Property '{0}' is declared but its value is never read. */,
+      ];
+      for (const diagnostic of tsDiagnostics) {
+        if (
+          diagnostic.category !== ts.DiagnosticCategory.Error ||
+          codesToIgnore.includes(diagnostic.code)
+        ) {
+          continue;
+        }
+
+        throw new Error(
+          `error TS${diagnostic.code}: ${ts.flattenDiagnosticMessageText(
+            diagnostic.messageText,
+            ts.sys.newLine,
+          )}`,
+        );
+      }
+    }
 
     return {
       config,
