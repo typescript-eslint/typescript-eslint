@@ -110,5 +110,6 @@ ruleTester.run('no-misused-object-likes', rule, {
       `,
       errors: [{ messageId: 'misusedObjectLike' }],
     },
+    { code: '4 in new Set();', errors: [{ messageId: 'misusedObjectLike' }] },
   ],
 });
