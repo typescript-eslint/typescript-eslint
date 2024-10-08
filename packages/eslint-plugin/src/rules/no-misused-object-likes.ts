@@ -22,13 +22,13 @@ export default createRule({
     },
     messages: {
       misusedObjectLike:
-        "Don't use `Object.{{method}}()` on {{objectClass}} objects — it will not properly check the contents.",
+        "Don't use {{used}} on {{objectClass}} objects — it will not properly check the contents.",
     },
     schema: [],
   },
 
   create(context) {
-    const checkClassAndReport = (node: TSESTree.Node) => {
+    const checkClassAndReport = (node: TSESTree.Node, used: string): void => {
       const objectClass = getParserServices(context)
         .getTypeAtLocation(node)
         .getSymbol()?.name;
@@ -36,17 +36,15 @@ export default createRule({
         context.report({
           node,
           messageId: 'misusedObjectLike',
-          data: { method, objectClass },
+          data: { used, objectClass },
         });
       }
     };
     return {
       BinaryExpression(node): void {
-        if (node.operator === 'in')
-          console.log(
-            getParserServices(context).getTypeAtLocation(node.right).getSymbol()
-              ?.name,
-          );
+        if (node.operator === 'in') {
+          checkClassAndReport(node.right, 'the `in` operator');
+        }
       },
       CallExpression(node): void {
         const { arguments: args, callee } = node;
@@ -64,10 +62,9 @@ export default createRule({
           return;
         }
         const method = getStaticMemberAccessValue(callee, context);
-        if (typeof method !== 'string' || !METHODS.includes(method)) {
-          return;
+        if (typeof method === 'string' && METHODS.includes(method)) {
+          checkClassAndReport(args[0], `\`Object.${method}()\``);
         }
-        checkClassAndReport(args[0]);
       },
     };
   },
