@@ -27,7 +27,7 @@ const createMockRuleContext = (
   }) as unknown as UnknownRuleContext;
 
 const requiresParserServicesMessageTemplate = (parser = '\\S*'): string =>
-  'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.\n' +
+  'You have used a rule which requires type information, .+\n' +
   `Parser: ${parser}`;
 const baseErrorRegex = (parser?: string): RegExp =>
   new RegExp(requiresParserServicesMessageTemplate(parser));

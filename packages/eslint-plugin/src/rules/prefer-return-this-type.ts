@@ -31,6 +31,7 @@ export default createRule({
   },
 
   defaultOptions: [],
+
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

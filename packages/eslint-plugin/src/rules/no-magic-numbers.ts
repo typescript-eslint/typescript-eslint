@@ -26,15 +26,20 @@ const schema = deepMerge(
     properties: {
       ignoreEnums: {
         type: 'boolean',
+        description: 'Whether enums used in TypeScript are considered okay.',
       },
       ignoreNumericLiteralTypes: {
         type: 'boolean',
+        description:
+          'Whether numbers used in TypeScript numeric literal types are considered okay.',
       },
       ignoreReadonlyClassProperties: {
         type: 'boolean',
+        description: 'Whether `readonly` class properties are considered okay.',
       },
       ignoreTypeIndexes: {
         type: 'boolean',
+        description: 'Whether numbers used to index types are okay.',
       },
     },
   },
@@ -164,11 +169,10 @@ function normalizeLiteralValue(
 ): bigint | number {
   if (
     node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-    ['-', '+'].includes(node.parent.operator)
+    ['-', '+'].includes(node.parent.operator) &&
+    node.parent.operator === '-'
   ) {
-    if (node.parent.operator === '-') {
-      return -value;
-    }
+    return -value;
   }
 
   return value;

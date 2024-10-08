@@ -109,9 +109,10 @@ export default createRule({
               const text = context.sourceCode
                 .getText()
                 .slice(start, member.range[1]);
-              const comments = context.sourceCode
-                .getCommentsBefore(member)
-                .concat(context.sourceCode.getCommentsAfter(member));
+              const comments = [
+                ...context.sourceCode.getCommentsBefore(member),
+                ...context.sourceCode.getCommentsAfter(member),
+              ];
               let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
                 colonPos + 1,
               )}`;

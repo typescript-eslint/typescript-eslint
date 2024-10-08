@@ -85,6 +85,8 @@ export default createRule<[Options], MessageIds>({
           minimumDescriptionLength: {
             type: 'number',
             default: defaultMinimumDescriptionLength,
+            description:
+              'A minimum character length for descriptions when `allow-with-description` is enabled.',
           },
           'ts-check': { $ref: '#/items/0/$defs/directiveConfigSchema' },
           'ts-expect-error': { $ref: '#/items/0/$defs/directiveConfigSchema' },
@@ -181,7 +183,9 @@ export default createRule<[Options], MessageIds>({
     }
 
     return {
-      Program(): void {
+      Program(node): void {
+        const firstStatement = node.body.at(0);
+
         const comments = context.sourceCode.getAllComments();
 
         comments.forEach(comment => {
@@ -190,6 +194,14 @@ export default createRule<[Options], MessageIds>({
             return;
           }
           const { description, directive } = match;
+
+          if (
+            directive === 'nocheck' &&
+            firstStatement &&
+            firstStatement.loc.start.line <= comment.loc.start.line
+          ) {
+            return;
+          }
 
           const fullDirective = `ts-${directive}` as keyof Options;
 

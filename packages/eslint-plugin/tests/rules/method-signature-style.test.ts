@@ -449,7 +449,7 @@ interface Foo {
       `,
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   foo(): one;
   foo(): two;
@@ -477,7 +477,7 @@ interface Foo {
       `,
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   foo(bar: string): one;
   foo(bar: number, baz: string): two;
@@ -505,7 +505,7 @@ interface Foo {
       `,
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   [foo](bar: string): one;
   [foo](bar: number, baz: string): two;
@@ -533,7 +533,7 @@ interface Foo {
       `,
     },
     {
-      code: noFormat`
+      code: `
 interface Foo {
   [foo](bar: string): one;
   [foo](bar: number, baz: string): two;

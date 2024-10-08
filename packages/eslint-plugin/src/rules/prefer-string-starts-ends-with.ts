@@ -10,6 +10,7 @@ import {
   getStaticValue,
   getTypeName,
   isNotClosingParenToken,
+  isStaticMemberAccessOfValue,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -59,6 +60,7 @@ export default createRule<Options, MessageIds>({
   },
 
   defaultOptions: [{ allowSingleElementEquality: 'never' }],
+
   create(context, [{ allowSingleElementEquality }]) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
 
@@ -534,11 +536,7 @@ export default createRule<Options, MessageIds>({
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode) as TSESTree.BinaryExpression;
 
-        if (
-          !isEqualityComparison(parentNode) ||
-          !isNull(parentNode.right) ||
-          !isStringType(node.object)
-        ) {
+        if (!isNull(parentNode.right) || !isStringType(node.object)) {
           return;
         }
 
@@ -580,11 +578,12 @@ export default createRule<Options, MessageIds>({
       // foo.substring(foo.length - 3) === 'bar'
       // foo.substring(foo.length - 3, foo.length) === 'bar'
       [[
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="slice"][computed=false]',
-        'BinaryExpression > CallExpression.left > MemberExpression.callee[property.name="substring"][computed=false]',
-        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name="slice"][computed=false]',
-        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression.callee[property.name="substring"][computed=false]',
+        'BinaryExpression > CallExpression.left > MemberExpression',
+        'BinaryExpression > ChainExpression.left > CallExpression > MemberExpression',
       ].join(', ')](node: TSESTree.MemberExpression): void {
+        if (!isStaticMemberAccessOfValue(node, context, 'slice', 'substring')) {
+          return;
+        }
         const callNode = getParent(node) as TSESTree.CallExpression;
         const parentNode = getParent(callNode);
 

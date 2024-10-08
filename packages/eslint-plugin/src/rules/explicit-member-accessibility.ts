@@ -12,6 +12,7 @@ import {
   getMemberHeadLoc,
   getParameterPropertyHeadLoc,
 } from '../util/getMemberHeadLoc';
+import { rangeToLoc } from '../util/rangeToLoc';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -84,6 +85,7 @@ export default createRule<Options, MessageIds>({
           accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
           ignoredMethodNames: {
             type: 'array',
+            description: 'Specific method names that may be ignored.',
             items: {
               type: 'string',
             },
@@ -91,7 +93,6 @@ export default createRule<Options, MessageIds>({
           overrides: {
             type: 'object',
             additionalProperties: false,
-
             properties: {
               accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
               constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
@@ -388,13 +389,3 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
-
-function rangeToLoc(
-  sourceCode: TSESLint.SourceCode,
-  range: TSESLint.AST.Range,
-): TSESTree.SourceLocation {
-  return {
-    start: sourceCode.getLocFromIndex(range[0]),
-    end: sourceCode.getLocFromIndex(range[1]),
-  };
-}

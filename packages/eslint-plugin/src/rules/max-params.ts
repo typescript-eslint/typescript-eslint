@@ -39,13 +39,19 @@ export default createRule<Options, MessageIds>({
         properties: {
           countVoidThis: {
             type: 'boolean',
+            description:
+              'Whether to count a `this` declaration when the type is `void`.',
           },
           max: {
             type: 'integer',
+            description:
+              'A maximum number of parameters in function definitions.',
             minimum: 0,
           },
           maximum: {
             type: 'integer',
+            description:
+              '(deprecated) A maximum number of parameters in function definitions.',
             minimum: 0,
           },
         },
@@ -53,6 +59,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: [{ countVoidThis: false, max: 3 }],
+
   create(context, [{ countVoidThis }]) {
     const baseRules = baseRule.create(context);
 

@@ -76,6 +76,7 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     "'false' === true;",
     "'true' === false;",
   ],
+
   invalid: [
     {
       code: 'true === true;',

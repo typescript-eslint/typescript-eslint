@@ -59,12 +59,16 @@ export default createRule<Options, MessageIds>({
         properties: {
           allow: {
             type: 'array',
+            description:
+              'Whether to allow certain kinds of properties to be ignored.',
             items: {
               $ref: '#/items/0/$defs/modifier',
             },
           },
           prefer: {
             type: 'string',
+            description:
+              'Whether to prefer class properties or parameter properties.',
             enum: ['class-property', 'parameter-property'],
           },
         },

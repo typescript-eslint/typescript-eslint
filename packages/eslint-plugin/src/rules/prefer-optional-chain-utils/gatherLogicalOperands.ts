@@ -24,8 +24,8 @@ const enum ComparisonValueType {
   UndefinedStringLiteral = 'UndefinedStringLiteral',
 }
 export const enum OperandValidity {
-  Invalid = 'Invalid',
   Valid = 'Valid',
+  Invalid = 'Invalid',
 }
 export const enum NullishComparisonType {
   /** `x != null`, `x != undefined` */
@@ -70,7 +70,8 @@ function isValidFalseBooleanCheckType(
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  if (disallowFalseyLiteral) {
+  if (
+    disallowFalseyLiteral &&
     /*
     ```
     declare const x: false | {a: string};
@@ -81,15 +82,14 @@ function isValidFalseBooleanCheckType(
     We don't want to consider these two cases because the boolean expression
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
-    */
-    if (
-      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
+    */ (types.some(
+      t => isBooleanLiteralType(t) && t.intrinsicName === 'false',
+    ) ||
       types.some(t => isStringLiteralType(t) && t.value === '') ||
       types.some(t => isNumberLiteralType(t) && t.value === 0) ||
-      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
-    ) {
-      return false;
-    }
+      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0'))
+  ) {
+    return false;
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
@@ -166,13 +166,13 @@ export function gatherLogicalOperands(
 
             // typeof x.y === 'undefined'
             result.push({
-              type: OperandValidity.Valid,
               comparedName: comparedExpression.argument,
               comparisonType: operand.operator.startsWith('!')
                 ? NullishComparisonType.NotStrictEqualUndefined
                 : NullishComparisonType.StrictEqualUndefined,
               isYoda,
               node: operand,
+              type: OperandValidity.Valid,
             });
             continue;
           }
@@ -191,13 +191,13 @@ export function gatherLogicalOperands(
             ) {
               // x == null, x == undefined
               result.push({
-                type: OperandValidity.Valid,
                 comparedName: comparedExpression,
                 comparisonType: operand.operator.startsWith('!')
                   ? NullishComparisonType.NotEqualNullOrUndefined
                   : NullishComparisonType.EqualNullOrUndefined,
                 isYoda,
                 node: operand,
+                type: OperandValidity.Valid,
               });
               continue;
             }
@@ -211,25 +211,25 @@ export function gatherLogicalOperands(
             switch (comparedValue) {
               case ComparisonValueType.Null:
                 result.push({
-                  type: OperandValidity.Valid,
                   comparedName,
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualNull
                     : NullishComparisonType.StrictEqualNull,
                   isYoda,
                   node: operand,
+                  type: OperandValidity.Valid,
                 });
                 continue;
 
               case ComparisonValueType.Undefined:
                 result.push({
-                  type: OperandValidity.Valid,
                   comparedName,
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualUndefined
                     : NullishComparisonType.StrictEqualUndefined,
                   isYoda,
                   node: operand,
+                  type: OperandValidity.Valid,
                 });
                 continue;
 
@@ -256,11 +256,11 @@ export function gatherLogicalOperands(
           )
         ) {
           result.push({
-            type: OperandValidity.Valid,
             comparedName: operand.argument,
             comparisonType: NullishComparisonType.NotBoolean,
             isYoda: false,
             node: operand,
+            type: OperandValidity.Valid,
           });
           continue;
         }
@@ -282,11 +282,11 @@ export function gatherLogicalOperands(
           )
         ) {
           result.push({
-            type: OperandValidity.Valid,
             comparedName: operand,
             comparisonType: NullishComparisonType.Boolean,
             isYoda: false,
             node: operand,
+            type: OperandValidity.Valid,
           });
         } else {
           result.push({ type: OperandValidity.Invalid });

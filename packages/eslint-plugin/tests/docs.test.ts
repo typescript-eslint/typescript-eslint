@@ -152,6 +152,7 @@ describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
+    'shared',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
     'ban-types.md',

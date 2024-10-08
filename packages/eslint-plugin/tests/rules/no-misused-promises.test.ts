@@ -440,6 +440,33 @@ new TakeCallbacks(
 );
     `,
     `
+class Foo {
+  public static doThing(): void {}
+}
+
+class Bar extends Foo {
+  public async doThing(): Promise<void> {}
+}
+    `,
+    `
+class Foo {
+  public doThing(): void {}
+}
+
+class Bar extends Foo {
+  public static async doThing(): Promise<void> {}
+}
+    `,
+    `
+class Foo {
+  public doThing = (): void => {};
+}
+
+class Bar extends Foo {
+  public static doThing = async (): Promise<void> => {};
+}
+    `,
+    `
 function restTuple(...args: []): void;
 function restTuple(...args: [string]): void;
 function restTuple(..._args: string[]): void {}
@@ -1020,7 +1047,27 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
     'const notAFn3: boolean = true;',
     'const notAFn4: { prop: 1 } = { prop: 1 };',
     'const notAFn5: {} = {};',
+    `
+const array: number[] = [1, 2, 3];
+array.filter(a => a > 1);
+    `,
+    `
+type ReturnsPromiseVoid = () => Promise<void>;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+useCallback<ReturnsPromiseVoid>(async () => {});
+    `,
+    `
+type ReturnsVoid = () => void;
+type ReturnsPromiseVoid = () => Promise<void>;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
+    `,
   ],
+
   invalid: [
     {
       code: `
@@ -2238,6 +2285,147 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
           data: { heritageTypeName: 'MyMethods' },
           line: 31,
           messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+declare function isTruthy(value: unknown): Promise<boolean>;
+[0, 1, 2].filter(isTruthy);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'predicate',
+        },
+      ],
+    },
+    {
+      code: `
+const array: number[] = [];
+array.every(() => Promise.resolve(true));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'predicate',
+        },
+      ],
+    },
+    {
+      code: `
+const array: (string[] & { foo: 'bar' }) | (number[] & { bar: 'foo' }) = [];
+array.every(() => Promise.resolve(true));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'predicate',
+        },
+      ],
+    },
+    {
+      code: `
+const tuple: [number, number, number] = [1, 2, 3];
+tuple.find(() => Promise.resolve(false));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'predicate',
+        },
+      ],
+      options: [{ checksConditionals: true }],
+    },
+    {
+      code: `
+type ReturnsVoid = () => void;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+declare const useCallbackReturningVoid: typeof useCallback<ReturnsVoid>;
+useCallbackReturningVoid(async () => {});
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+type ReturnsVoid = () => void;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+useCallback<ReturnsVoid>(async () => {});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo<T> {
+  (callback: () => T): void;
+  (callback: () => number): void;
+}
+declare const foo: Foo<void>;
+
+foo(async () => {});
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function tupleFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: [T, string, T]
+): void;
+tupleFn<() => void>(
+  async () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function arrayFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: (T | string)[]
+): void;
+arrayFn<() => void>(
+  async () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
         },
       ],
     },

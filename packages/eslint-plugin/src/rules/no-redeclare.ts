@@ -35,9 +35,13 @@ export default createRule<Options, MessageIds>({
         properties: {
           builtinGlobals: {
             type: 'boolean',
+            description:
+              'Whether to report shadowing of built-in global variables.',
           },
           ignoreDeclarationMerge: {
             type: 'boolean',
+            description:
+              'Whether to ignore declaration merges between certain TypeScript declaration types.',
           },
         },
       },

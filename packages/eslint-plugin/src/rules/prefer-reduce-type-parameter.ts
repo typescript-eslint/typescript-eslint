@@ -1,36 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isStaticMemberAccessOfValue,
   isTypeAssertion,
 } from '../util';
 
 type MemberExpressionWithCallExpressionParent = {
   parent: TSESTree.CallExpression;
 } & TSESTree.MemberExpression;
-
-const getMemberExpressionName = (
-  member: TSESTree.MemberExpression,
-): string | null => {
-  if (!member.computed) {
-    return member.property.name;
-  }
-
-  if (
-    member.property.type === AST_NODE_TYPES.Literal &&
-    typeof member.property.value === 'string'
-  ) {
-    return member.property.value;
-  }
-
-  return null;
-};
 
 export default createRule({
   name: 'prefer-reduce-type-parameter',
@@ -68,7 +51,7 @@ export default createRule({
       'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
       ): void {
-        if (getMemberExpressionName(callee) !== 'reduce') {
+        if (!isStaticMemberAccessOfValue(callee, context, 'reduce')) {
           return;
         }
 

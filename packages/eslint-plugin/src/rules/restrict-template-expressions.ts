@@ -1,8 +1,14 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { Type, TypeChecker } from 'typescript';
 
+import {
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
+} from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { TypeFlags } from 'typescript';
+
+import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
@@ -44,14 +50,16 @@ const optionTesters = (
       (type, checker): boolean => getTypeName(checker, type) === 'RegExp',
     ],
     ['Never', isTypeNeverType],
-  ] satisfies [string, OptionTester][]
+  ] as const satisfies [string, OptionTester][]
 ).map(([type, tester]) => ({
   type,
   option: `allow${type}` as const,
   tester,
 }));
 type Options = [
-  { [Type in (typeof optionTesters)[number]['option']]?: boolean },
+  {
+    allow?: TypeOrValueSpecifier[];
+  } & { [Type in (typeof optionTesters)[number]['option']]?: boolean },
 ];
 
 type MessageId = 'invalidType';
@@ -85,20 +93,27 @@ export default createRule<Options, MessageId>({
       {
         type: 'object',
         additionalProperties: false,
-        properties: Object.fromEntries(
-          optionTesters.map(({ type, option }) => [
-            option,
-            {
-              type: 'boolean',
-              description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
-            },
-          ]),
-        ),
+        properties: {
+          ...Object.fromEntries(
+            optionTesters.map(({ type, option }) => [
+              option,
+              {
+                type: 'boolean',
+                description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+              },
+            ]),
+          ),
+          allow: {
+            description: `Types to allow in template expressions.`,
+            ...typeOrValueSpecifiersSchema,
+          },
+        },
       },
     ],
   },
   defaultOptions: [
     {
+      allow: [{ name: ['Error', 'URL', 'URLSearchParams'], from: 'lib' }],
       allowAny: true,
       allowBoolean: true,
       allowNullish: true,
@@ -106,9 +121,10 @@ export default createRule<Options, MessageId>({
       allowRegExp: true,
     },
   ],
-  create(context, [options]) {
+  create(context, [{ allow, ...options }]) {
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
+    const { program } = services;
+    const checker = program.getTypeChecker();
     const enabledOptionTesters = optionTesters.filter(
       ({ option }) => options[option],
     );
@@ -148,6 +164,7 @@ export default createRule<Options, MessageId>({
 
       return (
         isTypeFlagSet(innerType, TypeFlags.StringLike) ||
+        typeMatchesSomeSpecifier(innerType, allow, program) ||
         enabledOptionTesters.some(({ tester }) =>
           tester(innerType, checker, recursivelyCheckType),
         )

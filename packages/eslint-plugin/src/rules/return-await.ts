@@ -60,16 +60,35 @@ export default createRule({
     schema: [
       {
         type: 'string',
-        enum: [
-          'in-try-catch',
-          'always',
-          'never',
-          'error-handling-correctness-only',
-        ] satisfies Option[],
+        oneOf: [
+          {
+            type: 'string',
+            description: 'Requires that all returned promises be awaited.',
+            enum: ['always'],
+          },
+          {
+            type: 'string',
+            description:
+              'In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule does not enforce any particular behavior around whether returned promises are awaited.',
+            enum: ['error-handling-correctness-only'],
+          },
+          {
+            type: 'string',
+            description:
+              'In error-handling contexts, the rule enforces that returned promises must be awaited. In ordinary contexts, the rule enforces that returned promises _must not_ be awaited.',
+            enum: ['in-try-catch'],
+          },
+          {
+            type: 'string',
+            description: 'Disallows awaiting any returned promises.',
+            enum: ['never'],
+          },
+        ],
       },
     ],
   },
   defaultOptions: ['in-try-catch'],
+
   create(context, [option]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

@@ -121,6 +121,7 @@ function cool(input: string) {
       `,
     },
   ],
+
   invalid: [
     {
       code: `

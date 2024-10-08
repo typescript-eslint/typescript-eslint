@@ -80,6 +80,7 @@ class Foo extends Base {
       options: [{ allow: ['overrideMethods'] }],
     },
   ],
+
   invalid: [
     {
       code: `

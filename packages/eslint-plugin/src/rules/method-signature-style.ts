@@ -36,6 +36,7 @@ export default createRule<Options, MessageIds>({
     ],
   },
   defaultOptions: ['property'],
+
   create(context, [mode]) {
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,

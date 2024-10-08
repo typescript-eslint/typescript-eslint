@@ -1,5 +1,6 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -286,6 +287,18 @@ export default createRule<Options, MessageIds>({
         // TODO - add contextually unnecessary check for this
       },
       TSNonNullExpression(node): void {
+        const removeExclamationFix: ReportFixFunction = fixer => {
+          const exclamationToken = nullThrows(
+            context.sourceCode.getLastToken(node, token => token.value === '!'),
+            NullThrowsReasons.MissingToken(
+              'exclamation mark',
+              'non-null assertion',
+            ),
+          );
+
+          return fixer.removeRange(exclamationToken.range);
+        };
+
         if (
           node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
           node.parent.operator === '='
@@ -294,12 +307,7 @@ export default createRule<Options, MessageIds>({
             context.report({
               node,
               messageId: 'contextuallyUnnecessary',
-              fix(fixer) {
-                return fixer.removeRange([
-                  node.expression.range[1],
-                  node.range[1],
-                ]);
-              },
+              fix: removeExclamationFix,
             });
           }
           // for all other = assignments we ignore non-null checks
@@ -313,7 +321,7 @@ export default createRule<Options, MessageIds>({
 
         const type = getConstrainedTypeAtLocation(services, node.expression);
 
-        if (!isNullableType(type) && !isTypeFlagSet(type, ts.TypeFlags.Void)) {
+        if (!isNullableType(type)) {
           if (
             node.expression.type === AST_NODE_TYPES.Identifier &&
             isPossiblyUsedBeforeAssigned(node.expression)
@@ -324,9 +332,7 @@ export default createRule<Options, MessageIds>({
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
-            fix(fixer) {
-              return fixer.removeRange([node.range[1] - 1, node.range[1]]);
-            },
+            fix: removeExclamationFix,
           });
         } else {
           // we know it's a nullable type
@@ -372,12 +378,7 @@ export default createRule<Options, MessageIds>({
               context.report({
                 node,
                 messageId: 'contextuallyUnnecessary',
-                fix(fixer) {
-                  return fixer.removeRange([
-                    node.expression.range[1],
-                    node.range[1],
-                  ]);
-                },
+                fix: removeExclamationFix,
               });
             }
           }

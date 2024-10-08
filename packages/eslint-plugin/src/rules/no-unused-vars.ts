@@ -87,36 +87,54 @@ export default createRule<Options, MessageIds>({
             properties: {
               args: {
                 type: 'string',
+                description: 'Whether to check all, some, or no arguments.',
                 enum: ['all', 'after-used', 'none'],
               },
               argsIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of argument names to not check for usage.',
               },
               caughtErrors: {
                 type: 'string',
+                description: 'Whether to check catch block arguments.',
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of catch block argument names to not check for usage.',
               },
               destructuredArrayIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of destructured array variable names to not check for usage.',
               },
               ignoreClassWithStaticInitBlock: {
                 type: 'boolean',
+                description:
+                  'Whether to ignore classes with at least one static initialization block.',
               },
               ignoreRestSiblings: {
                 type: 'boolean',
+                description:
+                  'Whether to ignore sibling properties in `...` destructurings.',
               },
               reportUsedIgnorePattern: {
                 type: 'boolean',
+                description:
+                  'Whether to report variables that match any of the valid ignore pattern options if they have been used.',
               },
               vars: {
                 type: 'string',
+                description:
+                  'Whether to check all variables or only locally-declared variables.',
                 enum: ['all', 'local'],
               },
               varsIgnorePattern: {
                 type: 'string',
+                description:
+                  'Regular expressions of variable names to not check for usage.',
               },
             },
           },

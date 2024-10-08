@@ -37,12 +37,15 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
           checkNever: {
             type: 'boolean',
             default: false,
+            description:
+              'Whether to suggest removing `void` when the argument has type `never`.',
           },
         },
       },
     ],
   },
   defaultOptions: [{ checkNever: false }],
+
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();

@@ -62,6 +62,7 @@ declare function foo<T = any>(): T;
 const bar = foo() as number;
     `,
   ],
+
   invalid: [
     {
       code: `

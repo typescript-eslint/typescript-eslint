@@ -1,4 +1,4 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-literal-enum-member';
 
@@ -56,7 +56,7 @@ enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }
     `,
-    noFormat`
+    `
 enum ValidKeyWithComputedSyntaxButNoComputedKey {
   ['a'],
 }
@@ -110,6 +110,50 @@ enum Foo {
 enum Foo {
   ['A-1'] = 1 << 0,
   C = ~Foo['A-1'],
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = A | B | C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | Foo.B | Foo.C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | (Foo.B & ~Foo.C),
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | -Foo.B,
 }
       `,
       options: [{ allowBitwiseExpressions: true }],
@@ -432,6 +476,20 @@ enum Foo {
         },
       ],
       options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+  B = +A,
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'notLiteral',
+        },
+      ],
     },
   ],
 });

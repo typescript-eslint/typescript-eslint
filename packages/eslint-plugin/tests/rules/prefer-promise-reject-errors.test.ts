@@ -266,6 +266,21 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       declare const foo: PromiseConstructor;
       foo.reject(new Error());
     `,
+    'console[Symbol.iterator]();',
+    `
+      class A {
+        a = [];
+        [Symbol.iterator]() {
+          return this.a[Symbol.iterator]();
+        }
+      }
+    `,
+    `
+      declare const foo: PromiseConstructor;
+      function fun<T extends Error>(t: T): void {
+        foo.reject(t);
+      }
+    `,
   ],
   invalid: [
     {
@@ -1427,6 +1442,24 @@ Bar.reject(5);
         {
           column: 1,
           endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: PromiseConstructor;
+function fun<T extends number>(t: T): void {
+  foo.reject(t);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
           endLine: 4,
           line: 4,
           messageId: 'rejectAnError',

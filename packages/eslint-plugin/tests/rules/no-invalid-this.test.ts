@@ -427,6 +427,7 @@ class A {
 }
     `,
   ],
+
   invalid: [
     {
       code: `

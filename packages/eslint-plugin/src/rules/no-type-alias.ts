@@ -215,14 +215,13 @@ export default createRule<Options, MessageIds>({
       if (type.node.type === AST_NODE_TYPES.TSTupleType) {
         return true;
       }
-      if (type.node.type === AST_NODE_TYPES.TSTypeOperator) {
-        if (
-          ['keyof', 'readonly'].includes(type.node.operator) &&
-          type.node.typeAnnotation &&
-          type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
-        ) {
-          return true;
-        }
+      if (
+        type.node.type === AST_NODE_TYPES.TSTypeOperator &&
+        ['keyof', 'readonly'].includes(type.node.operator) &&
+        type.node.typeAnnotation &&
+        type.node.typeAnnotation.type === AST_NODE_TYPES.TSTupleType
+      ) {
+        return true;
       }
       return false;
     };
@@ -326,10 +325,7 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.TSUnionType ||
         node.type === AST_NODE_TYPES.TSIntersectionType
       ) {
-        return node.types.reduce<TypeWithLabel[]>((acc, type) => {
-          acc.push(...getTypes(type, node.type));
-          return acc;
-        }, []);
+        return node.types.flatMap(type => getTypes(type, node.type));
       }
       return [{ node, compositionType }];
     }

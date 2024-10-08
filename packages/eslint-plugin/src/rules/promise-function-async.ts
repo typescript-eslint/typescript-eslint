@@ -58,15 +58,20 @@ export default createRule<Options, MessageIds>({
           },
           checkArrowFunctions: {
             type: 'boolean',
+            description: 'Whether to check arrow functions.',
           },
           checkFunctionDeclarations: {
             type: 'boolean',
+            description: 'Whether to check standalone function declarations.',
           },
           checkFunctionExpressions: {
             type: 'boolean',
+            description: 'Whether to check inline function expressions',
           },
           checkMethodDeclarations: {
             type: 'boolean',
+            description:
+              'Whether to check methods on classes and object literals.',
           },
         },
       },

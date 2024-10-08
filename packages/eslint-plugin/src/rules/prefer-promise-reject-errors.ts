@@ -11,6 +11,7 @@ import {
   isPromiseConstructorLike,
   isPromiseLike,
   isReadonlyErrorLike,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -41,6 +42,8 @@ export default createRule<Options, MessageIds>({
         properties: {
           allowEmptyReject: {
             type: 'boolean',
+            description:
+              'Whether to allow calls to `Promise.reject()` with no arguments.',
           },
         },
       },
@@ -98,13 +101,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const rejectMethodCalled = callee.computed
-          ? callee.property.type === AST_NODE_TYPES.Literal &&
-            callee.property.value === 'reject'
-          : callee.property.name === 'reject';
-
         if (
-          !rejectMethodCalled ||
+          !isStaticMemberAccessOfValue(callee, context, 'reject') ||
           !typeAtLocationIsLikePromise(callee.object)
         ) {
           return;

@@ -76,6 +76,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+switch (b1) {
+  case true:
+  default:
+}
     `,
     `
 declare function foo(): number | void;
@@ -869,6 +873,15 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare function foo(): void | { key: string };
+const bar = foo()?.key;
+    `,
+    `
+type fn = () => void;
+declare function foo(): void | fn;
+const bar = foo()?.();
+    `,
     {
       code: `
 class ConsistentRand {
@@ -882,7 +895,103 @@ class ConsistentRand {
       `,
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+
+assert(Math.random() > 0.5);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(Math.random() > 0.5, true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // should not report because option is disabled.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(Math.random());
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[]);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // ok to report if we start unpacking spread params one day.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[], {});
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+declare const a: string;
+assertString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
   ],
+
   invalid: [
     // Ensure that it's checking in all the right places
     {
@@ -902,6 +1011,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
+switch (b1) {
+  case true:
+  default:
+}
       `,
       errors: [
         ruleError(4, 12, 'alwaysTruthy'),
@@ -913,6 +1026,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
       output: null,
     },
@@ -1283,10 +1397,12 @@ function truthy() {
 function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
+[1, 2, 3].findLastIndex(falsy);
       `,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
+        ruleError(8, 25, 'alwaysFalsyFunc'),
       ],
       output: null,
     },
@@ -1909,7 +2025,7 @@ const a = null;
 if (!a) {
 }
       `,
-      errors: [ruleError(3, 6, 'alwaysTruthy')],
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
       output: null,
     },
     {
@@ -1918,7 +2034,7 @@ const a = true;
 if (!a) {
 }
       `,
-      errors: [ruleError(3, 6, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
       output: null,
     },
     {
@@ -1931,7 +2047,7 @@ let speech: never = sayHi();
 if (!speech) {
 }
       `,
-      errors: [ruleError(7, 6, 'never')],
+      errors: [ruleError(7, 5, 'never')],
       output: null,
     },
     {
@@ -2167,7 +2283,7 @@ foo.bar ??= 1;
       output: null,
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar()?.toExponential();
@@ -2188,7 +2304,7 @@ foo?.bar().toExponential();
       `,
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux?.toExponential();
@@ -2216,7 +2332,7 @@ foo?.bar?.baz().qux.toExponential();
       `,
     },
     {
-      code: noFormat`
+      code: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.()?.toExponential();
@@ -2237,7 +2353,7 @@ foo?.().toExponential();
       `,
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
@@ -2258,7 +2374,7 @@ foo?.['bar']().toExponential();
       `,
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.()?.toExponential();
@@ -2277,6 +2393,112 @@ type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.().toExponential();
       `,
+    },
+    {
+      code: `
+        const a = true;
+        if (!!a) {
+        }
+      `,
+      errors: [ruleError(3, 13, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(false);
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 3,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(true, Math.random() > 0.5);
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert({});
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertsString(x: unknown): asserts x is string;
+declare const a: string;
+assertsString(a);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString('fa' + 'lafel');
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
     },
 
     // "branded" types

@@ -10,14 +10,13 @@ import {
   getStaticValue,
   getTypeName,
   getWrappingFixer,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 enum ArgumentType {
   Other = 0,
-  RegExp = 1 << 1,
   String = 1 << 0,
-
-  // https://github.com/azat-io/eslint-plugin-perfectionist/issues/226
+  RegExp = 1 << 1,
   Both = String | RegExp,
 }
 
@@ -39,6 +38,7 @@ export default createRule({
   },
 
   defaultOptions: [],
+
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
     const services = getParserServices(context);
@@ -100,9 +100,12 @@ export default createRule({
     }
 
     return {
-      "CallExpression[arguments.length=1] > MemberExpression.callee[property.name='match'][computed=false]"(
+      'CallExpression[arguments.length=1] > MemberExpression'(
         memberNode: TSESTree.MemberExpression,
       ): void {
+        if (!isStaticMemberAccessOfValue(memberNode, context, 'match')) {
+          return;
+        }
         const objectNode = memberNode.object;
         const callNode = memberNode.parent as TSESTree.CallExpression;
         const [argumentNode] = callNode.arguments;

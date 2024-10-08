@@ -56,6 +56,7 @@ ruleTester.run('no-array-delete', rule, {
       delete test[0];
     `,
   ],
+
   invalid: [
     {
       code: `

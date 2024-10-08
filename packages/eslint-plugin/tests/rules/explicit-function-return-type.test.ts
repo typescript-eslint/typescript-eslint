@@ -803,6 +803,7 @@ const f = (gotcha: ObjectWithCallback = { callback: () => {} }): void => {};
       options: [{ allowTypedFunctionExpressions: true }],
     },
   ],
+
   invalid: [
     {
       code: `

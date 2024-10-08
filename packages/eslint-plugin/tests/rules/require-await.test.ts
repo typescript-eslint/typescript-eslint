@@ -253,6 +253,7 @@ async function* foo(): Promise<string> {
       }
     `,
   ],
+
   invalid: [
     {
       // Async function declaration with no await

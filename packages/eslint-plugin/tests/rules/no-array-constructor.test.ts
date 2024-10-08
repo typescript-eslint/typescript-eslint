@@ -36,6 +36,7 @@ ruleTester.run('no-array-constructor', rule, {
     'Array?.(0, 1, 2);',
     'Array?.(x, y);',
   ],
+
   invalid: [
     {
       code: 'new Array();',

@@ -99,6 +99,7 @@ abstract class Foo {
 }
     `,
   ],
+
   invalid: [
     {
       code: 'class Foo {}',

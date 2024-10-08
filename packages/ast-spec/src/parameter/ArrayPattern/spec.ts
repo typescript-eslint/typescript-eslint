@@ -6,8 +6,8 @@ import type { DestructuringPattern } from '../../unions/DestructuringPattern';
 
 export interface ArrayPattern extends BaseNode {
   type: AST_NODE_TYPES.ArrayPattern;
-  elements: (DestructuringPattern | null)[];
-  typeAnnotation: TSTypeAnnotation | undefined;
-  optional: boolean;
   decorators: Decorator[];
+  elements: (DestructuringPattern | null)[];
+  optional: boolean;
+  typeAnnotation: TSTypeAnnotation | undefined;
 }

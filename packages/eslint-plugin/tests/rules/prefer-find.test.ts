@@ -78,6 +78,7 @@ ruleTester.run('prefer-find', rule, {
         : [1, 2, 3].filter(x => true))[0];
     `,
   ],
+
   invalid: [
     {
       code: `

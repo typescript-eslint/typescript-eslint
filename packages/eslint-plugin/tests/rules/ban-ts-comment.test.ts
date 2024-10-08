@@ -100,7 +100,7 @@ ruleTester.run('ts-expect-error', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-expect-error': 'allow-with-description',
@@ -405,7 +405,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-expect-error    : TS1234 because xyz`,
+      code: '// @ts-expect-error    : TS1234 because xyz',
       errors: [
         {
           column: 1,
@@ -423,7 +423,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦`,
+      code: '// @ts-expect-error 👨‍👩‍👧‍👦',
       errors: [
         {
           column: 1,
@@ -500,7 +500,7 @@ ruleTester.run('ts-ignore', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-ignore': 'allow-with-description',
@@ -900,7 +900,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-ignore    : TS1234 because xyz`,
+      code: '// @ts-ignore    : TS1234 because xyz',
       errors: [
         {
           column: 1,
@@ -918,7 +918,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦`,
+      code: '// @ts-ignore 👨‍👩‍👧‍👦',
       errors: [
         {
           column: 1,
@@ -972,7 +972,7 @@ ruleTester.run('ts-nocheck', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-nocheck': 'allow-with-description',
@@ -992,6 +992,14 @@ ruleTester.run('ts-nocheck', rule, {
     `,
     '/** @ts-nocheck */',
     '/* @ts-nocheck */',
+    `
+const a = 1;
+
+// @ts-nocheck - should not be reported
+
+// TS error is not actually suppressed
+const b: string = a;
+    `,
   ],
   invalid: [
     {
@@ -1024,22 +1032,6 @@ ruleTester.run('ts-nocheck', rule, {
           column: 1,
           data: { directive: 'nocheck' },
           line: 1,
-          messageId: 'tsDirectiveComment',
-        },
-      ],
-    },
-    {
-      code: `
-if (false) {
-  // @ts-nocheck: Unreachable code error
-  console.log('hello');
-}
-      `,
-      errors: [
-        {
-          column: 3,
-          data: { directive: 'nocheck' },
-          line: 3,
           messageId: 'tsDirectiveComment',
         },
       ],
@@ -1094,7 +1086,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-nocheck    : TS1234 because xyz`,
+      code: '// @ts-nocheck    : TS1234 because xyz',
       errors: [
         {
           column: 1,
@@ -1112,7 +1104,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦`,
+      code: '// @ts-nocheck 👨‍👩‍👧‍👦',
       errors: [
         {
           column: 1,
@@ -1124,6 +1116,22 @@ if (false) {
       options: [
         {
           'ts-nocheck': 'allow-with-description',
+        },
+      ],
+    },
+    {
+      // comment's column > first statement's column
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+ // @ts-nocheck
+const a: true = false;
+      `,
+      errors: [
+        {
+          column: 2,
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          line: 2,
+          messageId: 'tsDirectiveComment',
         },
       ],
     },
@@ -1160,7 +1168,7 @@ ruleTester.run('ts-check', rule, {
       ],
     },
     {
-      code: noFormat`// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      code: '// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦',
       options: [
         {
           'ts-check': 'allow-with-description',
@@ -1288,7 +1296,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-check    : TS1234 because xyz`,
+      code: '// @ts-check    : TS1234 because xyz',
       errors: [
         {
           column: 1,
@@ -1306,7 +1314,7 @@ if (false) {
       ],
     },
     {
-      code: noFormat`// @ts-check 👨‍👩‍👧‍👦`,
+      code: '// @ts-check 👨‍👩‍👧‍👦',
       errors: [
         {
           column: 1,

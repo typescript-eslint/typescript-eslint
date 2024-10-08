@@ -25,13 +25,13 @@ interface TSMethodSignatureBase extends BaseNode {
 }
 
 export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {
-  key: PropertyNameComputed;
   computed: true;
+  key: PropertyNameComputed;
 }
 export interface TSMethodSignatureNonComputedName
   extends TSMethodSignatureBase {
-  key: PropertyNameNonComputed;
   computed: false;
+  key: PropertyNameNonComputed;
 }
 
 export type TSMethodSignature =

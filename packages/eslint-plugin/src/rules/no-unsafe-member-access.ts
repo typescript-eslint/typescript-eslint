@@ -13,8 +13,8 @@ import {
 } from '../util';
 
 const enum State {
-  Safe = 2,
   Unsafe = 1,
+  Safe = 2,
 }
 
 function createDataType(type: ts.Type): '`any`' | '`error` typed' {

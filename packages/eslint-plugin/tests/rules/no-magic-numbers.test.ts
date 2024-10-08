@@ -235,6 +235,7 @@ type Foo = {
       options: [{ ignore: [0, 3], ignoreTypeIndexes: true }],
     },
   ],
+
   invalid: [
     {
       code: 'type Foo = 1;',

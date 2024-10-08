@@ -13,6 +13,7 @@ declare module 'typescript' {
     getAwaitedType(type: Type): Type | undefined;
 
     getContextualTypeForArgumentAtIndex(node: Node, argIndex: number): Type;
+
     /**
      * @returns `true` if the given type is an array type:
      * - `Array<foo>`
@@ -21,6 +22,7 @@ declare module 'typescript' {
      * - `readonly foo[]`
      */
     isArrayType(type: Type): type is TypeReference;
+
     /**
      * @returns `true` if the given type is a tuple type:
      * - `[foo]`

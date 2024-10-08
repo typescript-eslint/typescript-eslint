@@ -517,7 +517,7 @@ export default createRule<Options, MessageIds>({
         'checkScope() called without a current scope',
       );
       const failures = checkOverloads(
-        Array.from(scope.overloads.values()),
+        [...scope.overloads.values()],
         scope.typeParameters,
       );
       addFailures(failures);

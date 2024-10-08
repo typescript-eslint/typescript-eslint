@@ -301,7 +301,7 @@ function foo() {
       options: [{ allowTernary: true }],
     },
     {
-      code: noFormat`
+      code: `
 class Foo<T> {}
 Foo<string>;
       `,

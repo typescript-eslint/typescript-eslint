@@ -1001,7 +1001,7 @@ const foo =  /* a */ (3 + 5);
       `,
     },
     {
-      code: noFormat`
+      code: `
 const foo = <number /* a */>(3 + 5);
       `,
       errors: [
@@ -1134,6 +1134,21 @@ var x = 1;
 {
   x;
 }
+      `,
+    },
+    {
+      code: `
+const a = '';
+const b: string | undefined = (a ? undefined : a)!;
+      `,
+      errors: [
+        {
+          messageId: 'contextuallyUnnecessary',
+        },
+      ],
+      output: `
+const a = '';
+const b: string | undefined = (a ? undefined : a);
       `,
     },
   ],

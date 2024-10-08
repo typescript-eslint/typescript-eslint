@@ -50,6 +50,7 @@ declare module 'foo' {
 }
     `,
   ],
+
   invalid: [
     {
       code: 'const self = this;',

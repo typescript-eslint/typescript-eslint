@@ -14,7 +14,7 @@ export default createRule({
       requiresTypeChecking: false,
     },
     messages: {
-      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
+      notLiteral: `Explicit enum value must only be a literal value (string or number).`,
     },
     schema: [
       {
@@ -23,6 +23,8 @@ export default createRule({
         properties: {
           allowBitwiseExpressions: {
             type: 'boolean',
+            description:
+              'Whether to allow using bitwise expressions in enum initializers.',
           },
         },
       },
@@ -76,69 +78,66 @@ export default createRule({
       return false;
     }
 
-    function isAllowedBitwiseOperand(
-      decl: TSESTree.TSEnumDeclaration,
-      node: TSESTree.Node,
-    ): boolean {
-      return (
-        node.type === AST_NODE_TYPES.Literal || isSelfEnumMember(decl, node)
-      );
-    }
-
     return {
       TSEnumMember(node): void {
         // If there is no initializer, then this node is just the name of the member, so ignore.
         if (node.initializer == null) {
           return;
         }
-        // any old literal
-        if (node.initializer.type === AST_NODE_TYPES.Literal) {
-          return;
-        }
-        // TemplateLiteral without expressions
-        if (
-          node.initializer.type === AST_NODE_TYPES.TemplateLiteral &&
-          node.initializer.expressions.length === 0
-        ) {
-          return;
-        }
         const declaration = node.parent.parent;
 
-        // -1 and +1
-        if (node.initializer.type === AST_NODE_TYPES.UnaryExpression) {
-          if (
-            node.initializer.argument.type === AST_NODE_TYPES.Literal &&
-            ['-', '+'].includes(node.initializer.operator)
-          ) {
-            return;
+        function isAllowedInitializerExpressionRecursive(
+          node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+          partOfBitwiseComputation: boolean,
+        ): boolean {
+          // You can only refer to an enum member if it's part of a bitwise computation.
+          // so C = B isn't allowed (special case), but C = A | B is.
+          if (partOfBitwiseComputation && isSelfEnumMember(declaration, node)) {
+            return true;
           }
 
-          if (
-            allowBitwiseExpressions &&
-            node.initializer.operator === '~' &&
-            isAllowedBitwiseOperand(declaration, node.initializer.argument)
-          ) {
-            return;
+          switch (node.type) {
+            // any old literal
+            case AST_NODE_TYPES.Literal:
+              return true;
+
+            // TemplateLiteral without expressions
+            case AST_NODE_TYPES.TemplateLiteral:
+              return node.expressions.length === 0;
+
+            case AST_NODE_TYPES.UnaryExpression:
+              // +123, -123, etc.
+              if (['-', '+'].includes(node.operator)) {
+                return isAllowedInitializerExpressionRecursive(
+                  node.argument,
+                  partOfBitwiseComputation,
+                );
+              }
+
+              if (allowBitwiseExpressions) {
+                return (
+                  node.operator === '~' &&
+                  isAllowedInitializerExpressionRecursive(node.argument, true)
+                );
+              }
+              return false;
+
+            case AST_NODE_TYPES.BinaryExpression:
+              if (allowBitwiseExpressions) {
+                return (
+                  ['&', '^', '<<', '>>', '>>>', '|'].includes(node.operator) &&
+                  isAllowedInitializerExpressionRecursive(node.left, true) &&
+                  isAllowedInitializerExpressionRecursive(node.right, true)
+                );
+              }
+              return false;
+
+            default:
+              return false;
           }
         }
-        if (
-          node.initializer.type === AST_NODE_TYPES.UnaryExpression &&
-          node.initializer.argument.type === AST_NODE_TYPES.Literal &&
-          (['-', '+'].includes(node.initializer.operator) ||
-            (allowBitwiseExpressions && node.initializer.operator === '~'))
-        ) {
-          return;
-        }
 
-        if (
-          allowBitwiseExpressions &&
-          node.initializer.type === AST_NODE_TYPES.BinaryExpression &&
-          ['&', '^', '<<', '>>', '>>>', '|'].includes(
-            node.initializer.operator,
-          ) &&
-          isAllowedBitwiseOperand(declaration, node.initializer.left) &&
-          isAllowedBitwiseOperand(declaration, node.initializer.right)
-        ) {
+        if (isAllowedInitializerExpressionRecursive(node.initializer, false)) {
           return;
         }
 

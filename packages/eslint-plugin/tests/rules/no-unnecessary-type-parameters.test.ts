@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-parameters';
 import { getFixturesRootDir } from '../RuleTester';
@@ -393,7 +393,44 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         return [{ value: () => mappedReturnType(x) }];
       }
     `,
+    `
+type Identity<T> = T;
+
+type Mapped<T, Value> = Identity<{ [P in keyof T]: Value }>;
+
+declare function sillyFoo<Data, Value>(
+  c: Value,
+): (data: Data) => Mapped<Data, Value>;
+    `,
+    `
+type Silly<T> = { [P in keyof T]: T[P] };
+
+type SillyFoo<T, Value> = Silly<{ [P in keyof T]: Value }>;
+
+type Foo<T, Value> = { [P in keyof T]: Value };
+
+declare function foo<T, Constant>(data: T, c: Constant): Foo<T, Constant>;
+declare function foo<T, Constant>(c: Constant): (data: T) => Foo<T, Constant>;
+
+declare function sillyFoo<T, Constant>(
+  data: T,
+  c: Constant,
+): SillyFoo<T, Constant>;
+declare function sillyFoo<T, Constant>(
+  c: Constant,
+): (data: T) => SillyFoo<T, Constant>;
+    `,
+    `
+const f = <T,>(setValue: (v: T) => void, getValue: () => NoInfer<T>) => {};
+    `,
+    `
+const f = <T,>(
+  setValue: (v: T) => NoInfer<T>,
+  getValue: (v: NoInfer<T>) => NoInfer<T>,
+) => {};
+    `,
   ],
+
   invalid: [
     {
       code: 'const func = <T,>(param: T) => null;',
@@ -929,6 +966,32 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       errors: [
         {
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      // This isn't actually an important test case.
+      // However, we use it as an example in the docs of code that is flagged,
+      // but shouldn't necessarily be. So, if you make a change to the rule logic
+      // that resolves this sort-of-false-positive, please update the docs
+      // accordingly.
+      // Original discussion in https://github.com/typescript-eslint/typescript-eslint/issues/9709
+      code: noFormat`
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
           messageId: 'sole',
         },
       ],

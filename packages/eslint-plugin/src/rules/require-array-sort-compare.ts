@@ -5,6 +5,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  isStaticMemberAccessOfValue,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 
@@ -47,6 +48,7 @@ export default createRule<Options, MessageIds>({
       ignoreStringArrays: true,
     },
   ],
+
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -65,6 +67,9 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkSortArgument(callee: TSESTree.MemberExpression): void {
+      if (!isStaticMemberAccessOfValue(callee, context, 'sort', 'toSorted')) {
+        return;
+      }
       const calleeObjType = getConstrainedTypeAtLocation(
         services,
         callee.object,
@@ -80,9 +85,7 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]":
-        checkSortArgument,
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='toSorted'][computed=false]":
+      'CallExpression[arguments.length=0] > MemberExpression':
         checkSortArgument,
     };
   },

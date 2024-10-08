@@ -12,9 +12,6 @@ import rule from '../../src/rules/no-inferrable-types';
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
 
-function flatten<T>(arr: T[][]): T[] {
-  return arr.reduce((acc, a) => acc.concat(a), []);
-}
 const testCases = [
   {
     code: [
@@ -72,11 +69,11 @@ const testCases = [
     type: 'undefined',
   },
 ];
-const validTestCases = flatten(
-  testCases.map(c => c.code.map(code => `const a = ${code}`)),
+const validTestCases = testCases.flatMap(c =>
+  c.code.map(code => `const a = ${code}`),
 );
-const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
-  testCases.map(cas =>
+const invalidTestCases: InvalidTestCase<MessageIds, Options>[] =
+  testCases.flatMap(cas =>
     cas.code.map(code => ({
       code: `const a: ${cas.type} = ${code}`,
       errors: [
@@ -91,8 +88,7 @@ const invalidTestCases: InvalidTestCase<MessageIds, Options>[] = flatten(
       ],
       output: `const a = ${code}`,
     })),
-  ),
-);
+  );
 
 const ruleTester = new RuleTester();
 

@@ -33,7 +33,7 @@ const defaultOptions: Options = {
 
 ### `ignoreDeclarationMerge`
 
-When set to `true`, the rule will ignore declaration merges between the following sets:
+Whether to ignore declaration merges between the following sets:
 
 - interface + interface
 - namespace + namespace
@@ -68,7 +68,7 @@ namespace Baz {}
 ```
 
 **Note:** Even with this option set to true, this rule will report if you name a type and a variable the same name. **_This is intentional_**.
-Declaring a variable and a type and a variable the same is usually an accident, and it can lead to hard-to-understand code.
+Declaring a variable and a type the same is usually an accident, and it can lead to hard-to-understand code.
 If you have a rare case where you're intentionally naming a type the same name as a variable, use a disable comment. For example:
 
 ```ts option='{ "ignoreDeclarationMerge": true }' showPlaygroundButton

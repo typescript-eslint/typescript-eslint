@@ -211,15 +211,14 @@ export default createRule({
         }
 
         const functionNode = findParentFunction(node);
-        if (functionNode) {
-          if (
-            !(
-              isArrowIIFE(functionNode) &&
-              findParentPropertyDefinition(node)?.value === functionNode.parent
-            )
-          ) {
-            return;
-          }
+        if (
+          functionNode &&
+          !(
+            isArrowIIFE(functionNode) &&
+            findParentPropertyDefinition(node)?.value === functionNode.parent
+          )
+        ) {
+          return;
         }
 
         const { assignedBeforeConstructor } = nullThrows(

@@ -24,8 +24,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${1}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 5,
+        column: 2,
+        endColumn: 6,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -36,8 +36,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${1n}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 6,
+        column: 2,
+        endColumn: 7,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -48,8 +48,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${0o25}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 8,
+        column: 2,
+        endColumn: 9,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -60,14 +60,14 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${0b1010} ${0b1111}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 10,
+        column: 2,
+        endColumn: 11,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
       {
-        column: 14,
-        endColumn: 20,
+        column: 12,
+        endColumn: 21,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -78,8 +78,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${0x25}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 8,
+        column: 2,
+        endColumn: 9,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -90,8 +90,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${/a/}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 7,
+        column: 2,
+        endColumn: 8,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -102,8 +102,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${/a/gim}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 10,
+        column: 2,
+        endColumn: 11,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -155,8 +155,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${true}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 8,
+        column: 2,
+        endColumn: 9,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -178,8 +178,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${null}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 8,
+        column: 2,
+        endColumn: 9,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -201,8 +201,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${undefined}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 13,
+        column: 2,
+        endColumn: 14,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -224,8 +224,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${Infinity}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 12,
+        column: 2,
+        endColumn: 13,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -237,8 +237,8 @@ const invalidCases: readonly InvalidTestCase<
     code: '`${NaN}`;',
     errors: [
       {
-        column: 4,
-        endColumn: 7,
+        column: 2,
+        endColumn: 8,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -250,14 +250,14 @@ const invalidCases: readonly InvalidTestCase<
     code: "`${'a'} ${'b'}`;",
     errors: [
       {
-        column: 4,
-        endColumn: 7,
+        column: 2,
+        endColumn: 8,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
       {
-        column: 11,
-        endColumn: 14,
+        column: 9,
+        endColumn: 15,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -311,17 +311,19 @@ const invalidCases: readonly InvalidTestCase<
       `,
     errors: [
       {
-        line: 4,
+        line: 2,
         messageId: 'noUnnecessaryTemplateExpression',
       },
       {
-        column: 3,
-        endLine: 7,
-        line: 7,
+        column: 2,
+        endColumn: 2,
+        endLine: 8,
+        line: 6,
         messageId: 'noUnnecessaryTemplateExpression',
       },
       {
-        column: 10,
+        column: 6,
+        endColumn: 17,
         endLine: 7,
         line: 7,
         messageId: 'noUnnecessaryTemplateExpression',
@@ -346,9 +348,10 @@ const invalidCases: readonly InvalidTestCase<
       `,
     errors: [
       {
-        column: 3,
-        endColumn: 9,
-        line: 3,
+        column: 5,
+        endColumn: 2,
+        endLine: 4,
+        line: 2,
         messageId: 'noUnnecessaryTemplateExpression',
       },
     ],
@@ -361,14 +364,14 @@ const invalidCases: readonly InvalidTestCase<
     code: "`${'1 + 1 ='} ${2}`;",
     errors: [
       {
-        column: 4,
-        endColumn: 13,
+        column: 2,
+        endColumn: 14,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
       {
-        column: 17,
-        endColumn: 18,
+        column: 15,
+        endColumn: 19,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -380,14 +383,14 @@ const invalidCases: readonly InvalidTestCase<
     code: "`${'a'} ${true}`;",
     errors: [
       {
-        column: 4,
-        endColumn: 7,
+        column: 2,
+        endColumn: 8,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
       {
-        column: 11,
-        endColumn: 15,
+        column: 9,
+        endColumn: 16,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -399,8 +402,8 @@ const invalidCases: readonly InvalidTestCase<
     code: "`${String(Symbol.for('test'))}`;",
     errors: [
       {
-        column: 4,
-        endColumn: 30,
+        column: 2,
+        endColumn: 31,
         line: 1,
         messageId: 'noUnnecessaryTemplateExpression',
       },
@@ -1032,8 +1035,8 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
       `,
       errors: [
         {
-          column: 14,
-          endColumn: 17,
+          column: 12,
+          endColumn: 18,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1051,8 +1054,8 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
       `,
       errors: [
         {
-          column: 17,
-          endColumn: 20,
+          column: 15,
+          endColumn: 21,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1099,8 +1102,8 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          column: 12,
-          endColumn: 18,
+          column: 10,
+          endColumn: 19,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
@@ -1117,8 +1120,8 @@ declare const nested: string, interpolation: string;
       `,
       errors: [
         {
-          column: 12,
-          endColumn: 24,
+          column: 10,
+          endColumn: 25,
           line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },

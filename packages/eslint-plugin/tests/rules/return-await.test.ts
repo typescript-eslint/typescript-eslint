@@ -857,7 +857,7 @@ async function test() {
       output: 'const test = async () => await Promise.resolve(1);',
     },
     {
-      code: noFormat`
+      code: `
 async function foo() {}
 async function bar() {}
 async function baz() {}

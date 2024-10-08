@@ -68,14 +68,22 @@ export default createRule<Options, MessageIds>({
         properties: {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
           },
           ignoreConditionalTests: {
             type: 'boolean',
+            description:
+              'Whether to ignore cases that are located within a conditional test.',
           },
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
+            description:
+              'Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).',
           },
           ignorePrimitives: {
+            description:
+              'Whether to ignore all (`true`) or some (an object with properties) primitive types.',
             oneOf: [
               {
                 type: 'object',
@@ -94,6 +102,8 @@ export default createRule<Options, MessageIds>({
           },
           ignoreTernaryTests: {
             type: 'boolean',
+            description:
+              'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
           },
         },
       },

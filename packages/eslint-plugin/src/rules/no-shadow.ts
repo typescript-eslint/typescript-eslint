@@ -45,25 +45,36 @@ export default createRule<Options, MessageIds>({
         properties: {
           allow: {
             type: 'array',
+            description: 'Identifier names for which shadowing is allowed.',
             items: {
               type: 'string',
             },
           },
           builtinGlobals: {
             type: 'boolean',
+            description:
+              'Whether to report shadowing of built-in global variables.',
           },
           hoist: {
             type: 'string',
+            description:
+              'Whether to report shadowing before outer functions or variables are defined.',
             enum: ['all', 'functions', 'never'],
           },
           ignoreFunctionTypeParameterNameValueShadow: {
             type: 'boolean',
+            description:
+              'Whether to ignore function parameters named the same as a variable.',
           },
           ignoreOnInitialization: {
             type: 'boolean',
+            description:
+              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
           },
           ignoreTypeValueShadow: {
             type: 'boolean',
+            description:
+              'Whether to ignore types named the same as a variable.',
           },
         },
       },
@@ -635,7 +646,7 @@ export default createRule<Options, MessageIds>({
     return {
       'Program:exit'(node): void {
         const globalScope = context.sourceCode.getScope(node);
-        const stack = globalScope.childScopes.slice();
+        const stack = [...globalScope.childScopes];
 
         while (stack.length) {
           // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

@@ -26,6 +26,7 @@ for (const x in { a: 1, b: 2, c: 3 }) {
 }
     `,
   ],
+
   invalid: [
     {
       code: `

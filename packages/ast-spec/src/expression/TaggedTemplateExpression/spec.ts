@@ -5,8 +5,8 @@ import type { Expression } from '../../unions/Expression';
 import type { TemplateLiteral } from '../TemplateLiteral/spec';
 
 export interface TaggedTemplateExpression extends BaseNode {
+  type: AST_NODE_TYPES.TaggedTemplateExpression;
   quasi: TemplateLiteral;
   tag: Expression;
-  type: AST_NODE_TYPES.TaggedTemplateExpression;
   typeArguments: TSTypeParameterInstantiation | undefined;
 }

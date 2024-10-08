@@ -61,7 +61,6 @@ export default createRule<Options, MessageIds>({
     messages: {
       avoidImportType: 'Use an `import` instead of an `import type`.',
       noImportTypeAnnotations: '`import()` type annotations are forbidden.',
-
       someImportsAreOnlyTypes: 'Imports {{typeImports}} are only used as type.',
       typeOverValue:
         'All imports in the declaration are only used as types. Use `import type`.',
@@ -73,13 +72,18 @@ export default createRule<Options, MessageIds>({
         properties: {
           disallowTypeAnnotations: {
             type: 'boolean',
+            description:
+              'Whether to disallow type imports in type annotations (`import()`).',
           },
           fixStyle: {
             type: 'string',
+            description:
+              'The expected type modifier to be added when an import is detected as used only in the type position.',
             enum: ['separate-type-imports', 'inline-type-imports'],
           },
           prefer: {
             type: 'string',
+            description: 'The expected import kind for type-only imports.',
             enum: ['type-imports', 'no-type-imports'],
           },
         },
@@ -94,6 +98,7 @@ export default createRule<Options, MessageIds>({
       prefer: 'type-imports',
     },
   ],
+
   create(context, [option]) {
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
@@ -221,14 +226,16 @@ export default createRule<Options, MessageIds>({
                * export = Type;
                */
               if (
-                ref.identifier.parent.type === AST_NODE_TYPES.ExportSpecifier ||
-                ref.identifier.parent.type ===
-                  AST_NODE_TYPES.ExportDefaultDeclaration ||
-                ref.identifier.parent.type === AST_NODE_TYPES.TSExportAssignment
+                (ref.identifier.parent.type ===
+                  AST_NODE_TYPES.ExportSpecifier ||
+                  ref.identifier.parent.type ===
+                    AST_NODE_TYPES.ExportDefaultDeclaration ||
+                  ref.identifier.parent.type ===
+                    AST_NODE_TYPES.TSExportAssignment) &&
+                ref.isValueReference &&
+                ref.isTypeReference
               ) {
-                if (ref.isValueReference && ref.isTypeReference) {
-                  return node.importKind === 'type';
-                }
+                return node.importKind === 'type';
               }
               if (ref.isValueReference) {
                 let parent = ref.identifier.parent as TSESTree.Node | undefined;
@@ -556,10 +563,8 @@ export default createRule<Options, MessageIds>({
         NullThrowsReasons.MissingToken('token', 'last specifier'),
       );
       textRange[1] = after.range[0];
-      if (isFirst || isLast) {
-        if (isCommaToken(after)) {
-          removeRange[1] = after.range[1];
-        }
+      if ((isFirst || isLast) && isCommaToken(after)) {
+        removeRange[1] = after.range[1];
       }
 
       return {

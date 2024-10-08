@@ -84,6 +84,7 @@ namespace Foo {
 }
     `,
   ],
+
   invalid: [
     {
       code: `

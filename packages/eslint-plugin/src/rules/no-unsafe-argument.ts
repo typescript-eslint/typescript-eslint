@@ -2,6 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -151,11 +152,11 @@ export default createRule<[], MessageIds>({
     },
     messages: {
       unsafeArgument:
-        'Unsafe argument of type `{{sender}}` assigned to a parameter of type `{{receiver}}`.',
-      unsafeArraySpread: 'Unsafe spread of an `any` array type.',
-      unsafeSpread: 'Unsafe spread of an `any` type.',
+        'Unsafe argument of type {{sender}} assigned to a parameter of type {{receiver}}.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} array type.',
+      unsafeSpread: 'Unsafe spread of an {{sender}} type.',
       unsafeTupleSpread:
-        'Unsafe spread of a tuple type. The argument is of type `{{sender}}` and is assigned to a parameter of type `{{receiver}}`.',
+        'Unsafe spread of a tuple type. The argument is {{sender}} and is assigned to a parameter of type {{receiver}}.',
     },
     schema: [],
   },
@@ -163,6 +164,33 @@ export default createRule<[], MessageIds>({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+
+    function describeType(type: ts.Type): string {
+      if (tsutils.isIntrinsicErrorType(type)) {
+        return 'error typed';
+      }
+
+      return `\`${checker.typeToString(type)}\``;
+    }
+
+    function describeTypeForSpread(type: ts.Type): string {
+      if (
+        checker.isArrayType(type) &&
+        tsutils.isIntrinsicErrorType(checker.getTypeArguments(type)[0])
+      ) {
+        return 'error';
+      }
+
+      return describeType(type);
+    }
+
+    function describeTypeForTuple(type: ts.Type): string {
+      if (tsutils.isIntrinsicErrorType(type)) {
+        return 'error typed';
+      }
+
+      return `of type \`${checker.typeToString(type)}\``;
+    }
 
     function checkUnsafeArguments(
       args: TSESTree.CallExpressionArgument[] | TSESTree.Expression[],
@@ -203,6 +231,7 @@ export default createRule<[], MessageIds>({
               context.report({
                 node: argument,
                 messageId: 'unsafeSpread',
+                data: { sender: describeType(spreadArgType) },
               });
             } else if (isTypeAnyArrayType(spreadArgType, checker)) {
               // foo(...any[])
@@ -211,6 +240,7 @@ export default createRule<[], MessageIds>({
               context.report({
                 node: argument,
                 messageId: 'unsafeArraySpread',
+                data: { sender: describeTypeForSpread(spreadArgType) },
               });
             } else if (checker.isTupleType(spreadArgType)) {
               // foo(...[tuple1, tuple2])
@@ -234,8 +264,8 @@ export default createRule<[], MessageIds>({
                     node: argument,
                     messageId: 'unsafeTupleSpread',
                     data: {
-                      receiver: checker.typeToString(parameterType),
-                      sender: checker.typeToString(tupleType),
+                      receiver: describeType(parameterType),
+                      sender: describeTypeForTuple(tupleType),
                     },
                   });
                 }
@@ -271,8 +301,8 @@ export default createRule<[], MessageIds>({
                 node: argument,
                 messageId: 'unsafeArgument',
                 data: {
-                  receiver: checker.typeToString(parameterType),
-                  sender: checker.typeToString(argumentType),
+                  receiver: describeType(parameterType),
+                  sender: describeType(argumentType),
                 },
               });
             }

@@ -134,6 +134,11 @@ function fun(value: unknown) {
   throw value;
 }
     `,
+    `
+function fun<T extends Error>(t: T): void {
+  throw t;
+}
+    `,
   ],
   invalid: [
     {
@@ -465,6 +470,18 @@ function fun(value: unknown) {
       options: [
         {
           allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+function fun<T extends number>(t: T): void {
+  throw t;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
         },
       ],
     },

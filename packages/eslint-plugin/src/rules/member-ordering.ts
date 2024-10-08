@@ -300,38 +300,36 @@ export const defaultOrder: MemberType[] = [
   'method',
 ];
 
-const allMemberTypes = Array.from(
-  (
-    [
-      'readonly-signature',
-      'signature',
-      'readonly-field',
-      'field',
-      'method',
-      'call-signature',
-      'constructor',
-      'accessor',
-      'get',
-      'set',
-      'static-initialization',
-    ] as const
-  ).reduce<Set<MemberType>>((all, type) => {
-    all.add(type);
+const allMemberTypes = [
+  ...new Set(
+    (
+      [
+        'readonly-signature',
+        'signature',
+        'readonly-field',
+        'field',
+        'method',
+        'call-signature',
+        'constructor',
+        'accessor',
+        'get',
+        'set',
+        'static-initialization',
+      ] as const
+    ).flatMap(type => [
+      type,
 
-    (['public', 'protected', 'private', '#private'] as const).forEach(
-      accessibility => {
-        if (
+      ...(['public', 'protected', 'private', '#private'] as const)
+        .flatMap<MemberType>(accessibility => [
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'static-initialization' &&
           type !== 'call-signature' &&
           !(type === 'constructor' && accessibility === '#private')
-        ) {
-          all.add(`${accessibility}-${type}`); // e.g. `public-field`
-        }
+            ? `${accessibility}-${type}` // e.g. `public-field`
+            : [],
 
-        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
-        if (
+          // Only class instance fields, methods, accessors, get and set can have decorators attached to them
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
@@ -339,36 +337,36 @@ const allMemberTypes = Array.from(
             type === 'accessor' ||
             type === 'get' ||
             type === 'set')
-        ) {
-          all.add(`${accessibility}-decorated-${type}`);
-          all.add(`decorated-${type}`);
-        }
+            ? [`${accessibility}-decorated-${type}`, `decorated-${type}`]
+            : [],
 
-        if (
           type !== 'constructor' &&
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'call-signature'
-        ) {
-          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-          if (accessibility === '#private' || accessibility === 'private') {
-            (['static', 'instance'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          } else {
-            (['static', 'instance', 'abstract'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          }
-        }
-      },
-    );
-
-    return all;
-  }, new Set<MemberType>()),
-);
+            ? (
+                [
+                  'static',
+                  'instance',
+                  // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+                  ...(accessibility === '#private' ||
+                  accessibility === 'private'
+                    ? []
+                    : (['abstract'] as const)),
+                ] as const
+              ).flatMap(
+                scope =>
+                  [
+                    `${scope}-${type}`,
+                    `${accessibility}-${scope}-${type}`,
+                  ] as const,
+              )
+            : [],
+        ])
+        .flat(),
+    ]),
+  ),
+];
 
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
@@ -512,7 +510,7 @@ function getRankOrder(
   orderConfig: MemberType[],
 ): number {
   let rank = -1;
-  const stack = memberGroups.slice(); // Get a copy of the member groups
+  const stack = [...memberGroups]; // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -739,6 +737,13 @@ export default createRule<Options, MessageIds>({
             type: 'string',
             enum: allMemberTypes as string[],
           },
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
+          },
           optionalityOrderOptions: {
             type: 'string',
             enum: ['optional-first', 'required-first'],
@@ -753,6 +758,7 @@ export default createRule<Options, MessageIds>({
               'natural-case-insensitive',
             ],
           },
+
           typeItems: {
             type: 'string',
             enum: [
@@ -762,15 +768,6 @@ export default createRule<Options, MessageIds>({
               'field',
               'method',
               'constructor',
-            ],
-          },
-
-          // These properties must follow the preceding ones for ajv logic.
-          baseConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/allItems'),
-              objectConfig('#/items/0/$defs/allItems'),
             ],
           },
           typesConfig: {

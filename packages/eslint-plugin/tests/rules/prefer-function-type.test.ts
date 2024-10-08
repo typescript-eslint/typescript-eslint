@@ -41,6 +41,7 @@ interface Bar extends Function, Foo {
 }
     `,
   ],
+
   invalid: [
     {
       code: `

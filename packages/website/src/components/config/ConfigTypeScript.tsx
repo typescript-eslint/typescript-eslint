@@ -50,7 +50,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
               key: item.name,
               type: 'string',
               label: item.description.message,
-              enum: ['', ...Array.from<string>(item.type.keys())],
+              enum: ['', ...item.type.keys()],
             });
           }
           return group;

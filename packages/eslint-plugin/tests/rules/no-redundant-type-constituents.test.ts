@@ -165,7 +165,9 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = 'a' | 1 | 'b';
       type U = T & string;
     `,
+    "declare function fn(): never | 'foo';",
   ],
+
   invalid: [
     {
       code: 'type T = number | any;',

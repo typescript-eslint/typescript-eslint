@@ -367,8 +367,8 @@ export {
   checkFunctionExpressionReturnType,
   checkFunctionReturnType,
   doesImmediatelyReturnFunctionExpression,
-  FunctionExpression,
-  FunctionNode,
+  type FunctionExpression,
+  type FunctionNode,
   isTypedFunctionExpression,
   isValidFunctionExpressionReturnType,
 };

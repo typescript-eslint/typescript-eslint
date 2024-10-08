@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isArrayMethodCallWithPredicate,
   isFunction,
   isRestParameterDeclaration,
   nullThrows,
@@ -32,6 +33,7 @@ interface ChecksVoidReturnOptions {
 
 type MessageId =
   | 'conditional'
+  | 'predicate'
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
@@ -81,6 +83,7 @@ export default createRule<Options, MessageId>({
     },
     messages: {
       conditional: 'Expected non-Promise value in a boolean conditional.',
+      predicate: 'Expected a non-Promise value to be returned.',
       spread: 'Expected a non-Promise value to be spreaded in an object.',
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
@@ -105,6 +108,7 @@ export default createRule<Options, MessageId>({
           },
           checksSpreads: {
             type: 'boolean',
+            description: 'Whether to warn when `...` spreading a `Promise`.',
           },
           checksVoidReturn: {
             oneOf: [
@@ -113,12 +117,36 @@ export default createRule<Options, MessageId>({
                 type: 'object',
                 additionalProperties: false,
                 properties: {
-                  arguments: { type: 'boolean' },
-                  attributes: { type: 'boolean' },
-                  inheritedMethods: { type: 'boolean' },
-                  properties: { type: 'boolean' },
-                  returns: { type: 'boolean' },
-                  variables: { type: 'boolean' },
+                  arguments: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`.',
+                  },
+                  attributes: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.',
+                  },
+                  inheritedMethods: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.',
+                  },
+                  properties: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`.',
+                  },
+                  returns: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`.',
+                  },
+                  variables: {
+                    type: 'boolean',
+                    description:
+                      'Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`.',
+                  },
                 },
               },
             ],
@@ -134,6 +162,7 @@ export default createRule<Options, MessageId>({
       checksVoidReturn: true,
     },
   ],
+
   create(context, [{ checksConditionals, checksSpreads, checksVoidReturn }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -141,6 +170,7 @@ export default createRule<Options, MessageId>({
     const checkedNodes = new Set<TSESTree.Node>();
 
     const conditionalChecks: TSESLint.RuleListener = {
+      'CallExpression > MemberExpression': checkArrayPredicates,
       ConditionalExpression: checkTestConditional,
       DoWhileStatement: checkTestConditional,
       ForStatement: checkTestConditional,
@@ -294,6 +324,25 @@ export default createRule<Options, MessageId>({
           node,
           messageId: 'conditional',
         });
+      }
+    }
+
+    function checkArrayPredicates(node: TSESTree.MemberExpression): void {
+      const parent = node.parent;
+      if (parent.type === AST_NODE_TYPES.CallExpression) {
+        const callback = parent.arguments.at(0);
+        if (
+          callback &&
+          isArrayMethodCallWithPredicate(context, services, parent)
+        ) {
+          const type = services.esTreeNodeToTSNodeMap.get(callback);
+          if (returnsThenable(checker, type)) {
+            context.report({
+              node: callback,
+              messageId: 'predicate',
+            });
+          }
+        }
       }
     }
 
@@ -503,6 +552,12 @@ export default createRule<Options, MessageId>({
         if (!returnsThenable(checker, nodeMember)) {
           continue;
         }
+
+        const node = services.tsNodeToESTreeNodeMap.get(nodeMember);
+        if (isStaticMember(node)) {
+          continue;
+        }
+
         for (const heritageType of heritageTypes) {
           checkHeritageTypeForMemberReturningVoid(
             nodeMember,
@@ -681,12 +736,27 @@ function checkThenableOrVoidArgument(
 ): void {
   if (isThenableReturningFunctionType(checker, node.expression, type)) {
     thenableReturnIndices.add(index);
-  } else if (isVoidReturningFunctionType(checker, node.expression, type)) {
+  } else if (
+    isVoidReturningFunctionType(checker, node.expression, type) &&
     // If a certain argument accepts both thenable and void returns,
     // a promise-returning function is valid
-    if (!thenableReturnIndices.has(index)) {
-      voidReturnIndices.add(index);
-    }
+    !thenableReturnIndices.has(index)
+  ) {
+    voidReturnIndices.add(index);
+  }
+  const contextualType = checker.getContextualTypeForArgumentAtIndex(
+    node,
+    index,
+  );
+  if (contextualType !== type) {
+    checkThenableOrVoidArgument(
+      checker,
+      node,
+      contextualType,
+      index,
+      thenableReturnIndices,
+      voidReturnIndices,
+    );
   }
 }
 
@@ -875,5 +945,13 @@ function getMemberIfExists(
   const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
   return (
     symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
+  );
+}
+
+function isStaticMember(node: TSESTree.Node): boolean {
+  return (
+    (node.type === AST_NODE_TYPES.MethodDefinition ||
+      node.type === AST_NODE_TYPES.PropertyDefinition) &&
+    node.static
   );
 }

@@ -28,6 +28,7 @@ export default createRule({
     schema: [],
   },
   defaultOptions: [],
+
   create(context) {
     const services = getParserServices(context);
 

@@ -41,9 +41,13 @@ export default createRule<Options, MessageIds>({
         properties: {
           allowThrowingAny: {
             type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `any`.',
           },
           allowThrowingUnknown: {
             type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `unknown`.',
           },
         },
       },
@@ -90,9 +94,7 @@ export default createRule<Options, MessageIds>({
 
     return {
       ThrowStatement(node): void {
-        if (node.argument) {
-          checkThrowArgument(node.argument);
-        }
+        checkThrowArgument(node.argument);
       },
     };
   },

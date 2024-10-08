@@ -228,10 +228,12 @@ export class Converter {
     node: ts.Node,
     result: TSESTree.Node | null,
   ): void {
-    if (result && this.options.shouldPreserveNodeMaps) {
-      if (!this.tsNodeToESTreeNodeMap.has(node)) {
-        this.tsNodeToESTreeNodeMap.set(node, result);
-      }
+    if (
+      result &&
+      this.options.shouldPreserveNodeMaps &&
+      !this.tsNodeToESTreeNodeMap.has(node)
+    ) {
+      this.tsNodeToESTreeNodeMap.set(node, result);
     }
   }
 
@@ -1213,7 +1215,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment: {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { questionToken, exclamationToken } = node;
 
         if (questionToken) {
@@ -1243,7 +1245,7 @@ export class Converter {
       }
 
       case SyntaxKind.ShorthandPropertyAssignment: {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { modifiers, questionToken, exclamationToken } = node;
 
         if (modifiers) {
@@ -1951,7 +1953,7 @@ export class Converter {
               specifiers: [],
               importKind: 'value',
               attributes: this.convertImportAttributes(
-                // eslint-disable-next-line deprecation/deprecation -- TS <5.3
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 node.attributes ?? node.assertClause,
               ),
             },
@@ -1982,9 +1984,9 @@ export class Converter {
                 );
                 break;
               case SyntaxKind.NamedImports:
-                result.specifiers = result.specifiers.concat(
-                  node.importClause.namedBindings.elements.map(el =>
-                    this.convertChild(el),
+                result.specifiers.push(
+                  ...node.importClause.namedBindings.elements.map(
+                    el => this.convertChild(el) as TSESTree.ImportClause,
                   ),
                 );
                 break;
@@ -2032,7 +2034,7 @@ export class Converter {
                 exportKind: node.isTypeOnly ? 'type' : 'value',
                 declaration: null,
                 attributes: this.convertImportAttributes(
-                  // eslint-disable-next-line deprecation/deprecation -- TS <5.3
+                  // eslint-disable-next-line @typescript-eslint/no-deprecated
                   node.attributes ?? node.assertClause,
                 ),
               },
@@ -2055,7 +2057,7 @@ export class Converter {
                   ? this.convertChild(node.exportClause.name)
                   : null,
               attributes: this.convertImportAttributes(
-                // eslint-disable-next-line deprecation/deprecation -- TS <5.3
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 node.attributes ?? node.assertClause,
               ),
             },
@@ -2163,7 +2165,7 @@ export class Converter {
             left.type === AST_NODE_TYPES.SequenceExpression &&
             node.left.kind !== SyntaxKind.ParenthesizedExpression
           ) {
-            result.expressions = result.expressions.concat(left.expressions);
+            result.expressions.push(...left.expressions);
           } else {
             result.expressions.push(left);
           }
@@ -2708,7 +2710,7 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { initializer } = node;
         if (initializer) {
           this.#throwError(
@@ -2757,7 +2759,7 @@ export class Converter {
       }
 
       case SyntaxKind.FunctionType: {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { modifiers } = node;
         if (modifiers) {
           this.#throwError(
@@ -3063,7 +3065,7 @@ export class Converter {
         result.declare = isDeclare;
 
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
-          // eslint-disable-next-line deprecation/deprecation
+          // eslint-disable-next-line @typescript-eslint/no-deprecated
           result.global = true;
         }
 
@@ -3223,7 +3225,7 @@ export class Converter {
         });
       }
 
-      // eslint-disable-next-line deprecation/deprecation -- required for backwards-compatibility
+      // eslint-disable-next-line @typescript-eslint/no-deprecated
       case SyntaxKind.AssertEntry:
       case SyntaxKind.ImportAttribute: {
         return this.createNode<TSESTree.ImportAttribute>(node, {

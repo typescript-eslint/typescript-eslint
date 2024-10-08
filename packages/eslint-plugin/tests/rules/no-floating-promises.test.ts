@@ -821,6 +821,20 @@ promise().then(() => {});
     },
     {
       code: `
+        import { it } from 'node:test';
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'node:test' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 interface SafePromise<T> extends Promise<T> {
   brand: 'safe';
 }
@@ -849,6 +863,7 @@ declare function createMyThenable(): MyThenable;
 createMyThenable();
     `,
   ],
+
   invalid: [
     {
       code: `
