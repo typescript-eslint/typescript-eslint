@@ -69,7 +69,6 @@ class Referencer extends Visitor {
       isValueVariable: false,
     });
   }
-
   public close(node: TSESTree.Node): void {
     while (this.currentScope(true) && node === this.currentScope().block) {
       this.scopeManager.currentScope = this.currentScope().close(
@@ -77,7 +76,6 @@ class Referencer extends Visitor {
       );
     }
   }
-
   public currentScope(): Scope;
 
   public currentScope(throwOnNull: true): Scope | null;
@@ -105,10 +103,6 @@ class Referencer extends Visitor {
       );
     });
   }
-
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
 
   /**
    * Searches for a variable named "name" in the upper scopes and adds a pseudo-reference from itself to itself
@@ -180,6 +174,10 @@ class Referencer extends Visitor {
     this.close(node);
   }
 
+  ///////////////////
+  // Visit helpers //
+  ///////////////////
+
   protected BreakStatement(): void {
     // don't reference the break statement's label
   }
@@ -225,6 +223,10 @@ class Referencer extends Visitor {
   protected ExportAllDeclaration(): void {
     // this defines no local variables
   }
+
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
 
   protected ExportDefaultDeclaration(
     node: TSESTree.ExportDefaultDeclaration,
@@ -590,10 +592,6 @@ class Referencer extends Visitor {
       this.visitType(decl.id.typeAnnotation);
     }
   }
-
-  ///////////////////
-  // Visit helpers //
-  ///////////////////
 
   protected visitClass(
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,

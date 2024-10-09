@@ -14,12 +14,12 @@ class ImportBindingDefinition extends DefinitionBase<
 > {
   public readonly isTypeDefinition = true;
   public readonly isVariableDefinition = true;
-
   constructor(
     name: TSESTree.Identifier,
     node: TSESTree.TSImportEqualsDeclaration,
     decl: TSESTree.TSImportEqualsDeclaration,
   );
+
   constructor(
     name: TSESTree.Identifier,
     node: Exclude<

@@ -10,8 +10,8 @@ class TSModuleNameDefinition extends DefinitionBase<
   TSESTree.Identifier
 > {
   public readonly isTypeDefinition = true;
-  public readonly isVariableDefinition = true;
 
+  public readonly isVariableDefinition = true;
   constructor(name: TSESTree.Identifier, node: TSModuleNameDefinition['node']) {
     super(DefinitionType.TSModuleName, name, node, null);
   }

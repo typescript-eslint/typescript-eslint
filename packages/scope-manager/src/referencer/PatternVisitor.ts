@@ -21,11 +21,11 @@ class PatternVisitor extends VisitorBase {
     | TSESTree.AssignmentExpression
     | TSESTree.AssignmentPattern
   )[] = [];
+
   readonly #callback: PatternVisitorCallback;
   readonly #restElements: TSESTree.RestElement[] = [];
   readonly #rootPattern: TSESTree.Node;
   public readonly rightHandNodes: TSESTree.Node[] = [];
-
   constructor(
     options: PatternVisitorOptions,
     rootPattern: TSESTree.Node,

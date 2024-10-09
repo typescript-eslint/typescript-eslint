@@ -10,8 +10,8 @@ class VariableDefinition extends DefinitionBase<
   TSESTree.Identifier
 > {
   public readonly isTypeDefinition = false;
-  public readonly isVariableDefinition = true;
 
+  public readonly isVariableDefinition = true;
   constructor(
     name: TSESTree.Identifier,
     node: VariableDefinition['node'],

@@ -18,13 +18,13 @@ class ParameterDefinition extends DefinitionBase<
   null,
   TSESTree.BindingName
 > {
-  public readonly isTypeDefinition = false;
-  public readonly isVariableDefinition = true;
   /**
    * Whether the parameter definition is a part of a rest parameter.
    */
-  public readonly rest: boolean;
+  public readonly isTypeDefinition = false;
+  public readonly isVariableDefinition = true;
 
+  public readonly rest: boolean;
   constructor(
     name: TSESTree.BindingName,
     node: ParameterDefinition['node'],

@@ -4,9 +4,9 @@ import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
 } from './PatternVisitor';
+import type { VisitorOptions } from './VisitorBase';
 
 import { PatternVisitor } from './PatternVisitor';
-import type { VisitorOptions } from './VisitorBase';
 import { VisitorBase } from './VisitorBase';
 
 interface VisitPatternOptions extends PatternVisitorOptions {
