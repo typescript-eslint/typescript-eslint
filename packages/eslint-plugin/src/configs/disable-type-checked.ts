@@ -8,7 +8,7 @@
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
-  parserOptions: { program: null, project: false, projectService: false },
+  parserOptions: { project: false, program: null, projectService: false },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',

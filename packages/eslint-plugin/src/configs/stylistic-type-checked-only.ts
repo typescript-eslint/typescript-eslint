@@ -10,6 +10,7 @@ import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
+    'dot-notation': 'off',
     '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
     '@typescript-eslint/prefer-find': 'error',
@@ -18,6 +19,5 @@ export = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/prefer-regexp-exec': 'error',
     '@typescript-eslint/prefer-string-starts-ends-with': 'error',
-    'dot-notation': 'off',
   },
 } satisfies ClassicConfig.Config;

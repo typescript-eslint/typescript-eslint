@@ -18,8 +18,10 @@ export = {
     '@typescript-eslint/consistent-indexed-object-style': 'error',
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',
+    'dot-notation': 'off',
     '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+    'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
@@ -31,7 +33,5 @@ export = {
     '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/prefer-regexp-exec': 'error',
     '@typescript-eslint/prefer-string-starts-ends-with': 'error',
-    'dot-notation': 'off',
-    'no-empty-function': 'off',
   },
 } satisfies ClassicConfig.Config;

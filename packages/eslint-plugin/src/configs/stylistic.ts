@@ -19,10 +19,10 @@ export = {
     '@typescript-eslint/consistent-type-assertions': 'error',
     '@typescript-eslint/consistent-type-definitions': 'error',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+    'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
-    'no-empty-function': 'off',
   },
 } satisfies ClassicConfig.Config;

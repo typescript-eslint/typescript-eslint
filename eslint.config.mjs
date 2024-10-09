@@ -596,7 +596,10 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
-    ignores: ['packages/typescript-eslint/src/configs/*'],
+    ignores: [
+      'packages/eslint-plugin/src/configs/*',
+      'packages/typescript-eslint/src/configs/*',
+    ],
     files: [
       'packages/ast-spec/{src,tests,typings}/**/*.ts',
       'packages/eslint-plugin/{src,tests,tools,typings}/**/*.ts',
@@ -639,9 +642,9 @@ export default tseslint.config(
         'error',
         {
           customGroups: {
-            primary: ['type'],
+            first: ['type'],
           },
-          groups: ['primary', 'unknown'],
+          groups: ['first', 'unknown'],
         },
       ],
     },
@@ -653,12 +656,12 @@ export default tseslint.config(
         'error',
         {
           customGroups: {
-            primary: ['loc', 'name', 'node', 'type'],
-            secondary: ['meta', 'messageId', 'start'],
-            tertiary: ['defaultOptions', 'data', 'end'],
-            quaternary: ['fix'],
+            first: ['loc', 'name', 'node', 'type'],
+            second: ['meta', 'messageId', 'start'],
+            third: ['defaultOptions', 'data', 'end'],
+            fourth: ['fix'],
           },
-          groups: ['primary', 'secondary', 'tertiary', 'quaternary', 'unknown'],
+          groups: ['first', 'second', 'third', 'fourth', 'unknown'],
         },
       ],
     },
