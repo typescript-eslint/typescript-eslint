@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -60,16 +61,16 @@ export default createRule({
     }
 
     return {
+      PropertyDefinition(node): void {
+        if (node.value && node.typeAnnotation) {
+          compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
+        }
+      },
       TSAsExpression(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
       },
       TSTypeAssertion(node): void {
         compareTypes(node.expression, node.typeAnnotation, true);
-      },
-      PropertyDefinition(node): void {
-        if (node.value && node.typeAnnotation) {
-          compareTypes(node.value, node.typeAnnotation.typeAnnotation, false);
-        }
       },
       VariableDeclarator(node): void {
         if (node.init && node.id.typeAnnotation) {

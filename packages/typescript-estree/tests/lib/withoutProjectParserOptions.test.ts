@@ -3,14 +3,31 @@ import { withoutProjectParserOptions } from '../../src';
 
 describe('withoutProjectParserOptions', () => {
   it('removes only project parser options', () => {
-    const without = withoutProjectParserOptions({
+    const options = {
       comment: true,
       EXPERIMENTAL_useProjectService: true,
       project: true,
       projectService: true,
-    } as TSESTreeOptions);
+    } as TSESTreeOptions;
+
+    const without = withoutProjectParserOptions(options);
+
     expect(without).toEqual({
       comment: true,
+    });
+  });
+
+  it('allows an alternate type extending from TSESTreeOptions', () => {
+    const without = withoutProjectParserOptions({
+      comment: true,
+      project: true,
+      projectService: true,
+      other: true,
+    });
+
+    expect(without).toEqual({
+      comment: true,
+      other: true,
     });
   });
 });

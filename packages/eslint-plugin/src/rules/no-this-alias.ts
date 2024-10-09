@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -19,20 +20,25 @@ export default createRule<Options, MessageIds>({
       description: 'Disallow aliasing `this`',
       recommended: 'recommended',
     },
+    messages: {
+      thisAssignment: "Unexpected aliasing of 'this' to local variable.",
+      thisDestructure:
+        "Unexpected aliasing of members of 'this' to local variables.",
+    },
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
           allowDestructuring: {
+            type: 'boolean',
             description:
               'Whether to ignore destructurings, such as `const { props, state } = this`.',
-            type: 'boolean',
           },
           allowedNames: {
+            type: 'array',
             description:
               'Names to ignore, such as ["self"] for `const self = this;`.',
-            type: 'array',
             items: {
               type: 'string',
             },
@@ -40,11 +46,6 @@ export default createRule<Options, MessageIds>({
         },
       },
     ],
-    messages: {
-      thisAssignment: "Unexpected aliasing of 'this' to local variable.",
-      thisDestructure:
-        "Unexpected aliasing of members of 'this' to local variables.",
-    },
   },
   defaultOptions: [
     {

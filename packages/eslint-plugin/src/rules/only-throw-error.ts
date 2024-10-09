@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -25,28 +26,32 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow throwing non-`Error` values as exceptions',
-      recommended: 'recommended',
       extendsBaseRule: 'no-throw-literal',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowThrowingAny: {
-            type: 'boolean',
-          },
-          allowThrowingUnknown: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
     messages: {
       object: 'Expected an error object to be thrown.',
       undef: 'Do not throw undefined.',
     },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowThrowingAny: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `any`.',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `unknown`.',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
@@ -89,9 +94,7 @@ export default createRule<Options, MessageIds>({
 
     return {
       ThrowStatement(node): void {
-        if (node.argument) {
-          checkThrowArgument(node.argument);
-        }
+        checkThrowArgument(node.argument);
       },
     };
   },

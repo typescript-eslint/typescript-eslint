@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 import type { Statement } from '../../unions/Statement';
 
 export interface SwitchCase extends BaseNode {
+  type: AST_NODE_TYPES.SwitchCase;
   consequent: Statement[];
   test: Expression | null;
-  type: AST_NODE_TYPES.SwitchCase;
 }

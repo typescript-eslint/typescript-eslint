@@ -1,6 +1,7 @@
 import * as tseslint from '@typescript-eslint/typescript-estree';
 
-import { analyze, AnalyzeOptions } from '../../src/analyze';
+import type { AnalyzeOptions } from '../../src/analyze';
+import { analyze } from '../../src/analyze';
 
 type SourceType = AnalyzeOptions['sourceType'];
 
@@ -59,4 +60,6 @@ function parseAndAnalyze(
   return { ast, scopeManager };
 }
 
-export { AnalyzeOptions, parse, parseAndAnalyze };
+export { parse, parseAndAnalyze };
+
+export type { AnalyzeOptions } from '../../src/analyze';

@@ -1,9 +1,7 @@
 import type { SourceType, TSESTree } from '@typescript-eslint/types';
 
-import type { Scope } from './scope';
-import type { Variable } from './variable';
-
 import { assert } from './assert';
+import type { Scope } from './scope';
 import {
   BlockScope,
   CatchScope,
@@ -25,6 +23,7 @@ import {
 } from './scope';
 import { ClassFieldInitializerScope } from './scope/ClassFieldInitializerScope';
 import { ClassStaticBlockScope } from './scope/ClassStaticBlockScope';
+import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
@@ -41,14 +40,24 @@ class ScopeManager {
   /**
    * The root scope
    */
-  readonly #options: ScopeManagerOptions;
   public globalScope: GlobalScope | null;
   public readonly nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
+  readonly #options: ScopeManagerOptions;
   /**
    * All scopes
    * @public
    */
   public readonly scopes: Scope[];
+
+  public get variables(): Variable[] {
+    const variables = new Set<Variable>();
+    function recurse(scope: Scope): void {
+      scope.variables.forEach(v => variables.add(v));
+      scope.childScopes.forEach(recurse);
+    }
+    this.scopes.forEach(recurse);
+    return [...variables].sort((a, b) => a.$id - b.$id);
+  }
 
   constructor(options: ScopeManagerOptions) {
     this.scopes = [];
@@ -59,34 +68,24 @@ class ScopeManager {
     this.declaredVariables = new WeakMap();
   }
 
-  public isES6(): boolean {
-    return true;
-  }
-
   public isGlobalReturn(): boolean {
     return this.#options.globalReturn === true;
-  }
-
-  public isImpliedStrict(): boolean {
-    return this.#options.impliedStrict === true;
   }
 
   public isModule(): boolean {
     return this.#options.sourceType === 'module';
   }
 
+  public isImpliedStrict(): boolean {
+    return this.#options.impliedStrict === true;
+  }
+
   public isStrictModeSupported(): boolean {
     return true;
   }
 
-  public get variables(): Variable[] {
-    const variables = new Set<Variable>();
-    function recurse(scope: Scope): void {
-      scope.variables.forEach(v => variables.add(v));
-      scope.childScopes.forEach(recurse);
-    }
-    this.scopes.forEach(recurse);
-    return Array.from(variables).sort((a, b) => a.$id - b.$id);
+  public isES6(): boolean {
+    return true;
   }
 
   /**
@@ -106,16 +105,6 @@ class ScopeManager {
    * @param inner If the node has multiple scopes, this returns the outermost scope normally.
    *                If `inner` is `true` then this returns the innermost scope.
    */
-  protected nestScope<T extends Scope>(scope: T): T;
-
-  protected nestScope(scope: Scope): Scope {
-    if (scope instanceof GlobalScope) {
-      assert(this.currentScope == null);
-      this.globalScope = scope;
-    }
-    this.currentScope = scope;
-    return scope;
-  }
   public acquire(node: TSESTree.Node, inner = false): Scope | null {
     function predicate(testScope: Scope): boolean {
       if (
@@ -152,6 +141,16 @@ class ScopeManager {
     return scopes.find(predicate) ?? null;
   }
 
+  protected nestScope<T extends Scope>(scope: T): T;
+  protected nestScope(scope: Scope): Scope {
+    if (scope instanceof GlobalScope) {
+      assert(this.currentScope == null);
+      this.globalScope = scope;
+    }
+    this.currentScope = scope;
+    return scope;
+  }
+
   public nestBlockScope(node: BlockScope['block']): BlockScope {
     assert(this.currentScope);
     return this.nestScope(new BlockScope(this, this.currentScope, node));
@@ -162,6 +161,11 @@ class ScopeManager {
     return this.nestScope(new CatchScope(this, this.currentScope, node));
   }
 
+  public nestClassScope(node: ClassScope['block']): ClassScope {
+    assert(this.currentScope);
+    return this.nestScope(new ClassScope(this, this.currentScope, node));
+  }
+
   public nestClassFieldInitializerScope(
     node: ClassFieldInitializerScope['block'],
   ): ClassFieldInitializerScope {
@@ -169,11 +173,6 @@ class ScopeManager {
     return this.nestScope(
       new ClassFieldInitializerScope(this, this.currentScope, node),
     );
-  }
-
-  public nestClassScope(node: ClassScope['block']): ClassScope {
-    assert(this.currentScope);
-    return this.nestScope(new ClassScope(this, this.currentScope, node));
   }
 
   public nestClassStaticBlockScope(

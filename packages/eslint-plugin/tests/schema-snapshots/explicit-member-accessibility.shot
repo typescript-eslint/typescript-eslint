@@ -33,6 +33,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "$ref": "#/items/0/$defs/accessibilityLevel"
       },
       "ignoredMethodNames": {
+        "description": "Specific method names that may be ignored.",
         "items": {
           "type": "string"
         },
@@ -78,6 +79,7 @@ type AccessibilityLevel =
 type Options = [
   {
     accessibility?: AccessibilityLevel;
+    /** Specific method names that may be ignored. */
     ignoredMethodNames?: string[];
     overrides?: {
       accessors?: AccessibilityLevel;

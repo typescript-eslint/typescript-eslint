@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { sync as globSync } from 'globby';
+import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
@@ -57,12 +57,7 @@ export function resolveProjectList(
   const projectFolderIgnoreList = (
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
   )
-    .reduce<string[]>((acc, folder) => {
-      if (typeof folder === 'string') {
-        acc.push(folder);
-      }
-      return acc;
-    }, [])
+    .filter(folder => typeof folder === 'string')
     // prefix with a ! for not match glob
     .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
 
@@ -93,22 +88,27 @@ export function resolveProjectList(
   const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
   const globProjects = sanitizedProjects.filter(project => isGlob(project));
 
+  let globProjectPaths: string[] = [];
+
+  if (globProjects.length > 0) {
+    // Although fast-glob supports multiple patterns, fast-glob returns arbitrary order of results
+    // to improve performance. To ensure the order is correct, we need to call fast-glob for each pattern
+    // separately and then concatenate the results in patterns' order.
+    globProjectPaths = globProjects.flatMap(pattern =>
+      globSync(pattern, {
+        cwd: options.tsconfigRootDir,
+        ignore: projectFolderIgnoreList,
+      }),
+    );
+  }
+
   const uniqueCanonicalProjectPaths = new Map(
-    nonGlobProjects
-      .concat(
-        globProjects.length === 0
-          ? []
-          : globSync([...globProjects, ...projectFolderIgnoreList], {
-              cwd: options.tsconfigRootDir,
-              dot: true,
-            }),
-      )
-      .map(project => [
-        getCanonicalFileName(
-          ensureAbsolutePath(project, options.tsconfigRootDir),
-        ),
+    [...nonGlobProjects, ...globProjectPaths].map(project => [
+      getCanonicalFileName(
         ensureAbsolutePath(project, options.tsconfigRootDir),
-      ]),
+      ),
+      ensureAbsolutePath(project, options.tsconfigRootDir),
+    ]),
   );
 
   log(

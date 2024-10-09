@@ -112,4 +112,4 @@ function analyze(
   return scopeManager;
 }
 
-export { analyze, AnalyzeOptions };
+export { analyze, type AnalyzeOptions };

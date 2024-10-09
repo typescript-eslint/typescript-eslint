@@ -9,6 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowForKnownSafeCalls": {
+        "description": "Type specifiers of functions whose calls are safe to float.",
         "items": {
           "oneOf": [
             {
@@ -103,6 +104,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "allowForKnownSafePromises": {
+        "description": "Type specifiers that are known to be safe to float.",
         "items": {
           "oneOf": [
             {
@@ -218,6 +220,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Type specifiers of functions whose calls are safe to float. */
     allowForKnownSafeCalls?: (
       | {
           from: 'file';
@@ -235,6 +238,7 @@ type Options = [
         }
       | string
     )[];
+    /** Type specifiers that are known to be safe to float. */
     allowForKnownSafePromises?: (
       | {
           from: 'file';

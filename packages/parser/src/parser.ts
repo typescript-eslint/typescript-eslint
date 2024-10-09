@@ -2,7 +2,7 @@ import type {
   AnalyzeOptions,
   ScopeManager,
 } from '@typescript-eslint/scope-manager';
-import type { Lib, TSESTree } from '@typescript-eslint/types';
+import type { Lib, ParserOptions, TSESTree } from '@typescript-eslint/types';
 import type {
   AST,
   ParserServices,
@@ -12,7 +12,6 @@ import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 import type * as ts from 'typescript';
 
 import { analyze } from '@typescript-eslint/scope-manager';
-import { ParserOptions } from '@typescript-eslint/types';
 import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 import debug from 'debug';
@@ -46,14 +45,9 @@ function validateBoolean(
 const LIB_FILENAME_REGEX = /lib\.(.+)\.d\.[cm]?ts$/;
 function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   if (compilerOptions.lib) {
-    return compilerOptions.lib.reduce<Lib[]>((acc, lib) => {
-      const match = LIB_FILENAME_REGEX.exec(lib.toLowerCase());
-      if (match) {
-        acc.push(match[1] as Lib);
-      }
-
-      return acc;
-    }, []);
+    return compilerOptions.lib
+      .map(lib => LIB_FILENAME_REGEX.exec(lib.toLowerCase())?.[1])
+      .filter((lib): lib is Lib => !!lib);
   }
 
   const target = compilerOptions.target ?? ScriptTarget.ES5;
@@ -188,4 +182,6 @@ function parseForESLint(
   return { ast, scopeManager, services, visitorKeys };
 }
 
-export { parse, parseForESLint, ParserOptions };
+export { parse, parseForESLint };
+
+export type { ParserOptions } from '@typescript-eslint/types';

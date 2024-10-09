@@ -8,8 +8,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -35,12 +35,12 @@ async function test() {
 }
     `,
     {
-      options: [{ ignoreVoid: true }],
       code: `
 async function test() {
   void Promise.resolve('value');
 }
       `,
+      options: [{ ignoreVoid: true }],
     },
     `
 async function test() {
@@ -821,6 +821,20 @@ promise().then(() => {});
     },
     {
       code: `
+        import { it } from 'node:test';
+
+        it('...', () => {});
+      `,
+      options: [
+        {
+          allowForKnownSafeCalls: [
+            { from: 'package', name: 'it', package: 'node:test' },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 interface SafePromise<T> extends Promise<T> {
   brand: 'safe';
 }
@@ -1535,7 +1549,6 @@ await myTag\`abc\`.finally(() => {});
     },
 
     {
-      options: [{ ignoreVoid: true }],
       code: `
 async function test() {
   Promise.resolve('value');
@@ -1565,6 +1578,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreVoid: true }],
     },
     {
       code: `
@@ -2074,7 +2088,6 @@ async function test() {
   void Promise.resolve();
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 3,
@@ -2091,6 +2104,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2099,7 +2113,6 @@ async function test() {
   promise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 4,
@@ -2117,6 +2130,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2125,7 +2139,6 @@ async function returnsPromise() {
 }
 void returnsPromise();
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2143,6 +2156,7 @@ await returnsPromise();
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
@@ -2152,7 +2166,6 @@ async function returnsPromise() {
 }
 void /* ... */ returnsPromise();
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2170,6 +2183,7 @@ await /* ... */ returnsPromise();
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2178,7 +2192,6 @@ async function returnsPromise() {
 }
 1, returnsPromise();
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2196,6 +2209,7 @@ await (1, returnsPromise());
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -2204,7 +2218,6 @@ async function returnsPromise() {
 }
 bool ? returnsPromise() : null;
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -2222,6 +2235,7 @@ await (bool ? returnsPromise() : null);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3198,7 +3212,6 @@ async function test() {
           Promise.resolve();
         })();
       `,
-      options: [{ ignoreIIFE: true }],
       errors: [
         {
           line: 3,
@@ -3223,6 +3236,7 @@ async function test() {
           ],
         },
       ],
+      options: [{ ignoreIIFE: true }],
     },
     {
       code: `
@@ -3234,7 +3248,6 @@ declare const promiseIntersection: Promise<number> & number;
   promiseIntersection.finally();
 })();
       `,
-      options: [{ ignoreIIFE: true }],
       errors: [
         {
           line: 4,
@@ -3357,6 +3370,7 @@ declare const promiseIntersection: Promise<number> & number;
           ],
         },
       ],
+      options: [{ ignoreIIFE: true }],
     },
     {
       code: `
@@ -3407,7 +3421,6 @@ async function foo() {
   (await condition) && myPromise();
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 6,
@@ -3427,6 +3440,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3556,7 +3570,6 @@ async function foo() {
   condition && myPromise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -3575,6 +3588,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3584,7 +3598,6 @@ async function foo() {
   condition || myPromise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -3603,6 +3616,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -3612,7 +3626,6 @@ async function foo() {
   condition ?? myPromise;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 5,
@@ -3631,6 +3644,7 @@ async function foo() {
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4056,7 +4070,6 @@ await (Promise.reject() || 3);
       code: `
 void Promise.resolve().then(() => {}, undefined);
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 2,
@@ -4071,13 +4084,13 @@ await Promise.resolve().then(() => {}, undefined);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
 declare const maybeCallable: string | (() => void);
 Promise.resolve().then(() => {}, maybeCallable);
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 3,
@@ -4093,6 +4106,7 @@ await Promise.resolve().then(() => {}, maybeCallable);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4110,7 +4124,6 @@ Promise.resolve().catch(3);
 Promise.resolve().catch(maybeCallable);
 Promise.resolve().catch(definitelyCallable);
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 4,
@@ -4305,12 +4318,12 @@ Promise.resolve().catch(definitelyCallable);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
 Promise.reject() || 3;
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 2,
@@ -4325,6 +4338,7 @@ await (Promise.reject() || 3);
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4357,7 +4371,6 @@ Promise.reject()
   .finally(() => {})
   .finally(() => {});
       `,
-      options: [{ ignoreVoid: false }],
       errors: [
         {
           line: 2,
@@ -4374,6 +4387,7 @@ await Promise.reject()
           ],
         },
       ],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4626,8 +4640,8 @@ array.map(() => Promise.reject());
 declare const promiseArray: Array<Promise<unknown>>;
 void promiseArray;
       `,
-      options: [{ ignoreVoid: false }],
       errors: [{ line: 3, messageId: 'floatingPromiseArray' }],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4636,8 +4650,8 @@ async function f() {
   await promiseArray;
 }
       `,
-      options: [{ ignoreVoid: false }],
       errors: [{ line: 4, messageId: 'floatingPromiseArray' }],
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
@@ -4751,12 +4765,6 @@ interface UnsafeThenable<T> {
 let promise: UnsafeThenable<number> = Promise.resolve(5);
 promise;
       `,
-      options: [
-        {
-          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
-          checkThenables: true,
-        },
-      ],
       errors: [
         {
           line: 15,
@@ -4803,6 +4811,12 @@ await promise;
           ],
         },
       ],
+      options: [
+        {
+          allowForKnownSafePromises: [{ from: 'file', name: 'SafeThenable' }],
+          checkThenables: true,
+        },
+      ],
     },
     {
       code: `
@@ -4810,9 +4824,6 @@ class SafePromise<T> extends Promise<T> {}
 let promise: SafePromise<number> = Promise.resolve(5);
 promise.catch();
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4837,6 +4848,9 @@ await promise.catch();
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4844,9 +4858,6 @@ class UnsafePromise<T> extends Promise<T> {}
 let promise: () => UnsafePromise<number> = async () => 5;
 promise().finally();
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4871,6 +4882,9 @@ await promise().finally();
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4878,9 +4892,6 @@ type UnsafePromise = Promise<number> & { hey?: string };
 let promise: UnsafePromise = Promise.resolve(5);
 0 ? promise.catch() : 2;
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4905,6 +4916,9 @@ await (0 ? promise.catch() : 2);
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4912,9 +4926,6 @@ type UnsafePromise = Promise<number> & { hey?: string };
 let promise: () => UnsafePromise = async () => 5;
 null ?? promise().catch();
       `,
-      options: [
-        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
-      ],
       errors: [
         {
           line: 4,
@@ -4939,6 +4950,9 @@ await (null ?? promise().catch());
           ],
         },
       ],
+      options: [
+        { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
+      ],
     },
     {
       code: `
@@ -4946,8 +4960,8 @@ type Foo<T> = Promise<T> & { hey?: string };
 declare const arrayOrPromiseTuple: Foo<unknown>[];
 arrayOrPromiseTuple;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
     },
     // an array containing elements of `Promise` type and a branded Promise type will be treated as just an ordinary `Promise`.
     // see https://github.com/typescript-eslint/typescript-eslint/pull/8502#issuecomment-2105734406
@@ -4958,10 +4972,10 @@ let foo: SafePromise = Promise.resolve(1);
 let bar = [Promise.resolve(2), foo];
 bar;
       `,
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
       options: [
         { allowForKnownSafePromises: [{ from: 'file', name: 'SafePromise' }] },
       ],
-      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
     },
     {
       code: `
@@ -4969,8 +4983,8 @@ type Foo<T> = Promise<T> & { hey?: string };
 declare const arrayOrPromiseTuple: [Foo<unknown>, 5];
 arrayOrPromiseTuple;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
       errors: [{ line: 4, messageId: 'floatingPromiseArrayVoid' }],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Bar' }] }],
     },
     {
       code: `
@@ -4978,7 +4992,6 @@ type SafePromise = Promise<number> & { __linterBrands?: string };
 declare const myTag: (strings: TemplateStringsArray) => SafePromise;
 myTag\`abc\`;
       `,
-      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
       errors: [
         {
           line: 4,
@@ -5003,6 +5016,7 @@ await myTag\`abc\`;
           ],
         },
       ],
+      options: [{ allowForKnownSafePromises: [{ from: 'file', name: 'Foo' }] }],
     },
     {
       code: `
@@ -5383,8 +5397,8 @@ value as Promise<number>;
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 3,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5410,8 +5424,8 @@ await (value as Promise<number>);
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 2,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5435,8 +5449,8 @@ await (({}) as Promise<number> & number);
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 2,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',
@@ -5460,8 +5474,8 @@ await (({}) as Promise<number> & { yolo?: string });
       `,
       errors: [
         {
-          messageId: 'floatingVoid',
           line: 2,
+          messageId: 'floatingVoid',
           suggestions: [
             {
               messageId: 'floatingFixVoid',

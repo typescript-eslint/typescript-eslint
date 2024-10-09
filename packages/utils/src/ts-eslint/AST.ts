@@ -12,4 +12,4 @@ namespace AST {
   export type Range = TSESTree.Range;
 }
 
-export { AST };
+export type { AST };

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isParenthesized } from '../util';
@@ -71,7 +72,7 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-export type OptionString = 'array-simple' | 'array' | 'generic';
+export type OptionString = 'array' | 'array-simple' | 'generic';
 type Options = [
   {
     default: OptionString;
@@ -80,11 +81,11 @@ type Options = [
 ];
 type MessageIds =
   | 'errorStringArray'
-  | 'errorStringArraySimple'
-  | 'errorStringGeneric'
-  | 'errorStringGenericSimple'
   | 'errorStringArrayReadonly'
-  | 'errorStringArraySimpleReadonly';
+  | 'errorStringArraySimple'
+  | 'errorStringArraySimpleReadonly'
+  | 'errorStringGeneric'
+  | 'errorStringGenericSimple';
 
 export default createRule<Options, MessageIds>({
   name: 'array-type',
@@ -97,21 +98,22 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      errorStringGeneric:
-        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
       errorStringArray:
         "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
       errorStringArrayReadonly:
         "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}' instead.",
       errorStringArraySimple:
         "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
-      errorStringGenericSimple:
-        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
       errorStringArraySimpleReadonly:
         "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}' instead.",
+      errorStringGeneric:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
+      errorStringGenericSimple:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           arrayOption: {
             type: 'string',
@@ -130,7 +132,6 @@ export default createRule<Options, MessageIds>({
               'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
           },
         },
-        type: 'object',
       },
     ],
   },
@@ -178,9 +179,9 @@ export default createRule<Options, MessageIds>({
           node: errorNode,
           messageId,
           data: {
+            type: getMessageType(node.elementType),
             className: isReadonly ? 'ReadonlyArray' : 'Array',
             readonlyPrefix: isReadonly ? 'readonly ' : '',
-            type: getMessageType(node.elementType),
           },
           fix(fixer) {
             const typeNode = node.elementType;
@@ -246,9 +247,9 @@ export default createRule<Options, MessageIds>({
             node,
             messageId,
             data: {
+              type: 'any',
               className: isReadonlyArrayType ? 'ReadonlyArray' : 'Array',
               readonlyPrefix,
-              type: 'any',
             },
             fix(fixer) {
               return fixer.replaceText(node, `${readonlyPrefix}any[]`);
@@ -280,9 +281,9 @@ export default createRule<Options, MessageIds>({
           node,
           messageId,
           data: {
+            type: getMessageType(type),
             className: isReadonlyArrayType ? node.typeName.name : 'Array',
             readonlyPrefix,
-            type: getMessageType(type),
           },
           fix(fixer) {
             return [

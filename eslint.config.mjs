@@ -15,7 +15,9 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
+import regexpPlugin from 'eslint-plugin-regexp';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
+import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
@@ -42,7 +44,9 @@ export default tseslint.config(
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
       ['react']: fixupPluginRules(reactPlugin),
+      ['regexp']: regexpPlugin,
       ['simple-import-sort']: simpleImportSortPlugin,
+      ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
     },
     /* eslint-enable no-useless-computed-key */
@@ -109,6 +113,12 @@ export default tseslint.config(
           minimumDescriptionLength: 5,
         },
       ],
+      // TODO: enable it once we drop support for TS<5.0
+      // https://github.com/typescript-eslint/typescript-eslint/issues/10065
+      '@typescript-eslint/consistent-type-exports': [
+        'off', // 'error',
+        { fixMixedExportsWithInlineTypeSpecifier: true },
+      ],
       '@typescript-eslint/consistent-type-imports': [
         'error',
         { prefer: 'type-imports', disallowTypeAnnotations: true },
@@ -121,7 +131,7 @@ export default tseslint.config(
       'no-constant-condition': 'off',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
-        { allowConstantLoopConditions: true },
+        { allowConstantLoopConditions: true, checkTypePredicates: true },
       ],
       '@typescript-eslint/no-unnecessary-type-parameters': 'error',
       '@typescript-eslint/no-unused-expressions': 'error',
@@ -304,6 +314,7 @@ export default tseslint.config(
       'jsdoc/check-tag-names': 'off',
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/1169
       'jsdoc/check-param-names': 'off',
+      'jsdoc/informative-docs': 'error',
       // https://github.com/gajus/eslint-plugin-jsdoc/issues/1175
       'jsdoc/require-jsdoc': 'off',
       'jsdoc/require-param': 'off',
@@ -311,16 +322,33 @@ export default tseslint.config(
       'jsdoc/require-yields': 'off',
       'jsdoc/tag-lines': 'off',
 
+      'regexp/no-dupe-disjunctions': 'error',
+      'regexp/no-useless-character-class': 'error',
+      'regexp/no-useless-flag': 'error',
+      'regexp/no-useless-lazy': 'error',
+      'regexp/no-useless-non-capturing-group': 'error',
+      'regexp/prefer-quantifier': 'error',
+      'regexp/prefer-question-quantifier': 'error',
+      'regexp/prefer-w': 'error',
+
+      'sonarjs/no-duplicated-branches': 'error',
+
       //
       // eslint-plugin-unicorn
       //
 
-      'jsdoc/informative-docs': 'error',
+      'unicorn/no-length-as-slice-end': 'error',
+      'unicorn/no-lonely-if': 'error',
       'unicorn/no-typeof-undefined': 'error',
+      'unicorn/no-single-promise-in-promise-methods': 'error',
       'unicorn/no-useless-spread': 'error',
+      'unicorn/prefer-array-some': 'error',
+      'unicorn/prefer-export-from': 'error',
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-regexp-test': 'error',
+      'unicorn/prefer-spread': 'error',
       'unicorn/prefer-string-replace-all': 'error',
+      'unicorn/prefer-structured-clone': 'error',
     },
   },
   {
@@ -351,9 +379,7 @@ export default tseslint.config(
   // test file specific configuration
   {
     files: [
-      'packages/*/tests/**/*.spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
-      'packages/*/tests/**/spec.{ts,tsx,cts,mts}',
       'packages/*/tests/**/test.{ts,tsx,cts,mts}',
       'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
       'packages/integration-tests/tools/integration-test-base.ts',
@@ -570,51 +596,87 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
+    ignores: [
+      'packages/eslint-plugin/src/configs/*',
+      'packages/typescript-eslint/src/configs/*',
+    ],
     files: [
       'packages/ast-spec/{src,tests,typings}/**/*.ts',
+      'packages/eslint-plugin/{src,tests,tools,typings}/**/*.ts',
       'packages/integration-tests/{tests,tools,typing}/**/*.ts',
       'packages/parser/{src,tests}/**/*.ts',
+      'packages/rule-schema-to-typescript-types/src/**/*.ts',
       'packages/rule-tester/{src,tests,typings}/**/*.ts',
       'packages/scope-manager/{src,tests}/**/*.ts',
+      'packages/types/{src,tools}/**/*.ts',
+      'packages/typescript-eslint/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',
       'packages/visitor-keys/src/**/*.ts',
       'packages/website*/src/**/*.ts',
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
-      'perfectionist/sort-classes': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
-      'perfectionist/sort-enums': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
-      'perfectionist/sort-objects': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
+      'perfectionist/sort-classes': 'error',
+      'perfectionist/sort-enums': 'off',
+      'perfectionist/sort-objects': 'error',
       'perfectionist/sort-union-types': [
         'error',
         {
-          order: 'asc',
           groups: ['unknown', 'keyword', 'nullish'],
           type: 'natural',
         },
       ],
       'simple-import-sort/imports': 'off',
+    },
+    settings: {
+      perfectionist: {
+        partitionByComment: true,
+        order: 'asc',
+        type: 'natural',
+      },
+    },
+  },
+  {
+    files: ['packages/ast-spec/src/**/*.ts'],
+    rules: {
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          customGroups: {
+            first: ['type'],
+          },
+          groups: ['first', 'unknown'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/eslint-plugin/src/rules/*.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: {
+            first: ['loc', 'name', 'node', 'type'],
+            second: ['meta', 'messageId', 'start'],
+            third: ['defaultOptions', 'data', 'end'],
+            fourth: ['fix'],
+          },
+          groups: ['first', 'second', 'third', 'fourth', 'unknown'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: { top: ['valid'] },
+          groups: ['top', 'unknown'],
+        },
+      ],
     },
   },
 );

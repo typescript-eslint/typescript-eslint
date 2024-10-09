@@ -1,14 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
+import { createIdGenerator } from '../ID';
 import type { Scope } from '../scope';
 import type { Variable } from '../variable';
 
-import { createIdGenerator } from '../ID';
-
 enum ReferenceFlag {
   Read = 0x1,
-  ReadWrite = 0x3,
   Write = 0x2,
+  ReadWrite = 0x3,
 }
 
 interface ReferenceImplicitGlobal {
@@ -20,8 +19,8 @@ interface ReferenceImplicitGlobal {
 const generator = createIdGenerator();
 
 enum ReferenceTypeFlag {
-  Type = 0x2,
   Value = 0x1,
+  Type = 0x2,
 }
 
 /**
@@ -60,9 +59,9 @@ class Reference {
    * If reference is writeable, this is the node being written to it.
    * @public
    */
-  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
-
   public readonly writeExpr?: TSESTree.Node | null;
+
+  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
 
   /**
    * In some cases, a reference may be a type, value or both a type and value reference.
@@ -79,6 +78,10 @@ class Reference {
   /**
    * True if this reference can reference values
    */
+  public get isValueReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
+  }
+
   constructor(
     identifier: TSESTree.Identifier | TSESTree.JSXIdentifier,
     scope: Scope,
@@ -100,10 +103,6 @@ class Reference {
 
     this.maybeImplicitGlobal = maybeImplicitGlobal;
     this.#referenceType = referenceType;
-  }
-
-  public get isValueReference(): boolean {
-    return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
   }
 
   /**
@@ -147,4 +146,9 @@ class Reference {
   }
 }
 
-export { Reference, ReferenceFlag, ReferenceImplicitGlobal, ReferenceTypeFlag };
+export {
+  Reference,
+  ReferenceFlag,
+  ReferenceTypeFlag,
+  type ReferenceImplicitGlobal,
+};

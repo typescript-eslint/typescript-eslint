@@ -8,8 +8,6 @@ import type {
 
 import { applyDefault } from './applyDefault';
 
-export type { RuleListener, RuleModule };
-
 // we automatically add the url
 export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 
@@ -119,3 +117,5 @@ RuleCreator.withoutDocs = function withoutDocs<
 ): RuleModule<MessageIds, Options> {
   return createRule(args);
 };
+
+export { type RuleListener, type RuleModule } from '../ts-eslint/Rule';

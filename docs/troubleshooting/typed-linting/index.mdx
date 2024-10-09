@@ -84,18 +84,21 @@ If the IDE provides different type information from typescript-eslint's report, 
 
 ## Are TypeScript project references supported?
 
-Yes, but only with [`EXPERIMENTAL_useProjectService`](../../packages/Parser.mdx#experimental_useprojectservice).
+Yes, but only with [`parserOptions.projectService`](../../packages/Parser.mdx#projectservice).
 
 See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.
 
 ## Project Service Issues
 
-<HiddenHeading id="allowdefaultproject-glob-too-wide" />
-<HiddenHeading id="allowdefaultprojectforfiles-glob-too-wide" />
+[`parserOptions.projectService`](../../packages/Parser.mdx#projectservice) is the recommended parser option to enable typed linting as of typescript-eslint v8.
+It enforces projects generate type information for typed linting from the same `tsconfig.json` files used by editors such as VS Code.
 
-### I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
+### I get errors telling me "... was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject"
 
-These errors are caused by attempting to use the [`projectService`](../../packages/Parser.mdx#projectservice) to lint a file not explicitly included in a `tsconfig.json`.
+These errors are caused by attempting to use the project service to lint a file not explicitly included in its nearest `tsconfig.json`.
+
+The project service will attempt to build type information for each file being linted using the nearest `tsconfig.json` on disk to that file.
+If that `tsconfig.json` does not include the file, and the file isn't allowlisted in [`allowDefaultProject`](../../packages/parser#allowdefaultproject), then the project service will throw this error.
 
 For each file being reported:
 
@@ -111,13 +114,61 @@ For each file being reported:
        + "*.js"
        ]
        ```
-    2. Otherwise, consider setting [`parserOptions.createProjectService.allowDefaultProject`](../../packages/parser#allowdefaultproject).
+    2. Otherwise, if you have a small number of "out of project" files, try setting [`projectService.allowDefaultProject`](../../packages/parser#allowdefaultproject).
+    3. If not, you can switch to [`parserOptions.project`](../../packages/Parser.mdx#project) for more fine-grained control of projects.
+
+Note also:
+
+- TSConfigs don't include `.js` files by default.
+  Enabling [`allowJs`](https://www.typescriptlang.org/tsconfig/#allowJs) or [`checkJs`](https://www.typescriptlang.org/tsconfig/#checkJs) is required to do so.
+- The project service _only_ looks at `tsconfig.json` files.
+  It does not look at `tsconfig.eslint.json` or other coincidentally-similarly-named files.
+
+If these steps don't work for you, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
+Be sure to include a minimal reproduction we can work with to understand your use case!
+
+<HiddenHeading id="allowdefaultproject-glob-too-wide" />
+
+### I get errors telling me "Having many files run with the default project is known to cause performance issues and slow down linting."
+
+These errors are caused by attempting to use the project service to lint too many files not explicitly included in a `tsconfig.json` with its [`allowDefaultProject`](../../packages/parser#allowdefaultproject) option.
 
 typescript-eslint allows up to 8 "out of project" files by default.
 Each file causes a new TypeScript "program" to be built for each file it includes, which incurs a performance overhead _for each file_.
 
-If you cannot do this, please [file an issue on typescript-eslint's typescript-estree package](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=enhancement%2Ctriage&projects=&template=07-enhancement-other.yaml&title=Enhancement%3A+%3Ca+short+description+of+my+proposal%3E) telling us your use case and why you need more out-of-project files linted.
-Be sure to include a minimal reproduction we can work with to understand your use case!
+For each file being reported:
+
+- If you **do not** want to lint the file:
+  - Use [one of the options ESLint offers to ignore files](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code), such an `ignores` config key.
+- If you **do** want to lint the file:
+  - If you **do not** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx): [disable type-checked linting for that file](#how-do-i-disable-type-checked-linting-for-a-file).
+  - If you **do** want to lint the file with [type-aware linting](../../getting-started/Typed_Linting.mdx):
+    1. If possible, add the file to the closest `tsconfig.json`'s `include` instead of adding it to `allowDefaultProject`. For example, allowing `.js` files:
+       ```diff title="tsconfig.json"
+       "include": [
+         "src",
+       + "*.js"
+       ]
+       ```
+    2. If not, you can switch to [`parserOptions.project`](../../packages/Parser.mdx#project) for more fine-grained control of projects.
+
+### I'd like to use TSConfigs other than `tsconfig.json`s for project service type information
+
+Only the TSConfig path used for "out of project" files in [`allowDefaultProject`](../../packages/Parser.mdx#allowdefaultproject) can be customized.
+Otherwise, only `tsconfig.json` files on disk will be read.
+
+For example, instead of:
+
+- `tsconfig.json`s for building (and, coincidentally, type information in editors)
+- Separate TSConfig(s) like `tsconfig.eslint.json` for linting
+
+Consider using:
+
+- `tsconfig.json`s for linting (and, intentionally, the same type information in editors)
+- Separate TSConfig(s) like `tsconfig.build.json` for building
+
+The project service uses the same underlying TypeScript logic as editors such as VS Code.
+Using only `tsconfig.json` for typed linting enforces that the types seen in your editor match what's used for linting.
 
 ## Traditional Project Issues
 

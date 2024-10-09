@@ -22,7 +22,7 @@ function sortKeys<Node extends TSESTree.Node>(
     keySet.delete('interpreter');
   }
 
-  return Array.from(keySet).sort((a, b) =>
+  return [...keySet].sort((a, b) =>
     a.localeCompare(b),
   ) as (keyof typeof node)[];
 }
