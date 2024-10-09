@@ -5,6 +5,7 @@ import type { Identifier } from '../../expression/Identifier/spec';
 import type { TSEnumBody } from '../../special/TSEnumBody/spec';
 
 export interface TSEnumDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSEnumDeclaration;
   /**
    * The body of the enum.
    */
@@ -34,5 +35,4 @@ export interface TSEnumDeclaration extends BaseNode {
    * @deprecated Use {@link body} instead.
    */
   members: TSEnumMember[];
-  type: AST_NODE_TYPES.TSEnumDeclaration;
 }

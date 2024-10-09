@@ -4,7 +4,7 @@ import type { Identifier } from '../../expression/Identifier/spec';
 import type { EntityName } from '../../unions/EntityName';
 
 export interface TSQualifiedName extends BaseNode {
+  type: AST_NODE_TYPES.TSQualifiedName;
   left: EntityName;
   right: Identifier;
-  type: AST_NODE_TYPES.TSQualifiedName;
 }

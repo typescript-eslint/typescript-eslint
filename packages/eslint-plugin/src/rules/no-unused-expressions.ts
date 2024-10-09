@@ -4,6 +4,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -22,14 +23,14 @@ export default createRule<Options, MessageIds>({
       recommended: 'recommended',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
   },
   defaultOptions: [
     {
       allowShortCircuit: false,
-      allowTernary: false,
       allowTaggedTemplates: false,
+      allowTernary: false,
     },
   ],
   create(context, [{ allowShortCircuit = false, allowTernary = false }]) {

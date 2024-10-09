@@ -2,6 +2,8 @@ import type { Range } from './Range';
 import type { SourceLocation } from './SourceLocation';
 
 export interface NodeOrTokenData {
+  type: string;
+
   /**
    * The source location information of the node.
    *
@@ -10,6 +12,4 @@ export interface NodeOrTokenData {
   loc: SourceLocation;
 
   range: Range;
-
-  type: string;
 }

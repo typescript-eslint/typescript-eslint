@@ -1,11 +1,13 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-unsafe-assignment';
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+
+import rule from '../../src/rules/no-unsafe-assignment';
 import { getFixturesRootDir } from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -21,10 +23,10 @@ const assignmentTest = (
       code: `const ${assignment}`,
       errors: [
         {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 1,
           column: column + 6,
           endColumn: endColumn + 6,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
         },
       ],
     },
@@ -33,10 +35,10 @@ const assignmentTest = (
       code: `function foo(${assignment}) {}`,
       errors: [
         {
-          messageId: 'unsafeArrayPatternFromTuple',
-          line: 1,
           column: column + 13,
           endColumn: endColumn + 13,
+          line: 1,
+          messageId: 'unsafeArrayPatternFromTuple',
         },
       ],
     },
@@ -48,10 +50,10 @@ const assignmentTest = (
             code: `(${assignment})`,
             errors: [
               {
-                messageId: 'unsafeArrayPatternFromTuple' as const,
-                line: 1,
                 column: column + 1,
                 endColumn: endColumn + 1,
+                line: 1,
+                messageId: 'unsafeArrayPatternFromTuple' as const,
               },
             ],
           },
@@ -205,8 +207,8 @@ const [x] = spooky;
       `,
       errors: [
         {
+          data: { receiver: 'error typed', sender: 'error typed' },
           messageId: 'anyAssignment',
-          data: { sender: 'error typed', receiver: 'error typed' },
         },
       ],
     },
@@ -216,8 +218,8 @@ const [[[x]]] = [spooky];
       `,
       errors: [
         {
+          data: { receiver: 'error typed', sender: 'error typed' },
           messageId: 'unsafeArrayPatternFromTuple',
-          data: { sender: 'error typed', receiver: 'error typed' },
         },
       ],
     },
@@ -229,12 +231,12 @@ const {
       `,
       errors: [
         {
+          data: { receiver: 'error typed', sender: 'error typed' },
           messageId: 'unsafeArrayPatternFromTuple',
-          data: { sender: 'error typed', receiver: 'error typed' },
         },
         {
+          data: { receiver: 'error typed', sender: 'error typed' },
           messageId: 'anyAssignment',
-          data: { sender: 'error typed', receiver: 'error typed' },
         },
       ],
     },
@@ -246,10 +248,10 @@ value = spooky;
       `,
       errors: [
         {
-          messageId: 'anyAssignment',
           data: {
             sender: 'error typed',
           },
+          messageId: 'anyAssignment',
         },
       ],
     },
@@ -270,11 +272,11 @@ const [x] = [] as any[];
       code: 'const x: Set<string> = new Set<any>();',
       errors: [
         {
-          messageId: 'unsafeAssignment',
           data: {
-            sender: '`Set<any>`',
             receiver: '`Set<string>`',
+            sender: '`Set<any>`',
           },
+          messageId: 'unsafeAssignment',
         },
       ],
     },
@@ -282,11 +284,11 @@ const [x] = [] as any[];
       code: 'const x: Map<string, string> = new Map<string, any>();',
       errors: [
         {
-          messageId: 'unsafeAssignment',
           data: {
-            sender: '`Map<string, any>`',
             receiver: '`Map<string, string>`',
+            sender: '`Map<string, any>`',
           },
+          messageId: 'unsafeAssignment',
         },
       ],
     },
@@ -294,11 +296,11 @@ const [x] = [] as any[];
       code: 'const x: Set<string[]> = new Set<any[]>();',
       errors: [
         {
-          messageId: 'unsafeAssignment',
           data: {
-            sender: '`Set<any[]>`',
             receiver: '`Set<string[]>`',
+            sender: '`Set<any[]>`',
           },
+          messageId: 'unsafeAssignment',
         },
       ],
     },
@@ -306,11 +308,11 @@ const [x] = [] as any[];
       code: 'const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();',
       errors: [
         {
-          messageId: 'unsafeAssignment',
           data: {
-            sender: '`Set<Set<Set<any>>>`',
             receiver: '`Set<Set<Set<string>>>`',
+            sender: '`Set<Set<Set<any>>>`',
           },
+          messageId: 'unsafeAssignment',
         },
       ],
     },
@@ -328,10 +330,10 @@ const [x] = [] as any[];
       code: '[[[[x]]]] = [1 as any];',
       errors: [
         {
-          messageId: 'unsafeAssignment',
-          line: 1,
           column: 1,
           endColumn: 23,
+          line: 1,
+          messageId: 'unsafeAssignment',
         },
       ],
     },
@@ -360,9 +362,9 @@ const x = [...([] as any[])];
       code: 'const x = { y: 1 as any };',
       errors: [
         {
-          messageId: 'anyAssignment',
           column: 13,
           endColumn: 24,
+          messageId: 'anyAssignment',
         },
       ],
     },
@@ -370,9 +372,9 @@ const x = [...([] as any[])];
       code: 'const x = { y: { z: 1 as any } };',
       errors: [
         {
-          messageId: 'anyAssignment',
           column: 18,
           endColumn: 29,
+          messageId: 'anyAssignment',
         },
       ],
     },
@@ -380,13 +382,13 @@ const x = [...([] as any[])];
       code: 'const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };',
       errors: [
         {
-          messageId: 'unsafeAssignment',
           column: 43,
-          endColumn: 70,
           data: {
-            sender: '`Set<Set<Set<any>>>`',
             receiver: '`Set<Set<Set<string>>>`',
+            sender: '`Set<Set<Set<any>>>`',
           },
+          endColumn: 70,
+          messageId: 'unsafeAssignment',
         },
       ],
     },
@@ -395,9 +397,9 @@ const x = [...([] as any[])];
       errors: [
         {
           // spreading an any widens the object type to any
-          messageId: 'anyAssignment',
           column: 7,
           endColumn: 28,
+          messageId: 'anyAssignment',
         },
       ],
     },
@@ -408,6 +410,14 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={1 as any} />;
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 17,
+          line: 4,
+          messageId: 'anyAssignment',
+        },
+      ],
       languageOptions: {
         parserOptions: {
           ecmaFeatures: {
@@ -415,14 +425,6 @@ declare function Foo(props: Props): never;
           },
         },
       },
-      errors: [
-        {
-          messageId: 'anyAssignment',
-          line: 4,
-          column: 9,
-          endColumn: 17,
-        },
-      ],
     },
     {
       code: `
@@ -432,10 +434,10 @@ function foo() {
       `,
       errors: [
         {
-          messageId: 'anyAssignmentThis',
-          line: 3,
           column: 9,
           endColumn: 19,
+          line: 3,
+          messageId: 'anyAssignmentThis',
         },
       ],
     },
@@ -446,10 +448,10 @@ const test: T = ['string', []] as any;
       `,
       errors: [
         {
-          messageId: 'anyAssignment',
-          line: 3,
           column: 7,
           endColumn: 38,
+          line: 3,
+          messageId: 'anyAssignment',
         },
       ],
     },
@@ -461,10 +463,10 @@ const foo: Foo = { bar };
       `,
       errors: [
         {
-          messageId: 'anyAssignment',
-          line: 4,
           column: 20,
           endColumn: 23,
+          line: 4,
+          messageId: 'anyAssignment',
         },
       ],
     },

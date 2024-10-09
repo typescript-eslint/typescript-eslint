@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { Type } from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type { Type } from 'typescript';
 import * as ts from 'typescript';
 
 import {
@@ -91,16 +92,16 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        additionalProperties: false,
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoreIntersections: {
-            description: 'Whether to ignore `&` intersections.',
             type: 'boolean',
+            description: 'Whether to ignore `&` intersections.',
           },
           ignoreUnions: {
-            description: 'Whether to ignore `|` unions.',
             type: 'boolean',
+            description: 'Whether to ignore `|` unions.',
           },
         },
       },
@@ -137,11 +138,11 @@ export default createRule<Options, MessageIds>({
             data?: Record<string, unknown>,
           ): void => {
             const getUnionOrIntersectionToken = (
-              where: 'Before' | 'After',
+              where: 'After' | 'Before',
               at: number,
             ): TSESTree.Token | undefined =>
               sourceCode[`getTokens${where}`](constituentNode, {
-                filter: token => ['|', '&'].includes(token.value),
+                filter: token => ['&', '|'].includes(token.value),
               }).at(at);
 
             const beforeUnionOrIntersectionToken = getUnionOrIntersectionToken(
@@ -179,13 +180,13 @@ export default createRule<Options, MessageIds>({
               );
             }
             context.report({
-              data,
-              messageId,
-              node: constituentNode,
               loc: {
                 start: constituentNode.loc.start,
                 end: (bracketAfterTokens.at(-1) ?? constituentNode).loc.end,
               },
+              node: constituentNode,
+              messageId,
+              data,
               fix: fixer =>
                 [
                   beforeUnionOrIntersectionToken,

@@ -1710,14 +1710,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type UnderscoreOptions =
-  | 'allow'
-  | 'allowDouble'
-  | 'allowSingleOrDouble'
-  | 'forbid'
-  | 'require'
-  | 'requireDouble';
-
 type PredefinedFormats =
   | 'PascalCase'
   | 'StrictPascalCase'
@@ -1728,14 +1720,22 @@ type PredefinedFormats =
 
 type TypeModifiers = 'array' | 'boolean' | 'function' | 'number' | 'string';
 
-type PrefixSuffixConfig = string[];
+type UnderscoreOptions =
+  | 'allow'
+  | 'allowDouble'
+  | 'allowSingleOrDouble'
+  | 'forbid'
+  | 'require'
+  | 'requireDouble';
+
+type FormatOptionsConfig = PredefinedFormats[] | null;
 
 type MatchRegexConfig = {
   match: boolean;
   regex: string;
 };
 
-type FormatOptionsConfig = PredefinedFormats[] | null;
+type PrefixSuffixConfig = string[];
 
 type Options = /** Multiple selectors in one config */
 (| {

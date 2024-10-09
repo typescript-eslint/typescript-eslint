@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -20,17 +21,17 @@ type Options = [
 ];
 
 interface SourceExports {
-  source: string;
   reportValueExports: ReportValueExport[];
+  source: string;
   typeOnlyNamedExport: TSESTree.ExportNamedDeclaration | null;
   valueOnlyNamedExport: TSESTree.ExportNamedDeclaration | null;
 }
 
 interface ReportValueExport {
+  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
   node: TSESTree.ExportNamedDeclaration;
   typeBasedSpecifiers: TSESTree.ExportSpecifier[];
   valueSpecifiers: TSESTree.ExportSpecifier[];
-  inlineTypeSpecifiers: TSESTree.ExportSpecifier[];
 }
 
 type MessageIds =
@@ -46,28 +47,28 @@ export default createRule<Options, MessageIds>({
       description: 'Enforce consistent usage of type exports',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
-      typeOverValue:
-        'All exports in the declaration are only used as types. Use `export type`.',
-      singleExportIsType:
-        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
       multipleExportsAreTypes:
         'Type exports {{exportNames}} are not values and should be exported using `export type`.',
+      singleExportIsType:
+        'Type export {{exportNames}} is not a value and should be exported using `export type`.',
+      typeOverValue:
+        'All exports in the declaration are only used as types. Use `export type`.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           fixMixedExportsWithInlineTypeSpecifier: {
+            type: 'boolean',
             description:
               'Whether the rule will autofix "mixed" export cases using TS inline type specifiers.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
-    fixable: 'code',
   },
   defaultOptions: [
     {
@@ -193,8 +194,8 @@ export default createRule<Options, MessageIds>({
         const source = getSourceFromExport(node) ?? 'undefined';
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const sourceExports = (sourceExportsMap[source] ||= {
-          source,
           reportValueExports: [],
+          source,
           typeOnlyNamedExport: null,
           valueOnlyNamedExport: null,
         });
@@ -244,9 +245,9 @@ export default createRule<Options, MessageIds>({
         ) {
           sourceExports.reportValueExports.push({
             node,
+            inlineTypeSpecifiers,
             typeBasedSpecifiers,
             valueSpecifiers,
-            inlineTypeSpecifiers,
           });
         }
       },
@@ -374,7 +375,7 @@ function* fixSeparateNamedExports(
   sourceCode: Readonly<TSESLint.SourceCode>,
   report: ReportValueExport,
 ): IterableIterator<TSESLint.RuleFix> {
-  const { node, typeBasedSpecifiers, inlineTypeSpecifiers, valueSpecifiers } =
+  const { node, inlineTypeSpecifiers, typeBasedSpecifiers, valueSpecifiers } =
     report;
   const typeSpecifiers = [...typeBasedSpecifiers, ...inlineTypeSpecifiers];
   const source = getSourceFromExport(node);
