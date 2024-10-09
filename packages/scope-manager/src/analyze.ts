@@ -18,11 +18,6 @@ interface AnalyzeOptions {
   childVisitorKeys?: ReferencerOptions['childVisitorKeys'];
 
   /**
-   * @deprecated This option never did what it was intended for and will be removed in a future major release.
-   */
-  emitDecoratorMetadata?: boolean;
-
-  /**
    * Whether the whole script is executed under node.js environment.
    * When enabled, the scope manager adds a function scope immediately following the global scope.
    * Defaults to `false`.
@@ -36,19 +31,19 @@ interface AnalyzeOptions {
   impliedStrict?: boolean;
 
   /**
+   * The identifier that's used for JSX Element creation (after transpilation).
+   * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
+   * Defaults to `"React"`.
+   */
+  jsxPragma?: string | null;
+
+  /**
    * The identifier that's used for JSX fragment elements (after transpilation).
    * If `null`, assumes transpilation will always use a member on `jsxFactory` (i.e. React.Fragment).
    * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
    * Defaults to `null`.
    */
   jsxFragmentName?: string | null;
-
-  /**
-   * The identifier that's used for JSX Element creation (after transpilation).
-   * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
-   * Defaults to `"React"`.
-   */
-  jsxPragma?: string | null;
 
   /**
    * The lib used by the project.
@@ -59,11 +54,16 @@ interface AnalyzeOptions {
    */
   lib?: Lib[];
 
-  // TODO - remove this in v8
   /**
    * The source type of the script.
    */
   sourceType?: SourceType;
+
+  // TODO - remove this in v8
+  /**
+   * @deprecated This option never did what it was intended for and will be removed in a future major release.
+   */
+  emitDecoratorMetadata?: boolean;
 }
 
 const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {

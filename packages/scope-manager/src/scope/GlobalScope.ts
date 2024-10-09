@@ -23,13 +23,13 @@ class GlobalScope extends ScopeBase<
 > {
   // note this is accessed in used in the legacy eslint-scope tests, so it can't be true private
   private readonly implicit: {
+    readonly set: Map<string, Variable>;
+    readonly variables: Variable[];
     /**
      * List of {@link Reference}s that are left to be resolved (i.e. which
      * need to be linked to the variable they refer to).
      */
     leftToBeResolved: Reference[];
-    readonly set: Map<string, Variable>;
-    readonly variables: Variable[];
   };
 
   constructor(scopeManager: ScopeManager, block: GlobalScope['block']) {

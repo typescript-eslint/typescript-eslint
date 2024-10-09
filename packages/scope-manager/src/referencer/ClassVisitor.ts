@@ -29,69 +29,18 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
-  protected AccessorProperty(node: TSESTree.AccessorProperty): void {
-    this.visitPropertyDefinition(node);
+  visit(node: TSESTree.Node | null | undefined): void {
+    // make sure we only handle the nodes we are designed to handle
+    if (node && node.type in this) {
+      super.visit(node);
+    } else {
+      this.#referencer.visit(node);
+    }
   }
 
   ///////////////////
   // Visit helpers //
   ///////////////////
-
-  protected ClassBody(node: TSESTree.ClassBody): void {
-    // this is here on purpose so that this visitor explicitly declares visitors
-    // for all nodes it cares about (see the instance visit method above)
-    this.visitChildren(node);
-  }
-
-  protected Identifier(node: TSESTree.Identifier): void {
-    this.#referencer.visit(node);
-  }
-
-  protected MethodDefinition(node: TSESTree.MethodDefinition): void {
-    this.visitMethod(node);
-  }
-
-  protected PrivateIdentifier(): void {
-    // intentionally skip
-  }
-
-  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  protected StaticBlock(node: TSESTree.StaticBlock): void {
-    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
-
-    node.body.forEach(b => this.visit(b));
-
-    this.#referencer.close(node);
-  }
-
-  protected TSAbstractAccessorProperty(
-    node: TSESTree.TSAbstractAccessorProperty,
-  ): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  /////////////////////
-  // Visit selectors //
-  /////////////////////
-
-  protected TSAbstractMethodDefinition(
-    node: TSESTree.TSAbstractMethodDefinition,
-  ): void {
-    this.visitPropertyBase(node);
-  }
-
-  protected TSAbstractPropertyDefinition(
-    node: TSESTree.TSAbstractPropertyDefinition,
-  ): void {
-    this.visitPropertyDefinition(node);
-  }
-
-  protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
-    this.visitType(node);
-  }
 
   protected visitClass(
     node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
@@ -325,13 +274,64 @@ class ClassVisitor extends Visitor {
     TypeVisitor.visit(this.#referencer, node);
   }
 
-  visit(node: TSESTree.Node | null | undefined): void {
-    // make sure we only handle the nodes we are designed to handle
-    if (node && node.type in this) {
-      super.visit(node);
-    } else {
-      this.#referencer.visit(node);
-    }
+  /////////////////////
+  // Visit selectors //
+  /////////////////////
+
+  protected AccessorProperty(node: TSESTree.AccessorProperty): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  protected ClassBody(node: TSESTree.ClassBody): void {
+    // this is here on purpose so that this visitor explicitly declares visitors
+    // for all nodes it cares about (see the instance visit method above)
+    this.visitChildren(node);
+  }
+
+  protected Identifier(node: TSESTree.Identifier): void {
+    this.#referencer.visit(node);
+  }
+
+  protected MethodDefinition(node: TSESTree.MethodDefinition): void {
+    this.visitMethod(node);
+  }
+
+  protected PrivateIdentifier(): void {
+    // intentionally skip
+  }
+
+  protected PropertyDefinition(node: TSESTree.PropertyDefinition): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  protected StaticBlock(node: TSESTree.StaticBlock): void {
+    this.#referencer.scopeManager.nestClassStaticBlockScope(node);
+
+    node.body.forEach(b => this.visit(b));
+
+    this.#referencer.close(node);
+  }
+
+  protected TSAbstractAccessorProperty(
+    node: TSESTree.TSAbstractAccessorProperty,
+  ): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  protected TSAbstractMethodDefinition(
+    node: TSESTree.TSAbstractMethodDefinition,
+  ): void {
+    this.visitPropertyBase(node);
+  }
+
+  protected TSAbstractPropertyDefinition(
+    node: TSESTree.TSAbstractPropertyDefinition,
+  ): void {
+    this.visitPropertyDefinition(node);
+  }
+
+  protected TSIndexSignature(node: TSESTree.TSIndexSignature): void {
+    this.visitType(node);
   }
 }
 
