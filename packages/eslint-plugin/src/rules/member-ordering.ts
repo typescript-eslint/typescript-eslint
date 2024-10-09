@@ -737,13 +737,6 @@ export default createRule<Options, MessageIds>({
             type: 'string',
             enum: allMemberTypes as string[],
           },
-          baseConfig: {
-            oneOf: [
-              neverConfig,
-              arrayConfig('#/items/0/$defs/allItems'),
-              objectConfig('#/items/0/$defs/allItems'),
-            ],
-          },
           optionalityOrderOptions: {
             type: 'string',
             enum: ['optional-first', 'required-first'],
@@ -758,7 +751,6 @@ export default createRule<Options, MessageIds>({
               'natural-case-insensitive',
             ],
           },
-
           typeItems: {
             type: 'string',
             enum: [
@@ -768,6 +760,14 @@ export default createRule<Options, MessageIds>({
               'field',
               'method',
               'constructor',
+            ],
+          },
+          // ajv is order-dependent; these configs must come last
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
             ],
           },
           typesConfig: {
