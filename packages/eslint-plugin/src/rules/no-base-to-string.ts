@@ -1,11 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
 import { expandUnionOrIntersectionType } from '../util/expandUnionOrIntersectionType';
+import { isArrayType } from '../util/isArrayType';
 
 enum Usefulness {
   Always = 'always',
@@ -84,7 +84,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      if (isArrayType(type)) {
+      if (isArrayType(checker, type)) {
         const types = expandUnionOrIntersectionType(type).flatMap(t =>
           checker.getTypeArguments(t as ts.TypeReference),
         );
@@ -169,16 +169,6 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
-    function isArrayType(type: ts.Type): boolean {
-      return tsutils
-        .unionTypeParts(type)
-        .every(unionPart =>
-          tsutils
-            .intersectionTypeParts(unionPart)
-            .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
-        );
-    }
-
     return {
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
@@ -201,7 +191,7 @@ export default createRule<Options, MessageIds>({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const maybeArrayType = services.getTypeAtLocation(memberExpr.object);
 
-        if (!isArrayType(maybeArrayType)) {
+        if (!isArrayType(checker, maybeArrayType)) {
           return;
         }
 
