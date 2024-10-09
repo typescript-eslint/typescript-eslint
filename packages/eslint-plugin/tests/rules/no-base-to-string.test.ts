@@ -1,4 +1,11 @@
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
+
+import type { MessageIds, Options } from '../../src/rules/no-base-to-string';
 
 import rule from '../../src/rules/no-base-to-string';
 import { getFixturesRootDir } from '../RuleTester';
@@ -31,12 +38,174 @@ const literalListNeedParen: string[] = [
   'function() {}',
 ];
 
-const literalList = [...literalListBasic, ...literalListNeedParen];
+const literalListArray = literalListBasic.map(i => `[${i}]`);
+
+const literalList = [
+  ...literalListBasic,
+  ...literalListArray,
+  ...literalListNeedParen,
+];
 
 const literalListWrapped = [
   ...literalListBasic,
+  ...literalListArray,
   ...literalListNeedParen.map(i => `(${i})`),
 ];
+
+const validArray = (type: string): ValidTestCase<Options>[] => [
+  // Array
+  {
+    code: `
+      function test(type: (${type})[]) {
+        return \`\${type}\`;
+      }
+    `,
+  },
+  {
+    code: `
+      function test(type: (${type})[]) {
+        return type.toString();
+      }
+    `,
+  },
+  {
+    code: `
+      function test(type: (${type})[]) {
+        return type.join();
+      }
+    `,
+  },
+
+  // Tuple
+  {
+    code: `
+      function test(type: [${type}]) {
+        return \`\${type}\`;
+      }
+    `,
+  },
+  {
+    code: `
+      function test(type: [${type}]) {
+        return type.toString();
+      }
+    `,
+  },
+  {
+    code: `
+      function test(type: [${type}]) {
+        return type.join();
+      }
+    `,
+  },
+];
+
+const invalidArray = (
+  type: string,
+  certainty: string,
+): InvalidTestCase<MessageIds, Options>[] => {
+  return [
+    // Array
+    {
+      code: `
+        function test(type: (${type})[]) {
+          return \`\${type}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty,
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function test(type: (${type})[]) {
+          return type.toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty,
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function test(type: (${type})[]) {
+          return type.join();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty,
+            name: 'type.join()',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+
+    // Tuple
+    {
+      code: `
+        function test(type: [${type}]) {
+          return \`\${type}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty,
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function test(type: [${type}]) {
+          return type.toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty,
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function test(type: [${type}]) {
+          return type.join();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty,
+            name: 'type.join()',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+  ];
+};
 
 ruleTester.run('no-base-to-string', rule, {
   valid: [
@@ -118,6 +287,17 @@ tag\`\${{}}\`;
     "'' += new Error();",
     "'' += new URL();",
     "'' += new URLSearchParams();",
+
+    {
+      code: `
+        function test(type: string[] | number[]) {
+          return \`\${type}\`;
+        }
+      `,
+    },
+    ...validArray('{} & string'),
+    ...validArray('string | number'),
+    ...validArray('string[][]'),
   ],
   invalid: [
     {
@@ -246,5 +426,25 @@ tag\`\${{}}\`;
         },
       ],
     },
+    {
+      code: `
+        function test(type: string[] | {}[]) {
+          return \`\${type}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    ...invalidArray('{}', 'will'),
+    ...invalidArray('{} | string', 'may'),
+    ...invalidArray('{a: number} | {b: number}', 'will'),
+    ...invalidArray('{}[]', 'will'),
   ],
 });

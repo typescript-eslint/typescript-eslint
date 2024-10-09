@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
@@ -11,12 +12,12 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-type Options = [
+export type Options = [
   {
     ignoredTypeNames?: string[];
   },
 ];
-type MessageIds = 'baseToString';
+export type MessageIds = 'baseToString';
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -67,6 +68,7 @@ export default createRule<Options, MessageIds>({
       const certainty = collectToStringCertainty(
         type ?? services.getTypeAtLocation(node),
       );
+
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -82,6 +84,22 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
+      if (isArrayType(type)) {
+        const types = expandUnionOrIntersectionType(type).flatMap(t =>
+          checker.getTypeArguments(t as ts.TypeReference),
+        );
+
+        for (const subType of types) {
+          const subtypeUsefulness = collectToStringCertainty(subType);
+
+          if (subtypeUsefulness !== Usefulness.Always) {
+            return subtypeUsefulness;
+          }
+        }
+
+        return Usefulness.Always;
+      }
+
       const toString = checker.getPropertyOfType(type, 'toString');
       const declarations = toString?.getDeclarations();
       if (!toString || !declarations || declarations.length === 0) {
@@ -151,6 +169,23 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
+    function isArrayType(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .every(unionPart =>
+          tsutils
+            .intersectionTypeParts(unionPart)
+            .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
+        );
+    }
+
+    function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
+      if (type.isUnionOrIntersection()) {
+        return type.types.flatMap(expandUnionOrIntersectionType);
+      }
+      return [type];
+    }
+
     return {
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
@@ -166,6 +201,21 @@ export default createRule<Options, MessageIds>({
         ) {
           checkExpression(node.left, leftType);
         }
+      },
+      'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        const maybeArrayType = services.getTypeAtLocation(memberExpr.object);
+
+        if (!isArrayType(maybeArrayType)) {
+          return;
+        }
+
+        checkExpression(
+          memberExpr.parent as TSESTree.CallExpression,
+          maybeArrayType,
+        );
       },
       'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
         node: TSESTree.Expression,
