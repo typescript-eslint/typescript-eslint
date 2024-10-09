@@ -15,7 +15,6 @@ interface TSModuleDeclarationBase extends BaseNode {
    * This can only be `undefined` for the code `declare module 'mod';`
    */
   body?: TSModuleBlock;
-  // TODO - remove this in the next major (we have `.kind` now)
   /**
    * Whether the module is `declare`d
    * @example
@@ -24,6 +23,7 @@ interface TSModuleDeclarationBase extends BaseNode {
    * ```
    */
   declare: boolean;
+  // TODO - remove this in the next major (we have `.kind` now)
   /**
    * Whether this is a global declaration
    * @example
