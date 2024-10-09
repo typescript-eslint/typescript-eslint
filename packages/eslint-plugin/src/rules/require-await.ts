@@ -15,6 +15,7 @@ import {
   nullThrows,
   upperCaseFirst,
 } from '../util';
+import { expandUnionOrIntersectionType } from '../util/expandUnionOrIntersectionType';
 
 interface ScopeInfo {
   hasAsync: boolean;
@@ -314,13 +315,6 @@ function isEmptyFunction(node: FunctionNode): boolean {
     node.body.type === AST_NODE_TYPES.BlockStatement &&
     node.body.body.length === 0
   );
-}
-
-function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
-  if (type.isUnionOrIntersection()) {
-    return type.types.flatMap(expandUnionOrIntersectionType);
-  }
-  return [type];
 }
 
 function hasTypeName(

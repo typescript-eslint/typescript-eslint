@@ -5,6 +5,7 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
+import { expandUnionOrIntersectionType } from '../util/expandUnionOrIntersectionType';
 
 enum Usefulness {
   Always = 'always',
@@ -68,7 +69,6 @@ export default createRule<Options, MessageIds>({
       const certainty = collectToStringCertainty(
         type ?? services.getTypeAtLocation(node),
       );
-
       if (certainty === Usefulness.Always) {
         return;
       }
@@ -177,13 +177,6 @@ export default createRule<Options, MessageIds>({
             .intersectionTypeParts(unionPart)
             .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
         );
-    }
-
-    function expandUnionOrIntersectionType(type: ts.Type): ts.Type[] {
-      if (type.isUnionOrIntersection()) {
-        return type.types.flatMap(expandUnionOrIntersectionType);
-      }
-      return [type];
     }
 
     return {
