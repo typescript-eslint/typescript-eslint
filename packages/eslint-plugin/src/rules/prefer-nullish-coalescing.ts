@@ -106,7 +106,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreBooleanCoercion: {
             description:
-              'Whether to ignore any make boolean type value like `Boolean`, `!`',
+              'Whether to ignore any make boolean type value like `Boolean`',
             type: 'boolean',
           },
         },
@@ -458,10 +458,8 @@ function isMakeBoolean(
     parents.add(current);
 
     if (
-      (current.type === AST_NODE_TYPES.UnaryExpression &&
-        current.operator === '!') ||
-      (current.type === AST_NODE_TYPES.CallExpression &&
-        isBuiltInBooleanCall(current, context))
+      current.type === AST_NODE_TYPES.CallExpression &&
+      isBuiltInBooleanCall(current, context)
     ) {
       return true;
     }

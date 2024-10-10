@@ -174,7 +174,7 @@ Also, if you would like to ignore all primitives types, you can set `ignorePrimi
 
 ### `ignoreBooleanCoercion`
 
-Whether to ignore expressions that coerce a value into a boolean: `Boolean(...)` and `!(...)`.
+Whether to ignore expressions that coerce a value into a boolean: `Boolean(...)`.
 
 Incorrect code for `ignoreBooleanCoercion: false`, and correct code for `ignoreBooleanCoercion: true`:
 
@@ -182,9 +182,7 @@ Incorrect code for `ignoreBooleanCoercion: false`, and correct code for `ignoreB
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
-const x = !(a || b);
-const y = !!(a || b);
-const z = Boolean(a || b);
+const x = Boolean(a || b);
 ```
 
 Correct code for `ignoreBooleanCoercion: false`:
@@ -193,9 +191,7 @@ Correct code for `ignoreBooleanCoercion: false`:
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
-const x = !(a ?? b);
-const y = !!(a ?? b);
-const z = Boolean(a ?? b);
+const x = Boolean(a ?? b);
 ```
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
