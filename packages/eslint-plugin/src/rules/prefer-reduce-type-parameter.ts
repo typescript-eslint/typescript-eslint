@@ -1,4 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -7,7 +10,6 @@ import {
   isStaticMemberAccessOfValue,
   isTypeAssertion,
 } from '../util';
-import { isArrayType } from '../util/isArrayType';
 
 type MemberExpressionWithCallExpressionParent = {
   parent: TSESTree.CallExpression;
@@ -35,6 +37,16 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function isArrayType(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .every(unionPart =>
+          tsutils
+            .intersectionTypeParts(unionPart)
+            .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
+        );
+    }
+
     return {
       'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
@@ -56,7 +68,7 @@ export default createRule({
         );
 
         // Check the owner type of the `reduce` method.
-        if (isArrayType(checker, calleeObjType)) {
+        if (isArrayType(calleeObjType)) {
           context.report({
             node: secondArg,
             messageId: 'preferTypeParameter',

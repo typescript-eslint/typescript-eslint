@@ -1,10 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
-import { isArrayType } from '../util/isArrayType';
 
 enum Usefulness {
   Always = 'always',
@@ -59,6 +59,26 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
+
+    function isFullyArrayType(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .every(unionPart =>
+          tsutils
+            .intersectionTypeParts(unionPart)
+            .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
+        );
+    }
+
+    function isPartlyArrayType(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .some(unionPart =>
+          tsutils
+            .intersectionTypeParts(unionPart)
+            .some(t => checker.isArrayType(t) || checker.isTupleType(t)),
+        );
+    }
 
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
@@ -189,14 +209,33 @@ export default createRule<Options, MessageIds>({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const maybeArrayType = services.getTypeAtLocation(memberExpr.object);
 
-        if (!isArrayType(checker, maybeArrayType)) {
-          return;
+        if (isFullyArrayType(maybeArrayType)) {
+          return checkExpression(
+            memberExpr.parent as TSESTree.CallExpression,
+            maybeArrayType,
+          );
         }
 
-        checkExpression(
-          memberExpr.parent as TSESTree.CallExpression,
-          maybeArrayType,
-        );
+        if (isPartlyArrayType(maybeArrayType)) {
+          const arrayTypes = tsutils
+            .unionTypeParts(maybeArrayType)
+            .filter(t => checker.isArrayType(t) || checker.isTupleType(t));
+
+          const certainty = arrayTypes.map(collectToStringCertainty);
+
+          if (certainty.every(x => x === Usefulness.Always)) {
+            return;
+          }
+
+          return context.report({
+            node: memberExpr.parent as TSESTree.CallExpression,
+            messageId: 'baseToString',
+            data: {
+              name: context.sourceCode.getText(node),
+              certainty: Usefulness.Sometimes,
+            },
+          });
+        }
       },
       'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
         node: TSESTree.Expression,
