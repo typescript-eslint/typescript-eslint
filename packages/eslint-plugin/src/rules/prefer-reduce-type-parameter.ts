@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -10,9 +11,9 @@ import {
   isTypeAssertion,
 } from '../util';
 
-type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
+type MemberExpressionWithCallExpressionParent = {
   parent: TSESTree.CallExpression;
-};
+} & TSESTree.MemberExpression;
 
 export default createRule({
   name: 'prefer-reduce-type-parameter',
@@ -24,11 +25,11 @@ export default createRule({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       preferTypeParameter:
         'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
     },
-    fixable: 'code',
     schema: [],
   },
   defaultOptions: [],
@@ -69,8 +70,8 @@ export default createRule({
         // Check the owner type of the `reduce` method.
         if (isArrayType(calleeObjType)) {
           context.report({
-            messageId: 'preferTypeParameter',
             node: secondArg,
+            messageId: 'preferTypeParameter',
             fix: fixer => {
               const fixes = [
                 fixer.removeRange([

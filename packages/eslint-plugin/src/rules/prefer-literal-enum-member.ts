@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue } from '../util';
@@ -14,18 +15,19 @@ export default createRule({
     },
     messages: {
       notLiteral: `Explicit enum value must only be a literal value (string or number).`,
+      notLiteralOrBitwiseExpression: `Explicit enum value must only be a literal value (string or number) or a bitwise expression.`,
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowBitwiseExpressions: {
+            type: 'boolean',
             description:
               'Whether to allow using bitwise expressions in enum initializers.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -106,7 +108,7 @@ export default createRule({
 
             case AST_NODE_TYPES.UnaryExpression:
               // +123, -123, etc.
-              if (['+', '-'].includes(node.operator)) {
+              if (['-', '+'].includes(node.operator)) {
                 return isAllowedInitializerExpressionRecursive(
                   node.argument,
                   partOfBitwiseComputation,
@@ -124,7 +126,7 @@ export default createRule({
             case AST_NODE_TYPES.BinaryExpression:
               if (allowBitwiseExpressions) {
                 return (
-                  ['|', '&', '^', '<<', '>>', '>>>'].includes(node.operator) &&
+                  ['&', '^', '<<', '>>', '>>>', '|'].includes(node.operator) &&
                   isAllowedInitializerExpressionRecursive(node.left, true) &&
                   isAllowedInitializerExpressionRecursive(node.right, true)
                 );
@@ -142,7 +144,9 @@ export default createRule({
 
         context.report({
           node: node.id,
-          messageId: 'notLiteral',
+          messageId: allowBitwiseExpressions
+            ? 'notLiteralOrBitwiseExpression'
+            : 'notLiteral',
         });
       },
     };

@@ -1,10 +1,12 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -23,8 +25,8 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [],
     messages: baseRule.meta.messages,
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -242,8 +244,8 @@ export default createRule<Options, MessageIds>({
 
     return {
       ArrowFunctionExpression: checkForLoops,
-      FunctionExpression: checkForLoops,
       FunctionDeclaration: checkForLoops,
+      FunctionExpression: checkForLoops,
     };
   },
 });

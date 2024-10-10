@@ -4,6 +4,7 @@ import type {
   Selectors,
   SelectorsString,
 } from './enums';
+
 import { MetaSelectors } from './enums';
 
 function selectorTypeToMessageString(selectorType: SelectorsString): string {
@@ -26,7 +27,7 @@ function isMethodOrPropertySelector(
 }
 
 export {
-  selectorTypeToMessageString,
   isMetaSelector,
   isMethodOrPropertySelector,
+  selectorTypeToMessageString,
 };

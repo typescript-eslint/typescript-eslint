@@ -2,6 +2,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -20,8 +21,8 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [],
     messages: baseRule.meta.messages,
+    schema: [],
   },
   defaultOptions: [],
   create(context) {

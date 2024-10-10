@@ -477,8 +477,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -495,8 +495,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i', 'j'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -511,8 +511,8 @@ for (var i in {}) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -525,14 +525,14 @@ for (var i of {}) {
   });
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -542,14 +542,14 @@ for (var i = 0; i < l; i++) {
   };
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.ArrowFunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -561,8 +561,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
@@ -578,8 +578,8 @@ for (var i = 0; i < l; i++) {
       `,
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionDeclaration,
         },
       ],
@@ -596,14 +596,14 @@ for (let i = 0; i < l; i++) {
   });
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -615,14 +615,14 @@ for (let i in {}) {
   a = 1;
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -634,14 +634,14 @@ for (let i of {}) {
 }
 a = 1;
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -655,14 +655,14 @@ for (let i = 0; i < l; i++) {
   a = 1;
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -676,14 +676,14 @@ for (let i in {}) {
   }
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionDeclaration,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -697,14 +697,14 @@ for (let i of {}) {
 }
 a = 1;
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.ArrowFunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -713,14 +713,14 @@ for (var i = 0; i < 10; ++i) {
   }
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'i'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.ArrowFunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -734,14 +734,14 @@ for (let x of xs) {
   }
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -753,14 +753,14 @@ for (var x of xs) {
   }
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'x'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -770,14 +770,14 @@ for (var x of xs) {
   });
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'x'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -789,14 +789,14 @@ for (let x of xs) {
   });
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -808,14 +808,14 @@ for (let x of xs) {
   a = 1;
 }
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -830,14 +830,14 @@ for (let x of xs) {
 }
 foo();
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
     {
       code: `
@@ -852,14 +852,14 @@ function foo() {
 }
 foo();
       `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       errors: [
         {
-          messageId: 'unsafeRefs',
           data: { varNames: "'a'" },
+          messageId: 'unsafeRefs',
           type: AST_NODE_TYPES.FunctionExpression,
         },
       ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
     },
   ],
 });

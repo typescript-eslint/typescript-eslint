@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 
 import {

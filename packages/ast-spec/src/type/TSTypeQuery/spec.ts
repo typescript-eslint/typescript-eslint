@@ -5,7 +5,7 @@ import type { EntityName } from '../../unions/EntityName';
 import type { TSImportType } from '../TSImportType/spec';
 
 export interface TSTypeQuery extends BaseNode {
-  exprName: EntityName | TSImportType;
   type: AST_NODE_TYPES.TSTypeQuery;
+  exprName: EntityName | TSImportType;
   typeArguments: TSTypeParameterInstantiation | undefined;
 }

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -21,6 +22,7 @@ type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 export default createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Require type annotations in certain places',
     },
@@ -34,49 +36,48 @@ export default createRule<[Options], MessageIds>({
         additionalProperties: false,
         properties: {
           [OptionKeys.ArrayDestructuring]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations on variables declared using array destructuring.',
-            type: 'boolean',
           },
           [OptionKeys.ArrowParameter]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations for parameters of arrow functions.',
-            type: 'boolean',
           },
           [OptionKeys.MemberVariableDeclaration]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations on member variables of classes.',
-            type: 'boolean',
           },
           [OptionKeys.ObjectDestructuring]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations on variables declared using object destructuring.',
-            type: 'boolean',
           },
           [OptionKeys.Parameter]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations for parameters of functions and methods.',
-            type: 'boolean',
           },
           [OptionKeys.PropertyDeclaration]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations for properties of interfaces and types.',
-            type: 'boolean',
           },
           [OptionKeys.VariableDeclaration]: {
+            type: 'boolean',
             description:
               'Whether to enforce type annotations for variable declarations, excluding array and object destructuring.',
-            type: 'boolean',
           },
           [OptionKeys.VariableDeclarationIgnoreFunction]: {
+            type: 'boolean',
             description:
               'Whether to ignore variable declarations for non-arrow and arrow functions.',
-            type: 'boolean',
           },
         },
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [
     {

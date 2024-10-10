@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -27,26 +28,26 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require using Error objects as Promise rejection reasons',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
       requiresTypeChecking: true,
+    },
+    messages: {
+      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowEmptyReject: {
+            type: 'boolean',
             description:
               'Whether to allow calls to `Promise.reject()` with no arguments.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: {
-      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
-    },
   },
   defaultOptions: [
     {

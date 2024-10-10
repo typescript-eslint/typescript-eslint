@@ -39,19 +39,19 @@ Options: { "allowBitwiseExpressions": true }
 const x = 1;
 enum Foo {
   A = x << 0,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
   B = x >> 0,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
   C = x >>> 0,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
   D = x | 0,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
   E = x & 0,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
   F = x ^ 0,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
   G = ~x,
-  ~ Explicit enum value must only be a literal value (string or number).
+  ~ Explicit enum value must only be a literal value (string or number) or a bitwise expression.
 }
 "
 `;

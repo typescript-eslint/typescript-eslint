@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -15,13 +16,13 @@ export default createRule<Options, MessageIds>({
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
-      preferTypeAnnotation:
-        'The generic type arguments should be specified as part of the type annotation.',
       preferConstructor:
         'The generic type arguments should be specified as part of the constructor type arguments.',
+      preferTypeAnnotation:
+        'The generic type arguments should be specified as part of the type annotation.',
     },
-    fixable: 'code',
     schema: [
       {
         type: 'string',
@@ -75,7 +76,7 @@ export default createRule<Options, MessageIds>({
         }
         if (mode === 'type-annotation') {
           if (!lhs && rhs.typeArguments) {
-            const { typeArguments, callee } = rhs;
+            const { callee, typeArguments } = rhs;
             const typeAnnotation =
               context.sourceCode.getText(callee) +
               context.sourceCode.getText(typeArguments);
