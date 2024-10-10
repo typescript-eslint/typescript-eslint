@@ -439,7 +439,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}'],
+    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
     rules: {
       // requirement
       'import/no-default-export': 'off',
@@ -598,6 +598,7 @@ export default tseslint.config(
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
     ignores: [
       'packages/eslint-plugin/src/configs/*',
+      'packages/scope-manager/src/configs/*',
       'packages/typescript-eslint/src/configs/*',
     ],
     files: [
@@ -607,6 +608,7 @@ export default tseslint.config(
       'packages/parser/{src,tests}/**/*.ts',
       'packages/rule-schema-to-typescript-types/src/**/*.ts',
       'packages/rule-tester/{src,tests,typings}/**/*.ts',
+      'packages/scope-manager/{src,tests}/**/*.ts',
       'packages/types/{src,tools}/**/*.ts',
       'packages/typescript-eslint/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',
