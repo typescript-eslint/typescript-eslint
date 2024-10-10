@@ -699,7 +699,11 @@ class Referencer extends Visitor {
     );
 
     if (node.moduleReference.type === AST_NODE_TYPES.TSQualifiedName) {
-      this.visit(node.moduleReference.left);
+      let moduleIdentifier = node.moduleReference.left;
+      while (moduleIdentifier.type === AST_NODE_TYPES.TSQualifiedName) {
+        moduleIdentifier = moduleIdentifier.left;
+      }
+      this.visit(moduleIdentifier);
     } else {
       this.visit(node.moduleReference);
     }

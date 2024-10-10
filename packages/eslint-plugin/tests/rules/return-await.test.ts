@@ -58,6 +58,27 @@ ruleTester.run('return-await', rule, {
         }
       }
     `,
+    `
+const fn = (): any => null;
+async function test() {
+  return await fn();
+}
+    `,
+    `
+const fn = (): unknown => null;
+async function test() {
+  return await fn();
+}
+    `,
+    `
+async function test(unknownParam: unknown) {
+  try {
+    return await unknownParam;
+  } finally {
+    console.log('In finally block');
+  }
+}
+    `,
     {
       code: `
         async function test() {
@@ -506,58 +527,6 @@ return Promise.resolve(42);
         },
       ],
       output: 'const test = async () => /* comment */ 1;',
-    },
-    {
-      code: `
-const fn = (): any => null;
-async function test() {
-  return await fn();
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'nonPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'nonPromiseAwait',
-              output: `
-const fn = (): any => null;
-async function test() {
-  return fn();
-}
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
-    },
-    {
-      code: `
-const fn = (): unknown => null;
-async function test() {
-  return await fn();
-}
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'nonPromiseAwait',
-          suggestions: [
-            {
-              messageId: 'nonPromiseAwait',
-              output: `
-const fn = (): unknown => null;
-async function test() {
-  return fn();
-}
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
     },
     {
       code: 'const test = async () => await Promise.resolve(1);',
