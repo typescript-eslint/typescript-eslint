@@ -308,16 +308,14 @@ export default createRule({
 
       if (!isThenable) {
         if (isAwait) {
-          // any/unknown could be thenable; do not auto-fix
-          const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
-
+          // any/unknown could be thenable; do not enforce whether they are `await`ed.
+          if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+            return;
+          }
           context.report({
             node,
             messageId: 'nonPromiseAwait',
-            ...fixOrSuggest(useAutoFix, {
-              messageId: 'nonPromiseAwait',
-              fix: fixer => removeAwait(fixer, node),
-            }),
+            fix: fixer => removeAwait(fixer, node),
           });
         }
         return;
