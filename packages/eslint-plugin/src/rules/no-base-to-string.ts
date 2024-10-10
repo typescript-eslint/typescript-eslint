@@ -4,7 +4,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
-import { expandUnionOrIntersectionType } from '../util/expandUnionOrIntersectionType';
 import { isArrayType } from '../util/isArrayType';
 
 enum Usefulness {
@@ -84,10 +83,8 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      if (isArrayType(checker, type)) {
-        const types = expandUnionOrIntersectionType(type).flatMap(t =>
-          checker.getTypeArguments(t as ts.TypeReference),
-        );
+      if (checker.isArrayType(type) || checker.isTupleType(type)) {
+        const types = checker.getTypeArguments(type);
 
         for (const subType of types) {
           const subtypeUsefulness = collectToStringCertainty(subType);
@@ -121,7 +118,8 @@ export default createRule<Options, MessageIds>({
       if (
         declarations.every(
           ({ parent }) =>
-            !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
+            !ts.isInterfaceDeclaration(parent) ||
+            (parent.name.text !== 'Object' && parent.name.text !== 'Array'),
         )
       ) {
         return Usefulness.Always;
