@@ -11,8 +11,8 @@ const EXCLUDED_KEYS = new Set([
   // type is printed in front of the object
   'type',
   // locations are just noise
-  'range',
   'loc',
+  'range',
 ]);
 
 const generator = createIdGenerator();
