@@ -497,12 +497,17 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(
-                ruleName,
-                rule,
-                valid,
-                seenValidTestCases,
-              );
+              try {
+                valid.before?.();
+                this.#testValidTemplate(
+                  ruleName,
+                  rule,
+                  valid,
+                  seenValidTestCases,
+                );
+              } finally {
+                valid.after?.();
+              }
             });
           });
         });
@@ -518,12 +523,17 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(
-                ruleName,
-                rule,
-                invalid,
-                seenInvalidTestCases,
-              );
+              try {
+                invalid.before?.();
+                this.#testInvalidTemplate(
+                  ruleName,
+                  rule,
+                  invalid,
+                  seenInvalidTestCases,
+                );
+              } finally {
+                invalid.after?.();
+              }
             });
           });
         });

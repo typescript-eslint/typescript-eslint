@@ -8,6 +8,8 @@ import { simpleTraverse } from '@typescript-eslint/typescript-estree';
  * configuration
  */
 export const RULE_TESTER_PARAMETERS = [
+  'after',
+  'before',
   'code',
   'defaultFilenames',
   'dependencyConstraints',
