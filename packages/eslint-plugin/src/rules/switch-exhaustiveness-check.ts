@@ -73,7 +73,7 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
           requireDefaultCaseForUnions: {
-            description: `If 'true', the 'default' clause is used to determine whether the switch statement is Exhaustive for union type`,
+            description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
             type: 'boolean',
           },
         },
@@ -173,13 +173,13 @@ export default createRule<Options, MessageIds>({
       const { missingLiteralBranchTypes, symbolName, defaultCase } =
         switchMetadata;
 
-      // We only trigger the rule if a `default` case does not exist when requireDefaultCaseForUnions option
-      // is `true`. because that would disqualify the switch statement from having cases that exactly
-      // match the members of a union.
-      if (
-        missingLiteralBranchTypes.length > 0 &&
-        (!requireDefaultCaseForUnions ? defaultCase === undefined : true)
-      ) {
+      // Unless requireDefaultCaseForUnions is enabled, the presence of a default case
+      // always makes the switch exhaustive.
+      if (!requireDefaultCaseForUnions && defaultCase != null) {
+        return;
+      }
+
+      if (missingLiteralBranchTypes.length > 0) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
@@ -217,6 +217,8 @@ export default createRule<Options, MessageIds>({
     ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
+      const defaultCase = node.cases.find(caseEl => caseEl.test == null);
+
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)
         : // If there are no cases, use indentation of the switch statement and
@@ -264,15 +266,13 @@ export default createRule<Options, MessageIds>({
         .join('\n');
 
       if (lastCase) {
-        const isLastCaseDefaultCase = lastCase.test == null;
-        if (isLastCaseDefaultCase) {
+        if (defaultCase) {
           const beforeFixString = missingCases
             .map(code => `${code}\n${caseIndent}`)
             .join('');
 
-          return fixer.insertTextBefore(lastCase, beforeFixString);
+          return fixer.insertTextBefore(defaultCase, beforeFixString);
         }
-
         return fixer.insertTextAfter(lastCase, `\n${fixString}`);
       }
 

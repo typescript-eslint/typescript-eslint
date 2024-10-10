@@ -2514,6 +2514,80 @@ switch (literal) {
     },
     {
       code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  default:
+  case 'a':
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  default:
+  case 'a':
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
 declare const literal: 'a' | 'b' | 'c';
 
 switch (literal) {
