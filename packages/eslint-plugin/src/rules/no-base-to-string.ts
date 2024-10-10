@@ -60,7 +60,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function isFullyArrayType(type: ts.Type): boolean {
+    function isArrayType(type: ts.Type): boolean {
       return tsutils
         .unionTypeParts(type)
         .every(unionPart =>
@@ -70,7 +70,7 @@ export default createRule<Options, MessageIds>({
         );
     }
 
-    function isPartlyArrayType(type: ts.Type): boolean {
+    function isPossiblyArrayType(type: ts.Type): boolean {
       return tsutils
         .unionTypeParts(type)
         .some(unionPart =>
@@ -207,28 +207,26 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
-        const maybeArrayType = services.getTypeAtLocation(memberExpr.object);
+        const callExpression = memberExpr.parent as TSESTree.CallExpression;
 
-        if (isFullyArrayType(maybeArrayType)) {
-          return checkExpression(
-            memberExpr.parent as TSESTree.CallExpression,
-            maybeArrayType,
-          );
+        const type = services.getTypeAtLocation(memberExpr.object);
+
+        if (isArrayType(type)) {
+          return checkExpression(callExpression, type);
         }
 
-        if (isPartlyArrayType(maybeArrayType)) {
-          const arrayTypes = tsutils
-            .unionTypeParts(maybeArrayType)
-            .filter(t => checker.isArrayType(t) || checker.isTupleType(t));
-
-          const certainty = arrayTypes.map(collectToStringCertainty);
+        if (isPossiblyArrayType(type)) {
+          const certainty = tsutils
+            .unionTypeParts(type)
+            .filter(t => checker.isArrayType(t) || checker.isTupleType(t))
+            .map(collectToStringCertainty);
 
           if (certainty.every(x => x === Usefulness.Always)) {
             return;
           }
 
           return context.report({
-            node: memberExpr.parent as TSESTree.CallExpression,
+            node: callExpression,
             messageId: 'baseToString',
             data: {
               name: context.sourceCode.getText(node),
