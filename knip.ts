@@ -1,5 +1,6 @@
 import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
+// eslint-disable-next-line import/no-default-export
 export default {
   rules: {
     classMembers: 'off',
