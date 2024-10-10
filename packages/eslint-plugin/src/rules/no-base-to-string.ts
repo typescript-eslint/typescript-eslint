@@ -198,12 +198,12 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
-        const callExpression = memberExpr.parent as TSESTree.CallExpression;
+        const callExpr = memberExpr.parent as TSESTree.CallExpression;
 
         const type = services.getTypeAtLocation(memberExpr.object);
 
         if (isArrayType(checker, type)) {
-          return checkExpression(callExpression, type);
+          return checkExpression(callExpr, type);
         }
 
         if (isPossiblyArrayType(type)) {
@@ -217,7 +217,7 @@ export default createRule<Options, MessageIds>({
           }
 
           return context.report({
-            node: callExpression,
+            node: callExpr,
             messageId: 'baseToString',
             data: {
               name: context.sourceCode.getText(node),
