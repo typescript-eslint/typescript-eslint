@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unsafe-type-assertion.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function f() {
+  return Math.random() < 0.5 ? 42 : 'oops';
+}
+
+const z = f() as number;
+          ~~~~~~~~~~~~~ Unsafe type assertion: type \`42 | "oops"\` is not assignable to type \`number\`
+
+const items = [1, '2', 3, '4'];
+
+const number = items[0] as number;
+               ~~~~~~~~~~~~~~~~~~ Unsafe type assertion: type \`string | number\` is not assignable to type \`number\`
+"
+`;
+
+exports[`Validating rule docs no-unsafe-type-assertion.mdx code examples ESLint output 2`] = `
+"Correct
+
+function f() {
+  return Math.random() < 0.5 ? 42 : 'oops';
+}
+
+const z = f() as number | string | boolean;
+
+const items = [1, '2', 3, '4'];
+
+const number = items[0] as number | string | undefined;
+"
+`;

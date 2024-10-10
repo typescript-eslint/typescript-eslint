@@ -83,6 +83,7 @@ import noUnsafeEnumComparison from './no-unsafe-enum-comparison';
 import noUnsafeFunctionType from './no-unsafe-function-type';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
+import noUnsafeTypeAssertion from './no-unsafe-type-assertion';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
@@ -213,6 +214,7 @@ export default {
   'no-unsafe-function-type': noUnsafeFunctionType,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
+  'no-unsafe-type-assertion': noUnsafeTypeAssertion,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
