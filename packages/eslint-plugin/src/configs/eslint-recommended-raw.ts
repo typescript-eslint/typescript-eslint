@@ -7,7 +7,7 @@
  * - disables rules from eslint:recommended which are already handled by TypeScript.
  * - enables rules that make sense due to TS's typechecking / transpilation.
  */
-export default (
+const config = (
   style: 'glob' | 'minimatch',
 ): {
   files: string[];
@@ -44,3 +44,5 @@ export default (
     'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply
   },
 });
+
+export = config;

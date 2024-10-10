@@ -21,27 +21,31 @@ const { name, version } = require('../package.json') as {
   version: string;
 };
 
+const configs = {
+  all,
+  base,
+  'disable-type-checked': disableTypeChecked,
+  'eslint-recommended': eslintRecommended,
+  recommended,
+  /** @deprecated - please use "recommended-type-checked" instead. */
+  'recommended-requiring-type-checking': recommendedTypeChecked,
+  'recommended-type-checked': recommendedTypeChecked,
+  'recommended-type-checked-only': recommendedTypeCheckedOnly,
+  strict,
+  'strict-type-checked': strictTypeChecked,
+  'strict-type-checked-only': strictTypeCheckedOnly,
+  stylistic,
+  'stylistic-type-checked': stylisticTypeChecked,
+  'stylistic-type-checked-only': stylisticTypeCheckedOnly,
+};
+
+const meta = {
+  name,
+  version,
+};
+
 export = {
-  configs: {
-    all,
-    base,
-    'disable-type-checked': disableTypeChecked,
-    'eslint-recommended': eslintRecommended,
-    recommended,
-    /** @deprecated - please use "recommended-type-checked" instead. */
-    'recommended-requiring-type-checking': recommendedTypeChecked,
-    'recommended-type-checked': recommendedTypeChecked,
-    'recommended-type-checked-only': recommendedTypeCheckedOnly,
-    strict,
-    'strict-type-checked': strictTypeChecked,
-    'strict-type-checked-only': strictTypeCheckedOnly,
-    stylistic,
-    'stylistic-type-checked': stylisticTypeChecked,
-    'stylistic-type-checked-only': stylisticTypeCheckedOnly,
-  },
-  meta: {
-    name,
-    version,
-  },
+  configs,
+  meta,
   rules,
 } satisfies Linter.Plugin;
