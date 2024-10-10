@@ -32,36 +32,42 @@ class Reference {
    * A unique ID for this instance - primarily used to help debugging and testing
    */
   public readonly $id: number = generator();
+
   /**
    * The read-write mode of the reference.
    */
   readonly #flag: ReferenceFlag;
+
   /**
    * Reference to the enclosing Scope.
    * @public
    */
   public readonly from: Scope;
+
   /**
    * Identifier syntax node.
    * @public
    */
   public readonly identifier: TSESTree.Identifier | TSESTree.JSXIdentifier;
+
   /**
    * `true` if this writing reference is a variable initializer or a default value.
    * @public
    */
   public readonly init?: boolean;
+
+  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
+
   /**
    * The {@link Variable} object that this reference refers to. If such variable was not defined, this is `null`.
    * @public
    */
   public resolved: Variable | null;
+
   /**
    * If reference is writeable, this is the node being written to it.
    * @public
    */
-  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
-
   public readonly writeExpr?: TSESTree.Node | null;
 
   /**
@@ -69,16 +75,6 @@ class Reference {
    */
   readonly #referenceType: ReferenceTypeFlag;
 
-  /**
-   * True if this reference can reference types
-   */
-  public get isTypeReference(): boolean {
-    return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
-  }
-
-  /**
-   * True if this reference can reference values
-   */
   constructor(
     identifier: TSESTree.Identifier | TSESTree.JSXIdentifier,
     scope: Scope,
@@ -102,6 +98,16 @@ class Reference {
     this.#referenceType = referenceType;
   }
 
+  /**
+   * True if this reference can reference types
+   */
+  public get isTypeReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
+  }
+
+  /**
+   * True if this reference can reference values
+   */
   public get isValueReference(): boolean {
     return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
   }

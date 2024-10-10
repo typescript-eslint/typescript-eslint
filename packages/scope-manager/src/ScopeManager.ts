@@ -36,14 +36,19 @@ interface ScopeManagerOptions {
  * @see https://eslint.org/docs/latest/developer-guide/scope-manager-interface#scopemanager-interface
  */
 class ScopeManager {
+  readonly #options: ScopeManagerOptions;
+
   public currentScope: Scope | null;
+
   public readonly declaredVariables: WeakMap<TSESTree.Node, Variable[]>;
+
   /**
    * The root scope
    */
-  readonly #options: ScopeManagerOptions;
   public globalScope: GlobalScope | null;
+
   public readonly nodeToScope: WeakMap<TSESTree.Node, Scope[]>;
+
   /**
    * All scopes
    * @public
@@ -106,16 +111,6 @@ class ScopeManager {
    * @param inner If the node has multiple scopes, this returns the outermost scope normally.
    *                If `inner` is `true` then this returns the innermost scope.
    */
-  protected nestScope<T extends Scope>(scope: T): T;
-
-  protected nestScope(scope: Scope): Scope {
-    if (scope instanceof GlobalScope) {
-      assert(this.currentScope == null);
-      this.globalScope = scope;
-    }
-    this.currentScope = scope;
-    return scope;
-  }
   public acquire(node: TSESTree.Node, inner = false): Scope | null {
     function predicate(testScope: Scope): boolean {
       if (
@@ -262,6 +257,18 @@ class ScopeManager {
   public nestWithScope(node: WithScope['block']): WithScope {
     assert(this.currentScope);
     return this.nestScope(new WithScope(this, this.currentScope, node));
+  }
+
+  // Scope helpers
+
+  protected nestScope<T extends Scope>(scope: T): T;
+  protected nestScope(scope: Scope): Scope {
+    if (scope instanceof GlobalScope) {
+      assert(this.currentScope == null);
+      this.globalScope = scope;
+    }
+    this.currentScope = scope;
+    return scope;
   }
 }
 
