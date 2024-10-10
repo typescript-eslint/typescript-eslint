@@ -10,8 +10,8 @@ class TSEnumNameDefinition extends DefinitionBase<
   TSESTree.Identifier
 > {
   public readonly isTypeDefinition = true;
-
   public readonly isVariableDefinition = true;
+
   constructor(name: TSESTree.Identifier, node: TSEnumNameDefinition['node']) {
     super(DefinitionType.TSEnumName, name, node, null);
   }

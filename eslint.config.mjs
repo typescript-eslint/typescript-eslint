@@ -598,6 +598,7 @@ export default tseslint.config(
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
     ignores: [
       'packages/eslint-plugin/src/configs/*',
+      'packages/scope-manager/src/configs/*',
       'packages/typescript-eslint/src/configs/*',
     ],
     files: [
