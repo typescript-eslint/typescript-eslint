@@ -5,6 +5,7 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
+import { isArrayType } from '../util/isArrayType';
 
 enum Usefulness {
   Always = 'always',
@@ -59,16 +60,6 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
-
-    function isArrayType(type: ts.Type): boolean {
-      return tsutils
-        .unionTypeParts(type)
-        .every(unionPart =>
-          tsutils
-            .intersectionTypeParts(unionPart)
-            .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
-        );
-    }
 
     function isPossiblyArrayType(type: ts.Type): boolean {
       return tsutils
@@ -211,7 +202,7 @@ export default createRule<Options, MessageIds>({
 
         const type = services.getTypeAtLocation(memberExpr.object);
 
-        if (isArrayType(type)) {
+        if (isArrayType(checker, type)) {
           return checkExpression(callExpression, type);
         }
 
