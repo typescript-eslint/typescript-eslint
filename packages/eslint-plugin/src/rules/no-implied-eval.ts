@@ -12,12 +12,12 @@ import {
 } from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
-const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
+const GLOBAL_CANDIDATES = new Set(['global', 'globalThis', 'window']);
 const EVAL_LIKE_METHODS = new Set([
+  'execScript',
   'setImmediate',
   'setInterval',
   'setTimeout',
-  'execScript',
 ]);
 
 export default createRule({

@@ -976,8 +976,8 @@ declare function setItem<T>(T): T;
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -989,8 +989,8 @@ interface StorageService {
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },

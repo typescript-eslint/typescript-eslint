@@ -55,13 +55,13 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const CLASS_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
+      AST_NODE_TYPES.ClassDeclaration,
       AST_NODE_TYPES.TSInterfaceDeclaration,
       AST_NODE_TYPES.TSModuleDeclaration,
-      AST_NODE_TYPES.ClassDeclaration,
     ]);
     const FUNCTION_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
-      AST_NODE_TYPES.TSModuleDeclaration,
       AST_NODE_TYPES.FunctionDeclaration,
+      AST_NODE_TYPES.TSModuleDeclaration,
     ]);
     const ENUM_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSEnumDeclaration,

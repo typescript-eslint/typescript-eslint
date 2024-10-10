@@ -177,12 +177,12 @@ export default createRule({
       },
       TSEnumDeclaration: enterDeclaration,
       'TSEnumDeclaration:exit': exitDeclaration,
+      'TSModuleDeclaration:exit': exitDeclaration,
       'TSModuleDeclaration > TSModuleBlock'(
         node: TSESTree.TSModuleBlock,
       ): void {
         enterDeclaration(node.parent);
       },
-      'TSModuleDeclaration:exit': exitDeclaration,
       TSQualifiedName(node: TSESTree.TSQualifiedName): void {
         visitNamespaceAccess(node, node.left, node.right);
       },

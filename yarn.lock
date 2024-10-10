@@ -5809,7 +5809,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.8.1, @typescript-eslint/types@^8.3.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.8.1, @typescript-eslint/types@^8.8.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5953,7 +5953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@8.8.1, @typescript-eslint/utils@^8.3.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.8.1, @typescript-eslint/utils@^8.8.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -9862,18 +9862,18 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-perfectionist@npm:^3.2.0":
-  version: 3.3.0
-  resolution: "eslint-plugin-perfectionist@npm:3.3.0"
+  version: 3.8.0
+  resolution: "eslint-plugin-perfectionist@npm:3.8.0"
   dependencies:
-    "@typescript-eslint/types": ^8.3.0
-    "@typescript-eslint/utils": ^8.3.0
-    minimatch: ^10.0.1
+    "@typescript-eslint/types": ^8.8.0
+    "@typescript-eslint/utils": ^8.8.0
+    minimatch: ^9.0.5
     natural-compare-lite: ^1.4.0
   peerDependencies:
     astro-eslint-parser: ^1.0.2
     eslint: ">=8.0.0"
     svelte: ">=3.0.0"
-    svelte-eslint-parser: ^0.41.0
+    svelte-eslint-parser: ^0.41.1
     vue-eslint-parser: ">=9.0.0"
   peerDependenciesMeta:
     astro-eslint-parser:
@@ -9884,7 +9884,7 @@ __metadata:
       optional: true
     vue-eslint-parser:
       optional: true
-  checksum: c1a603d4718a75dc7ff14ba976d01c2d2a0e352f27309c6099b2ed9be54d789ac37242fdd4106015a0a19e797a00a5faac9c12157ff0ae39aadf00df1d2f3cf2
+  checksum: dbaa8985ad13a26d68090b57fd973f22248aa62d9d45e655b625c4464e7992a336afdd492ab06b3d3061b851abc683efa40ca706821646fe6dd6e65ccf74ad31
   languageName: node
   linkType: hard
 
@@ -15009,7 +15009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^10.0.0, minimatch@npm:^10.0.1, minimatch@npm:~10.0.1":
+"minimatch@npm:^10.0.0, minimatch@npm:~10.0.1":
   version: 10.0.1
   resolution: "minimatch@npm:10.0.1"
   dependencies:
@@ -15036,12 +15036,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.3, minimatch@npm:^9.0.4":
-  version: 9.0.4
-  resolution: "minimatch@npm:9.0.4"
+"minimatch@npm:^9.0.3, minimatch@npm:^9.0.4, minimatch@npm:^9.0.5":
+  version: 9.0.5
+  resolution: "minimatch@npm:9.0.5"
   dependencies:
     brace-expansion: ^2.0.1
-  checksum: cf717f597ec3eed7dabc33153482a2e8d49f4fd3c26e58fd9c71a94c5029a0838728841b93f46bf1263b65a8010e2ee800d0dc9b004ab8ba8b6d1ec07cc115b5
+  checksum: 2c035575eda1e50623c731ec6c14f65a85296268f749b9337005210bb2b34e2705f8ef1a358b188f69892286ab99dc42c8fb98a57bde55c8d81b3023c19cea28
   languageName: node
   linkType: hard
 

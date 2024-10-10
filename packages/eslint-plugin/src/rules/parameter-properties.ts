@@ -5,12 +5,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule, nullThrows } from '../util';
 
 type Modifier =
-  | 'private readonly'
   | 'private'
-  | 'protected readonly'
+  | 'private readonly'
   | 'protected'
-  | 'public readonly'
+  | 'protected readonly'
   | 'public'
+  | 'public readonly'
   | 'readonly';
 
 type Prefer = 'class-property' | 'parameter-property';
