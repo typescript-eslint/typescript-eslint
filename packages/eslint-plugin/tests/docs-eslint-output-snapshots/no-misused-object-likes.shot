@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-misused-object-likes.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+console.log(Object.values(new Set('abc')));
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Don't use \`Object.values()\` on Set objects — it will not properly check the contents.
+	Object.assign(new Map(), { k: 'v' });
+"
+`;
+
+exports[`Validating rule docs no-misused-object-likes.mdx code examples ESLint output 2`] = `
+"Correct
+
+console.log([...new Set('abc').values()]);
+	new Map().set('k', 'v');
+"
+`;
