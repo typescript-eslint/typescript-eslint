@@ -123,8 +123,8 @@ export const useSandboxServices = (
           [...webLinter.rules.values()],
           [
             ...new Set([
-              ...sandboxInstance.supportedVersions,
               window.ts.version,
+              ...sandboxInstance.supportedVersions,
             ]),
           ]
             .filter(item =>
