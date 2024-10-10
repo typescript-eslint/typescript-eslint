@@ -220,6 +220,13 @@ async function forAwait() {
 }
       `,
     },
+    {
+      code: `
+declare const asyncIter: AsyncIterable<string> | Iterable<string>;
+for await (const s of asyncIter) {
+}
+      `,
+    },
   ],
 
   invalid: [
