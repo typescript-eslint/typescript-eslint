@@ -1,13 +1,15 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import type { Type, TypeChecker } from 'typescript';
+
 import {
   typeMatchesSomeSpecifier,
   typeOrValueSpecifiersSchema,
 } from '@typescript-eslint/type-utils';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { Type, TypeChecker } from 'typescript';
 import { TypeFlags } from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -55,9 +57,9 @@ const optionTesters = (
   tester,
 }));
 type Options = [
-  { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
+  {
     allow?: TypeOrValueSpecifier[];
-  },
+  } & { [Type in (typeof optionTesters)[number]['option']]?: boolean },
 ];
 
 type MessageId = 'invalidType';
@@ -75,10 +77,10 @@ export default createRule<Options, MessageId>({
           {
             allowAny: false,
             allowBoolean: false,
+            allowNever: false,
             allowNullish: false,
             allowNumber: false,
             allowRegExp: false,
-            allowNever: false,
           },
         ],
       },
@@ -93,11 +95,11 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           ...Object.fromEntries(
-            optionTesters.map(({ option, type }) => [
+            optionTesters.map(({ type, option }) => [
               option,
               {
-                description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
                 type: 'boolean',
+                description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
               },
             ]),
           ),
@@ -111,12 +113,12 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allow: [{ name: ['Error', 'URL', 'URLSearchParams'], from: 'lib' }],
       allowAny: true,
       allowBoolean: true,
       allowNullish: true,
       allowNumber: true,
       allowRegExp: true,
-      allow: [{ from: 'lib', name: ['Error', 'URL', 'URLSearchParams'] }],
     },
   ],
   create(context, [{ allow, ...options }]) {

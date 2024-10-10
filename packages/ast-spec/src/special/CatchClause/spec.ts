@@ -4,7 +4,7 @@ import type { BlockStatement } from '../../statement/BlockStatement/spec';
 import type { BindingName } from '../../unions/BindingName';
 
 export interface CatchClause extends BaseNode {
+  type: AST_NODE_TYPES.CatchClause;
   body: BlockStatement;
   param: BindingName | null;
-  type: AST_NODE_TYPES.CatchClause;
 }

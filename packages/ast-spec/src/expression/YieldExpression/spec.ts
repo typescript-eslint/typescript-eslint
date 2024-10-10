@@ -3,7 +3,7 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Expression } from '../../unions/Expression';
 
 export interface YieldExpression extends BaseNode {
+  type: AST_NODE_TYPES.YieldExpression;
   argument: Expression | undefined;
   delegate: boolean;
-  type: AST_NODE_TYPES.YieldExpression;
 }

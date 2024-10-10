@@ -8,8 +8,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -220,13 +220,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
           column: 16,
-          endLine: 4,
+          data: { name: "Function 'foo'" },
           endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -240,13 +240,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 5,
           column: 11,
-          endLine: 5,
+          data: { name: "Function 'foo'" },
           endColumn: 18,
+          endLine: 5,
+          line: 5,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -264,22 +264,22 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'baz'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 6,
           column: 13,
-          endLine: 6,
+          data: { name: "Function 'baz'" },
           endColumn: 30,
+          endLine: 6,
+          line: 6,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
         {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'bar'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 9,
           column: 11,
-          endLine: 9,
+          data: { name: "Function 'bar'" },
           endColumn: 18,
+          endLine: 9,
+          line: 9,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -292,13 +292,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
           column: 16,
-          endLine: 4,
+          data: { name: "Function 'foo'" },
           endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -311,13 +311,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Async function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
           column: 16,
-          endLine: 4,
+          data: { name: "Async function 'foo'" },
           endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -330,13 +330,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'missingReturnValue',
-          data: { name: "Async function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
           column: 16,
-          endLine: 4,
+          data: { name: "Async function 'foo'" },
           endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -349,13 +349,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Async function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
           column: 11,
-          endLine: 4,
+          data: { name: "Async function 'foo'" },
           endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -368,13 +368,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 4,
           column: 16,
-          endLine: 4,
+          data: { name: "Function 'foo'" },
           endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -390,13 +390,13 @@ ruleTester.run('consistent-return', rule, {
       `,
       errors: [
         {
-          messageId: 'missingReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 7,
           column: 11,
-          endLine: 7,
+          data: { name: "Function 'foo'" },
           endColumn: 18,
+          endLine: 7,
+          line: 7,
+          messageId: 'missingReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
         },
       ],
     },
@@ -409,20 +409,20 @@ ruleTester.run('consistent-return', rule, {
           return true;
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Function 'foo'" },
+          endColumn: 23,
+          endLine: 6,
+          line: 6,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
       options: [
         {
           treatUndefinedAsUnspecified: true,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 6,
-          column: 11,
-          endLine: 6,
-          endColumn: 23,
         },
       ],
     },
@@ -436,20 +436,20 @@ ruleTester.run('consistent-return', rule, {
           return undefOrNum;
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: { name: "Function 'foo'" },
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'unexpectedReturnValue',
+          type: AST_NODE_TYPES.ReturnStatement,
+        },
+      ],
       options: [
         {
           treatUndefinedAsUnspecified: true,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'unexpectedReturnValue',
-          data: { name: "Function 'foo'" },
-          type: AST_NODE_TYPES.ReturnStatement,
-          line: 7,
-          column: 11,
-          endLine: 7,
-          endColumn: 29,
         },
       ],
     },

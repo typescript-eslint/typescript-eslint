@@ -115,7 +115,7 @@
     "knip": "^5.9.4",
     "lint-staged": "^15.2.2",
     "make-dir": "^4.0.0",
-    "markdownlint-cli": "^0.41.0",
+    "markdownlint-cli": "^0.42.0",
     "ncp": "^2.0.0",
     "nx": "19.5.2",
     "prettier": "3.3.2",

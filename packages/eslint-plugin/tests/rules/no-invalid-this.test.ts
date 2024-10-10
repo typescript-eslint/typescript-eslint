@@ -453,12 +453,12 @@ z(x => console.log(x, this));
 console.log(this);
 z(x => console.log(x, this));
       `,
+      errors,
       languageOptions: {
         parserOptions: {
           ecmaFeatures: { globalReturn: true },
         },
       },
-      errors,
     },
 
     // IIFE.
@@ -489,8 +489,8 @@ function foo() {
   z(x => console.log(x, this));
 }
       `,
-      options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
       errors,
+      options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
     },
     {
       code: `
@@ -499,8 +499,8 @@ function Foo() {
   z(x => console.log(x, this));
 }
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -520,8 +520,8 @@ function Foo() {
   z(x => console.log(x, this));
 }
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -530,12 +530,12 @@ return function () {
   z(x => console.log(x, this));
 };
       `,
+      errors,
       languageOptions: {
         parserOptions: {
           ecmaFeatures: { globalReturn: true },
         },
       },
-      errors,
     },
     {
       code: `
@@ -837,8 +837,8 @@ var Ctor = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -856,8 +856,8 @@ var func = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
 
     {
@@ -867,8 +867,8 @@ Ctor = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -886,8 +886,8 @@ func = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
 
     {

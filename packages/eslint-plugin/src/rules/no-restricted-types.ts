@@ -1,24 +1,25 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, objectReduceKey } from '../util';
 
 type Types = Record<
   string,
-  | boolean
-  | string
   | {
-      message: string;
       fixWith?: string;
+      message: string;
       suggest?: readonly string[];
     }
+  | boolean
+  | string
   | null
 >;
 
 export type Options = [
   {
-    types?: Types;
     extendDefaults?: boolean;
+    types?: Types;
   },
 ];
 
@@ -36,7 +37,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: string | true | { message?: string; fixWith?: string } | null,
+  bannedType: { fixWith?: string; message?: string } | true | string | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';
@@ -82,13 +83,14 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           banConfig: {
             oneOf: [
               {
                 type: 'boolean',
-                enum: [true],
                 description: 'Bans the type with the default message',
+                enum: [true],
               },
               {
                 type: 'string',
@@ -96,29 +98,29 @@ export default createRule<Options, MessageIds>({
               },
               {
                 type: 'object',
+                additionalProperties: false,
                 description: 'Bans a type',
                 properties: {
-                  message: {
-                    type: 'string',
-                    description: 'Custom error message',
-                  },
                   fixWith: {
                     type: 'string',
                     description:
                       'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
                   },
+                  message: {
+                    type: 'string',
+                    description: 'Custom error message',
+                  },
                   suggest: {
                     type: 'array',
-                    items: { type: 'string' },
                     description: 'Types to suggest replacing with.',
+                    items: { type: 'string' },
                   },
                 },
-                additionalProperties: false,
               },
             ],
           },
         },
-        type: 'object',
+        additionalProperties: false,
         properties: {
           types: {
             type: 'object',
@@ -127,7 +129,6 @@ export default createRule<Options, MessageIds>({
             },
           },
         },
-        additionalProperties: false,
       },
     ],
   },

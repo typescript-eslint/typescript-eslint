@@ -18,12 +18,6 @@ export type MessageIds = 'requireCompare';
 
 export default createRule<Options, MessageIds>({
   name: 'require-array-sort-compare',
-  defaultOptions: [
-    {
-      ignoreStringArrays: true,
-    },
-  ],
-
   meta: {
     type: 'problem',
     docs: {
@@ -40,14 +34,20 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           ignoreStringArrays: {
+            type: 'boolean',
             description:
               'Whether to ignore arrays in which all elements are strings.',
-            type: 'boolean',
           },
         },
       },
     ],
   },
+
+  defaultOptions: [
+    {
+      ignoreStringArrays: true,
+    },
+  ],
 
   create(context, [options]) {
     const services = getParserServices(context);

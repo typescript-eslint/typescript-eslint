@@ -1,10 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
   isClosingBraceToken,
   isClosingParenToken,
 } from '@typescript-eslint/utils/ast-utils';
-import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 // The following is adapted from `eslint`'s source code.
 // https://github.com/eslint/eslint/blob/3a4eaf921543b1cd5d1df4ea9dec02fab396af2a/lib/rules/utils/ast-utils.js#L1043-L1132

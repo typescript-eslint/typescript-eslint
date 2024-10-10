@@ -336,15 +336,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type OrderOptions =
-  | 'alphabetically'
-  | 'alphabetically-case-insensitive'
-  | 'as-written'
-  | 'natural'
-  | 'natural-case-insensitive';
-
-type OptionalityOrderOptions = 'optional-first' | 'required-first';
-
 type AllItems =
   | '#private-accessor'
   | '#private-field'
@@ -499,6 +490,15 @@ type AllItems =
   | 'static-readonly-field'
   | 'static-set'
   | 'static-static-initialization';
+
+type OptionalityOrderOptions = 'optional-first' | 'required-first';
+
+type OrderOptions =
+  | 'alphabetically'
+  | 'alphabetically-case-insensitive'
+  | 'as-written'
+  | 'natural'
+  | 'natural-case-insensitive';
 
 type TypeItems =
   | 'constructor'

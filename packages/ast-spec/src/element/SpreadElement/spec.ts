@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Expression } from '../../unions/Expression';
 
 export interface SpreadElement extends BaseNode {
-  argument: Expression;
   type: AST_NODE_TYPES.SpreadElement;
+  argument: Expression;
 }

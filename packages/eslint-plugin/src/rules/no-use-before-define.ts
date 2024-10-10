@@ -1,5 +1,6 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -33,13 +34,13 @@ function parseOptions(options: Config | string | null): Required<Config> {
   }
 
   return {
-    functions,
+    allowNamedExports,
     classes,
     enums,
-    variables,
-    typedefs,
+    functions,
     ignoreTypeReferences,
-    allowNamedExports,
+    typedefs,
+    variables,
   };
 }
 
@@ -203,15 +204,15 @@ function isInInitializer(
 }
 
 interface Config {
-  functions?: boolean;
+  allowNamedExports?: boolean;
   classes?: boolean;
   enums?: boolean;
-  variables?: boolean;
-  typedefs?: boolean;
+  functions?: boolean;
   ignoreTypeReferences?: boolean;
-  allowNamedExports?: boolean;
+  typedefs?: boolean;
+  variables?: boolean;
 }
-type Options = [Config | 'nofunc'];
+type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
 export default createRule<Options, MessageIds>({
@@ -234,37 +235,37 @@ export default createRule<Options, MessageIds>({
           },
           {
             type: 'object',
+            additionalProperties: false,
             properties: {
-              functions: {
-                description:
-                  'Whether to ignore references to function declarations.',
-                type: 'boolean',
-              },
+              allowNamedExports: { type: 'boolean' },
               classes: {
+                type: 'boolean',
                 description:
                   'Whether to ignore references to class declarations.',
-                type: 'boolean',
               },
               enums: {
+                type: 'boolean',
                 description: 'Whether to check references to enums.',
-                type: 'boolean',
               },
-              variables: {
-                description: 'Whether to ignore references to variables.',
+              functions: {
                 type: 'boolean',
-              },
-              typedefs: {
-                description: 'Whether to check references to types.',
-                type: 'boolean',
+                description:
+                  'Whether to ignore references to function declarations.',
               },
               ignoreTypeReferences: {
+                type: 'boolean',
                 description:
                   'Whether to ignore type references, such as in type annotations and assertions.',
-                type: 'boolean',
               },
-              allowNamedExports: { type: 'boolean' },
+              typedefs: {
+                type: 'boolean',
+                description: 'Whether to check references to types.',
+              },
+              variables: {
+                type: 'boolean',
+                description: 'Whether to ignore references to variables.',
+              },
             },
-            additionalProperties: false,
           },
         ],
       },
@@ -272,13 +273,13 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      functions: true,
+      allowNamedExports: false,
       classes: true,
       enums: true,
-      variables: true,
-      typedefs: true,
+      functions: true,
       ignoreTypeReferences: true,
-      allowNamedExports: false,
+      typedefs: true,
+      variables: true,
     },
   ],
   create(context, optionsWithDefault) {

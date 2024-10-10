@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isReferenceToGlobalFunction } from '../util';
@@ -47,12 +48,12 @@ export default createRule({
       const preferred = typeName.toLowerCase();
 
       context.report({
-        data: { typeName, preferred },
+        node,
+        messageId: 'bannedClassType',
+        data: { preferred, typeName },
         fix: includeFix
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(node, preferred)
           : undefined,
-        messageId: 'bannedClassType',
-        node,
       });
     }
 
