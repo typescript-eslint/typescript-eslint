@@ -310,8 +310,6 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
-/* eslint-enable perfectionist/sort-interfaces */
-
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
