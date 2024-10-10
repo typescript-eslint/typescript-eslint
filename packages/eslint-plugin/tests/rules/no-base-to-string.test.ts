@@ -295,6 +295,19 @@ tag\`\${{}}\`;
         }
       `,
     },
+    {
+      code: `
+        class Foo {
+          join(): string {
+            return '';
+          }
+        }
+
+        function test(type: string[] | Foo) {
+          return type.join();
+        }
+      `,
+    },
     ...validArray('{} & string'),
     ...validArray('string | number'),
     ...validArray('string[][]'),
@@ -453,6 +466,44 @@ tag\`\${{}}\`;
           data: {
             certainty: 'may',
             name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function test(type: { bar: string }[] | { foo: string }[]) {
+          return \`\${type}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {
+          join(): string {
+            return '';
+          }
+        }
+
+        function test(type: {}[] | Foo) {
+          return type.join();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'join',
           },
           messageId: 'baseToString',
         },
