@@ -27,13 +27,15 @@ export default createRule({
   },
 
   create(context) {
-    const checkClassAndReport = (node: TSESTree.Node, used: string): void => {
+    const getSymbolIfFromDefaultLibrary = (node: TSESTree.Node) => {
       const services = getParserServices(context);
       const symbol = services.getTypeAtLocation(node).getSymbol();
-      if (!isSymbolFromDefaultLibrary(services.program, symbol)) {
-        return;
-      }
-      const objectClass = symbol?.name;
+      return isSymbolFromDefaultLibrary(services.program, symbol)
+        ? symbol
+        : undefined;
+    };
+    const checkClassAndReport = (node: TSESTree.Node, used: string): void => {
+      const objectClass = getSymbolIfFromDefaultLibrary(node)?.name;
       if (objectClass && /^(Readonly|Weak)?(Map|Set)$/.test(objectClass)) {
         context.report({
           node,
@@ -59,7 +61,8 @@ export default createRule({
         const { object } = callee;
         if (
           object.type !== AST_NODE_TYPES.Identifier ||
-          object.name !== 'Object'
+          object.name !== 'Object' ||
+          getSymbolIfFromDefaultLibrary(object)
         ) {
           return;
         }
