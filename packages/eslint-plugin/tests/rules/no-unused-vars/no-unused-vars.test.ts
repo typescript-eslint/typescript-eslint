@@ -2266,5 +2266,13 @@ import { foo } from 'foo';
 
 export type Bar = typeof foo;
     `,
+    {
+      code: `
+export enum Foo {
+  _A,
+}
+      `,
+      options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '_' }],
+    },
   ],
 });

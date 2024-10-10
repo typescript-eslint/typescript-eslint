@@ -522,7 +522,13 @@ export default createRule<Options, MessageIds>({
           def.name.type === AST_NODE_TYPES.Identifier &&
           options.varsIgnorePattern?.test(def.name.name)
         ) {
-          if (options.reportUsedIgnorePattern && used) {
+          if (
+            options.reportUsedIgnorePattern &&
+            used &&
+            /* enum members are always marked as 'used' by `collectVariables`, but in reality they may be used or
+               unused. either way, don't complain about their naming. */
+            def.type !== TSESLint.Scope.DefinitionType.TSEnumMember
+          ) {
             context.report({
               node: def.name,
               messageId: 'usedIgnoredVar',
