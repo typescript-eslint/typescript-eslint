@@ -435,7 +435,23 @@ tag\`\${{}}\`;
       errors: [
         {
           data: {
-            certainty: 'will',
+            certainty: 'may',
+            name: 'type',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        function test(type: string[] | {}[][]) {
+          return \`\${type}\`;
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
             name: 'type',
           },
           messageId: 'baseToString',
