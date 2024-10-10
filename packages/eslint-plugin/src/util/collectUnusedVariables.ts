@@ -418,11 +418,11 @@ function isSelfReference(
 }
 
 const MERGABLE_TYPES = new Set([
-  AST_NODE_TYPES.TSInterfaceDeclaration,
-  AST_NODE_TYPES.TSTypeAliasDeclaration,
-  AST_NODE_TYPES.TSModuleDeclaration,
   AST_NODE_TYPES.ClassDeclaration,
   AST_NODE_TYPES.FunctionDeclaration,
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSModuleDeclaration,
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 /**
  * Determine if the variable is directly exported
@@ -471,7 +471,7 @@ function isExported(variable: ScopeVariable): boolean {
   });
 }
 
-const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
 
 /**
  * Determines if the variable is used.

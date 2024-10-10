@@ -57,9 +57,9 @@ const optionTesters = (
   tester,
 }));
 type Options = [
-  {
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
     allow?: TypeOrValueSpecifier[];
-  } & { [Type in (typeof optionTesters)[number]['option']]?: boolean },
+  },
 ];
 
 type MessageId = 'invalidType';

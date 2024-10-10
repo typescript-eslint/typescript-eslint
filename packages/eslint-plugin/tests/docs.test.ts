@@ -151,8 +151,8 @@ describe('Validating rule docs', () => {
 
   const ignoredFiles = new Set([
     'README.md',
-    'TEMPLATE.md',
     'shared',
+    'TEMPLATE.md',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
     'ban-types.md',
@@ -262,11 +262,11 @@ describe('Validating rule docs', () => {
       const requiredHeadings = ['When Not To Use It'];
 
       const importantHeadings = new Set([
-        ...requiredHeadings,
         'How to Use',
         'Options',
         'Related To',
         'When Not To Use It',
+        ...requiredHeadings,
       ]);
 
       test('important headings must be h2s', () => {

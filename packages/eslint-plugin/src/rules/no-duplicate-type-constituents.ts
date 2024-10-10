@@ -22,7 +22,7 @@ export type Options = [
 
 export type MessageIds = 'duplicate' | 'unnecessary';
 
-const astIgnoreKeys = new Set(['range', 'loc', 'parent']);
+const astIgnoreKeys = new Set(['loc', 'parent', 'range']);
 
 const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
   if (actualNode === expectedNode) {
