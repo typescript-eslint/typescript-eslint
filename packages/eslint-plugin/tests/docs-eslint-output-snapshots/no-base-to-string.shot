@@ -54,5 +54,6 @@ exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 
 let value = /regex/;
 value.toString();
 let text = \`\${value}\`;
+[value].toString();
 "
 `;

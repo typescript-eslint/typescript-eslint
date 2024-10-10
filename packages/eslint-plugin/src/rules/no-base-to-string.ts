@@ -1,9 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
+import { isArrayType } from '../util/isArrayType';
 
 enum Usefulness {
   Always = 'always',
@@ -11,12 +13,12 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-type Options = [
+export type Options = [
   {
     ignoredTypeNames?: string[];
   },
 ];
-type MessageIds = 'baseToString';
+export type MessageIds = 'baseToString';
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -59,6 +61,16 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
+    function isPossiblyArrayType(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .some(unionPart =>
+          tsutils
+            .intersectionTypeParts(unionPart)
+            .some(t => checker.isArrayType(t) || checker.isTupleType(t)),
+        );
+    }
+
     function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
@@ -82,6 +94,20 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
+      if (checker.isArrayType(type) || checker.isTupleType(type)) {
+        const types = checker.getTypeArguments(type);
+
+        for (const subType of types) {
+          const subtypeUsefulness = collectToStringCertainty(subType);
+
+          if (subtypeUsefulness !== Usefulness.Always) {
+            return subtypeUsefulness;
+          }
+        }
+
+        return Usefulness.Always;
+      }
+
       const toString = checker.getPropertyOfType(type, 'toString');
       const declarations = toString?.getDeclarations();
       if (!toString || !declarations || declarations.length === 0) {
@@ -103,7 +129,8 @@ export default createRule<Options, MessageIds>({
       if (
         declarations.every(
           ({ parent }) =>
-            !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
+            !ts.isInterfaceDeclaration(parent) ||
+            (parent.name.text !== 'Object' && parent.name.text !== 'Array'),
         )
       ) {
         return Usefulness.Always;
@@ -165,6 +192,38 @@ export default createRule<Options, MessageIds>({
           node.left.type !== AST_NODE_TYPES.PrivateIdentifier
         ) {
           checkExpression(node.left, leftType);
+        }
+      },
+      'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        const callExpr = memberExpr.parent as TSESTree.CallExpression;
+
+        const type = services.getTypeAtLocation(memberExpr.object);
+
+        if (isArrayType(checker, type)) {
+          return checkExpression(callExpr, type);
+        }
+
+        if (isPossiblyArrayType(type)) {
+          const certainty = tsutils
+            .unionTypeParts(type)
+            .filter(t => checker.isArrayType(t) || checker.isTupleType(t))
+            .map(collectToStringCertainty);
+
+          if (certainty.every(x => x === Usefulness.Always)) {
+            return;
+          }
+
+          return context.report({
+            node: callExpr,
+            messageId: 'baseToString',
+            data: {
+              name: context.sourceCode.getText(node),
+              certainty: Usefulness.Sometimes,
+            },
+          });
         }
       },
       'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
