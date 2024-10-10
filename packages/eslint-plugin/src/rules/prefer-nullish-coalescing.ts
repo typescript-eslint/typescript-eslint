@@ -106,7 +106,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreBooleanCoercion: {
             description:
-              'Whether to ignore any make boolean type value like `Boolan`, `!`',
+              'Whether to ignore any make boolean type value like `Boolean`, `!`',
             type: 'boolean',
           },
         },
@@ -461,7 +461,7 @@ function isMakeBoolean(
       (current.type === AST_NODE_TYPES.UnaryExpression &&
         current.operator === '!') ||
       (current.type === AST_NODE_TYPES.CallExpression &&
-        isBuiltInBoolanCall(current, context))
+        isBuiltInBooleanCall(current, context))
     ) {
       return true;
     }
@@ -486,17 +486,17 @@ function isMakeBoolean(
   return false;
 }
 
-function isBuiltInBoolanCall(
+function isBuiltInBooleanCall(
   node: TSESTree.CallExpression,
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): boolean {
   if (
     node.callee.type === AST_NODE_TYPES.Identifier &&
-    node.callee.name === 'Boolean' &&
+    node.callee.name === AST_TOKEN_TYPES.Boolean &&
     node.arguments[0]
   ) {
     const scope = context.sourceCode.getScope(node);
-    const variable = scope.set.get('Boolean');
+    const variable = scope.set.get(AST_TOKEN_TYPES.Boolean);
     return !variable?.defs.length;
   }
   return false;
