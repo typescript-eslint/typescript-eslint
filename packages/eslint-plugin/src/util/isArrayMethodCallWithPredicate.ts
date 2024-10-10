@@ -11,13 +11,13 @@ import * as tsutils from 'ts-api-utils';
 import { getStaticMemberAccessValue } from './misc';
 
 const ARRAY_PREDICATE_FUNCTIONS = new Set<unknown>([
+  'every',
   'filter',
   'find',
   'findIndex',
   'findLast',
   'findLastIndex',
   'some',
-  'every',
 ]);
 
 export function isArrayMethodCallWithPredicate(

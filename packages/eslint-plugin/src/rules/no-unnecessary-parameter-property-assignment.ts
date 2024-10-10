@@ -5,7 +5,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue, nullThrows } from '../util';
 
-const UNNECESSARY_OPERATORS = new Set(['=', '&&=', '||=', '??=']);
+const UNNECESSARY_OPERATORS = new Set(['??=', '&&=', '=', '||=']);
 
 export default createRule({
   name: 'no-unnecessary-parameter-property-assignment',

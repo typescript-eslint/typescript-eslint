@@ -194,14 +194,6 @@ export default createRule({
         // when entering an interface reset the count of `this`s to empty.
         tsThisTypes = [];
       },
-      'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
-        // inside an interface keep track of all ThisType references.
-        // unless it's inside a nested type literal in which case it's invalid code anyway
-        // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
-        if (literalNesting === 0 && tsThisTypes != null) {
-          tsThisTypes.push(node);
-        }
-      },
       'TSInterfaceDeclaration:exit'(
         node: TSESTree.TSInterfaceDeclaration,
       ): void {
@@ -210,6 +202,14 @@ export default createRule({
         }
         // on exit check member and reset the array to nothing.
         tsThisTypes = null;
+      },
+      'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
+        // inside an interface keep track of all ThisType references.
+        // unless it's inside a nested type literal in which case it's invalid code anyway
+        // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
+        if (literalNesting === 0 && tsThisTypes != null) {
+          tsThisTypes.push(node);
+        }
       },
       // keep track of nested literals to avoid complaining about invalid `this` uses
       'TSInterfaceDeclaration TSTypeLiteral'(): void {
