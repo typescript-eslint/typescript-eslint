@@ -20,11 +20,8 @@ function createSerializer<Constructor extends ConstructorSignature>(
   const SEEN_THINGS = new Set<unknown>();
 
   return {
-    test(val): boolean {
-      return val instanceof type;
-    },
     serialize(
-      thing: Record<string, unknown> & { $id?: number },
+      thing: { $id?: number } & Record<string, unknown>,
       config,
       indentation,
       depth,
@@ -77,6 +74,9 @@ function createSerializer<Constructor extends ConstructorSignature>(
 
       const out = outputLines.join('\n');
       return out;
+    },
+    test(val): boolean {
+      return val instanceof type;
     },
   };
 }

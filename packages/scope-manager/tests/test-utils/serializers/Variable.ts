@@ -18,4 +18,4 @@ const implicitLibVarSerializer = createSerializer(ImplicitLibVariable, [
   'isTypeVariable',
 ]);
 
-export { serializer, implicitLibVarSerializer };
+export { implicitLibVarSerializer, serializer };

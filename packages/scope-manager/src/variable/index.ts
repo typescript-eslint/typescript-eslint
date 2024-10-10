@@ -8,4 +8,4 @@ export {
 } from './ImplicitLibVariable';
 export { Variable } from './Variable';
 
-export type ScopeVariable = Variable | ESLintScopeVariable;
+export type ScopeVariable = ESLintScopeVariable | Variable;

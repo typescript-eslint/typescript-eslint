@@ -4,11 +4,12 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const esnext_collection = {
   MapConstructor: TYPE,
+  ReadonlySet: TYPE,
   ReadonlySetLike: TYPE,
   Set: TYPE,
-  ReadonlySet: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

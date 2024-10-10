@@ -4,10 +4,11 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const es2019_array = {
+  Array: TYPE,
   FlatArray: TYPE,
   ReadonlyArray: TYPE,
-  Array: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

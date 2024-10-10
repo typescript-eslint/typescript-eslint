@@ -41,8 +41,8 @@ describe('gloablReturn option', () => {
 
   it('creates a function scope following the global scope immediately and creates module scope', () => {
     const { scopeManager } = parseAndAnalyze("import {x as v} from 'mod';", {
-      sourceType: 'module',
       globalReturn: true,
+      sourceType: 'module',
     });
 
     expect(scopeManager.scopes).toHaveLength(3);

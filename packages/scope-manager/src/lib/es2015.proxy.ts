@@ -4,9 +4,10 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const es2015_proxy = {
-  ProxyHandler: TYPE,
   ProxyConstructor: TYPE,
+  ProxyHandler: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

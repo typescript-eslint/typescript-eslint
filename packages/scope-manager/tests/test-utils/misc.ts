@@ -1,4 +1,5 @@
 import type { Variable } from '../../src';
+
 import { ImplicitLibVariable } from '../../src';
 
 function getRealVariables(variables: Variable[]): Variable[] {

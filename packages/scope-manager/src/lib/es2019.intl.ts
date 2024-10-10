@@ -4,6 +4,7 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE_VALUE } from './base-config';
 
 export const es2019_intl = {

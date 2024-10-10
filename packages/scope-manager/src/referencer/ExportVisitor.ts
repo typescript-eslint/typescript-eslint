@@ -1,7 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { Referencer } from './Referencer';
+
 import { Visitor } from './Visitor';
 
 type ExportNode =
@@ -10,8 +12,8 @@ type ExportNode =
   | TSESTree.ExportNamedDeclaration;
 
 class ExportVisitor extends Visitor {
-  readonly #referencer: Referencer;
   readonly #exportNode: ExportNode;
+  readonly #referencer: Referencer;
 
   constructor(node: ExportNode, referencer: Referencer) {
     super(referencer);
@@ -22,16 +24,6 @@ class ExportVisitor extends Visitor {
   static visit(referencer: Referencer, node: ExportNode): void {
     const exportReferencer = new ExportVisitor(node, referencer);
     exportReferencer.visit(node);
-  }
-
-  protected Identifier(node: TSESTree.Identifier): void {
-    if (this.#exportNode.exportKind === 'type') {
-      // export type { T };
-      // type exports can only reference types
-      this.#referencer.currentScope().referenceType(node);
-    } else {
-      this.#referencer.currentScope().referenceDualValueType(node);
-    }
   }
 
   protected ExportDefaultDeclaration(
@@ -77,6 +69,16 @@ class ExportVisitor extends Visitor {
       this.#referencer.currentScope().referenceType(node.local);
     } else {
       this.visit(node.local);
+    }
+  }
+
+  protected Identifier(node: TSESTree.Identifier): void {
+    if (this.#exportNode.exportKind === 'type') {
+      // export type { T };
+      // type exports can only reference types
+      this.#referencer.currentScope().referenceType(node);
+    } else {
+      this.#referencer.currentScope().referenceDualValueType(node);
     }
   }
 }

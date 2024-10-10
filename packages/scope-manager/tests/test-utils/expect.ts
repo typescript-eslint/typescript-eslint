@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type {
@@ -11,7 +12,6 @@ import type {
   ParameterDefinition,
   VariableDefinition,
 } from '../../src/definition';
-import { DefinitionType } from '../../src/definition';
 import type {
   BlockScope,
   CatchScope,
@@ -26,6 +26,8 @@ import type {
   SwitchScope,
   WithScope,
 } from '../../src/scope';
+
+import { DefinitionType } from '../../src/definition';
 import { ScopeType } from '../../src/scope';
 
 //////////////////
