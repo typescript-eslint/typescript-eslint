@@ -810,6 +810,104 @@ switch (value) {
         },
       ],
     },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+          allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar:
+    break;
+  case MyEnum.Baz:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  case false:
+    break;
+  case true:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -2370,6 +2468,253 @@ switch (myValue) {
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  default:
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  default:
+  case 'a':
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  default:
+  case 'a':
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 4,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  default:
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 10,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar: { throw new Error('Not implemented yet: MyEnum.Bar case') }
+  case MyEnum.Baz: { throw new Error('Not implemented yet: MyEnum.Baz case') }
+  default: {
+    break;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          requireDefaultCaseForUnions: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          line: 3,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean;
+switch (value) {
+  case false: { throw new Error('Not implemented yet: false case') }
+  case true: { throw new Error('Not implemented yet: true case') }
+  default: {
+    break;
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
