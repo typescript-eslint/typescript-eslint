@@ -439,7 +439,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/index.ts'],
+    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
     rules: {
       // requirement
       'import/no-default-export': 'off',
