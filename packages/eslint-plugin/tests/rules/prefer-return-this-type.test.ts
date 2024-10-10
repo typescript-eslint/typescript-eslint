@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -93,9 +93,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 8,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -117,9 +117,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 8,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -141,9 +141,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 11,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -165,9 +165,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 11,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -187,9 +187,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 11,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -211,9 +211,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -239,9 +239,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 10,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -269,9 +269,9 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 20,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `
@@ -299,10 +299,10 @@ class Animal<T> {
       `,
       errors: [
         {
-          messageId: 'useThisType',
-          line: 3,
           column: 10,
           endColumn: 19,
+          line: 3,
+          messageId: 'useThisType',
         },
       ],
       output: `

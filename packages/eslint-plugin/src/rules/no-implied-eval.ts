@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -22,19 +23,19 @@ const EVAL_LIKE_METHODS = new Set([
 export default createRule({
   name: 'no-implied-eval',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow the use of `eval()`-like methods',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
-      noImpliedEvalError: 'Implied eval. Consider passing a function.',
       noFunctionConstructor:
         'Implied eval. Do not use the Function constructor to create functions.',
+      noImpliedEvalError: 'Implied eval. Consider passing a function.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -156,8 +157,8 @@ export default createRule({
     }
 
     return {
-      NewExpression: checkImpliedEval,
       CallExpression: checkImpliedEval,
+      NewExpression: checkImpliedEval,
     };
   },
 });

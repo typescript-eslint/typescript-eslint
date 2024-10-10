@@ -54,12 +54,12 @@ declare module 'foo' {
   invalid: [
     {
       code: 'const self = this;',
+      errors: [idError],
       options: [
         {
           allowDestructuring: true,
         },
       ],
-      errors: [idError],
     },
     {
       code: 'const self = this;',
@@ -74,12 +74,12 @@ that = this;
     },
     {
       code: 'const { props, state } = this;',
+      errors: [destructureError],
       options: [
         {
           allowDestructuring: false,
         },
       ],
-      errors: [destructureError],
     },
     {
       code: `
@@ -115,11 +115,6 @@ class TestClass {
   }
 }
       `,
-      options: [
-        {
-          allowDestructuring: false,
-        },
-      ],
       errors: [
         idError,
         idError,
@@ -128,6 +123,11 @@ class TestClass {
         destructureError,
         arrayDestructureError,
         arrayDestructureError,
+      ],
+      options: [
+        {
+          allowDestructuring: false,
+        },
       ],
     },
   ],

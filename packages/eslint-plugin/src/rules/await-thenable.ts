@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -14,13 +15,14 @@ import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
 type MessageId =
   | 'await'
+  | 'convertToOrdinaryFor'
   | 'forAwaitOfNonThenable'
-  | 'removeAwait'
-  | 'convertToOrdinaryFor';
+  | 'removeAwait';
 
 export default createRule<[], MessageId>({
   name: 'await-thenable',
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow awaiting a value that is not a Thenable',
       recommended: 'recommended',
@@ -29,13 +31,12 @@ export default createRule<[], MessageId>({
     hasSuggestions: true,
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
       forAwaitOfNonThenable:
         'Unexpected `for await...of` of a value that is not async iterable.',
       removeAwait: 'Remove unnecessary `await`.',
-      convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
     },
     schema: [],
-    type: 'problem',
   },
   defaultOptions: [],
 
@@ -54,8 +55,8 @@ export default createRule<[], MessageId>({
 
         if (!tsutils.isThenableType(checker, originalNode.expression, type)) {
           context.report({
-            messageId: 'await',
             node,
+            messageId: 'await',
             suggest: [
               {
                 messageId: 'removeAwait',

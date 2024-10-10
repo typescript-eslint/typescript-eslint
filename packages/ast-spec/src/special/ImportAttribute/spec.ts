@@ -4,7 +4,7 @@ import type { Identifier } from '../../expression/Identifier/spec';
 import type { Literal } from '../../unions/Literal';
 
 export interface ImportAttribute extends BaseNode {
-  key: Identifier | Literal;
   type: AST_NODE_TYPES.ImportAttribute;
+  key: Identifier | Literal;
   value: Literal;
 }
