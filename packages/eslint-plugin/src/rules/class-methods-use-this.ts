@@ -254,12 +254,12 @@ export default createRule<Options, MessageIds>({
           }
         : {}),
 
-      'PropertyDefinition:exit'(): void {
-        popContext();
-      },
       /*
        * Class field value are implicit functions.
        */
+      'PropertyDefinition:exit'(): void {
+        popContext();
+      },
       'PropertyDefinition > *.key:exit'(): void {
         pushContext();
       },
