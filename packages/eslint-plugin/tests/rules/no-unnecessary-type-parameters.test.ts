@@ -971,6 +971,30 @@ const f = <T,>(
       ],
     },
     {
+      code: `
+declare function setItem<T>(T): T;
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+        },
+      ],
+    },
+    {
+      code: `
+interface StorageService {
+  setItem<T>({ key: string, value: T }): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+        },
+      ],
+    },
+    {
       // This isn't actually an important test case.
       // However, we use it as an example in the docs of code that is flagged,
       // but shouldn't necessarily be. So, if you make a change to the rule logic
