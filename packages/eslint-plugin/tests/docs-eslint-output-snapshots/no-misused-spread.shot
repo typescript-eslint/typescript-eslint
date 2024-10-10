@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare const userName: string;
+const chars = [...userName];
+               ~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
+
+declare const arr: number[];
+const arrSpread = { ...arr };
+                    ~~~~~~ Using the spread operator on an array in an object will result in a list of indices.
+
+declare const set: Set<number>;
+const setSpread = { ...set };
+                    ~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+
+declare const map: Map<string, number>;
+const mapSpread = { ...map };
+                    ~~~~~~ Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use \`Object.fromEntries(map)\` instead?
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj };
+                       ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare const userName: string;
+const chars = userName.split('');
+
+declare const arr: number[];
+const arrSpread = [...arr];
+
+declare const set: Set<number>;
+const setSpread = [...set];
+
+declare const map: Map<string, number>;
+const mapObject = Object.fromEntries(map);
+
+declare function getObj(): { a: 1; b: 2 };
+const getObjSpread = { ...getObj() };
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+type UnsafeIterable = Iterable<number>;
+
+declare const iterable: UnsafeIterable;
+
+const spreadIterable = { ...iterable };
+                         ~~~~~~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+
+type UnsafeBrandedString = string & { __brand: 'unsafe' };
+
+declare const brandedString: UnsafeBrandedString;
+
+const spreadBrandedString = { ...brandedString };
+"
+`;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
+"Correct
+Options: {"allow":["SafeIterable", "BrandedString"]}
+
+type SafeIterable = Iterable<number>;
+
+declare const iterable: SafeIterable;
+
+const spreadIterable = { ...iterable };
+
+type BrandedString = string & { __brand: 'safe' };
+
+declare const brandedString: BrandedString;
+
+const spreadBrandedString = { ...brandedString };
+"
+`;
