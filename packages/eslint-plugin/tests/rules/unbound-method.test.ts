@@ -1,7 +1,9 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds, Options } from '../../src/rules/unbound-method';
+
 import rule from '../../src/rules/unbound-method';
 import { getFixturesRootDir } from '../RuleTester';
 
@@ -10,8 +12,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -564,15 +566,15 @@ new ContainsMethods().unbound;
 
 ContainsMethods.unboundStatic;
       `,
-      options: [
-        {
-          ignoreStatic: true,
-        },
-      ],
       errors: [
         {
           line: 8,
           messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+      options: [
+        {
+          ignoreStatic: true,
         },
       ],
     },
@@ -1153,8 +1155,8 @@ class OtherClass extends BaseClass {
       `,
       errors: [
         {
-          line: 8,
           column: 15,
+          line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -1175,8 +1177,8 @@ class OtherClass extends BaseClass {
       `,
       errors: [
         {
-          line: 9,
           column: 9,
+          line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -1192,9 +1194,9 @@ const { a, b } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 9,
           endColumn: 10,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -1210,9 +1212,9 @@ const { a: c } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 9,
           endColumn: 10,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -1228,9 +1230,9 @@ const { b, a } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 12,
           endColumn: 13,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

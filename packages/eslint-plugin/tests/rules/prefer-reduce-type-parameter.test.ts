@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -64,61 +64,61 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
 declare const arr: string[];
 arr.reduce<string>(acc => acc, arr.shift() as string);
       `,
+      errors: [
+        {
+          column: 32,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 declare const arr: string[];
 arr.reduce<string>(acc => acc, arr.shift());
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 32,
-          line: 3,
-        },
-      ],
     },
     {
       code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), [] as number[]);',
-      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
-          messageId: 'preferTypeParameter',
           column: 45,
           line: 1,
+          messageId: 'preferTypeParameter',
         },
       ],
+      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
     },
     {
       code: '[1, 2, 3].reduce((a, s) => a.concat(s * 2), <number[]>[]);',
-      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
-          messageId: 'preferTypeParameter',
           column: 45,
           line: 1,
+          messageId: 'preferTypeParameter',
         },
       ],
+      output: '[1, 2, 3].reduce<number[]>((a, s) => a.concat(s * 2), []);',
     },
     {
       code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), [] as number[]);',
-      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
-          messageId: 'preferTypeParameter',
           column: 46,
           line: 1,
+          messageId: 'preferTypeParameter',
         },
       ],
+      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
     },
     {
       code: '[1, 2, 3]?.reduce((a, s) => a.concat(s * 2), <number[]>[]);',
-      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
       errors: [
         {
-          messageId: 'preferTypeParameter',
           column: 46,
           line: 1,
+          messageId: 'preferTypeParameter',
         },
       ],
+      output: '[1, 2, 3]?.reduce<number[]>((a, s) => a.concat(s * 2), []);',
     },
     {
       code: `
@@ -132,6 +132,13 @@ names.reduce(
   {} as Record<string, boolean>,
 );
       `,
+      errors: [
+        {
+          column: 3,
+          line: 9,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 const names = ['a', 'b', 'c'];
 
@@ -143,13 +150,6 @@ names.reduce<Record<string, boolean>>(
   {},
 );
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 3,
-          line: 9,
-        },
-      ],
     },
     {
       code: `
@@ -161,6 +161,13 @@ names.reduce<Record<string, boolean>>(
   <Record<string, boolean>>{},
 );
       `,
+      errors: [
+        {
+          column: 3,
+          line: 7,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 ['a', 'b'].reduce<Record<string, boolean>>(
   (accum, name) => ({
@@ -170,13 +177,6 @@ names.reduce<Record<string, boolean>>(
   {},
 );
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 3,
-          line: 7,
-        },
-      ],
     },
     {
       code: `
@@ -188,6 +188,13 @@ names.reduce<Record<string, boolean>>(
   {} as Record<string, boolean>,
 );
       `,
+      errors: [
+        {
+          column: 3,
+          line: 7,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 ['a', 'b']['reduce']<Record<string, boolean>>(
   (accum, name) => ({
@@ -197,13 +204,6 @@ names.reduce<Record<string, boolean>>(
   {},
 );
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 3,
-          line: 7,
-        },
-      ],
     },
     {
       code: `
@@ -211,69 +211,69 @@ function f<T, U extends T[]>(a: U) {
   return a.reduce(() => {}, {} as Record<string, boolean>);
 }
       `,
+      errors: [
+        {
+          column: 29,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 function f<T, U extends T[]>(a: U) {
   return a.reduce<Record<string, boolean>>(() => {}, {});
 }
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 29,
-          line: 3,
-        },
-      ],
     },
     {
       code: `
 declare const tuple: [number, number, number];
 tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
       `,
+      errors: [
+        {
+          column: 41,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 declare const tuple: [number, number, number];
 tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 41,
-          line: 3,
-        },
-      ],
     },
     {
       code: `
 declare const tupleOrArray: [number, number, number] | number[];
 tupleOrArray.reduce((a, s) => a.concat(s * 2), [] as number[]);
       `,
+      errors: [
+        {
+          column: 48,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 declare const tupleOrArray: [number, number, number] | number[];
 tupleOrArray.reduce<number[]>((a, s) => a.concat(s * 2), []);
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 48,
-          line: 3,
-        },
-      ],
     },
     {
       code: `
 declare const tuple: [number, number, number] & number[];
 tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
       `,
+      errors: [
+        {
+          column: 41,
+          line: 3,
+          messageId: 'preferTypeParameter',
+        },
+      ],
       output: `
 declare const tuple: [number, number, number] & number[];
 tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
       `,
-      errors: [
-        {
-          messageId: 'preferTypeParameter',
-          column: 41,
-          line: 3,
-        },
-      ],
     },
   ],
 });

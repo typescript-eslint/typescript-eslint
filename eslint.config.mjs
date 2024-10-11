@@ -439,7 +439,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['eslint.config.{js,cjs,mjs}'],
+    files: ['eslint.config.{js,cjs,mjs}', 'knip.ts', 'packages/*/src/index.ts'],
     rules: {
       // requirement
       'import/no-default-export': 'off',
@@ -596,13 +596,19 @@ export default tseslint.config(
   },
   {
     extends: [perfectionistPlugin.configs['recommended-alphabetical']],
-    ignores: ['packages/typescript-eslint/src/configs/*'],
+    ignores: [
+      'packages/eslint-plugin/src/configs/*',
+      'packages/scope-manager/src/configs/*',
+      'packages/typescript-eslint/src/configs/*',
+    ],
     files: [
       'packages/ast-spec/{src,tests,typings}/**/*.ts',
+      'packages/eslint-plugin/{src,tests,tools,typings}/**/*.ts',
       'packages/integration-tests/{tests,tools,typing}/**/*.ts',
       'packages/parser/{src,tests}/**/*.ts',
       'packages/rule-schema-to-typescript-types/src/**/*.ts',
       'packages/rule-tester/{src,tests,typings}/**/*.ts',
+      'packages/scope-manager/{src,tests}/**/*.ts',
       'packages/types/{src,tools}/**/*.ts',
       'packages/typescript-eslint/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',
@@ -611,32 +617,67 @@ export default tseslint.config(
     ],
     rules: {
       '@typescript-eslint/sort-type-constituents': 'off',
-      'perfectionist/sort-classes': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
+      'perfectionist/sort-classes': 'error',
       'perfectionist/sort-enums': 'off',
-      'perfectionist/sort-objects': [
-        'error',
-        {
-          order: 'asc',
-          partitionByComment: true,
-          type: 'natural',
-        },
-      ],
+      'perfectionist/sort-objects': 'error',
       'perfectionist/sort-union-types': [
         'error',
         {
-          order: 'asc',
           groups: ['unknown', 'keyword', 'nullish'],
           type: 'natural',
         },
       ],
       'simple-import-sort/imports': 'off',
+    },
+    settings: {
+      perfectionist: {
+        partitionByComment: true,
+        order: 'asc',
+        type: 'natural',
+      },
+    },
+  },
+  {
+    files: ['packages/ast-spec/src/**/*.ts'],
+    rules: {
+      'perfectionist/sort-interfaces': [
+        'error',
+        {
+          customGroups: {
+            first: ['type'],
+          },
+          groups: ['first', 'unknown'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/eslint-plugin/src/rules/*.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: {
+            first: ['loc', 'name', 'node', 'type'],
+            second: ['meta', 'messageId', 'start'],
+            third: ['defaultOptions', 'data', 'end'],
+            fourth: ['fix'],
+          },
+          groups: ['first', 'second', 'third', 'fourth', 'unknown'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/eslint-plugin/tests/rules/*.test.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: { top: ['valid'] },
+          groups: ['top', 'unknown'],
+        },
+      ],
     },
   },
 );

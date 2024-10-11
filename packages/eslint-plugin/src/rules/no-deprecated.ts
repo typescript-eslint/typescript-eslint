@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -10,6 +11,7 @@ type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
 export default createRule({
   name: 'no-deprecated',
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow using code marked as `@deprecated`',
       recommended: 'strict',
@@ -20,7 +22,6 @@ export default createRule({
       deprecatedWithReason: `\`{{name}}\` is deprecated. {{reason}}`,
     },
     schema: [],
-    type: 'problem',
   },
   defaultOptions: [],
   create(context) {
@@ -301,12 +302,12 @@ export default createRule({
       context.report({
         ...(reason
           ? {
-              data: { name: node.name, reason },
               messageId: 'deprecatedWithReason',
+              data: { name: node.name, reason },
             }
           : {
-              data: { name: node.name },
               messageId: 'deprecated',
+              data: { name: node.name },
             }),
         node,
       });

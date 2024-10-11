@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -7,6 +8,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, getModifiers, getParserServices } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -21,57 +23,57 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce dot notation whenever possible',
-      recommended: 'stylistic',
       extendsBaseRule: true,
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowKeywords: {
-            description: 'Whether to allow keywords such as ["class"]`.',
-            type: 'boolean',
-            default: true,
-          },
-          allowPattern: {
-            description: 'Regular expression of names to allow.',
-            type: 'string',
-            default: '',
-          },
-          allowPrivateClassPropertyAccess: {
-            description:
-              'Whether to allow accessing class members marked as `private` with array notation.',
-            type: 'boolean',
-            default: false,
-          },
-          allowProtectedClassPropertyAccess: {
-            description:
-              'Whether to allow accessing class members marked as `protected` with array notation.',
-            type: 'boolean',
-            default: false,
-          },
-          allowIndexSignaturePropertyAccess: {
-            description:
-              'Whether to allow accessing properties matching an index signature with array notation.',
-            type: 'boolean',
-            default: false,
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
     fixable: baseRule.meta.fixable,
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowIndexSignaturePropertyAccess: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Whether to allow accessing properties matching an index signature with array notation.',
+          },
+          allowKeywords: {
+            type: 'boolean',
+            default: true,
+            description: 'Whether to allow keywords such as ["class"]`.',
+          },
+          allowPattern: {
+            type: 'string',
+            default: '',
+            description: 'Regular expression of names to allow.',
+          },
+          allowPrivateClassPropertyAccess: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Whether to allow accessing class members marked as `private` with array notation.',
+          },
+          allowProtectedClassPropertyAccess: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Whether to allow accessing class members marked as `protected` with array notation.',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
-      allowPrivateClassPropertyAccess: false,
-      allowProtectedClassPropertyAccess: false,
       allowIndexSignaturePropertyAccess: false,
       allowKeywords: true,
       allowPattern: '',
+      allowPrivateClassPropertyAccess: false,
+      allowProtectedClassPropertyAccess: false,
     },
   ],
   create(context, [options]) {

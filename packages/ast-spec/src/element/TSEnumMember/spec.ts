@@ -7,12 +7,12 @@ import type {
 } from '../../unions/PropertyName';
 
 interface TSEnumMemberBase extends BaseNode {
+  type: AST_NODE_TYPES.TSEnumMember;
   computed: boolean;
   id:
     | PropertyNameComputed // this should only happen in semantically invalid code (ts error 1164)
     | PropertyNameNonComputed;
   initializer: Expression | undefined;
-  type: AST_NODE_TYPES.TSEnumMember;
 }
 
 /**

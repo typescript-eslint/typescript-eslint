@@ -245,13 +245,6 @@
     "website": "https://www.0x.se"
   },
   {
-    "id": "Trevor Burnham",
-    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
-    "name": "Trevor Burnham",
-    "totalDonations": 22000,
-    "website": "https://trevorburnham.com"
-  },
-  {
     "id": "Evil Martians",
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
@@ -264,6 +257,13 @@
     "name": "Corellium",
     "totalDonations": 21000,
     "website": "https://www.corellium.com"
+  },
+  {
+    "id": "Trevor Burnham",
+    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
+    "name": "Trevor Burnham",
+    "totalDonations": 21000,
+    "website": "https://trevorburnham.com"
   },
   {
     "id": "David Johnston",
