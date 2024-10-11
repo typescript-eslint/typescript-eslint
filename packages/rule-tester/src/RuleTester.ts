@@ -184,10 +184,37 @@ export class RuleTester extends TestFramework {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
     });
 
-    this.#linter = new Linter({
-      configType: 'flat',
-      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
-    });
+    // This proxy nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
+    // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
+    //
+    // For some reason rethrowing exceptions skirts around the circular JSON error.
+    this.#linter = new Proxy(
+      new Linter({
+        configType: 'flat',
+        cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
+      }),
+      {
+        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+        get: (target, prop, receiver) => {
+          if (prop === 'verify') {
+            return (
+              ...args: Parameters<Linter['verify']>
+            ): ReturnType<Linter['verify']> => {
+              try {
+                return target.verify(...args);
+              } catch (error) {
+                throw new Error('Caught an error while linting', {
+                  cause: error,
+                });
+              }
+            };
+          }
+
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return Reflect.get(target, prop, receiver);
+        },
+      },
+    );
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
@@ -775,51 +802,6 @@ export class RuleTester extends TestFramework {
    * Check if the template is valid or not
    * all valid cases go through this
    */
-  #testValidTemplate<
-    MessageIds extends string,
-    Options extends readonly unknown[],
-  >(
-    ruleName: string,
-    rule: RuleModule<MessageIds, Options>,
-    itemIn: ValidTestCase<Options> | string,
-    seenValidTestCases: Set<string>,
-  ): void {
-    const item: ValidTestCase<Options> =
-      typeof itemIn === 'object' ? itemIn : { code: itemIn };
-
-    assert.ok(
-      typeof item.code === 'string',
-      "Test case must specify a string value for 'code'",
-    );
-    if (item.name) {
-      assert.ok(
-        typeof item.name === 'string',
-        "Optional test case property 'name' must be a string",
-      );
-    }
-
-    checkDuplicateTestCase(item, seenValidTestCases);
-
-    const result = this.runRuleForItem(ruleName, rule, item);
-    const messages = result.messages;
-
-    assert.strictEqual(
-      messages.length,
-      0,
-      util.format(
-        'Should have no errors but had %d: %s',
-        messages.length,
-        util.inspect(messages),
-      ),
-    );
-
-    assertASTDidntChange(result.beforeAST, result.afterAST);
-  }
-
-  /**
-   * Check if the template is invalid or not
-   * all invalid cases go through this.
-   */
   #testInvalidTemplate<
     MessageIds extends string,
     Options extends readonly unknown[],
@@ -1281,6 +1263,47 @@ export class RuleTester extends TestFramework {
         "The rule fixed the code. Please add 'output' property.",
       );
     }
+
+    assertASTDidntChange(result.beforeAST, result.afterAST);
+  }
+
+  #testValidTemplate<
+    MessageIds extends string,
+    Options extends readonly unknown[],
+  >(
+    ruleName: string,
+    rule: RuleModule<MessageIds, Options>,
+    itemIn: ValidTestCase<Options> | string,
+    seenValidTestCases: Set<string>,
+  ): void {
+    const item: ValidTestCase<Options> =
+      typeof itemIn === 'object' ? itemIn : { code: itemIn };
+
+    assert.ok(
+      typeof item.code === 'string',
+      "Test case must specify a string value for 'code'",
+    );
+    if (item.name) {
+      assert.ok(
+        typeof item.name === 'string',
+        "Optional test case property 'name' must be a string",
+      );
+    }
+
+    checkDuplicateTestCase(item, seenValidTestCases);
+
+    const result = this.runRuleForItem(ruleName, rule, item);
+    const messages = result.messages;
+
+    assert.strictEqual(
+      messages.length,
+      0,
+      util.format(
+        'Should have no errors but had %d: %s',
+        messages.length,
+        util.inspect(messages),
+      ),
+    );
 
     assertASTDidntChange(result.beforeAST, result.afterAST);
   }
