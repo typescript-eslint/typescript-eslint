@@ -646,6 +646,22 @@ assert(nullableString);
       const x = (t: string | null) => t;
       ['', null].filter(x);
     `,
+    `
+      [1, 2].filter(x => {
+        if (x === 1) {
+          return true;
+        }
+
+        throw new Error('oops');
+      });
+    `,
+    `
+      [1, 2].filter(x => {
+        if (typeof x === 'number') {
+          return true;
+        }
+      });
+    `,
   ],
 
   invalid: [
