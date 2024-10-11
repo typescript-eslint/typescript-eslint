@@ -1113,7 +1113,7 @@ describe('RuleTester - hooks', () => {
             },
           ],
         }),
-      ).toThrow(/is not a function/);
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
       expect(() =>
         ruleTester.run('no-foo', noFooRule, {
           invalid: [
@@ -1125,7 +1125,7 @@ describe('RuleTester - hooks', () => {
           ],
           valid: [],
         }),
-      ).toThrow(/is not a function/);
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
     },
   );
 

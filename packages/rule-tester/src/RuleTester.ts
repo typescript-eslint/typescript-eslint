@@ -411,6 +411,24 @@ export class RuleTester extends TestFramework {
   }
 
   /**
+   * Runs a hook on the given item when it's assigned to the given property
+   * @throws {Error} If the property is not a function or that function throws an error
+   */
+  #runHook<MessageIds extends string, Options extends readonly unknown[]>(
+    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
+    prop: keyof Pick<typeof item, 'after' | 'before'>,
+  ): void {
+    if (hasOwnProperty(item, prop)) {
+      assert.strictEqual(
+        typeof item[prop],
+        'function',
+        `Optional test case property '${prop}' must be a function`,
+      );
+      item[prop]();
+    }
+  }
+
+  /**
    * Adds a new rule test to execute.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
@@ -498,7 +516,7 @@ export class RuleTester extends TestFramework {
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
               try {
-                valid.before?.();
+                this.#runHook(valid, 'before');
                 this.#testValidTemplate(
                   ruleName,
                   rule,
@@ -506,7 +524,7 @@ export class RuleTester extends TestFramework {
                   seenValidTestCases,
                 );
               } finally {
-                valid.after?.();
+                this.#runHook(valid, 'after');
               }
             });
           });
@@ -524,7 +542,7 @@ export class RuleTester extends TestFramework {
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
               try {
-                invalid.before?.();
+                this.#runHook(invalid, 'before');
                 this.#testInvalidTemplate(
                   ruleName,
                   rule,
@@ -532,7 +550,7 @@ export class RuleTester extends TestFramework {
                   seenInvalidTestCases,
                 );
               } finally {
-                invalid.after?.();
+                this.#runHook(invalid, 'after');
               }
             });
           });
