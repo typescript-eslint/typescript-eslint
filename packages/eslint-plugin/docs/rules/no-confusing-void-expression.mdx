@@ -123,7 +123,11 @@ console.log(void alert('Hello, world!'));
 
 Whether to ignore returns from functions with `void` return types when inside a function with a `void` return type.
 
-It may be preferable to allow functions that explicitly return `void` to return `void` expressions. This exception will also apply to functions with an implicit contextual return type of `void`.
+Some projects prefer allowing functions that explicitly return `void` to return `void` expressions. Doing so allows more writing more succinct functions.
+
+:::note
+This is technically risky as the `void`-returning function might actually be returning a value not seen by the type system.
+:::
 
 ```ts option='{ "ignoreVoidReturningFunctions": true }' showPlaygroundButton
 function foo(): void {
