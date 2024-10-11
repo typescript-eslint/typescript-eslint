@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -187,14 +187,14 @@ const b = a as string;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 22,
           data: {
-            type: 'string | number',
             asserted: 'string',
+            type: 'string | number',
           },
+          endColumn: 22,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -205,14 +205,14 @@ const b = a as unknown as number;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 33,
           data: {
-            type: 'unknown',
             asserted: 'number',
+            type: 'unknown',
           },
+          endColumn: 33,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -223,14 +223,14 @@ const b = a as string | boolean;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 32,
           data: {
-            type: 'string | undefined',
             asserted: 'string | boolean',
+            type: 'string | undefined',
           },
+          endColumn: 32,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -241,14 +241,14 @@ const b = a as string | boolean as boolean;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 43,
           data: {
-            type: 'string | boolean',
             asserted: 'boolean',
+            type: 'string | boolean',
           },
+          endColumn: 43,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -259,24 +259,24 @@ const b = a as 'foo' as 'bar';
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 30,
           data: {
-            type: '"foo"',
             asserted: '"bar"',
+            type: '"foo"',
           },
+          endColumn: 30,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 21,
           data: {
-            type: 'string',
             asserted: '"foo"',
+            type: 'string',
           },
+          endColumn: 21,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -288,14 +288,14 @@ function f(t: number | string) {
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 10,
-          endColumn: 31,
           data: {
-            type: 'string | number',
             asserted: 'number | boolean',
+            type: 'string | number',
           },
+          endColumn: 31,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -307,14 +307,14 @@ function f<T extends number | string>(t: T) {
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 10,
-          endColumn: 31,
           data: {
-            type: 'string | number',
             asserted: 'number | boolean',
+            type: 'string | number',
           },
+          endColumn: 31,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -326,14 +326,14 @@ function f<T extends number | string>(t: T) {
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 10,
-          endColumn: 30,
           data: {
-            type: 'string | number',
             asserted: 'Omit<T, number>',
+            type: 'string | number',
           },
+          endColumn: 30,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -344,14 +344,14 @@ const b = a as () => string | number;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 37,
           data: {
-            type: '() => string | boolean',
             asserted: '() => string | number',
+            type: '() => string | boolean',
           },
+          endColumn: 37,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -366,14 +366,14 @@ var foo = {} as Foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 7,
           column: 11,
-          endColumn: 20,
           data: {
-            type: '{}',
             asserted: 'Foo',
+            type: '{}',
           },
+          endColumn: 20,
+          line: 7,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -388,14 +388,14 @@ export const foo = { bar: 1, bazz: 1 } as Foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 7,
           column: 20,
-          endColumn: 46,
           data: {
-            type: '{ bar: number; bazz: number; }',
             asserted: 'Foo',
+            type: '{ bar: number; bazz: number; }',
           },
+          endColumn: 46,
+          line: 7,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -406,24 +406,24 @@ const bar = foo as string | boolean as string | null;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 53,
           data: {
-            type: 'string | boolean',
             asserted: 'string | null',
+            type: 'string | boolean',
           },
+          endColumn: 53,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 36,
           data: {
-            type: 'string | number',
             asserted: 'string | boolean',
+            type: 'string | number',
           },
+          endColumn: 36,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -434,14 +434,14 @@ declare const foo: { bar?: { bazz: string } };
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 2,
-          endColumn: 39,
           data: {
-            type: '{ bazz: string; } | undefined',
             asserted: '{ bazz: string | boolean; }',
+            type: '{ bazz: string; } | undefined',
           },
+          endColumn: 39,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -452,14 +452,14 @@ const bar = foo as 'hello';
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 27,
           data: {
-            type: '"hello" | "world"',
             asserted: '"hello"',
+            type: '"hello" | "world"',
           },
+          endColumn: 27,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -480,14 +480,14 @@ const bar = foo as Foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 13,
           column: 13,
-          endColumn: 23,
           data: {
-            type: 'Bazz',
             asserted: 'Foo',
+            type: 'Bazz',
           },
+          endColumn: 23,
+          line: 13,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -500,14 +500,14 @@ const bar = foo as Foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 5,
           column: 13,
-          endColumn: 23,
           data: {
-            type: '{}',
             asserted: 'Readonly<Required<{ hello?: string | undefined; }>>',
+            type: '{}',
           },
+          endColumn: 23,
+          line: 5,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -518,14 +518,14 @@ const bar = foo as number[];
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 28,
           data: {
-            type: 'readonly number[]',
             asserted: 'number[]',
+            type: 'readonly number[]',
           },
+          endColumn: 28,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -536,14 +536,14 @@ const bar = foo as { hello: string; world: 'world' };
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 53,
           data: {
-            type: '{ hello: string; } & { world: string; }',
             asserted: '{ hello: string; world: "world"; }',
+            type: '{ hello: string; } & { world: string; }',
           },
+          endColumn: 53,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -554,14 +554,14 @@ const b = <string>a;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 20,
           data: {
-            type: 'string | number',
             asserted: 'string',
+            type: 'string | number',
           },
+          endColumn: 20,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -572,14 +572,14 @@ const b = <number>(<unknown>a);
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 31,
           data: {
-            type: 'unknown',
             asserted: 'number',
+            type: 'unknown',
           },
+          endColumn: 31,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -590,14 +590,14 @@ const b = <string | boolean>a;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 30,
           data: {
-            type: 'string | undefined',
             asserted: 'string | boolean',
+            type: 'string | undefined',
           },
+          endColumn: 30,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -608,14 +608,14 @@ const b = <boolean>(<string | boolean>a);
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 41,
           data: {
-            type: 'string | boolean',
             asserted: 'boolean',
+            type: 'string | boolean',
           },
+          endColumn: 41,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -626,24 +626,24 @@ const b = <'bar'>(<'foo'>a);
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 28,
           data: {
-            type: '"foo"',
             asserted: '"bar"',
+            type: '"foo"',
           },
+          endColumn: 28,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 19,
-          endColumn: 27,
           data: {
-            type: 'string',
             asserted: '"foo"',
+            type: 'string',
           },
+          endColumn: 27,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -655,14 +655,14 @@ function f(t: number | string) {
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 10,
-          endColumn: 29,
           data: {
-            type: 'string | number',
             asserted: 'number | boolean',
+            type: 'string | number',
           },
+          endColumn: 29,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -674,14 +674,14 @@ function f<T extends number | string>(t: T) {
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 10,
-          endColumn: 29,
           data: {
-            type: 'string | number',
             asserted: 'number | boolean',
+            type: 'string | number',
           },
+          endColumn: 29,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -693,14 +693,14 @@ function f<T extends number | string>(t: T) {
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 10,
-          endColumn: 28,
           data: {
-            type: 'string | number',
             asserted: 'Omit<T, number>',
+            type: 'string | number',
           },
+          endColumn: 28,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -711,14 +711,14 @@ const b = <() => string | number>a;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 11,
-          endColumn: 35,
           data: {
-            type: '() => string | boolean',
             asserted: '() => string | number',
+            type: '() => string | boolean',
           },
+          endColumn: 35,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -733,14 +733,14 @@ var foo = <Foo>{};
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 7,
           column: 11,
-          endColumn: 18,
           data: {
-            type: '{}',
             asserted: 'Foo',
+            type: '{}',
           },
+          endColumn: 18,
+          line: 7,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -755,14 +755,14 @@ export const foo = <Foo>{ bar: 1, bazz: 1 };
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 7,
           column: 20,
-          endColumn: 44,
           data: {
-            type: '{ bar: number; bazz: number; }',
             asserted: 'Foo',
+            type: '{ bar: number; bazz: number; }',
           },
+          endColumn: 44,
+          line: 7,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -773,24 +773,24 @@ const bar = <string | null>(<string | boolean>foo);
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 51,
           data: {
-            type: 'string | boolean',
             asserted: 'string | null',
+            type: 'string | boolean',
           },
+          endColumn: 51,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 29,
-          endColumn: 50,
           data: {
-            type: 'string | number',
             asserted: 'string | boolean',
+            type: 'string | number',
           },
+          endColumn: 50,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -801,14 +801,14 @@ declare const foo: { bar?: { bazz: string } };
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 2,
-          endColumn: 37,
           data: {
-            type: '{ bazz: string; } | undefined',
             asserted: '{ bazz: string | boolean; }',
+            type: '{ bazz: string; } | undefined',
           },
+          endColumn: 37,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -819,14 +819,14 @@ const bar = <'hello'>foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 25,
           data: {
-            type: '"hello" | "world"',
             asserted: '"hello"',
+            type: '"hello" | "world"',
           },
+          endColumn: 25,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -847,14 +847,14 @@ const bar = <Foo>foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 13,
           column: 13,
-          endColumn: 21,
           data: {
-            type: 'Bazz',
             asserted: 'Foo',
+            type: 'Bazz',
           },
+          endColumn: 21,
+          line: 13,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -867,14 +867,14 @@ const bar = <Foo>foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 5,
           column: 13,
-          endColumn: 21,
           data: {
-            type: '{}',
             asserted: 'Readonly<Required<{ hello?: string | undefined; }>>',
+            type: '{}',
           },
+          endColumn: 21,
+          line: 5,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -885,14 +885,14 @@ const bar = <number[]>foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 26,
           data: {
-            type: 'readonly number[]',
             asserted: 'number[]',
+            type: 'readonly number[]',
           },
+          endColumn: 26,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
@@ -903,14 +903,14 @@ const bar = <{ hello: string; world: 'world' }>foo;
       `,
       errors: [
         {
-          messageId: 'unsafeTypeAssertion',
-          line: 3,
           column: 13,
-          endColumn: 51,
           data: {
-            type: '{ hello: string; } & { world: string; }',
             asserted: '{ hello: string; world: "world"; }',
+            type: '{ hello: string; } & { world: string; }',
           },
+          endColumn: 51,
+          line: 3,
+          messageId: 'unsafeTypeAssertion',
         },
       ],
     },
