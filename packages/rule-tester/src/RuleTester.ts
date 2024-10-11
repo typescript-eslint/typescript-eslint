@@ -802,6 +802,51 @@ export class RuleTester extends TestFramework {
    * Check if the template is valid or not
    * all valid cases go through this
    */
+  #testValidTemplate<
+    MessageIds extends string,
+    Options extends readonly unknown[],
+  >(
+    ruleName: string,
+    rule: RuleModule<MessageIds, Options>,
+    itemIn: ValidTestCase<Options> | string,
+    seenValidTestCases: Set<string>,
+  ): void {
+    const item: ValidTestCase<Options> =
+      typeof itemIn === 'object' ? itemIn : { code: itemIn };
+
+    assert.ok(
+      typeof item.code === 'string',
+      "Test case must specify a string value for 'code'",
+    );
+    if (item.name) {
+      assert.ok(
+        typeof item.name === 'string',
+        "Optional test case property 'name' must be a string",
+      );
+    }
+
+    checkDuplicateTestCase(item, seenValidTestCases);
+
+    const result = this.runRuleForItem(ruleName, rule, item);
+    const messages = result.messages;
+
+    assert.strictEqual(
+      messages.length,
+      0,
+      util.format(
+        'Should have no errors but had %d: %s',
+        messages.length,
+        util.inspect(messages),
+      ),
+    );
+
+    assertASTDidntChange(result.beforeAST, result.afterAST);
+  }
+
+  /**
+   * Check if the template is invalid or not
+   * all invalid cases go through this.
+   */
   #testInvalidTemplate<
     MessageIds extends string,
     Options extends readonly unknown[],
@@ -1263,47 +1308,6 @@ export class RuleTester extends TestFramework {
         "The rule fixed the code. Please add 'output' property.",
       );
     }
-
-    assertASTDidntChange(result.beforeAST, result.afterAST);
-  }
-
-  #testValidTemplate<
-    MessageIds extends string,
-    Options extends readonly unknown[],
-  >(
-    ruleName: string,
-    rule: RuleModule<MessageIds, Options>,
-    itemIn: ValidTestCase<Options> | string,
-    seenValidTestCases: Set<string>,
-  ): void {
-    const item: ValidTestCase<Options> =
-      typeof itemIn === 'object' ? itemIn : { code: itemIn };
-
-    assert.ok(
-      typeof item.code === 'string',
-      "Test case must specify a string value for 'code'",
-    );
-    if (item.name) {
-      assert.ok(
-        typeof item.name === 'string',
-        "Optional test case property 'name' must be a string",
-      );
-    }
-
-    checkDuplicateTestCase(item, seenValidTestCases);
-
-    const result = this.runRuleForItem(ruleName, rule, item);
-    const messages = result.messages;
-
-    assert.strictEqual(
-      messages.length,
-      0,
-      util.format(
-        'Should have no errors but had %d: %s',
-        messages.length,
-        util.inspect(messages),
-      ),
-    );
 
     assertASTDidntChange(result.beforeAST, result.afterAST);
   }
