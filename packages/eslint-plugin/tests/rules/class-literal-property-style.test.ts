@@ -269,9 +269,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 7,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -295,9 +295,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 7,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -321,9 +321,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 14,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -347,9 +347,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 21,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -373,9 +373,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 15,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -399,9 +399,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 15,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -423,9 +423,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 20,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -448,9 +448,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 12,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -473,9 +473,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 12,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -498,9 +498,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 19,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -525,9 +525,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 17,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -550,9 +550,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 22,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -577,9 +577,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 21,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -601,9 +601,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 26,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -635,9 +635,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 14,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -673,9 +673,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 19,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -711,12 +711,11 @@ class A {
   }
 }
       `,
-      options: ['getters'],
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 20,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -737,6 +736,7 @@ class A {
           ],
         },
       ],
+      options: ['getters'],
     },
     {
       code: `
@@ -754,12 +754,11 @@ class A {
   }
 }
       `,
-      options: ['getters'],
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 24,
           line: 6,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -782,6 +781,7 @@ class A {
           ],
         },
       ],
+      options: ['getters'],
     },
     {
       code: `
@@ -794,12 +794,11 @@ class A {
   }
 }
       `,
-      options: ['getters'],
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 20,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -817,6 +816,7 @@ class A {
           ],
         },
       ],
+      options: ['getters'],
     },
   ],
 });

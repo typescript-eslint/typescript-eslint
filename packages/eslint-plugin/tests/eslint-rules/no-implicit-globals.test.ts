@@ -6,6 +6,7 @@ const rule = getESLintCoreRule('no-implicit-globals');
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-implicit-globals', rule, {
+  invalid: [],
   valid: [
     // https://github.com/typescript-eslint/typescript-eslint/issues/23
     `
@@ -16,5 +17,4 @@ function foo() {
 module.exports = foo;
     `,
   ],
-  invalid: [],
 });

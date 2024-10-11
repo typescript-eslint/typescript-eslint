@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-deprecated -- TODO - migrate this test away from `batchedSingleLineTests` */
 
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as parser from '@typescript-eslint/parser';
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESTree } from '@typescript-eslint/utils';
 
 import type {
   MessageIds,
   Options,
 } from '../../src/rules/consistent-type-assertions';
+
 import rule from '../../src/rules/consistent-type-assertions';
 import { dedupeTestCases } from '../dedupeTestCases';
 import { batchedSingleLineTests } from '../RuleTester';
@@ -168,445 +170,445 @@ ruleTester.run('consistent-type-assertions', rule, {
       ).flatMap(([assertionStyle, code, output]) =>
         batchedSingleLineTests<MessageIds, Options>({
           code,
-          options: [{ assertionStyle }],
           errors: code
             .split(`\n`)
-            .map((_, i) => ({ messageId: assertionStyle, line: i + 1 })),
+            .map((_, i) => ({ line: i + 1, messageId: assertionStyle })),
+          options: [{ assertionStyle }],
           output,
         }),
       ),
     ),
     ...batchedSingleLineTests<MessageIds, Options>({
       code: OBJECT_LITERAL_AS_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              output: 'const x: Foo<int> = {};',
+            },
+            {
+              data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies Foo<int>;',
+            },
+          ],
+        },
+        {
+          line: 3,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              output: 'const x: a | b = ({});',
+            },
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = ({}) satisfies a | b;',
+            },
+          ],
+        },
+        {
+          line: 4,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'A' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies A + b;',
+            },
+          ],
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: OBJECT_LITERAL_ANGLE_BRACKET_CASTS,
       errors: [
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 2,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               output: 'const x: Foo<int> = {};',
             },
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = {} satisfies Foo<int>;',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 3,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               output: 'const x: a | b = ({});',
             },
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = ({}) satisfies a | b;',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 4,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'A' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = {} satisfies A + b;',
             },
           ],
         },
       ],
-    }),
-    ...batchedSingleLineTests<MessageIds, Options>({
-      code: OBJECT_LITERAL_ANGLE_BRACKET_CASTS,
       options: [
         {
           assertionStyle: 'angle-bracket',
           objectLiteralTypeAssertions: 'allow-as-parameter',
         },
       ],
-      errors: [
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 2,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              data: { cast: 'Foo<int>' },
-              output: 'const x: Foo<int> = {};',
-            },
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo<int>' },
-              output: 'const x = {} satisfies Foo<int>;',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 3,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              data: { cast: 'a | b' },
-              output: 'const x: a | b = ({});',
-            },
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'a | b' },
-              output: 'const x = ({}) satisfies a | b;',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 4,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'A' },
-              output: 'const x = {} satisfies A + b;',
-            },
-          ],
-        },
-      ],
     }),
     ...batchedSingleLineTests<MessageIds, Options>({
       code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
-      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
       errors: [
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 2,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               output: 'const x: Foo<int> = {};',
             },
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = {} satisfies Foo<int>;',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 3,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
               output: 'const x: a | b = ({});',
             },
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = ({}) satisfies a | b;',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 4,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'A' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'const x = {} satisfies A + b;',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'print({ bar: 5 } satisfies Foo)',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 6,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'new print({ bar: 5 } satisfies Foo)',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 7,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'function foo() { throw { bar: 5 } satisfies Foo }',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 8,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo.Bar' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'function b(x = {} satisfies Foo.Bar) {}',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 9,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'function c(x = {} satisfies Foo) {}',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 10,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'print?.({ bar: 5 } satisfies Foo)',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 11,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: 'print?.call({ bar: 5 } satisfies Foo)',
             },
           ],
         },
         {
-          messageId: 'unexpectedObjectTypeAssertion',
           line: 12,
+          messageId: 'unexpectedObjectTypeAssertion',
           suggestions: [
             {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
               output: `print\`\${{ bar: 5 } satisfies Foo}\``,
             },
           ],
         },
       ],
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
     }),
     ...batchedSingleLineTests<MessageIds, Options>({
       code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              output: 'const x: Foo<int> = {};',
+            },
+            {
+              data: { cast: 'Foo<int>' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies Foo<int>;',
+            },
+          ],
+        },
+        {
+          line: 3,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              output: 'const x: a | b = ({});',
+            },
+            {
+              data: { cast: 'a | b' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = ({}) satisfies a | b;',
+            },
+          ],
+        },
+        {
+          line: 4,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'A' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'const x = {} satisfies A + b;',
+            },
+          ],
+        },
+        {
+          line: 5,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print({ bar: 5 } satisfies Foo)',
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'new print({ bar: 5 } satisfies Foo)',
+            },
+          ],
+        },
+        {
+          line: 7,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'function foo() { throw { bar: 5 } satisfies Foo }',
+            },
+          ],
+        },
+        {
+          line: 8,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print?.({ bar: 5 } satisfies Foo)',
+            },
+          ],
+        },
+        {
+          line: 9,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: 'print?.call({ bar: 5 } satisfies Foo)',
+            },
+          ],
+        },
+        {
+          line: 10,
+          messageId: 'unexpectedObjectTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              output: `print\`\${{ bar: 5 } satisfies Foo}\``,
+            },
+          ],
+        },
+      ],
       options: [
         {
           assertionStyle: 'angle-bracket',
           objectLiteralTypeAssertions: 'never',
         },
       ],
-      errors: [
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 2,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              data: { cast: 'Foo<int>' },
-              output: 'const x: Foo<int> = {};',
-            },
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo<int>' },
-              output: 'const x = {} satisfies Foo<int>;',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 3,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithAnnotation',
-              data: { cast: 'a | b' },
-              output: 'const x: a | b = ({});',
-            },
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'a | b' },
-              output: 'const x = ({}) satisfies a | b;',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 4,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'A' },
-              output: 'const x = {} satisfies A + b;',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 5,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo' },
-              output: 'print({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 6,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo' },
-              output: 'new print({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 7,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo' },
-              output: 'function foo() { throw { bar: 5 } satisfies Foo }',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 8,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo' },
-              output: 'print?.({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 9,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo' },
-              output: 'print?.call({ bar: 5 } satisfies Foo)',
-            },
-          ],
-        },
-        {
-          messageId: 'unexpectedObjectTypeAssertion',
-          line: 10,
-          suggestions: [
-            {
-              messageId: 'replaceObjectTypeAssertionWithSatisfies',
-              data: { cast: 'Foo' },
-              output: `print\`\${{ bar: 5 } satisfies Foo}\``,
-            },
-          ],
-        },
-      ],
     }),
     {
       code: 'const foo = <Foo style={{ bar: 5 } as Bar} />;',
-      output: null,
+      errors: [{ line: 1, messageId: 'never' }],
       languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       options: [{ assertionStyle: 'never' }],
-      errors: [{ messageId: 'never', line: 1 }],
+      output: null,
     },
     {
       code: 'const a = <any>(b, c);',
-      output: `const a = (b, c) as any;`,
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
         },
       ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 1,
-        },
-      ],
+      output: `const a = (b, c) as any;`,
     },
     {
       code: 'const f = <any>(() => {});',
-      output: 'const f = (() => {}) as any;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
         },
       ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 1,
-        },
-      ],
+      output: 'const f = (() => {}) as any;',
     },
     {
       code: 'const f = <any>function () {};',
-      output: 'const f = function () {} as any;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
         },
       ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 1,
-        },
-      ],
+      output: 'const f = function () {} as any;',
     },
     {
       code: 'const f = <any>(async () => {});',
-      output: 'const f = (async () => {}) as any;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
         },
       ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 1,
-        },
-      ],
+      output: 'const f = (async () => {}) as any;',
     },
     {
       // prettier wants to remove the parens around the yield expression,
@@ -616,58 +618,58 @@ function* g() {
   const y = <any>(yield a);
 }
       `,
-      output: `
-function* g() {
-  const y = (yield a) as any;
-}
-      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'as',
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
         },
       ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 3,
-        },
-      ],
+      output: `
+function* g() {
+  const y = (yield a) as any;
+}
+      `,
     },
     {
       code: `
 declare let x: number, y: number;
 const bs = <any>(x <<= y);
       `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'as',
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
       output: `
 declare let x: number, y: number;
 const bs = (x <<= y) as any;
       `,
-      options: [
-        {
-          assertionStyle: 'as',
-        },
-      ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 3,
-        },
-      ],
     },
     {
       code: 'const ternary = <any>(true ? x : y);',
-      output: 'const ternary = (true ? x : y) as any;',
+      errors: [
+        {
+          line: 1,
+          messageId: 'as',
+        },
+      ],
       options: [
         {
           assertionStyle: 'as',
         },
       ],
-      errors: [
-        {
-          messageId: 'as',
-          line: 1,
-        },
-      ],
+      output: 'const ternary = (true ? x : y) as any;',
     },
   ],
 });

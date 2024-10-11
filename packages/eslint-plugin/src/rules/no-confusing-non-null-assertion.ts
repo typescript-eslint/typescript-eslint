@@ -1,18 +1,19 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type {
   ReportDescriptor,
   RuleFix,
 } from '@typescript-eslint/utils/ts-eslint';
 
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+
 import { createRule } from '../util';
 
 type MessageId =
-  | 'confusingEqual'
   | 'confusingAssign'
+  | 'confusingEqual'
   | 'confusingOperator'
-  | 'notNeedInEqualTest'
   | 'notNeedInAssign'
+  | 'notNeedInEqualTest'
   | 'notNeedInOperator'
   | 'wrapUpLeft';
 
@@ -41,17 +42,17 @@ export default createRule<[], MessageId>({
     },
     hasSuggestions: true,
     messages: {
-      confusingEqual:
-        'Confusing combination of non-null assertion and equality test like `a! == b`, which looks very similar to `a !== b`.',
       confusingAssign:
         'Confusing combination of non-null assertion and assignment like `a! = b`, which looks very similar to `a != b`.',
+      confusingEqual:
+        'Confusing combination of non-null assertion and equality test like `a! == b`, which looks very similar to `a !== b`.',
       confusingOperator:
         'Confusing combination of non-null assertion and `{{operator}}` operator like `a! {{operator}} b`, which might be misinterpreted as `!(a {{operator}} b)`.',
 
-      notNeedInEqualTest:
-        'Remove unnecessary non-null assertion (!) in equality test.',
       notNeedInAssign:
         'Remove unnecessary non-null assertion (!) in assignment left-hand side.',
+      notNeedInEqualTest:
+        'Remove unnecessary non-null assertion (!) in equality test.',
 
       notNeedInOperator:
         'Remove possibly unnecessary non-null assertion (!) in the left operand of the `{{operator}}` operator.',
@@ -65,7 +66,7 @@ export default createRule<[], MessageId>({
   create(context) {
     function confusingOperatorToMessageData(
       operator: ConfusingOperator,
-    ): Pick<ReportDescriptor<MessageId>, 'messageId' | 'data'> {
+    ): Pick<ReportDescriptor<MessageId>, 'data' | 'messageId'> {
       switch (operator) {
         case '=':
           return {

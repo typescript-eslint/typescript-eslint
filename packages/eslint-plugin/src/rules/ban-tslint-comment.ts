@@ -23,11 +23,11 @@ export default createRule({
       description: 'Disallow `// tslint:<rule-flag>` comments',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',
     },
     schema: [],
-    fixable: 'code',
   },
   defaultOptions: [],
   create: context => {
@@ -37,9 +37,9 @@ export default createRule({
         comments.forEach(c => {
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
-              data: { text: toText(c.value, c.type) },
               node: c,
               messageId: 'commentDetected',
+              data: { text: toText(c.value, c.type) },
               fix(fixer) {
                 const rangeStart = context.sourceCode.getIndexFromLoc({
                   column: c.loc.start.column > 0 ? c.loc.start.column - 1 : 0,

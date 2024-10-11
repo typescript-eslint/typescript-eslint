@@ -5,9 +5,9 @@ import type { TSTypeAnnotation } from '../../special/TSTypeAnnotation/spec';
 import type { DestructuringPattern } from '../../unions/DestructuringPattern';
 
 export interface ArrayPattern extends BaseNode {
+  type: AST_NODE_TYPES.ArrayPattern;
   decorators: Decorator[];
   elements: (DestructuringPattern | null)[];
   optional: boolean;
-  type: AST_NODE_TYPES.ArrayPattern;
   typeAnnotation: TSTypeAnnotation | undefined;
 }

@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -22,8 +24,8 @@ export default createRule<Options, MessageIds>({
         'Disallow `this` keywords outside of classes or class-like objects',
       extendsBaseRule: true,
     },
-    messages: baseRule.meta.messages,
     hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
   defaultOptions: [{ capIsConstructor: true }],
@@ -48,12 +50,6 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      PropertyDefinition(): void {
-        thisIsValidStack.push(true);
-      },
-      'PropertyDefinition:exit'(): void {
-        thisIsValidStack.pop();
-      },
       AccessorProperty(): void {
         thisIsValidStack.push(true);
       },
@@ -80,6 +76,12 @@ export default createRule<Options, MessageIds>({
         );
       },
       'FunctionExpression:exit'(): void {
+        thisIsValidStack.pop();
+      },
+      PropertyDefinition(): void {
+        thisIsValidStack.push(true);
+      },
+      'PropertyDefinition:exit'(): void {
         thisIsValidStack.pop();
       },
       ThisExpression(node: TSESTree.ThisExpression): void {

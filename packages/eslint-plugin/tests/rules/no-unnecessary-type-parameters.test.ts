@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -436,8 +436,8 @@ const f = <T,>(
       code: 'const func = <T,>(param: T) => null;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -445,8 +445,8 @@ const f = <T,>(
       code: 'const f1 = <T,>(): T => {};',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -458,8 +458,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -481,8 +481,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -492,8 +492,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'V', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -505,12 +505,12 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -522,12 +522,12 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -539,8 +539,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'P', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -552,8 +552,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -565,12 +565,12 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'A', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'B', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -583,8 +583,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -597,8 +597,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -611,8 +611,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -629,8 +629,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -642,8 +642,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -655,8 +655,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'K', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -689,12 +689,12 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -731,8 +731,8 @@ const f = <T,>(
       code: 'declare function get<T>(): unknown;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -740,8 +740,8 @@ const f = <T,>(
       code: 'declare function get<T>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -749,8 +749,8 @@ const f = <T,>(
       code: 'declare function get<T extends object>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -758,8 +758,8 @@ const f = <T,>(
       code: 'declare function take<T>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -767,8 +767,8 @@ const f = <T,>(
       code: 'declare function take<T extends object>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -776,8 +776,8 @@ const f = <T,>(
       code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -785,8 +785,8 @@ const f = <T,>(
       code: 'declare function take<T, U extends T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -794,8 +794,8 @@ const f = <T,>(
       code: 'declare function take<T, U extends T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -803,8 +803,8 @@ const f = <T,>(
       code: 'declare function get<T, U = T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -812,8 +812,8 @@ const f = <T,>(
       code: 'declare function get<T, U extends T = T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -821,8 +821,8 @@ const f = <T,>(
       code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -830,16 +830,16 @@ const f = <T,>(
       code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -847,16 +847,16 @@ const f = <T,>(
       code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -864,8 +864,8 @@ const f = <T,>(
       code: 'type Fn = <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -873,8 +873,8 @@ const f = <T,>(
       code: 'type Fn = <T>() => [];',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -885,8 +885,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -897,8 +897,8 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -906,8 +906,8 @@ const f = <T,>(
       code: 'type Fn = <U>(param: U) => void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -915,8 +915,8 @@ const f = <T,>(
       code: 'type Ctr = new <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -924,8 +924,8 @@ const f = <T,>(
       code: 'type Fn = <T>() => { [K in keyof T]: K };',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -933,8 +933,8 @@ const f = <T,>(
       code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -942,8 +942,8 @@ const f = <T,>(
       code: 'type Fn = <T>(value: unknown) => value is T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -951,8 +951,8 @@ const f = <T,>(
       code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -965,8 +965,32 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+declare function setItem<T>(T): T;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+interface StorageService {
+  setItem<T>({ key: string, value: T }): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -987,12 +1011,12 @@ type Equal<X, Y> =
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },

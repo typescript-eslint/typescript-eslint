@@ -575,4 +575,56 @@ If you absolutely need more files included, set parserOptions.projectService.max
       extraFileExtensions: [],
     });
   });
+
+  it('throws an error when a nonstandard file extension is used', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.`,
+    );
+  });
+
+  it('throws an error when a nonstandard file extension is used but not included in extraFileExtensions', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          filePath,
+          extraFileExtensions: ['.svelte'],
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
+    );
+  });
 });

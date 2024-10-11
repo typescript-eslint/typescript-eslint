@@ -1,6 +1,6 @@
 export * from './CatchClauseDefinition';
 export * from './ClassNameDefinition';
-export type * from './Definition';
+export * from './Definition';
 export * from './DefinitionType';
 export * from './FunctionNameDefinition';
 export * from './ImplicitGlobalVariableDefinition';
