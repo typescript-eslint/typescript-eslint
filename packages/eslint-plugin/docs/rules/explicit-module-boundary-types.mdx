@@ -99,8 +99,6 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 {/* insert option description */}
 
-When this option is `true`, the rule ignores arguments that are explicitly typed as any.
-
 Examples of code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false }`:
 
 <Tabs>
@@ -173,8 +171,6 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 {/* insert option description */}
 
-When this option is `true`, the rule ignores return type annotations on function, which is immediately returning another function expression.
-
 Examples of code for this rule with `{ allowHigherOrderFunctions: false }`:
 
 <Tabs>
@@ -213,8 +209,6 @@ export function foo(outer: string) {
 ### `allowTypedFunctionExpressions`
 
 {/* insert option description */}
-
-When this option is `true`, the rule ignores type annotations on the variable of a function expression.
 
 Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
 
