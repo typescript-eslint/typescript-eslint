@@ -1,14 +1,16 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, getStaticStringValue, nullThrows } from '../util';
 
-const UNNECESSARY_OPERATORS = new Set(['=', '&&=', '||=', '??=']);
+const UNNECESSARY_OPERATORS = new Set(['??=', '&&=', '=', '||=']);
 
 export default createRule({
   name: 'no-unnecessary-parameter-property-assignment',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow unnecessary assignment of constructor property parameter',
@@ -18,13 +20,12 @@ export default createRule({
         'This assignment is unnecessary since it is already assigned by a parameter property.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
     const reportInfoStack: {
-      assignedBeforeUnnecessary: Set<string>;
       assignedBeforeConstructor: Set<string>;
+      assignedBeforeUnnecessary: Set<string>;
       unnecessaryAssignments: {
         name: string;
         node: TSESTree.AssignmentExpression;
@@ -57,9 +58,9 @@ export default createRule({
     function findParentFunction(
       node: TSESTree.Node | undefined,
     ):
-      | TSESTree.FunctionExpression
-      | TSESTree.FunctionDeclaration
       | TSESTree.ArrowFunctionExpression
+      | TSESTree.FunctionDeclaration
+      | TSESTree.FunctionExpression
       | undefined {
       if (
         !node ||
@@ -136,13 +137,13 @@ export default createRule({
     return {
       ClassBody(): void {
         reportInfoStack.push({
-          unnecessaryAssignments: [],
-          assignedBeforeUnnecessary: new Set(),
           assignedBeforeConstructor: new Set(),
+          assignedBeforeUnnecessary: new Set(),
+          unnecessaryAssignments: [],
         });
       },
       'ClassBody:exit'(): void {
-        const { unnecessaryAssignments, assignedBeforeConstructor } =
+        const { assignedBeforeConstructor, unnecessaryAssignments } =
           nullThrows(reportInfoStack.pop(), 'The top stack should exist');
         unnecessaryAssignments.forEach(({ name, node }) => {
           if (assignedBeforeConstructor.has(name)) {
@@ -153,33 +154,6 @@ export default createRule({
             messageId: 'unnecessaryAssign',
           });
         });
-      },
-      'PropertyDefinition AssignmentExpression'(
-        node: TSESTree.AssignmentExpression,
-      ): void {
-        const name = getPropertyName(node.left);
-
-        if (!name) {
-          return;
-        }
-
-        const functionNode = findParentFunction(node);
-        if (functionNode) {
-          if (
-            !(
-              isArrowIIFE(functionNode) &&
-              findParentPropertyDefinition(node)?.value === functionNode.parent
-            )
-          ) {
-            return;
-          }
-        }
-
-        const { assignedBeforeConstructor } = nullThrows(
-          reportInfoStack.at(-1),
-          'The top stack should exist',
-        );
-        assignedBeforeConstructor.add(name);
       },
       "MethodDefinition[kind='constructor'] > FunctionExpression AssignmentExpression"(
         node: TSESTree.AssignmentExpression,
@@ -226,6 +200,32 @@ export default createRule({
             node,
           });
         }
+      },
+      'PropertyDefinition AssignmentExpression'(
+        node: TSESTree.AssignmentExpression,
+      ): void {
+        const name = getPropertyName(node.left);
+
+        if (!name) {
+          return;
+        }
+
+        const functionNode = findParentFunction(node);
+        if (
+          functionNode &&
+          !(
+            isArrowIIFE(functionNode) &&
+            findParentPropertyDefinition(node)?.value === functionNode.parent
+          )
+        ) {
+          return;
+        }
+
+        const { assignedBeforeConstructor } = nullThrows(
+          reportInfoStack.at(-1),
+          'The top stack should exist',
+        );
+        assignedBeforeConstructor.add(name);
       },
     };
   },

@@ -1,15 +1,15 @@
 interface TsParsedEnums {
-  SyntaxKind: Record<number, string>;
-  NodeFlags: Record<number, string>;
-  TokenFlags: Record<number, string>;
-  ModifierFlags: Record<number, string>;
-  ObjectFlags: Record<number, string>;
-  SymbolFlags: Record<number, string>;
-  TypeFlags: Record<number, string>;
-  ScriptKind: Record<number, string>;
-  TransformFlags: Record<number, string>;
-  ScriptTarget: Record<number, string>;
   LanguageVariant: Record<number, string>;
+  ModifierFlags: Record<number, string>;
+  NodeFlags: Record<number, string>;
+  ObjectFlags: Record<number, string>;
+  ScriptKind: Record<number, string>;
+  ScriptTarget: Record<number, string>;
+  SymbolFlags: Record<number, string>;
+  SyntaxKind: Record<number, string>;
+  TokenFlags: Record<number, string>;
+  TransformFlags: Record<number, string>;
+  TypeFlags: Record<number, string>;
 }
 
 /**
@@ -23,10 +23,8 @@ export function extractEnum(
   const result: Record<number, string> = {};
   const keys = Object.entries(obj);
   for (const [name, value] of keys) {
-    if (typeof value === 'number') {
-      if (!(value in result)) {
-        result[value] = name;
-      }
+    if (typeof value === 'number' && !(value in result)) {
+      result[value] = name;
     }
   }
   return result;
@@ -39,16 +37,16 @@ let tsEnumCache: TsParsedEnums | undefined;
  */
 function getTsEnum(type: keyof TsParsedEnums): Record<number, string> {
   tsEnumCache ??= {
-    SyntaxKind: extractEnum(window.ts.SyntaxKind),
-    NodeFlags: extractEnum(window.ts.NodeFlags),
-    TokenFlags: extractEnum(window.ts.TokenFlags),
+    LanguageVariant: extractEnum(window.ts.LanguageVariant),
     ModifierFlags: extractEnum(window.ts.ModifierFlags),
+    NodeFlags: extractEnum(window.ts.NodeFlags),
     ObjectFlags: extractEnum(window.ts.ObjectFlags),
-    SymbolFlags: extractEnum(window.ts.SymbolFlags),
-    TypeFlags: extractEnum(window.ts.TypeFlags),
     ScriptKind: extractEnum(window.ts.ScriptKind),
     ScriptTarget: extractEnum(window.ts.ScriptTarget),
-    LanguageVariant: extractEnum(window.ts.LanguageVariant),
+    SymbolFlags: extractEnum(window.ts.SymbolFlags),
+    SyntaxKind: extractEnum(window.ts.SyntaxKind),
+    TokenFlags: extractEnum(window.ts.TokenFlags),
+    TypeFlags: extractEnum(window.ts.TypeFlags),
     // @ts-expect-error: non public API
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     TransformFlags: extractEnum(window.ts.TransformFlags),

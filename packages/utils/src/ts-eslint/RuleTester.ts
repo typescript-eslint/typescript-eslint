@@ -1,4 +1,4 @@
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { RuleTester as ESLintRuleTester } from 'eslint';
 
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
@@ -229,12 +229,12 @@ declare class RuleTesterBase {
 class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
 export {
-  InvalidTestCase,
+  type InvalidTestCase,
   RuleTester,
-  RuleTesterConfig,
-  RuleTesterTestFrameworkFunction,
-  RunTests,
-  SuggestionOutput,
-  TestCaseError,
-  ValidTestCase,
+  type RuleTesterConfig,
+  type RuleTesterTestFrameworkFunction,
+  type RunTests,
+  type SuggestionOutput,
+  type TestCaseError,
+  type ValidTestCase,
 };

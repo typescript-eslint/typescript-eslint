@@ -1,11 +1,11 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
 export function getFixOrSuggest<MessageId extends string>({
-  useFix,
   suggestion,
+  useFix,
 }: {
-  useFix: boolean;
   suggestion: TSESLint.SuggestionReportDescriptor<MessageId>;
+  useFix: boolean;
 }):
   | { fix: TSESLint.ReportFixFunction }
   | { suggest: TSESLint.SuggestionReportDescriptor<MessageId>[] } {

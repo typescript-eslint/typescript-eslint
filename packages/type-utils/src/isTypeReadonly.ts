@@ -8,17 +8,17 @@ import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
+  /** the type cannot be handled by the function */
+  UnknownType = 1,
   /** the type is mutable */
   Mutable = 2,
   /** the type is readonly */
   Readonly = 3,
-  /** the type cannot be handled by the function */
-  UnknownType = 1,
 }
 
 export interface ReadonlynessOptions {
@@ -29,10 +29,7 @@ export interface ReadonlynessOptions {
 export const readonlynessOptionsSchema = {
   additionalProperties: false,
   properties: {
-    allow: {
-      items: typeOrValueSpecifierSchema,
-      type: 'array',
-    },
+    allow: typeOrValueSpecifiersSchema,
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
@@ -234,11 +231,7 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (
-    options.allow?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    )
-  ) {
+  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 

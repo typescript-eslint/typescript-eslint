@@ -68,7 +68,7 @@ describe('containsAllTypesByName', () => {
       const result = containsAllTypesByName(
         type,
         false,
-        new Set(['Promise', 'Object']),
+        new Set(['Object', 'Promise']),
         matchAnyInstead,
       );
       expect(result).toBe(expected);

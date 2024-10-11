@@ -16,9 +16,7 @@ const SUPPORTED_PRERELEASE_RANGES: string[] = [];
 const ACTIVE_TYPESCRIPT_VERSION = ts.version;
 const isRunningSupportedTypeScriptVersion = semver.satisfies(
   ACTIVE_TYPESCRIPT_VERSION,
-  [SUPPORTED_TYPESCRIPT_VERSIONS]
-    .concat(SUPPORTED_PRERELEASE_RANGES)
-    .join(' || '),
+  [SUPPORTED_TYPESCRIPT_VERSIONS, ...SUPPORTED_PRERELEASE_RANGES].join(' || '),
 );
 
 let warnedAboutTSVersion = false;

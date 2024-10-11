@@ -2,7 +2,7 @@ import { join, resolve } from 'node:path';
 
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import debug from 'debug';
-import * as globbyModule from 'globby';
+import * as fastGlobModule from 'fast-glob';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
@@ -39,11 +39,11 @@ jest.mock('typescript', () => {
   };
 });
 
-jest.mock('globby', () => {
-  const globby = jest.requireActual<typeof globbyModule>('globby');
+jest.mock('fast-glob', () => {
+  const fastGlob = jest.requireActual<typeof fastGlobModule>('fast-glob');
   return {
-    ...globby,
-    sync: jest.fn(globby.sync),
+    ...fastGlob,
+    sync: jest.fn(fastGlob.sync),
   };
 });
 
@@ -52,13 +52,13 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const globbySyncMock = jest.mocked(globbyModule.sync);
+const fastGlobSyncMock = jest.mocked(fastGlobModule.sync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
  */
 function alignErrorPath(error: Error): never {
-  error.message = error.message.replaceAll(/\\(?!["])/gm, '/');
+  error.message = error.message.replaceAll(/\\(?!")/g, '/');
   throw error;
 }
 
@@ -342,6 +342,134 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
+  describe('ESM parsing', () => {
+    describe('TLA(Top Level Await)', () => {
+      const config: TSESTreeOptions = {
+        projectService: false,
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true,
+      };
+      const code = 'await(1)';
+
+      const testParse = ({
+        sourceType,
+        ext,
+        shouldAllowTLA = false,
+      }: {
+        sourceType?: 'module' | 'script';
+        ext: '.js' | '.ts' | '.mjs' | '.mts';
+        shouldAllowTLA?: boolean;
+      }): void => {
+        const ast = parser.parse(code, {
+          ...config,
+          sourceType,
+          filePath: `file${ext}`,
+        });
+        const expressionType = (
+          ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parse(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+      const testParseAndGenerateServices = ({
+        sourceType,
+        ext,
+        shouldAllowTLA = false,
+      }: {
+        sourceType?: 'module' | 'script';
+        ext: '.js' | '.ts' | '.mjs' | '.mts';
+        shouldAllowTLA?: boolean;
+      }): void => {
+        const result = parser.parseAndGenerateServices(code, {
+          ...config,
+          sourceType,
+          filePath: `file${ext}`,
+        });
+        const expressionType = (
+          result.ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parseAndGenerateServices(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+
+      testParse({ ext: '.js' });
+      testParse({ ext: '.ts' });
+      testParse({ ext: '.mjs', shouldAllowTLA: true });
+      testParse({ ext: '.mts', shouldAllowTLA: true });
+
+      testParse({ sourceType: 'module', ext: '.js', shouldAllowTLA: true });
+      testParse({ sourceType: 'module', ext: '.ts', shouldAllowTLA: true });
+      testParse({ sourceType: 'module', ext: '.mjs', shouldAllowTLA: true });
+      testParse({ sourceType: 'module', ext: '.mts', shouldAllowTLA: true });
+
+      testParse({ sourceType: 'script', ext: '.js' });
+      testParse({ sourceType: 'script', ext: '.ts' });
+      testParse({ sourceType: 'script', ext: '.mjs' });
+      testParse({ sourceType: 'script', ext: '.mts' });
+
+      testParseAndGenerateServices({ ext: '.js' });
+      testParseAndGenerateServices({ ext: '.ts' });
+      testParseAndGenerateServices({ ext: '.mjs', shouldAllowTLA: true });
+      testParseAndGenerateServices({ ext: '.mts', shouldAllowTLA: true });
+
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.js',
+        shouldAllowTLA: true,
+      });
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.ts',
+        shouldAllowTLA: true,
+      });
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.mjs',
+        shouldAllowTLA: true,
+      });
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.mts',
+        shouldAllowTLA: true,
+      });
+
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.js',
+      });
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.ts',
+      });
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.mjs',
+      });
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.mts',
+      });
+    });
+  });
+
   if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
@@ -514,7 +642,7 @@ describe('parseAndGenerateServices', () => {
         it('extension matching the file name but not a file on disk', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', [
-              'unknown',
+              '.unknown',
             ]),
           ).toThrow(
             /unknownFileType\.unknown was not found by the project service/,
@@ -685,6 +813,12 @@ describe('parseAndGenerateServices', () => {
 
     describe('cacheLifetime', () => {
       describe('glob', () => {
+        const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
+        // fast-glob returns arbitrary order of results to improve performance.
+        // `resolveProjectList()` calls fast-glob for each pattern to ensure the
+        // order is correct.
+        // Thus the expected call time of spy is the number of patterns.
+        const expectFastGlobCalls = project.length;
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
@@ -693,52 +827,56 @@ describe('parseAndGenerateServices', () => {
             disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
             tsconfigRootDir: FIXTURES_DIR,
-            project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            project,
           });
         }
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(0);
-          // should call globby again because we specified immediate cache expiry
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // should call fast-glob again because we specified immediate cache expiry
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
+            expectFastGlobCalls * 2,
+          );
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
+            expectFastGlobCalls * 2,
+          );
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
       });
     });

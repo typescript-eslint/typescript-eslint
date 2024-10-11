@@ -5,6 +5,6 @@ import type { Statement } from '../../unions/Statement';
 
 export interface LabeledStatement extends BaseNode {
   type: AST_NODE_TYPES.LabeledStatement;
-  label: Identifier;
   body: Statement;
+  label: Identifier;
 }

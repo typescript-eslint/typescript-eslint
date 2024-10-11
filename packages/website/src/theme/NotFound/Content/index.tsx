@@ -13,7 +13,7 @@ export default function NotFound(): React.JSX.Element {
           <h1 className={styles.title}>
             <div className={styles.code}>$ npx eslint .</div>
             <strong>
-              {`'${location.pathname}'`.split('').map((letter, i) => (
+              {[...`'${location.pathname}'`].map((letter, i) => (
                 <span className={styles.word} key={i}>
                   {letter}
                 </span>

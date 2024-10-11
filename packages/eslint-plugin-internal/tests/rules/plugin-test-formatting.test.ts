@@ -53,7 +53,6 @@ ${PARENT_INDENT}\``,
     wrap`\`
 const a = 1;
 ${PARENT_INDENT}\``,
-    wrap`noFormat\`const a = 1;\``,
     // sanity check suggestion validation
     // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
@@ -130,7 +129,7 @@ const a = 1;
       ],
     },
 
-    // empty linems are valid when everything else is indented
+    // empty lines are valid when everything else is indented
     wrap`\`
 ${CODE_INDENT}const a = 1;
 
@@ -452,7 +451,50 @@ ${PARENT_INDENT}\``,
         },
       ],
     },
-
+    // noUnnecessaryNoFormat
+    {
+      code: wrap`noFormat\`const a = 1;\``,
+      output: wrap`'const a = 1;'`,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
+    {
+      code: wrap`
+noFormat\`
+async function foo() {}
+async function bar() {}
+\``,
+      output: wrap`
+\`
+async function foo() {}
+async function bar() {}
+\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
+    {
+      code: wrap`
+${PARENT_INDENT}noFormat\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+      output: wrap`
+${PARENT_INDENT}\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
     // sanity check that it handles suggestion output
     {
       code: `

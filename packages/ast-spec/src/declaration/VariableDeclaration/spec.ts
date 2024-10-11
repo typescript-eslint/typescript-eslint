@@ -43,8 +43,6 @@ interface LetOrConstOrVarDeclarationBase extends BaseNode {
 
 export interface LetOrVarDeclaredDeclaration
   extends LetOrConstOrVarDeclarationBase {
-  kind: 'let' | 'var';
-  declare: true;
   /**
    * In a `declare let` declaration, the declarators must not have definite assignment
    * assertions or initializers.
@@ -56,12 +54,12 @@ export interface LetOrVarDeclaredDeclaration
    * ```
    */
   declarations: VariableDeclaratorNoInit[];
+  declare: true;
+  kind: 'let' | 'var';
 }
 
 export interface LetOrVarNonDeclaredDeclaration
   extends LetOrConstOrVarDeclarationBase {
-  kind: 'let' | 'var';
-  declare: false;
   /**
    * In a `let`/`var` declaration, the declarators may have definite assignment
    * assertions or initializers, but not both.
@@ -70,10 +68,11 @@ export interface LetOrVarNonDeclaredDeclaration
     | VariableDeclaratorDefiniteAssignment
     | VariableDeclaratorMaybeInit
   )[];
+  declare: false;
+  kind: 'let' | 'var';
 }
 
 export interface ConstDeclaration extends LetOrConstOrVarDeclarationBase {
-  kind: 'const';
   /**
    * In a `declare const` declaration, the declarators may have initializers, but
    * not definite assignment assertions. Each declarator cannot have both an
@@ -83,6 +82,7 @@ export interface ConstDeclaration extends LetOrConstOrVarDeclarationBase {
    * no initializer.
    */
   declarations: VariableDeclaratorMaybeInit[];
+  kind: 'const';
 }
 
 export type LetOrConstOrVarDeclaration =

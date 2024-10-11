@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import {
   AST_NODE_TYPES,
   ASTUtils,
@@ -6,10 +7,6 @@ import {
 } from '@typescript-eslint/utils';
 
 interface WrappingFixerParams {
-  /** Source code. */
-  sourceCode: Readonly<TSESLint.SourceCode>;
-  /** The node we want to modify. */
-  node: TSESTree.Node;
   /**
    * Descendant of `node` we want to preserve.
    * Use this to replace some code with another.
@@ -17,6 +14,10 @@ interface WrappingFixerParams {
    * You can pass multiple nodes as an array.
    */
   innerNode?: TSESTree.Node | TSESTree.Node[];
+  /** The node we want to modify. */
+  node: TSESTree.Node;
+  /** Source code. */
+  sourceCode: Readonly<TSESLint.SourceCode>;
   /**
    * The function which gets the code of the `innerNode` and returns some code around it.
    * Receives multiple arguments if there are multiple innerNodes.
@@ -32,7 +33,7 @@ interface WrappingFixerParams {
 export function getWrappingFixer(
   params: WrappingFixerParams,
 ): TSESLint.ReportFixFunction {
-  const { sourceCode, node, innerNode = node, wrap } = params;
+  const { node, innerNode = node, sourceCode, wrap } = params;
   const innerNodes = Array.isArray(innerNode) ? innerNode : [innerNode];
 
   return (fixer): TSESLint.RuleFix => {
@@ -58,12 +59,13 @@ export function getWrappingFixer(
     let code = wrap(...innerCodes);
 
     // check the outer expression's precedence
-    if (isWeakPrecedenceParent(node)) {
+    if (
+      isWeakPrecedenceParent(node) &&
       // we wrapped the node in some expression which very likely has a different precedence than original wrapped node
       // let's wrap the whole expression in parens just in case
-      if (!ASTUtils.isParenthesized(node, sourceCode)) {
-        code = `(${code})`;
-      }
+      !ASTUtils.isParenthesized(node, sourceCode)
+    ) {
+      code = `(${code})`;
     }
 
     // check if we need to insert semicolon
@@ -82,11 +84,11 @@ export function getWrappingFixer(
  * @returns If parentheses are required, code for the nodeToMove node is returned with parentheses at both ends of the code.
  */
 export function getMovedNodeCode(params: {
-  sourceCode: Readonly<TSESLint.SourceCode>;
-  nodeToMove: TSESTree.Node;
   destinationNode: TSESTree.Node;
+  nodeToMove: TSESTree.Node;
+  sourceCode: Readonly<TSESLint.SourceCode>;
 }): string {
-  const { sourceCode, nodeToMove: existingNode, destinationNode } = params;
+  const { destinationNode, nodeToMove: existingNode, sourceCode } = params;
   const code = sourceCode.getText(existingNode);
   if (isStrongPrecedenceNode(existingNode)) {
     // Moved node never needs parens

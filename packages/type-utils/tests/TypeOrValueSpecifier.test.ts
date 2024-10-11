@@ -6,22 +6,19 @@ import path from 'node:path';
 
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
 
-import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
-} from '../src/TypeOrValueSpecifier';
+import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
     const ajv = new Ajv();
-    const validate = ajv.compile(typeOrValueSpecifierSchema);
+    const validate = ajv.compile(typeOrValueSpecifiersSchema);
 
-    function runTestPositive(data: unknown): void {
-      expect(validate(data)).toBe(true);
+    function runTestPositive(typeOrValueSpecifier: unknown): void {
+      expect(validate([typeOrValueSpecifier])).toBe(true);
     }
 
-    function runTestNegative(data: unknown): void {
-      expect(validate(data)).toBe(false);
+    function runTestNegative(typeOrValueSpecifier: unknown): void {
+      expect(validate([typeOrValueSpecifier])).toBe(false);
     }
 
     it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']])(
@@ -449,7 +446,7 @@ describe('TypeOrValueSpecifier', () => {
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
       ],
-    ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
+    ])("doesn't match a mismatched package specifier: %s", runTestNegative);
 
     it.each<[string, TypeOrValueSpecifier]>([
       [

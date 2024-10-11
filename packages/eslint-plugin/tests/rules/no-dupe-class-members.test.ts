@@ -89,7 +89,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -100,7 +100,7 @@ class A {
 };
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -111,7 +111,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -122,7 +122,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: '10' } },
+        { column: 3, data: { name: '10' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -134,8 +134,8 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-        { line: 5, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        { column: 3, data: { name: 'foo' }, line: 5, messageId: 'unexpected' },
       ],
     },
     {
@@ -146,7 +146,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -157,7 +157,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -168,7 +168,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -179,7 +179,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -190,7 +190,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
   ],

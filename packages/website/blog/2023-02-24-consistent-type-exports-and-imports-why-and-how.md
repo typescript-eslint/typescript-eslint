@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Why enforcing TypeScript imports use the `type` modifier when possible benefits some project setups.
 slug: consistent-type-imports-and-exports-why-and-how
 tags: [typescript, imports, exports, types, transpiling]

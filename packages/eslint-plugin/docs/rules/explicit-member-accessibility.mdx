@@ -317,7 +317,8 @@ class Animal {
 
 ### `ignoredMethodNames`
 
-If you want to ignore some specific methods, you can do it by specifying method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
+Specific method names that may be ignored.
+Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
 
 ```ts option='{ "ignoredMethodNames": ["specificMethod", "whateverMethod"] }' showPlaygroundButton

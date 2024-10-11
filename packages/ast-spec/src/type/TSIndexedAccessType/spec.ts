@@ -4,6 +4,6 @@ import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSIndexedAccessType extends BaseNode {
   type: AST_NODE_TYPES.TSIndexedAccessType;
-  objectType: TypeNode;
   indexType: TypeNode;
+  objectType: TypeNode;
 }

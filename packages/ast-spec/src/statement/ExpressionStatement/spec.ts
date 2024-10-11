@@ -4,6 +4,6 @@ import type { Expression } from '../../unions/Expression';
 
 export interface ExpressionStatement extends BaseNode {
   type: AST_NODE_TYPES.ExpressionStatement;
-  expression: Expression;
   directive: string | undefined;
+  expression: Expression;
 }

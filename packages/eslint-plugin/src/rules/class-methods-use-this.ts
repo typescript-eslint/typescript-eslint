@@ -1,19 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
   getFunctionHeadLoc,
   getFunctionNameWithKind,
-  getStaticStringValue,
+  getStaticMemberAccessValue,
 } from '../util';
 
 type Options = [
   {
-    exceptMethods?: string[];
     enforceForClassFields?: boolean;
+    exceptMethods?: string[];
+    ignoreClassesThatImplementAnInterface?: 'public-fields' | boolean;
     ignoreOverrideMethods?: boolean;
-    ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
   },
 ];
 type MessageIds = 'missingThis';
@@ -27,10 +28,20 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       requiresTypeChecking: false,
     },
+    messages: {
+      missingThis: "Expected 'this' to be used by class {{name}}.",
+    },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
+          enforceForClassFields: {
+            type: 'boolean',
+            default: true,
+            description:
+              'Enforces that functions used as instance field initializers utilize `this`',
+          },
           exceptMethods: {
             type: 'array',
             description:
@@ -39,17 +50,9 @@ export default createRule<Options, MessageIds>({
               type: 'string',
             },
           },
-          enforceForClassFields: {
-            type: 'boolean',
-            description:
-              'Enforces that functions used as instance field initializers utilize `this`',
-            default: true,
-          },
-          ignoreOverrideMethods: {
-            type: 'boolean',
-            description: 'Ignore members marked with the `override` modifier',
-          },
           ignoreClassesThatImplementAnInterface: {
+            description:
+              'Ignore classes that specifically implement some interface',
             oneOf: [
               {
                 type: 'boolean',
@@ -57,21 +60,19 @@ export default createRule<Options, MessageIds>({
               },
               {
                 type: 'string',
-                enum: ['public-fields'],
                 description:
                   'Ignore only the public fields of classes that implement an interface',
+                enum: ['public-fields'],
               },
             ],
-            description:
-              'Ignore classes that specifically implement some interface',
+          },
+          ignoreOverrideMethods: {
+            type: 'boolean',
+            description: 'Ignore members marked with the `override` modifier',
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: {
-      missingThis: "Expected 'this' to be used by class {{name}}.",
-    },
   },
   defaultOptions: [
     {
@@ -95,14 +96,14 @@ export default createRule<Options, MessageIds>({
     const exceptMethods = new Set(exceptMethodsRaw);
     type Stack =
       | {
-          member: null;
           class: null;
+          member: null;
           parent: Stack | undefined;
           usesThis: boolean;
         }
       | {
-          member: TSESTree.MethodDefinition | TSESTree.PropertyDefinition;
           class: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
+          member: TSESTree.MethodDefinition | TSESTree.PropertyDefinition;
           parent: Stack | undefined;
           usesThis: boolean;
         };
@@ -113,17 +114,17 @@ export default createRule<Options, MessageIds>({
     ): void {
       if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
-          member,
           class: member.parent.parent,
-          usesThis: false,
+          member,
           parent: stack,
+          usesThis: false,
         };
       } else {
         stack = {
-          member: null,
           class: null,
-          usesThis: false,
+          member: null,
           parent: stack,
+          usesThis: false,
         };
       }
     }
@@ -182,12 +183,11 @@ export default createRule<Options, MessageIds>({
 
       const hashIfNeeded =
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
-      const name =
-        node.key.type === AST_NODE_TYPES.Literal
-          ? getStaticStringValue(node.key)
-          : node.key.name || '';
+      const name = getStaticMemberAccessValue(node, context);
 
-      return !exceptMethods.has(hashIfNeeded + (name ?? ''));
+      return (
+        typeof name !== 'string' || !exceptMethods.has(hashIfNeeded + name)
+      );
     }
 
     /**
@@ -214,8 +214,8 @@ export default createRule<Options, MessageIds>({
 
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
-          node,
           loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
           messageId: 'missingThis',
           data: {
             name: getFunctionNameWithKind(node),
@@ -257,11 +257,11 @@ export default createRule<Options, MessageIds>({
       /*
        * Class field value are implicit functions.
        */
-      'PropertyDefinition > *.key:exit'(): void {
-        pushContext();
-      },
       'PropertyDefinition:exit'(): void {
         popContext();
+      },
+      'PropertyDefinition > *.key:exit'(): void {
+        pushContext();
       },
 
       /*

@@ -1,9 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -35,20 +37,19 @@ export type MessageId =
 export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       invalidVoidExpr:
         'Placing a void expression inside another expression is forbidden. ' +
         'Move it to its own statement instead.',
-      invalidVoidExprWrapVoid:
-        'Void expressions used inside another expression ' +
-        'must be moved to its own statement ' +
-        'or marked explicitly with the `void` operator.',
       invalidVoidExprArrow:
         'Returning a void expression from an arrow function shorthand is forbidden. ' +
         'Please add braces to the arrow function.',
@@ -64,21 +65,30 @@ export default createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
+      invalidVoidExprWrapVoid:
+        'Void expressions used inside another expression ' +
+        'must be moved to its own statement ' +
+        'or marked explicitly with the `void` operator.',
       voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {
         type: 'object',
-        properties: {
-          ignoreArrowShorthand: { type: 'boolean' },
-          ignoreVoidOperator: { type: 'boolean' },
-        },
         additionalProperties: false,
+        properties: {
+          ignoreArrowShorthand: {
+            type: 'boolean',
+            description:
+              'Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces.',
+          },
+          ignoreVoidOperator: {
+            type: 'boolean',
+            description:
+              'Whether to ignore returns that start with the `void` operator.',
+          },
+        },
       },
     ],
-    type: 'problem',
-    fixable: 'code',
-    hasSuggestions: true,
   },
   defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
 
@@ -257,10 +267,11 @@ export default createRule<Options, MessageId>({
      */
     function findInvalidAncestor(node: TSESTree.Node): InvalidAncestor | null {
       const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
-      if (parent.type === AST_NODE_TYPES.SequenceExpression) {
-        if (node !== parent.expressions[parent.expressions.length - 1]) {
-          return null;
-        }
+      if (
+        parent.type === AST_NODE_TYPES.SequenceExpression &&
+        node !== parent.expressions[parent.expressions.length - 1]
+      ) {
+        return null;
       }
 
       if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
@@ -269,38 +280,41 @@ export default createRule<Options, MessageId>({
         return null;
       }
 
-      if (parent.type === AST_NODE_TYPES.LogicalExpression) {
-        if (parent.right === node) {
-          // e.g. `x && console.log(x)`
-          // this is valid only if the next ancestor is valid
-          return findInvalidAncestor(parent);
-        }
+      if (
+        parent.type === AST_NODE_TYPES.LogicalExpression &&
+        parent.right === node
+      ) {
+        // e.g. `x && console.log(x)`
+        // this is valid only if the next ancestor is valid
+        return findInvalidAncestor(parent);
       }
 
-      if (parent.type === AST_NODE_TYPES.ConditionalExpression) {
-        if (parent.consequent === node || parent.alternate === node) {
-          // e.g. `cond ? console.log(true) : console.log(false)`
-          // this is valid only if the next ancestor is valid
-          return findInvalidAncestor(parent);
-        }
+      if (
+        parent.type === AST_NODE_TYPES.ConditionalExpression &&
+        (parent.consequent === node || parent.alternate === node)
+      ) {
+        // e.g. `cond ? console.log(true) : console.log(false)`
+        // this is valid only if the next ancestor is valid
+        return findInvalidAncestor(parent);
       }
 
-      if (parent.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+      if (
+        parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
         // e.g. `() => console.log("foo")`
         // this is valid with an appropriate option
-        if (options.ignoreArrowShorthand) {
-          return null;
-        }
+        options.ignoreArrowShorthand
+      ) {
+        return null;
       }
 
-      if (parent.type === AST_NODE_TYPES.UnaryExpression) {
-        if (parent.operator === 'void') {
-          // e.g. `void console.log("foo")`
-          // this is valid with an appropriate option
-          if (options.ignoreVoidOperator) {
-            return null;
-          }
-        }
+      if (
+        parent.type === AST_NODE_TYPES.UnaryExpression &&
+        parent.operator === 'void' &&
+        // e.g. `void console.log("foo")`
+        // this is valid with an appropriate option
+        options.ignoreVoidOperator
+      ) {
+        return null;
       }
 
       if (parent.type === AST_NODE_TYPES.ChainExpression) {
@@ -329,9 +343,9 @@ export default createRule<Options, MessageId>({
       );
       if (
         ![
+          AST_NODE_TYPES.ArrowFunctionExpression,
           AST_NODE_TYPES.FunctionDeclaration,
           AST_NODE_TYPES.FunctionExpression,
-          AST_NODE_TYPES.ArrowFunctionExpression,
         ].includes(blockParent.type)
       ) {
         // e.g. `if (cond) { return; }`
