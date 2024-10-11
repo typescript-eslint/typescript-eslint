@@ -2847,6 +2847,24 @@ if (x) {
         },
       ],
     },
+    {
+      code: `
+['one', 'two'].filter(x => {
+  if (Math.random() > 0.5) {
+    return undefined;
+  }
+});
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
     // empty return statements
     {
       code: `

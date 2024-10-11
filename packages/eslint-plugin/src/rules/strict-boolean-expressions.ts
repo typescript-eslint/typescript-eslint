@@ -268,12 +268,14 @@ export default createRule<Options, MessageId>({
     function traverseLogicalExpression(
       node: TSESTree.LogicalExpression,
       isCondition = false,
-    ): void {
+    ): boolean {
       // left argument is always treated as a condition
-      traverseNode(node.left, true);
+      const isLeftReported = traverseNode(node.left, true);
       // if the logical expression is used for control flow,
       // then its right argument is used for its side effects only
-      traverseNode(node.right, isCondition);
+      const isRightReported = traverseNode(node.right, isCondition);
+
+      return isLeftReported || isRightReported;
     }
 
     /**
@@ -284,8 +286,9 @@ export default createRule<Options, MessageId>({
      */
     function traverseArrayPredicateReturnStatements(
       node: TSESTree.CallExpressionArgument,
-    ): boolean {
+    ): { hasReported: boolean; hasReturnStatement: boolean } {
       let hasReturnStatement = false;
+      let hasReported = false;
 
       // Shorthand arrow function expression
       if (
@@ -293,7 +296,7 @@ export default createRule<Options, MessageId>({
         node.body.type !== AST_NODE_TYPES.BlockStatement
       ) {
         hasReturnStatement = true;
-        traverseNode(node.body, true);
+        hasReported = traverseNode(node.body, true);
       }
 
       // Any other function expression with a block body
@@ -311,18 +314,20 @@ export default createRule<Options, MessageId>({
 
           if (statement.type === AST_NODE_TYPES.ReturnStatement) {
             if (statement.argument) {
-              return traverseNode(statement.argument, true);
-            }
+              hasReported ||= traverseNode(statement.argument, true);
+            } else {
+              hasReported = true;
 
-            context.report({
-              node: statement,
-              messageId: 'predicateReturnsEmptyExpression',
-            });
+              context.report({
+                node: statement,
+                messageId: 'predicateReturnsEmptyExpression',
+              });
+            }
           }
         });
       }
 
-      return hasReturnStatement;
+      return { hasReported, hasReturnStatement };
     }
 
     function traverseCallExpression(node: TSESTree.CallExpression): void {
@@ -334,8 +339,13 @@ export default createRule<Options, MessageId>({
         const predicate = node.arguments.at(0);
 
         if (predicate != null) {
-          const hasReturnStatement =
+          const { hasReported, hasReturnStatement } =
             traverseArrayPredicateReturnStatements(predicate);
+
+          // Don't report a function as returning `undefined` unless every
+          if (hasReported) {
+            return;
+          }
 
           // Empty functions has their return type as `void` rather than `undefined`
           if (
@@ -353,6 +363,7 @@ export default createRule<Options, MessageId>({
             services.getTypeAtLocation(predicate),
           );
 
+          //
           if (isFunctionReturningUndefined(type)) {
             return context.report({
               node: predicate,
@@ -390,10 +401,10 @@ export default createRule<Options, MessageId>({
     function traverseNode(
       node: TSESTree.Expression,
       isCondition: boolean,
-    ): void {
+    ): boolean {
       // prevent checking the same node multiple times
       if (traversedNodes.has(node)) {
-        return;
+        return false;
       }
       traversedNodes.add(node);
 
@@ -402,23 +413,22 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        traverseLogicalExpression(node, isCondition);
-        return;
+        return traverseLogicalExpression(node, isCondition);
       }
 
       // skip if node is not a condition
       if (!isCondition) {
-        return;
+        return false;
       }
 
-      checkNode(node);
+      return checkNode(node);
     }
 
     /**
      * This function does the actual type check on a node.
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
-    function checkNode(node: TSESTree.Expression): void {
+    function checkNode(node: TSESTree.Expression): boolean {
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
@@ -429,25 +439,25 @@ export default createRule<Options, MessageId>({
       // boolean
       if (is('boolean') || is('truthy boolean')) {
         // boolean is always okay
-        return;
+        return false;
       }
 
       // never
       if (is('never')) {
         // never is always okay
-        return;
+        return false;
       }
 
       // nullish
       if (is('nullish')) {
         // condition is always false
         context.report({ node, messageId: 'conditionErrorNullish' });
-        return;
+        return true;
       }
 
       // Known edge case: boolean `true` and nullish values are always valid boolean expressions
       if (is('nullish', 'truthy boolean')) {
-        return;
+        return false;
       }
 
       // nullable boolean
@@ -503,8 +513,9 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // Known edge case: truthy primitives and nullish values are always valid boolean expressions
@@ -512,7 +523,7 @@ export default createRule<Options, MessageId>({
         (options.allowNumber && is('nullish', 'truthy number')) ||
         (options.allowString && is('nullish', 'truthy string'))
       ) {
-        return;
+        return false;
       }
 
       // string
@@ -586,8 +597,9 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // nullable string
@@ -660,8 +672,9 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // number
@@ -762,8 +775,9 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // nullable number
@@ -836,15 +850,16 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // object
       if (is('object')) {
         // condition is always true
         context.report({ node, messageId: 'conditionErrorObject' });
-        return;
+        return true;
       }
 
       // nullable object
@@ -884,8 +899,9 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // nullable enum
@@ -923,8 +939,9 @@ export default createRule<Options, MessageId>({
               }),
             });
           }
+          return true;
         }
-        return;
+        return false;
       }
 
       // any
@@ -944,12 +961,15 @@ export default createRule<Options, MessageId>({
               },
             ],
           });
+          return true;
         }
-        return;
+        return false;
       }
 
       // other
       context.report({ node, messageId: 'conditionErrorOther' });
+
+      return true;
     }
 
     /** The types we care about */
