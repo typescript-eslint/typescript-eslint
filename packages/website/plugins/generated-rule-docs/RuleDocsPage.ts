@@ -1,4 +1,5 @@
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import { fromMarkdown } from 'mdast-util-from-markdown';
 import type * as unist from 'unist';
 
 import type { VFileWithStem } from '../utils/rules';
@@ -57,9 +58,15 @@ export class RuleDocsPage {
   spliceChildren(
     start: number,
     deleteCount: number,
-    ...items: unist.Node[]
+    ...items: (string | unist.Node)[]
   ): void {
-    this.#children.splice(start, deleteCount, ...items);
+    this.#children.splice(
+      start,
+      deleteCount,
+      ...items.map(item =>
+        typeof item === 'string' ? fromMarkdown(item) : item,
+      ),
+    );
     this.#headingIndices = this.#recreateHeadingIndices();
   }
 

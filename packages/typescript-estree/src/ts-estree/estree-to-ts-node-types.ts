@@ -75,10 +75,12 @@ export interface EstreeToTsNodeTypes {
     | ts.Identifier
     | ts.Token<ts.SyntaxKind.ImportKeyword | ts.SyntaxKind.NewKeyword>;
   [AST_NODE_TYPES.IfStatement]: ts.IfStatement;
+  [AST_NODE_TYPES.PrivateIdentifier]: ts.PrivateIdentifier;
+  [AST_NODE_TYPES.PropertyDefinition]: ts.PropertyDeclaration;
   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
   [AST_NODE_TYPES.ImportAttribute]: 'ImportAttribute' extends keyof typeof ts
     ? ts.ImportAttribute
-    : // eslint-disable-next-line deprecation/deprecation
+    : // eslint-disable-next-line @typescript-eslint/no-deprecated
       ts.AssertEntry;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
@@ -125,7 +127,6 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ObjectPattern]:
     | ts.ObjectBindingPattern
     | ts.ObjectLiteralExpression;
-  [AST_NODE_TYPES.PrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.Program]: ts.SourceFile;
   [AST_NODE_TYPES.Property]:
     | ts.BindingElement
@@ -134,7 +135,6 @@ export interface EstreeToTsNodeTypes {
     | ts.PropertyAssignment
     | ts.SetAccessorDeclaration
     | ts.ShorthandPropertyAssignment;
-  [AST_NODE_TYPES.PropertyDefinition]: ts.PropertyDeclaration;
   [AST_NODE_TYPES.RestElement]:
     | ts.BindingElement
     | ts.ParameterDeclaration
@@ -163,40 +163,24 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.ThrowStatement]: ts.ThrowStatement;
   [AST_NODE_TYPES.TryStatement]: ts.TryStatement;
   [AST_NODE_TYPES.TSAbstractAccessorProperty]: ts.PropertyDeclaration;
-  // Keywords
-  [AST_NODE_TYPES.TSAbstractKeyword]: ts.Token<ts.SyntaxKind.AbstractKeyword>;
   [AST_NODE_TYPES.TSAbstractMethodDefinition]:
     | ts.ConstructorDeclaration
     | ts.GetAccessorDeclaration
     | ts.MethodDeclaration
     | ts.SetAccessorDeclaration;
   [AST_NODE_TYPES.TSAbstractPropertyDefinition]: ts.PropertyDeclaration;
-  [AST_NODE_TYPES.TSAnyKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSArrayType]: ts.ArrayTypeNode;
   [AST_NODE_TYPES.TSAsExpression]: ts.AsExpression;
-  // Unused
-  [AST_NODE_TYPES.TSAsyncKeyword]: ts.Token<ts.SyntaxKind.AsyncKeyword>;
-  [AST_NODE_TYPES.TSBigIntKeyword]: ts.KeywordTypeNode;
-  [AST_NODE_TYPES.TSBooleanKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSCallSignatureDeclaration]: ts.CallSignatureDeclaration;
   [AST_NODE_TYPES.TSClassImplements]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSConditionalType]: ts.ConditionalTypeNode;
   [AST_NODE_TYPES.TSConstructorType]: ts.ConstructorTypeNode;
   [AST_NODE_TYPES.TSConstructSignatureDeclaration]: ts.ConstructSignatureDeclaration;
   [AST_NODE_TYPES.TSDeclareFunction]: ts.FunctionDeclaration;
-  [AST_NODE_TYPES.TSDeclareKeyword]: ts.Token<ts.SyntaxKind.DeclareKeyword>;
-  // Should be same as AST_NODE_TYPES.FunctionExpression
-  [AST_NODE_TYPES.TSEmptyBodyFunctionExpression]:
-    | ts.ConstructorDeclaration
-    | ts.FunctionExpression
-    | ts.GetAccessorDeclaration
-    | ts.MethodDeclaration
-    | ts.SetAccessorDeclaration;
   [AST_NODE_TYPES.TSEnumBody]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumDeclaration]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumMember]: ts.EnumMember;
   [AST_NODE_TYPES.TSExportAssignment]: ts.ExportAssignment;
-  [AST_NODE_TYPES.TSExportKeyword]: ts.Token<ts.SyntaxKind.ExportKeyword>;
   [AST_NODE_TYPES.TSExternalModuleReference]: ts.ExternalModuleReference;
   [AST_NODE_TYPES.TSFunctionType]: ts.FunctionTypeNode;
   [AST_NODE_TYPES.TSImportEqualsDeclaration]: ts.ImportEqualsDeclaration;
@@ -209,7 +193,6 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSInterfaceDeclaration]: ts.InterfaceDeclaration;
   [AST_NODE_TYPES.TSInterfaceHeritage]: ts.ExpressionWithTypeArguments;
   [AST_NODE_TYPES.TSIntersectionType]: ts.IntersectionTypeNode;
-  [AST_NODE_TYPES.TSIntrinsicKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSLiteralType]: ts.LiteralTypeNode;
   [AST_NODE_TYPES.TSMappedType]: ts.MappedTypeNode;
   [AST_NODE_TYPES.TSMethodSignature]:
@@ -220,35 +203,20 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSModuleDeclaration]: ts.ModuleDeclaration;
   [AST_NODE_TYPES.TSNamedTupleMember]: ts.NamedTupleMember;
   [AST_NODE_TYPES.TSNamespaceExportDeclaration]: ts.NamespaceExportDeclaration;
-  [AST_NODE_TYPES.TSNeverKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSNonNullExpression]: ts.NonNullExpression;
-  [AST_NODE_TYPES.TSNullKeyword]: ts.KeywordTypeNode | ts.NullLiteral;
-  [AST_NODE_TYPES.TSNumberKeyword]: ts.KeywordTypeNode;
-  [AST_NODE_TYPES.TSObjectKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSOptionalType]: ts.OptionalTypeNode;
   [AST_NODE_TYPES.TSParameterProperty]: ts.ParameterDeclaration;
-  [AST_NODE_TYPES.TSPrivateKeyword]: ts.Token<ts.SyntaxKind.PrivateKeyword>;
   [AST_NODE_TYPES.TSPropertySignature]: ts.PropertySignature;
-  [AST_NODE_TYPES.TSProtectedKeyword]: ts.Token<ts.SyntaxKind.ProtectedKeyword>;
-  [AST_NODE_TYPES.TSPublicKeyword]: ts.Token<ts.SyntaxKind.PublicKeyword>;
   [AST_NODE_TYPES.TSQualifiedName]: ts.Identifier | ts.QualifiedName;
-  [AST_NODE_TYPES.TSReadonlyKeyword]: ts.Token<ts.SyntaxKind.ReadonlyKeyword>;
   [AST_NODE_TYPES.TSRestType]:
     | ts.NamedTupleMember // for consistency and following babel's choices, a named tuple member with a rest gets converted to a TSRestType
     | ts.RestTypeNode;
   [AST_NODE_TYPES.TSSatisfiesExpression]: ts.SatisfiesExpression;
-  [AST_NODE_TYPES.TSStaticKeyword]: ts.Token<ts.SyntaxKind.StaticKeyword>;
-  [AST_NODE_TYPES.TSStringKeyword]: ts.KeywordTypeNode;
-  [AST_NODE_TYPES.TSSymbolKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSTemplateLiteralType]: ts.TemplateLiteralTypeNode;
   [AST_NODE_TYPES.TSThisType]: ts.ThisTypeNode;
-
-  // Added by parser
   [AST_NODE_TYPES.TSTupleType]: ts.TupleTypeNode;
-
   [AST_NODE_TYPES.TSTypeAliasDeclaration]: ts.TypeAliasDeclaration;
   [AST_NODE_TYPES.TSTypeAnnotation]: undefined;
-
   [AST_NODE_TYPES.TSTypeAssertion]: ts.TypeAssertion;
   [AST_NODE_TYPES.TSTypeLiteral]: ts.TypeLiteralNode;
   [AST_NODE_TYPES.TSTypeOperator]: ts.TypeOperatorNode;
@@ -267,11 +235,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSTypePredicate]: ts.TypePredicateNode;
   [AST_NODE_TYPES.TSTypeQuery]: ts.ImportTypeNode | ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypeReference]: ts.TypeReferenceNode;
-  [AST_NODE_TYPES.TSUndefinedKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.TSUnionType]: ts.UnionTypeNode;
-  [AST_NODE_TYPES.TSUnknownKeyword]: ts.KeywordTypeNode;
-
-  [AST_NODE_TYPES.TSVoidKeyword]: ts.KeywordTypeNode;
   [AST_NODE_TYPES.UnaryExpression]:
     | ts.DeleteExpression
     | ts.PostfixUnaryExpression
@@ -288,6 +252,42 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.WhileStatement]: ts.WhileStatement;
   [AST_NODE_TYPES.WithStatement]: ts.WithStatement;
   [AST_NODE_TYPES.YieldExpression]: ts.YieldExpression;
+
+  // Added by parser
+  // Should be same as AST_NODE_TYPES.FunctionExpression
+  [AST_NODE_TYPES.TSEmptyBodyFunctionExpression]:
+    | ts.ConstructorDeclaration
+    | ts.FunctionExpression
+    | ts.GetAccessorDeclaration
+    | ts.MethodDeclaration
+    | ts.SetAccessorDeclaration;
+
+  // Keywords
+  [AST_NODE_TYPES.TSAbstractKeyword]: ts.Token<ts.SyntaxKind.AbstractKeyword>;
+  [AST_NODE_TYPES.TSAnyKeyword]: ts.KeywordTypeNode;
+
+  [AST_NODE_TYPES.TSBigIntKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSBooleanKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSIntrinsicKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSNeverKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSNullKeyword]: ts.KeywordTypeNode | ts.NullLiteral;
+  [AST_NODE_TYPES.TSNumberKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSObjectKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSStringKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSSymbolKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSUndefinedKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSUnknownKeyword]: ts.KeywordTypeNode;
+  [AST_NODE_TYPES.TSVoidKeyword]: ts.KeywordTypeNode;
+
+  // Unused
+  [AST_NODE_TYPES.TSAsyncKeyword]: ts.Token<ts.SyntaxKind.AsyncKeyword>;
+  [AST_NODE_TYPES.TSDeclareKeyword]: ts.Token<ts.SyntaxKind.DeclareKeyword>;
+  [AST_NODE_TYPES.TSExportKeyword]: ts.Token<ts.SyntaxKind.ExportKeyword>;
+  [AST_NODE_TYPES.TSPrivateKeyword]: ts.Token<ts.SyntaxKind.PrivateKeyword>;
+  [AST_NODE_TYPES.TSProtectedKeyword]: ts.Token<ts.SyntaxKind.ProtectedKeyword>;
+  [AST_NODE_TYPES.TSPublicKeyword]: ts.Token<ts.SyntaxKind.PublicKeyword>;
+  [AST_NODE_TYPES.TSReadonlyKeyword]: ts.Token<ts.SyntaxKind.ReadonlyKeyword>;
+  [AST_NODE_TYPES.TSStaticKeyword]: ts.Token<ts.SyntaxKind.StaticKeyword>;
 }
 
 /**

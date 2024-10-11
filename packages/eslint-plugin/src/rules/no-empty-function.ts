@@ -1,11 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -22,6 +24,8 @@ const schema = deepMerge(
   {
     properties: {
       allow: {
+        description:
+          'Locations and kinds of functions that are allowed to be empty.',
         items: {
           type: 'string',
           enum: [
@@ -52,12 +56,12 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow empty functions',
-      recommended: 'stylistic',
       extendsBaseRule: true,
+      recommended: 'stylistic',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [schema],
     messages: baseRule.meta.messages,
+    schema: [schema],
   },
   defaultOptions: [
     {

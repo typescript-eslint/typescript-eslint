@@ -51,7 +51,7 @@ declare module './generated/ast-spec' {
   }
 
   interface ClassBody {
-    parent: TSESTree.ClassExpression | TSESTree.ClassDeclaration;
+    parent: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   }
 
   interface ExportSpecifier {
@@ -138,6 +138,7 @@ declare module './generated/ast-spec' {
     parent:
       | TSESTree.ArrayExpression
       | TSESTree.CallExpression
+      | TSESTree.NewExpression
       | TSESTree.ObjectExpression;
   }
 
@@ -216,8 +217,8 @@ declare module './generated/ast-spec' {
   interface TSTypeParameter {
     parent:
       | TSESTree.TSInferType
-      | TSESTree.TSTypeParameterDeclaration
-      | TSESTree.TSMappedType;
+      | TSESTree.TSMappedType
+      | TSESTree.TSTypeParameterDeclaration;
   }
 }
 

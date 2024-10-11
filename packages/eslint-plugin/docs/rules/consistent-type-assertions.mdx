@@ -30,7 +30,7 @@ Examples of them include `let x = "hello" as const;` and `let x = <const>"hello"
 
 ### `assertionStyle`
 
-This option defines the expected assertion style. Valid values for `assertionStyle` are:
+The expected assertion style to enforce. Valid values for `assertionStyle` are:
 
 - `as` will enforce that you always use `... as foo`.
 - `angle-bracket` will enforce that you always use `<foo>...`
@@ -42,7 +42,10 @@ Some codebases like to go for an extra level of type safety, and ban assertions 
 
 ### `objectLiteralTypeAssertions`
 
-Always prefer `const x: T = { ... };` to `const x = { ... } as T;` (or similar with angle brackets). The type assertion in the latter case is either unnecessary or will probably hide an error.
+Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions.
+
+For example, this would prefer `const x: T = { ... };` to `const x = { ... } as T;` (or similar with angle brackets).
+The type assertion in the latter case is either unnecessary or will probably hide an error.
 
 The compiler will warn for excess properties with this syntax, but not missing _required_ fields. For example: `const x: { foo: number } = {};` will fail to compile, but `const x = {} as { foo: number }` will succeed.
 

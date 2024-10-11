@@ -1,10 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import {
   isClosingBraceToken,
   isClosingParenToken,
 } from '@typescript-eslint/utils/ast-utils';
-import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 // The following is adapted from `eslint`'s source code.
 // https://github.com/eslint/eslint/blob/3a4eaf921543b1cd5d1df4ea9dec02fab396af2a/lib/rules/utils/ast-utils.js#L1043-L1132
@@ -43,7 +44,7 @@ const NODE_TYPES_BY_KEYWORD: Record<string, TSESTree.AST_NODE_TYPES | null> = {
  * Before an opening parenthesis, postfix `++` and `--` always trigger ASI;
  * the tokens `:`, `;`, `{` and `=>` don't expect a semicolon, as that would count as an empty statement.
  */
-const PUNCTUATORS = new Set([':', ';', '{', '=>', '++', '--']);
+const PUNCTUATORS = new Set(['--', ';', ':', '{', '++', '=>']);
 
 /*
  * Statements that can contain an `ExpressionStatement` after a closing parenthesis.

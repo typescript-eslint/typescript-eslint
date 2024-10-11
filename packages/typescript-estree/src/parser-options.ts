@@ -3,18 +3,25 @@ import type {
   DebugLevel,
   JSDocParsingMode,
   ProjectServiceOptions,
+  SourceType,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
-export { ProjectServiceOptions } from '@typescript-eslint/types';
+export type { ProjectServiceOptions } from '@typescript-eslint/types';
 
 //////////////////////////////////////////////////////////
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
 //////////////////////////////////////////////////////////
 
 interface ParseOptions {
+  /**
+   * Specify the `sourceType`.
+   * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
+   */
+  sourceType?: SourceType;
+
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
@@ -94,14 +101,14 @@ interface ParseOptions {
   range?: boolean;
 
   /**
-   * Whether deprecated AST properties should skip calling console.warn on accesses.
-   */
-  suppressDeprecatedPropertyWarnings?: boolean;
-
-  /**
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
@@ -175,13 +182,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * An array of one or more instances of TypeScript Program objects to be used for type information.
-   * This overrides any program or programs that would have been computed from the `project` option.
-   * All linted files must be part of the provided program(s).
-   */
-  programs?: ts.Program[] | null;
-
-  /**
    * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
@@ -210,6 +210,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * The absolute path to the root directory for all provided `project`s.
    */
   tsconfigRootDir?: string;
+
+  /**
+   * An array of one or more instances of TypeScript Program objects to be used for type information.
+   * This overrides any program or programs that would have been computed from the `project` option.
+   * All linted files must be part of the provided program(s).
+   */
+  programs?: ts.Program[] | null;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;

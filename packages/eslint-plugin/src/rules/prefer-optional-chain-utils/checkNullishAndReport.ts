@@ -1,4 +1,3 @@
-import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import type {
   ParserServicesWithTypeInformation,
   TSESTree,
@@ -7,6 +6,8 @@ import type {
   ReportDescriptor,
   RuleContext,
 } from '@typescript-eslint/utils/ts-eslint';
+
+import { isTypeFlagSet } from '@typescript-eslint/type-utils';
 import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 

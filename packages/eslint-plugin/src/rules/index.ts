@@ -29,6 +29,7 @@ import noArrayDelete from './no-array-delete';
 import noBaseToString from './no-base-to-string';
 import confusingNonNullAssertionLikeNotEqual from './no-confusing-non-null-assertion';
 import noConfusingVoidExpression from './no-confusing-void-expression';
+import noDeprecated from './no-deprecated';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDuplicateEnumValues from './no-duplicate-enum-values';
 import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
@@ -127,7 +128,7 @@ import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 import useUnknownInCatchCallbackVariable from './use-unknown-in-catch-callback-variable';
 
-export default {
+const rules = {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
   'array-type': arrayType,
   'await-thenable': awaitThenable,
@@ -157,6 +158,7 @@ export default {
   'no-base-to-string': noBaseToString,
   'no-confusing-non-null-assertion': confusingNonNullAssertionLikeNotEqual,
   'no-confusing-void-expression': noConfusingVoidExpression,
+  'no-deprecated': noDeprecated,
   'no-dupe-class-members': noDupeClassMembers,
   'no-duplicate-enum-values': noDuplicateEnumValues,
   'no-duplicate-type-constituents': noDuplicateTypeConstituents,
@@ -256,3 +258,5 @@ export default {
   'unified-signatures': unifiedSignatures,
   'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,
 } satisfies Linter.PluginRules;
+
+export = rules;

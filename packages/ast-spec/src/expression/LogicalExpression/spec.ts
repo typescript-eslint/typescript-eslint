@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 
 export interface LogicalExpression extends BaseNode {
   type: AST_NODE_TYPES.LogicalExpression;
-  operator: '??' | '&&' | '||';
   left: Expression;
+  operator: '&&' | '??' | '||';
   right: Expression;
 }

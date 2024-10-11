@@ -35,4 +35,4 @@ interface WatchCompilerHostOfConfigFile<T extends ts.BuilderProgram>
   ): void;
 }
 
-export { WatchCompilerHostOfConfigFile };
+export type { WatchCompilerHostOfConfigFile };

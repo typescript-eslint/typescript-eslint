@@ -6,7 +6,7 @@ import type { JSXChild } from '../../unions/JSXChild';
 
 export interface JSXElement extends BaseNode {
   type: AST_NODE_TYPES.JSXElement;
-  openingElement: JSXOpeningElement;
-  closingElement: JSXClosingElement | null;
   children: JSXChild[];
+  closingElement: JSXClosingElement | null;
+  openingElement: JSXOpeningElement;
 }

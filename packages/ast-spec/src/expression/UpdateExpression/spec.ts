@@ -3,5 +3,5 @@ import type { UnaryExpressionBase } from '../../base/UnaryExpressionBase';
 
 export interface UpdateExpression extends UnaryExpressionBase {
   type: AST_NODE_TYPES.UpdateExpression;
-  operator: '--' | '++';
+  operator: '++' | '--';
 }

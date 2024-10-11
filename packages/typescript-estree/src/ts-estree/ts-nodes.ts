@@ -25,15 +25,14 @@ export type TSNode =
   | ts.ArrayTypeNode
   | ts.ArrowFunction
   | ts.AsExpression
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional for old TS versions */
   | ts.AssertClause
-  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
+  /* eslint-disable-next-line @typescript-eslint/no-deprecated -- intentional for old TS versions */
   | ts.AssertEntry
   | ts.AwaitExpression
   | ts.BigIntLiteral
   | ts.BinaryExpression
   | ts.BindingElement
-  // | ts.SignatureDeclarationBase -> CallSignatureDeclaration, ConstructSignatureDeclaration
   | ts.Block
   | ts.BooleanLiteral
   | ts.BreakStatement
@@ -45,6 +44,7 @@ export type TSNode =
   | ts.CatchClause
   | ts.ClassDeclaration
   | ts.ClassExpression
+  // | ts.ClassLikeDeclarationBase -> ClassDeclaration | ClassExpression
   | ts.ClassStaticBlockDeclaration
   | ts.CommaListExpression
   | ts.ComputedPropertyName
@@ -59,7 +59,6 @@ export type TSNode =
   | ts.DefaultClause
   | ts.DeleteExpression
   | ts.DoStatement
-  // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
   | ts.ElementAccessExpression
   | ts.EmptyStatement
   | ts.EnumDeclaration
@@ -75,6 +74,7 @@ export type TSNode =
   | ts.ForStatement
   | ts.FunctionDeclaration
   | ts.FunctionExpression
+  // | ts.FunctionOrConstructorTypeNodeBase -> FunctionTypeNode, ConstructorTypeNode
   | ts.FunctionTypeNode
   | ts.GetAccessorDeclaration
   | ts.HeritageClause
@@ -161,7 +161,6 @@ export type TSNode =
   | ts.ParenthesizedTypeNode
   | ts.PartiallyEmittedExpression
   | ts.PostfixUnaryExpression
-  // | ts.ClassLikeDeclarationBase -> ClassDeclaration | ClassExpression
   | ts.PrefixUnaryExpression
   | ts.PrivateIdentifier
   | ts.PropertyAccessExpression
@@ -175,6 +174,7 @@ export type TSNode =
   | ts.SatisfiesExpression
   | ts.SemicolonClassElement
   | ts.SetAccessorDeclaration
+  // | ts.SignatureDeclarationBase -> CallSignatureDeclaration, ConstructSignatureDeclaration
   | ts.ShorthandPropertyAssignment
   | ts.SourceFile
   | ts.SpreadAssignment

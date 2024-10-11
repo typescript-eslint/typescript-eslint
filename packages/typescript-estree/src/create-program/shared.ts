@@ -38,6 +38,17 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
 };
 
+const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
+  ts.Extension.Cjs,
+  ts.Extension.Cts,
+  ts.Extension.Js,
+  ts.Extension.Jsx,
+  ts.Extension.Mjs,
+  ts.Extension.Mts,
+  ts.Extension.Ts,
+  ts.Extension.Tsx,
+]);
+
 function createDefaultCompilerOptionsFromExtra(
   parseSettings: ParseSettings,
 ): ts.CompilerOptions {
@@ -128,14 +139,15 @@ function createHash(content: string): string {
 }
 
 export {
-  ASTAndDefiniteProgram,
-  ASTAndNoProgram,
-  ASTAndProgram,
+  type ASTAndDefiniteProgram,
+  type ASTAndNoProgram,
+  type ASTAndProgram,
   canonicalDirname,
-  CanonicalPath,
+  type CanonicalPath,
   CORE_COMPILER_OPTIONS,
   createDefaultCompilerOptionsFromExtra,
   createHash,
+  DEFAULT_EXTRA_FILE_EXTENSIONS,
   ensureAbsolutePath,
   getAstFromProgram,
   getCanonicalFileName,

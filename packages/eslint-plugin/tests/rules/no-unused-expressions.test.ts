@@ -1,4 +1,5 @@
 import type { TestCaseError } from '@typescript-eslint/rule-tester';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unused-expressions';
@@ -95,8 +96,8 @@ if (0) 0;
       `,
       errors: error([
         {
-          line: 2,
           column: 8,
+          line: 2,
         },
       ]),
     },
@@ -106,8 +107,8 @@ f(0), {};
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -117,8 +118,8 @@ a, b();
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -131,8 +132,8 @@ a() &&
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -142,8 +143,8 @@ a?.b;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -153,8 +154,8 @@ a?.b;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -164,8 +165,8 @@ a?.['b'];
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -175,8 +176,8 @@ a?.['b'];
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -186,8 +187,8 @@ a?.b()?.c;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -197,8 +198,8 @@ a?.b()?.c;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -208,8 +209,8 @@ one[2]?.[3][4];
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -219,8 +220,8 @@ one.two?.three.four;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -233,10 +234,10 @@ module Foo {
       `,
       errors: error([
         {
-          line: 4,
-          endLine: 4,
           column: 3,
           endColumn: 16,
+          endLine: 4,
+          line: 4,
         },
       ]),
     },
@@ -251,10 +252,10 @@ namespace Foo {
       `,
       errors: error([
         {
-          line: 6,
-          endLine: 6,
           column: 3,
           endColumn: 16,
+          endLine: 6,
+          line: 6,
         },
       ]),
     },
@@ -268,48 +269,48 @@ function foo() {
       `,
       errors: error([
         {
-          line: 5,
-          endLine: 5,
           column: 3,
           endColumn: 16,
+          endLine: 5,
+          line: 5,
         },
       ]),
     },
     {
       code: 'foo && foo?.bar;',
-      options: [{ allowShortCircuit: true }],
       errors: error([
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 17,
+          endLine: 1,
+          line: 1,
         },
       ]),
+      options: [{ allowShortCircuit: true }],
     },
     {
       code: 'foo ? foo?.bar : bar.baz;',
-      options: [{ allowTernary: true }],
       errors: error([
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 26,
+          endLine: 1,
+          line: 1,
         },
       ]),
+      options: [{ allowTernary: true }],
     },
     {
-      code: noFormat`
+      code: `
 class Foo<T> {}
 Foo<string>;
       `,
       errors: error([
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 13,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },
@@ -317,10 +318,10 @@ Foo<string>;
       code: 'Map<string, string>;',
       errors: error([
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
         },
       ]),
     },
@@ -331,10 +332,10 @@ foo;
       `,
       errors: error([
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 5,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },
@@ -345,10 +346,10 @@ foo as any;
       `,
       errors: error([
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 12,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },
@@ -359,10 +360,10 @@ declare const foo: number | undefined;
       `,
       errors: error([
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 10,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },
@@ -373,10 +374,10 @@ foo!;
       `,
       errors: error([
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 6,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },

@@ -5,12 +5,12 @@ export { createProgramFromConfigFile as createProgram } from './create-program/u
 export * from './getModifiers';
 export { TSError } from './node-utils';
 export {
-  AST,
+  type AST,
   parse,
   parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
+  type ParseAndGenerateServicesResult,
 } from './parser';
-export {
+export type {
   ParserServices,
   ParserServicesWithoutTypeInformation,
   ParserServicesWithTypeInformation,

@@ -38,9 +38,9 @@ export function convertComments(
           : // multiline comments end 2 characters early
             range[1] - textStart - 2;
       comments.push({
+        type,
         loc,
         range,
-        type,
         value: code.slice(textStart, textStart + textEnd),
       });
     },

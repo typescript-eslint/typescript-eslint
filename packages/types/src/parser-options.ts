@@ -2,10 +2,11 @@ import type { Program } from 'typescript';
 
 import type { Lib } from './lib';
 
-type DebugLevel = ('eslint' | 'typescript-eslint' | 'typescript')[] | boolean;
-type CacheDurationSeconds = number | 'Infinity';
+type DebugLevel = ('eslint' | 'typescript' | 'typescript-eslint')[] | boolean;
+type CacheDurationSeconds = 'Infinity' | number;
 
 type EcmaVersion =
+  | 'latest'
   | 3
   | 5
   | 6
@@ -30,11 +31,10 @@ type EcmaVersion =
   | 2023
   | 2024
   | 2025
-  | 'latest'
   | undefined;
 
 type SourceTypeClassic = 'module' | 'script';
-type SourceType = SourceTypeClassic | 'commonjs';
+type SourceType = 'commonjs' | SourceTypeClassic;
 
 type JSDocParsingMode = 'all' | 'none' | 'type-info';
 
@@ -50,8 +50,14 @@ interface ProjectServiceOptions {
 
   /**
    * Path to a TSConfig to use instead of TypeScript's default project configuration.
+   * @default 'tsconfig.json'
    */
   defaultProject?: string;
+
+  /**
+   * Whether to allow TypeScript plugins as configured in the TSConfig.
+   */
+  loadTypeScriptPlugins?: boolean;
 
   /**
    * The maximum number of files {@link allowDefaultProject} may match.
@@ -65,49 +71,49 @@ interface ProjectServiceOptions {
 
 // If you add publicly visible options here, make sure they're also documented in `docs/packages/Parser.mdx`
 interface ParserOptions {
-  ecmaFeatures?:
-    | {
-        globalReturn?: boolean | undefined;
-        jsx?: boolean | undefined;
-        [key: string]: unknown;
-      }
-    | undefined;
-  ecmaVersion?: EcmaVersion;
-
-  // scope-manager specific
-  jsxPragma?: string | null;
-  jsxFragmentName?: string | null;
-  lib?: Lib[];
-
-  // use emitDecoratorMetadata without specifying parserOptions.project
-  emitDecoratorMetadata?: boolean;
-  // use experimentalDecorators without specifying parserOptions.project
-  experimentalDecorators?: boolean;
-
-  // typescript-estree specific
-  debugLevel?: DebugLevel;
-  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
-  errorOnUnknownASTType?: boolean;
-  extraFileExtensions?: string[];
-  filePath?: string;
-  jsDocParsingMode?: JSDocParsingMode;
-  programs?: Program[] | null;
-  project?: string[] | string | boolean | null;
-  projectFolderIgnoreList?: string[];
-  projectService?: boolean | ProjectServiceOptions;
-  range?: boolean;
-  sourceType?: SourceType | undefined;
-  tokens?: boolean;
-  tsconfigRootDir?: string;
-  warnOnUnsupportedTypeScriptVersion?: boolean;
+  [additionalProperties: string]: unknown;
   cacheLifetime?: {
     glob?: CacheDurationSeconds;
   };
 
-  [additionalProperties: string]: unknown;
+  // typescript-estree specific
+  debugLevel?: DebugLevel;
+  ecmaFeatures?:
+    | {
+        [key: string]: unknown;
+        globalReturn?: boolean | undefined;
+        jsx?: boolean | undefined;
+      }
+    | undefined;
+  ecmaVersion?: EcmaVersion;
+
+  // use emitDecoratorMetadata without specifying parserOptions.project
+  emitDecoratorMetadata?: boolean;
+  errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
+
+  errorOnUnknownASTType?: boolean;
+  // use experimentalDecorators without specifying parserOptions.project
+  experimentalDecorators?: boolean;
+  extraFileExtensions?: string[];
+  filePath?: string;
+  jsDocParsingMode?: JSDocParsingMode;
+  jsxFragmentName?: string | null;
+  // scope-manager specific
+  jsxPragma?: string | null;
+  lib?: Lib[];
+  programs?: Program[] | null;
+  project?: string[] | boolean | string | null;
+  projectFolderIgnoreList?: string[];
+  projectService?: ProjectServiceOptions | boolean;
+  range?: boolean;
+  sourceType?: SourceType | undefined;
+  tokens?: boolean;
+  tsconfigRootDir?: string;
+
+  warnOnUnsupportedTypeScriptVersion?: boolean;
 }
 
-export {
+export type {
   CacheDurationSeconds,
   DebugLevel,
   EcmaVersion,

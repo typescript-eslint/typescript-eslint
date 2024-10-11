@@ -33,7 +33,11 @@ function getParsedConfigFile(
         throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
       },
       readDirectory: tsserver.sys.readDirectory,
-      readFile: file => fs.readFileSync(file, 'utf-8'),
+      readFile: file =>
+        fs.readFileSync(
+          path.isAbsolute(file) ? file : path.join(getCurrentDirectory(), file),
+          'utf-8',
+        ),
       useCaseSensitiveFileNames: tsserver.sys.useCaseSensitiveFileNames,
     },
   );

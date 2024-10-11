@@ -33,6 +33,7 @@ const currentDirectory = '/repos/repo';
 function createMockProjectService() {
   const openClientFile = jest.fn();
   const setHostConfiguration = jest.fn();
+  const reloadProjects = jest.fn();
   const service = {
     getDefaultProjectForFile: () => ({
       getLanguageService: () => ({
@@ -44,11 +45,13 @@ function createMockProjectService() {
       getCurrentDirectory: () => currentDirectory,
     },
     openClientFile,
+    reloadProjects,
     setHostConfiguration,
   };
 
   return {
     openClientFile,
+    reloadProjects,
     service: service as typeof service & TypeScriptProjectService,
   };
 }
@@ -58,6 +61,7 @@ const mockFileName = 'camelCaseFile.ts';
 const mockParseSettings = {
   extraFileExtensions: [] as readonly string[],
   filePath: `path/PascalCaseDirectory/${mockFileName}`,
+  singleRun: false,
   tsconfigRootDir: currentDirectory,
 } as ParseSettings;
 
@@ -66,6 +70,7 @@ const createProjectServiceSettings = <
 >(
   settings: T,
 ) => ({
+  lastReloadTimestamp: 0,
   maximumDefaultProjectFileMatchCount: 8,
   ...settings,
 });
@@ -126,11 +131,11 @@ describe('useProgramFromProjectService', () => {
 
     expect(() =>
       useProgramFromProjectService(
-        {
+        createProjectServiceSettings({
           allowDefaultProject: [mockParseSettings.filePath],
           maximumDefaultProjectFileMatchCount: 8,
           service,
-        },
+        }),
         mockParseSettings,
         true,
         new Set(),
@@ -140,7 +145,7 @@ describe('useProgramFromProjectService', () => {
     );
   });
 
-  it('throws an error when hasFullTypeInformation is enabled and the file is neither in the project service nor allowDefaultProject', () => {
+  it('throws an error without reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor allowDefaultProject, and the last reload was not a long time ago', () => {
     const { service } = createMockProjectService();
 
     service.openClientFile.mockReturnValueOnce({});
@@ -149,6 +154,7 @@ describe('useProgramFromProjectService', () => {
       useProgramFromProjectService(
         createProjectServiceSettings({
           allowDefaultProject: [],
+          lastReloadTimestamp: Infinity,
           service,
         }),
         mockParseSettings,
@@ -158,6 +164,55 @@ describe('useProgramFromProjectService', () => {
     ).toThrow(
       `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
     );
+    expect(service.reloadProjects).not.toHaveBeenCalled();
+  });
+
+  it('throws an error after reloading projects when hasFullTypeInformation is enabled, the file is neither in the project service nor allowDefaultProject, and the last reload was recent', () => {
+    const { service } = createMockProjectService();
+
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          lastReloadTimestamp: 0,
+          service,
+        }),
+        mockParseSettings,
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${mockParseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+    );
+    expect(service.reloadProjects).toHaveBeenCalledTimes(1);
+  });
+
+  it('returns a created program after reloading projects when hasFullTypeInformation is enabled, the file is only in the project service after reload, and the last reload was recent', () => {
+    const { service } = createMockProjectService();
+    const program = { getSourceFile: jest.fn() };
+
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({
+      configFileName: 'tsconfig.json',
+    });
+    mockCreateProjectProgram.mockReturnValueOnce(program);
+
+    mockGetProgram.mockReturnValueOnce(program);
+
+    const actual = useProgramFromProjectService(
+      createProjectServiceSettings({
+        allowDefaultProject: [],
+        lastReloadTimestamp: 0,
+        service,
+      }),
+      mockParseSettings,
+      true,
+      new Set(),
+    );
+
+    expect(actual).toBe(program);
+    expect(service.reloadProjects).toHaveBeenCalledTimes(1);
   });
 
   it('throws an error when more than the maximum allowed file count is matched to the default project', () => {
@@ -519,5 +574,57 @@ If you absolutely need more files included, set parserOptions.projectService.max
     expect(service.setHostConfiguration).toHaveBeenCalledWith({
       extraFileExtensions: [],
     });
+  });
+
+  it('throws an error when a nonstandard file extension is used', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.`,
+    );
+  });
+
+  it('throws an error when a nonstandard file extension is used but not included in extraFileExtensions', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          extraFileExtensions: ['.svelte'],
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
+    );
   });
 });

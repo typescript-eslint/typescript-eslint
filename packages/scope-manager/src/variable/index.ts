@@ -4,8 +4,8 @@ import type { Variable } from './Variable';
 export { ESLintScopeVariable } from './ESLintScopeVariable';
 export {
   ImplicitLibVariable,
-  ImplicitLibVariableOptions,
+  type ImplicitLibVariableOptions,
 } from './ImplicitLibVariable';
 export { Variable } from './Variable';
 
-export type ScopeVariable = Variable | ESLintScopeVariable;
+export type ScopeVariable = ESLintScopeVariable | Variable;

@@ -277,11 +277,11 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 export {
-  AST,
+  type AST,
   clearDefaultProjectMatchedFiles,
   clearParseAndGenerateServicesCalls,
   clearProgramCache,
   parse,
   parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
+  type ParseAndGenerateServicesResult,
 };

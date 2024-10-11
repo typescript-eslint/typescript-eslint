@@ -16,8 +16,8 @@ type LogicalOperatorKind =
   | ts.SyntaxKind.BarBarToken
   | ts.SyntaxKind.QuestionQuestionToken;
 const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
-  SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.BarBarToken,
   SyntaxKind.QuestionQuestionToken,
 ]);
 
@@ -33,50 +33,50 @@ interface TokenToText
 
 type AssignmentOperatorKind = keyof TSESTree.AssignmentOperatorToText;
 const ASSIGNMENT_OPERATORS: ReadonlySet<AssignmentOperatorKind> = new Set([
-  ts.SyntaxKind.EqualsToken,
-  ts.SyntaxKind.PlusEqualsToken,
-  ts.SyntaxKind.MinusEqualsToken,
-  ts.SyntaxKind.AsteriskEqualsToken,
+  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+  ts.SyntaxKind.AmpersandEqualsToken,
   ts.SyntaxKind.AsteriskAsteriskEqualsToken,
-  ts.SyntaxKind.SlashEqualsToken,
-  ts.SyntaxKind.PercentEqualsToken,
-  ts.SyntaxKind.LessThanLessThanEqualsToken,
+  ts.SyntaxKind.AsteriskEqualsToken,
+  ts.SyntaxKind.BarBarEqualsToken,
+  ts.SyntaxKind.BarEqualsToken,
+  ts.SyntaxKind.CaretEqualsToken,
+  ts.SyntaxKind.EqualsToken,
   ts.SyntaxKind.GreaterThanGreaterThanEqualsToken,
   ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
-  ts.SyntaxKind.AmpersandEqualsToken,
-  ts.SyntaxKind.BarEqualsToken,
-  ts.SyntaxKind.BarBarEqualsToken,
-  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+  ts.SyntaxKind.LessThanLessThanEqualsToken,
+  ts.SyntaxKind.MinusEqualsToken,
+  ts.SyntaxKind.PercentEqualsToken,
+  ts.SyntaxKind.PlusEqualsToken,
   ts.SyntaxKind.QuestionQuestionEqualsToken,
-  ts.SyntaxKind.CaretEqualsToken,
+  ts.SyntaxKind.SlashEqualsToken,
 ]);
 
 type BinaryOperatorKind = keyof TSESTree.BinaryOperatorToText;
 const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
-  SyntaxKind.InstanceOfKeyword,
-  SyntaxKind.InKeyword,
+  SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.AmpersandToken,
   SyntaxKind.AsteriskAsteriskToken,
   SyntaxKind.AsteriskToken,
-  SyntaxKind.SlashToken,
-  SyntaxKind.PercentToken,
-  SyntaxKind.PlusToken,
-  SyntaxKind.MinusToken,
-  SyntaxKind.AmpersandToken,
+  SyntaxKind.BarBarToken,
   SyntaxKind.BarToken,
   SyntaxKind.CaretToken,
-  SyntaxKind.LessThanLessThanToken,
-  SyntaxKind.GreaterThanGreaterThanToken,
-  SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
-  SyntaxKind.AmpersandAmpersandToken,
-  SyntaxKind.BarBarToken,
-  SyntaxKind.LessThanToken,
-  SyntaxKind.LessThanEqualsToken,
-  SyntaxKind.GreaterThanToken,
-  SyntaxKind.GreaterThanEqualsToken,
-  SyntaxKind.EqualsEqualsToken,
   SyntaxKind.EqualsEqualsEqualsToken,
+  SyntaxKind.EqualsEqualsToken,
   SyntaxKind.ExclamationEqualsEqualsToken,
   SyntaxKind.ExclamationEqualsToken,
+  SyntaxKind.GreaterThanEqualsToken,
+  SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+  SyntaxKind.GreaterThanGreaterThanToken,
+  SyntaxKind.GreaterThanToken,
+  SyntaxKind.InKeyword,
+  SyntaxKind.InstanceOfKeyword,
+  SyntaxKind.LessThanEqualsToken,
+  SyntaxKind.LessThanLessThanToken,
+  SyntaxKind.LessThanToken,
+  SyntaxKind.MinusToken,
+  SyntaxKind.PercentToken,
+  SyntaxKind.PlusToken,
+  SyntaxKind.SlashToken,
 ]);
 
 type DeclarationKind = TSESTree.VariableDeclaration['kind'];
@@ -190,7 +190,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
-  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -214,18 +214,18 @@ export function getBinaryExpressionType(operator: ts.BinaryOperatorToken):
     } {
   if (isAssignmentOperator(operator)) {
     return {
-      operator: getTextForTokenKind(operator.kind),
       type: AST_NODE_TYPES.AssignmentExpression,
+      operator: getTextForTokenKind(operator.kind),
     };
   } else if (isLogicalOperator(operator)) {
     return {
-      operator: getTextForTokenKind(operator.kind),
       type: AST_NODE_TYPES.LogicalExpression,
+      operator: getTextForTokenKind(operator.kind),
     };
   } else if (isESTreeBinaryOperator(operator)) {
     return {
-      operator: getTextForTokenKind(operator.kind),
       type: AST_NODE_TYPES.BinaryExpression,
+      operator: getTextForTokenKind(operator.kind),
     };
   }
 
@@ -637,22 +637,22 @@ export function convertToken(
 
   if (tokenType === AST_TOKEN_TYPES.RegularExpression) {
     return {
+      type: tokenType,
       loc,
       range,
       regex: {
         flags: value.slice(value.lastIndexOf('/') + 1),
         pattern: value.slice(1, value.lastIndexOf('/')),
       },
-      type: tokenType,
       value,
     };
   }
   // @ts-expect-error TS is complaining about `value` not being the correct
   // type but it is
   return {
+    type: tokenType,
     loc,
     range,
-    type: tokenType,
     value,
   };
 }

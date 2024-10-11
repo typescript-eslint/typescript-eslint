@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -318,8 +318,8 @@ bar<F<string>>();
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -341,8 +341,8 @@ declare module 'bar' {
       `,
       errors: [
         {
-          line: 4,
           column: 12,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],

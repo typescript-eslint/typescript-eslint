@@ -5,22 +5,22 @@ import type { Expression } from '../../unions/Expression';
 import type { Identifier } from '../Identifier/spec';
 
 interface MemberExpressionBase extends BaseNode {
-  object: Expression;
-  property: Expression | Identifier | PrivateIdentifier;
   computed: boolean;
+  object: Expression;
   optional: boolean;
+  property: Expression | Identifier | PrivateIdentifier;
 }
 
 export interface MemberExpressionComputedName extends MemberExpressionBase {
   type: AST_NODE_TYPES.MemberExpression;
-  property: Expression;
   computed: true;
+  property: Expression;
 }
 
 export interface MemberExpressionNonComputedName extends MemberExpressionBase {
   type: AST_NODE_TYPES.MemberExpression;
-  property: Identifier | PrivateIdentifier;
   computed: false;
+  property: Identifier | PrivateIdentifier;
 }
 
 export type MemberExpression =

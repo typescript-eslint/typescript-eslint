@@ -1,9 +1,7 @@
+import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import 'jest-specific-snapshot';
-
 import fs from 'node:fs';
 import path from 'node:path';
-
-import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import prettier from 'prettier';
 
 import rules from '../src/rules/index';
@@ -188,8 +186,8 @@ describe('Rule schemas should validate options correctly', () => {
   // This override allows providing example valid options for rules which don't
   // accept their defaults.
   const overrideValidOptions: Record<string, unknown> = {
-    semi: ['never'],
     'func-call-spacing': ['never'],
+    semi: ['never'],
   };
 
   for (const [ruleName, rule] of Object.entries(rules)) {

@@ -7,8 +7,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -165,6 +165,7 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type T = 'a' | 1 | 'b';
       type U = T & string;
     `,
+    "declare function fn(): never | 'foo';",
   ],
 
   invalid: [
