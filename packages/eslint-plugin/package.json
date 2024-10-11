@@ -5,6 +5,7 @@
   "files": [
     "dist",
     "docs",
+    "eslint-recommended-raw.d.ts",
     "index.d.ts",
     "rules.d.ts",
     "package.json",
