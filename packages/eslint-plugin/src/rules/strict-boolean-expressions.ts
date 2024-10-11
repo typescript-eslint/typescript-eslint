@@ -56,6 +56,7 @@ export type MessageId =
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultZero'
   | 'noStrictNullCheck'
+  | 'predicateReturnsEmptyExpression'
   | 'predicateReturnsUndefined';
 
 export default createRule<Options, MessageId>({
@@ -127,8 +128,10 @@ export default createRule<Options, MessageId>({
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      predicateReturnsEmptyExpression:
+        'Unexpected empty return from predicate function',
       predicateReturnsUndefined:
-        'Unexpected `undefined` or `void` return value from predicate function',
+        'Unexpected `undefined` return value from predicate function',
     },
     schema: [
       {
@@ -273,14 +276,23 @@ export default createRule<Options, MessageId>({
       traverseNode(node.right, isCondition);
     }
 
+    /**
+     * Inspects return statements of predicate functions.
+     *
+     * Returns a boolean representing whether or not the predicate
+     * has at least one return statement.
+     */
     function traverseArrayPredicateReturnStatements(
       node: TSESTree.CallExpressionArgument,
-    ): void {
+    ): boolean {
+      let hasReturnStatement = false;
+
       // Shorthand arrow function expression
       if (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
         node.body.type !== AST_NODE_TYPES.BlockStatement
       ) {
+        hasReturnStatement = true;
         traverseNode(node.body, true);
       }
 
@@ -293,15 +305,24 @@ export default createRule<Options, MessageId>({
         const tsBody = services.esTreeNodeToTSNodeMap.get(node.body);
 
         forEachReturnStatement(tsBody, tsStatement => {
+          hasReturnStatement = true;
+
           const statement = services.tsNodeToESTreeNodeMap.get(tsStatement);
-          if (
-            statement.type === AST_NODE_TYPES.ReturnStatement &&
-            statement.argument
-          ) {
-            traverseNode(statement.argument, true);
+
+          if (statement.type === AST_NODE_TYPES.ReturnStatement) {
+            if (statement.argument) {
+              return traverseNode(statement.argument, true);
+            }
+
+            context.report({
+              node: statement,
+              messageId: 'predicateReturnsEmptyExpression',
+            });
           }
         });
       }
+
+      return hasReturnStatement;
     }
 
     function traverseCallExpression(node: TSESTree.CallExpression): void {
@@ -313,35 +334,43 @@ export default createRule<Options, MessageId>({
         const predicate = node.arguments.at(0);
 
         if (predicate != null) {
-          const type = checker.getApparentType(
-            services.getTypeAtLocation(predicate),
-          );
+          const hasReturnStatement =
+            traverseArrayPredicateReturnStatements(predicate);
 
-          if (isFunctionReturningUndefinedOrVoid(type)) {
-            context.report({
+          // Empty functions has their return type as `void` rather than `undefined`
+          if (
+            !hasReturnStatement &&
+            (predicate.type === AST_NODE_TYPES.FunctionExpression ||
+              predicate.type === AST_NODE_TYPES.ArrowFunctionExpression)
+          ) {
+            return context.report({
               node: predicate,
               messageId: 'predicateReturnsUndefined',
             });
           }
 
-          traverseArrayPredicateReturnStatements(predicate);
+          const type = checker.getApparentType(
+            services.getTypeAtLocation(predicate),
+          );
+
+          if (isFunctionReturningUndefined(type)) {
+            return context.report({
+              node: predicate,
+              messageId: 'predicateReturnsUndefined',
+            });
+          }
         }
       }
     }
 
-    function isFunctionReturningUndefinedOrVoid(type: ts.Type): boolean {
+    function isFunctionReturningUndefined(type: ts.Type): boolean {
       for (const signature of type.getCallSignatures()) {
         const returnType = signature.getReturnType();
 
         if (
           tsutils
             .unionTypeParts(returnType)
-            .some(t =>
-              tsutils.isTypeFlagSet(
-                t,
-                ts.TypeFlags.Undefined | ts.TypeFlags.Void,
-              ),
-            )
+            .some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.Undefined))
         ) {
           return true;
         }

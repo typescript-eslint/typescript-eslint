@@ -2839,13 +2839,6 @@ if (x) {
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 2,
-          endLine: 4,
-          line: 2,
-          messageId: 'predicateReturnsUndefined',
-        },
-        {
           column: 10,
           endColumn: 19,
           endLine: 3,
@@ -2854,7 +2847,7 @@ if (x) {
         },
       ],
     },
-    // `void` returning functions
+    // empty return statements
     {
       code: `
 ['one', 'two'].filter(x => {
@@ -2863,11 +2856,11 @@ if (x) {
       `,
       errors: [
         {
-          column: 23,
-          endColumn: 2,
-          endLine: 4,
-          line: 2,
-          messageId: 'predicateReturnsUndefined',
+          column: 3,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+          messageId: 'predicateReturnsEmptyExpression',
         },
       ],
     },
@@ -2883,11 +2876,11 @@ if (x) {
       `,
       errors: [
         {
-          column: 22,
-          endColumn: 2,
-          endLine: 8,
-          line: 2,
-          messageId: 'predicateReturnsUndefined',
+          column: 5,
+          endColumn: 12,
+          endLine: 4,
+          line: 4,
+          messageId: 'predicateReturnsEmptyExpression',
         },
       ],
     },
