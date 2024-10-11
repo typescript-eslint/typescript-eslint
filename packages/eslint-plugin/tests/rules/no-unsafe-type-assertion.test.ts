@@ -189,7 +189,6 @@ const b = a as string;
         {
           column: 11,
           data: {
-            asserted: 'string',
             type: 'string | number',
           },
           endColumn: 22,
@@ -207,7 +206,6 @@ const b = a as unknown as number;
         {
           column: 11,
           data: {
-            asserted: 'number',
             type: 'unknown',
           },
           endColumn: 33,
@@ -225,7 +223,6 @@ const b = a as string | boolean;
         {
           column: 11,
           data: {
-            asserted: 'string | boolean',
             type: 'string | undefined',
           },
           endColumn: 32,
@@ -243,7 +240,6 @@ const b = a as string | boolean as boolean;
         {
           column: 11,
           data: {
-            asserted: 'boolean',
             type: 'string | boolean',
           },
           endColumn: 43,
@@ -261,7 +257,6 @@ const b = a as 'foo' as 'bar';
         {
           column: 11,
           data: {
-            asserted: '"bar"',
             type: '"foo"',
           },
           endColumn: 30,
@@ -271,7 +266,6 @@ const b = a as 'foo' as 'bar';
         {
           column: 11,
           data: {
-            asserted: '"foo"',
             type: 'string',
           },
           endColumn: 21,
@@ -290,7 +284,6 @@ function f(t: number | string) {
         {
           column: 10,
           data: {
-            asserted: 'number | boolean',
             type: 'string | number',
           },
           endColumn: 31,
@@ -309,7 +302,6 @@ function f<T extends number | string>(t: T) {
         {
           column: 10,
           data: {
-            asserted: 'number | boolean',
             type: 'string | number',
           },
           endColumn: 31,
@@ -328,7 +320,6 @@ function f<T extends number | string>(t: T) {
         {
           column: 10,
           data: {
-            asserted: 'Omit<T, number>',
             type: 'string | number',
           },
           endColumn: 30,
@@ -346,7 +337,6 @@ const b = a as () => string | number;
         {
           column: 11,
           data: {
-            asserted: '() => string | number',
             type: '() => string | boolean',
           },
           endColumn: 37,
@@ -368,7 +358,6 @@ var foo = {} as Foo;
         {
           column: 11,
           data: {
-            asserted: 'Foo',
             type: '{}',
           },
           endColumn: 20,
@@ -390,7 +379,6 @@ export const foo = { bar: 1, bazz: 1 } as Foo;
         {
           column: 20,
           data: {
-            asserted: 'Foo',
             type: '{ bar: number; bazz: number; }',
           },
           endColumn: 46,
@@ -408,7 +396,6 @@ const bar = foo as string | boolean as string | null;
         {
           column: 13,
           data: {
-            asserted: 'string | null',
             type: 'string | boolean',
           },
           endColumn: 53,
@@ -418,7 +405,6 @@ const bar = foo as string | boolean as string | null;
         {
           column: 13,
           data: {
-            asserted: 'string | boolean',
             type: 'string | number',
           },
           endColumn: 36,
@@ -436,7 +422,6 @@ declare const foo: { bar?: { bazz: string } };
         {
           column: 2,
           data: {
-            asserted: '{ bazz: string | boolean; }',
             type: '{ bazz: string; } | undefined',
           },
           endColumn: 39,
@@ -454,7 +439,6 @@ const bar = foo as 'hello';
         {
           column: 13,
           data: {
-            asserted: '"hello"',
             type: '"hello" | "world"',
           },
           endColumn: 27,
@@ -482,7 +466,6 @@ const bar = foo as Foo;
         {
           column: 13,
           data: {
-            asserted: 'Foo',
             type: 'Bazz',
           },
           endColumn: 23,
@@ -502,7 +485,6 @@ const bar = foo as Foo;
         {
           column: 13,
           data: {
-            asserted: 'Readonly<Required<{ hello?: string | undefined; }>>',
             type: '{}',
           },
           endColumn: 23,
@@ -520,7 +502,6 @@ const bar = foo as number[];
         {
           column: 13,
           data: {
-            asserted: 'number[]',
             type: 'readonly number[]',
           },
           endColumn: 28,
@@ -538,7 +519,6 @@ const bar = foo as { hello: string; world: 'world' };
         {
           column: 13,
           data: {
-            asserted: '{ hello: string; world: "world"; }',
             type: '{ hello: string; } & { world: string; }',
           },
           endColumn: 53,
@@ -556,7 +536,6 @@ const b = <string>a;
         {
           column: 11,
           data: {
-            asserted: 'string',
             type: 'string | number',
           },
           endColumn: 20,
@@ -574,7 +553,6 @@ const b = <number>(<unknown>a);
         {
           column: 11,
           data: {
-            asserted: 'number',
             type: 'unknown',
           },
           endColumn: 31,
@@ -592,7 +570,6 @@ const b = <string | boolean>a;
         {
           column: 11,
           data: {
-            asserted: 'string | boolean',
             type: 'string | undefined',
           },
           endColumn: 30,
@@ -610,7 +587,6 @@ const b = <boolean>(<string | boolean>a);
         {
           column: 11,
           data: {
-            asserted: 'boolean',
             type: 'string | boolean',
           },
           endColumn: 41,
@@ -628,7 +604,6 @@ const b = <'bar'>(<'foo'>a);
         {
           column: 11,
           data: {
-            asserted: '"bar"',
             type: '"foo"',
           },
           endColumn: 28,
@@ -638,7 +613,6 @@ const b = <'bar'>(<'foo'>a);
         {
           column: 19,
           data: {
-            asserted: '"foo"',
             type: 'string',
           },
           endColumn: 27,
@@ -657,7 +631,6 @@ function f(t: number | string) {
         {
           column: 10,
           data: {
-            asserted: 'number | boolean',
             type: 'string | number',
           },
           endColumn: 29,
@@ -676,7 +649,6 @@ function f<T extends number | string>(t: T) {
         {
           column: 10,
           data: {
-            asserted: 'number | boolean',
             type: 'string | number',
           },
           endColumn: 29,
@@ -695,7 +667,6 @@ function f<T extends number | string>(t: T) {
         {
           column: 10,
           data: {
-            asserted: 'Omit<T, number>',
             type: 'string | number',
           },
           endColumn: 28,
@@ -713,7 +684,6 @@ const b = <() => string | number>a;
         {
           column: 11,
           data: {
-            asserted: '() => string | number',
             type: '() => string | boolean',
           },
           endColumn: 35,
@@ -735,7 +705,6 @@ var foo = <Foo>{};
         {
           column: 11,
           data: {
-            asserted: 'Foo',
             type: '{}',
           },
           endColumn: 18,
@@ -757,7 +726,6 @@ export const foo = <Foo>{ bar: 1, bazz: 1 };
         {
           column: 20,
           data: {
-            asserted: 'Foo',
             type: '{ bar: number; bazz: number; }',
           },
           endColumn: 44,
@@ -775,7 +743,6 @@ const bar = <string | null>(<string | boolean>foo);
         {
           column: 13,
           data: {
-            asserted: 'string | null',
             type: 'string | boolean',
           },
           endColumn: 51,
@@ -785,7 +752,6 @@ const bar = <string | null>(<string | boolean>foo);
         {
           column: 29,
           data: {
-            asserted: 'string | boolean',
             type: 'string | number',
           },
           endColumn: 50,
@@ -803,7 +769,6 @@ declare const foo: { bar?: { bazz: string } };
         {
           column: 2,
           data: {
-            asserted: '{ bazz: string | boolean; }',
             type: '{ bazz: string; } | undefined',
           },
           endColumn: 37,
@@ -821,7 +786,6 @@ const bar = <'hello'>foo;
         {
           column: 13,
           data: {
-            asserted: '"hello"',
             type: '"hello" | "world"',
           },
           endColumn: 25,
@@ -849,7 +813,6 @@ const bar = <Foo>foo;
         {
           column: 13,
           data: {
-            asserted: 'Foo',
             type: 'Bazz',
           },
           endColumn: 21,
@@ -869,7 +832,6 @@ const bar = <Foo>foo;
         {
           column: 13,
           data: {
-            asserted: 'Readonly<Required<{ hello?: string | undefined; }>>',
             type: '{}',
           },
           endColumn: 21,
@@ -887,7 +849,6 @@ const bar = <number[]>foo;
         {
           column: 13,
           data: {
-            asserted: 'number[]',
             type: 'readonly number[]',
           },
           endColumn: 26,
@@ -905,7 +866,6 @@ const bar = <{ hello: string; world: 'world' }>foo;
         {
           column: 13,
           data: {
-            asserted: '{ hello: string; world: "world"; }',
             type: '{ hello: string; } & { world: string; }',
           },
           endColumn: 51,

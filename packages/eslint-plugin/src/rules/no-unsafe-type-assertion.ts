@@ -16,7 +16,7 @@ export default createRule({
     },
     messages: {
       unsafeTypeAssertion:
-        'Unsafe type assertion: type `{{type}}` is not assignable to type `{{asserted}}`',
+        "Unsafe type assertion: type '{{type}}' is more narrow than the original type.",
     },
     schema: [],
   },
@@ -45,7 +45,6 @@ export default createRule({
           messageId: 'unsafeTypeAssertion',
           data: {
             type: checker.typeToString(nodeType),
-            asserted: checker.typeToString(assertedType),
           },
         });
       }
