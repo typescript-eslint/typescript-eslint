@@ -164,10 +164,6 @@ if (x) {
         x.filter(function (t) {
           return t;
         });
-        x.filter(t => {
-          return t ? 1 : 0;
-        });
-        x.filter(t => !t);
       `,
       options: [{ allowNullableBoolean: true }],
     },
@@ -649,13 +645,6 @@ assert(nullableString);
     `
       const x = (t: string | null) => t;
       ['', null].filter(x);
-    `,
-    `
-      ['one', 'two'].filter(x => {
-        if (x.length > 2) {
-          return true;
-        }
-      });
     `,
   ],
 
@@ -1438,7 +1427,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         declare const x: string; if (x) {}
         (x: string) => (!x);
         <T extends string>(x: T) => x ? 1 : 0;
-        ['foo', 'bar'].filter(x => x);
       `,
       errors: [
         {
@@ -2803,6 +2791,105 @@ if (x) {
         },
       ],
       output: null,
+    },
+    // implicitly return `undefined`
+    {
+      code: `
+['one', 'two'].filter(x => {
+  if (x.length > 2) {
+    return true;
+  }
+});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 2,
+          endLine: 6,
+          line: 2,
+          messageId: 'predicateReturnsUndefined',
+        },
+      ],
+    },
+    // implicitly return `undefined` with a return type annotation
+    {
+      code: `
+['one', 'two'].filter((x): boolean | undefined => {
+  if (x.length > 2) {
+    return true;
+  }
+});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 2,
+          endLine: 6,
+          line: 2,
+          messageId: 'predicateReturnsUndefined',
+        },
+      ],
+    },
+    // explicitly returning `undefined`
+    {
+      code: `
+['one', 'two'].filter(x => {
+  return undefined;
+});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsUndefined',
+        },
+        {
+          column: 10,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullish',
+        },
+      ],
+    },
+    // `void` returning functions
+    {
+      code: `
+['one', 'two'].filter(x => {
+  return;
+});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsUndefined',
+        },
+      ],
+    },
+    {
+      code: `
+['one', null].filter(x => {
+  if (Math.random() > 0.5) {
+    return;
+  }
+
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 2,
+          endLine: 8,
+          line: 2,
+          messageId: 'predicateReturnsUndefined',
+        },
+      ],
     },
     {
       code: `

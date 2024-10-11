@@ -128,7 +128,7 @@ export default createRule<Options, MessageId>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       predicateReturnsUndefined:
-        'Unexpected `undefined` return value from predicate function',
+        'Unexpected `undefined` or `void` return value from predicate function',
     },
     schema: [
       {
@@ -319,7 +319,7 @@ export default createRule<Options, MessageId>({
 
           const returnTypeIncludesUndefined = tsutils
             .unionTypeParts(type)
-            .some(t => isFunctionReturningUndefined(t));
+            .some(t => isFunctionReturningUndefinedOrVoid(t));
 
           if (returnTypeIncludesUndefined) {
             context.report({
@@ -333,14 +333,19 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function isFunctionReturningUndefined(type: ts.Type): boolean {
+    function isFunctionReturningUndefinedOrVoid(type: ts.Type): boolean {
       for (const signature of type.getCallSignatures()) {
         const returnType = signature.getReturnType();
 
         if (
           tsutils
             .unionTypeParts(returnType)
-            .some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.Undefined))
+            .some(t =>
+              tsutils.isTypeFlagSet(
+                t,
+                ts.TypeFlags.Undefined | ts.TypeFlags.Void,
+              ),
+            )
         ) {
           return true;
         }
