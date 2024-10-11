@@ -121,7 +121,7 @@ console.log(void alert('Hello, world!'));
 
 ### `ignoreVoidReturningFunctions`
 
-Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types.
+Whether to ignore returns from functions with `void` return types when inside a function with a `void` return type.
 
 It may be preferable to allow functions that explicitly return `void` to return `void` expressions. This exception will also apply to functions with an implicit contextual return type of `void`.
 
