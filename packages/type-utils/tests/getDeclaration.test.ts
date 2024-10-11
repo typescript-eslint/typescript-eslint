@@ -6,12 +6,28 @@ import { getDeclaration } from '../src';
 
 const node = {} as TSESTree.Node;
 
+const mockSymbol = (declarations?: ts.Declaration[]): ts.Symbol => {
+  return {
+    getDeclarations: () => declarations,
+  } as ts.Symbol;
+};
+
+const mockServices = (
+  symbol?: ts.Symbol,
+): ParserServicesWithTypeInformation => {
+  return {
+    getSymbolAtLocation: (_: TSESTree.Node) => symbol,
+  } as ParserServicesWithTypeInformation;
+};
+
+const mockDeclaration = (): ts.Declaration => {
+  return {} as ts.Declaration;
+};
+
 describe('getDeclaration', () => {
   describe('when symbol does not exist', () => {
     it('returns null', () => {
-      const services = {
-        getSymbolAtLocation: () => undefined,
-      } as unknown as ParserServicesWithTypeInformation;
+      const services = mockServices();
 
       expect(getDeclaration(services, node)).toBeNull();
     });
@@ -19,12 +35,8 @@ describe('getDeclaration', () => {
 
   describe('when declarations do not exist', () => {
     it('returns null', () => {
-      const symbol = {
-        getDeclarations: () => undefined,
-      } as unknown as ts.Symbol;
-      const services = {
-        getSymbolAtLocation: () => symbol,
-      } as unknown as ParserServicesWithTypeInformation;
+      const symbol = mockSymbol();
+      const services = mockServices(symbol);
 
       expect(getDeclaration(services, node)).toBeNull();
     });
@@ -32,14 +44,10 @@ describe('getDeclaration', () => {
 
   describe('when declarations exist', () => {
     it('returns the first declaration', () => {
-      const declaration1 = {} as ts.Declaration;
-      const declaration2 = {} as ts.Declaration;
-      const symbol = {
-        getDeclarations: () => [declaration1, declaration2],
-      } as unknown as ts.Symbol;
-      const services = {
-        getSymbolAtLocation: () => symbol,
-      } as unknown as ParserServicesWithTypeInformation;
+      const declaration1 = mockDeclaration();
+      const declaration2 = mockDeclaration();
+      const symbol = mockSymbol([declaration1, declaration2]);
+      const services = mockServices(symbol);
 
       expect(getDeclaration(services, node)).toBe(declaration1);
     });
