@@ -317,10 +317,7 @@ export default createRule<Options, MessageId>({
             services.getTypeAtLocation(predicate),
           );
 
-          const returnTypeIncludesUndefined =
-            isFunctionReturningUndefinedOrVoid(type);
-
-          if (returnTypeIncludesUndefined) {
+          if (isFunctionReturningUndefinedOrVoid(type)) {
             context.report({
               node: predicate,
               messageId: 'predicateReturnsUndefined',
