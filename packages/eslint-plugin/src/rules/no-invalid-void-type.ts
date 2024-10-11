@@ -6,7 +6,7 @@ import { createRule } from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
-  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
+  allowInGenericTypeArguments?: boolean | [string, ...string[]];
 }
 
 type MessageIds =

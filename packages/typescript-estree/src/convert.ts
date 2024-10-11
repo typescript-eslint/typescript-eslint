@@ -338,7 +338,7 @@ export class Converter {
   }
 
   #throwUnlessAllowInvalidAST(
-    node: ts.Node | number,
+    node: number | ts.Node,
     message: string,
   ): asserts node is never {
     if (!this.options.allowInvalidAST) {
@@ -3559,7 +3559,7 @@ export class Converter {
     }
   }
 
-  #throwError(node: ts.Node | number, message: string): asserts node is never {
+  #throwError(node: number | ts.Node, message: string): asserts node is never {
     let start;
     let end;
     if (typeof node === 'number') {

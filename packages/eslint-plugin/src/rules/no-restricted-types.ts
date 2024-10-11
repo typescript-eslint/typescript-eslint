@@ -6,13 +6,13 @@ import { createRule, objectReduceKey } from '../util';
 
 type Types = Record<
   string,
+  | boolean
+  | string
   | {
       fixWith?: string;
       message: string;
       suggest?: readonly string[];
     }
-  | boolean
-  | string
   | null
 >;
 
@@ -37,7 +37,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: { fixWith?: string; message?: string } | true | string | null,
+  bannedType: string | { fixWith?: string; message?: string } | true | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';

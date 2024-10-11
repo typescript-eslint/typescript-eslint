@@ -40,7 +40,7 @@ export interface ProjectServiceSettings {
 }
 
 export function createProjectService(
-  optionsRaw: ProjectServiceOptions | boolean | undefined,
+  optionsRaw: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
   tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {

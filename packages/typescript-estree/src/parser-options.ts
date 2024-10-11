@@ -190,7 +190,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Note that {@link projectService} is now preferred.
    */
-  project?: string[] | boolean | string | null;
+  project?: boolean | string | string[] | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -204,7 +204,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * Whether to create a shared TypeScript project service to power program creation.
    */
-  projectService?: ProjectServiceOptions | boolean;
+  projectService?: boolean | ProjectServiceOptions;
 
   /**
    * The absolute path to the root directory for all provided `project`s.

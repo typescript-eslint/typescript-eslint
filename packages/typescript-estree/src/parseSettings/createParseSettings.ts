@@ -38,7 +38,7 @@ const JSDocParsingMode = {
 /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
 export function createParseSettings(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   tsestreeOptions: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);

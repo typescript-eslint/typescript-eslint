@@ -30,7 +30,7 @@ export interface MutableParseSettings {
   /**
    * Code of the file being parsed, or raw source file containing it.
    */
-  code: ts.SourceFile | string;
+  code: string | ts.SourceFile;
 
   /**
    * Full text of the file being parsed.

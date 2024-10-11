@@ -77,14 +77,14 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
 }
 
 function parse(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
 function parseForESLint(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
   if (!parserOptions || typeof parserOptions !== 'object') {

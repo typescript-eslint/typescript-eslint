@@ -626,7 +626,7 @@ export default tseslint.config(
       'perfectionist/sort-union-types': [
         'error',
         {
-          groups: ['unknown', 'keyword', 'nullish'],
+          groups: ['keyword', 'unknown', 'nullish'],
           type: 'natural',
         },
       ],

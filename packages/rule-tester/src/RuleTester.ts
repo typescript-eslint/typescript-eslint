@@ -237,7 +237,7 @@ export class RuleTester extends TestFramework {
    * Adds the `only` property to a test to run it in isolation.
    */
   static only<Options extends readonly unknown[]>(
-    item: ValidTestCase<Options> | string,
+    item: string | ValidTestCase<Options>,
   ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
@@ -247,9 +247,9 @@ export class RuleTester extends TestFramework {
   ): InvalidTestCase<MessageIds, Options>;
   static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
+      | string
       | InvalidTestCase<MessageIds, Options>
-      | ValidTestCase<Options>
-      | string,
+      | ValidTestCase<Options>,
   ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
     if (typeof item === 'string') {
       return { code: item, only: true };
@@ -781,7 +781,7 @@ export class RuleTester extends TestFramework {
   >(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
-    itemIn: ValidTestCase<Options> | string,
+    itemIn: string | ValidTestCase<Options>,
     seenValidTestCases: Set<string>,
   ): void {
     const item: ValidTestCase<Options> =
@@ -1322,7 +1322,7 @@ function checkDuplicateTestCase(
  * value is a regular expression, it is checked against the actual
  * value.
  */
-function assertMessageMatches(actual: string, expected: RegExp | string): void {
+function assertMessageMatches(actual: string, expected: string | RegExp): void {
   if (expected instanceof RegExp) {
     // assert.js doesn't have a built-in RegExp match function
     assert.ok(
