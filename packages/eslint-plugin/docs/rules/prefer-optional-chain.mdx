@@ -93,9 +93,10 @@ When this option is `false` unsafe cases will have suggestion fixers provided in
 
 {/* insert option description */}
 
-<Tabs>
+Examples of code for this rule with `{ checkAny: false }`:
 
-<TabItem value="❌ Incorrect for `checkAny: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "checkAny": true }'
 declare const thing: any;
@@ -104,7 +105,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `checkAny: false`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "checkAny": false }'
 declare const thing: any;
@@ -119,9 +120,10 @@ thing && thing.toString();
 
 {/* insert option description */}
 
-<Tabs>
+Examples of code for this rule with `{ checkUnknown: false }`:
 
-<TabItem value="❌ Incorrect for `checkUnknown: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "checkUnknown": true }'
 declare const thing: unknown;
@@ -130,7 +132,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `checkUnknown: false`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "checkUnknown": false }'
 declare const thing: unknown;
@@ -145,9 +147,10 @@ thing && thing.toString();
 
 {/* insert option description */}
 
-<Tabs>
+Examples of code for this rule with `{ checkString: false }`:
 
-<TabItem value="❌ Incorrect for `checkString: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "checkString": true }'
 declare const thing: string;
@@ -156,7 +159,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `checkString: false`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "checkString": false }'
 declare const thing: string;
@@ -171,9 +174,10 @@ thing && thing.toString();
 
 {/* insert option description */}
 
-<Tabs>
+Examples of code for this rule with `{ checkNumber: false }`:
 
-<TabItem value="❌ Incorrect for `checkNumber: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "checkNumber": true }'
 declare const thing: number;
@@ -182,7 +186,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `checkNumber: false`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "checkNumber": false }'
 declare const thing: number;
@@ -211,9 +215,10 @@ The boolean expression narrows out the non-nullish falsy cases - so converting t
 
 :::
 
-<Tabs>
+Examples of code for this rule with `{ checkBoolean: false }`:
 
-<TabItem value="❌ Incorrect for `checkBoolean: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "checkBoolean": true }'
 declare const thing: true;
@@ -222,7 +227,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `checkBoolean: false`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "checkBoolean": false }'
 declare const thing: true;
@@ -237,9 +242,10 @@ thing && thing.toString();
 
 {/* insert option description */}
 
-<Tabs>
+Examples of code for this rule with `{ checkBigInt: false }`:
 
-<TabItem value="❌ Incorrect for `checkBigInt: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "checkBigInt": true }'
 declare const thing: bigint;
@@ -248,7 +254,7 @@ thing && thing.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `checkBigInt: false`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "checkBigInt": false }'
 declare const thing: bigint;
@@ -263,9 +269,10 @@ thing && thing.toString();
 
 {/* insert option description */}
 
-<Tabs>
+Examples of code for this rule with `{ requireNullish: false }`:
 
-<TabItem value="❌ Incorrect for `requireNullish: true`">
+<Tabs>
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "requireNullish": true }'
 declare const thing1: string | null;
@@ -273,7 +280,7 @@ thing1 && thing1.toString();
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `requireNullish: true`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "requireNullish": true }'
 declare const thing1: string | null;
