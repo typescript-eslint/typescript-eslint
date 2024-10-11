@@ -453,10 +453,7 @@ export default createRule<Options, MessageId>({
           .some(tsutils.isIntrinsicVoidType);
       }
 
-      if (
-        ts.isFunctionExpression(functionTSNode) ||
-        ts.isArrowFunction(functionTSNode)
-      ) {
+      if (ts.isExpression(functionTSNode)) {
         const functionType = checker.getContextualType(functionTSNode);
 
         if (functionType) {
