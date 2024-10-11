@@ -6,8 +6,8 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: getFixturesRootDir(),
       project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
     },
   },
 });
@@ -132,6 +132,11 @@ function fun(value: any) {
     `
 function fun(value: unknown) {
   throw value;
+}
+    `,
+    `
+function fun<T extends Error>(t: T): void {
+  throw t;
 }
     `,
   ],
@@ -352,9 +357,9 @@ throw new Error();
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 3,
           column: 7,
+          line: 3,
+          messageId: 'object',
         },
       ],
     },
@@ -365,9 +370,9 @@ throw new CustomError();
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 3,
           column: 7,
+          line: 3,
+          messageId: 'object',
         },
       ],
     },
@@ -380,9 +385,9 @@ function foo<T>() {
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'object',
         },
       ],
     },
@@ -396,9 +401,9 @@ function foo<T>(fn: () => Promise<T>) {
       `,
       errors: [
         {
-          messageId: 'object',
-          line: 5,
           column: 9,
+          line: 5,
+          messageId: 'object',
         },
       ],
     },
@@ -465,6 +470,18 @@ function fun(value: unknown) {
       options: [
         {
           allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+function fun<T extends number>(t: T): void {
+  throw t;
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
         },
       ],
     },

@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 import type { Statement } from '../../unions/Statement';
 
 export interface DoWhileStatement extends BaseNode {
+  type: AST_NODE_TYPES.DoWhileStatement;
   body: Statement;
   test: Expression;
-  type: AST_NODE_TYPES.DoWhileStatement;
 }

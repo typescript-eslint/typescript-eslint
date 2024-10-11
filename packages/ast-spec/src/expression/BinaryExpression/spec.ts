@@ -5,11 +5,11 @@ import type { Expression } from '../../unions/Expression';
 import type { ValueOf } from '../../utils';
 import type { BinaryOperatorToText } from './BinaryOperatorToText';
 
-export type * from './BinaryOperatorToText';
+export * from './BinaryOperatorToText';
 
 export interface BinaryExpression extends BaseNode {
+  type: AST_NODE_TYPES.BinaryExpression;
   left: Expression | PrivateIdentifier;
   operator: ValueOf<BinaryOperatorToText>;
   right: Expression;
-  type: AST_NODE_TYPES.BinaryExpression;
 }

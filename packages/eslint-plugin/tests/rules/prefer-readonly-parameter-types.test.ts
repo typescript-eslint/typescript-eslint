@@ -1,11 +1,13 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/prefer-readonly-parameter-types';
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
+
+import rule from '../../src/rules/prefer-readonly-parameter-types';
 import { readonlynessOptionsDefaults } from '../../src/util';
 import { dedupeTestCases } from '../dedupeTestCases';
 import { getFixturesRootDir } from '../RuleTester';
@@ -18,8 +20,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -359,7 +361,6 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       ],
     },
     {
-      name: 'circular readonly types (Bug: #4476)',
       code: `
         interface Obj {
           readonly [K: string]: Obj;
@@ -367,6 +368,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
         function foo(event: Obj): void {}
       `,
+      name: 'circular readonly types (Bug: #4476)',
       options: [
         {
           checkParameterProperties: true,
@@ -376,7 +378,6 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       ],
     },
     {
-      name: 'circular readonly types (Bug: #5875)',
       code: `
         interface Obj1 {
           readonly [K: string]: Obj2;
@@ -388,6 +389,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
         function foo(event: Obj1): void {}
       `,
+      name: 'circular readonly types (Bug: #5875)',
       options: [
         {
           checkParameterProperties: true,
@@ -487,9 +489,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           code: `function foo(arg: ${type}) {}`,
           errors: [
             {
-              messageId: 'shouldBeReadonly',
               column: 14,
               endColumn: 19 + type.length,
+              messageId: 'shouldBeReadonly',
             },
           ],
         };
@@ -500,9 +502,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: 'function foo(arg: readonly string[][]) {}',
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 14,
           endColumn: 38,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -510,9 +512,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: 'function foo(arg: Readonly<string[][]>) {}',
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 14,
           endColumn: 39,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -520,9 +522,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: 'function foo(arg: ReadonlyArray<Array<string>>) {}',
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 14,
           endColumn: 47,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -533,9 +535,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         code: `function foo(arg: ${type}) {}`,
         errors: [
           {
-            messageId: 'shouldBeReadonly',
             column: 14,
             endColumn: 19 + type.length,
+            messageId: 'shouldBeReadonly',
           },
         ],
       };
@@ -550,11 +552,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 2,
           column: 22,
-          endLine: 6,
           endColumn: 10,
+          endLine: 6,
+          line: 2,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -565,11 +567,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 2,
           column: 22,
-          endLine: 2,
           endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -579,11 +581,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 2,
           column: 22,
-          endLine: 2,
           endColumn: 52,
+          endLine: 2,
+          line: 2,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -607,11 +609,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 5,
           column: 22,
-          endLine: 5,
           endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -624,11 +626,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 5,
           column: 22,
-          endLine: 5,
           endColumn: 31,
+          endLine: 5,
+          line: 5,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -645,37 +647,37 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [{ checkParameterProperties: true }],
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 4,
           column: 21,
-          endLine: 4,
           endColumn: 35,
+          endLine: 4,
+          line: 4,
+          messageId: 'shouldBeReadonly',
         },
         {
-          messageId: 'shouldBeReadonly',
-          line: 5,
           column: 20,
-          endLine: 5,
           endColumn: 34,
+          endLine: 5,
+          line: 5,
+          messageId: 'shouldBeReadonly',
         },
         {
-          messageId: 'shouldBeReadonly',
-          line: 6,
           column: 23,
-          endLine: 6,
           endColumn: 37,
+          endLine: 6,
+          line: 6,
+          messageId: 'shouldBeReadonly',
         },
         {
-          messageId: 'shouldBeReadonly',
-          line: 7,
           column: 22,
-          endLine: 7,
           endColumn: 36,
+          endLine: 7,
+          line: 7,
+          messageId: 'shouldBeReadonly',
         },
       ],
+      options: [{ checkParameterProperties: true }],
     },
     {
       code: `
@@ -689,16 +691,16 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           ) {}
         }
       `,
-      options: [{ checkParameterProperties: false }],
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 8,
           column: 13,
-          endLine: 8,
           endColumn: 27,
+          endLine: 8,
+          line: 8,
+          messageId: 'shouldBeReadonly',
         },
       ],
+      options: [{ checkParameterProperties: false }],
     },
 
     // type functions
@@ -711,9 +713,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 12,
           endColumn: 25,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -726,9 +728,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 16,
           endColumn: 29,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -737,9 +739,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: noFormat`class Foo { foo(arg: string[]): void; };`,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 17,
           endColumn: 30,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -748,9 +750,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: 'function foo(arg: string[]);',
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 14,
           endColumn: 27,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -759,9 +761,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: 'type Foo = (arg: string[]) => void;',
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 13,
           endColumn: 26,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -774,9 +776,9 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
           column: 15,
           endColumn: 28,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -792,10 +794,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 5,
           column: 22,
           endColumn: 30,
+          line: 5,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -808,10 +810,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 5,
           column: 22,
           endColumn: 40,
+          line: 5,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -828,10 +830,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 8,
           column: 22,
           endColumn: 30,
+          line: 8,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -847,10 +849,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 8,
           column: 22,
           endColumn: 40,
+          line: 8,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -866,10 +868,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 8,
           column: 22,
           endColumn: 30,
+          line: 8,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -885,10 +887,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 8,
           column: 26,
           endColumn: 41,
+          line: 8,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -904,17 +906,17 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
         acceptsCallback<CallbackOptions>((options: CallbackOptions) => {});
       `,
+      errors: [
+        {
+          column: 43,
+          endColumn: 67,
+          line: 10,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           ignoreInferredTypes: true,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 10,
-          column: 43,
-          endColumn: 67,
         },
       ],
     },
@@ -929,10 +931,10 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       errors: [
         {
-          messageId: 'shouldBeReadonly',
-          line: 6,
           column: 22,
           endColumn: 33,
+          line: 6,
+          messageId: 'shouldBeReadonly',
         },
       ],
     },
@@ -957,19 +959,19 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       code: `
         function foo(arg: RegExp) {}
       `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 33,
+          line: 2,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           allow: [{ from: 'file', name: 'Foo' }],
         },
       ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 2,
-          column: 22,
-          endColumn: 33,
-        },
-      ],
     },
     {
       code: `
@@ -979,19 +981,19 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
         function foo(arg: Foo) {}
       `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 30,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           allow: [{ from: 'file', name: 'Bar' }],
         },
       ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 6,
-          column: 22,
-          endColumn: 30,
-        },
-      ],
     },
     {
       code: `
@@ -1001,19 +1003,19 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
         function foo(arg: Foo) {}
       `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 30,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           allow: [{ from: 'lib', name: 'Foo' }],
         },
       ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 6,
-          column: 22,
-          endColumn: 30,
-        },
-      ],
     },
     {
       code: `
@@ -1023,53 +1025,53 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
 
         function foo(arg: Foo) {}
       `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 30,
+          line: 6,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
         },
       ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 6,
-          column: 22,
-          endColumn: 30,
-        },
-      ],
     },
     {
       code: `
         function foo(arg: RegExp) {}
       `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 33,
+          line: 2,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           allow: [{ from: 'file', name: 'RegExp' }],
         },
       ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 2,
-          column: 22,
-          endColumn: 33,
-        },
-      ],
     },
     {
       code: `
         function foo(arg: RegExp) {}
       `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 33,
+          line: 2,
+          messageId: 'shouldBeReadonly',
+        },
+      ],
       options: [
         {
           allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'shouldBeReadonly',
-          line: 2,
-          column: 22,
-          endColumn: 33,
         },
       ],
     },

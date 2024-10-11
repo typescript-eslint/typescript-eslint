@@ -274,7 +274,7 @@ const booleanSchema = {
   validate: 'boolean',
 } satisfies ObjectPropertySchema;
 
-const ALLOWED_SEVERITIES = new Set(['error', 'warn', 'off', 2, 1, 0]);
+const ALLOWED_SEVERITIES = new Set([0, 1, 2, 'error', 'off', 'warn']);
 
 const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLevel> =
   {

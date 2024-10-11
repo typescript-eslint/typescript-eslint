@@ -1,7 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
-import * as ts from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+
+import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
+import type {
+  PreferOptionalChainMessageIds,
+  PreferOptionalChainOptions,
+} from './prefer-optional-chain-utils/PreferOptionalChainOptions';
 
 import {
   createRule,
@@ -11,15 +17,10 @@ import {
 } from '../util';
 import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import { checkNullishAndReport } from './prefer-optional-chain-utils/checkNullishAndReport';
-import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import {
   gatherLogicalOperands,
   OperandValidity,
 } from './prefer-optional-chain-utils/gatherLogicalOperands';
-import type {
-  PreferOptionalChainMessageIds,
-  PreferOptionalChainOptions,
-} from './prefer-optional-chain-utils/PreferOptionalChainOptions';
 
 export default createRule<
   [PreferOptionalChainOptions],
@@ -37,54 +38,54 @@ export default createRule<
     fixable: 'code',
     hasSuggestions: true,
     messages: {
+      optionalChainSuggest: 'Change to an optional chain.',
       preferOptionalChain:
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
-      optionalChainSuggest: 'Change to an optional chain.',
     },
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
+          allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
+            type: 'boolean',
+            description:
+              'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
+          },
           checkAny: {
             type: 'boolean',
             description:
               'Check operands that are typed as `any` when inspecting "loose boolean" operands.',
-          },
-          checkUnknown: {
-            type: 'boolean',
-            description:
-              'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
-          },
-          checkString: {
-            type: 'boolean',
-            description:
-              'Check operands that are typed as `string` when inspecting "loose boolean" operands.',
-          },
-          checkNumber: {
-            type: 'boolean',
-            description:
-              'Check operands that are typed as `number` when inspecting "loose boolean" operands.',
-          },
-          checkBoolean: {
-            type: 'boolean',
-            description:
-              'Check operands that are typed as `boolean` when inspecting "loose boolean" operands.',
           },
           checkBigInt: {
             type: 'boolean',
             description:
               'Check operands that are typed as `bigint` when inspecting "loose boolean" operands.',
           },
+          checkBoolean: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `boolean` when inspecting "loose boolean" operands.',
+          },
+          checkNumber: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `number` when inspecting "loose boolean" operands.',
+          },
+          checkString: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `string` when inspecting "loose boolean" operands.',
+          },
+          checkUnknown: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
+          },
           requireNullish: {
             type: 'boolean',
             description:
               'Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.',
-          },
-          allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
-            type: 'boolean',
-            description:
-              'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
           },
         },
       },
@@ -92,14 +93,14 @@ export default createRule<
   },
   defaultOptions: [
     {
-      checkAny: true,
-      checkUnknown: true,
-      checkString: true,
-      checkNumber: true,
-      checkBoolean: true,
-      checkBigInt: true,
-      requireNullish: false,
       allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
+      checkAny: true,
+      checkBigInt: true,
+      checkBoolean: true,
+      checkNumber: true,
+      checkString: true,
+      checkUnknown: true,
+      requireNullish: false,
     },
   ],
   create(context, [options]) {
@@ -109,67 +110,6 @@ export default createRule<
 
     return {
       // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
-      'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
-        node: TSESTree.LogicalExpression,
-      ): void {
-        const leftNode = node.left;
-        const rightNode = node.right;
-        const parentNode = node.parent;
-        const isRightNodeAnEmptyObjectLiteral =
-          rightNode.type === AST_NODE_TYPES.ObjectExpression &&
-          rightNode.properties.length === 0;
-        if (
-          !isRightNodeAnEmptyObjectLiteral ||
-          parentNode.type !== AST_NODE_TYPES.MemberExpression ||
-          parentNode.optional
-        ) {
-          return;
-        }
-
-        seenLogicals.add(node);
-
-        function isLeftSideLowerPrecedence(): boolean {
-          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-
-          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
-          const operator = ts.isBinaryExpression(logicalTsNode)
-            ? logicalTsNode.operatorToken.kind
-            : ts.SyntaxKind.Unknown;
-          const leftPrecedence = getOperatorPrecedence(
-            leftTsNode.kind,
-            operator,
-          );
-
-          return leftPrecedence < OperatorPrecedence.LeftHandSide;
-        }
-        checkNullishAndReport(context, parserServices, options, [leftNode], {
-          messageId: 'preferOptionalChain',
-          node: parentNode,
-          suggest: [
-            {
-              messageId: 'optionalChainSuggest',
-              fix: (fixer): RuleFix => {
-                const leftNodeText = context.sourceCode.getText(leftNode);
-                // Any node that is made of an operator with higher or equal precedence,
-                const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
-                  ? `(${leftNodeText})`
-                  : leftNodeText;
-                const propertyToBeOptionalText = context.sourceCode.getText(
-                  parentNode.property,
-                );
-                const maybeWrappedProperty = parentNode.computed
-                  ? `[${propertyToBeOptionalText}]`
-                  : propertyToBeOptionalText;
-                return fixer.replaceTextRange(
-                  parentNode.range,
-                  `${maybeWrappedLeftNode}?.${maybeWrappedProperty}`,
-                );
-              },
-            },
-          ],
-        });
-      },
-
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
@@ -177,7 +117,7 @@ export default createRule<
           return;
         }
 
-        const { operands, newlySeenLogicals } = gatherLogicalOperands(
+        const { newlySeenLogicals, operands } = gatherLogicalOperands(
           node,
           parserServices,
           context.sourceCode,
@@ -215,6 +155,63 @@ export default createRule<
             currentChain,
           );
         }
+      },
+
+      'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
+        node: TSESTree.LogicalExpression,
+      ): void {
+        const leftNode = node.left;
+        const rightNode = node.right;
+        const parentNode = node.parent;
+        const isRightNodeAnEmptyObjectLiteral =
+          rightNode.type === AST_NODE_TYPES.ObjectExpression &&
+          rightNode.properties.length === 0;
+        if (
+          !isRightNodeAnEmptyObjectLiteral ||
+          parentNode.type !== AST_NODE_TYPES.MemberExpression ||
+          parentNode.optional
+        ) {
+          return;
+        }
+
+        seenLogicals.add(node);
+
+        function isLeftSideLowerPrecedence(): boolean {
+          const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+          const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
+          const leftPrecedence = getOperatorPrecedence(
+            leftTsNode.kind,
+            logicalTsNode.operatorToken.kind,
+          );
+
+          return leftPrecedence < OperatorPrecedence.LeftHandSide;
+        }
+        checkNullishAndReport(context, parserServices, options, [leftNode], {
+          node: parentNode,
+          messageId: 'preferOptionalChain',
+          suggest: [
+            {
+              messageId: 'optionalChainSuggest',
+              fix: (fixer): RuleFix => {
+                const leftNodeText = context.sourceCode.getText(leftNode);
+                // Any node that is made of an operator with higher or equal precedence,
+                const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
+                  ? `(${leftNodeText})`
+                  : leftNodeText;
+                const propertyToBeOptionalText = context.sourceCode.getText(
+                  parentNode.property,
+                );
+                const maybeWrappedProperty = parentNode.computed
+                  ? `[${propertyToBeOptionalText}]`
+                  : propertyToBeOptionalText;
+                return fixer.replaceTextRange(
+                  parentNode.range,
+                  `${maybeWrappedLeftNode}?.${maybeWrappedProperty}`,
+                );
+              },
+            },
+          ],
+        });
       },
     };
   },

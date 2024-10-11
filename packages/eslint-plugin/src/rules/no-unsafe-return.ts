@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -29,12 +30,12 @@ export default createRule({
     },
     messages: {
       unsafeReturn: 'Unsafe return of a value of type {{type}}.',
+      unsafeReturnAssignment:
+        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
       unsafeReturnThis: [
         'Unsafe return of a value of type `{{type}}`. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeReturnAssignment:
-        'Unsafe return of type `{{sender}}` from function with return type `{{receiver}}`.',
     },
     schema: [],
   },
@@ -194,19 +195,20 @@ export default createRule({
           return;
         }
 
-        const { sender, receiver } = result;
+        const { receiver, sender } = result;
         return context.report({
           node: reportingNode,
           messageId: 'unsafeReturnAssignment',
           data: {
-            sender: checker.typeToString(sender),
             receiver: checker.typeToString(receiver),
+            sender: checker.typeToString(sender),
           },
         });
       }
     }
 
     return {
+      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
       ReturnStatement(node): void {
         const argument = node.argument;
         if (!argument) {
@@ -215,7 +217,6 @@ export default createRule({
 
         checkReturn(argument, node);
       },
-      'ArrowFunctionExpression > :not(BlockStatement).body': checkReturn,
     };
   },
 });
