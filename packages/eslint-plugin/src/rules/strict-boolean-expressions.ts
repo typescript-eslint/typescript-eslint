@@ -55,7 +55,8 @@ export type MessageId =
   | 'conditionFixDefaultEmptyString'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultZero'
-  | 'noStrictNullCheck';
+  | 'noStrictNullCheck'
+  | 'predicateReturnsUndefined';
 
 export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -126,6 +127,8 @@ export default createRule<Options, MessageId>({
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      predicateReturnsUndefined:
+        'Unexpected `undefined` return value from predicate function',
     },
     schema: [
       {
@@ -310,9 +313,40 @@ export default createRule<Options, MessageId>({
         const predicate = node.arguments.at(0);
 
         if (predicate != null) {
+          const type = checker.getApparentType(
+            services.getTypeAtLocation(predicate),
+          );
+
+          const returnTypeIncludesUndefined = tsutils
+            .unionTypeParts(type)
+            .some(t => isFunctionReturningUndefined(t));
+
+          if (returnTypeIncludesUndefined) {
+            context.report({
+              node: predicate,
+              messageId: 'predicateReturnsUndefined',
+            });
+          }
+
           traverseArrayPredicateReturnStatements(predicate);
         }
       }
+    }
+
+    function isFunctionReturningUndefined(type: ts.Type): boolean {
+      for (const signature of type.getCallSignatures()) {
+        const returnType = signature.getReturnType();
+
+        if (
+          tsutils
+            .unionTypeParts(returnType)
+            .some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.Undefined))
+        ) {
+          return true;
+        }
+      }
+
+      return false;
     }
 
     /**
