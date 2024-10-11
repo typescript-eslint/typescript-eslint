@@ -317,9 +317,8 @@ export default createRule<Options, MessageId>({
             services.getTypeAtLocation(predicate),
           );
 
-          const returnTypeIncludesUndefined = tsutils
-            .unionTypeParts(type)
-            .some(t => isFunctionReturningUndefinedOrVoid(t));
+          const returnTypeIncludesUndefined =
+            isFunctionReturningUndefinedOrVoid(type);
 
           if (returnTypeIncludesUndefined) {
             context.report({
