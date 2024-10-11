@@ -383,6 +383,14 @@ const test: () => any = (): void => console.log();
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
     },
+    {
+      code: `
+function test(): void | string {
+  return console.log('bar');
+}
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
   ],
 
   invalid: [
