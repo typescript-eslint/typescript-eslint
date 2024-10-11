@@ -1,19 +1,18 @@
-import 'jest-specific-snapshot';
-
-import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import path from 'node:path';
-
-import { parseForESLint } from '@typescript-eslint/parser';
-import * as tseslintParser from '@typescript-eslint/parser';
-import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import { marked } from 'marked';
 import type * as mdast from 'mdast';
 import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
 import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
 import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
-import { titleCase } from 'title-case';
 import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
+
+import { parseForESLint } from '@typescript-eslint/parser';
+import * as tseslintParser from '@typescript-eslint/parser';
+import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import 'jest-specific-snapshot';
+import { marked } from 'marked';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { titleCase } from 'title-case';
 
 import rules from '../src/rules';
 import { areOptionsValid } from './areOptionsValid';
@@ -43,7 +42,7 @@ type TokenType = marked.Token['type'];
 function tokenIs<Type extends TokenType>(
   token: marked.Token,
   type: Type,
-): token is marked.Token & { type: Type } {
+): token is { type: Type } & marked.Token {
   return token.type === type;
 }
 
@@ -53,7 +52,7 @@ function tokenIsHeading(token: marked.Token): token is marked.Tokens.Heading {
 
 function tokenIsH2(
   token: marked.Token,
-): token is marked.Tokens.Heading & { depth: 2 } {
+): token is { depth: 2 } & marked.Tokens.Heading {
   return (
     tokenIsHeading(token) && token.depth === 2 && !/[a-z]+: /.test(token.text)
   );
@@ -152,8 +151,8 @@ describe('Validating rule docs', () => {
 
   const ignoredFiles = new Set([
     'README.md',
-    'TEMPLATE.md',
     'shared',
+    'TEMPLATE.md',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
     'ban-types.md',
@@ -229,10 +228,10 @@ describe('Validating rule docs', () => {
           type: 'hr',
         });
         expect(tokens[1]).toMatchObject({
+          depth: 2,
           text: description.includes("'")
             ? `description: "${description}."`
             : `description: '${description}.'`,
-          depth: 2,
           type: 'heading',
         });
       });
@@ -263,11 +262,11 @@ describe('Validating rule docs', () => {
       const requiredHeadings = ['When Not To Use It'];
 
       const importantHeadings = new Set([
-        ...requiredHeadings,
         'How to Use',
         'Options',
         'Related To',
         'When Not To Use It',
+        ...requiredHeadings,
       ]);
 
       test('important headings must be h2s', () => {
@@ -377,8 +376,8 @@ describe('Validating rule docs', () => {
                 jsx: /^tsx\b/i.test(lang),
               },
               ecmaVersion: 'latest',
-              sourceType: 'module',
               range: true,
+              sourceType: 'module',
             });
           } catch {
             throw new Error(`Parsing error:\n\n${token.text}`);
@@ -436,7 +435,7 @@ describe('Validating rule docs', () => {
 
         function lintCodeBlock(
           token: mdast.Code,
-          shouldContainLintErrors: boolean | 'skip-check',
+          shouldContainLintErrors: 'skip-check' | boolean,
         ): void {
           const lang = token.lang?.trim();
           if (!lang || !/^tsx?\b/i.test(lang)) {
@@ -468,8 +467,8 @@ describe('Validating rule docs', () => {
               parser: '@typescript-eslint/parser',
               parserOptions: {
                 disallowAutomaticSingleRunInference: true,
-                tsconfigRootDir: rootPath,
                 project: './tsconfig.json',
+                tsconfigRootDir: rootPath,
               },
               rules: {
                 [ruleName]: ruleConfig,

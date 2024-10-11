@@ -2,6 +2,7 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -44,7 +45,7 @@ export function findTruthinessAssertedArgument(
     return undefined;
   }
 
-  const { parameterIndex, kind, type } = firstTypePredicateResult;
+  const { kind, parameterIndex, type } = firstTypePredicateResult;
   if (!(kind === ts.TypePredicateKind.AssertsIdentifier && type == null)) {
     return undefined;
   }
@@ -61,8 +62,8 @@ export function findTypeGuardAssertedArgument(
   node: TSESTree.CallExpression,
 ):
   | {
-      asserts: boolean;
       argument: TSESTree.Expression;
+      asserts: boolean;
       type: ts.Type;
     }
   | undefined {
@@ -96,7 +97,7 @@ export function findTypeGuardAssertedArgument(
     return undefined;
   }
 
-  const { parameterIndex, kind, type } = typePredicateInfo;
+  const { kind, parameterIndex, type } = typePredicateInfo;
   if (
     !(
       (kind === ts.TypePredicateKind.AssertsIdentifier ||
@@ -112,8 +113,8 @@ export function findTypeGuardAssertedArgument(
   }
 
   return {
-    type,
-    asserts: kind === ts.TypePredicateKind.AssertsIdentifier,
     argument: checkableArguments[parameterIndex],
+    asserts: kind === ts.TypePredicateKind.AssertsIdentifier,
+    type,
   };
 }

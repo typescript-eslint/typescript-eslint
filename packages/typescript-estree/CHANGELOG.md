@@ -1,3 +1,21 @@
+## 8.8.1 (2024-10-07)
+
+
+### 🩹 Fixes
+
+- **typescript-estree:** fix crash when running from a `node --eval` script
+
+- **typescript-estree:** ensure mjs/mts files are always be parsed as ESM
+
+
+### ❤️  Thank You
+
+- Brad Zacher
+- Ronen Amiel
+- WhitePiano
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.8.0 (2024-09-30)
 
 

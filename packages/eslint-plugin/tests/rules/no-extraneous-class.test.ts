@@ -165,12 +165,12 @@ export default class {
 @FooDecorator
 class Foo {}
       `,
-      options: [{ allowWithDecorator: false }],
       errors: [
         {
           messageId: 'empty',
         },
       ],
+      options: [{ allowWithDecorator: false }],
     },
     {
       code: `
@@ -183,12 +183,12 @@ class Foo {
   }
 }
       `,
-      options: [{ allowWithDecorator: false }],
       errors: [
         {
           messageId: 'onlyConstructor',
         },
       ],
+      options: [{ allowWithDecorator: false }],
     },
     {
       code: `

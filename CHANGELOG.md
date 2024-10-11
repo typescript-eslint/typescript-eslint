@@ -1,3 +1,20 @@
+## 8.8.1 (2024-10-07)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** stop warning on @ts-nocheck comments which aren't at the beginning of the file ([#10046](https://github.com/typescript-eslint/typescript-eslint/pull/10046))
+- **typescript-estree:** fix crash when running from a `node --eval` script ([#10098](https://github.com/typescript-eslint/typescript-eslint/pull/10098))
+- **typescript-estree:** ensure mjs/mts files are always be parsed as ESM ([#10011](https://github.com/typescript-eslint/typescript-eslint/pull/10011))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+- Ronen Amiel
+- WhitePiano @goldentrash
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.8.0 (2024-09-30)
 
 

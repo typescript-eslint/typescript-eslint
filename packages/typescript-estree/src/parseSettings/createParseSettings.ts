@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import debug from 'debug';
 import * as ts from 'typescript';
 
@@ -46,6 +48,14 @@ export function createParseSettings(
       ? tsestreeOptions.tsconfigRootDir
       : process.cwd();
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
+  const filePath = ensureAbsolutePath(
+    typeof tsestreeOptions.filePath === 'string' &&
+      tsestreeOptions.filePath !== '<input>'
+      ? tsestreeOptions.filePath
+      : getFileName(tsestreeOptions.jsx),
+    tsconfigRootDir,
+  );
+  const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   const jsDocParsingMode = ((): ts.JSDocParsingMode => {
     switch (tsestreeOptions.jsDocParsingMode) {
       case 'all':
@@ -81,13 +91,17 @@ export function createParseSettings(
       tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')
         ? tsestreeOptions.extraFileExtensions
         : [],
-    filePath: ensureAbsolutePath(
-      typeof tsestreeOptions.filePath === 'string' &&
-        tsestreeOptions.filePath !== '<input>'
-        ? tsestreeOptions.filePath
-        : getFileName(tsestreeOptions.jsx),
-      tsconfigRootDir,
-    ),
+    filePath,
+    setExternalModuleIndicator:
+      tsestreeOptions.sourceType === 'module' ||
+      (tsestreeOptions.sourceType === undefined &&
+        extension === ts.Extension.Mjs) ||
+      (tsestreeOptions.sourceType === undefined &&
+        extension === ts.Extension.Mts)
+        ? (file): void => {
+            file.externalModuleIndicator = true;
+          }
+        : undefined,
     jsDocParsingMode,
     jsx: tsestreeOptions.jsx === true,
     loc: tsestreeOptions.loc === true,

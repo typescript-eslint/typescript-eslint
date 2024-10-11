@@ -1,8 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { AST, RuleFix } from '@typescript-eslint/utils/ts-eslint';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -16,11 +17,11 @@ import {
 } from '../util';
 
 interface ScopeInfo {
-  upper: ScopeInfo | null;
-  hasAwait: boolean;
   hasAsync: boolean;
-  isGen: boolean;
+  hasAwait: boolean;
   isAsyncYield: boolean;
+  isGen: boolean;
+  upper: ScopeInfo | null;
 }
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
@@ -34,16 +35,16 @@ export default createRule({
     docs: {
       description:
         'Disallow async functions which do not return promises and have no `await` expression',
+      extendsBaseRule: true,
       recommended: 'recommended',
       requiresTypeChecking: true,
-      extendsBaseRule: true,
     },
-    schema: [],
+    hasSuggestions: true,
     messages: {
       missingAwait: "{{name}} has no 'await' expression.",
       removeAsync: "Remove 'async'.",
     },
-    hasSuggestions: true,
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -57,11 +58,11 @@ export default createRule({
      */
     function enterFunction(node: FunctionNode): void {
       scopeInfo = {
-        upper: scopeInfo,
-        hasAwait: false,
         hasAsync: node.async,
-        isGen: node.generator || false,
+        hasAwait: false,
         isAsyncYield: false,
+        isGen: node.generator || false,
+        upper: scopeInfo,
       };
     }
 
@@ -186,8 +187,8 @@ export default createRule({
         }
 
         context.report({
-          node,
           loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
           messageId: 'missingAwait',
           data: {
             name: upperCaseFirst(getFunctionNameWithKind(node)),
@@ -268,16 +269,16 @@ export default createRule({
     }
 
     return {
-      FunctionDeclaration: enterFunction,
-      FunctionExpression: enterFunction,
       ArrowFunctionExpression: enterFunction,
-      'FunctionDeclaration:exit': exitFunction,
-      'FunctionExpression:exit': exitFunction,
       'ArrowFunctionExpression:exit': exitFunction,
-
       AwaitExpression: markAsHasAwait,
-      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
+      FunctionDeclaration: enterFunction,
+      'FunctionDeclaration:exit': exitFunction,
+
+      FunctionExpression: enterFunction,
+      'FunctionExpression:exit': exitFunction,
+      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       YieldExpression: visitYieldExpression,
 
       // check body-less async arrow function.
