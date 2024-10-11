@@ -90,12 +90,12 @@ class Person {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 29,
           data: {
             name: 'constructor',
           },
           line: 3,
-          column: 29,
+          messageId: 'unexpected',
         },
       ],
     },
@@ -107,12 +107,12 @@ class Person {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 29,
           data: {
             name: "method 'otherMethod'",
           },
           line: 3,
-          column: 29,
+          messageId: 'unexpected',
         },
       ],
     },
@@ -124,12 +124,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 25,
           data: {
             name: 'constructor',
           },
           line: 3,
-          column: 25,
+          messageId: 'unexpected',
         },
       ],
     },
@@ -141,12 +141,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 27,
           data: {
             name: 'constructor',
           },
           line: 3,
-          column: 27,
+          messageId: 'unexpected',
         },
       ],
     },
@@ -156,12 +156,12 @@ function foo() {}
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 16,
           data: {
             name: "function 'foo'",
           },
           line: 2,
-          column: 16,
+          messageId: 'unexpected',
         },
       ],
     },
@@ -174,12 +174,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 9,
           data: {
             name: "method 'foo'",
           },
           line: 4,
-          column: 9,
+          messageId: 'unexpected',
         },
       ],
     },
@@ -191,12 +191,12 @@ class Foo extends Base {
       `,
       errors: [
         {
-          messageId: 'unexpected',
+          column: 18,
           data: {
             name: "method 'foo'",
           },
           line: 3,
-          column: 18,
+          messageId: 'unexpected',
         },
       ],
     },

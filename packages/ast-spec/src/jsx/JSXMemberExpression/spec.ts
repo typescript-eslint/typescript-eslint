@@ -4,7 +4,7 @@ import type { JSXTagNameExpression } from '../../unions/JSXTagNameExpression';
 import type { JSXIdentifier } from '../JSXIdentifier/spec';
 
 export interface JSXMemberExpression extends BaseNode {
+  type: AST_NODE_TYPES.JSXMemberExpression;
   object: JSXTagNameExpression;
   property: JSXIdentifier;
-  type: AST_NODE_TYPES.JSXMemberExpression;
 }

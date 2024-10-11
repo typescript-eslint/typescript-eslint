@@ -1,5 +1,6 @@
-import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -11,9 +12,9 @@ type Options = [
     allow?: string[];
     builtinGlobals?: boolean;
     hoist?: 'all' | 'functions' | 'never';
+    ignoreFunctionTypeParameterNameValueShadow?: boolean;
     ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
-    ignoreFunctionTypeParameterNameValueShadow?: boolean;
   },
 ];
 
@@ -32,61 +33,61 @@ export default createRule<Options, MessageIds>({
         'Disallow variable declarations from shadowing variables declared in the outer scope',
       extendsBaseRule: true,
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          builtinGlobals: {
-            description:
-              'Whether to report shadowing of built-in global variables.',
-            type: 'boolean',
-          },
-          hoist: {
-            description:
-              'Whether to report shadowing before outer functions or variables are defined.',
-            type: 'string',
-            enum: ['all', 'functions', 'never'],
-          },
-          allow: {
-            description: 'Identifier names for which shadowing is allowed.',
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-          ignoreOnInitialization: {
-            description:
-              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
-            type: 'boolean',
-          },
-          ignoreTypeValueShadow: {
-            description:
-              'Whether to ignore types named the same as a variable.',
-            type: 'boolean',
-          },
-          ignoreFunctionTypeParameterNameValueShadow: {
-            description:
-              'Whether to ignore function parameters named the same as a variable.',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
     messages: {
       noShadow:
         "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
       noShadowGlobal: "'{{name}}' is already a global variable.",
     },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            type: 'array',
+            description: 'Identifier names for which shadowing is allowed.',
+            items: {
+              type: 'string',
+            },
+          },
+          builtinGlobals: {
+            type: 'boolean',
+            description:
+              'Whether to report shadowing of built-in global variables.',
+          },
+          hoist: {
+            type: 'string',
+            description:
+              'Whether to report shadowing before outer functions or variables are defined.',
+            enum: ['all', 'functions', 'never'],
+          },
+          ignoreFunctionTypeParameterNameValueShadow: {
+            type: 'boolean',
+            description:
+              'Whether to ignore function parameters named the same as a variable.',
+          },
+          ignoreOnInitialization: {
+            type: 'boolean',
+            description:
+              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
+          },
+          ignoreTypeValueShadow: {
+            type: 'boolean',
+            description:
+              'Whether to ignore types named the same as a variable.',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
       allow: [],
       builtinGlobals: false,
       hoist: 'functions',
+      ignoreFunctionTypeParameterNameValueShadow: true,
       ignoreOnInitialization: false,
       ignoreTypeValueShadow: true,
-      ignoreFunctionTypeParameterNameValueShadow: true,
     },
   ],
   create(context, [options]) {
@@ -431,14 +432,14 @@ export default createRule<Options, MessageIds>({
           }
         } else if (
           [
-            AST_NODE_TYPES.FunctionDeclaration,
-            AST_NODE_TYPES.ClassDeclaration,
-            AST_NODE_TYPES.FunctionExpression,
-            AST_NODE_TYPES.ClassExpression,
             AST_NODE_TYPES.ArrowFunctionExpression,
             AST_NODE_TYPES.CatchClause,
-            AST_NODE_TYPES.ImportDeclaration,
+            AST_NODE_TYPES.ClassDeclaration,
+            AST_NODE_TYPES.ClassExpression,
             AST_NODE_TYPES.ExportNamedDeclaration,
+            AST_NODE_TYPES.FunctionDeclaration,
+            AST_NODE_TYPES.FunctionExpression,
+            AST_NODE_TYPES.ImportDeclaration,
           ].includes(node.type)
         ) {
           break;
@@ -526,13 +527,13 @@ export default createRule<Options, MessageIds>({
      */
     function getDeclaredLocation(
       variable: TSESLint.Scope.Variable,
-    ): { global: false; line: number; column: number } | { global: true } {
+    ): { column: number; global: false; line: number } | { global: true } {
       const identifier = variable.identifiers.at(0);
       if (identifier) {
         return {
+          column: identifier.loc.start.column + 1,
           global: false,
           line: identifier.loc.start.line,
-          column: identifier.loc.start.column + 1,
         };
       }
       return {
@@ -633,8 +634,8 @@ export default createRule<Options, MessageIds>({
                   messageId: 'noShadow',
                   data: {
                     name: variable.name,
-                    shadowedLine: location.line,
                     shadowedColumn: location.column,
+                    shadowedLine: location.line,
                   },
                 }),
           });

@@ -1,6 +1,7 @@
 import * as tseslint from '@typescript-eslint/typescript-estree';
 
 import type { AnalyzeOptions } from '../../src/analyze';
+
 import { analyze } from '../../src/analyze';
 
 type SourceType = AnalyzeOptions['sourceType'];

@@ -5,6 +5,6 @@ import type { UpdateExpression } from '../../expression/UpdateExpression/spec';
 import type { LiteralExpression } from '../../unions/LiteralExpression';
 
 export interface TSLiteralType extends BaseNode {
-  literal: LiteralExpression | UnaryExpression | UpdateExpression;
   type: AST_NODE_TYPES.TSLiteralType;
+  literal: LiteralExpression | UnaryExpression | UpdateExpression;
 }
