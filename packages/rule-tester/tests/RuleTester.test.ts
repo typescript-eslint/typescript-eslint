@@ -1163,7 +1163,7 @@ describe('RuleTester - hooks', () => {
     expect(hookAfter).toHaveBeenCalledTimes(2);
   });
 
-  it('should call both before() and after() hooks regardless syntax errors', () => {
+  it('should call both before() and after() hooks regardless of syntax errors', () => {
     const hookBefore = jest.fn();
     const hookAfter = jest.fn();
 
