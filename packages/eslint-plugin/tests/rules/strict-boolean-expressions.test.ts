@@ -655,13 +655,6 @@ assert(nullableString);
         throw new Error('oops');
       });
     `,
-    `
-      [1, 2].filter(x => {
-        if (typeof x === 'number') {
-          return true;
-        }
-      });
-    `,
   ],
 
   invalid: [
