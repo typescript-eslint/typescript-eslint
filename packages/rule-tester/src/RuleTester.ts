@@ -713,7 +713,10 @@ export class RuleTester extends TestFramework {
               ...configWithoutCustomKeys.languageOptions?.parserOptions,
             },
           },
-          linterOptions: { reportUnusedDisableDirectives: 1 },
+          linterOptions: {
+            reportUnusedDisableDirectives: 1,
+            ...configWithoutCustomKeys.linterOptions,
+          },
         });
         messages = this.#linter.verify(code, actualConfig, filename);
       } finally {
