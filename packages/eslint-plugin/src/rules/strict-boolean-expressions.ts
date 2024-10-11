@@ -280,9 +280,6 @@ export default createRule<Options, MessageId>({
 
     /**
      * Inspects return statements of predicate functions.
-     *
-     * Returns a boolean representing whether or not the predicate
-     * has at least one return statement.
      */
     function traverseArrayPredicateReturnStatements(
       node: TSESTree.CallExpressionArgument,
@@ -342,7 +339,8 @@ export default createRule<Options, MessageId>({
           const { hasReported, hasReturnStatement } =
             traverseArrayPredicateReturnStatements(predicate);
 
-          // Don't report a function as returning `undefined` unless every
+          // Don't report a function as implicitly returning `undefined` only
+          // when no other issues were found with it.
           if (hasReported) {
             return;
           }
@@ -363,7 +361,7 @@ export default createRule<Options, MessageId>({
             services.getTypeAtLocation(predicate),
           );
 
-          //
+          // Report a function as implicitly returning `undefined`
           if (isFunctionReturningUndefined(type)) {
             return context.report({
               node: predicate,
@@ -427,6 +425,8 @@ export default createRule<Options, MessageId>({
     /**
      * This function does the actual type check on a node.
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
+     *
+     * @returns true if it reported an issue, false otherwise.
      */
     function checkNode(node: TSESTree.Expression): boolean {
       const type = getConstrainedTypeAtLocation(services, node);

@@ -2811,6 +2811,20 @@ if (x) {
         },
       ],
     },
+    {
+      code: `
+['one', 'two'].filter(x => {});
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsUndefined',
+        },
+      ],
+    },
     // implicitly return `undefined` with a return type annotation
     {
       code: `
