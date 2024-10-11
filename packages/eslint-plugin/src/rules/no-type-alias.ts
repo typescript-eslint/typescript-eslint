@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -6,8 +7,8 @@ import { createRule } from '../util';
 type Values =
   | 'always'
   | 'in-intersections'
-  | 'in-unions-and-intersections'
   | 'in-unions'
+  | 'in-unions-and-intersections'
   | 'never';
 
 type Options = [
@@ -16,10 +17,10 @@ type Options = [
     allowCallbacks?: 'always' | 'never';
     allowConditionalTypes?: 'always' | 'never';
     allowConstructors?: 'always' | 'never';
+    allowGenerics?: 'always' | 'never';
     allowLiterals?: Values;
     allowMappedTypes?: Values;
     allowTupleTypes?: Values;
-    allowGenerics?: 'always' | 'never';
   },
 ];
 type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
@@ -28,26 +29,27 @@ type CompositionType =
   | AST_NODE_TYPES.TSIntersectionType
   | AST_NODE_TYPES.TSUnionType;
 interface TypeWithLabel {
-  node: TSESTree.Node;
   compositionType: CompositionType | null;
+  node: TSESTree.Node;
 }
 
 export default createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
-    deprecated: true,
     type: 'suggestion',
+    deprecated: true,
     docs: {
       description: 'Disallow type aliases',
       // too opinionated to be recommended
     },
     messages: {
-      noTypeAlias: 'Type {{alias}} are not allowed.',
       noCompositionAlias:
         '{{typeName}} in {{compositionType}} types are not allowed.',
+      noTypeAlias: 'Type {{alias}} are not allowed.',
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           expandedOptions: {
             type: 'string',
@@ -64,43 +66,42 @@ export default createRule<Options, MessageIds>({
             enum: ['always', 'never'],
           },
         },
-        type: 'object',
+        additionalProperties: false,
         properties: {
           allowAliases: {
-            description: 'Whether to allow direct one-to-one type aliases.',
             $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow direct one-to-one type aliases.',
           },
           allowCallbacks: {
-            description: 'Whether to allow type aliases for callbacks.',
             $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases for callbacks.',
           },
           allowConditionalTypes: {
-            description: 'Whether to allow type aliases for conditional types.',
             $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases for conditional types.',
           },
           allowConstructors: {
-            description: 'Whether to allow type aliases with constructors.',
             $ref: '#/items/0/$defs/simpleOptions',
-          },
-          allowLiterals: {
-            description:
-              'Whether to allow type aliases with object literal types.',
-            $ref: '#/items/0/$defs/expandedOptions',
-          },
-          allowMappedTypes: {
-            description: 'Whether to allow type aliases with mapped types.',
-            $ref: '#/items/0/$defs/expandedOptions',
-          },
-          allowTupleTypes: {
-            description: 'Whether to allow type aliases with tuple types.',
-            $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow type aliases with constructors.',
           },
           allowGenerics: {
-            description: 'Whether to allow type aliases with generic types.',
             $ref: '#/items/0/$defs/simpleOptions',
+            description: 'Whether to allow type aliases with generic types.',
+          },
+          allowLiterals: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description:
+              'Whether to allow type aliases with object literal types.',
+          },
+          allowMappedTypes: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow type aliases with mapped types.',
+          },
+          allowTupleTypes: {
+            $ref: '#/items/0/$defs/expandedOptions',
+            description: 'Whether to allow type aliases with tuple types.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -110,10 +111,10 @@ export default createRule<Options, MessageIds>({
       allowCallbacks: 'never',
       allowConditionalTypes: 'never',
       allowConstructors: 'never',
+      allowGenerics: 'never',
       allowLiterals: 'never',
       allowMappedTypes: 'never',
       allowTupleTypes: 'never',
-      allowGenerics: 'never',
     },
   ],
   create(
@@ -124,10 +125,10 @@ export default createRule<Options, MessageIds>({
         allowCallbacks,
         allowConditionalTypes,
         allowConstructors,
+        allowGenerics,
         allowLiterals,
         allowMappedTypes,
         allowTupleTypes,
-        allowGenerics,
       },
     ],
   ) {
@@ -145,11 +146,11 @@ export default createRule<Options, MessageIds>({
     const aliasTypes = new Set([
       AST_NODE_TYPES.TSArrayType,
       AST_NODE_TYPES.TSImportType,
-      AST_NODE_TYPES.TSTypeReference,
-      AST_NODE_TYPES.TSLiteralType,
-      AST_NODE_TYPES.TSTypeQuery,
       AST_NODE_TYPES.TSIndexedAccessType,
+      AST_NODE_TYPES.TSLiteralType,
       AST_NODE_TYPES.TSTemplateLiteralType,
+      AST_NODE_TYPES.TSTypeQuery,
+      AST_NODE_TYPES.TSTypeReference,
     ]);
 
     /**

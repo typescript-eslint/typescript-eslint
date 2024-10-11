@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -6,6 +7,7 @@ import { createRule, nullThrows, NullThrowsReasons } from '../util';
 export default createRule({
   name: 'no-dynamic-delete',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow using the `delete` operator on computed key expressions',
@@ -16,7 +18,6 @@ export default createRule({
       dynamicDelete: 'Do not delete dynamically computed property keys.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -47,9 +48,9 @@ export default createRule({
         }
 
         context.report({
-          fix: createFixer(node.argument),
-          messageId: 'dynamicDelete',
           node: node.argument.property,
+          messageId: 'dynamicDelete',
+          fix: createFixer(node.argument),
         });
       },
     };
@@ -80,7 +81,7 @@ export default createRule({
 function isAcceptableIndexExpression(property: TSESTree.Expression): boolean {
   return (
     (property.type === AST_NODE_TYPES.Literal &&
-      ['string', 'number'].includes(typeof property.value)) ||
+      ['number', 'string'].includes(typeof property.value)) ||
     (property.type === AST_NODE_TYPES.UnaryExpression &&
       property.operator === '-' &&
       property.argument.type === AST_NODE_TYPES.Literal &&

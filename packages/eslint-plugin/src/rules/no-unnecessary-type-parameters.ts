@@ -1,32 +1,34 @@
 import type { Reference } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
+
 import { createRule, getParserServices, nullThrows } from '../util';
 
 type NodeWithTypeParameters = MakeRequired<
-  ts.SignatureDeclaration | ts.ClassLikeDeclaration,
+  ts.ClassLikeDeclaration | ts.SignatureDeclaration,
   'typeParameters'
 >;
 
 export default createRule({
-  defaultOptions: [],
+  name: 'no-unnecessary-type-parameters',
   meta: {
+    type: 'problem',
     docs: {
       description: "Disallow type parameters that aren't used multiple times",
-      requiresTypeChecking: true,
       recommended: 'strict',
+      requiresTypeChecking: true,
     },
     messages: {
       sole: 'Type parameter {{name}} is {{uses}} in the {{descriptor}} signature.',
     },
     schema: [],
-    type: 'problem',
   },
-  name: 'no-unnecessary-type-parameters',
+  defaultOptions: [],
   create(context) {
     const parserServices = getParserServices(context);
 
@@ -50,11 +52,7 @@ export default createRule({
         const smTypeParameterVariable = nullThrows(
           (() => {
             const variable = scope.set.get(esTypeParameter.name.name);
-            return variable != null &&
-              variable.isTypeVariable &&
-              !variable.isValueVariable
-              ? variable
-              : undefined;
+            return variable?.isTypeVariable ? variable : undefined;
           })(),
           "Type parameter should be present in scope's variables.",
         );
@@ -79,13 +77,13 @@ export default createRule({
         }
 
         context.report({
-          data: {
-            descriptor,
-            uses: identifierCounts === 1 ? 'never used' : 'used only once',
-            name: typeParameter.name.text,
-          },
           node: esTypeParameter,
           messageId: 'sole',
+          data: {
+            name: typeParameter.name.text,
+            descriptor,
+            uses: identifierCounts === 1 ? 'never used' : 'used only once',
+          },
         });
       }
     }
@@ -413,9 +411,9 @@ function collectTypeParameterUsageCounts(
 }
 
 interface MappedType extends ts.ObjectType {
-  typeParameter?: ts.Type;
   constraintType?: ts.Type;
   templateType?: ts.Type;
+  typeParameter?: ts.Type;
 }
 
 function isMappedType(type: ts.Type): type is MappedType {

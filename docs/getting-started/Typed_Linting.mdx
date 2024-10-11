@@ -16,6 +16,9 @@ To tap into TypeScript's additional powers, there are two small changes you need
 2. Add `languageOptions.parserOptions` to tell our parser how to find the TSConfig for each source file.
 
 ```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
@@ -84,7 +87,7 @@ In more detail:
 
 :::caution
 Your ESLint config file may start receiving a parsing error about type information.
-See [our TSConfig inclusion FAQ](../troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+See [our TSConfig inclusion FAQ](../../troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 :::
 
 With that done, run the same lint command you ran before.

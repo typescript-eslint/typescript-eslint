@@ -342,6 +342,134 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
+  describe('ESM parsing', () => {
+    describe('TLA(Top Level Await)', () => {
+      const config: TSESTreeOptions = {
+        projectService: false,
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true,
+      };
+      const code = 'await(1)';
+
+      const testParse = ({
+        sourceType,
+        ext,
+        shouldAllowTLA = false,
+      }: {
+        sourceType?: 'module' | 'script';
+        ext: '.js' | '.ts' | '.mjs' | '.mts';
+        shouldAllowTLA?: boolean;
+      }): void => {
+        const ast = parser.parse(code, {
+          ...config,
+          sourceType,
+          filePath: `file${ext}`,
+        });
+        const expressionType = (
+          ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parse(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+      const testParseAndGenerateServices = ({
+        sourceType,
+        ext,
+        shouldAllowTLA = false,
+      }: {
+        sourceType?: 'module' | 'script';
+        ext: '.js' | '.ts' | '.mjs' | '.mts';
+        shouldAllowTLA?: boolean;
+      }): void => {
+        const result = parser.parseAndGenerateServices(code, {
+          ...config,
+          sourceType,
+          filePath: `file${ext}`,
+        });
+        const expressionType = (
+          result.ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parseAndGenerateServices(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+
+      testParse({ ext: '.js' });
+      testParse({ ext: '.ts' });
+      testParse({ ext: '.mjs', shouldAllowTLA: true });
+      testParse({ ext: '.mts', shouldAllowTLA: true });
+
+      testParse({ sourceType: 'module', ext: '.js', shouldAllowTLA: true });
+      testParse({ sourceType: 'module', ext: '.ts', shouldAllowTLA: true });
+      testParse({ sourceType: 'module', ext: '.mjs', shouldAllowTLA: true });
+      testParse({ sourceType: 'module', ext: '.mts', shouldAllowTLA: true });
+
+      testParse({ sourceType: 'script', ext: '.js' });
+      testParse({ sourceType: 'script', ext: '.ts' });
+      testParse({ sourceType: 'script', ext: '.mjs' });
+      testParse({ sourceType: 'script', ext: '.mts' });
+
+      testParseAndGenerateServices({ ext: '.js' });
+      testParseAndGenerateServices({ ext: '.ts' });
+      testParseAndGenerateServices({ ext: '.mjs', shouldAllowTLA: true });
+      testParseAndGenerateServices({ ext: '.mts', shouldAllowTLA: true });
+
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.js',
+        shouldAllowTLA: true,
+      });
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.ts',
+        shouldAllowTLA: true,
+      });
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.mjs',
+        shouldAllowTLA: true,
+      });
+      testParseAndGenerateServices({
+        sourceType: 'module',
+        ext: '.mts',
+        shouldAllowTLA: true,
+      });
+
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.js',
+      });
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.ts',
+      });
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.mjs',
+      });
+      testParseAndGenerateServices({
+        sourceType: 'script',
+        ext: '.mts',
+      });
+    });
+  });
+
   if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
@@ -514,7 +642,7 @@ describe('parseAndGenerateServices', () => {
         it('extension matching the file name but not a file on disk', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', [
-              'unknown',
+              '.unknown',
             ]),
           ).toThrow(
             /unknownFileType\.unknown was not found by the project service/,

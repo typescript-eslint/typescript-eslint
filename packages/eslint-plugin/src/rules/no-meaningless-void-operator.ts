@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -31,15 +32,15 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           checkNever: {
-            description:
-              'Whether to suggest removing `void` when the argument has type `never`.',
             type: 'boolean',
             default: false,
+            description:
+              'Whether to suggest removing `void` when the argument has type `never`.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },

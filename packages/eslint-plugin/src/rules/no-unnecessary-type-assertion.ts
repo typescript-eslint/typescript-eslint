@@ -1,7 +1,8 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -28,6 +29,7 @@ type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow type assertions that do not change the type of an expression',
@@ -36,10 +38,10 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      unnecessaryAssertion:
-        'This assertion is unnecessary since it does not change the type of the expression.',
       contextuallyUnnecessary:
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
+      unnecessaryAssertion:
+        'This assertion is unnecessary since it does not change the type of the expression.',
     },
     schema: [
       {
@@ -47,8 +49,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           typesToIgnore: {
-            description: 'A list of type names to ignore.',
             type: 'array',
+            description: 'A list of type names to ignore.',
             items: {
               type: 'string',
             },
@@ -56,7 +58,6 @@ export default createRule<Options, MessageIds>({
         },
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [{}],
   create(context, [options]) {
@@ -208,6 +209,83 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      'TSAsExpression, TSTypeAssertion'(
+        node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      ): void {
+        if (
+          options.typesToIgnore?.includes(
+            context.sourceCode.getText(node.typeAnnotation),
+          )
+        ) {
+          return;
+        }
+
+        const castType = services.getTypeAtLocation(node);
+        const uncastType = services.getTypeAtLocation(node.expression);
+        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
+
+        const wouldSameTypeBeInferred = castType.isLiteral()
+          ? isImplicitlyNarrowedConstDeclaration(node)
+          : !isConstAssertion(node.typeAnnotation);
+
+        if (typeIsUnchanged && wouldSameTypeBeInferred) {
+          context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
+            fix(fixer) {
+              if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
+                const openingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '<',
+                  ),
+                  NullThrowsReasons.MissingToken('<', 'type annotation'),
+                );
+                const closingAngleBracket = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    node.typeAnnotation,
+                    token =>
+                      token.type === AST_TOKEN_TYPES.Punctuator &&
+                      token.value === '>',
+                  ),
+                  NullThrowsReasons.MissingToken('>', 'type annotation'),
+                );
+
+                // < ( number ) > ( 3 + 5 )
+                // ^---remove---^
+                return fixer.removeRange([
+                  openingAngleBracket.range[0],
+                  closingAngleBracket.range[1],
+                ]);
+              }
+              // `as` is always present in TSAsExpression
+              const asToken = nullThrows(
+                context.sourceCode.getTokenAfter(
+                  node.expression,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Identifier &&
+                    token.value === 'as',
+                ),
+                NullThrowsReasons.MissingToken('>', 'type annotation'),
+              );
+              const tokenBeforeAs = nullThrows(
+                context.sourceCode.getTokenBefore(asToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('comment', 'as'),
+              );
+
+              // ( 3 + 5 )  as  number
+              //          ^--remove--^
+              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
+            },
+          });
+        }
+
+        // TODO - add contextually unnecessary check for this
+      },
       TSNonNullExpression(node): void {
         const removeExclamationFix: ReportFixFunction = fixer => {
           const exclamationToken = nullThrows(
@@ -305,83 +383,6 @@ export default createRule<Options, MessageIds>({
             }
           }
         }
-      },
-      'TSAsExpression, TSTypeAssertion'(
-        node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-      ): void {
-        if (
-          options.typesToIgnore?.includes(
-            context.sourceCode.getText(node.typeAnnotation),
-          )
-        ) {
-          return;
-        }
-
-        const castType = services.getTypeAtLocation(node);
-        const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
-
-        const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isImplicitlyNarrowedConstDeclaration(node)
-          : !isConstAssertion(node.typeAnnotation);
-
-        if (typeIsUnchanged && wouldSameTypeBeInferred) {
-          context.report({
-            node,
-            messageId: 'unnecessaryAssertion',
-            fix(fixer) {
-              if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const openingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '<',
-                  ),
-                  NullThrowsReasons.MissingToken('<', 'type annotation'),
-                );
-                const closingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '>',
-                  ),
-                  NullThrowsReasons.MissingToken('>', 'type annotation'),
-                );
-
-                // < ( number ) > ( 3 + 5 )
-                // ^---remove---^
-                return fixer.removeRange([
-                  openingAngleBracket.range[0],
-                  closingAngleBracket.range[1],
-                ]);
-              }
-              // `as` is always present in TSAsExpression
-              const asToken = nullThrows(
-                context.sourceCode.getTokenAfter(
-                  node.expression,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Identifier &&
-                    token.value === 'as',
-                ),
-                NullThrowsReasons.MissingToken('>', 'type annotation'),
-              );
-              const tokenBeforeAs = nullThrows(
-                context.sourceCode.getTokenBefore(asToken, {
-                  includeComments: true,
-                }),
-                NullThrowsReasons.MissingToken('comment', 'as'),
-              );
-
-              // ( 3 + 5 )  as  number
-              //          ^--remove--^
-              return fixer.removeRange([tokenBeforeAs.range[1], node.range[1]]);
-            },
-          });
-        }
-
-        // TODO - add contextually unnecessary check for this
       },
     };
   },

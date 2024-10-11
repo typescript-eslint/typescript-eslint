@@ -1,10 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
   getStaticMemberAccessValue,
-  getStaticStringValue,
   isAssignee,
   isFunction,
   isStaticMemberAccessOfValue,
@@ -24,8 +24,8 @@ interface NodeWithModifiers {
 }
 
 interface PropertiesInfo {
+  excludeSet: Set<string | symbol>;
   properties: TSESTree.PropertyDefinition[];
-  excludeSet: Set<string>;
 }
 
 const printNodeModifiers = (
@@ -72,8 +72,8 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
-        description: 'Which literal class member syntax to prefer.',
         type: 'string',
+        description: 'Which literal class member syntax to prefer.',
         enum: ['fields', 'getters'],
       },
     ],
@@ -84,13 +84,13 @@ export default createRule<Options, MessageIds>({
 
     function enterClassBody(): void {
       propertiesInfoStack.push({
-        properties: [],
         excludeSet: new Set(),
+        properties: [],
       });
     }
 
     function exitClassBody(): void {
-      const { properties, excludeSet } = nullThrows(
+      const { excludeSet, properties } = nullThrows(
         propertiesInfoStack.pop(),
         'Stack should exist on class exit',
       );
@@ -133,9 +133,7 @@ export default createRule<Options, MessageIds>({
         const { excludeSet } =
           propertiesInfoStack[propertiesInfoStack.length - 1];
 
-        const name =
-          getStaticStringValue(node.property) ??
-          context.sourceCode.getText(node.property);
+        const name = getStaticMemberAccessValue(node, context);
 
         if (name) {
           excludeSet.add(name);

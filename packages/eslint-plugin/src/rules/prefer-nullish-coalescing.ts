@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -52,73 +53,73 @@ export default createRule<Options, MessageIds>({
     },
     hasSuggestions: true,
     messages: {
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       preferNullishOverOr:
         'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
       preferNullishOverTernary:
         'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
       suggestNullish: 'Fix to nullish coalescing operator (`??`).',
-      noStrictNullCheck:
-        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
             description:
               'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
-            type: 'boolean',
           },
           ignoreConditionalTests: {
+            type: 'boolean',
             description:
               'Whether to ignore cases that are located within a conditional test.',
-            type: 'boolean',
           },
           ignoreMixedLogicalExpressions: {
+            type: 'boolean',
             description:
               'Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).',
-            type: 'boolean',
           },
           ignorePrimitives: {
             description:
               'Whether to ignore all (`true`) or some (an object with properties) primitive types.',
             oneOf: [
               {
-                description: 'Which primitives types may be ignored.',
                 type: 'object',
+                description: 'Which primitives types may be ignored.',
                 properties: {
                   bigint: {
-                    description: 'Ignore bigint primitive types.',
                     type: 'boolean',
+                    description: 'Ignore bigint primitive types.',
                   },
                   boolean: {
-                    description: 'Ignore boolean primitive types.',
                     type: 'boolean',
+                    description: 'Ignore boolean primitive types.',
                   },
                   number: {
-                    description: 'Ignore number primitive types.',
                     type: 'boolean',
+                    description: 'Ignore number primitive types.',
                   },
                   string: {
-                    description: 'Ignore string primitive types.',
                     type: 'boolean',
+                    description: 'Ignore string primitive types.',
                   },
                 },
               },
               {
-                description: 'Ignore all primitive types.',
                 type: 'boolean',
+                description: 'Ignore all primitive types.',
                 enum: [true],
               },
             ],
           },
           ignoreTernaryTests: {
+            type: 'boolean',
             description:
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -126,7 +127,6 @@ export default createRule<Options, MessageIds>({
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignoreConditionalTests: true,
-      ignoreTernaryTests: false,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
         bigint: false,
@@ -134,6 +134,7 @@ export default createRule<Options, MessageIds>({
         number: false,
         string: false,
       },
+      ignoreTernaryTests: false,
     },
   ],
   create(
@@ -163,8 +164,8 @@ export default createRule<Options, MessageIds>({
     ) {
       context.report({
         loc: {
-          start: { line: 0, column: 0 },
-          end: { line: 0, column: 0 },
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
         },
         messageId: 'noStrictNullCheck',
       });

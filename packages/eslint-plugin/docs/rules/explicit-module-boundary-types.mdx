@@ -97,6 +97,8 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowArgumentsExplicitlyTypedAsAny`
 
+{/* insert option description */}
+
 When this option is `true`, the rule ignores arguments that are explicitly typed as any.
 
 <Tabs>
@@ -117,6 +119,8 @@ export const func = (value: any): number => value + 1;
 </Tabs>
 
 ### `allowDirectConstAssertionInArrowFunctions`
+
+{/* insert option description */}
 
 When this option is `true`, the rule ignores return type annotations on body-less arrow functions that return an `as const` type assertion.
 
@@ -148,6 +152,8 @@ export const bar = () => 1 as const;
 
 ### `allowedNames`
 
+{/* insert option description */}
+
 You may pass function/method names you would like this rule to ignore, like so:
 
 ```json
@@ -162,6 +168,8 @@ You may pass function/method names you would like this rule to ignore, like so:
 ```
 
 ### `allowHigherOrderFunctions`
+
+{/* insert option description */}
 
 When this option is `true`, the rule ignores return type annotations on function, which is immediately returning another function expression.
 
@@ -199,6 +207,8 @@ export function foo(outer: string) {
 </Tabs>
 
 ### `allowTypedFunctionExpressions`
+
+{/* insert option description */}
 
 When this option is `true`, the rule ignores type annotations on the variable of a function expression.
 

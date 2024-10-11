@@ -140,6 +140,8 @@ interface Foo {
 
 ### `allow`
 
+{/* insert option description */}
+
 Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
 
 This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
@@ -250,6 +252,8 @@ function fn(arg: Foo) {}
 
 ### `checkParameterProperties`
 
+{/* insert option description */}
+
 Because parameter properties create properties on the class, it may be undesirable to force them to be readonly.
 
 Examples of code for this rule with `{checkParameterProperties: true}`:
@@ -287,6 +291,8 @@ class Foo {
 ```
 
 ### `ignoreInferredTypes`
+
+{/* insert option description */}
 
 This may be desirable in cases where an external dependency specifies a callback with mutable parameters, and manually annotating the callback's parameters is undesirable.
 
@@ -344,6 +350,8 @@ export const acceptsCallback: AcceptsCallback;
 </Tabs>
 
 ### `treatMethodsAsReadonly`
+
+{/* insert option description */}
 
 This may be desirable when you are never reassigning methods.
 

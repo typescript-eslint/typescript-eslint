@@ -1,5 +1,7 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import type { Node } from 'unist';
 
+import { nodeIsHeading, nodeIsMdxFlowExpression } from '../../utils/nodes';
 import { findHeadingIndex } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
 
@@ -55,17 +57,47 @@ export function insertRuleOptions(page: RuleDocsPage): void {
       continue;
     }
 
+    const commentInsertionIndex = findCommentIndexForOption(
+      page.children,
+      existingHeadingIndex,
+    );
+    if (commentInsertionIndex === -1) {
+      throw new Error(
+        `[${page.file.stem}] Could not find ${OPTION_COMMENT} under option heading ${optionName}.`,
+      );
+    }
+
     const defaultValue =
       defaultOptions[optionName] ?? emptyOptionDefaults.get(option.type);
 
     page.spliceChildren(
-      existingHeadingIndex + 1,
+      commentInsertionIndex,
       0,
       defaultValue !== undefined
         ? `${option.description} Default: \`${JSON.stringify(defaultValue)}\`.`
         : option.description,
     );
   }
+}
+
+const OPTION_COMMENT = `/* insert option description */`;
+
+function findCommentIndexForOption(
+  children: readonly Node[],
+  headingIndex: number,
+): number {
+  for (let i = headingIndex + 1; i < children.length; i += 1) {
+    const child = children[i];
+    if (nodeIsMdxFlowExpression(child) && child.value === OPTION_COMMENT) {
+      return i;
+    }
+
+    if (nodeIsHeading(child)) {
+      break;
+    }
+  }
+
+  return -1;
 }
 
 function getOptionProperties(

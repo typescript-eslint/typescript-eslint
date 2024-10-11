@@ -114,6 +114,8 @@ and simplified types (primitives, tuples, unions, intersections, etc).
 
 ### `allowAliases`
 
+{/* insert option description */}
+
 The setting accepts the following values:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -266,6 +268,8 @@ type Foo = Bar & Baz;
 
 ### `allowCallbacks`
 
+{/* insert option description */}
+
 The setting accepts the following values:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -286,6 +290,8 @@ type Foo = (name: string, age: number) => string & Person;
 
 ### `allowConditionalTypes`
 
+{/* insert option description */}
+
 Examples of **correct** code for the `{ "allowConditionalTypes": "always" }` option:
 
 ```ts option='{ "allowConditionalTypes": "always" }' showPlaygroundButton
@@ -293,6 +299,8 @@ type Foo<T> = T extends number ? number : null;
 ```
 
 ### `allowConstructors`
+
+{/* insert option description */}
 
 The setting accepts the following values:
 
@@ -305,6 +313,8 @@ type Foo = new () => void;
 ```
 
 ### `allowLiterals`
+
+{/* insert option description */}
 
 The setting accepts the following options:
 
@@ -411,6 +421,8 @@ type Foo = { name: string } & { age: number };
 
 ### `allowMappedTypes`
 
+{/* insert option description */}
+
 The setting accepts the following values:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -512,6 +524,8 @@ type Foo<T, U> = { [P in keyof T]?: T[P] } & { [P in keyof U]?: U[P] };
 
 ### `allowTupleTypes`
 
+{/* insert option description */}
+
 The setting accepts the following options:
 
 - `"always"` or `"never"` to active or deactivate the feature.
@@ -584,6 +598,8 @@ type Foo = [string] | [number];
 ```
 
 ### `allowGenerics`
+
+{/* insert option description */}
 
 The setting accepts the following options:
 

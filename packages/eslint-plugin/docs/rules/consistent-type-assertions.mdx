@@ -30,6 +30,8 @@ Examples of them include `let x = "hello" as const;` and `let x = <const>"hello"
 
 ### `assertionStyle`
 
+{/* insert option description */}
+
 Valid values for `assertionStyle` are:
 
 - `as` will enforce that you always use `... as foo`.
@@ -41,6 +43,8 @@ Most codebases will want to enforce not using `angle-bracket` style because it c
 Some codebases like to go for an extra level of type safety, and ban assertions altogether via the `never` option.
 
 ### `objectLiteralTypeAssertions`
+
+{/* insert option description */}
 
 For example, this would prefer `const x: T = { ... };` to `const x = { ... } as T;` (or similar with angle brackets).
 The type assertion in the latter case is either unnecessary or will probably hide an error.

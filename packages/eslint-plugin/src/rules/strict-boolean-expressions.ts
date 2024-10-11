@@ -2,6 +2,7 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -13,18 +14,19 @@ import {
   getWrappingFixer,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
+import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
 export type Options = [
   {
-    allowString?: boolean;
-    allowNumber?: boolean;
-    allowNullableObject?: boolean;
-    allowNullableBoolean?: boolean;
-    allowNullableString?: boolean;
-    allowNullableNumber?: boolean;
-    allowNullableEnum?: boolean;
     allowAny?: boolean;
+    allowNullableBoolean?: boolean;
+    allowNullableEnum?: boolean;
+    allowNullableNumber?: boolean;
+    allowNullableObject?: boolean;
+    allowNullableString?: boolean;
+    allowNumber?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    allowString?: boolean;
   },
 ];
 
@@ -57,134 +59,134 @@ export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
   meta: {
     type: 'suggestion',
-    fixable: 'code',
-    hasSuggestions: true,
     docs: {
       description: 'Disallow certain types in boolean expressions',
       requiresTypeChecking: true,
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          allowString: {
-            description: 'Whether to allow `string`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowNumber: {
-            description: 'Whether to allow `number`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowNullableObject: {
-            description:
-              'Whether to allow nullable `object`s, `symbol`s, and functions in a boolean context.',
-            type: 'boolean',
-          },
-          allowNullableBoolean: {
-            description:
-              'Whether to allow nullable `boolean`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowNullableString: {
-            description:
-              'Whether to allow nullable `string`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowNullableNumber: {
-            description:
-              'Whether to allow nullable `number`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowNullableEnum: {
-            description:
-              'Whether to allow nullable `enum`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowAny: {
-            description: 'Whether to allow `any`s in a boolean context.',
-            type: 'boolean',
-          },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            description:
-              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
-      conditionErrorOther:
-        'Unexpected value in conditional. ' +
-        'A boolean expression is required.',
       conditionErrorAny:
         'Unexpected any value in conditional. ' +
         'An explicit comparison or type cast is required.',
-      conditionErrorNullish:
-        'Unexpected nullish value in conditional. ' +
-        'The condition is always false.',
       conditionErrorNullableBoolean:
         'Unexpected nullable boolean value in conditional. ' +
         'Please handle the nullish case explicitly.',
-      conditionErrorString:
-        'Unexpected string value in conditional. ' +
-        'An explicit empty string check is required.',
-      conditionErrorNullableString:
-        'Unexpected nullable string value in conditional. ' +
-        'Please handle the nullish/empty cases explicitly.',
-      conditionErrorNumber:
-        'Unexpected number value in conditional. ' +
-        'An explicit zero/NaN check is required.',
-      conditionErrorNullableNumber:
-        'Unexpected nullable number value in conditional. ' +
-        'Please handle the nullish/zero/NaN cases explicitly.',
-      conditionErrorObject:
-        'Unexpected object value in conditional. ' +
-        'The condition is always true.',
-      conditionErrorNullableObject:
-        'Unexpected nullable object value in conditional. ' +
-        'An explicit null check is required.',
       conditionErrorNullableEnum:
         'Unexpected nullable enum value in conditional. ' +
         'Please handle the nullish/zero/NaN cases explicitly.',
-      noStrictNullCheck:
-        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-
-      conditionFixDefaultFalse:
-        'Explicitly treat nullish value the same as false (`value ?? false`)',
-      conditionFixDefaultEmptyString:
-        'Explicitly treat nullish value the same as an empty string (`value ?? ""`)',
-      conditionFixDefaultZero:
-        'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
-      conditionFixCompareNullish:
-        'Change condition to check for null/undefined (`value != null`)',
+      conditionErrorNullableNumber:
+        'Unexpected nullable number value in conditional. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
+      conditionErrorNullableObject:
+        'Unexpected nullable object value in conditional. ' +
+        'An explicit null check is required.',
+      conditionErrorNullableString:
+        'Unexpected nullable string value in conditional. ' +
+        'Please handle the nullish/empty cases explicitly.',
+      conditionErrorNullish:
+        'Unexpected nullish value in conditional. ' +
+        'The condition is always false.',
+      conditionErrorNumber:
+        'Unexpected number value in conditional. ' +
+        'An explicit zero/NaN check is required.',
+      conditionErrorObject:
+        'Unexpected object value in conditional. ' +
+        'The condition is always true.',
+      conditionErrorOther:
+        'Unexpected value in conditional. ' +
+        'A boolean expression is required.',
+      conditionErrorString:
+        'Unexpected string value in conditional. ' +
+        'An explicit empty string check is required.',
       conditionFixCastBoolean:
         'Explicitly cast value to a boolean (`Boolean(value)`)',
-      conditionFixCompareTrue:
-        'Change condition to check if true (`value === true`)',
-      conditionFixCompareFalse:
-        'Change condition to check if false (`value === false`)',
-      conditionFixCompareStringLength:
-        "Change condition to check string's length (`value.length !== 0`)",
+
       conditionFixCompareEmptyString:
         'Change condition to check for empty string (`value !== ""`)',
-      conditionFixCompareZero:
-        'Change condition to check for 0 (`value !== 0`)',
+      conditionFixCompareFalse:
+        'Change condition to check if false (`value === false`)',
       conditionFixCompareNaN:
         'Change condition to check for NaN (`!Number.isNaN(value)`)',
+      conditionFixCompareNullish:
+        'Change condition to check for null/undefined (`value != null`)',
+      conditionFixCompareStringLength:
+        "Change condition to check string's length (`value.length !== 0`)",
+      conditionFixCompareTrue:
+        'Change condition to check if true (`value === true`)',
+      conditionFixCompareZero:
+        'Change condition to check for 0 (`value !== 0`)',
+      conditionFixDefaultEmptyString:
+        'Explicitly treat nullish value the same as an empty string (`value ?? ""`)',
+      conditionFixDefaultFalse:
+        'Explicitly treat nullish value the same as false (`value ?? false`)',
+      conditionFixDefaultZero:
+        'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
     },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allowAny: {
+            type: 'boolean',
+            description: 'Whether to allow `any`s in a boolean context.',
+          },
+          allowNullableBoolean: {
+            type: 'boolean',
+            description:
+              'Whether to allow nullable `boolean`s in a boolean context.',
+          },
+          allowNullableEnum: {
+            type: 'boolean',
+            description:
+              'Whether to allow nullable `enum`s in a boolean context.',
+          },
+          allowNullableNumber: {
+            type: 'boolean',
+            description:
+              'Whether to allow nullable `number`s in a boolean context.',
+          },
+          allowNullableObject: {
+            type: 'boolean',
+            description:
+              'Whether to allow nullable `object`s, `symbol`s, and functions in a boolean context.',
+          },
+          allowNullableString: {
+            type: 'boolean',
+            description:
+              'Whether to allow nullable `string`s in a boolean context.',
+          },
+          allowNumber: {
+            type: 'boolean',
+            description: 'Whether to allow `number`s in a boolean context.',
+          },
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
+            description:
+              'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
+          },
+          allowString: {
+            type: 'boolean',
+            description: 'Whether to allow `string`s in a boolean context.',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
-      allowString: true,
-      allowNumber: true,
-      allowNullableObject: true,
-      allowNullableBoolean: false,
-      allowNullableString: false,
-      allowNullableNumber: false,
-      allowNullableEnum: false,
       allowAny: false,
+      allowNullableBoolean: false,
+      allowNullableEnum: false,
+      allowNullableNumber: false,
+      allowNullableObject: true,
+      allowNullableString: false,
+      allowNumber: true,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      allowString: true,
     },
   ],
   create(context, [options]) {
@@ -203,8 +205,8 @@ export default createRule<Options, MessageId>({
     ) {
       context.report({
         loc: {
-          start: { line: 0, column: 0 },
-          end: { line: 0, column: 0 },
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
         },
         messageId: 'noStrictNullCheck',
       });
@@ -213,14 +215,14 @@ export default createRule<Options, MessageId>({
     const traversedNodes = new Set<TSESTree.Node>();
 
     return {
+      CallExpression: traverseCallExpression,
       ConditionalExpression: traverseTestExpression,
       DoWhileStatement: traverseTestExpression,
       ForStatement: traverseTestExpression,
       IfStatement: traverseTestExpression,
-      WhileStatement: traverseTestExpression,
       'LogicalExpression[operator!="??"]': traverseLogicalExpression,
       'UnaryExpression[operator="!"]': traverseUnaryLogicalExpression,
-      CallExpression: traverseCallExpression,
+      WhileStatement: traverseTestExpression,
     };
 
     type TestExpression =
@@ -269,132 +271,10 @@ export default createRule<Options, MessageId>({
     }
 
     function traverseCallExpression(node: TSESTree.CallExpression): void {
-      const assertedArgument = findAssertedArgument(node);
+      const assertedArgument = findTruthinessAssertedArgument(services, node);
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
       }
-    }
-
-    /**
-     * Inspect a call expression to see if it's a call to an assertion function.
-     * If it is, return the node of the argument that is asserted.
-     */
-    function findAssertedArgument(
-      node: TSESTree.CallExpression,
-    ): TSESTree.Expression | undefined {
-      // If the call looks like `assert(expr1, expr2, ...c, d, e, f)`, then we can
-      // only care if `expr1` or `expr2` is asserted, since anything that happens
-      // within or after a spread argument is out of scope to reason about.
-      const checkableArguments: TSESTree.Expression[] = [];
-      for (const argument of node.arguments) {
-        if (argument.type === AST_NODE_TYPES.SpreadElement) {
-          break;
-        }
-
-        checkableArguments.push(argument);
-      }
-
-      // nothing to do
-      if (checkableArguments.length === 0) {
-        return undefined;
-      }
-
-      // Game plan: we're going to check the type of the callee. If it has call
-      // signatures and they _ALL_ agree that they assert on a parameter at the
-      // _SAME_ position, we'll consider the argument in that position to be an
-      // asserted argument.
-      const calleeType = getConstrainedTypeAtLocation(services, node.callee);
-      const callSignatures = tsutils.getCallSignaturesOfType(calleeType);
-
-      let assertedParameterIndex: number | undefined = undefined;
-      for (const signature of callSignatures) {
-        const declaration = signature.getDeclaration();
-        const returnTypeAnnotation = declaration.type;
-
-        // Be sure we're dealing with a truthiness assertion function.
-        if (
-          !(
-            returnTypeAnnotation != null &&
-            ts.isTypePredicateNode(returnTypeAnnotation) &&
-            // This eliminates things like `x is string` and `asserts x is T`
-            // leaving us with just the `asserts x` cases.
-            returnTypeAnnotation.type == null &&
-            // I think this is redundant but, still, it needs to be true
-            returnTypeAnnotation.assertsModifier != null
-          )
-        ) {
-          return undefined;
-        }
-
-        const assertionTarget = returnTypeAnnotation.parameterName;
-        if (assertionTarget.kind !== ts.SyntaxKind.Identifier) {
-          // This can happen when asserting on `this`. Ignore!
-          return undefined;
-        }
-
-        // If the first parameter is `this`, skip it, so that our index matches
-        // the index of the argument at the call site.
-        const firstParameter = declaration.parameters.at(0);
-        const nonThisParameters =
-          firstParameter?.name.kind === ts.SyntaxKind.Identifier &&
-          firstParameter.name.text === 'this'
-            ? declaration.parameters.slice(1)
-            : declaration.parameters;
-
-        // Don't bother inspecting parameters past the number of
-        // arguments we have at the call site.
-        const checkableNonThisParameters = nonThisParameters.slice(
-          0,
-          checkableArguments.length,
-        );
-
-        let assertedParameterIndexForThisSignature: number | undefined;
-        for (const [index, parameter] of checkableNonThisParameters.entries()) {
-          if (parameter.dotDotDotToken != null) {
-            // Cannot assert a rest parameter, and can't have a rest parameter
-            // before the asserted parameter. It's not only a TS error, it's
-            // not something we can logically make sense of, so give up here.
-            return undefined;
-          }
-
-          if (parameter.name.kind !== ts.SyntaxKind.Identifier) {
-            // Only identifiers are valid for assertion targets, so skip over
-            // anything like `{ destructuring: parameter }: T`
-            continue;
-          }
-
-          // we've found a match between the "target"s in
-          // `function asserts(target: T): asserts target;`
-          if (parameter.name.text === assertionTarget.text) {
-            assertedParameterIndexForThisSignature = index;
-            break;
-          }
-        }
-
-        if (assertedParameterIndexForThisSignature == null) {
-          // Didn't find an assertion target in this signature that could match
-          // the call site.
-          return undefined;
-        }
-
-        if (
-          assertedParameterIndex != null &&
-          assertedParameterIndex !== assertedParameterIndexForThisSignature
-        ) {
-          // The asserted parameter we found for this signature didn't match
-          // previous signatures.
-          return undefined;
-        }
-
-        assertedParameterIndex = assertedParameterIndexForThisSignature;
-      }
-
-      // Didn't find a unique assertion index.
-      if (assertedParameterIndex == null) {
-        return undefined;
-      }
-
-      return checkableArguments[assertedParameterIndex];
     }
 
     /**
@@ -480,17 +360,17 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultFalse',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} ?? false`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareFalse',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} === false`,
                   }),
                 },
@@ -505,16 +385,16 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixDefaultFalse',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} ?? false`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareTrue',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} === true`,
                   }),
                 },
@@ -545,27 +425,27 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code}.length === 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} === ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `!Boolean(${code})`,
                   }),
                 },
@@ -580,24 +460,24 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareStringLength',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code}.length > 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} !== ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `Boolean(${code})`,
                   }),
                 },
@@ -620,26 +500,26 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} == null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `!Boolean(${code})`,
                   }),
                 },
@@ -654,24 +534,24 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} != null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultEmptyString',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} ?? ""`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `Boolean(${code})`,
                   }),
                 },
@@ -692,9 +572,9 @@ export default createRule<Options, MessageId>({
                 node,
                 messageId: 'conditionErrorNumber',
                 fix: getWrappingFixer({
-                  sourceCode: context.sourceCode,
                   node: node.parent,
                   innerNode: node,
+                  sourceCode: context.sourceCode,
                   wrap: code => `${code} === 0`,
                 }),
               });
@@ -704,8 +584,8 @@ export default createRule<Options, MessageId>({
                 node,
                 messageId: 'conditionErrorNumber',
                 fix: getWrappingFixer({
-                  sourceCode: context.sourceCode,
                   node,
+                  sourceCode: context.sourceCode,
                   wrap: code => `${code} > 0`,
                 }),
               });
@@ -719,9 +599,9 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareZero',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     // TODO: we have to compare to 0n if the type is bigint
                     wrap: code => `${code} === 0`,
                   }),
@@ -730,18 +610,18 @@ export default createRule<Options, MessageId>({
                   // TODO: don't suggest this for bigint because it can't be NaN
                   messageId: 'conditionFixCompareNaN',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `Number.isNaN(${code})`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `!Boolean(${code})`,
                   }),
                 },
@@ -756,24 +636,24 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareZero',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} !== 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCompareNaN',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `!Number.isNaN(${code})`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `Boolean(${code})`,
                   }),
                 },
@@ -796,26 +676,26 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} == null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultZero',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `!Boolean(${code})`,
                   }),
                 },
@@ -830,24 +710,24 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} != null`,
                   }),
                 },
                 {
                   messageId: 'conditionFixDefaultZero',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} ?? 0`,
                   }),
                 },
                 {
                   messageId: 'conditionFixCastBoolean',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `Boolean(${code})`,
                   }),
                 },
@@ -877,9 +757,9 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node: node.parent,
                     innerNode: node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} == null`,
                   }),
                 },
@@ -894,8 +774,8 @@ export default createRule<Options, MessageId>({
                 {
                   messageId: 'conditionFixCompareNullish',
                   fix: getWrappingFixer({
-                    sourceCode: context.sourceCode,
                     node,
+                    sourceCode: context.sourceCode,
                     wrap: code => `${code} != null`,
                   }),
                 },
@@ -924,9 +804,9 @@ export default createRule<Options, MessageId>({
               node,
               messageId: 'conditionErrorNullableEnum',
               fix: getWrappingFixer({
-                sourceCode: context.sourceCode,
                 node: node.parent,
                 innerNode: node,
+                sourceCode: context.sourceCode,
                 wrap: code => `${code} == null`,
               }),
             });
@@ -935,8 +815,8 @@ export default createRule<Options, MessageId>({
               node,
               messageId: 'conditionErrorNullableEnum',
               fix: getWrappingFixer({
-                sourceCode: context.sourceCode,
                 node,
+                sourceCode: context.sourceCode,
                 wrap: code => `${code} != null`,
               }),
             });
@@ -955,8 +835,8 @@ export default createRule<Options, MessageId>({
               {
                 messageId: 'conditionFixCastBoolean',
                 fix: getWrappingFixer({
-                  sourceCode: context.sourceCode,
                   node,
+                  sourceCode: context.sourceCode,
                   wrap: code => `Boolean(${code})`,
                 }),
               },

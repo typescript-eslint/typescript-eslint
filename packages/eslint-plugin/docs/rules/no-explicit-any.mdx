@@ -107,12 +107,16 @@ function greet(param: Array<string>): Array<string> {}
 
 ### `fixToUnknown`
 
+{/* insert option description */}
+
 By default, this rule will not provide automatic ESLint _fixes_: only opt-in _suggestions_.
 Switching types to `unknown` is safer but is likely to cause additional type errors.
 
 Enabling `{ "fixToUnknown": true }` gives the rule an auto-fixer to replace `: any` with `: unknown`.
 
 ### `ignoreRestArgs`
+
+{/* insert option description */}
 
 The examples below are **incorrect** when `{ignoreRestArgs: false}`, but **correct** when `{ignoreRestArgs: true}`.
 

@@ -31,6 +31,8 @@ const defaultOptions: Options = {
 
 ### `ignoreTypeValueShadow`
 
+{/* insert option description */}
+
 This is generally safe because you cannot use variables in type locations without a `typeof` operator, so there's little risk of confusion.
 
 Examples of **correct** code with `{ ignoreTypeValueShadow: true }`:
@@ -54,6 +56,8 @@ _Shadowing_ specifically refers to two identical identifiers that are in differe
 :::
 
 ### `ignoreFunctionTypeParameterNameValueShadow`
+
+{/* insert option description */}
 
 Each of a function type's arguments creates a value variable within the scope of the function type. This is done so that you can reference the type later using the `typeof` operator:
 

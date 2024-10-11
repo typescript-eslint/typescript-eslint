@@ -1,11 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 interface Options {
-  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
   allowAsThisParameter?: boolean;
+  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
 }
 
 type MessageIds =
@@ -27,9 +28,9 @@ export default createRule<[Options], MessageIds>({
     messages: {
       invalidVoidForGeneric:
         '{{ generic }} may not have void as a type argument.',
+      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrGeneric:
         'void is only valid as a return type or generic type argument.',
-      invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
         'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
@@ -40,39 +41,39 @@ export default createRule<[Options], MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
+          allowAsThisParameter: {
+            type: 'boolean',
+            description:
+              'Whether a `this` parameter of a function may be `void`.',
+          },
           allowInGenericTypeArguments: {
             description:
               'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
               {
+                type: 'boolean',
                 description:
                   'Whether `void` can be used as a valid value for all generic type parameters.',
-                type: 'boolean',
               },
               {
+                type: 'array',
                 description:
                   'Allowlist of types that may accept `void` as a generic type parameter.',
-                type: 'array',
                 items: { type: 'string' },
                 minItems: 1,
               },
             ],
           },
-          allowAsThisParameter: {
-            description:
-              'Whether a `this` parameter of a function may be `void`.',
-            type: 'boolean',
-          },
         },
-        additionalProperties: false,
       },
     ],
   },
   defaultOptions: [
-    { allowInGenericTypeArguments: true, allowAsThisParameter: false },
+    { allowAsThisParameter: false, allowInGenericTypeArguments: true },
   ],
-  create(context, [{ allowInGenericTypeArguments, allowAsThisParameter }]) {
+  create(context, [{ allowAsThisParameter, allowInGenericTypeArguments }]) {
     const validParents: AST_NODE_TYPES[] = [
       AST_NODE_TYPES.TSTypeAnnotation, //
     ];
@@ -121,9 +122,9 @@ export default createRule<[Options], MessageIds>({
             .includes(fullyQualifiedName)
         ) {
           context.report({
+            node,
             messageId: 'invalidVoidForGeneric',
             data: { generic: fullyQualifiedName },
-            node,
           });
         }
         return;
@@ -131,10 +132,10 @@ export default createRule<[Options], MessageIds>({
 
       if (!allowInGenericTypeArguments) {
         context.report({
+          node,
           messageId: allowAsThisParameter
             ? 'invalidVoidNotReturnOrThisParam'
             : 'invalidVoidNotReturn',
-          node,
         });
       }
     }
@@ -148,8 +149,8 @@ export default createRule<[Options], MessageIds>({
     ): void {
       if (parentNode.default !== node) {
         context.report({
-          messageId: getNotReturnOrGenericMessageId(node),
           node,
+          messageId: getNotReturnOrGenericMessageId(node),
         });
       }
     }
@@ -223,6 +224,7 @@ export default createRule<[Options], MessageIds>({
         }
 
         context.report({
+          node,
           messageId:
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
@@ -231,7 +233,6 @@ export default createRule<[Options], MessageIds>({
                 : allowAsThisParameter
                   ? 'invalidVoidNotReturnOrThisParam'
                   : 'invalidVoidNotReturn',
-          node,
         });
       },
     };

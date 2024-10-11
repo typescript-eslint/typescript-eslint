@@ -18,6 +18,8 @@ This rule reports when a `switch` statement over a value typed as a union of lit
 
 ### `allowDefaultCaseForExhaustiveSwitch`
 
+{/* insert option description */}
+
 If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
 
 When a `switch` statement over a union type is exhaustive, a final `default` case would be a form of dead code.
@@ -33,6 +35,8 @@ If your project has a small number of intentionally redundant `default` cases, y
 If your project has many intentionally redundant `default` cases, you may want to disable `allowDefaultCaseForExhaustiveSwitch` and use the [`default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case) along with [a `satisfies never` check](https://www.typescriptlang.org/play?#code/C4TwDgpgBAYgTgVwJbCgXigcgIZjAGwkygB8sAjbAO2u0wG4AoRgMwSoGNgkB7KqBAGcI8ZMAAULRCgBcsacACUcwcDhIqAcygBvRlCiCA7ig4ALKJIWLd+g1A7ZhWXASJy99+3AjAEcfhw8QgApZA4iJi8AX2YvR2dMShoaTA87Lx8-AIpaGjCkCIYMqFiSgBMIFmwEfGB0rwMpMUNsbkEWJAhBKCoIADcIOCjGrP9A9gBrKh4jKgKikYNY5cZYoA).
 
 ### `requireDefaultForNonUnion`
+
+{/* insert option description */}
 
 If set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
 
