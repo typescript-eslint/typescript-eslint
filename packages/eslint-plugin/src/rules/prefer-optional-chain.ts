@@ -128,24 +128,17 @@ export default createRule<
         if (node.alternate) {
           return;
         }
-        if (
-          node.test.type !== AST_NODE_TYPES.LogicalExpression &&
-          node.test.type !== AST_NODE_TYPES.Identifier &&
-          node.test.type !== AST_NODE_TYPES.MemberExpression &&
-          node.test.type !== AST_NODE_TYPES.CallExpression
-        ) {
+        const ifBodyStatement = node.consequent.body[0];
+
+        if (ifBodyStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
           return;
         }
-        const ifBodyStatement = node.consequent.body[0];
+
         const hasCommentsInIfBody =
           context.sourceCode.getCommentsBefore(ifBodyStatement).length ||
           context.sourceCode.getCommentsAfter(ifBodyStatement).length;
 
         if (hasCommentsInIfBody) {
-          return;
-        }
-
-        if (ifBodyStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
           return;
         }
         const ifBodyExpression = ifBodyStatement.expression;

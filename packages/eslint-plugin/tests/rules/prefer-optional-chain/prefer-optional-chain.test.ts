@@ -759,6 +759,11 @@ foo?.bar?.baz?.bazz();
       },
     ],
     valid: [
+      // Option is disabled
+      {
+        code: noFormat`if (foo) { foo.bar(); }`,
+        options: [{ allowSuggestingOnIfStatements: false }],
+      },
       // Ignore no calls
       {
         code: noFormat`if (foo) { foo.bar; }`,
@@ -804,6 +809,24 @@ foo?.bar?.baz?.bazz();
           declare const x: null | { a: () => string };
           if (globalThis) {
             x.a();
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: `
+          if (foo && typeof window === 'undefined') {
+            foo.bar();
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: `
+          if (foo) {
+            if (foo.bar) {
+              console.log(window);
+            }
           }
         `,
         options: [{ allowSuggestingOnIfStatements: true }],
