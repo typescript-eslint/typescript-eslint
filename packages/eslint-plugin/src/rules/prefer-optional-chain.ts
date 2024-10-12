@@ -116,7 +116,6 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
-      // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
       'IfStatement[consequent.body.length=1][consequent.type=BlockStatement]': (
         node: {
           consequent: { type: AST_NODE_TYPES.BlockStatement };
@@ -236,6 +235,7 @@ export default createRule<
         }
       },
 
+      // specific handling for `(foo ?? {}).bar` / `(foo || {}).bar`
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
         node: TSESTree.LogicalExpression,
       ): void {
