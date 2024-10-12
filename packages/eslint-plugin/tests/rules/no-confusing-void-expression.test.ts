@@ -391,6 +391,25 @@ function test(): void | string {
       `,
       options: [{ ignoreVoidReturningFunctions: true }],
     },
+    {
+      code: `
+export function makeDate(): Date;
+export function makeDate(m: number): void;
+export function makeDate(m?: number): Date | void {
+  if (m !== undefined) {
+    return console.log('123');
+  }
+  return new Date();
+}
+
+declare const test: (cb: () => void) => void;
+
+test((() => {
+  return console.log('123');
+}) as typeof makeDate | (() => string));
+      `,
+      options: [{ ignoreVoidReturningFunctions: true }],
+    },
   ],
 
   invalid: [

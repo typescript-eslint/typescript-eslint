@@ -419,17 +419,15 @@ export default createRule<Options, MessageId>({
     }
 
     function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
-      const signature = tsutils.getCallSignaturesOfType(functionType).at(0);
+      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
 
-      if (!signature) {
-        return false;
-      }
+      return callSignatures.some(signature => {
+        const returnType = signature.getReturnType();
 
-      const returnType = signature.getReturnType();
-
-      return tsutils
-        .unionTypeParts(returnType)
-        .some(tsutils.isIntrinsicVoidType);
+        return tsutils
+          .unionTypeParts(returnType)
+          .some(tsutils.isIntrinsicVoidType);
+      });
     }
 
     function isVoidReturningFunctionNode(
