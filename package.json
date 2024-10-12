@@ -117,7 +117,7 @@
     "make-dir": "^4.0.0",
     "markdownlint-cli": "^0.42.0",
     "ncp": "^2.0.0",
-    "nx": "19.5.2",
+    "nx": "19.8.4",
     "prettier": "3.3.2",
     "pretty-format": "^29.7.0",
     "rimraf": "^5.0.5",
