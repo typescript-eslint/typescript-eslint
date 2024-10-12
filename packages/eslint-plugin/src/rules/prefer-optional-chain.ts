@@ -141,9 +141,6 @@ export default createRule<
           return;
         }
         const ifBodyExpression = ifBodyStatement.expression;
-        if (ifBodyExpression.type !== AST_NODE_TYPES.CallExpression) {
-          return;
-        }
         const currentChain: ValidOperand[] = [
           {
             node: node.test,
@@ -170,13 +167,34 @@ export default createRule<
             currentChain.push(operand);
           }
         }
-        currentChain.push({
-          node: ifBodyExpression,
-          type: OperandValidity.Valid,
-          comparedName: ifBodyExpression,
-          comparisonType: NullishComparisonType.Boolean,
-          isYoda: false,
-        });
+        if (ifBodyExpression.type === AST_NODE_TYPES.LogicalExpression) {
+          const { newlySeenLogicals, operands } = gatherLogicalOperands(
+            ifBodyExpression,
+            parserServices,
+            context.sourceCode,
+            options,
+          );
+          for (const logical of newlySeenLogicals) {
+            seenLogicals.add(logical);
+          }
+          for (const operand of operands) {
+            if (operand.type === OperandValidity.Invalid) {
+              return;
+            }
+            currentChain.push(operand);
+          }
+        } else {
+          if (ifBodyExpression.type !== AST_NODE_TYPES.CallExpression) {
+            return;
+          }
+          currentChain.push({
+            node: ifBodyExpression,
+            type: OperandValidity.Valid,
+            comparedName: ifBodyExpression,
+            comparisonType: NullishComparisonType.Boolean,
+            isYoda: false,
+          });
+        }
         analyzeChain(
           context,
           parserServices,

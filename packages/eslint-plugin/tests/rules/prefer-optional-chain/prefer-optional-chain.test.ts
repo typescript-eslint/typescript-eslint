@@ -740,10 +740,10 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
-declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
-if (foo && foo.bar && foo.bar.baz) {
-  foo.bar.baz.bazz();
-}
+          declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
+          if (foo && foo.bar && foo.bar.baz) {
+            foo.bar.baz.bazz();
+          }
         `,
         errors: [
           {
@@ -753,9 +753,20 @@ if (foo && foo.bar && foo.bar.baz) {
         ],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: `
-declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
-foo?.bar?.baz?.bazz();
+          declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
+          foo?.bar?.baz?.bazz();
         `,
+      },
+      {
+        code: noFormat`if (foo) { foo.bar.baz && foo.bar.baz(); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.bar.baz?.();',
       },
     ],
     valid: [
