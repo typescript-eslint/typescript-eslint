@@ -673,7 +673,7 @@ describe('if block with a single statment matches part of the condition', () => 
   ruleTester.run('prefer-optional-chain', rule, {
     invalid: [
       {
-        code: noFormat`if (foo) { foo.bar(); }`,
+        code: noFormat`if (foo) { foo.bar() }`, // Missing semi-colon
         errors: [
           {
             messageId: 'preferOptionalChain',
@@ -684,6 +684,17 @@ describe('if block with a single statment matches part of the condition', () => 
         output: 'foo?.bar()',
       },
       {
+        code: noFormat`if (foo) { foo.bar(); }`,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.bar();',
+      },
+      {
         code: noFormat`if (foo) { foo(); }`,
         errors: [
           {
@@ -692,7 +703,7 @@ describe('if block with a single statment matches part of the condition', () => 
           },
         ],
         options: [{ allowSuggestingOnIfStatements: true }],
-        output: 'foo?.()',
+        output: 'foo?.();',
       },
       {
         code: noFormat`if (foo) { foo[bar](); }`,
@@ -703,7 +714,7 @@ describe('if block with a single statment matches part of the condition', () => 
           },
         ],
         options: [{ allowSuggestingOnIfStatements: true }],
-        output: 'foo?.[bar]()',
+        output: 'foo?.[bar]();',
       },
       {
         code: noFormat`if (foo[bar]) { foo[bar].baz(); }`,
@@ -714,7 +725,7 @@ describe('if block with a single statment matches part of the condition', () => 
           },
         ],
         options: [{ allowSuggestingOnIfStatements: true }],
-        output: 'foo[bar]?.baz()',
+        output: 'foo[bar]?.baz();',
       },
       {
         code: noFormat`if (foo.bar.baz()) { foo.bar.baz().bazz(); }`,
@@ -725,7 +736,7 @@ describe('if block with a single statment matches part of the condition', () => 
           },
         ],
         options: [{ allowSuggestingOnIfStatements: true }],
-        output: 'foo.bar.baz()?.bazz()',
+        output: 'foo.bar.baz()?.bazz();',
       },
       {
         code: `
@@ -743,7 +754,7 @@ if (foo && foo.bar && foo.bar.baz) {
         options: [{ allowSuggestingOnIfStatements: true }],
         output: `
 declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
-foo?.bar?.baz?.bazz()
+foo?.bar?.baz?.bazz();
         `,
       },
     ],
