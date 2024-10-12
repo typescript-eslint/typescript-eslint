@@ -1,5 +1,5 @@
 ---
-description: 'Require `.toString()` to only be called on objects which provide useful information when stringified.'
+description: 'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,11 +9,11 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-base-to-string** for documentation.
 
-JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
-The default Object `.toString()` uses the format `"[object Object]"`, which is often not what was intended.
-This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` method.
+JavaScript will call `toString()` or `toLocaleString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
+The default Object `.toString()` or `toLocaleString()` uses the format `"[object Object]"`, which is often not what was intended.
+This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` or `toLocaleString()` method.
 
-> Note that `Function` provides its own `.toString()` that returns the function's code.
+> Note that `Function` provides its own `.toString()` or `toLocaleString()` that returns the function's code.
 > Functions are not flagged by this rule.
 
 ## Examples
@@ -29,20 +29,22 @@ class MyClass {}
 const value = new MyClass();
 value + '';
 
-// Interpolation and manual .toString() calls too:
+// Interpolation and manual .toString() and .toLocaleString() calls too:
 `Value: ${value}`;
 ({}).toString();
+({}).toLocaleString();
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-// These types all have useful .toString()s
+// These types all have useful .toString() and .toLocaleString() methods
 'Text' + true;
 `Value: ${123}`;
 `Arrays too: ${[1, 2, 3]}`;
 (() => {}).toString();
+(() => {}).toLocaleString();
 
 // Defining a custom .toString class is considered acceptable
 class CustomToString {
@@ -67,8 +69,8 @@ const literalWithToString = {
 ### `ignoredTypeNames`
 
 Stringified regular expressions of type names to ignore.
-This is useful for types missing `toString()` (but actually has `toString()`).
-There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
+This is useful for types missing `toString()` or `toLocaleString()` (but actually has `toString()` or `toLocaleString()`).
+There are some types missing `toString()` or `toLocaleString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
 The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
@@ -93,3 +95,4 @@ If you don't mind a risk of `"[object Object]"` or incorrect type coercions in y
 ## Further Reading
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
+- [`Object.prototype.toLocaleString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString)
