@@ -66,6 +66,30 @@ foo?.a?.b?.c?.d?.e;
 In the context of the descriptions below a "loose boolean" operand is any operand that implicitly coerces the value to a boolean.
 Specifically the argument of the not operator (`!loose`) or a bare value in a logical expression (`loose && looser`).
 
+### allowSuggestingOnIfStatements
+
+When this option is `true`, the rule will analyze and suggest turning simple `if` statements with a single block expression into an optional chain call
+
+<Tabs>
+
+<TabItem value="❌ Incorrect for `allowSuggestingOnIfStatements: true`">
+
+```ts option='{ "allowSuggestingOnIfStatements": true }'
+if (foo) {
+  foo.bar();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct for `allowSuggestingOnIfStatements: false`">
+
+```ts option='{ "allowSuggestingOnIfStatements": false }'
+foo?.bar();
+```
+
+</TabItem>
+</Tabs>
+
 ### `allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing`
 
 When this option is `true`, the rule will provide an auto-fixer for cases where the return type of the expression would change. For example for the expression `!foo || foo.bar` the return type of the expression is `true | T`, however for the equivalent optional chain `foo?.bar` the return type of the expression is `undefined | T`. Thus changing the code from a logical expression to an optional chain expression has altered the type of the expression.
