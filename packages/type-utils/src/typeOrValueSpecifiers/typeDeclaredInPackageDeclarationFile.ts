@@ -1,3 +1,7 @@
+import console from 'node:console';
+import path from 'node:path';
+
+import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
@@ -34,6 +38,12 @@ function typeDeclaredInDeclarationFile(
   const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
 
   const packageNameMatcher = new RegExp(`${packageName}|${typesPackageName}`);
+  console.log(
+    program.getCompilerOptions().typeRoots ?? ['node_modules'],
+    getCanonicalFileName(
+      path.join(program.getCurrentDirectory(), relativePath),
+    ),
+  );
   const fileNameMatcher = new RegExp(
     `node_modules/(?:${packageName}|@types/${typesPackageName})/`,
   );
