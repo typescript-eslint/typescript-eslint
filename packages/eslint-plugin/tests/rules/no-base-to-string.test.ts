@@ -51,6 +51,11 @@ ruleTester.run('no-base-to-string', rule, {
     // toString()
     ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
 
+    // toLocalString()
+    ...literalListWrapped.map(
+      i => `${i === '1' ? `(${i})` : i}.toLocalString();`,
+    ),
+
     // variable toString() and template
     ...literalList.map(
       i => `
@@ -60,12 +65,27 @@ ruleTester.run('no-base-to-string', rule, {
       `,
     ),
 
+    // variable toLocalString() and template
+    ...literalList.map(
+      i => `
+        let value = ${i};
+        value.toLocalString();
+        let text = \`\${value}\`;
+      `,
+    ),
+
     `
 function someFunction() {}
 someFunction.toString();
 let text = \`\${someFunction}\`;
     `,
+    `
+function someFunction() {}
+someFunction.toLocaleString();
+let text = \`\${someFunction}\`;
+    `,
     'unknownObject.toString();',
+    'unknownObject.toLocaleString();',
     'unknownObject.someOtherMethod();',
     `
 class CustomToString {
@@ -84,6 +104,14 @@ const literalWithToString = {
     `
 const printer = (inVar: string | number | boolean) => {
   inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
+    `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toLocaleString();
 };
 printer('');
 printer(1);
@@ -145,6 +173,18 @@ tag\`\${{}}\`;
       ],
     },
     {
+      code: '({}).toLocaleString();',
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
       code: "'' + {};",
       errors: [
         {
@@ -186,6 +226,21 @@ tag\`\${{}}\`;
     {
       code: `
         let someObjectOrString = Math.random() ? { a: true } : 'text';
+        someObjectOrString.toLocaleString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'someObjectOrString',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        let someObjectOrString = Math.random() ? { a: true } : 'text';
         someObjectOrString + '';
       `,
       errors: [
@@ -202,6 +257,21 @@ tag\`\${{}}\`;
       code: `
         let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
         someObjectOrObject.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'someObjectOrObject',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
+        someObjectOrObject.toLocaleString();
       `,
       errors: [
         {
