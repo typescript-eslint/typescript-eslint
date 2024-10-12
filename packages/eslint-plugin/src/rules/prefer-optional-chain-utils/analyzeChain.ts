@@ -408,9 +408,8 @@ function getReportDescriptor(
   const reportRange = getReportRange(chain, node, sourceCode);
 
   if (node.type === AST_NODE_TYPES.IfStatement) {
-    const lastChainNode = chain.at(-1)?.node;
     const chainEndedWithSemicolon =
-      lastChainNode && sourceCode.getTokenAfter(lastChainNode)?.value === ';';
+      sourceCode.getTokenAfter(lastOperand.node)?.value === ';';
     if (chainEndedWithSemicolon) {
       newCode += ';';
     }
