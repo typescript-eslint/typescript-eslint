@@ -12,6 +12,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.",
         "type": "boolean"
       },
+      "allowSuggestingOnIfStatements": {
+        "description": "Allow suggesting optional chain on if statements with a single expression in the consequent.",
+        "type": "boolean"
+      },
       "checkAny": {
         "description": "Check operands that are typed as \`any\` when inspecting \\"loose boolean\\" operands.",
         "type": "boolean"
@@ -52,6 +56,8 @@ type Options = [
   {
     /** Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build. */
     allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
+    /** Allow suggesting optional chain on if statements with a single expression in the consequent. */
+    allowSuggestingOnIfStatements?: boolean;
     /** Check operands that are typed as \`any\` when inspecting "loose boolean" operands. */
     checkAny?: boolean;
     /** Check operands that are typed as \`bigint\` when inspecting "loose boolean" operands. */
