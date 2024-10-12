@@ -99,7 +99,7 @@ class CustomToString {
 const literalWithToString = {
   toString: () => 'Hello, world!',
 };
-'' + literalToString;
+'' + literalWithToString;
     `,
     `
 const printer = (inVar: string | number | boolean) => {
