@@ -12,10 +12,12 @@ const value = new MyClass();
 value + '';
 ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
 
-// Interpolation and manual .toString() calls too:
+// Interpolation and manual .toString() and .toLocaleString() calls too:
 \`Value: \${value}\`;
           ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
 ({}).toString();
+ ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
+({}).toLocaleString();
  ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 "
 `;
@@ -23,11 +25,12 @@ value + '';
 exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 2`] = `
 "Correct
 
-// These types all have useful .toString()s
+// These types all have useful .toString() and .toLocaleString() methods
 'Text' + true;
 \`Value: \${123}\`;
 \`Arrays too: \${[1, 2, 3]}\`;
 (() => {}).toString();
+(() => {}).toLocaleString();
 
 // Defining a custom .toString class is considered acceptable
 class CustomToString {

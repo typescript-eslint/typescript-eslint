@@ -24,7 +24,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+        'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
