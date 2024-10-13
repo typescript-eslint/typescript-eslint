@@ -116,6 +116,7 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
+      // specific handling for `if (foo) { foo.bar(); }`
       'IfStatement[consequent.body.length=1][consequent.type=BlockStatement]': (
         node: {
           consequent: { type: AST_NODE_TYPES.BlockStatement };
