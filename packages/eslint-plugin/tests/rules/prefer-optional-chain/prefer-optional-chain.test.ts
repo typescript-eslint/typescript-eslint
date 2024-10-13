@@ -674,69 +674,51 @@ describe('if block with a single statment matches part of the condition', () => 
     invalid: [
       {
         code: noFormat`if (foo) { foo.bar() }`, // Missing semi-colon
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: 'foo?.bar()',
       },
       {
         code: noFormat`if (foo) { foo.bar(); }`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: 'foo?.bar();',
       },
       {
         code: noFormat`if (foo) { foo(); }`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: 'foo?.();',
       },
       {
         code: noFormat`if (foo) { foo[bar](); }`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: 'foo?.[bar]();',
       },
       {
         code: noFormat`if (foo[bar]) { foo[bar].baz(); }`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: 'foo[bar]?.baz();',
       },
       {
         code: noFormat`if (foo.bar.baz()) { foo.bar.baz().bazz(); }`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],
         output: 'foo.bar.baz()?.bazz();',
+      },
+      {
+        code: noFormat`if (foo && foo.bar && foo.bar.baz) { foo.bar.baz.bazz(); }`,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.bar?.baz?.bazz();',
+      },
+      {
+        code: noFormat`if (foo) { foo.bar.baz && foo.bar.baz(); }`,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.bar.baz?.();',
       },
       {
         code: `
@@ -745,28 +727,14 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar.baz.bazz();
           }
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [
+          { allowSuggestingOnIfStatements: true, requireNullish: true },
         ],
-        options: [{ allowSuggestingOnIfStatements: true }],
         output: `
           declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
           foo?.bar?.baz?.bazz();
         `,
-      },
-      {
-        code: noFormat`if (foo) { foo.bar.baz && foo.bar.baz(); }`,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
-        options: [{ allowSuggestingOnIfStatements: true }],
-        output: 'foo?.bar.baz?.();',
       },
     ],
     valid: [
@@ -857,6 +825,16 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: `
+          if (foo) {
+            foo.bar();
+          }
+        `,
+        options: [
+          { allowSuggestingOnIfStatements: true, requireNullish: true },
+        ],
       },
     ],
   });
