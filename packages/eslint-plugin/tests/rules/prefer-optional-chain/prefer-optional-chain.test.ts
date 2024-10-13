@@ -835,6 +835,22 @@ describe('if block with a single statment matches part of the condition', () => 
       {
         code: `
           if (foo) {
+            typeof window === 'undefined' && foo.bar();
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: `
+          if (foo) {
+            foo.bar() && typeof window === 'undefined';
+          }
+        `,
+        options: [{ allowSuggestingOnIfStatements: true }],
+      },
+      {
+        code: `
+          if (foo) {
             if (foo.bar) {
               console.log(window);
             }
