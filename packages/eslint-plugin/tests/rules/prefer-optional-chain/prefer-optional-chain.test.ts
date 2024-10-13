@@ -685,6 +685,12 @@ describe('if block with a single statment matches part of the condition', () => 
         output: 'foo?.bar();',
       },
       {
+        code: 'if (foo) foo.bar();', // Missing curly braces
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowSuggestingOnIfStatements: true }],
+        output: 'foo?.bar();',
+      },
+      {
         code: noFormat`if (foo) { foo(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowSuggestingOnIfStatements: true }],

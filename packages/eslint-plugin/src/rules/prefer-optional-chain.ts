@@ -116,96 +116,96 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
-      // specific handling for `if (foo) { foo.bar(); }`
-      'IfStatement[consequent.body.length=1][consequent.type=BlockStatement]': (
-        node: {
-          consequent: { type: AST_NODE_TYPES.BlockStatement };
-        } & TSESTree.IfStatement,
-      ): void => {
-        if (!options.allowSuggestingOnIfStatements) {
-          return;
-        }
-        if (node.alternate) {
-          return;
-        }
-        const ifBodyStatement = node.consequent.body[0];
-
-        if (ifBodyStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
-          return;
-        }
-
-        const hasCommentsInIfBody =
-          context.sourceCode.getCommentsBefore(ifBodyStatement).length ||
-          context.sourceCode.getCommentsAfter(ifBodyStatement).length;
-
-        if (hasCommentsInIfBody) {
-          return;
-        }
-        const ifBodyExpression = ifBodyStatement.expression;
-        const currentChain: ValidOperand[] = [
-          {
-            node: node.test,
-            type: OperandValidity.Valid,
-            comparedName: node.test,
-            comparisonType: NullishComparisonType.Boolean,
-            isYoda: false,
-          },
-        ];
-        if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
-          const { newlySeenLogicals, operands } = gatherLogicalOperands(
-            node.test,
-            parserServices,
-            context.sourceCode,
-            options,
-          );
-          for (const logical of newlySeenLogicals) {
-            seenLogicals.add(logical);
-          }
-          for (const operand of operands) {
-            if (operand.type === OperandValidity.Invalid) {
-              return;
-            }
-            currentChain.push(operand);
-          }
-        }
-        if (ifBodyExpression.type === AST_NODE_TYPES.LogicalExpression) {
-          const { newlySeenLogicals, operands } = gatherLogicalOperands(
-            ifBodyExpression,
-            parserServices,
-            context.sourceCode,
-            options,
-          );
-          for (const logical of newlySeenLogicals) {
-            seenLogicals.add(logical);
-          }
-          for (const operand of operands) {
-            if (operand.type === OperandValidity.Invalid) {
-              return;
-            }
-            currentChain.push(operand);
-          }
-        } else {
-          if (ifBodyExpression.type !== AST_NODE_TYPES.CallExpression) {
+      // specific handling for `if (foo) { foo.bar(); }` / `if (foo) foo.bar();`
+      'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]':
+        (node: TSESTree.IfStatement): void => {
+          if (!options.allowSuggestingOnIfStatements) {
             return;
           }
-          currentChain.push({
-            node: ifBodyExpression,
-            type: OperandValidity.Valid,
-            comparedName: ifBodyExpression,
-            comparisonType: NullishComparisonType.Boolean,
-            isYoda: false,
-          });
-        }
-        analyzeChain(
-          context,
-          parserServices,
-          options,
-          node,
-          '&&',
-          currentChain,
-        );
-        return;
-      },
+          if (node.alternate) {
+            return;
+          }
+          const ifBodyStatement =
+            node.consequent.type === AST_NODE_TYPES.BlockStatement
+              ? node.consequent.body[0]
+              : node.consequent;
+
+          if (ifBodyStatement.type !== AST_NODE_TYPES.ExpressionStatement) {
+            return;
+          }
+
+          const hasCommentsInIfBody =
+            context.sourceCode.getCommentsBefore(ifBodyStatement).length ||
+            context.sourceCode.getCommentsAfter(ifBodyStatement).length;
+
+          if (hasCommentsInIfBody) {
+            return;
+          }
+          const ifBodyExpression = ifBodyStatement.expression;
+          const currentChain: ValidOperand[] = [
+            {
+              node: node.test,
+              type: OperandValidity.Valid,
+              comparedName: node.test,
+              comparisonType: NullishComparisonType.Boolean,
+              isYoda: false,
+            },
+          ];
+          if (node.test.type === AST_NODE_TYPES.LogicalExpression) {
+            const { newlySeenLogicals, operands } = gatherLogicalOperands(
+              node.test,
+              parserServices,
+              context.sourceCode,
+              options,
+            );
+            for (const logical of newlySeenLogicals) {
+              seenLogicals.add(logical);
+            }
+            for (const operand of operands) {
+              if (operand.type === OperandValidity.Invalid) {
+                return;
+              }
+              currentChain.push(operand);
+            }
+          }
+          if (ifBodyExpression.type === AST_NODE_TYPES.LogicalExpression) {
+            const { newlySeenLogicals, operands } = gatherLogicalOperands(
+              ifBodyExpression,
+              parserServices,
+              context.sourceCode,
+              options,
+            );
+            for (const logical of newlySeenLogicals) {
+              seenLogicals.add(logical);
+            }
+            for (const operand of operands) {
+              if (operand.type === OperandValidity.Invalid) {
+                return;
+              }
+              currentChain.push(operand);
+            }
+          } else {
+            if (ifBodyExpression.type !== AST_NODE_TYPES.CallExpression) {
+              return;
+            }
+            currentChain.push({
+              node: ifBodyExpression,
+              type: OperandValidity.Valid,
+              comparedName: ifBodyExpression,
+              comparisonType: NullishComparisonType.Boolean,
+              isYoda: false,
+            });
+          }
+          analyzeChain(
+            context,
+            parserServices,
+            options,
+            node,
+            '&&',
+            currentChain,
+          );
+          return;
+        },
 
       'LogicalExpression[operator!="??"]'(
         node: TSESTree.LogicalExpression,
