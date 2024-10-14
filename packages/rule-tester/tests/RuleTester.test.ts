@@ -347,6 +347,21 @@ describe('RuleTester', () => {
     expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
   });
 
+  it('provided linterOptions should be respected', () => {
+    const ruleTester = new RuleTester({
+      linterOptions: {
+        reportUnusedDisableDirectives: 0,
+      },
+    });
+
+    expect(() => {
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+        valid: ['// eslint-disable-next-line'],
+      });
+    }).not.toThrow();
+  });
+
   it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
     const ruleTester = new RuleTester({
       languageOptions: {
