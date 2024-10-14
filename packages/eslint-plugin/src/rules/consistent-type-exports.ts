@@ -446,9 +446,12 @@ function getSourceFromExport(
  * the proper formatting.
  */
 function getSpecifierText(specifier: TSESTree.ExportSpecifier): string {
+  const exportedName =
+    specifier.exported.type === AST_NODE_TYPES.Literal
+      ? specifier.exported.raw
+      : specifier.exported.name;
+
   return `${specifier.local.name}${
-    specifier.exported.name !== specifier.local.name
-      ? ` as ${specifier.exported.name}`
-      : ''
+    exportedName !== specifier.local.name ? ` as ${exportedName}` : ''
   }`;
 }

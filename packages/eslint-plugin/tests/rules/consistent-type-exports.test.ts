@@ -21,6 +21,7 @@ ruleTester.run('consistent-type-exports', rule, {
 
     "export type { Type1 } from './consistent-type-exports';",
     "export { value1 } from './consistent-type-exports';",
+    'export { value1 as "🍎" } from \'./consistent-type-exports\';',
     "export type { value1 } from './consistent-type-exports';",
     `
 const variable = 1;
@@ -74,6 +75,18 @@ export { NonTypeNS };
         },
       ],
       output: "export type { Type1 } from './consistent-type-exports';",
+    },
+    {
+      code: 'export { Type1 as "🍎" } from \'./consistent-type-exports\';',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'typeOverValue',
+        },
+      ],
+      output:
+        'export type { Type1 as "🍎" } from \'./consistent-type-exports\';',
     },
     {
       code: "export { Type1, value1 } from './consistent-type-exports';",

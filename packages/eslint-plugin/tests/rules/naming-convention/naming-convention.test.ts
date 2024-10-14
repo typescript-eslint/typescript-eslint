@@ -1280,6 +1280,26 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: 'import { "🍎" as foo } from \'foo_bar\';',
+      errors: [
+        {
+          data: {
+            formats: 'PascalCase',
+            name: 'foo',
+            type: 'Import',
+          },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+      ],
+    },
   ],
   valid: [
     {
@@ -2256,6 +2276,16 @@ ruleTester.run('naming-convention', rule, {
         {
           format: ['camelCase'],
           modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: 'import { "🍎" as Foo } from \'foo_bar\';',
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
           selector: ['import'],
         },
       ],
