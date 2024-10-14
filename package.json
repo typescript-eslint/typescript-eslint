@@ -147,7 +147,8 @@
     "tmp": "0.2.1",
     "tsx": "^4.7.2",
     "typescript": "5.6.2",
-    "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch"
+    "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
+    "@microsoft/api-extractor@^7.47.8": "patch:@microsoft/api-extractor@npm%3A7.47.9#./.yarn/patches/@microsoft-api-extractor-npm-7.47.9-d69a694fc6.patch"
   },
   "packageManager": "yarn@3.8.2",
   "nx": {

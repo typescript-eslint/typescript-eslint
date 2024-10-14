@@ -1,0 +1,44 @@
+diff --git a/lib/analyzer/ExportAnalyzer.js b/lib/analyzer/ExportAnalyzer.js
+index 43b4bb171db8f2e51b6a2eaa0cc669f67ec820e8..b60e84802ad4a73d1910266b80c627fd05ae7c27 100644
+--- a/lib/analyzer/ExportAnalyzer.js
++++ b/lib/analyzer/ExportAnalyzer.js
+@@ -192,7 +192,11 @@ class ExportAnalyzer {
+             ? importOrExportDeclaration.argument
+             : importOrExportDeclaration.moduleSpecifier;
+         const mode = specifier && ts.isStringLiteralLike(specifier)
+-            ? TypeScriptInternals_1.TypeScriptInternals.getModeForUsageLocation(importOrExportDeclaration.getSourceFile(), specifier)
++            ? TypeScriptInternals_1.TypeScriptInternals.getModeForUsageLocation(
++                importOrExportDeclaration.getSourceFile(),
++                specifier,
++                this._program.getCompilerOptions()
++            )
+             : undefined;
+         const resolvedModule = TypeScriptInternals_1.TypeScriptInternals.getResolvedModule(this._program, importOrExportDeclaration.getSourceFile(), moduleSpecifier, mode);
+         if (resolvedModule === undefined) {
+@@ -676,7 +680,7 @@ class ExportAnalyzer {
+         const moduleSpecifier = this._getModuleSpecifier(importOrExportDeclaration);
+         const mode = importOrExportDeclaration.moduleSpecifier &&
+             ts.isStringLiteralLike(importOrExportDeclaration.moduleSpecifier)
+-            ? TypeScriptInternals_1.TypeScriptInternals.getModeForUsageLocation(importOrExportDeclaration.getSourceFile(), importOrExportDeclaration.moduleSpecifier)
++            ? TypeScriptInternals_1.TypeScriptInternals.getModeForUsageLocation(importOrExportDeclaration.getSourceFile(), importOrExportDeclaration.moduleSpecifier, this._program.getCompilerOptions())
+             : undefined;
+         const resolvedModule = TypeScriptInternals_1.TypeScriptInternals.getResolvedModule(this._program, importOrExportDeclaration.getSourceFile(), moduleSpecifier, mode);
+         if (resolvedModule === undefined) {
+diff --git a/lib/analyzer/TypeScriptInternals.js b/lib/analyzer/TypeScriptInternals.js
+index c72cafa63c0c6669b8389fbed17ecb49179773c3..22775d6d7cfd7bde796d7b44c51f07c7be774c6e 100644
+--- a/lib/analyzer/TypeScriptInternals.js
++++ b/lib/analyzer/TypeScriptInternals.js
+@@ -93,11 +93,11 @@ class TypeScriptInternals {
+     /**
+      * Gets the mode required for module resolution required with the addition of Node16/nodenext
+      */
+-    static getModeForUsageLocation(file, usage) {
++    static getModeForUsageLocation(file, usage, compilerOptions) {
+         // Compiler internal:
+         // https://github.com/microsoft/TypeScript/blob/v4.7.2/src/compiler/program.ts#L568
+         var _a, _b;
+-        return (_b = (_a = ts).getModeForUsageLocation) === null || _b === void 0 ? void 0 : _b.call(_a, file, usage);
++        return (_b = (_a = ts).getModeForUsageLocation) === null || _b === void 0 ? void 0 : _b.call(_a, file, usage, compilerOptions);
+     }
+     /**
+      * Returns ts.Symbol.parent if it exists.
