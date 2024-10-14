@@ -1,7 +1,8 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -28,6 +29,7 @@ type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow type assertions that do not change the type of an expression',
@@ -36,10 +38,10 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      unnecessaryAssertion:
-        'This assertion is unnecessary since it does not change the type of the expression.',
       contextuallyUnnecessary:
         'This assertion is unnecessary since the receiver accepts the original type of the expression.',
+      unnecessaryAssertion:
+        'This assertion is unnecessary since it does not change the type of the expression.',
     },
     schema: [
       {
@@ -47,8 +49,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           typesToIgnore: {
-            description: 'A list of type names to ignore.',
             type: 'array',
+            description: 'A list of type names to ignore.',
             items: {
               type: 'string',
             },
@@ -56,7 +58,6 @@ export default createRule<Options, MessageIds>({
         },
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [{}],
   create(context, [options]) {
@@ -208,104 +209,6 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      TSNonNullExpression(node): void {
-        const removeExclamationFix: ReportFixFunction = fixer => {
-          const exclamationToken = nullThrows(
-            context.sourceCode.getLastToken(node, token => token.value === '!'),
-            NullThrowsReasons.MissingToken(
-              'exclamation mark',
-              'non-null assertion',
-            ),
-          );
-
-          return fixer.removeRange(exclamationToken.range);
-        };
-
-        if (
-          node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
-          node.parent.operator === '='
-        ) {
-          if (node.parent.left === node) {
-            context.report({
-              node,
-              messageId: 'contextuallyUnnecessary',
-              fix: removeExclamationFix,
-            });
-          }
-          // for all other = assignments we ignore non-null checks
-          // this is because non-null assertions can change the type-flow of the code
-          // so whilst they might be unnecessary for the assignment - they are necessary
-          // for following code
-          return;
-        }
-
-        const originalNode = services.esTreeNodeToTSNodeMap.get(node);
-
-        const type = getConstrainedTypeAtLocation(services, node.expression);
-
-        if (!isNullableType(type) && !isTypeFlagSet(type, ts.TypeFlags.Void)) {
-          if (
-            node.expression.type === AST_NODE_TYPES.Identifier &&
-            isPossiblyUsedBeforeAssigned(node.expression)
-          ) {
-            return;
-          }
-
-          context.report({
-            node,
-            messageId: 'unnecessaryAssertion',
-            fix: removeExclamationFix,
-          });
-        } else {
-          // we know it's a nullable type
-          // so figure out if the variable is used in a place that accepts nullable types
-
-          const contextualType = getContextualType(checker, originalNode);
-          if (contextualType) {
-            // in strict mode you can't assign null to undefined, so we have to make sure that
-            // the two types share a nullable type
-            const typeIncludesUndefined = isTypeFlagSet(
-              type,
-              ts.TypeFlags.Undefined,
-            );
-            const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
-            const typeIncludesVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
-
-            const contextualTypeIncludesUndefined = isTypeFlagSet(
-              contextualType,
-              ts.TypeFlags.Undefined,
-            );
-            const contextualTypeIncludesNull = isTypeFlagSet(
-              contextualType,
-              ts.TypeFlags.Null,
-            );
-            const contextualTypeIncludesVoid = isTypeFlagSet(
-              contextualType,
-              ts.TypeFlags.Void,
-            );
-
-            // make sure that the parent accepts the same types
-            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
-            const isValidUndefined = typeIncludesUndefined
-              ? contextualTypeIncludesUndefined
-              : true;
-            const isValidNull = typeIncludesNull
-              ? contextualTypeIncludesNull
-              : true;
-            const isValidVoid = typeIncludesVoid
-              ? contextualTypeIncludesVoid
-              : true;
-
-            if (isValidUndefined && isValidNull && isValidVoid) {
-              context.report({
-                node,
-                messageId: 'contextuallyUnnecessary',
-                fix: removeExclamationFix,
-              });
-            }
-          }
-        }
-      },
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       ): void {
@@ -382,6 +285,104 @@ export default createRule<Options, MessageIds>({
         }
 
         // TODO - add contextually unnecessary check for this
+      },
+      TSNonNullExpression(node): void {
+        const removeExclamationFix: ReportFixFunction = fixer => {
+          const exclamationToken = nullThrows(
+            context.sourceCode.getLastToken(node, token => token.value === '!'),
+            NullThrowsReasons.MissingToken(
+              'exclamation mark',
+              'non-null assertion',
+            ),
+          );
+
+          return fixer.removeRange(exclamationToken.range);
+        };
+
+        if (
+          node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
+          node.parent.operator === '='
+        ) {
+          if (node.parent.left === node) {
+            context.report({
+              node,
+              messageId: 'contextuallyUnnecessary',
+              fix: removeExclamationFix,
+            });
+          }
+          // for all other = assignments we ignore non-null checks
+          // this is because non-null assertions can change the type-flow of the code
+          // so whilst they might be unnecessary for the assignment - they are necessary
+          // for following code
+          return;
+        }
+
+        const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+
+        const type = getConstrainedTypeAtLocation(services, node.expression);
+
+        if (!isNullableType(type)) {
+          if (
+            node.expression.type === AST_NODE_TYPES.Identifier &&
+            isPossiblyUsedBeforeAssigned(node.expression)
+          ) {
+            return;
+          }
+
+          context.report({
+            node,
+            messageId: 'unnecessaryAssertion',
+            fix: removeExclamationFix,
+          });
+        } else {
+          // we know it's a nullable type
+          // so figure out if the variable is used in a place that accepts nullable types
+
+          const contextualType = getContextualType(checker, originalNode);
+          if (contextualType) {
+            // in strict mode you can't assign null to undefined, so we have to make sure that
+            // the two types share a nullable type
+            const typeIncludesUndefined = isTypeFlagSet(
+              type,
+              ts.TypeFlags.Undefined,
+            );
+            const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
+            const typeIncludesVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
+
+            const contextualTypeIncludesUndefined = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Undefined,
+            );
+            const contextualTypeIncludesNull = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Null,
+            );
+            const contextualTypeIncludesVoid = isTypeFlagSet(
+              contextualType,
+              ts.TypeFlags.Void,
+            );
+
+            // make sure that the parent accepts the same types
+            // i.e. assigning `string | null | undefined` to `string | undefined` is invalid
+            const isValidUndefined = typeIncludesUndefined
+              ? contextualTypeIncludesUndefined
+              : true;
+            const isValidNull = typeIncludesNull
+              ? contextualTypeIncludesNull
+              : true;
+            const isValidVoid = typeIncludesVoid
+              ? contextualTypeIncludesVoid
+              : true;
+
+            if (isValidUndefined && isValidNull && isValidVoid) {
+              context.report({
+                node,
+                messageId: 'contextuallyUnnecessary',
+                fix: removeExclamationFix,
+              });
+            }
+          }
+        }
       },
     };
   },

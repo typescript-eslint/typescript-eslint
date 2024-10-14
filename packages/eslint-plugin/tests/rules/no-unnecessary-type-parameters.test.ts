@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-type-parameters';
 import { getFixturesRootDir } from '../RuleTester';
@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -420,6 +420,15 @@ declare function sillyFoo<T, Constant>(
   c: Constant,
 ): (data: T) => SillyFoo<T, Constant>;
     `,
+    `
+const f = <T,>(setValue: (v: T) => void, getValue: () => NoInfer<T>) => {};
+    `,
+    `
+const f = <T,>(
+  setValue: (v: T) => NoInfer<T>,
+  getValue: (v: NoInfer<T>) => NoInfer<T>,
+) => {};
+    `,
   ],
 
   invalid: [
@@ -427,8 +436,8 @@ declare function sillyFoo<T, Constant>(
       code: 'const func = <T,>(param: T) => null;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -436,8 +445,8 @@ declare function sillyFoo<T, Constant>(
       code: 'const f1 = <T,>(): T => {};',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -449,8 +458,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -472,8 +481,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -483,8 +492,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'V', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -496,12 +505,12 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -513,12 +522,12 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -530,8 +539,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'P', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -543,8 +552,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -556,12 +565,12 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'A', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'B', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -574,8 +583,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -588,8 +597,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -602,8 +611,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -620,8 +629,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -633,8 +642,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -646,8 +655,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'K', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -680,12 +689,12 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -722,8 +731,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T>(): unknown;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -731,8 +740,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -740,8 +749,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T extends object>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -749,8 +758,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function take<T>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -758,8 +767,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function take<T extends object>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -767,8 +776,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -776,8 +785,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function take<T, U extends T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -785,8 +794,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function take<T, U extends T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -794,8 +803,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T, U = T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -803,8 +812,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T, U extends T = T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -812,8 +821,8 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -821,16 +830,16 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -838,16 +847,16 @@ declare function sillyFoo<T, Constant>(
       code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -855,8 +864,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Fn = <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -864,8 +873,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Fn = <T>() => [];',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -876,8 +885,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -888,8 +897,8 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
         },
       ],
     },
@@ -897,8 +906,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Fn = <U>(param: U) => void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -906,8 +915,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Ctr = new <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -915,8 +924,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Fn = <T>() => { [K in keyof T]: K };',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -924,8 +933,8 @@ declare function sillyFoo<T, Constant>(
       code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -933,8 +942,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Fn = <T>(value: unknown) => value is T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -942,8 +951,8 @@ declare function sillyFoo<T, Constant>(
       code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },
@@ -956,8 +965,58 @@ declare function sillyFoo<T, Constant>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+declare function setItem<T>(T): T;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+interface StorageService {
+  setItem<T>({ key: string, value: T }): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      // This isn't actually an important test case.
+      // However, we use it as an example in the docs of code that is flagged,
+      // but shouldn't necessarily be. So, if you make a change to the rule logic
+      // that resolves this sort-of-false-positive, please update the docs
+      // accordingly.
+      // Original discussion in https://github.com/typescript-eslint/typescript-eslint/issues/9709
+      code: noFormat`
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+          messageId: 'sole',
+        },
+        {
+          data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
+          messageId: 'sole',
         },
       ],
     },

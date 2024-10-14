@@ -64,177 +64,177 @@ ruleTester.run('no-wrapper-object-types', rule, {
   invalid: [
     {
       code: 'let value: BigInt;',
-      output: 'let value: bigint;',
       errors: [
         {
-          data: { typeName: 'BigInt', preferred: 'bigint' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'bigint', typeName: 'BigInt' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: bigint;',
     },
     {
       code: 'let value: Boolean;',
-      output: 'let value: boolean;',
       errors: [
         {
-          data: { typeName: 'Boolean', preferred: 'boolean' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'boolean', typeName: 'Boolean' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: boolean;',
     },
     {
       code: 'let value: Number;',
-      output: 'let value: number;',
       errors: [
         {
-          data: { typeName: 'Number', preferred: 'number' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'number', typeName: 'Number' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: number;',
     },
     {
       code: 'let value: Object;',
-      output: 'let value: object;',
       errors: [
         {
-          data: { typeName: 'Object', preferred: 'object' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'object', typeName: 'Object' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: object;',
     },
     {
       code: 'let value: String;',
-      output: 'let value: string;',
       errors: [
         {
-          data: { typeName: 'String', preferred: 'string' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'string', typeName: 'String' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: string;',
     },
     {
       code: 'let value: Symbol;',
-      output: 'let value: symbol;',
       errors: [
         {
-          data: { typeName: 'Symbol', preferred: 'symbol' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'symbol', typeName: 'Symbol' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: symbol;',
     },
     {
       code: 'let value: Number | Symbol;',
-      output: 'let value: number | symbol;',
       errors: [
         {
-          data: { typeName: 'Number', preferred: 'number' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 12,
+          data: { preferred: 'number', typeName: 'Number' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
         {
-          data: { typeName: 'Symbol', preferred: 'symbol' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 21,
+          data: { preferred: 'symbol', typeName: 'Symbol' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: number | symbol;',
     },
     {
       code: 'let value: { property: Number };',
-      output: 'let value: { property: number };',
       errors: [
         {
-          messageId: 'bannedClassType',
-          line: 1,
           column: 24,
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'let value: { property: number };',
     },
     {
       code: '0 as Number;',
-      output: '0 as number;',
       errors: [
         {
-          messageId: 'bannedClassType',
-          line: 1,
           column: 6,
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: '0 as number;',
     },
     {
       code: 'type MyType = Number;',
-      output: 'type MyType = number;',
       errors: [
         {
-          messageId: 'bannedClassType',
-          line: 1,
           column: 15,
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'type MyType = number;',
     },
     {
       code: 'type MyType = [Number];',
-      output: 'type MyType = [number];',
       errors: [
         {
-          messageId: 'bannedClassType',
-          line: 1,
           column: 16,
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'type MyType = [number];',
     },
     {
       code: 'class MyClass implements Number {}',
-      output: null,
       errors: [
         {
-          messageId: 'bannedClassType',
-          line: 1,
           column: 26,
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: null,
     },
     {
       code: 'interface MyInterface extends Number {}',
-      output: null,
       errors: [
         {
-          messageId: 'bannedClassType',
-          line: 1,
           column: 31,
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: null,
     },
     {
       code: 'type MyType = Number & String;',
-      output: 'type MyType = number & string;',
       errors: [
         {
-          data: { preferred: 'number', typeName: 'Number' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 15,
+          data: { preferred: 'number', typeName: 'Number' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
         {
-          data: { preferred: 'string', typeName: 'String' },
-          messageId: 'bannedClassType',
-          line: 1,
           column: 24,
+          data: { preferred: 'string', typeName: 'String' },
+          line: 1,
+          messageId: 'bannedClassType',
         },
       ],
+      output: 'type MyType = number & string;',
     },
   ],
 });

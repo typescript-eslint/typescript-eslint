@@ -134,6 +134,8 @@ if (promise) {
 
 const val = promise ? 123 : 456;
 
+[1, 2, 3].filter(() => promise);
+
 while (promise) {
   // Do something
 }
@@ -151,6 +153,9 @@ if (await promise) {
 }
 
 const val = (await promise) ? 123 : 456;
+
+const returnVal = await promise;
+[1, 2, 3].filter(() => returnVal);
 
 while (await promise) {
   // Do something

@@ -128,7 +128,7 @@ import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 import useUnknownInCatchCallbackVariable from './use-unknown-in-catch-callback-variable';
 
-export default {
+const rules = {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
   'array-type': arrayType,
   'await-thenable': awaitThenable,
@@ -258,3 +258,5 @@ export default {
   'unified-signatures': unifiedSignatures,
   'use-unknown-in-catch-callback-variable': useUnknownInCatchCallbackVariable,
 } satisfies Linter.PluginRules;
+
+export = rules;

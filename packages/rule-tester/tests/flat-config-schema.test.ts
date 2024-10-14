@@ -39,7 +39,7 @@ describe('merge', () => {
   });
 
   it('does not preserve the type of merged objects', () => {
-    const first = new Set(['foo', 'bar']);
+    const first = new Set(['bar', 'foo']);
     const second = new Set(['baz']);
     const result = merge(
       first as unknown as ObjectLike,

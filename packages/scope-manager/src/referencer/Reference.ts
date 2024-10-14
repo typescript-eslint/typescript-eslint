@@ -1,8 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
-import { createIdGenerator } from '../ID';
 import type { Scope } from '../scope';
 import type { Variable } from '../variable';
+
+import { createIdGenerator } from '../ID';
 
 enum ReferenceFlag {
   Read = 0x1,
@@ -31,59 +32,57 @@ class Reference {
    * A unique ID for this instance - primarily used to help debugging and testing
    */
   public readonly $id: number = generator();
+
   /**
    * The read-write mode of the reference.
    */
   readonly #flag: ReferenceFlag;
+
   /**
    * Reference to the enclosing Scope.
    * @public
    */
   public readonly from: Scope;
+
   /**
    * Identifier syntax node.
    * @public
    */
-  public readonly identifier: TSESTree.Identifier | TSESTree.JSXIdentifier;
+  public readonly identifier:
+    | TSESTree.Identifier
+    | TSESTree.JSXIdentifier
+    | TSESTree.StringLiteral;
+
   /**
    * `true` if this writing reference is a variable initializer or a default value.
    * @public
    */
   public readonly init?: boolean;
+
+  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
+
   /**
    * The {@link Variable} object that this reference refers to. If such variable was not defined, this is `null`.
    * @public
    */
   public resolved: Variable | null;
+
   /**
    * If reference is writeable, this is the node being written to it.
    * @public
    */
   public readonly writeExpr?: TSESTree.Node | null;
 
-  public readonly maybeImplicitGlobal?: ReferenceImplicitGlobal | null;
-
   /**
    * In some cases, a reference may be a type, value or both a type and value reference.
    */
   readonly #referenceType: ReferenceTypeFlag;
 
-  /**
-   * True if this reference can reference types
-   */
-  public get isTypeReference(): boolean {
-    return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
-  }
-
-  /**
-   * True if this reference can reference values
-   */
-  public get isValueReference(): boolean {
-    return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
-  }
-
   constructor(
-    identifier: TSESTree.Identifier | TSESTree.JSXIdentifier,
+    identifier:
+      | TSESTree.Identifier
+      | TSESTree.JSXIdentifier
+      | TSESTree.StringLiteral,
     scope: Scope,
     flag: ReferenceFlag,
     writeExpr?: TSESTree.Node | null,
@@ -103,6 +102,20 @@ class Reference {
 
     this.maybeImplicitGlobal = maybeImplicitGlobal;
     this.#referenceType = referenceType;
+  }
+
+  /**
+   * True if this reference can reference types
+   */
+  public get isTypeReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.Type) !== 0;
+  }
+
+  /**
+   * True if this reference can reference values
+   */
+  public get isValueReference(): boolean {
+    return (this.#referenceType & ReferenceTypeFlag.Value) !== 0;
   }
 
   /**
@@ -149,6 +162,6 @@ class Reference {
 export {
   Reference,
   ReferenceFlag,
-  ReferenceTypeFlag,
   type ReferenceImplicitGlobal,
+  ReferenceTypeFlag,
 };

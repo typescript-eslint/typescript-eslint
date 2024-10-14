@@ -7,6 +7,7 @@ import type { NamedExportDeclarations } from '../../unions/ExportDeclaration';
 import type { ExportKind } from '../ExportAndImportKind';
 
 interface ExportNamedDeclarationBase extends BaseNode {
+  type: AST_NODE_TYPES.ExportNamedDeclaration;
   /**
    * The assertions declared for the export.
    * @example
@@ -52,7 +53,6 @@ interface ExportNamedDeclarationBase extends BaseNode {
    * This will be an empty array if `declaration` is not `null`
    */
   specifiers: ExportSpecifier[];
-  type: AST_NODE_TYPES.ExportNamedDeclaration;
 }
 
 /**

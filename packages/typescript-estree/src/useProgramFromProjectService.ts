@@ -13,6 +13,7 @@ import type {
   ASTAndNoProgram,
   ASTAndProgram,
 } from './create-program/shared';
+import { DEFAULT_EXTRA_FILE_EXTENSIONS } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
 import type { MutableParseSettings } from './parseSettings';
 
@@ -72,10 +73,32 @@ function openClientFileFromProjectService(
         `${parseSettings.filePath} was included by allowDefaultProject but also was found in the project service. Consider removing it from allowDefaultProject.`,
       );
     }
-  } else if (!isDefaultProjectAllowed) {
-    throw new Error(
-      `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
-    );
+  } else {
+    const wasNotFound = `${parseSettings.filePath} was not found by the project service`;
+
+    const fileExtension = path.extname(parseSettings.filePath);
+    const extraFileExtensions = parseSettings.extraFileExtensions;
+    if (
+      !DEFAULT_EXTRA_FILE_EXTENSIONS.has(fileExtension) &&
+      !extraFileExtensions.includes(fileExtension)
+    ) {
+      const nonStandardExt = `${wasNotFound} because the extension for the file (\`${fileExtension}\`) is non-standard`;
+      if (extraFileExtensions.length > 0) {
+        throw new Error(
+          `${nonStandardExt}. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
+        );
+      } else {
+        throw new Error(
+          `${nonStandardExt}. You should add \`parserOptions.extraFileExtensions\` to your config.`,
+        );
+      }
+    }
+
+    if (!isDefaultProjectAllowed) {
+      throw new Error(
+        `${wasNotFound}. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`,
+      );
+    }
   }
 
   // No a configFileName indicates this file wasn't included in a TSConfig.

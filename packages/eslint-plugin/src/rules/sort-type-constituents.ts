@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getEnumNames, typeNodeRequiresParentheses } from '../util';
@@ -106,9 +107,9 @@ function caseSensitiveSort(a: string, b: string): number {
 
 export type Options = [
   {
+    caseSensitive?: boolean;
     checkIntersections?: boolean;
     checkUnions?: boolean;
-    caseSensitive?: boolean;
     groupOrder?: string[];
   },
 ];
@@ -117,12 +118,8 @@ export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 export default createRule<Options, MessageIds>({
   name: 'sort-type-constituents',
   meta: {
-    deprecated: true,
-    replacedBy: [
-      'perfectionist/sort-intersection-types',
-      'perfectionist/sort-union-types',
-    ],
     type: 'suggestion',
+    deprecated: true,
     docs: {
       description:
         'Enforce constituents of a type union/intersection to be sorted alphabetically',
@@ -134,26 +131,30 @@ export default createRule<Options, MessageIds>({
       notSortedNamed: '{{type}} type {{name}} constituents must be sorted.',
       suggestFix: 'Sort constituents of type (removes all comments).',
     },
+    replacedBy: [
+      'perfectionist/sort-intersection-types',
+      'perfectionist/sort-union-types',
+    ],
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
-          checkIntersections: {
-            description: 'Whether to check intersection types.',
+          caseSensitive: {
             type: 'boolean',
+            description: 'Whether to sort using case sensitive sorting.',
+          },
+          checkIntersections: {
+            type: 'boolean',
+            description: 'Whether to check intersection types.',
           },
           checkUnions: {
+            type: 'boolean',
             description: 'Whether to check union types.',
-            type: 'boolean',
-          },
-          caseSensitive: {
-            description: 'Whether to sort using case sensitive sorting.',
-            type: 'boolean',
           },
           groupOrder: {
-            description: 'Ordering of the groups.',
             type: 'array',
+            description: 'Ordering of the groups.',
             items: {
               type: 'string',
               enum: getEnumNames(Group),
@@ -165,9 +166,9 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      caseSensitive: false,
       checkIntersections: true,
       checkUnions: true,
-      caseSensitive: false,
       groupOrder: [
         Group.named,
         Group.keyword,
@@ -186,11 +187,11 @@ export default createRule<Options, MessageIds>({
   ],
   create(
     context,
-    [{ checkIntersections, checkUnions, caseSensitive, groupOrder }],
+    [{ caseSensitive, checkIntersections, checkUnions, groupOrder }],
   ) {
     const collator = new Intl.Collator('en', {
-      sensitivity: 'base',
       numeric: true,
+      sensitivity: 'base',
     });
 
     function checkSorting(
@@ -199,8 +200,8 @@ export default createRule<Options, MessageIds>({
       const sourceOrder = node.types.map(type => {
         const group = groupOrder?.indexOf(getGroup(type)) ?? -1;
         return {
-          group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           node: type,
+          group: group === -1 ? Number.MAX_SAFE_INTEGER : group,
           text: context.sourceCode.getText(type),
         };
       });

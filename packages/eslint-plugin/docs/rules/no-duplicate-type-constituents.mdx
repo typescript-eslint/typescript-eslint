@@ -19,6 +19,8 @@ For example, given `type A = string` and `type T = string | A`, this rule would 
 
 This rule also disallows explicitly listing `undefined` in a type union when a function parameter is marked as optional.
 Doing so is unnecessary.
+Please note that this check only applies to parameters, not properties.
+Therefore, it does not conflict with the [`exactOptionalPropertyTypes`](https://www.typescriptlang.org/tsconfig/#exactOptionalPropertyTypes) TypeScript compiler setting.
 
 <Tabs>
 <TabItem value="❌ Incorrect">

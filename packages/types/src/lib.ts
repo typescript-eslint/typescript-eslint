@@ -101,4 +101,4 @@ type Lib =
   | 'webworker.importscripts'
   | 'webworker.iterable';
 
-export type { Lib };
+export { Lib };

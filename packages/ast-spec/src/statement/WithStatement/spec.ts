@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 import type { Statement } from '../../unions/Statement';
 
 export interface WithStatement extends BaseNode {
+  type: AST_NODE_TYPES.WithStatement;
   body: Statement;
   object: Expression;
-  type: AST_NODE_TYPES.WithStatement;
 }

@@ -54,10 +54,6 @@ declare module './generated/ast-spec' {
     parent: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   }
 
-  interface ExportSpecifier {
-    parent: TSESTree.ExportNamedDeclaration;
-  }
-
   interface ImportAttribute {
     parent: TSESTree.ImportDeclaration | TSESTree.ImportExpression;
   }
@@ -138,6 +134,7 @@ declare module './generated/ast-spec' {
     parent:
       | TSESTree.ArrayExpression
       | TSESTree.CallExpression
+      | TSESTree.NewExpression
       | TSESTree.ObjectExpression;
   }
 

@@ -10,6 +10,7 @@ import type {
 } from '../../special/VariableDeclarator/spec';
 
 interface LetOrConstOrVarDeclarationBase extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
    * Always non-empty.
@@ -38,7 +39,6 @@ interface LetOrConstOrVarDeclarationBase extends BaseNode {
    * ```
    */
   kind: 'const' | 'let' | 'var';
-  type: AST_NODE_TYPES.VariableDeclaration;
 }
 
 export interface LetOrVarDeclaredDeclaration
@@ -91,6 +91,7 @@ export type LetOrConstOrVarDeclaration =
   | LetOrVarNonDeclaredDeclaration;
 
 interface UsingDeclarationBase extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * This value will always be `false`
    * because 'declare' modifier cannot appear on a 'using' declaration.
@@ -105,7 +106,6 @@ interface UsingDeclarationBase extends BaseNode {
    * ```
    */
   kind: 'await using' | 'using';
-  type: AST_NODE_TYPES.VariableDeclaration;
 }
 
 export interface UsingInNormalContextDeclaration extends UsingDeclarationBase {

@@ -15,7 +15,8 @@ export function isNullableType(type: ts.Type): boolean {
     ts.TypeFlags.Any |
       ts.TypeFlags.Unknown |
       ts.TypeFlags.Null |
-      ts.TypeFlags.Undefined,
+      ts.TypeFlags.Undefined |
+      ts.TypeFlags.Void,
   );
 }
 

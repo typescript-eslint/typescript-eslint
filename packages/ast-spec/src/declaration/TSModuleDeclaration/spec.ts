@@ -9,6 +9,7 @@ import type { Literal } from '../../unions/Literal';
 export type TSModuleDeclarationKind = 'global' | 'module' | 'namespace';
 
 interface TSModuleDeclarationBase extends BaseNode {
+  type: AST_NODE_TYPES.TSModuleDeclaration;
   /**
    * The body of the module.
    * This can only be `undefined` for the code `declare module 'mod';`
@@ -42,6 +43,7 @@ interface TSModuleDeclarationBase extends BaseNode {
    * ```
    */
   id: Identifier | Literal | TSQualifiedName;
+
   /**
    * The keyword used to define this module declaration
    * @example
@@ -57,8 +59,6 @@ interface TSModuleDeclarationBase extends BaseNode {
    * ```
    */
   kind: TSModuleDeclarationKind;
-
-  type: AST_NODE_TYPES.TSModuleDeclaration;
 }
 
 export interface TSModuleDeclarationNamespace extends TSModuleDeclarationBase {

@@ -4,6 +4,7 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
 import { es2015_symbol } from './es2015.symbol';
@@ -11,7 +12,6 @@ import { es2015_symbol } from './es2015.symbol';
 export const es2020_symbol_wellknown = {
   ...es2015_iterable,
   ...es2015_symbol,
-  SymbolConstructor: TYPE,
-  RegExpStringIterator: TYPE,
   RegExp: TYPE,
+  SymbolConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

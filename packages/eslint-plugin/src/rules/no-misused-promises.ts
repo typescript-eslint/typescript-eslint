@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -6,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  isArrayMethodCallWithPredicate,
   isFunction,
   isRestParameterDeclaration,
   nullThrows,
@@ -15,8 +17,8 @@ import {
 type Options = [
   {
     checksConditionals?: boolean;
-    checksVoidReturn?: ChecksVoidReturnOptions | boolean;
     checksSpreads?: boolean;
+    checksVoidReturn?: ChecksVoidReturnOptions | boolean;
   },
 ];
 
@@ -31,6 +33,7 @@ interface ChecksVoidReturnOptions {
 
 type MessageId =
   | 'conditional'
+  | 'predicate'
   | 'spread'
   | 'voidReturnArgument'
   | 'voidReturnAttribute'
@@ -72,12 +75,16 @@ function parseChecksVoidReturn(
 export default createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow Promises in places not designed to handle them',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
+      conditional: 'Expected non-Promise value in a boolean conditional.',
+      predicate: 'Expected a non-Promise value to be returned.',
+      spread: 'Expected a non-Promise value to be spreaded in an object.',
       voidReturnArgument:
         'Promise returned in function argument where a void return was expected.',
       voidReturnAttribute:
@@ -90,8 +97,6 @@ export default createRule<Options, MessageId>({
         'Promise-returning function provided to return value where a void return was expected.',
       voidReturnVariable:
         'Promise-returning function provided to variable where a void return was expected.',
-      conditional: 'Expected non-Promise value in a boolean conditional.',
-      spread: 'Expected a non-Promise value to be spreaded in an object.',
     },
     schema: [
       {
@@ -101,71 +106,71 @@ export default createRule<Options, MessageId>({
           checksConditionals: {
             type: 'boolean',
           },
+          checksSpreads: {
+            type: 'boolean',
+            description: 'Whether to warn when `...` spreading a `Promise`.',
+          },
           checksVoidReturn: {
             oneOf: [
               { type: 'boolean' },
               {
+                type: 'object',
                 additionalProperties: false,
                 properties: {
                   arguments: {
+                    type: 'boolean',
                     description:
                       'Disables checking an asynchronous function passed as argument where the parameter type expects a function that returns `void`.',
-                    type: 'boolean',
                   },
                   attributes: {
+                    type: 'boolean',
                     description:
                       'Disables checking an asynchronous function passed as a JSX attribute expected to be a function that returns `void`.',
-                    type: 'boolean',
                   },
                   inheritedMethods: {
+                    type: 'boolean',
                     description:
                       'Disables checking an asynchronous method in a type that extends or implements another type expecting that method to return `void`.',
-                    type: 'boolean',
                   },
                   properties: {
+                    type: 'boolean',
                     description:
                       'Disables checking an asynchronous function passed as an object property expected to be a function that returns `void`.',
-                    type: 'boolean',
                   },
                   returns: {
+                    type: 'boolean',
                     description:
                       'Disables checking an asynchronous function returned in a function whose return type is a function that returns `void`.',
-                    type: 'boolean',
                   },
                   variables: {
+                    type: 'boolean',
                     description:
                       'Disables checking an asynchronous function used as a variable whose return type is a function that returns `void`.',
-                    type: 'boolean',
                   },
                 },
-                type: 'object',
               },
             ],
-          },
-          checksSpreads: {
-            description: 'Whether to warn when `...` spreading a `Promise`.',
-            type: 'boolean',
           },
         },
       },
     ],
-    type: 'problem',
   },
   defaultOptions: [
     {
       checksConditionals: true,
-      checksVoidReturn: true,
       checksSpreads: true,
+      checksVoidReturn: true,
     },
   ],
 
-  create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
+  create(context, [{ checksConditionals, checksSpreads, checksVoidReturn }]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     const checkedNodes = new Set<TSESTree.Node>();
 
     const conditionalChecks: TSESLint.RuleListener = {
+      'CallExpression > MemberExpression': checkArrayPredicates,
       ConditionalExpression: checkTestConditional,
       DoWhileStatement: checkTestConditional,
       ForStatement: checkTestConditional,
@@ -316,9 +321,28 @@ export default createRule<Options, MessageId>({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({
-          messageId: 'conditional',
           node,
+          messageId: 'conditional',
         });
+      }
+    }
+
+    function checkArrayPredicates(node: TSESTree.MemberExpression): void {
+      const parent = node.parent;
+      if (parent.type === AST_NODE_TYPES.CallExpression) {
+        const callback = parent.arguments.at(0);
+        if (
+          callback &&
+          isArrayMethodCallWithPredicate(context, services, parent)
+        ) {
+          const type = services.esTreeNodeToTSNodeMap.get(callback);
+          if (returnsThenable(checker, type)) {
+            context.report({
+              node: callback,
+              messageId: 'predicate',
+            });
+          }
+        }
       }
     }
 
@@ -339,8 +363,8 @@ export default createRule<Options, MessageId>({
         const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
-            messageId: 'voidReturnArgument',
             node: argument,
+            messageId: 'voidReturnArgument',
           });
         }
       }
@@ -355,8 +379,8 @@ export default createRule<Options, MessageId>({
 
       if (returnsThenable(checker, tsNode.right)) {
         context.report({
-          messageId: 'voidReturnVariable',
           node: node.right,
+          messageId: 'voidReturnVariable',
         });
       }
     }
@@ -383,8 +407,8 @@ export default createRule<Options, MessageId>({
 
       if (returnsThenable(checker, tsNode.initializer)) {
         context.report({
-          messageId: 'voidReturnVariable',
           node: node.init,
+          messageId: 'voidReturnVariable',
         });
       }
     }
@@ -403,8 +427,8 @@ export default createRule<Options, MessageId>({
           returnsThenable(checker, tsNode.initializer)
         ) {
           context.report({
-            messageId: 'voidReturnProperty',
             node: node.value,
+            messageId: 'voidReturnProperty',
           });
         }
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
@@ -415,8 +439,8 @@ export default createRule<Options, MessageId>({
           returnsThenable(checker, tsNode.name)
         ) {
           context.report({
-            messageId: 'voidReturnProperty',
             node: node.value,
+            messageId: 'voidReturnProperty',
           });
         }
       } else if (ts.isMethodDeclaration(tsNode)) {
@@ -457,8 +481,8 @@ export default createRule<Options, MessageId>({
 
         if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
           context.report({
-            messageId: 'voidReturnProperty',
             node: node.value,
+            messageId: 'voidReturnProperty',
           });
         }
         return;
@@ -497,8 +521,8 @@ export default createRule<Options, MessageId>({
         returnsThenable(checker, tsNode.expression)
       ) {
         context.report({
-          messageId: 'voidReturnReturnValue',
           node: node.argument,
+          messageId: 'voidReturnReturnValue',
         });
       }
     }
@@ -598,8 +622,8 @@ export default createRule<Options, MessageId>({
         returnsThenable(checker, expression)
       ) {
         context.report({
-          messageId: 'voidReturnAttribute',
           node: node.value,
+          messageId: 'voidReturnAttribute',
         });
       }
     }
@@ -609,8 +633,8 @@ export default createRule<Options, MessageId>({
 
       if (isSometimesThenable(checker, tsNode.expression)) {
         context.report({
-          messageId: 'spread',
           node: node.argument,
+          messageId: 'spread',
         });
       }
     }
@@ -719,6 +743,20 @@ function checkThenableOrVoidArgument(
     !thenableReturnIndices.has(index)
   ) {
     voidReturnIndices.add(index);
+  }
+  const contextualType = checker.getContextualTypeForArgumentAtIndex(
+    node,
+    index,
+  );
+  if (contextualType !== type) {
+    checkThenableOrVoidArgument(
+      checker,
+      node,
+      contextualType,
+      index,
+      thenableReturnIndices,
+      voidReturnIndices,
+    );
   }
 }
 
