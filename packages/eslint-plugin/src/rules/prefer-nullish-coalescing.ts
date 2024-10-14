@@ -332,7 +332,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (ignoreBooleanCoercion === true && isMakeBoolean(node, context)) {
+        if (ignoreBooleanCoercion === true && isBooleanConstructorContext(node, context)) {
           return;
         }
 
@@ -448,15 +448,12 @@ function isConditionalTest(node: TSESTree.Node): boolean {
   return false;
 }
 
-function isMakeBoolean(
+function isBooleanConstructorContext(
   node: TSESTree.Node,
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): boolean {
-  const parents = new Set<TSESTree.Node | null>([node]);
   let current = node.parent;
   while (current) {
-    parents.add(current);
-
     if (
       current.type === AST_NODE_TYPES.CallExpression &&
       isBuiltInBooleanCall(current, context)
@@ -490,7 +487,8 @@ function isBuiltInBooleanCall(
 ): boolean {
   if (
     node.callee.type === AST_NODE_TYPES.Identifier &&
-    node.callee.name === AST_TOKEN_TYPES.Boolean &&
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    node.callee.name === 'Boolean' &&
     node.arguments[0]
   ) {
     const scope = context.sourceCode.getScope(node);
