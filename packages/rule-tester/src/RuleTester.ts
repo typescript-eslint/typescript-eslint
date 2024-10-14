@@ -746,7 +746,15 @@ export class RuleTester extends TestFramework {
             ...configWithoutCustomKeys.linterOptions,
           },
         });
-        messages = this.#linter.verify(code, actualConfig, filename);
+        messages = this.#linter.verify(
+          code,
+          // ESLint uses an internal FlatConfigArray that extends @humanwhocodes/config-array.
+          Object.assign([], {
+            basePath: filename ? path.parse(filename).root : '',
+            getConfig: () => actualConfig,
+          }),
+          filename,
+        );
       } finally {
         SourceCode.prototype.applyInlineConfig = applyInlineConfig;
         SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
