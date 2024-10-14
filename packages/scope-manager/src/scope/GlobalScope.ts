@@ -1,13 +1,15 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { assert } from '../assert';
-import { ImplicitGlobalVariableDefinition } from '../definition/ImplicitGlobalVariableDefinition';
 import type { Reference } from '../referencer/Reference';
 import type { ScopeManager } from '../ScopeManager';
 import type { ImplicitLibVariableOptions, Variable } from '../variable';
-import { ImplicitLibVariable } from '../variable';
 import type { Scope } from './Scope';
+
+import { assert } from '../assert';
+import { ImplicitGlobalVariableDefinition } from '../definition/ImplicitGlobalVariableDefinition';
+import { ImplicitLibVariable } from '../variable';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
@@ -33,23 +35,10 @@ class GlobalScope extends ScopeBase<
   constructor(scopeManager: ScopeManager, block: GlobalScope['block']) {
     super(scopeManager, ScopeType.global, null, block, false);
     this.implicit = {
+      leftToBeResolved: [],
       set: new Map<string, Variable>(),
       variables: [],
-      leftToBeResolved: [],
     };
-  }
-
-  public defineImplicitVariable(
-    name: string,
-    options: ImplicitLibVariableOptions,
-  ): void {
-    this.defineVariable(
-      new ImplicitLibVariable(this, name, options),
-      this.set,
-      this.variables,
-      null,
-      null,
-    );
   }
 
   public close(scopeManager: ScopeManager): Scope | null {
@@ -74,6 +63,19 @@ class GlobalScope extends ScopeBase<
 
     this.implicit.leftToBeResolved = this.leftToResolve;
     return super.close(scopeManager);
+  }
+
+  public defineImplicitVariable(
+    name: string,
+    options: ImplicitLibVariableOptions,
+  ): void {
+    this.defineVariable(
+      new ImplicitLibVariable(this, name, options),
+      this.set,
+      this.variables,
+      null,
+      null,
+    );
   }
 }
 
