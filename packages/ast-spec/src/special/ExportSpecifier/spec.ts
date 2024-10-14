@@ -4,21 +4,9 @@ import type { ExportKind } from '../../declaration/ExportAndImportKind';
 import type { Identifier } from '../../expression/Identifier/spec';
 import type { StringLiteral } from '../../expression/literal/StringLiteral/spec';
 
-export interface ExportSpecifierBase extends BaseNode {
-  exportKind: ExportKind;
+export interface ExportSpecifier extends BaseNode {
   type: AST_NODE_TYPES.ExportSpecifier;
-}
-
-export interface ExportIdentifierSpecifier extends ExportSpecifierBase {
-  exported: Identifier;
+  exported: StringLiteral | Identifier;
+  exportKind: ExportKind;
   local: Identifier;
 }
-
-export interface ExportStringLiteralSpecifier extends ExportSpecifierBase {
-  exported: StringLiteral;
-  local: StringLiteral;
-}
-
-export type ExportSpecifier =
-  | ExportIdentifierSpecifier
-  | ExportStringLiteralSpecifier;
