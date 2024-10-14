@@ -5,8 +5,8 @@ import type { Identifier } from '../../expression/Identifier/spec';
 import type { StringLiteral } from '../../expression/literal/StringLiteral/spec';
 
 export interface ImportSpecifier extends BaseNode {
+  type: AST_NODE_TYPES.ImportSpecifier;
   imported: Identifier | StringLiteral;
   importKind: ImportKind;
   local: Identifier;
-  type: AST_NODE_TYPES.ImportSpecifier;
 }
