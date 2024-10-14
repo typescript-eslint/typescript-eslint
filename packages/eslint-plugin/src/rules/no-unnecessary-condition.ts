@@ -92,7 +92,6 @@ export type MessageId =
   | 'neverOptionalChain'
   | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck'
-  | 'replaceWithTrue'
   | 'typeGuardAlreadyIsType';
 
 export default createRule<Options, MessageId>({
@@ -125,7 +124,6 @@ export default createRule<Options, MessageId>({
         'Unnecessary conditional, the types have no overlap.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-      replaceWithTrue: 'Replace always true expression with `true`.',
       typeGuardAlreadyIsType:
         'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
     },
