@@ -1,5 +1,5 @@
 import type { Reference } from '@typescript-eslint/scope-manager';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
@@ -7,7 +7,12 @@ import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
 
-import { createRule, getParserServices, nullThrows } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type NodeWithTypeParameters = MakeRequired<
   ts.ClassLikeDeclaration | ts.SignatureDeclaration,
@@ -23,7 +28,10 @@ export default createRule({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
+      replaceUsagesWithConstraint:
+        'Replace all usages of type parameter with its constraint.',
       sole: 'Type parameter {{name}} is {{uses}} in the {{descriptor}} signature.',
     },
     schema: [],
@@ -84,6 +92,112 @@ export default createRule({
             descriptor,
             uses: identifierCounts === 1 ? 'never used' : 'used only once',
           },
+          suggest: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              *fix(fixer): Generator<TSESLint.RuleFix> {
+                // Replace all the usages of the type parameter with the constraint...
+
+                const constraint = esTypeParameter.constraint;
+                // special case - a constraint of 'any' actually acts like 'unknown'
+                const constraintText =
+                  constraint != null &&
+                  constraint.type !== AST_NODE_TYPES.TSAnyKeyword
+                    ? context.sourceCode.getText(constraint)
+                    : 'unknown';
+                for (const reference of smTypeParameterVariable.references) {
+                  if (reference.isTypeReference) {
+                    const referenceNode = reference.identifier;
+                    yield fixer.replaceText(referenceNode, constraintText);
+                  }
+                }
+
+                // ...and remove the type parameter itself from the declaration.
+
+                const typeParams = nullThrows(
+                  node.typeParameters,
+                  'node should have type parameters',
+                ).params;
+
+                const index = typeParams.indexOf(esTypeParameter);
+
+                if (index === -1) {
+                  throw new Error(
+                    "type parameter should be in node's type parameters",
+                  );
+                } else if (typeParams.length === 1) {
+                  const angleBracketBefore = nullThrows(
+                    context.sourceCode.getTokenBefore(
+                      esTypeParameter,
+                      token => token.value === '<',
+                    ),
+                    NullThrowsReasons.MissingToken(
+                      'angle bracket',
+                      'type parameter list',
+                    ),
+                  );
+
+                  const angleBracketAfter = nullThrows(
+                    context.sourceCode.getTokenAfter(
+                      esTypeParameter,
+                      token => token.value === '>',
+                    ),
+                    NullThrowsReasons.MissingToken(
+                      'angle bracket',
+                      'type parameter list',
+                    ),
+                  );
+
+                  yield fixer.removeRange([
+                    angleBracketBefore.range[0],
+                    angleBracketAfter.range[1],
+                  ]);
+                } else if (index === 0) {
+                  const commaAfter = nullThrows(
+                    context.sourceCode.getTokenAfter(
+                      esTypeParameter,
+                      token => token.value === ',',
+                    ),
+                    NullThrowsReasons.MissingToken(
+                      'comma',
+                      'type parameter list',
+                    ),
+                  );
+
+                  const tokenAfterComma = nullThrows(
+                    context.sourceCode.getTokenAfter(commaAfter, {
+                      includeComments: true,
+                    }),
+                    NullThrowsReasons.MissingToken(
+                      'token',
+                      'type parameter list',
+                    ),
+                  );
+
+                  yield fixer.removeRange([
+                    esTypeParameter.range[0],
+                    tokenAfterComma.range[0],
+                  ]);
+                } else {
+                  const commaBefore = nullThrows(
+                    context.sourceCode.getTokenBefore(
+                      esTypeParameter,
+                      token => token.value === ',',
+                    ),
+                    NullThrowsReasons.MissingToken(
+                      'comma',
+                      'type parameter list',
+                    ),
+                  );
+
+                  yield fixer.removeRange([
+                    commaBefore.range[0],
+                    esTypeParameter.range[1],
+                  ]);
+                }
+              },
+            },
+          ],
         });
       }
     }
