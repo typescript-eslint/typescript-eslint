@@ -4,16 +4,16 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
-import { TYPE } from './base-config';
-import { es2015_iterable } from './es2015.iterable';
 import { es2015_symbol } from './es2015.symbol';
+import { es2015_iterable } from './es2015.iterable';
+import { TYPE } from './base-config';
 
 export const esnext_asynciterable = {
   ...es2015_symbol,
   ...es2015_iterable,
+  SymbolConstructor: TYPE,
+  AsyncIterator: TYPE,
   AsyncIterable: TYPE,
   AsyncIterableIterator: TYPE,
-  AsyncIterator: TYPE,
-  SymbolConstructor: TYPE,
+  AsyncIteratorObject: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

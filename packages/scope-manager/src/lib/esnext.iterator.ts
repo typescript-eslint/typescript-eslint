@@ -4,8 +4,8 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE, TYPE_VALUE } from './base-config';
 import { es2015_iterable } from './es2015.iterable';
+import { TYPE, TYPE_VALUE } from './base-config';
 
 export const esnext_iterator = {
   ...es2015_iterable,

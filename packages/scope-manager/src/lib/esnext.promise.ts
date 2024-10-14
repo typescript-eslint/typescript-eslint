@@ -4,10 +4,9 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
 import { TYPE } from './base-config';
 
 export const esnext_promise = {
-  PromiseConstructor: TYPE,
   PromiseWithResolvers: TYPE,
+  PromiseConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

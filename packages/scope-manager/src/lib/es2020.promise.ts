@@ -4,12 +4,11 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
 import { TYPE } from './base-config';
 
 export const es2020_promise = {
-  PromiseConstructor: TYPE,
   PromiseFulfilledResult: TYPE,
   PromiseRejectedResult: TYPE,
   PromiseSettledResult: TYPE,
+  PromiseConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

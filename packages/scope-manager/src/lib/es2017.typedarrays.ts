@@ -4,17 +4,16 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
 import { TYPE } from './base-config';
 
 export const es2017_typedarrays = {
-  Float32ArrayConstructor: TYPE,
-  Float64ArrayConstructor: TYPE,
-  Int16ArrayConstructor: TYPE,
-  Int32ArrayConstructor: TYPE,
   Int8ArrayConstructor: TYPE,
-  Uint16ArrayConstructor: TYPE,
-  Uint32ArrayConstructor: TYPE,
   Uint8ArrayConstructor: TYPE,
   Uint8ClampedArrayConstructor: TYPE,
+  Int16ArrayConstructor: TYPE,
+  Uint16ArrayConstructor: TYPE,
+  Int32ArrayConstructor: TYPE,
+  Uint32ArrayConstructor: TYPE,
+  Float32ArrayConstructor: TYPE,
+  Float64ArrayConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

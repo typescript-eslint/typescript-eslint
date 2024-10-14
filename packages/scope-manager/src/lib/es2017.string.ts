@@ -4,7 +4,6 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
 import { TYPE } from './base-config';
 
 export const es2017_string = {

@@ -4,11 +4,10 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
 import { TYPE } from './base-config';
 
 export const es2018_regexp = {
-  RegExp: TYPE,
-  RegExpExecArray: TYPE,
   RegExpMatchArray: TYPE,
+  RegExpExecArray: TYPE,
+  RegExp: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

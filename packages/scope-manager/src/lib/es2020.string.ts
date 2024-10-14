@@ -4,9 +4,8 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
-import { TYPE } from './base-config';
 import { es2020_symbol_wellknown } from './es2020.symbol.wellknown';
+import { TYPE } from './base-config';
 
 export const es2020_string = {
   ...es2020_symbol_wellknown,

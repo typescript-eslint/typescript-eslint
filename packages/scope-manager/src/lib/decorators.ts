@@ -4,20 +4,19 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-
 import { TYPE } from './base-config';
 
 export const decorators = {
-  ClassAccessorDecoratorContext: TYPE,
-  ClassAccessorDecoratorResult: TYPE,
-  ClassAccessorDecoratorTarget: TYPE,
-  ClassDecoratorContext: TYPE,
-  ClassFieldDecoratorContext: TYPE,
-  ClassGetterDecoratorContext: TYPE,
   ClassMemberDecoratorContext: TYPE,
-  ClassMethodDecoratorContext: TYPE,
-  ClassSetterDecoratorContext: TYPE,
   DecoratorContext: TYPE,
-  DecoratorMetadata: TYPE,
   DecoratorMetadataObject: TYPE,
+  DecoratorMetadata: TYPE,
+  ClassDecoratorContext: TYPE,
+  ClassMethodDecoratorContext: TYPE,
+  ClassGetterDecoratorContext: TYPE,
+  ClassSetterDecoratorContext: TYPE,
+  ClassAccessorDecoratorContext: TYPE,
+  ClassAccessorDecoratorTarget: TYPE,
+  ClassAccessorDecoratorResult: TYPE,
+  ClassFieldDecoratorContext: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
