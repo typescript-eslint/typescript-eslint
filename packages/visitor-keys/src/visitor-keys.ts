@@ -253,8 +253,6 @@ const additionalKeys: AdditionalKeys = {
   TSTupleType: ['elementTypes'],
   TSTypeAliasDeclaration: ['id', 'typeParameters', 'typeAnnotation'],
   TSTypeAnnotation: ['typeAnnotation'],
-  // this is intentionally different to SharedVisitorKeys.AsExpression because
-  // the type annotation comes first in the source code
   TSTypeAssertion: ['typeAnnotation', 'expression'],
   TSTypeLiteral: ['members'],
   TSTypeOperator: ['typeAnnotation'],
