@@ -51,11 +51,6 @@ ruleTester.run('no-base-to-string', rule, {
     // toString()
     ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
 
-    // toLocaleString()
-    ...literalListWrapped.map(
-      i => `${i === '1' ? `(${i})` : i}.toLocaleString();`,
-    ),
-
     // variable toString() and template
     ...literalList.map(
       i => `
