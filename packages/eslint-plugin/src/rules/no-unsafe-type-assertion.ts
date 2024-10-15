@@ -8,10 +8,10 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   isTypeAnyType,
-  isTypeFlagSet,
   isTypeUnknownType,
   isUnsafeAssignment,
 } from '../util';
+import { isTypeUnchanged } from '../util/isTypeUnchanged';
 
 export default createRule({
   name: 'no-unsafe-type-assertion',
@@ -37,36 +37,15 @@ export default createRule({
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
 
-    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
-      if (uncast === cast) {
-        return true;
-      }
+    function getAnyTypeName(type: ts.Type): string {
+      return tsutils.isIntrinsicErrorType(type) ? 'error typed' : '`any`';
+    }
 
-      if (
-        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
-        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
-        tsutils.isCompilerOptionEnabled(
-          compilerOptions,
-          'exactOptionalPropertyTypes',
-        )
-      ) {
-        const uncastParts = tsutils
-          .unionTypeParts(uncast)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        const castParts = tsutils
-          .unionTypeParts(cast)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        if (uncastParts.length !== castParts.length) {
-          return false;
-        }
-
-        const uncastPartsSet = new Set(uncastParts);
-        return castParts.every(part => uncastPartsSet.has(part));
-      }
-
-      return false;
+    function isObjectLiteralType(type: ts.Type): boolean {
+      return (
+        tsutils.isObjectType(type) &&
+        tsutils.isObjectFlagSet(type, ts.ObjectFlags.ObjectLiteral)
+      );
     }
 
     function checkExpression(
@@ -82,7 +61,11 @@ export default createRule({
       );
 
       // consider unchanged type as safe
-      const typeIsUnchanged = isTypeUnchanged(expressionType, assertedType);
+      const typeIsUnchanged = isTypeUnchanged(
+        compilerOptions,
+        expressionType,
+        assertedType,
+      );
 
       if (typeIsUnchanged) {
         return;
@@ -114,9 +97,7 @@ export default createRule({
           node,
           messageId: 'unsafeOfAnyTypeAssertion',
           data: {
-            type: tsutils.isIntrinsicErrorType(expressionAny.sender)
-              ? 'error typed'
-              : '`any`',
+            type: getAnyTypeName(expressionAny.sender),
           },
         });
 
@@ -136,9 +117,7 @@ export default createRule({
           node,
           messageId: 'unsafeToAnyTypeAssertion',
           data: {
-            type: tsutils.isIntrinsicErrorType(assertedAny.sender)
-              ? 'error typed'
-              : '`any`',
+            type: getAnyTypeName(assertedAny.sender),
           },
         });
 
@@ -146,11 +125,9 @@ export default createRule({
       }
 
       // fallback to checking assignability
-      const nodeWidenedType =
-        tsutils.isObjectType(expressionType) &&
-        tsutils.isObjectFlagSet(expressionType, ts.ObjectFlags.ObjectLiteral)
-          ? checker.getWidenedType(expressionType)
-          : expressionType;
+      const nodeWidenedType = isObjectLiteralType(expressionType)
+        ? checker.getWidenedType(expressionType)
+        : expressionType;
 
       const isAssertionSafe = checker.isTypeAssignableTo(
         nodeWidenedType,
