@@ -173,8 +173,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const isMixedLogical = isMixedLogicalExpression(node);
-      if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
+      if (
+        ignoreMixedLogicalExpressions === true &&
+        isMixedLogicalExpression(node)
+      ) {
         return;
       }
 
@@ -230,14 +232,19 @@ export default createRule<Options, MessageIds>({
           }
           yield fixer.insertTextAfter(node.right, ')');
         }
-        yield fixer.replaceText(barBarOperator, '??');
+        yield fixer.replaceText(
+          barBarOperator,
+          node.operator.replace('||', '??'),
+        );
       }
 
       context.report({
+        data: { equals, description },
         node: barBarOperator,
         messageId: 'preferNullishOverOr',
         suggest: [
           {
+            data: { equals },
             messageId: 'suggestNullish',
             fix,
           },
