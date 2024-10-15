@@ -1,3 +1,40 @@
+## 8.9.0 (2024-10-14)
+
+
+### 🚀 Features
+
+- **rule-tester:** hooks for test cases ([#10109](https://github.com/typescript-eslint/typescript-eslint/pull/10109))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] cannot assume variables are either type or value ([#10093](https://github.com/typescript-eslint/typescript-eslint/pull/10093))
+- **eslint-plugin:** [return-await] sync the behavior with await-thenable ([#10069](https://github.com/typescript-eslint/typescript-eslint/pull/10069))
+- **eslint-plugin:** [prefer-literal-enum-member] report a different error message when `allowBitwiseExpressions` is enabled ([#10096](https://github.com/typescript-eslint/typescript-eslint/pull/10096))
+- **eslint-plugin:** [no-loop-func] sync from upstream base rule ([#10103](https://github.com/typescript-eslint/typescript-eslint/pull/10103))
+- **eslint-plugin:** [no-unused-vars] never report the naming of an enum member ([#10117](https://github.com/typescript-eslint/typescript-eslint/pull/10117))
+- **eslint-plugin:** correct use-at-your-own-risk type definitions ([#10049](https://github.com/typescript-eslint/typescript-eslint/pull/10049))
+- **eslint-plugin:** handle unions in await...for ([#10110](https://github.com/typescript-eslint/typescript-eslint/pull/10110))
+- **rule-tester:** merge provided `linterOptions` ([#10131](https://github.com/typescript-eslint/typescript-eslint/pull/10131))
+- **scope-manager:** [no-use-before-define] do not treat nested namespace aliases as variable references ([#10095](https://github.com/typescript-eslint/typescript-eslint/pull/10095))
+- **typescript-estree:** improve project service error message when file extension missing from extraFileExtensions ([#10076](https://github.com/typescript-eslint/typescript-eslint/pull/10076))
+- **visitor-keys:** reorder `TSSatisfiesExpression` and `TSTypeAssertion` ([#10139](https://github.com/typescript-eslint/typescript-eslint/pull/10139))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Anna Bocharova @RobinTail
+- Arya Emami @aryaemami59
+- auvred @auvred
+- Joshua Chen
+- Kirk Waiblinger @kirkwaiblinger
+- Lotfi Meklati @lotmek
+- mdm317
+- Ronen Amiel
+- Sukka
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.8.1 (2024-10-07)
 
 
