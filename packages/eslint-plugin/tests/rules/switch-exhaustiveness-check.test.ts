@@ -823,7 +823,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -841,7 +841,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -857,7 +857,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
           allowDefaultCaseForExhaustiveSwitch: false,
         },
       ],
@@ -886,7 +886,7 @@ switch (myEnum) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -905,7 +905,7 @@ switch (value) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -2485,7 +2485,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
       errors: [
@@ -2523,7 +2523,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
       errors: [
@@ -2560,7 +2560,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
       errors: [
@@ -2599,7 +2599,7 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
       errors: [
@@ -2647,7 +2647,7 @@ switch (myEnum) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
       errors: [
@@ -2693,7 +2693,7 @@ switch (value) {
       `,
       options: [
         {
-          requireDefaultCaseForUnions: true,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
       errors: [

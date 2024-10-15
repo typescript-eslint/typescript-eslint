@@ -42,7 +42,7 @@ type Options = [
      *
      * @default false
      */
-    requireDefaultCaseForUnions?: boolean;
+    considerDefaultExhaustiveForUnions?: boolean;
   },
 ];
 
@@ -72,7 +72,7 @@ export default createRule<Options, MessageIds>({
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
             type: 'boolean',
           },
-          requireDefaultCaseForUnions: {
+          considerDefaultExhaustiveForUnions: {
             description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
             type: 'boolean',
           },
@@ -92,7 +92,7 @@ export default createRule<Options, MessageIds>({
     {
       allowDefaultCaseForExhaustiveSwitch: true,
       requireDefaultForNonUnion: false,
-      requireDefaultCaseForUnions: false,
+      considerDefaultExhaustiveForUnions: false,
     },
   ],
   create(
@@ -101,7 +101,7 @@ export default createRule<Options, MessageIds>({
       {
         allowDefaultCaseForExhaustiveSwitch,
         requireDefaultForNonUnion,
-        requireDefaultCaseForUnions,
+        considerDefaultExhaustiveForUnions,
       },
     ],
   ) {
@@ -173,9 +173,9 @@ export default createRule<Options, MessageIds>({
       const { missingLiteralBranchTypes, symbolName, defaultCase } =
         switchMetadata;
 
-      // Unless requireDefaultCaseForUnions is enabled, the presence of a default case
+      // Unless considerDefaultExhaustiveForUnions is enabled, the presence of a default case
       // always makes the switch exhaustive.
-      if (!requireDefaultCaseForUnions && defaultCase != null) {
+      if (!considerDefaultExhaustiveForUnions && defaultCase != null) {
         return;
       }
 

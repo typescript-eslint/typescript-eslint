@@ -21,8 +21,7 @@ This rule reports when a `switch` statement over a value typed as a union of lit
 Defaults to true. If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
 
 When a `switch` statement over a union type is exhaustive, a final `default` case would be a form of dead code.
-Additionally, if a new value is added to the union type, a `default` would prevent the `switch-exhaustiveness-check` rule from reporting on the new case not being handled in the `switch` statement.
-If you want `default` to prevent `switch-exhaustiveness-check` when new values ​​are added to the union type, try using the `requireDefaultCaseForUnions` option
+Additionally, if a new value is added to the union type and you're using `[considerDefaultExhaustiveForUnions](#considerDefaultExhaustiveForUnions)`, a `default` would prevent the `switch-exhaustiveness-check` rule from reporting on the new case not being handled in the `switch` statement.
 
 #### `allowDefaultCaseForExhaustiveSwitch` Caveats
 
@@ -54,17 +53,17 @@ switch (value) {
 
 Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
 
-### `allowDefaultCaseMatchUnionMember`
+### `considerDefaultExhaustiveForUnions`
 
 Defaults to false. Whether a `default` clause will be considered as making a switch statement over a union type exhaustive.
 
 By default, if a `switch` statement over a union type includes a `default` case, then it's considered exhaustive.
-`allowDefaultCaseMatchUnionMember` enforces explicitly handling every constituent of the union type with their own explicit `case`.
+`considerDefaultExhaustiveForUnions` enforces explicitly handling every constituent of the union type with their own explicit `case`.
 This can be useful if you want to make sure every value added to the union receives explicit handling, with the `default` case reserved for reporting an error.
 
-Examples of additional **incorrect** code for this rule with `{ allowDefaultCaseMatchUnionMember: true }`:
+Examples of additional **incorrect** code for this rule with `{ considerDefaultExhaustiveForUnions: true }`:
 
-```ts option='{ "allowDefaultCaseMatchUnionMember": true }' showPlaygroundButton
+```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
 declare const literal: 'a' | 'b';
 
 switch (literal) {

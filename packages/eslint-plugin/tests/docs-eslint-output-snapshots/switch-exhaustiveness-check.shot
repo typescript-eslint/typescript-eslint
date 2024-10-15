@@ -16,7 +16,7 @@ switch (value) {
 `;
 
 exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 2`] = `
-"Options: { "allowDefaultCaseMatchUnionMember": true }
+"Options: { "considerDefaultExhaustiveForUnions": true }
 
 declare const literal: 'a' | 'b';
 
