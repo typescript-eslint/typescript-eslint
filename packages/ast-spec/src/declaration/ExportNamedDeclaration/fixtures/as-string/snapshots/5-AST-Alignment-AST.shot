@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 1`] = `
+exports[`AST Fixtures declaration ExportNamedDeclaration as-string AST Alignment - AST 1`] = `
 "Snapshot Diff:
 - TSESTree
 + Babel
@@ -8,47 +8,38 @@ exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 
   Program {
     type: 'Program',
     body: Array [
-      ImportDeclaration {
-        type: 'ImportDeclaration',
+      ExportNamedDeclaration {
+        type: 'ExportNamedDeclaration',
 -       attributes: Array [],
 +       assertions: Array [],
-        importKind: 'value',
-        source: Literal {
-          type: 'Literal',
-          raw: '"mod"',
-          value: 'mod',
-
-          range: [26, 31],
-          loc: {
-            start: { column: 26, line: 1 },
-            end: { column: 31, line: 1 },
-          },
-        },
+        declaration: null,
+        exportKind: 'value',
+        source: null,
         specifiers: Array [
-          ImportSpecifier {
-            type: 'ImportSpecifier',
-            imported: Literal {
+          ExportSpecifier {
+            type: 'ExportSpecifier',
+            exported: Literal {
               type: 'Literal',
               raw: '"🍎"',
               value: '🍎',
 
-              range: [9, 13],
+              range: [14, 18],
               loc: {
-                start: { column: 9, line: 1 },
-                end: { column: 13, line: 1 },
+                start: { column: 14, line: 1 },
+                end: { column: 18, line: 1 },
               },
             },
-            importKind: 'value',
+            exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
 -             decorators: Array [],
               name: 'a',
 -             optional: false,
 
-              range: [17, 18],
+              range: [9, 10],
               loc: {
-                start: { column: 17, line: 1 },
-                end: { column: 18, line: 1 },
+                start: { column: 9, line: 1 },
+                end: { column: 10, line: 1 },
               },
             },
 
@@ -60,16 +51,17 @@ exports[`AST Fixtures declaration ImportDeclaration default AST Alignment - AST 
           },
         ],
 
-        range: [0, 32],
+        range: [0, 21],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 32, line: 1 },
+          end: { column: 21, line: 1 },
         },
       },
     ],
-    sourceType: 'module',
+-   sourceType: 'module',
++   sourceType: 'script',
 
-    range: [0, 33],
+    range: [0, 22],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },

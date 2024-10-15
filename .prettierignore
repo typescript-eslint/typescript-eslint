@@ -10,6 +10,10 @@ packages/eslint-plugin/tests/fixtures/indent/
 # prettier errors on this case because it's semantically valid
 packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts
 
+# prettier doesn't yet support arbitrary export/import names
+packages/ast-spec/src/declaration/ExportNamedDeclaration/fixtures/as-string/fixture.ts
+packages/ast-spec/src/declaration/ImportDeclaration/fixtures/default/fixture.ts
+
 # prettier doesn't yet support `using` declaration
 packages/ast-spec/src/declaration/VariableDeclaration/fixtures/await-using-multiple-declarations/fixture.ts
 packages/ast-spec/src/declaration/VariableDeclaration/fixtures/await-using-with-value/fixture.ts
