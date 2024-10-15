@@ -89,17 +89,17 @@ export default createRule<Options, MessageIds>({
             oneOf: [
               {
                 type: 'boolean',
-                description: 'Bans the type with the default message',
+                description: 'Bans the type with the default message.',
                 enum: [true],
               },
               {
                 type: 'string',
-                description: 'Bans the type with a custom message',
+                description: 'Bans the type with a custom message.',
               },
               {
                 type: 'object',
                 additionalProperties: false,
-                description: 'Bans a type',
+                description: 'Bans a type.',
                 properties: {
                   fixWith: {
                     type: 'string',
@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
                   },
                   message: {
                     type: 'string',
-                    description: 'Custom error message',
+                    description: 'Custom error message.',
                   },
                   suggest: {
                     type: 'array',
@@ -127,6 +127,8 @@ export default createRule<Options, MessageIds>({
             additionalProperties: {
               $ref: '#/items/0/$defs/banConfig',
             },
+            description:
+              'An object whose keys are the types you want to ban, and the values are error messages.',
           },
         },
       },

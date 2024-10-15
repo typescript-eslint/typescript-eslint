@@ -66,9 +66,10 @@ const literalWithToString = {
 
 ### `ignoredTypeNames`
 
-Stringified regular expressions of type names to ignore.
-This is useful for types missing `toString()` (but actually has `toString()`).
-There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
+{/* insert option description */}
+
+This is useful for types whose declarations missing `toString()`, but are known to actually have `toString()`.
+There are some types missing `toString()` in TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
 The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
@@ -93,3 +94,4 @@ If you don't mind a risk of `"[object Object]"` or incorrect type coercions in y
 ## Further Reading
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
+- [Microsoft/TypeScript Add missing toString declarations for base types that have them](https://github.com/microsoft/TypeScript/issues/38347)

@@ -49,6 +49,8 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `accessibility`
 
+{/* insert option description */}
+
 This rule in its default state requires no configuration and will enforce that every class member has an accessibility modifier. If you would like to allow for some implicit public members then you have the following options:
 
 ```jsonc
@@ -168,6 +170,8 @@ class Animal {
 ```
 
 ### `overrides`
+
+{/* insert option description */}
 
 There are three ways in which an override can be used.
 
@@ -317,8 +321,9 @@ class Animal {
 
 ### `ignoredMethodNames`
 
-Specific method names that may be ignored.
-Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
+{/* insert option description */}
+
+Note that this option does not care about context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
 
 ```ts option='{ "ignoredMethodNames": ["specificMethod", "whateverMethod"] }' showPlaygroundButton
