@@ -239,13 +239,13 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
-        data: { equals, description },
         node: barBarOperator,
         messageId: 'preferNullishOverOr',
+        data: { description, equals },
         suggest: [
           {
-            data: { equals },
             messageId: 'suggestNullish',
+            data: { equals },
             fix,
           },
         ],
@@ -253,6 +253,11 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      'AssignmentExpression[operator = "||="]'(
+        node: TSESTree.AssignmentExpression,
+      ): void {
+        checkAssignmentOrLogicalExpression(node, 'assignment', '=');
+      },
       ConditionalExpression(node: TSESTree.ConditionalExpression): void {
         if (ignoreTernaryTests) {
           return;
@@ -383,14 +388,14 @@ export default createRule<Options, MessageIds>({
 
         if (isFixable) {
           context.report({
-            // TODO: also account for = in the ternary clause
-            data: { equals: '' },
             node,
             messageId: 'preferNullishOverTernary',
+            // TODO: also account for = in the ternary clause
+            data: { equals: '' },
             suggest: [
               {
-                data: { equals: '' },
                 messageId: 'suggestNullish',
+                data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '=='
@@ -408,11 +413,6 @@ export default createRule<Options, MessageIds>({
             ],
           });
         }
-      },
-      'AssignmentExpression[operator = "||="]'(
-        node: TSESTree.AssignmentExpression,
-      ): void {
-        checkAssignmentOrLogicalExpression(node, 'assignment', '=');
       },
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
