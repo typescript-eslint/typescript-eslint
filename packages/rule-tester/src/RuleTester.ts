@@ -184,10 +184,31 @@ export class RuleTester extends TestFramework {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
     });
 
-    this.#linter = new Linter({
-      configType: 'flat',
-      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
-    });
+    this.#linter = (() => {
+      const linter = new Linter({
+        configType: 'flat',
+        cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
+      });
+
+      // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
+      // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
+      //
+      // For some reason rethrowing exceptions skirts around the circular JSON error.
+      const oldVerify = linter.verify.bind(linter);
+      linter.verify = (
+        ...args: Parameters<Linter['verify']>
+      ): ReturnType<Linter['verify']> => {
+        try {
+          return oldVerify(...args);
+        } catch (error) {
+          throw new Error('Caught an error while linting', {
+            cause: error,
+          });
+        }
+      };
+
+      return linter;
+    })();
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
