@@ -14,865 +14,1033 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-unsafe-type-assertion', rule, {
-  valid: [
-    `
+describe('basic assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
 declare const a: string;
-const b = a as string | number;
-    `,
-    `
+a as string | number;
+      `,
+      `
 declare const a: string;
-const b = a as unknown;
-    `,
-    `
+<string | number>a;
+      `,
+      `
 declare const a: string;
-const b = a as any;
-    `,
-    `
+a as string | number as string | number | boolean;
+      `,
+      `
 declare const a: string;
-const b = a as string | number as string | number | boolean;
-    `,
-    `
-declare const a: string;
-const b = a as any as number;
-    `,
-    `
-declare const a: () => boolean;
-const b = a() as boolean | number;
-    `,
-    `
-declare const a: () => boolean;
-const b = a() as boolean | number as boolean | number | string;
-    `,
-    `
-declare const a: string;
-const b = a as string;
-    `,
-    `
-declare const a: () => string;
-const b = a() as string;
-    `,
-    `
-declare const a: () => string;
-const b = a as (() => string) | (() => number);
-    `,
-    `
-declare const a: () => string;
-const b = a as (() => string) | ((x: number) => string);
-    `,
-    `
-declare const a: () => string;
-const b = a as () => string | number;
-    `,
-    `
+a as string;
+      `,
+      `
 declare const a: { hello: 'world' };
-const b = a as { hello: string };
-    `,
-    `
-declare const foo = 'hello' as const;
-foo() as string;
-    `,
-    `
-declare const foo: () => string | undefined;
-foo()!;
-    `,
-    `
-declare const foo: { bar?: { bazz: string } };
-(foo.bar as { bazz: string | boolean } | undefined)?.bazz;
-    `,
-    `
-function foo(a: string) {
-  return a as string | number;
-}
-    `,
-    `
-function foo<T extends boolean>(a: T) {
-  return a as boolean | number;
-}
-    `,
-    `
+a as { hello: string };
+      `,
+      `
+'hello' as const;
+      `,
+      `
 function foo<T extends boolean>(a: T) {
   return a as T | number;
 }
-    `,
-    `
-declare const a: { hello: string } & { world: string };
-const b = a as { hello: string };
-    `,
-    `
-declare const a: string;
-const b = <string | number>a;
-    `,
-    `
-declare const a: string;
-const b = <unknown>a;
-    `,
-    `
-declare const a: string;
-const b = <any>a;
-    `,
-    `
-declare const a: string;
-const b = <string | number | boolean>(<string | number>a);
-    `,
-    `
-declare const a: string;
-const b = <number>(<any>a);
-    `,
-    `
-declare const a: () => boolean;
-const b = <boolean | number>a();
-    `,
-    `
-declare const a: () => boolean;
-const b = boolean | number | string(<boolean | number>a());
-    `,
-    `
-declare const a: string;
-const b = <string>a;
-    `,
-    `
-declare const a: () => string;
-const b = <string>a();
-    `,
-    `
-declare const a: () => string;
-const b = <(() => string) | (() => number)>a;
-    `,
-    `
-declare const a: () => string;
-const b = <(() => string) | ((x: number) => string)>a;
-    `,
-    `
-declare const a: () => string;
-const b = <() => string | number>a;
-    `,
-    `
-declare const a: { hello: 'world' };
-const b = <{ hello: string }>a;
-    `,
-    `
-declare const foo = <const>'hello';
-<string>foo();
-    `,
-    `
-declare const foo: { bar?: { bazz: string } };
-(<{ bazz: string | boolean } | undefined>foo.bar)?.bazz;
-    `,
-    `
-function foo(a: string) {
-  return <string | number>a;
-}
-    `,
-    `
-function foo<T extends boolean>(a: T) {
-  return <boolean | number>a;
-}
-    `,
-    `
-function foo<T extends boolean>(a: T) {
-  return <T | number>a;
-}
-    `,
-    `
-declare const a: { hello: string } & { world: string };
-const b = <{ hello: string }>a;
-    `,
-  ],
-  invalid: [
-    {
-      code: `
+      `,
+    ],
+    invalid: [
+      {
+        code: `
 declare const a: string | number;
-const b = a as string;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'string | number',
+a as string;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'string | number',
+            },
+            endColumn: 12,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 22,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string;
-const b = a as unknown as number;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'unknown',
+        ],
+      },
+      {
+        code: `
+declare const a: string | number;
+a satisfies string as string;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'string | number',
+            },
+            endColumn: 29,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 33,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
+        ],
+      },
+      {
+        code: `
+declare const a: string | number;
+<string>a;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'string | number',
+            },
+            endColumn: 10,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
 declare const a: string | undefined;
-const b = a as string | boolean;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'string | undefined',
+a as string | boolean;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'string | undefined',
+            },
+            endColumn: 22,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 32,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
+        ],
+      },
+      // multiple failures
+      {
+        code: `
 declare const a: string;
-const b = a as string | boolean as boolean;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'string | boolean',
+a as 'foo' as 'bar';
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '"foo"',
+            },
+            endColumn: 20,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 43,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string;
-const b = a as 'foo' as 'bar';
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: '"foo"',
+          {
+            column: 1,
+            data: {
+              type: 'string',
+            },
+            endColumn: 11,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 30,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-        {
-          column: 11,
-          data: {
-            type: 'string',
-          },
-          endColumn: 21,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-function f(t: number | string) {
-  return t as number | boolean;
+        ],
+      },
+      // type constraint
+      {
+        code: `
+function foo<T extends boolean>(a: T) {
+  return a as true;
 }
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            type: 'string | number',
+        `,
+        errors: [
+          {
+            column: 10,
+            data: {
+              type: 'boolean',
+            },
+            endColumn: 19,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 31,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-function f<T extends number | string>(t: T) {
-  return t as number | boolean;
-}
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            type: 'string | number',
+        ],
+      },
+      // long/complex original type
+      {
+        code: `
+declare const a: Omit<
+  Required<Readonly<{ hello: 'world'; foo: 'bar' }>>,
+  'foo'
+>;
+a as string;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'Omit<Required<Readonly<{ hello: "world"; foo: "bar"; }>>, "foo">',
+            },
+            endColumn: 12,
+            endLine: 6,
+            line: 6,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 31,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-function f<T extends number | string>(t: T) {
-  return t as Omit<T, number>;
-}
-      `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 30,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: () => string | boolean;
-const b = a as () => string | number;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: '() => string | boolean',
-          },
-          endColumn: 37,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  bar: number;
-  bas: string;
-}
-
-var foo = {} as Foo;
-      `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: '{}',
-          },
-          endColumn: 20,
-          line: 7,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  bar: number;
-}
-
-// no additional properties are allowed
-export const foo = { bar: 1, bazz: 1 } as Foo;
-      `,
-      errors: [
-        {
-          column: 20,
-          data: {
-            type: '{ bar: number; bazz: number; }',
-          },
-          endColumn: 46,
-          line: 7,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: string | number;
-const bar = foo as string | boolean as string | null;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: 'string | boolean',
-          },
-          endColumn: 53,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-        {
-          column: 13,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 36,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: { bar?: { bazz: string } };
-(foo.bar as { bazz: string | boolean }).bazz;
-      `,
-      errors: [
-        {
-          column: 2,
-          data: {
-            type: '{ bazz: string; } | undefined',
-          },
-          endColumn: 39,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: 'hello' | 'world';
-const bar = foo as 'hello';
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: '"hello" | "world"',
-          },
-          endColumn: 27,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  type: 'foo';
-}
-
-interface Bar {
-  type: 'bar';
-}
-
-type Bazz = Foo | Bar;
-
-declare const foo: Bazz;
-const bar = foo as Foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: 'Bazz',
-          },
-          endColumn: 23,
-          line: 13,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = Readonly<Required<{ hello?: string }>>;
-
-declare const foo: {};
-const bar = foo as Foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: '{}',
-          },
-          endColumn: 23,
-          line: 5,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
+        ],
+      },
+      {
+        code: `
 declare const foo: readonly number[];
 const bar = foo as number[];
+        `,
+        errors: [
+          {
+            column: 13,
+            data: {
+              type: 'readonly number[]',
+            },
+            endColumn: 28,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('any assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+declare const _any_: any;
+_any_ as any;
       `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: 'readonly number[]',
-          },
-          endColumn: 28,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: { hello: string } & { world: string };
-const bar = foo as { hello: string; world: 'world' };
+      `
+declare const _any_: any;
+_any_ as unknown;
       `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: '{ hello: string; } & { world: string; }',
+    ],
+    invalid: [
+      {
+        code: `
+declare const _any_: any;
+_any_ as string;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 16,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
           },
-          endColumn: 53,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string | number;
-const b = <string>a;
+        ],
+      },
+      {
+        code: `
+declare const _unknown_: unknown;
+_unknown_ as any;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 17,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const _any_: any;
+_any_ as Function;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 18,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const _any_: any;
+_any_ as never;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 15,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+'foo' as any;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 13,
+            endLine: 2,
+            line: 2,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      // an error type `any`
+      {
+        code: `
+const bar = foo as number;
+        `,
+        errors: [
+          {
+            column: 13,
+            data: {
+              type: 'error typed',
+            },
+            endColumn: 26,
+            endLine: 2,
+            line: 2,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+const bar = 'foo' as errorType;
+        `,
+        errors: [
+          {
+            column: 13,
+            data: {
+              type: 'error typed',
+            },
+            endColumn: 31,
+            endLine: 2,
+            line: 2,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('never assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+declare const _never_: never;
+_never_ as never;
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 20,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string;
-const b = <number>(<unknown>a);
+      `
+declare const _never_: never;
+_never_ as unknown;
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'unknown',
+    ],
+    invalid: [
+      {
+        code: `
+declare const _never_: never;
+_never_ as any;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 15,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
           },
-          endColumn: 31,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string | undefined;
-const b = <string | boolean>a;
+        ],
+      },
+      {
+        code: `
+declare const _string_: string;
+_string_ as never;
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 18,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('function assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+declare const _function_: Function;
+_function_ as Function;
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'string | undefined',
-          },
-          endColumn: 30,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string;
-const b = <boolean>(<string | boolean>a);
+      `
+declare const _function_: Function;
+_function_ as unknown;
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: 'string | boolean',
+    ],
+    invalid: [
+      {
+        code: `
+declare const _function_: Function;
+_function_ as () => void;
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 25,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 41,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string;
-const b = <'bar'>(<'foo'>a);
+        ],
+      },
+      {
+        code: `
+declare const _function_: Function;
+_function_ as any;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 18,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const _function_: Function;
+_function_ as never;
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 20,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('object assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+// additional properties should be allowed
+export const foo = { bar: 1, bazz: 1 } as {
+  bar: number;
+};
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: '"foo"',
-          },
-          endColumn: 28,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-        {
-          column: 19,
-          data: {
-            type: 'string',
-          },
-          endColumn: 27,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-function f(t: number | string) {
-  return <number | boolean>t;
-}
+      `
+declare const a: { hello: string } & { world: string };
+a as { hello: string };
       `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 29,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-function f<T extends number | string>(t: T) {
-  return <number | boolean>t;
-}
+      `
+declare const a: { hello: any };
+a as { hello: unknown };
       `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 29,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-function f<T extends number | string>(t: T) {
-  return <Omit<T, number>>t;
-}
+      `
+declare const a: { hello: string };
+a as { hello?: string };
       `,
-      errors: [
-        {
-          column: 10,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 28,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: () => string | boolean;
-const b = <() => string | number>a;
+      `
+declare const a: { hello: string };
+a satisfies Record<string, string> as { hello?: string };
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: '() => string | boolean',
-          },
-          endColumn: 35,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
+    ],
+    invalid: [
+      {
+        code: `
+var foo = {} as {
   bar: number;
   bas: string;
+};
+        `,
+        errors: [
+          {
+            column: 11,
+            data: {
+              type: '{}',
+            },
+            endColumn: 2,
+            endLine: 5,
+            line: 2,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: { hello: string };
+a satisfies Record<string, string> as { hello: string; world: string };
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '{ hello: string; }',
+            },
+            endColumn: 71,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: { hello?: string };
+a as { hello: string };
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 23,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('array assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+declare const a: string[];
+a as (string | number)[];
+      `,
+      `
+declare const a: number[];
+a as unknown[];
+      `,
+      `
+declare const a: { hello: 'world'; foo: 'bar' }[];
+a as { hello: 'world' }[];
+      `,
+    ],
+    invalid: [
+      {
+        code: `
+declare const a: (string | number)[];
+a as string[];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '(string | number)[]',
+            },
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: any[];
+a as number[];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: number[];
+a as any[];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 11,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: unknown[];
+a as number[];
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: number[];
+a as never[];
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 13,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('tuple assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+declare const a: [string];
+a as [string | number];
+      `,
+      `
+declare const a: [string, number];
+a as [string, string | number];
+      `,
+      `
+declare const a: [string];
+a as [unknown];
+      `,
+      `
+declare const a: [{ hello: 'world'; foo: 'bar' }];
+a as [{ hello: 'world' }];
+      `,
+    ],
+    invalid: [
+      {
+        code: `
+declare const a: [string | number];
+a as [string];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '[string | number]',
+            },
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [string, number];
+a as [string, string];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '[string, number]',
+            },
+            endColumn: 22,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [string];
+a as [string, number];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '[string]',
+            },
+            endColumn: 22,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [string, number];
+a as [string];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '[string, number]',
+            },
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [any];
+a as [number];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [number, any];
+a as [number, number];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 22,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [number];
+a as [any];
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 11,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [unknown];
+a as [number];
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 14,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [number];
+a as [never];
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 13,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: [Promise<string | number>];
+a as [Promise<string>];
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 23,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('promise assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+declare const a: Promise<string>;
+a as Promise<string | number>;
+      `,
+      `
+declare const a: Promise<number>;
+a as Promise<unknown>;
+      `,
+      `
+declare const a: Promise<{ hello: 'world'; foo: 'bar' }>;
+a as Promise<{ hello: 'world' }>;
+      `,
+      `
+declare const a: Promise<string>;
+a as Promise<string> | string;
+      `,
+    ],
+    invalid: [
+      {
+        code: `
+declare const a: Promise<string | number>;
+a as Promise<string>;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: 'Promise<string | number>',
+            },
+            endColumn: 21,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: Promise<any>;
+a as Promise<number>;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 21,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeOfAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: Promise<number>;
+a as Promise<any>;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 18,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: Promise<number[]>;
+a as Promise<any[]>;
+        `,
+        errors: [
+          {
+            column: 1,
+            data: {
+              type: '`any`',
+            },
+            endColumn: 20,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeToAnyTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: Promise<unknown>;
+a as Promise<number>;
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 21,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+declare const a: Promise<number>;
+a as Promise<never>;
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 20,
+            endLine: 3,
+            line: 3,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
+
+describe('class assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+class Foo {}
+declare const a: Foo;
+a as Foo | number;
+      `,
+      `
+class Foo {}
+class Bar {}
+declare const a: Foo;
+a as Bar;
+      `,
+      `
+class Foo {
+  hello() {}
 }
-
-var foo = <Foo>{};
+class Bar {}
+declare const a: Foo;
+a as Bar;
       `,
-      errors: [
-        {
-          column: 11,
-          data: {
-            type: '{}',
-          },
-          endColumn: 18,
-          line: 7,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  bar: number;
+      `
+class Foo {
+  hello() {}
 }
-
-// no additional properties are allowed
-export const foo = <Foo>{ bar: 1, bazz: 1 };
+class Bar extends Foo {}
+declare const a: Bar;
+a as Foo;
       `,
-      errors: [
-        {
-          column: 20,
-          data: {
-            type: '{ bar: number; bazz: number; }',
-          },
-          endColumn: 44,
-          line: 7,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: string | number;
-const bar = <string | null>(<string | boolean>foo);
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: 'string | boolean',
-          },
-          endColumn: 51,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-        {
-          column: 29,
-          data: {
-            type: 'string | number',
-          },
-          endColumn: 50,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: { bar?: { bazz: string } };
-(<{ bazz: string | boolean }>foo.bar).bazz;
-      `,
-      errors: [
-        {
-          column: 2,
-          data: {
-            type: '{ bazz: string; } | undefined',
-          },
-          endColumn: 37,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: 'hello' | 'world';
-const bar = <'hello'>foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: '"hello" | "world"',
-          },
-          endColumn: 25,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-interface Foo {
-  type: 'foo';
+      `
+class Foo {
+  hello() {}
 }
-
-interface Bar {
-  type: 'bar';
+class Bar extends Foo {}
+declare const a: Foo;
+a as Bar;
+      `,
+    ],
+    invalid: [
+      {
+        code: `
+class Foo {
+  hello() {}
 }
-
-type Bazz = Foo | Bar;
-
-declare const foo: Bazz;
-const bar = <Foo>foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: 'Bazz',
+class Bar extends Foo {
+  world() {}
+}
+declare const a: Foo;
+a as Bar;
+        `,
+        errors: [
+          {
+            column: 1,
+            endColumn: 9,
+            endLine: 9,
+            line: 9,
+            messageId: 'unsafeTypeAssertion',
           },
-          endColumn: 21,
-          line: 13,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-type Foo = Readonly<Required<{ hello?: string }>>;
-
-declare const foo: {};
-const bar = <Foo>foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: '{}',
-          },
-          endColumn: 21,
-          line: 5,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: readonly number[];
-const bar = <number[]>foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: 'readonly number[]',
-          },
-          endColumn: 26,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-    {
-      code: `
-declare const foo: { hello: string } & { world: string };
-const bar = <{ hello: string; world: 'world' }>foo;
-      `,
-      errors: [
-        {
-          column: 13,
-          data: {
-            type: '{ hello: string; } & { world: string; }',
-          },
-          endColumn: 51,
-          line: 3,
-          messageId: 'unsafeTypeAssertion',
-        },
-      ],
-    },
-  ],
+        ],
+      },
+    ],
+  });
 });
