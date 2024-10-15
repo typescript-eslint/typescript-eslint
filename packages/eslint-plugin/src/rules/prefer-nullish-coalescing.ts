@@ -56,10 +56,10 @@ export default createRule<Options, MessageIds>({
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       preferNullishOverOr:
-        'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
+        'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a logical {{ description }} (`||{{ equals }}`), as it is a safer operator.',
       preferNullishOverTernary:
-        'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
-      suggestNullish: 'Fix to nullish coalescing operator (`??`).',
+        'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a ternary expression, as it is simpler to read.',
+      suggestNullish: 'Fix to nullish coalescing operator (`??{{ equals }}`).',
     },
     schema: [
       {
@@ -274,7 +274,7 @@ export default createRule<Options, MessageIds>({
             node.test.right.left,
             node.test.right.right,
           ];
-          if (node.test.operator === '||') {
+          if (['||', '||='].includes(node.test.operator)) {
             if (
               node.test.left.operator === '===' &&
               node.test.right.operator === '==='
@@ -376,10 +376,13 @@ export default createRule<Options, MessageIds>({
 
         if (isFixable) {
           context.report({
+            // TODO: also account for = in the ternary clause
+            data: { equals: '' },
             node,
             messageId: 'preferNullishOverTernary',
             suggest: [
               {
+                data: { equals: '' },
                 messageId: 'suggestNullish',
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
@@ -399,7 +402,11 @@ export default createRule<Options, MessageIds>({
           });
         }
       },
-
+      'AssignmentExpression[operator = "||="]'(
+        node: TSESTree.AssignmentExpression,
+      ): void {
+        checkAssignmentOrLogicalExpression(node, 'assignment', '=');
+      },
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
@@ -446,7 +453,9 @@ function isConditionalTest(node: TSESTree.Node): boolean {
   return false;
 }
 
-function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
+function isMixedLogicalExpression(
+  node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
+): boolean {
   const seen = new Set<TSESTree.Node | undefined>();
   const queue = [node.parent, node.left, node.right];
   for (const current of queue) {
@@ -458,7 +467,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
     if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
-      } else if (current.operator === '||') {
+      } else if (['||', '||='].includes(current.operator)) {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }
