@@ -4,13 +4,14 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { es2015_symbol } from './es2015.symbol';
-import { decorators } from './decorators';
+
 import { TYPE } from './base-config';
+import { decorators } from './decorators';
+import { es2015_symbol } from './es2015.symbol';
 
 export const esnext_decorators = {
   ...es2015_symbol,
   ...decorators,
-  SymbolConstructor: TYPE,
   Function: TYPE,
+  SymbolConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

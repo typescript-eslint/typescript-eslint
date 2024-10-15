@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 

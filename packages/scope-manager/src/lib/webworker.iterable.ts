@@ -4,31 +4,32 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const webworker_iterable = {
   AbortSignal: TYPE,
-  CSSNumericArray: TYPE,
-  CSSTransformValue: TYPE,
-  CSSUnparsedValue: TYPE,
   Cache: TYPE,
   CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
+  CSSNumericArray: TYPE,
+  CSSTransformValue: TYPE,
+  CSSUnparsedValue: TYPE,
   DOMStringList: TYPE,
   FileList: TYPE,
   FontFaceSet: TYPE,
-  FormDataIterator: TYPE,
   FormData: TYPE,
-  HeadersIterator: TYPE,
+  FormDataIterator: TYPE,
   Headers: TYPE,
+  HeadersIterator: TYPE,
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
   MessageEvent: TYPE,
-  StylePropertyMapReadOnlyIterator: TYPE,
   StylePropertyMapReadOnly: TYPE,
+  StylePropertyMapReadOnlyIterator: TYPE,
   SubtleCrypto: TYPE,
-  URLSearchParamsIterator: TYPE,
   URLSearchParams: TYPE,
+  URLSearchParamsIterator: TYPE,
   WEBGL_draw_buffers: TYPE,
   WEBGL_multi_draw: TYPE,
   WebGL2RenderingContextBase: TYPE,

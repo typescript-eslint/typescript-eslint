@@ -4,11 +4,12 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const webworker_asynciterable = {
-  FileSystemDirectoryHandleAsyncIterator: TYPE,
   FileSystemDirectoryHandle: TYPE,
-  ReadableStreamAsyncIterator: TYPE,
+  FileSystemDirectoryHandleAsyncIterator: TYPE,
   ReadableStream: TYPE,
+  ReadableStreamAsyncIterator: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
