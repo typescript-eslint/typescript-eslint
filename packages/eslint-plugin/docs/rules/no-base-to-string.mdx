@@ -13,7 +13,7 @@ JavaScript will call `toString()` on an object when it is converted to a string,
 The default Object `.toString()` or `toLocaleString()` uses the format `"[object Object]"`, which is often not what was intended.
 This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` or `toLocaleString()` method.
 
-> Note that `Function` provides its own `.toString()` or `toLocaleString()` that returns the function's code.
+> Note that `Function` provides its own `.toString()` and `toLocaleString()` that return the function's code.
 > Functions are not flagged by this rule.
 
 ## Examples
