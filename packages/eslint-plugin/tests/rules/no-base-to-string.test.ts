@@ -51,9 +51,9 @@ ruleTester.run('no-base-to-string', rule, {
     // toString()
     ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
 
-    // toLocalString()
+    // toLocaleString()
     ...literalListWrapped.map(
-      i => `${i === '1' ? `(${i})` : i}.toLocalString();`,
+      i => `${i === '1' ? `(${i})` : i}.toLocaleString();`,
     ),
 
     // variable toString() and template
@@ -61,15 +61,6 @@ ruleTester.run('no-base-to-string', rule, {
       i => `
         let value = ${i};
         value.toString();
-        let text = \`\${value}\`;
-      `,
-    ),
-
-    // variable toLocalString() and template
-    ...literalList.map(
-      i => `
-        let value = ${i};
-        value.toLocalString();
         let text = \`\${value}\`;
       `,
     ),
