@@ -114,45 +114,21 @@ export default createRule({
 
                 // ...and remove the type parameter itself from the declaration.
 
-                const typeParams = nullThrows(
+                const typeParamsNode = nullThrows(
                   node.typeParameters,
                   'node should have type parameters',
-                ).params;
+                );
 
-                const index = typeParams.indexOf(esTypeParameter);
+                const index = typeParamsNode.params.indexOf(esTypeParameter);
 
                 /* istanbul ignore if: this is an assertion that should never happen */
                 if (index === -1) {
                   throw new Error(
                     "type parameter should be in node's type parameters",
                   );
-                } else if (typeParams.length === 1) {
-                  const angleBracketBefore = nullThrows(
-                    context.sourceCode.getTokenBefore(
-                      esTypeParameter,
-                      token => token.value === '<',
-                    ),
-                    NullThrowsReasons.MissingToken(
-                      'angle bracket',
-                      'type parameter list',
-                    ),
-                  );
-
-                  const angleBracketAfter = nullThrows(
-                    context.sourceCode.getTokenAfter(
-                      esTypeParameter,
-                      token => token.value === '>',
-                    ),
-                    NullThrowsReasons.MissingToken(
-                      'angle bracket',
-                      'type parameter list',
-                    ),
-                  );
-
-                  yield fixer.removeRange([
-                    angleBracketBefore.range[0],
-                    angleBracketAfter.range[1],
-                  ]);
+                } else if (typeParamsNode.params.length === 1) {
+                  // Remove the whole <T> generic syntax if we're removing the only type parameter in the list.
+                  yield fixer.remove(typeParamsNode);
                 } else if (index === 0) {
                   const commaAfter = nullThrows(
                     context.sourceCode.getTokenAfter(
