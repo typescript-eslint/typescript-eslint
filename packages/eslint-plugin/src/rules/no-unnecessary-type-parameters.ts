@@ -121,7 +121,7 @@ export default createRule({
 
                 const index = typeParams.indexOf(esTypeParameter);
 
-                /* istanbul ignore if */ // This should never happen.
+                /* istanbul ignore if: this is an assertion that should never happen */
                 if (index === -1) {
                   throw new Error(
                     "type parameter should be in node's type parameters",
