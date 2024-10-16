@@ -57,7 +57,7 @@ Since `value` is a non-union type it requires the switch case to have a default 
 
 Defaults to false. Whether a `default` clause will be considered as making a switch statement over a union type exhaustive.
 
-By default, if a `switch` statement over a union type includes a `default` case, then it's considered exhaustive.
+If set to true, `switch` statement over a union type includes a `default` case is considered exhaustive.
 `considerDefaultExhaustiveForUnions` enforces explicitly handling every constituent of the union type with their own explicit `case`.
 This can be useful if you want to make sure every value added to the union receives explicit handling, with the `default` case reserved for reporting an error.
 
