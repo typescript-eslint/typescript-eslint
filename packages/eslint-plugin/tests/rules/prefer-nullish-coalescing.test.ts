@@ -38,16 +38,21 @@ function typeValidTest(
   ];
 }
 
-function nullishTypeTest<
+const nullishTypeTest = <
   T extends
     | InvalidTestCase<MessageIds, Options>
     | ValidTestCase<Options>
     | string,
->(cb: (nullish: string, type: string, equals: string) => T): T[] {
-  return nullishTypes.flatMap(nullish =>
-    types.flatMap(type => [cb(nullish, type, ''), cb(nullish, type, '=')]),
+>(
+  cb: (nullish: string, type: string, equals: string) => T,
+): T[] =>
+  nullishTypes.flatMap(nullish =>
+    types.flatMap(type =>
+      ['', ...(cb.length === 3 ? ['='] : [])].map(equals =>
+        cb(nullish, type, equals),
+      ),
+    ),
   );
-}
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
   valid: [
