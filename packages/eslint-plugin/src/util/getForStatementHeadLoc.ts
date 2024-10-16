@@ -24,10 +24,11 @@ export function getForStatementHeadLoc(
     | TSESTree.ForOfStatement
     | TSESTree.ForStatement,
 ): TSESTree.SourceLocation {
-  const closingParens = nullThrows(
-    sourceCode.getTokenBefore(node.body, token => token.value === ')'),
-    'for statement must have a closing parenthesis.',
+  const closingParens = sourceCode.getTokenBefore(
+    node.body,
+    token => token.value === ')',
   );
+  nullThrows(closingParens, 'for statement must have a closing parenthesis.');
   return {
     end: structuredClone(closingParens.loc.end),
     start: structuredClone(node.loc.start),

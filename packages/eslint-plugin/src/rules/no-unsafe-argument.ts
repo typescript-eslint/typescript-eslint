@@ -210,10 +210,8 @@ export default createRule<[], MessageIds>({
       }
 
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const signature = nullThrows(
-        FunctionSignature.create(checker, tsNode),
-        'Expected to a signature resolved',
-      );
+      const signature = FunctionSignature.create(checker, tsNode);
+      nullThrows(signature, 'Expected to a signature resolved');
 
       if (node.type === AST_NODE_TYPES.TaggedTemplateExpression) {
         // Consumes the first parameter (TemplateStringsArray) of the function called with TaggedTemplateExpression.

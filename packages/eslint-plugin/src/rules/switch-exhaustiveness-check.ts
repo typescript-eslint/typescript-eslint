@@ -248,18 +248,20 @@ export default createRule<Options, MessageIds>({
       }
 
       // There were no existing cases.
-      const openingBrace = nullThrows(
-        context.sourceCode.getTokenAfter(
-          node.discriminant,
-          isOpeningBraceToken,
-        ),
+      const openingBrace = context.sourceCode.getTokenAfter(
+        node.discriminant,
+        isOpeningBraceToken,
+      );
+      nullThrows(
+        openingBrace,
         NullThrowsReasons.MissingToken('{', 'discriminant'),
       );
-      const closingBrace = nullThrows(
-        context.sourceCode.getTokenAfter(
-          node.discriminant,
-          isClosingBraceToken,
-        ),
+      const closingBrace = context.sourceCode.getTokenAfter(
+        node.discriminant,
+        isClosingBraceToken,
+      );
+      nullThrows(
+        closingBrace,
         NullThrowsReasons.MissingToken('}', 'discriminant'),
       );
 

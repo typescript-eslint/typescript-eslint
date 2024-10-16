@@ -18,14 +18,16 @@ export function getTextWithParentheses(
   let afterCount = 0;
 
   if (isParenthesized(node, sourceCode)) {
-    const bodyOpeningParen = nullThrows(
-      sourceCode.getTokenBefore(node, isOpeningParenToken),
-      NullThrowsReasons.MissingToken('(', 'node'),
+    const bodyOpeningParen = sourceCode.getTokenBefore(
+      node,
+      isOpeningParenToken,
     );
-    const bodyClosingParen = nullThrows(
-      sourceCode.getTokenAfter(node, isClosingParenToken),
-      NullThrowsReasons.MissingToken(')', 'node'),
+    nullThrows(bodyOpeningParen, NullThrowsReasons.MissingToken('(', 'node'));
+    const bodyClosingParen = sourceCode.getTokenAfter(
+      node,
+      isClosingParenToken,
     );
+    nullThrows(bodyClosingParen, NullThrowsReasons.MissingToken(')', 'node'));
 
     beforeCount = node.range[0] - bodyOpeningParen.range[0];
     afterCount = bodyClosingParen.range[1] - node.range[1];

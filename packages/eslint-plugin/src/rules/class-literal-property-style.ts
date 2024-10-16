@@ -90,10 +90,9 @@ export default createRule<Options, MessageIds>({
     }
 
     function exitClassBody(): void {
-      const { excludeSet, properties } = nullThrows(
-        propertiesInfoStack.pop(),
-        'Stack should exist on class exit',
-      );
+      const propertiesInfo = propertiesInfoStack.pop();
+      nullThrows(propertiesInfo, 'Stack should exist on class exit');
+      const { excludeSet, properties } = propertiesInfo;
 
       properties.forEach(node => {
         const { value } = node;

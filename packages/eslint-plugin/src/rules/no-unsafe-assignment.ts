@@ -368,10 +368,8 @@ export default createRule({
       'VariableDeclarator[init != null]'(
         node: TSESTree.VariableDeclarator,
       ): void {
-        const init = nullThrows(
-          node.init,
-          NullThrowsReasons.MissingToken(node.type, 'init'),
-        );
+        const { init } = node;
+        nullThrows(init, NullThrowsReasons.MissingToken(node.type, 'init'));
         let didReport = checkAssignment(
           node.id,
           init,
@@ -409,10 +407,8 @@ export default createRule({
         }
       },
       'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
-        const value = nullThrows(
-          node.value,
-          NullThrowsReasons.MissingToken(node.type, 'value'),
-        );
+        const { value } = node;
+        nullThrows(value, NullThrowsReasons.MissingToken(node.type, 'value'));
         if (
           value.type !== AST_NODE_TYPES.JSXExpressionContainer ||
           value.expression.type === AST_NODE_TYPES.JSXEmptyExpression

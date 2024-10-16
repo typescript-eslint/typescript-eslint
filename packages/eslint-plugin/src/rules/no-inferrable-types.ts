@@ -225,12 +225,12 @@ export default createRule<Options, MessageIds>({
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
-            yield fixer.remove(
-              nullThrows(
-                context.sourceCode.getTokenBefore(typeNode),
-                NullThrowsReasons.MissingToken('token before', 'type node'),
-              ),
+            const tokenBefore = context.sourceCode.getTokenBefore(typeNode);
+            nullThrows(
+              tokenBefore,
+              NullThrowsReasons.MissingToken('token before', 'type node'),
             );
+            yield fixer.remove(tokenBefore);
           }
           yield fixer.remove(typeNode);
         },

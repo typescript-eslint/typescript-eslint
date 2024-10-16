@@ -30,9 +30,10 @@ const {
   deepMerge,
   getParserServices,
   isObjectNotArray,
-  nullThrows,
   NullThrowsReasons,
 } = ESLintUtils;
+// `Assertions require every name in the call target to be declared with an explicit type annotation.`
+const nullThrows: typeof ESLintUtils.nullThrows = ESLintUtils.nullThrows;
 type InferMessageIdsTypeFromRule<T> =
   ESLintUtils.InferMessageIdsTypeFromRule<T>;
 type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;

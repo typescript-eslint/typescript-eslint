@@ -250,8 +250,9 @@ export default createRule<Options, MessageIds>({
       ): TSESLint.RuleFix | null {
         if (node.decorators.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
-          const nextToken = nullThrows(
-            context.sourceCode.getTokenAfter(lastDecorator),
+          const nextToken = context.sourceCode.getTokenAfter(lastDecorator);
+          nullThrows(
+            nextToken,
             NullThrowsReasons.MissingToken('token', 'last decorator'),
           );
           return fixer.insertTextBefore(nextToken, `${accessibility} `);

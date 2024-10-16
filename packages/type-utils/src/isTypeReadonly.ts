@@ -75,8 +75,9 @@ function isTypeReadonlyArrayOrTuple(
   }
 
   if (checker.isArrayType(type)) {
-    const symbol = ESLintUtils.nullThrows(
-      type.getSymbol(),
+    const symbol = type.getSymbol();
+    ESLintUtils.nullThrows(
+      symbol,
       ESLintUtils.NullThrowsReasons.MissingToken('symbol', 'array type'),
     );
     const escapedName = symbol.getEscapedName();
@@ -183,8 +184,9 @@ function isTypeReadonlyObject(
     // as we might be able to bail out early due to a mutable property before
     // doing this deep, potentially expensive check.
     for (const property of properties) {
-      const propertyType = ESLintUtils.nullThrows(
-        getTypeOfPropertyOfType(checker, type, property),
+      const propertyType = getTypeOfPropertyOfType(checker, type, property);
+      ESLintUtils.nullThrows(
+        propertyType,
         ESLintUtils.NullThrowsReasons.MissingToken(
           `property "${property.name}"`,
           'type',

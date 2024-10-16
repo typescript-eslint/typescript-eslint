@@ -235,8 +235,12 @@ export default createRule<Options, MessageIds>({
     function getPropertyRange(
       node: TSESTree.MemberExpression,
     ): [number, number] {
-      const dotOrOpenBracket = nullThrows(
-        context.sourceCode.getTokenAfter(node.object, isNotClosingParenToken),
+      const dotOrOpenBracket = context.sourceCode.getTokenAfter(
+        node.object,
+        isNotClosingParenToken,
+      );
+      nullThrows(
+        dotOrOpenBracket,
         NullThrowsReasons.MissingToken('closing parenthesis', 'member'),
       );
       return [dotOrOpenBracket.range[0], node.range[1]];
@@ -383,12 +387,12 @@ export default createRule<Options, MessageIds>({
     }
 
     function getParent(node: TSESTree.Node): TSESTree.Node {
-      return nullThrows(
+      const { parent } =
         node.parent?.type === AST_NODE_TYPES.ChainExpression
-          ? node.parent.parent
-          : node.parent,
-        NullThrowsReasons.MissingParent,
-      );
+          ? node.parent
+          : node;
+      nullThrows(parent, NullThrowsReasons.MissingParent);
+      return parent;
     }
 
     return {

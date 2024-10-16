@@ -144,21 +144,23 @@ export default createRule<Options, MessageId>({
               const arrowBodyText = context.sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
               if (isParenthesized(arrowBody, context.sourceCode)) {
-                const bodyOpeningParen = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    arrowBody,
-                    isOpeningParenToken,
-                  ),
+                const bodyOpeningParen = context.sourceCode.getTokenBefore(
+                  arrowBody,
+                  isOpeningParenToken,
+                );
+                nullThrows(
+                  bodyOpeningParen,
                   NullThrowsReasons.MissingToken(
                     'opening parenthesis',
                     'arrow body',
                   ),
                 );
-                const bodyClosingParen = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    arrowBody,
-                    isClosingParenToken,
-                  ),
+                const bodyClosingParen = context.sourceCode.getTokenAfter(
+                  arrowBody,
+                  isClosingParenToken,
+                );
+                nullThrows(
+                  bodyClosingParen,
                   NullThrowsReasons.MissingToken(
                     'closing parenthesis',
                     'arrow body',
@@ -266,7 +268,8 @@ export default createRule<Options, MessageId>({
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
     function findInvalidAncestor(node: TSESTree.Node): InvalidAncestor | null {
-      const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+      const { parent } = node;
+      nullThrows(parent, NullThrowsReasons.MissingParent);
       if (
         parent.type === AST_NODE_TYPES.SequenceExpression &&
         node !== parent.expressions[parent.expressions.length - 1]
@@ -330,17 +333,16 @@ export default createRule<Options, MessageId>({
     /** Checks whether the return statement is the last statement in a function body. */
     function isFinalReturn(node: TSESTree.ReturnStatement): boolean {
       // the parent must be a block
-      const block = nullThrows(node.parent, NullThrowsReasons.MissingParent);
+      const block = node.parent;
+      nullThrows(block, NullThrowsReasons.MissingParent);
       if (block.type !== AST_NODE_TYPES.BlockStatement) {
         // e.g. `if (cond) return;` (not in a block)
         return false;
       }
 
       // the block's parent must be a function
-      const blockParent = nullThrows(
-        block.parent,
-        NullThrowsReasons.MissingParent,
-      );
+      const blockParent = block.parent;
+      nullThrows(blockParent, NullThrowsReasons.MissingParent);
       if (
         ![
           AST_NODE_TYPES.ArrowFunctionExpression,
@@ -369,8 +371,9 @@ export default createRule<Options, MessageId>({
      * This happens if the line begins with `(`, `[` or `` ` ``
      */
     function isPreventingASI(node: TSESTree.Expression): boolean {
-      const startToken = nullThrows(
-        context.sourceCode.getFirstToken(node),
+      const startToken = context.sourceCode.getFirstToken(node);
+      nullThrows(
+        startToken,
         NullThrowsReasons.MissingToken('first token', node.type),
       );
 

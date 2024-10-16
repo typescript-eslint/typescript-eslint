@@ -199,10 +199,8 @@ export default createRule<Options, MessageIds>({
         );
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
-        const finalizedClassScope = nullThrows(
-          classScopeStack.pop(),
-          'Stack should exist on class exit',
-        );
+        const finalizedClassScope = classScopeStack.pop();
+        nullThrows(finalizedClassScope, 'Stack should exist on class exit');
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =

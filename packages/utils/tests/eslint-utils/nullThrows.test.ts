@@ -4,17 +4,19 @@ describe('nullThrows', () => {
   it('returns a falsy value when it exists', () => {
     const value = 0;
 
-    const actual = nullThrows(value, NullThrowsReasons.MissingParent);
-
-    expect(actual).toBe(value);
+    expect(() =>
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      nullThrows(value, NullThrowsReasons.MissingParent),
+    ).not.toThrow();
   });
 
   it('returns a truthy value when it exists', () => {
     const value = { abc: 'def' };
 
-    const actual = nullThrows(value, NullThrowsReasons.MissingParent);
-
-    expect(actual).toBe(value);
+    expect(() =>
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      nullThrows(value, NullThrowsReasons.MissingParent),
+    ).not.toThrow();
   });
 
   it('throws an error when the value is null', () => {

@@ -26,8 +26,9 @@ function getOpeningParenOfParams(
     node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     node.params.length === 1
   ) {
-    const argToken = ESLintUtils.nullThrows(
-      sourceCode.getFirstToken(node.params[0]),
+    const argToken = sourceCode.getFirstToken(node.params[0]);
+    ESLintUtils.nullThrows(
+      argToken,
       ESLintUtils.NullThrowsReasons.MissingToken('parameter', 'arrow function'),
     );
     const maybeParenToken = sourceCode.getTokenBefore(argToken);
@@ -38,18 +39,18 @@ function getOpeningParenOfParams(
   }
 
   // Otherwise, returns paren.
-  return node.id != null
-    ? ESLintUtils.nullThrows(
-        sourceCode.getTokenAfter(node.id, isOpeningParenToken),
-        ESLintUtils.NullThrowsReasons.MissingToken('id', 'function'),
-      )
-    : ESLintUtils.nullThrows(
-        sourceCode.getFirstToken(node, isOpeningParenToken),
-        ESLintUtils.NullThrowsReasons.MissingToken(
-          'opening parenthesis',
-          'function',
-        ),
-      );
+  const openingParen =
+    node.id != null
+      ? sourceCode.getTokenAfter(node.id, isOpeningParenToken)
+      : sourceCode.getFirstToken(node, isOpeningParenToken);
+  ESLintUtils.nullThrows(
+    openingParen,
+    ESLintUtils.NullThrowsReasons.MissingToken(
+      'opening parenthesis',
+      'function',
+    ),
+  );
+  return openingParen;
 }
 
 /**
@@ -166,8 +167,9 @@ export function getFunctionHeadLoc(
     // to highlight it ever.
     if (parent.decorators.length > 0) {
       const lastDecorator = parent.decorators[parent.decorators.length - 1];
-      const firstTokenAfterDecorator = ESLintUtils.nullThrows(
-        sourceCode.getTokenAfter(lastDecorator),
+      const firstTokenAfterDecorator = sourceCode.getTokenAfter(lastDecorator);
+      ESLintUtils.nullThrows(
+        firstTokenAfterDecorator,
         ESLintUtils.NullThrowsReasons.MissingToken(
           'modifier or member name',
           'class member',
@@ -182,8 +184,9 @@ export function getFunctionHeadLoc(
     start = parent.loc.start;
     end = getOpeningParenOfParams(node, sourceCode).loc.start;
   } else if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-    const arrowToken = ESLintUtils.nullThrows(
-      sourceCode.getTokenBefore(node.body, isArrowToken),
+    const arrowToken = sourceCode.getTokenBefore(node.body, isArrowToken);
+    ESLintUtils.nullThrows(
+      arrowToken,
       ESLintUtils.NullThrowsReasons.MissingToken(
         'arrow token',
         'arrow function',

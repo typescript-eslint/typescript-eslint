@@ -94,30 +94,35 @@ export default createRule({
             ? node.parent
             : node;
 
-        const asyncToken = nullThrows(
-          context.sourceCode.getFirstToken(
-            nodeWithAsyncKeyword,
-            token => token.value === 'async',
-          ),
+        const asyncToken = context.sourceCode.getFirstToken(
+          nodeWithAsyncKeyword,
+          token => token.value === 'async',
+        );
+        nullThrows(
+          asyncToken,
           'The node is an async function, so it must have an "async" token.',
         );
 
+        const nextTokenOrComment = context.sourceCode.getTokenAfter(
+          asyncToken,
+          { includeComments: true },
+        );
+        nullThrows(
+          nextTokenOrComment,
+          'There will always be a token after the "async" keyword.',
+        );
         const asyncRange: Readonly<AST.Range> = [
           asyncToken.range[0],
-          nullThrows(
-            context.sourceCode.getTokenAfter(asyncToken, {
-              includeComments: true,
-            }),
-            'There will always be a token after the "async" keyword.',
-          ).range[0],
+          nextTokenOrComment.range[0],
         ] as const;
 
         // Removing the `async` keyword can cause parsing errors if the
         // current statement is relying on automatic semicolon insertion.
         // If ASI is currently being used, then we should replace the
         // `async` keyword with a semicolon.
-        const nextToken = nullThrows(
-          context.sourceCode.getTokenAfter(asyncToken),
+        const nextToken = context.sourceCode.getTokenAfter(asyncToken);
+        nullThrows(
+          nextToken,
           'There will always be a token after the "async" keyword.',
         );
         const addSemiColon =
@@ -152,22 +157,24 @@ export default createRule({
             hasTypeName(node.returnType.typeAnnotation, 'Promise') &&
             node.returnType.typeAnnotation.typeArguments != null
           ) {
-            const openAngle = nullThrows(
-              context.sourceCode.getFirstToken(
-                node.returnType.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '<',
-              ),
+            const openAngle = context.sourceCode.getFirstToken(
+              node.returnType.typeAnnotation,
+              token =>
+                token.type === AST_TOKEN_TYPES.Punctuator &&
+                token.value === '<',
+            );
+            nullThrows(
+              openAngle,
               'There are type arguments, so the angle bracket will exist.',
             );
-            const closeAngle = nullThrows(
-              context.sourceCode.getLastToken(
-                node.returnType.typeAnnotation,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '>',
-              ),
+            const closeAngle = context.sourceCode.getLastToken(
+              node.returnType.typeAnnotation,
+              token =>
+                token.type === AST_TOKEN_TYPES.Punctuator &&
+                token.value === '>',
+            );
+            nullThrows(
+              closeAngle,
               'There are type arguments, so the angle bracket will exist.',
             );
             changes.push(

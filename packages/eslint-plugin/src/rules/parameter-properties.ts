@@ -175,10 +175,8 @@ export default createRule<Options, MessageIds>({
 
     return {
       ':matches(ClassDeclaration, ClassExpression):exit'(): void {
-        const propertyNodesByName = nullThrows(
-          propertyNodesByNameStack.pop(),
-          'Stack should exist on class exit',
-        );
+        const propertyNodesByName = propertyNodesByNameStack.pop();
+        nullThrows(propertyNodesByName, 'Stack should exist on class exit');
 
         for (const [name, nodes] of propertyNodesByName) {
           if (

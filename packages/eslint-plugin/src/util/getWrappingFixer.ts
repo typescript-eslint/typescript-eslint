@@ -190,13 +190,9 @@ function isMissingSemicolonBefore(
         // parent is an expression statement in a block
         const statementIndex = block.body.indexOf(parent);
         const previousStatement = block.body[statementIndex - 1];
-        if (
-          statementIndex > 0 &&
-          ESLintUtils.nullThrows(
-            sourceCode.getLastToken(previousStatement),
-            'Mismatched semicolon and block',
-          ).value !== ';'
-        ) {
+        const lastToken = sourceCode.getLastToken(previousStatement);
+        ESLintUtils.nullThrows(lastToken, 'Mismatched semicolon and block');
+        if (statementIndex > 0 && lastToken.value !== ';') {
           return true;
         }
       }

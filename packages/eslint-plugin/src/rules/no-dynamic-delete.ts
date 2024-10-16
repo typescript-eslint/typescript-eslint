@@ -64,16 +64,17 @@ export default createRule({
     }
 
     function getTokenRange(property: TSESTree.Expression): [number, number] {
-      return [
-        nullThrows(
-          context.sourceCode.getTokenBefore(property),
-          NullThrowsReasons.MissingToken('token before', 'property'),
-        ).range[0],
-        nullThrows(
-          context.sourceCode.getTokenAfter(property),
-          NullThrowsReasons.MissingToken('token after', 'property'),
-        ).range[1],
-      ];
+      const tokenBeforeProperty = context.sourceCode.getTokenBefore(property);
+      nullThrows(
+        tokenBeforeProperty,
+        NullThrowsReasons.MissingToken('token before', 'property'),
+      );
+      const tokenAfterProperty = context.sourceCode.getTokenAfter(property);
+      nullThrows(
+        tokenAfterProperty,
+        NullThrowsReasons.MissingToken('token after', 'property'),
+      );
+      return [tokenBeforeProperty.range[0], tokenAfterProperty.range[1]];
     }
   },
 });

@@ -49,8 +49,9 @@ export default createRule({
     ): FilterExpressionData[] {
       if (expression.type === AST_NODE_TYPES.SequenceExpression) {
         // Only the last expression in (a, b, [1, 2, 3].filter(condition))[0] matters
-        const lastExpression = nullThrows(
-          expression.expressions.at(-1),
+        const lastExpression = expression.expressions.at(-1);
+        nullThrows(
+          lastExpression,
           'Expected to have more than zero expressions in a sequence expression',
         );
         return parseArrayFilterExpressions(lastExpression);
@@ -220,13 +221,14 @@ export default createRule({
       arrayNode: TSESTree.Expression,
       wholeExpressionBeingFlagged: TSESTree.Expression,
     ): RuleFix {
-      const tokenToStartDeletingFrom = nullThrows(
-        // The next `.` or `[` is what we're looking for.
+      const tokenToStartDeletingFrom = // The next `.` or `[` is what we're looking for.
         // think of (...).at(0) or (...)[0] or even (...)["at"](0).
         context.sourceCode.getTokenAfter(
           arrayNode,
           token => token.value === '.' || token.value === '[',
-        ),
+        );
+      nullThrows(
+        tokenToStartDeletingFrom,
         'Expected to find a member access token!',
       );
       return fixer.removeRange([

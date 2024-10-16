@@ -211,10 +211,10 @@ export default createRule({
       const tsNode = services.esTreeNodeToTSNodeMap.get(node.parent);
 
       // If the node is a direct function call, we look for its signature.
-      const signature = nullThrows(
-        checker.getResolvedSignature(tsNode as ts.CallLikeExpression),
-        'Expected call like node to have signature',
+      const signature = checker.getResolvedSignature(
+        tsNode as ts.CallLikeExpression,
       );
+      nullThrows(signature, 'Expected call like node to have signature');
 
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =

@@ -59,20 +59,19 @@ export default createRule<Options, MessageIds>({
     ): string {
       let params = '()';
       if (node.params.length > 0) {
-        const openingParen = nullThrows(
-          context.sourceCode.getTokenBefore(
-            node.params[0],
-            isOpeningParenToken,
-          ),
+        const openingParen = context.sourceCode.getTokenBefore(
+          node.params[0],
+          isOpeningParenToken,
+        );
+        nullThrows(
+          openingParen,
           'Missing opening paren before first parameter',
         );
-        const closingParen = nullThrows(
-          context.sourceCode.getTokenAfter(
-            node.params[node.params.length - 1],
-            isClosingParenToken,
-          ),
-          'Missing closing paren after last parameter',
+        const closingParen = context.sourceCode.getTokenAfter(
+          node.params[node.params.length - 1],
+          isClosingParenToken,
         );
+        nullThrows(closingParen, 'Missing closing paren after last parameter');
 
         params = context.sourceCode.text.substring(
           openingParen.range[0],

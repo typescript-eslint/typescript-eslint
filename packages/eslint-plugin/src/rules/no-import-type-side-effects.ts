@@ -55,8 +55,12 @@ export default createRule<Options, MessageIds>({
           fix(fixer) {
             const fixes: TSESLint.RuleFix[] = [];
             for (const specifier of specifiers) {
-              const qualifier = nullThrows(
-                context.sourceCode.getFirstToken(specifier, isTypeKeyword),
+              const qualifier = context.sourceCode.getFirstToken(
+                specifier,
+                isTypeKeyword,
+              );
+              nullThrows(
+                qualifier,
                 NullThrowsReasons.MissingToken(
                   'type keyword',
                   'import specifier',
@@ -70,8 +74,12 @@ export default createRule<Options, MessageIds>({
               );
             }
 
-            const importKeyword = nullThrows(
-              context.sourceCode.getFirstToken(node, isImportKeyword),
+            const importKeyword = context.sourceCode.getFirstToken(
+              node,
+              isImportKeyword,
+            );
+            nullThrows(
+              importKeyword,
               NullThrowsReasons.MissingToken('import keyword', 'import'),
             );
             fixes.push(fixer.insertTextAfter(importKeyword, ' type'));

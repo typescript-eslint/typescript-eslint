@@ -371,17 +371,18 @@ export default createRule<Options, MessageIds>({
         }
         /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
-        const barBarOperator = nullThrows(
-          context.sourceCode.getTokenAfter(
-            node.left,
-            token =>
-              token.type === AST_TOKEN_TYPES.Punctuator &&
-              token.value === node.operator,
-          ),
+        const barBarOperator = context.sourceCode.getTokenAfter(
+          node.left,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator &&
+            token.value === node.operator,
+        );
+        nullThrows(
+          barBarOperator,
           NullThrowsReasons.MissingToken('operator', node.type),
         );
 
-        function* fix(
+        const fix = function* (
           fixer: TSESLint.RuleFixer,
         ): IterableIterator<TSESLint.RuleFix> {
           if (isLogicalOrOperator(node.parent)) {
@@ -397,7 +398,7 @@ export default createRule<Options, MessageIds>({
             yield fixer.insertTextAfter(node.right, ')');
           }
           yield fixer.replaceText(barBarOperator, '??');
-        }
+        };
 
         context.report({
           node: barBarOperator,

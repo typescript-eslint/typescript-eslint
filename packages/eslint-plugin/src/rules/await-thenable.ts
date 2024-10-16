@@ -61,8 +61,12 @@ export default createRule<[], MessageId>({
               {
                 messageId: 'removeAwait',
                 fix(fixer): TSESLint.RuleFix {
-                  const awaitKeyword = nullThrows(
-                    context.sourceCode.getFirstToken(node, isAwaitKeyword),
+                  const awaitKeyword = context.sourceCode.getFirstToken(
+                    node,
+                    isAwaitKeyword,
+                  );
+                  nullThrows(
+                    awaitKeyword,
                     NullThrowsReasons.MissingToken('await', 'await expression'),
                   );
 
@@ -101,8 +105,12 @@ export default createRule<[], MessageId>({
               {
                 messageId: 'convertToOrdinaryFor',
                 fix(fixer): TSESLint.RuleFix {
-                  const awaitToken = nullThrows(
-                    context.sourceCode.getFirstToken(node, isAwaitKeyword),
+                  const awaitToken = context.sourceCode.getFirstToken(
+                    node,
+                    isAwaitKeyword,
+                  );
+                  nullThrows(
+                    awaitToken,
                     NullThrowsReasons.MissingToken('await', 'for await loop'),
                   );
                   return fixer.remove(awaitToken);

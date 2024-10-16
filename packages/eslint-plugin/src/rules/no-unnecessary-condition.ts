@@ -714,12 +714,13 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      const questionDotOperator = nullThrows(
-        context.sourceCode.getTokenAfter(
-          beforeOperator,
-          token =>
-            token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.',
-        ),
+      const questionDotOperator = context.sourceCode.getTokenAfter(
+        beforeOperator,
+        token =>
+          token.type === AST_TOKEN_TYPES.Punctuator && token.value === '?.',
+      );
+      nullThrows(
+        questionDotOperator,
         NullThrowsReasons.MissingToken('operator', node.type),
       );
 

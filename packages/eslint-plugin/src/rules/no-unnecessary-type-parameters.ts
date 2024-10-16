@@ -49,11 +49,12 @@ export default createRule({
             typeParameter,
           );
 
-        const smTypeParameterVariable = nullThrows(
-          (() => {
-            const variable = scope.set.get(esTypeParameter.name.name);
-            return variable?.isTypeVariable ? variable : undefined;
-          })(),
+        const variable = scope.set.get(esTypeParameter.name.name);
+        const smTypeParameterVariable = variable?.isTypeVariable
+          ? variable
+          : undefined;
+        nullThrows(
+          smTypeParameterVariable,
           "Type parameter should be present in scope's variables.",
         );
 

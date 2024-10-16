@@ -467,23 +467,26 @@ export default createRule<Options, MessageIds>({
       if (subsetNamedSpecifiers.length === allNamedSpecifiers.length) {
         // import Foo, {Type1, Type2} from 'foo'
         // import DefType, {Type1, Type2} from 'foo'
-        const openingBraceToken = nullThrows(
-          context.sourceCode.getTokenBefore(
-            subsetNamedSpecifiers[0],
-            isOpeningBraceToken,
-          ),
+        const openingBraceToken = context.sourceCode.getTokenBefore(
+          subsetNamedSpecifiers[0],
+          isOpeningBraceToken,
+        );
+        nullThrows(
+          openingBraceToken,
           NullThrowsReasons.MissingToken('{', node.type),
         );
-        const commaToken = nullThrows(
-          context.sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
-          NullThrowsReasons.MissingToken(',', node.type),
+        const commaToken = context.sourceCode.getTokenBefore(
+          openingBraceToken,
+          isCommaToken,
         );
-        const closingBraceToken = nullThrows(
-          context.sourceCode.getFirstTokenBetween(
-            openingBraceToken,
-            node.source,
-            isClosingBraceToken,
-          ),
+        nullThrows(commaToken, NullThrowsReasons.MissingToken(',', node.type));
+        const closingBraceToken = context.sourceCode.getFirstTokenBetween(
+          openingBraceToken,
+          node.source,
+          isClosingBraceToken,
+        );
+        nullThrows(
+          closingBraceToken,
           NullThrowsReasons.MissingToken('}', node.type),
         );
 
@@ -545,8 +548,9 @@ export default createRule<Options, MessageIds>({
       const last = namedSpecifierGroup[namedSpecifierGroup.length - 1];
       const removeRange: TSESTree.Range = [first.range[0], last.range[1]];
       const textRange: TSESTree.Range = [...removeRange];
-      const before = nullThrows(
-        context.sourceCode.getTokenBefore(first),
+      const before = context.sourceCode.getTokenBefore(first);
+      nullThrows(
+        before,
         NullThrowsReasons.MissingToken('token', 'first specifier'),
       );
       textRange[0] = before.range[1];
@@ -558,8 +562,9 @@ export default createRule<Options, MessageIds>({
 
       const isFirst = allNamedSpecifiers[0] === first;
       const isLast = allNamedSpecifiers[allNamedSpecifiers.length - 1] === last;
-      const after = nullThrows(
-        context.sourceCode.getTokenAfter(last),
+      const after = context.sourceCode.getTokenAfter(last);
+      nullThrows(
+        after,
         NullThrowsReasons.MissingToken('token', 'last specifier'),
       );
       textRange[1] = after.range[0];
@@ -584,19 +589,23 @@ export default createRule<Options, MessageIds>({
       target: TSESTree.ImportDeclaration,
       insertText: string,
     ): TSESLint.RuleFix {
-      const closingBraceToken = nullThrows(
-        context.sourceCode.getFirstTokenBetween(
-          nullThrows(
-            context.sourceCode.getFirstToken(target),
-            NullThrowsReasons.MissingToken('token before', 'import'),
-          ),
-          target.source,
-          isClosingBraceToken,
-        ),
+      const tokenBeforeImport = context.sourceCode.getFirstToken(target);
+      nullThrows(
+        tokenBeforeImport,
+        NullThrowsReasons.MissingToken('token before', 'import'),
+      );
+      const closingBraceToken = context.sourceCode.getFirstTokenBetween(
+        tokenBeforeImport,
+        target.source,
+        isClosingBraceToken,
+      );
+      nullThrows(
+        closingBraceToken,
         NullThrowsReasons.MissingToken('}', target.type),
       );
-      const before = nullThrows(
-        context.sourceCode.getTokenBefore(closingBraceToken),
+      const before = context.sourceCode.getTokenBefore(closingBraceToken);
+      nullThrows(
+        before,
         NullThrowsReasons.MissingToken('token before', 'closing brace'),
       );
       if (!isCommaToken(before) && !isOpeningBraceToken(before)) {
@@ -770,10 +779,11 @@ export default createRule<Options, MessageIds>({
         // import Foo, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
         // import DefType, * as Type from 'foo'
-        const commaToken = nullThrows(
-          context.sourceCode.getTokenBefore(namespaceSpecifier, isCommaToken),
-          NullThrowsReasons.MissingToken(',', node.type),
+        const commaToken = context.sourceCode.getTokenBefore(
+          namespaceSpecifier,
+          isCommaToken,
         );
+        nullThrows(commaToken, NullThrowsReasons.MissingToken(',', node.type));
 
         // import Def, * as Ns from 'foo'
         //           ^^^^^^^^^ remove
@@ -795,16 +805,24 @@ export default createRule<Options, MessageIds>({
         report.typeSpecifiers.includes(defaultSpecifier)
       ) {
         if (report.typeSpecifiers.length === node.specifiers.length) {
-          const importToken = nullThrows(
-            context.sourceCode.getFirstToken(node, isImportKeyword),
+          const importToken = context.sourceCode.getFirstToken(
+            node,
+            isImportKeyword,
+          );
+          nullThrows(
+            importToken,
             NullThrowsReasons.MissingToken('import', node.type),
           );
           // import type Type from 'foo'
           //        ^^^^ insert
           yield fixer.insertTextAfter(importToken, ' type');
         } else {
-          const commaToken = nullThrows(
-            context.sourceCode.getTokenAfter(defaultSpecifier, isCommaToken),
+          const commaToken = context.sourceCode.getTokenAfter(
+            defaultSpecifier,
+            isCommaToken,
+          );
+          nullThrows(
+            commaToken,
             NullThrowsReasons.MissingToken(',', defaultSpecifier.type),
           );
           // import Type , {...} from 'foo'
@@ -818,10 +836,11 @@ export default createRule<Options, MessageIds>({
               node.source,
             )};\n`,
           );
-          const afterToken = nullThrows(
-            context.sourceCode.getTokenAfter(commaToken, {
-              includeComments: true,
-            }),
+          const afterToken = context.sourceCode.getTokenAfter(commaToken, {
+            includeComments: true,
+          });
+          nullThrows(
+            afterToken,
             NullThrowsReasons.MissingToken('any token', node.type),
           );
           // import Type , {...} from 'foo'
@@ -846,8 +865,12 @@ export default createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       // import type Foo from 'foo'
       //       ^^^^^ insert
-      const importToken = nullThrows(
-        context.sourceCode.getFirstToken(node, isImportKeyword),
+      const importToken = context.sourceCode.getFirstToken(
+        node,
+        isImportKeyword,
+      );
+      nullThrows(
+        importToken,
         NullThrowsReasons.MissingToken('import', node.type),
       );
       yield fixer.insertTextAfter(importToken, ' type');
@@ -861,16 +884,21 @@ export default createRule<Options, MessageIds>({
         );
         if (openingBraceToken) {
           // Only braces. e.g. import Foo, {} from 'foo'
-          const commaToken = nullThrows(
-            context.sourceCode.getTokenBefore(openingBraceToken, isCommaToken),
+          const commaToken = context.sourceCode.getTokenBefore(
+            openingBraceToken,
+            isCommaToken,
+          );
+          nullThrows(
+            commaToken,
             NullThrowsReasons.MissingToken(',', node.type),
           );
-          const closingBraceToken = nullThrows(
-            context.sourceCode.getFirstTokenBetween(
-              openingBraceToken,
-              node.source,
-              isClosingBraceToken,
-            ),
+          const closingBraceToken = context.sourceCode.getFirstTokenBetween(
+            openingBraceToken,
+            node.source,
+            isClosingBraceToken,
+          );
+          nullThrows(
+            closingBraceToken,
             NullThrowsReasons.MissingToken('}', node.type),
           );
 
@@ -912,20 +940,25 @@ export default createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       // import type Foo from 'foo'
       //        ^^^^ remove
-      const importToken = nullThrows(
-        context.sourceCode.getFirstToken(node, isImportKeyword),
+      const importToken = context.sourceCode.getFirstToken(
+        node,
+        isImportKeyword,
+      );
+      nullThrows(
+        importToken,
         NullThrowsReasons.MissingToken('import', node.type),
       );
-      const typeToken = nullThrows(
-        context.sourceCode.getFirstTokenBetween(
-          importToken,
-          node.specifiers[0]?.local ?? node.source,
-          isTypeKeyword,
-        ),
-        NullThrowsReasons.MissingToken('type', node.type),
+      const typeToken = context.sourceCode.getFirstTokenBetween(
+        importToken,
+        node.specifiers[0]?.local ?? node.source,
+        isTypeKeyword,
       );
-      const afterToken = nullThrows(
-        context.sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+      nullThrows(typeToken, NullThrowsReasons.MissingToken('type', node.type));
+      const afterToken = context.sourceCode.getTokenAfter(typeToken, {
+        includeComments: true,
+      });
+      nullThrows(
+        afterToken,
         NullThrowsReasons.MissingToken('any token', node.type),
       );
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);
@@ -937,12 +970,13 @@ export default createRule<Options, MessageIds>({
     ): IterableIterator<TSESLint.RuleFix> {
       // import { type Foo } from 'foo'
       //          ^^^^ remove
-      const typeToken = nullThrows(
-        context.sourceCode.getFirstToken(node, isTypeKeyword),
-        NullThrowsReasons.MissingToken('type', node.type),
-      );
-      const afterToken = nullThrows(
-        context.sourceCode.getTokenAfter(typeToken, { includeComments: true }),
+      const typeToken = context.sourceCode.getFirstToken(node, isTypeKeyword);
+      nullThrows(typeToken, NullThrowsReasons.MissingToken('type', node.type));
+      const afterToken = context.sourceCode.getTokenAfter(typeToken, {
+        includeComments: true,
+      });
+      nullThrows(
+        afterToken,
         NullThrowsReasons.MissingToken('any token', node.type),
       );
       yield fixer.removeRange([typeToken.range[0], afterToken.range[0]]);

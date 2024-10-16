@@ -116,10 +116,9 @@ export default createRule<Options, MessageIds>({
     }
 
     function popFunctionInfo(exitNodeType: string): FunctionInfo<FunctionNode> {
-      return nullThrows(
-        functionInfoStack.pop(),
-        `Stack should exist on ${exitNodeType} exit`,
-      );
+      const functionInfo = functionInfoStack.pop();
+      nullThrows(functionInfo, `Stack should exist on ${exitNodeType} exit`);
+      return functionInfo;
     }
 
     function isAllowedFunction(

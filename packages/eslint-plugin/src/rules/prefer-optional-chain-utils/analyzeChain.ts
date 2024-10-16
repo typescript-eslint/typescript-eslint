@@ -213,17 +213,19 @@ function getReportRange(
 ): TSESTree.Range {
   const leftNode = chain[0].node;
   const rightNode = chain[chain.length - 1].node;
-  let leftMost = nullThrows(
-    sourceCode.getFirstToken(leftNode),
+  let leftMost = sourceCode.getFirstToken(leftNode);
+  nullThrows(
+    leftMost,
     NullThrowsReasons.MissingToken('any token', leftNode.type),
   );
-  let rightMost = nullThrows(
-    sourceCode.getLastToken(rightNode),
+  let rightMost = sourceCode.getLastToken(rightNode);
+  nullThrows(
+    rightMost,
     NullThrowsReasons.MissingToken('any token', rightNode.type),
   );
 
   while (leftMost.range[0] > boundary[0]) {
-    const token = sourceCode.getTokenBefore(leftMost);
+    const token: TSESTree.Token | null = sourceCode.getTokenBefore(leftMost);
     if (!token || !isOpeningParenToken(token) || token.range[0] < boundary[0]) {
       break;
     }
@@ -231,7 +233,7 @@ function getReportRange(
   }
 
   while (rightMost.range[1] < boundary[1]) {
-    const token = sourceCode.getTokenAfter(rightMost);
+    const token: TSESTree.Token | null = sourceCode.getTokenAfter(rightMost);
     if (!token || !isClosingParenToken(token) || token.range[1] > boundary[1]) {
       break;
     }
@@ -438,16 +440,18 @@ function getReportDescriptor(
 
       case AST_NODE_TYPES.CallExpression: {
         const argumentsText = (() => {
-          const closingParenToken = nullThrows(
-            sourceCode.getLastToken(node),
+          const closingParenToken = sourceCode.getLastToken(node);
+          nullThrows(
+            closingParenToken,
             NullThrowsReasons.MissingToken('closing parenthesis', node.type),
           );
-          const openingParenToken = nullThrows(
-            sourceCode.getFirstTokenBetween(
-              node.typeArguments ?? node.callee,
-              closingParenToken,
-              isOpeningParenToken,
-            ),
+          const openingParenToken = sourceCode.getFirstTokenBetween(
+            node.typeArguments ?? node.callee,
+            closingParenToken,
+            isOpeningParenToken,
+          );
+          nullThrows(
+            openingParenToken,
             NullThrowsReasons.MissingToken('opening parenthesis', node.type),
           );
           return sourceCode.text.substring(

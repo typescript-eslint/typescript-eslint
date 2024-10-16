@@ -11,12 +11,13 @@ const NullThrowsReasons = {
  * Assert that a value must not be null or undefined.
  * This is a nice explicit alternative to the non-null assertion operator.
  */
-function nullThrows<T>(value: T, message: string): NonNullable<T> {
+function nullThrows<T>(
+  value: T,
+  message: string,
+): asserts value is NonNullable<T> {
   if (value == null) {
     throw new Error(`Non-null Assertion Failed: ${message}`);
   }
-
-  return value;
 }
 
 export { nullThrows, NullThrowsReasons };

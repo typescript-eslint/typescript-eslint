@@ -161,8 +161,12 @@ export default createRule<Options, MessageIds>({
                 count: bracketBeforeTokens.length,
               });
             } else {
-              afterUnionOrIntersectionToken = nullThrows(
-                getUnionOrIntersectionToken('After', 0),
+              afterUnionOrIntersectionToken = getUnionOrIntersectionToken(
+                'After',
+                0,
+              );
+              nullThrows(
+                afterUnionOrIntersectionToken,
                 NullThrowsReasons.MissingToken(
                   'union or intersection token',
                   'duplicate type constituent',

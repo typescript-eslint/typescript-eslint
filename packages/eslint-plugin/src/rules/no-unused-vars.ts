@@ -580,10 +580,9 @@ export default createRule<Options, MessageIds>({
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
         false,
       )](node: DeclarationSelectorNode): void {
-        const moduleDecl = nullThrows(
-          node.parent.parent,
-          NullThrowsReasons.MissingParent,
-        ) as TSESTree.TSModuleDeclaration;
+        const moduleDecl = node.parent
+          .parent as TSESTree.TSModuleDeclaration | null;
+        nullThrows(moduleDecl, NullThrowsReasons.MissingParent);
 
         // declared ambient modules with an `export =` statement will only export that one thing
         // all other statements are not automatically exported in this case

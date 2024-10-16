@@ -82,11 +82,12 @@ export default createRule({
             {
               messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
-                const exclamationMark = nullThrows(
-                  context.sourceCode.getLastToken(
-                    node,
-                    ASTUtils.isNonNullAssertionPunctuator,
-                  ),
+                const exclamationMark = context.sourceCode.getLastToken(
+                  node,
+                  ASTUtils.isNonNullAssertionPunctuator,
+                );
+                nullThrows(
+                  exclamationMark,
                   NullThrowsReasons.MissingToken('!', 'Non-null Assertion'),
                 );
                 return fixer.remove(exclamationMark);

@@ -213,10 +213,8 @@ function isTypedFunctionExpression(
   node: FunctionExpression,
   options: Options,
 ): boolean {
-  const parent = ESLintUtils.nullThrows(
-    node.parent,
-    ESLintUtils.NullThrowsReasons.MissingParent,
-  );
+  const { parent } = node;
+  ESLintUtils.nullThrows(parent, ESLintUtils.NullThrowsReasons.MissingParent);
 
   if (!options.allowTypedFunctionExpressions) {
     return false;
@@ -241,10 +239,8 @@ function isValidFunctionExpressionReturnType(
     return true;
   }
 
-  const parent = ESLintUtils.nullThrows(
-    node.parent,
-    ESLintUtils.NullThrowsReasons.MissingParent,
-  );
+  const { parent } = node;
+  ESLintUtils.nullThrows(parent, ESLintUtils.NullThrowsReasons.MissingParent);
   if (
     options.allowExpressions &&
     parent.type !== AST_NODE_TYPES.VariableDeclarator &&

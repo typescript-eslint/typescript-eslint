@@ -143,8 +143,9 @@ export default createRule({
         });
       },
       'ClassBody:exit'(): void {
-        const { assignedBeforeConstructor, unnecessaryAssignments } =
-          nullThrows(reportInfoStack.pop(), 'The top stack should exist');
+        const topStack = reportInfoStack.pop();
+        nullThrows(topStack, 'The top stack should exist');
+        const { assignedBeforeConstructor, unnecessaryAssignments } = topStack;
         unnecessaryAssignments.forEach(({ name, node }) => {
           if (assignedBeforeConstructor.has(name)) {
             return;
@@ -173,11 +174,10 @@ export default createRule({
           return;
         }
 
+        const topOfStack = reportInfoStack.at(reportInfoStack.length - 1);
+        nullThrows(topOfStack, 'The top of stack should exist');
         const { assignedBeforeUnnecessary, unnecessaryAssignments } =
-          nullThrows(
-            reportInfoStack.at(reportInfoStack.length - 1),
-            'The top of stack should exist',
-          );
+          topOfStack;
 
         if (!UNNECESSARY_OPERATORS.has(node.operator)) {
           assignedBeforeUnnecessary.add(leftName);
@@ -221,10 +221,9 @@ export default createRule({
           return;
         }
 
-        const { assignedBeforeConstructor } = nullThrows(
-          reportInfoStack.at(-1),
-          'The top stack should exist',
-        );
+        const topStack = reportInfoStack.at(-1);
+        nullThrows(topStack, 'The top stack should exist');
+        const { assignedBeforeConstructor } = topStack;
         assignedBeforeConstructor.add(name);
       },
     };

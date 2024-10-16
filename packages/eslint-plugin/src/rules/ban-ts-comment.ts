@@ -141,20 +141,12 @@ export default createRule<[Options], MessageIds>({
         return null;
       }
 
-      const { description, directive } = nullThrows(
-        match.groups,
-        'RegExp should contain groups',
-      );
-      return {
-        description: nullThrows(
-          description,
-          'RegExp should contain "description" group',
-        ),
-        directive: nullThrows(
-          directive,
-          'RegExp should contain "directive" group',
-        ),
-      };
+      const { groups } = match;
+      nullThrows(groups, 'RegExp should contain groups');
+      const { description, directive } = groups;
+      nullThrows(description, 'RegExp should contain "description" group');
+      nullThrows(directive, 'RegExp should contain "directive" group');
+      return { description, directive };
     }
 
     function findDirectiveInComment(
@@ -244,13 +236,13 @@ export default createRule<[Options], MessageIds>({
             (typeof option === 'object' && option.descriptionFormat)
           ) {
             const { minimumDescriptionLength } = options;
+            nullThrows(
+              minimumDescriptionLength,
+              'Expected minimumDescriptionLength to be set',
+            );
             const format = descriptionFormats.get(fullDirective);
             if (
-              getStringLength(description.trim()) <
-              nullThrows(
-                minimumDescriptionLength,
-                'Expected minimumDescriptionLength to be set',
-              )
+              getStringLength(description.trim()) < minimumDescriptionLength
             ) {
               context.report({
                 node: comment,

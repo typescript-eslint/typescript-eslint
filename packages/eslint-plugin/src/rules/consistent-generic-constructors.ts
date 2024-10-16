@@ -96,10 +96,14 @@ export default createRule<Options, MessageIds>({
                   }
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
-                  return nullThrows(
-                    context.sourceCode.getTokenAfter(node.key),
+                  const squareBracket = context.sourceCode.getTokenAfter(
+                    node.key,
+                  );
+                  nullThrows(
+                    squareBracket,
                     NullThrowsReasons.MissingToken(']', 'key'),
                   );
+                  return squareBracket;
                 }
                 return [
                   fixer.remove(typeArguments),

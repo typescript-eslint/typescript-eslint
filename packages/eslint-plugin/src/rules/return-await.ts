@@ -142,10 +142,12 @@ export default createRule({
         // This should always exist, since the rule should only be checking
         // contexts in which `return` statements are legal, which should always
         // be inside a function.
-        scope = nullThrows(
-          scope.upper,
+        const { upper } = scope;
+        nullThrows(
+          upper,
           'Expected parent scope to exist. return-await should only operate on return statements within functions',
         );
+        scope = upper;
       }
 
       return false;
@@ -221,13 +223,11 @@ export default createRule({
             block = 'finally';
           }
 
-          return {
-            block: nullThrows(
-              block,
-              'Child of a try statement must be a try block, catch clause, or finally block',
-            ),
-            tryStatement: ancestor,
-          };
+          nullThrows(
+            block,
+            'Child of a try statement must be a try block, catch clause, or finally block',
+          );
+          return { block, tryStatement: ancestor };
         }
         child = ancestor;
         ancestor = ancestor.parent;

@@ -41,8 +41,9 @@ export function getMemberHeadLoc(
     start = node.loc.start;
   } else {
     const lastDecorator = node.decorators[node.decorators.length - 1];
-    const nextToken = nullThrows(
-      sourceCode.getTokenAfter(lastDecorator),
+    const nextToken = sourceCode.getTokenAfter(lastDecorator);
+    nullThrows(
+      nextToken,
       NullThrowsReasons.MissingToken('token', 'last decorator'),
     );
     start = nextToken.loc.start;
@@ -53,10 +54,11 @@ export function getMemberHeadLoc(
   if (!node.computed) {
     end = node.key.loc.end;
   } else {
-    const closingBracket = nullThrows(
-      sourceCode.getTokenAfter(node.key, token => token.value === ']'),
-      NullThrowsReasons.MissingToken(']', node.type),
+    const closingBracket = sourceCode.getTokenAfter(
+      node.key,
+      token => token.value === ']',
     );
+    nullThrows(closingBracket, NullThrowsReasons.MissingToken(']', node.type));
     end = closingBracket.loc.end;
   }
 
@@ -91,8 +93,9 @@ export function getParameterPropertyHeadLoc(
     start = structuredClone(node.loc.start);
   } else {
     const lastDecorator = node.decorators[node.decorators.length - 1];
-    const nextToken = nullThrows(
-      sourceCode.getTokenAfter(lastDecorator),
+    const nextToken = sourceCode.getTokenAfter(lastDecorator);
+    nullThrows(
+      nextToken,
       NullThrowsReasons.MissingToken('token', 'last decorator'),
     );
     start = structuredClone(nextToken.loc.start);

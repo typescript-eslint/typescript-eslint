@@ -172,13 +172,14 @@ export default createRule<Options, MessageIds>({
           node,
           messageId: 'typeOverValue',
           fix(fixer) {
-            const asteriskToken = nullThrows(
-              context.sourceCode.getFirstToken(
-                node,
-                token =>
-                  token.type === AST_TOKEN_TYPES.Punctuator &&
-                  token.value === '*',
-              ),
+            const asteriskToken = context.sourceCode.getFirstToken(
+              node,
+              token =>
+                token.type === AST_TOKEN_TYPES.Punctuator &&
+                token.value === '*',
+            );
+            nullThrows(
+              asteriskToken,
               NullThrowsReasons.MissingToken(
                 'asterisk',
                 'export all declaration',
@@ -340,25 +341,22 @@ function* fixExportInsertType(
   sourceCode: Readonly<TSESLint.SourceCode>,
   node: TSESTree.ExportNamedDeclaration,
 ): IterableIterator<TSESLint.RuleFix> {
-  const exportToken = nullThrows(
-    sourceCode.getFirstToken(node),
-    NullThrowsReasons.MissingToken('export', node.type),
-  );
+  const exportToken = sourceCode.getFirstToken(node);
+  nullThrows(exportToken, NullThrowsReasons.MissingToken('export', node.type));
 
   yield fixer.insertTextAfter(exportToken, ' type');
 
   for (const specifier of node.specifiers) {
     if (specifier.exportKind === 'type') {
-      const kindToken = nullThrows(
-        sourceCode.getFirstToken(specifier),
+      const kindToken = sourceCode.getFirstToken(specifier);
+      nullThrows(
+        kindToken,
         NullThrowsReasons.MissingToken('export', specifier.type),
       );
-      const firstTokenAfter = nullThrows(
-        sourceCode.getTokenAfter(kindToken, {
-          includeComments: true,
-        }),
-        'Missing token following the export kind.',
-      );
+      const firstTokenAfter = sourceCode.getTokenAfter(kindToken, {
+        includeComments: true,
+      });
+      nullThrows(firstTokenAfter, 'Missing token following the export kind.');
 
       yield fixer.removeRange([kindToken.range[0], firstTokenAfter.range[0]]);
     }
@@ -381,23 +379,17 @@ function* fixSeparateNamedExports(
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 
-  const exportToken = nullThrows(
-    sourceCode.getFirstToken(node),
-    NullThrowsReasons.MissingToken('export', node.type),
-  );
+  const exportToken = sourceCode.getFirstToken(node);
+  nullThrows(exportToken, NullThrowsReasons.MissingToken('export', node.type));
 
   // Filter the bad exports from the current line.
   const filteredSpecifierNames = valueSpecifiers
     .map(getSpecifierText)
     .join(', ');
-  const openToken = nullThrows(
-    sourceCode.getFirstToken(node, isOpeningBraceToken),
-    NullThrowsReasons.MissingToken('{', node.type),
-  );
-  const closeToken = nullThrows(
-    sourceCode.getLastToken(node, isClosingBraceToken),
-    NullThrowsReasons.MissingToken('}', node.type),
-  );
+  const openToken = sourceCode.getFirstToken(node, isOpeningBraceToken);
+  nullThrows(openToken, NullThrowsReasons.MissingToken('{', node.type));
+  const closeToken = sourceCode.getLastToken(node, isClosingBraceToken);
+  nullThrows(closeToken, NullThrowsReasons.MissingToken('}', node.type));
 
   // Remove exports from the current line which we're going to re-insert.
   yield fixer.replaceTextRange(

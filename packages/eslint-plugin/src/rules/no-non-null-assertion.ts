@@ -35,21 +35,21 @@ export default createRule<[], MessageIds>({
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
 
         // it always exists in non-null assertion
-        const nonNullOperator = nullThrows(
-          context.sourceCode.getTokenAfter(
-            node.expression,
-            isNonNullAssertionPunctuator,
-          ),
+        const nonNullOperator = context.sourceCode.getTokenAfter(
+          node.expression,
+          isNonNullAssertionPunctuator,
+        );
+        nullThrows(
+          nonNullOperator,
           NullThrowsReasons.MissingToken('!', 'expression'),
         );
 
-        function replaceTokenWithOptional(): TSESLint.ReportFixFunction {
-          return fixer => fixer.replaceText(nonNullOperator, '?.');
-        }
+        const replaceTokenWithOptional =
+          (): TSESLint.ReportFixFunction => fixer =>
+            fixer.replaceText(nonNullOperator, '?.');
 
-        function removeToken(): TSESLint.ReportFixFunction {
-          return fixer => fixer.remove(nonNullOperator);
-        }
+        const removeToken = (): TSESLint.ReportFixFunction => fixer =>
+          fixer.remove(nonNullOperator);
 
         if (
           node.parent.type === AST_NODE_TYPES.MemberExpression &&
@@ -69,8 +69,10 @@ export default createRule<[], MessageIds>({
                 fix(fixer) {
                   // x!.y?.z
                   //   ^ punctuator
-                  const punctuator = nullThrows(
-                    context.sourceCode.getTokenAfter(nonNullOperator),
+                  const punctuator =
+                    context.sourceCode.getTokenAfter(nonNullOperator);
+                  nullThrows(
+                    punctuator,
                     NullThrowsReasons.MissingToken('.', '!'),
                   );
                   return [

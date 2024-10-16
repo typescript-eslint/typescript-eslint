@@ -29,11 +29,11 @@ interface RuleMap {
 
 type RuleId = keyof RuleMap;
 
-export const getESLintCoreRule = <R extends RuleId>(ruleId: R): RuleMap[R] =>
-  ESLintUtils.nullThrows(
-    builtinRules.get(ruleId),
-    `ESLint's core rule '${ruleId}' not found.`,
-  );
+export const getESLintCoreRule = <R extends RuleId>(ruleId: R): RuleMap[R] => {
+  const rule = builtinRules.get(ruleId);
+  ESLintUtils.nullThrows(rule, `ESLint's core rule '${ruleId}' not found.`);
+  return rule;
+};
 
 export function maybeGetESLintCoreRule<R extends RuleId>(
   ruleId: R,

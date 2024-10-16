@@ -234,22 +234,24 @@ export default createRule<Options, MessageIds>({
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
               if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
-                const openingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenBefore(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '<',
-                  ),
+                const openingAngleBracket = context.sourceCode.getTokenBefore(
+                  node.typeAnnotation,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '<',
+                );
+                nullThrows(
+                  openingAngleBracket,
                   NullThrowsReasons.MissingToken('<', 'type annotation'),
                 );
-                const closingAngleBracket = nullThrows(
-                  context.sourceCode.getTokenAfter(
-                    node.typeAnnotation,
-                    token =>
-                      token.type === AST_TOKEN_TYPES.Punctuator &&
-                      token.value === '>',
-                  ),
+                const closingAngleBracket = context.sourceCode.getTokenAfter(
+                  node.typeAnnotation,
+                  token =>
+                    token.type === AST_TOKEN_TYPES.Punctuator &&
+                    token.value === '>',
+                );
+                nullThrows(
+                  closingAngleBracket,
                   NullThrowsReasons.MissingToken('>', 'type annotation'),
                 );
 
@@ -261,19 +263,21 @@ export default createRule<Options, MessageIds>({
                 ]);
               }
               // `as` is always present in TSAsExpression
-              const asToken = nullThrows(
-                context.sourceCode.getTokenAfter(
-                  node.expression,
-                  token =>
-                    token.type === AST_TOKEN_TYPES.Identifier &&
-                    token.value === 'as',
-                ),
+              const asToken = context.sourceCode.getTokenAfter(
+                node.expression,
+                token =>
+                  token.type === AST_TOKEN_TYPES.Identifier &&
+                  token.value === 'as',
+              );
+              nullThrows(
+                asToken,
                 NullThrowsReasons.MissingToken('>', 'type annotation'),
               );
-              const tokenBeforeAs = nullThrows(
-                context.sourceCode.getTokenBefore(asToken, {
-                  includeComments: true,
-                }),
+              const tokenBeforeAs = context.sourceCode.getTokenBefore(asToken, {
+                includeComments: true,
+              });
+              nullThrows(
+                tokenBeforeAs,
                 NullThrowsReasons.MissingToken('comment', 'as'),
               );
 
@@ -288,8 +292,12 @@ export default createRule<Options, MessageIds>({
       },
       TSNonNullExpression(node): void {
         const removeExclamationFix: ReportFixFunction = fixer => {
-          const exclamationToken = nullThrows(
-            context.sourceCode.getLastToken(node, token => token.value === '!'),
+          const exclamationToken = context.sourceCode.getLastToken(
+            node,
+            token => token.value === '!',
+          );
+          nullThrows(
+            exclamationToken,
             NullThrowsReasons.MissingToken(
               'exclamation mark',
               'non-null assertion',

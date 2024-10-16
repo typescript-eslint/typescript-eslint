@@ -512,13 +512,10 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkScope(): void {
-      const scope = nullThrows(
-        currentScope,
-        'checkScope() called without a current scope',
-      );
+      nullThrows(currentScope, 'checkScope() called without a current scope');
       const failures = checkOverloads(
-        [...scope.overloads.values()],
-        scope.typeParameters,
+        [...currentScope.overloads.values()],
+        currentScope.typeParameters,
       );
       addFailures(failures);
       currentScope = scopes.pop();

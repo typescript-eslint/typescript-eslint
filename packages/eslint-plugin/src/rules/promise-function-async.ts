@@ -171,8 +171,9 @@ export default createRule<Options, MessageIds>({
             const method = node.parent;
 
             // the token to put `async` before
-            let keyToken = nullThrows(
-              context.sourceCode.getFirstToken(method),
+            let keyToken = context.sourceCode.getFirstToken(method);
+            nullThrows(
+              keyToken,
               NullThrowsReasons.MissingToken('key token', 'method'),
             );
 
@@ -183,8 +184,9 @@ export default createRule<Options, MessageIds>({
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
-              keyToken = nullThrows(
-                context.sourceCode.getTokenAfter(lastDecorator),
+              keyToken = context.sourceCode.getTokenAfter(lastDecorator);
+              nullThrows(
+                keyToken,
                 NullThrowsReasons.MissingToken('key token', 'last decorator'),
               );
             }
@@ -194,18 +196,21 @@ export default createRule<Options, MessageIds>({
               keyToken.type === AST_TOKEN_TYPES.Keyword &&
               keyToken.range[0] < method.key.range[0]
             ) {
-              keyToken = nullThrows(
-                context.sourceCode.getTokenAfter(keyToken),
+              keyToken = context.sourceCode.getTokenAfter(keyToken);
+              nullThrows(
+                keyToken,
                 NullThrowsReasons.MissingToken('token', 'keyword'),
               );
             }
 
             // check if there is a space between key and previous token
+            const previousToken = context.sourceCode.getTokenBefore(keyToken);
+            nullThrows(
+              previousToken,
+              NullThrowsReasons.MissingToken('token', 'keyword'),
+            );
             const insertSpace = !context.sourceCode.isSpaceBetween(
-              nullThrows(
-                context.sourceCode.getTokenBefore(keyToken),
-                NullThrowsReasons.MissingToken('token', 'keyword'),
-              ),
+              previousToken,
               keyToken,
             );
 
