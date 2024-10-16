@@ -521,7 +521,7 @@ undefined !== x ? x : y;
       `,
       `
 declare let x: string | undefined;
-undefined === x ? y : x;
+x === undefined ? y : x;
       `,
       `
 declare let x: string | undefined;
@@ -537,7 +537,7 @@ null !== x ? x : y;
       `,
       `
 declare let x: string | null;
-null === x ? y : x;
+x === null ? y : x;
       `,
       `
 declare let x: string | null;
