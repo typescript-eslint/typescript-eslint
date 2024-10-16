@@ -237,7 +237,10 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             additionalProperties: false,
             properties: {
-              allowNamedExports: { type: 'boolean' },
+              allowNamedExports: {
+                type: 'boolean',
+                description: 'Whether to ignore named exports.',
+              },
               classes: {
                 type: 'boolean',
                 description:

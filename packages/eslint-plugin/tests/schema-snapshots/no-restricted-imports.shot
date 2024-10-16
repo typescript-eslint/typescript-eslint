@@ -22,7 +22,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                 "type": "array"
               },
               "allowTypeImports": {
-                "description": "Disallow value imports, but allow type-only imports.",
+                "description": "Whether to allow type-only imports for a path.",
                 "type": "boolean"
               },
               "importNames": {
@@ -69,7 +69,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                         "type": "array"
                       },
                       "allowTypeImports": {
-                        "description": "Disallow value imports, but allow type-only imports.",
+                        "description": "Whether to allow type-only imports for a path.",
                         "type": "boolean"
                       },
                       "importNames": {
@@ -119,7 +119,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                         "uniqueItems": true
                       },
                       "allowTypeImports": {
-                        "description": "Disallow value imports, but allow type-only imports.",
+                        "description": "Whether to allow type-only imports for a path.",
                         "type": "boolean"
                       },
                       "caseSensitive": {
@@ -173,7 +173,7 @@ type Options =
   | (
       | {
           allowImportNames?: string[];
-          /** Disallow value imports, but allow type-only imports. */
+          /** Whether to allow type-only imports for a path. */
           allowTypeImports?: boolean;
           importNames?: string[];
           message?: string;
@@ -187,7 +187,7 @@ type Options =
         paths?: (
           | {
               allowImportNames?: string[];
-              /** Disallow value imports, but allow type-only imports. */
+              /** Whether to allow type-only imports for a path. */
               allowTypeImports?: boolean;
               importNames?: string[];
               message?: string;
@@ -199,7 +199,7 @@ type Options =
           | {
               allowImportNamePattern?: string;
               allowImportNames?: [string, ...string[]];
-              /** Disallow value imports, but allow type-only imports. */
+              /** Whether to allow type-only imports for a path. */
               allowTypeImports?: boolean;
               caseSensitive?: boolean;
               group: [string, ...string[]];
