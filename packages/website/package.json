@@ -38,7 +38,7 @@
     "react-markdown": "^9.0.1",
     "react-resizable-panels": "^0.0.63",
     "semver": "^7.6.0",
-    "typedoc": "^0.25.13",
+    "typedoc": "^0.26.0",
     "typedoc-plugin-markdown": "^4.0.3",
     "typescript": "*"
   },
