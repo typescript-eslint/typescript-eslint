@@ -153,11 +153,10 @@ export default createRule({
         const calleeType = services.getTypeAtLocation(callee.object);
 
         if (
-          !isBuiltinSymbolLike(
-            services.program,
-            calleeType,
-            name => name === 'PromiseConstructor' || name === 'Promise',
-          )
+          !isBuiltinSymbolLike(services.program, calleeType, [
+            'PromiseConstructor',
+            'Promise',
+          ])
         ) {
           return;
         }
