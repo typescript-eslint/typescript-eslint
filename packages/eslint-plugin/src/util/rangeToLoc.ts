@@ -5,7 +5,7 @@ export function rangeToLoc(
   range: TSESLint.AST.Range,
 ): TSESTree.SourceLocation {
   return {
-    start: sourceCode.getLocFromIndex(range[0]),
     end: sourceCode.getLocFromIndex(range[1]),
+    start: sourceCode.getLocFromIndex(range[0]),
   };
 }

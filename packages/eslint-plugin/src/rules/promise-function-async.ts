@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -28,51 +29,51 @@ export default createRule<Options, MessageIds>({
   name: 'promise-function-async',
   meta: {
     type: 'suggestion',
-    fixable: 'code',
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       missingAsync: 'Functions that return promises must be async.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowAny: {
+            type: 'boolean',
             description:
               'Whether to consider `any` and `unknown` to be Promises.',
-            type: 'boolean',
           },
           allowedPromiseNames: {
+            type: 'array',
             description:
               'Any extra names of classes or interfaces to be considered Promises.',
-            type: 'array',
             items: {
               type: 'string',
             },
           },
           checkArrowFunctions: {
-            description: 'Whether to check arrow functions.',
             type: 'boolean',
+            description: 'Whether to check arrow functions.',
           },
           checkFunctionDeclarations: {
-            description: 'Whether to check standalone function declarations.',
             type: 'boolean',
+            description: 'Whether to check standalone function declarations.',
           },
           checkFunctionExpressions: {
-            description: 'Whether to check inline function expressions',
             type: 'boolean',
+            description: 'Whether to check inline function expressions',
           },
           checkMethodDeclarations: {
+            type: 'boolean',
             description:
               'Whether to check methods on classes and object literals.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -151,16 +152,16 @@ export default createRule<Options, MessageIds>({
       if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         // Report without auto fixer because the return type is unknown
         return context.report({
-          messageId: 'missingAsync',
-          node,
           loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
+          messageId: 'missingAsync',
         });
       }
 
       context.report({
-        messageId: 'missingAsync',
-        node,
         loc: getFunctionHeadLoc(node, context.sourceCode),
+        node,
+        messageId: 'missingAsync',
         fix: fixer => {
           if (
             node.parent.type === AST_NODE_TYPES.MethodDefinition ||

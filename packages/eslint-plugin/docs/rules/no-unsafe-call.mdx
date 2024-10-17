@@ -78,12 +78,29 @@ Note that whereas [no-unsafe-function-type](./no-unsafe-function-type.mdx) helps
 See, for example, the following code:
 
 ```ts
-function unsafe(maybeFunction: unknown): string {
+function callUnsafe(maybeFunction: unknown): string {
   if (typeof maybeFunction === 'function') {
     // TypeScript allows this, but it's completely unsound.
     return maybeFunction('call', 'with', 'any', 'args');
   }
   // etc
+}
+```
+
+In this sort of situation, beware that there is no way to guarantee with runtime checks that a value is safe to call.
+If you _really_ want to call a value whose type you don't know, your best best is to use a `try`/`catch` and suppress any TypeScript or linter errors that get in your way.
+
+```ts
+function callSafe(maybeFunction: unknown): void {
+  try {
+    // intentionally unsound type assertion
+    (maybeFunction as () => unknown)();
+  } catch (e) {
+    console.error(
+      'Function either could not be called or threw an error when called: ',
+      e,
+    );
+  }
 }
 ```
 

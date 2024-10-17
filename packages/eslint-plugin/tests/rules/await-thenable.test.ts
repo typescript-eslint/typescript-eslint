@@ -9,8 +9,8 @@ const messageId = 'await';
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -220,6 +220,13 @@ async function forAwait() {
 }
       `,
     },
+    {
+      code: `
+declare const asyncIter: AsyncIterable<string> | Iterable<string>;
+for await (const s of asyncIter) {
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -413,11 +420,11 @@ for await (const value of yieldNumbers()) {
       `,
       errors: [
         {
-          messageId: 'forAwaitOfNonThenable',
-          line: 7,
-          endLine: 7,
           column: 1,
           endColumn: 42,
+          endLine: 7,
+          line: 7,
+          messageId: 'forAwaitOfNonThenable',
           suggestions: [
             {
               messageId: 'convertToOrdinaryFor',

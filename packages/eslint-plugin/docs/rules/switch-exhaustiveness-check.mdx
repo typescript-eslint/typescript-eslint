@@ -18,7 +18,9 @@ This rule reports when a `switch` statement over a value typed as a union of lit
 
 ### `allowDefaultCaseForExhaustiveSwitch`
 
-Defaults to true. If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
+{/* insert option description */}
+
+If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
 
 When a `switch` statement over a union type is exhaustive, a final `default` case would be a form of dead code.
 Additionally, if a new value is added to the union type, a `default` would prevent the `switch-exhaustiveness-check` rule from reporting on the new case not being handled in the `switch` statement.
@@ -34,7 +36,9 @@ If your project has many intentionally redundant `default` cases, you may want t
 
 ### `requireDefaultForNonUnion`
 
-Defaults to false. If set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
+{/* insert option description */}
+
+If set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
 
 This is generally desirable so that `number` and `string` switches will be subject to the same exhaustive checks that your other switches are.
 

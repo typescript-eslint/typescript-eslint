@@ -38,6 +38,17 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
   checkJs: true,
 };
 
+const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
+  ts.Extension.Ts,
+  ts.Extension.Tsx,
+  ts.Extension.Js,
+  ts.Extension.Jsx,
+  ts.Extension.Mjs,
+  ts.Extension.Mts,
+  ts.Extension.Cjs,
+  ts.Extension.Cts,
+]);
+
 function createDefaultCompilerOptionsFromExtra(
   parseSettings: ParseSettings,
 ): ts.CompilerOptions {
@@ -139,4 +150,5 @@ export {
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,
+  DEFAULT_EXTRA_FILE_EXTENSIONS,
 };

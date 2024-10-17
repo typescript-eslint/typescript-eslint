@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -22,11 +23,11 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     hasSuggestions: true,
     messages: {
-      unexpectedAny: 'Unexpected any. Specify a different type.',
-      suggestUnknown:
-        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
       suggestNever:
         "Use `never` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+      suggestUnknown:
+        'Use `unknown` instead, this will force you to explicitly, and safely assert the type is correct.',
+      unexpectedAny: 'Unexpected any. Specify a different type.',
     },
     schema: [
       {
@@ -34,13 +35,13 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           fixToUnknown: {
+            type: 'boolean',
             description:
               'Whether to enable auto-fixing in which the `any` type is converted to the `unknown` type.',
-            type: 'boolean',
           },
           ignoreRestArgs: {
-            description: 'Whether to ignore rest parameter arrays.',
             type: 'boolean',
+            description: 'Whether to ignore rest parameter arrays.',
           },
         },
       },
@@ -52,7 +53,7 @@ export default createRule<Options, MessageIds>({
       ignoreRestArgs: false,
     },
   ],
-  create(context, [{ ignoreRestArgs, fixToUnknown }]) {
+  create(context, [{ fixToUnknown, ignoreRestArgs }]) {
     /**
      * Checks if the node is an arrow function, function/constructor declaration or function expression
      * @param node the node to be validated.
@@ -64,13 +65,13 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.ArrowFunctionExpression, // const x = (...args: any[]) => {};
         AST_NODE_TYPES.FunctionDeclaration, // function f(...args: any[]) {}
         AST_NODE_TYPES.FunctionExpression, // const x = function(...args: any[]) {};
+        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
+        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
+        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
+        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
         AST_NODE_TYPES.TSEmptyBodyFunctionExpression, // declare class A { f(...args: any[]): unknown; }
         AST_NODE_TYPES.TSFunctionType, // type T = (...args: any[]) => unknown;
-        AST_NODE_TYPES.TSConstructorType, // type T = new (...args: any[]) => unknown
-        AST_NODE_TYPES.TSCallSignatureDeclaration, // type T = {(...args: any[]): unknown};
-        AST_NODE_TYPES.TSConstructSignatureDeclaration, // type T = {new (...args: any[]): unknown};
         AST_NODE_TYPES.TSMethodSignature, // type T = {f(...args: any[]): unknown};
-        AST_NODE_TYPES.TSDeclareFunction, // declare function _8(...args: any[]): unknown;
       ].includes(node.type);
     }
 

@@ -150,10 +150,10 @@ interface Foo {
   [key: string]: any;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo = Record<string, any>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Readonly interface
@@ -163,10 +163,10 @@ interface Foo {
   readonly [key: string]: any;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo = Readonly<Record<string, any>>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Interface with generic parameter
@@ -176,10 +176,10 @@ interface Foo<A> {
   [key: string]: A;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo<A> = Record<string, A>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Interface with generic parameter and default value
@@ -189,10 +189,10 @@ interface Foo<A = any> {
   [key: string]: A;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo<A = any> = Record<string, A>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Interface with extends
@@ -202,8 +202,8 @@ interface B extends A {
   [index: number]: unknown;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: null,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
     // Readonly interface with generic parameter
     {
@@ -212,10 +212,10 @@ interface Foo<A> {
   readonly [key: string]: A;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo<A> = Readonly<Record<string, A>>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Interface with multiple generic parameters
@@ -225,10 +225,10 @@ interface Foo<A, B> {
   [key: A]: B;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo<A, B> = Record<A, B>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Readonly interface with multiple generic parameters
@@ -238,101 +238,101 @@ interface Foo<A, B> {
   readonly [key: A]: B;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo<A, B> = Readonly<Record<A, B>>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
 
     // Type literal
     {
       code: 'type Foo = { [key: string]: any };',
+      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Record<string, any>;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
 
     // Readonly type literal
     {
       code: 'type Foo = { readonly [key: string]: any };',
+      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Readonly<Record<string, any>>;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
 
     // Generic
     {
       code: 'type Foo = Generic<{ [key: string]: any }>;',
+      errors: [{ column: 20, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Generic<Record<string, any>>;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 20 }],
     },
 
     // Readonly Generic
     {
       code: 'type Foo = Generic<{ readonly [key: string]: any }>;',
+      errors: [{ column: 20, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Generic<Readonly<Record<string, any>>>;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 20 }],
     },
 
     // Function types
     {
       code: 'function foo(arg: { [key: string]: any }) {}',
+      errors: [{ column: 19, line: 1, messageId: 'preferRecord' }],
       output: 'function foo(arg: Record<string, any>) {}',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 19 }],
     },
     {
       code: 'function foo(): { [key: string]: any } {}',
+      errors: [{ column: 17, line: 1, messageId: 'preferRecord' }],
       output: 'function foo(): Record<string, any> {}',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 17 }],
     },
 
     // Readonly function types
     {
       code: 'function foo(arg: { readonly [key: string]: any }) {}',
+      errors: [{ column: 19, line: 1, messageId: 'preferRecord' }],
       output: 'function foo(arg: Readonly<Record<string, any>>) {}',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 19 }],
     },
     {
       code: 'function foo(): { readonly [key: string]: any } {}',
+      errors: [{ column: 17, line: 1, messageId: 'preferRecord' }],
       output: 'function foo(): Readonly<Record<string, any>> {}',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 17 }],
     },
 
     // Never
     // Type literal
     {
       code: 'type Foo = Record<string, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'type Foo = { [key: string]: any };',
-      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 12 }],
     },
 
     // Type literal with generic parameter
     {
       code: 'type Foo<T> = Record<string, T>;',
+      errors: [{ column: 15, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'type Foo<T> = { [key: string]: T };',
-      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 15 }],
     },
 
     // Circular
     {
       code: 'type Foo = { [k: string]: A.Foo };',
+      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Record<string, A.Foo>;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
     {
       code: 'type Foo = { [key: string]: AnotherFoo };',
+      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Record<string, AnotherFoo>;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
     {
       code: 'type Foo = { [key: string]: { [key: string]: Foo } };',
+      errors: [{ column: 29, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = { [key: string]: Record<string, Foo> };',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 29 }],
     },
     {
       code: 'type Foo = { [key: string]: string } | Foo;',
+      errors: [{ column: 12, line: 1, messageId: 'preferRecord' }],
       output: 'type Foo = Record<string, string> | Foo;',
-      errors: [{ messageId: 'preferRecord', line: 1, column: 12 }],
     },
     {
       code: `
@@ -340,10 +340,10 @@ interface Foo<T> {
   [k: string]: T;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo<T> = Record<string, T>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
     {
       code: `
@@ -351,10 +351,10 @@ interface Foo {
   [k: string]: A.Foo;
 }
       `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
       output: `
 type Foo = Record<string, A.Foo>;
       `,
-      errors: [{ messageId: 'preferRecord', line: 2, column: 1 }],
     },
     {
       code: `
@@ -362,34 +362,34 @@ interface Foo {
   [k: string]: { [key: string]: Foo };
 }
       `,
+      errors: [{ column: 16, line: 3, messageId: 'preferRecord' }],
       output: `
 interface Foo {
   [k: string]: Record<string, Foo>;
 }
       `,
-      errors: [{ messageId: 'preferRecord', line: 3, column: 16 }],
     },
 
     // Generic
     {
       code: 'type Foo = Generic<Record<string, any>>;',
+      errors: [{ column: 20, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'type Foo = Generic<{ [key: string]: any }>;',
-      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 20 }],
     },
 
     // Function types
     {
       code: 'function foo(arg: Record<string, any>) {}',
+      errors: [{ column: 19, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'function foo(arg: { [key: string]: any }) {}',
-      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 19 }],
     },
     {
       code: 'function foo(): Record<string, any> {}',
+      errors: [{ column: 17, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'function foo(): { [key: string]: any } {}',
-      errors: [{ messageId: 'preferIndexSignature', line: 1, column: 17 }],
     },
   ],
 });
