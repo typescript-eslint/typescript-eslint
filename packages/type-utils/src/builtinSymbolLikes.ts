@@ -128,7 +128,7 @@ export function isBuiltinTypeAliasLike(
  * false.
  *
  * @param program The program the type is defined in
- * @param type The type
+ * @param type
  * @param symbolName the name or names of the symbol to match
  */
 export function isBuiltinSymbolLike(

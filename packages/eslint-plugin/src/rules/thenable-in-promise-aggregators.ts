@@ -1,20 +1,22 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import {
   isBuiltinSymbolLike,
   isTypeAnyType,
   isTypeUnknownType,
 } from '@typescript-eslint/type-utils';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices } from '../util';
 
-const aggregateFunctionNames = new Set(['all', 'race', 'allSettled', 'any']);
+const aggregateFunctionNames = new Set(['all', 'allSettled', 'any', 'race']);
 
 export default createRule({
   name: 'thenable-in-promise-aggregators',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Disallow passing non-Thenable values to promise aggregators',
@@ -22,15 +24,14 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      inArray:
-        'Unexpected non-Thenable value in array passed to promise aggregator.',
       arrayArg:
         'Unexpected array of non-Thenable values passed to promise aggregator.',
       emptyArrayElement:
         'Unexpected empty element in array passed to promise aggregator (do you have an extra comma?).',
+      inArray:
+        'Unexpected non-Thenable value in array passed to promise aggregator.',
     },
     schema: [],
-    type: 'problem',
   },
   defaultOptions: [],
 
@@ -171,8 +172,8 @@ export default createRule({
           for (const element of elements) {
             if (element == null) {
               context.report({
-                messageId: 'emptyArrayElement',
                 node: arg,
+                messageId: 'emptyArrayElement',
               });
               return;
             }
@@ -187,8 +188,8 @@ export default createRule({
             }
 
             context.report({
-              messageId: 'inArray',
               node: element,
+              messageId: 'inArray',
             });
           }
           return;
@@ -205,8 +206,8 @@ export default createRule({
         }
 
         context.report({
-          messageId: 'arrayArg',
           node: arg,
+          messageId: 'arrayArg',
         });
       },
     };
