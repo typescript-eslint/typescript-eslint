@@ -257,6 +257,35 @@ class Mx {
       `,
       options: ['getters'],
     },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3602
+      // getter with override modifier should be ignored
+      code: `
+declare abstract class BaseClass {
+  get cursor(): string;
+}
+
+class ChildClass extends BaseClass {
+  override get cursor() {
+    return 'overridden value';
+  }
+}
+      `,
+    },
+    {
+      // https://github.com/typescript-eslint/typescript-eslint/issues/3602
+      // property with override modifier should be ignored
+      code: `
+declare abstract class BaseClass {
+  protected readonly foo: string;
+}
+
+class ChildClass extends BaseClass {
+  protected override readonly foo = 'bar';
+}
+      `,
+      options: ['getters'],
+    },
   ],
   invalid: [
     {

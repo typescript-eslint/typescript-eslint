@@ -146,6 +146,7 @@ export default createRule<Options, MessageIds>({
         MethodDefinition(node): void {
           if (
             node.kind !== 'get' ||
+            node.override ||
             !node.value.body ||
             node.value.body.body.length === 0
           ) {
@@ -223,7 +224,7 @@ export default createRule<Options, MessageIds>({
           }
         },
         PropertyDefinition(node): void {
-          if (!node.readonly || node.declare) {
+          if (!node.readonly || node.declare || node.override) {
             return;
           }
           const { properties } =
