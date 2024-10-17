@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-
 import tmp from 'tmp';
 
 import { clearCaches } from '../../src/clear-caches';
@@ -11,10 +10,10 @@ import {
 } from '../../src/parser';
 
 const CONTENTS = {
-  foo: 'console.log("foo")',
   bar: 'console.log("bar")',
-  'baz/bar': 'console.log("baz bar")',
   'bat/baz/bar': 'console.log("bat/baz/bar")',
+  'baz/bar': 'console.log("baz bar")',
+  foo: 'console.log("foo")',
   number: 'const foo = 1;',
   object: '(() => { })();',
   string: 'let a: "a" | "b";',
@@ -81,11 +80,11 @@ function parseFile(
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
     disallowAutomaticSingleRunInference: true,
-    project: './tsconfig.json',
-    tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
     filePath: relative
       ? path.join('src', `${filename}.ts`)
       : path.join(tmpDir, 'src', `${filename}.ts`),
+    project: './tsconfig.json',
+    tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
   });
 }
 
@@ -243,12 +242,12 @@ function baseTests(
 describe('persistent parse', () => {
   describe('includes not ending in a slash', () => {
     const tsConfigExcludeBar = {
-      include: ['src'],
       exclude: ['./src/bar.ts'],
+      include: ['src'],
     };
     const tsConfigIncludeAll = {
-      include: ['src'],
       exclude: [],
+      include: ['src'],
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
@@ -260,12 +259,12 @@ describe('persistent parse', () => {
   */
   describe('includes ending in a slash', () => {
     const tsConfigExcludeBar = {
-      include: ['src/'],
       exclude: ['./src/bar.ts'],
+      include: ['src/'],
     };
     const tsConfigIncludeAll = {
-      include: ['src/'],
       exclude: [],
+      include: ['src/'],
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
@@ -322,8 +321,8 @@ describe('persistent parse', () => {
   */
   describe('tsconfig with overlapping globs', () => {
     const tsConfigExcludeBar = {
-      include: ['./*', './**/*', './src/**/*'],
       exclude: ['./src/bar.ts'],
+      include: ['./*', './**/*', './src/**/*'],
     };
     const tsConfigIncludeAll = {
       include: ['./*', './**/*', './src/**/*'],

@@ -995,7 +995,7 @@ export default createRule<Options, MessageIds>({
 
       // Standardize config
       let order: Order | undefined;
-      let memberTypes: MemberType[] | string | undefined;
+      let memberTypes: string | MemberType[] | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
       /**

@@ -72,8 +72,8 @@ describe('getProjectConfigFiles', () => {
       getProjectConfigFiles(
         {
           filePath: './a/b/c/d.ts',
-          tsconfigRootDir: './a',
           tsconfigMatchCache,
+          tsconfigRootDir: './a',
         },
         true,
       );
@@ -83,8 +83,8 @@ describe('getProjectConfigFiles', () => {
       const actual = getProjectConfigFiles(
         {
           filePath: './a/b/c/e/f.ts',
-          tsconfigRootDir: './a',
           tsconfigMatchCache,
+          tsconfigRootDir: './a',
         },
         true,
       );
@@ -104,8 +104,8 @@ describe('getProjectConfigFiles', () => {
       getProjectConfigFiles(
         {
           filePath: './a/b/c/d/e.ts',
-          tsconfigRootDir: './a',
           tsconfigMatchCache,
+          tsconfigRootDir: './a',
         },
         true,
       );
@@ -115,8 +115,8 @@ describe('getProjectConfigFiles', () => {
       const actual = getProjectConfigFiles(
         {
           filePath: './a/b/f/g/h.ts',
-          tsconfigRootDir: './a',
           tsconfigMatchCache,
+          tsconfigRootDir: './a',
         },
         true,
       );

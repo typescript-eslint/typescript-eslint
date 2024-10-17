@@ -25,7 +25,7 @@ interface PatternMatcher {
    */
   [Symbol.replace](
     str: string,
-    replacer: ((...strs: string[]) => string) | string,
+    replacer: string | ((...strs: string[]) => string),
   ): string;
 
   /**

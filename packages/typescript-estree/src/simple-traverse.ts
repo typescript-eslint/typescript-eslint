@@ -1,4 +1,5 @@
 import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
+
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 import type { TSESTree } from './ts-estree';
@@ -22,8 +23,8 @@ function getVisitorKeysForNode(
 
 type SimpleTraverseOptions = Readonly<
   | {
-      visitorKeys?: Readonly<VisitorKeys>;
       enter: (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void;
+      visitorKeys?: Readonly<VisitorKeys>;
     }
   | {
       visitorKeys?: Readonly<VisitorKeys>;

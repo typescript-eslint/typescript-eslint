@@ -256,11 +256,11 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
   const rule: TSESLint.RuleModule<
     'customMessage' | 'defaultMessage',
     (
+      | string
       | {
           message?: string;
           name: string;
         }
-      | string
     )[],
     unknown,
     {
@@ -539,6 +539,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
 
   namespace rule {
     export type ArrayOfStringOrObject = (
+      | string
       | {
           // extended
           allowTypeImports?: boolean;
@@ -546,7 +547,6 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
           message?: string;
           name: string;
         }
-      | string
     )[];
     export type ArrayOfStringOrObjectPatterns =
       | {

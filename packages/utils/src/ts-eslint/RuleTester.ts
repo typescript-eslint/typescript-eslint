@@ -94,7 +94,7 @@ interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: string[] | string | null;
+  readonly output?: string | string[] | null;
 }
 
 /**
@@ -156,7 +156,7 @@ interface RunTests<
 > {
   // RuleTester.run also accepts strings for valid cases
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
-  readonly valid: readonly (ValidTestCase<Options> | string)[];
+  readonly valid: readonly (string | ValidTestCase<Options>)[];
 }
 
 /**

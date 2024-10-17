@@ -21,17 +21,17 @@ declare module 'typescript' {
   }
   interface PropertyAssignment {
     /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
-    readonly questionToken?: QuestionToken | undefined;
-    /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
     readonly exclamationToken?: ExclamationToken | undefined;
+    /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
+    readonly questionToken?: QuestionToken | undefined;
   }
   interface ShorthandPropertyAssignment {
+    /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
+    readonly exclamationToken?: ExclamationToken | undefined;
     /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
     readonly modifiers?: NodeArray<Modifier> | undefined;
     /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
     readonly questionToken?: QuestionToken | undefined;
-    /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
-    readonly exclamationToken?: ExclamationToken | undefined;
   }
   interface FunctionTypeNode {
     /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */

@@ -1,5 +1,4 @@
 import path from 'node:path';
-
 import * as ts from 'typescript';
 
 import { getParsedConfigFile } from '../../src/create-program/getParsedConfigFile';
@@ -7,9 +6,9 @@ import { getParsedConfigFile } from '../../src/create-program/getParsedConfigFil
 const mockGetParsedCommandLineOfConfigFile = jest.fn();
 
 const mockTsserver: typeof ts = {
-  sys: {} as ts.System,
   formatDiagnostics: ts.formatDiagnostics,
   getParsedCommandLineOfConfigFile: mockGetParsedCommandLineOfConfigFile,
+  sys: {} as ts.System,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
@@ -63,9 +62,9 @@ describe('getParsedConfigFile', () => {
           file: ts.createSourceFile('./tsconfig.json', '', {
             languageVersion: ts.ScriptTarget.Latest,
           }),
-          start: 0,
           length: 0,
           messageText: 'Oh no!',
+          start: 0,
         },
       ] satisfies ts.Diagnostic[],
     });
@@ -87,9 +86,9 @@ describe('getParsedConfigFile', () => {
           file: ts.createSourceFile('./tsconfig.json', '', {
             languageVersion: ts.ScriptTarget.Latest,
           }),
-          start: 0,
           length: 0,
           messageText: 'Oh no!',
+          start: 0,
         } satisfies ts.Diagnostic);
       },
     );
@@ -100,9 +99,9 @@ describe('getParsedConfigFile', () => {
 
   it('uses compiler options when parsing a config file succeeds', () => {
     const parsedConfigFile = {
+      errors: [],
       options: { strict: true },
       raw: { compilerOptions: { strict: true } },
-      errors: [],
     };
     mockGetParsedCommandLineOfConfigFile.mockReturnValue(parsedConfigFile);
     expect(getParsedConfigFile(mockTsserver, 'tsconfig.json')).toEqual(

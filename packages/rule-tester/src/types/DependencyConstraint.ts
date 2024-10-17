@@ -6,7 +6,7 @@ export interface RangeOptions {
 }
 
 export interface SemverVersionConstraint {
-  readonly options?: RangeOptions | boolean;
+  readonly options?: boolean | RangeOptions;
   readonly range: string;
 }
 export type AtLeastVersionConstraint =

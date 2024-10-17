@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import debug from 'debug';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
+import debug from 'debug';
+
 import type { ProjectServiceOptions } from '../parser-options';
+
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
 
@@ -71,11 +73,11 @@ export function createProjectService(
     // See https://github.com/typescript-eslint/typescript-eslint/issues/9905
     ...(!options.loadTypeScriptPlugins && {
       require: () => ({
-        module: undefined,
         error: {
           message:
             'TypeScript plugins are not required when using parserOptions.projectService.',
         },
+        module: undefined,
       }),
     }),
   };
@@ -118,18 +120,18 @@ export function createProjectService(
   log('Creating project service with: %o', options);
 
   const service = new tsserver.server.ProjectService({
-    host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
-    useSingleInferredProject: false,
-    useInferredProjectPerProjectRoot: false,
-    logger,
     eventHandler: logTsserverEvent.enabled
       ? (e): void => {
           logTsserverEvent(e);
         }
       : undefined,
-    session: undefined,
+    host: system,
     jsDocParsingMode,
+    logger,
+    session: undefined,
+    useInferredProjectPerProjectRoot: false,
+    useSingleInferredProject: false,
   });
 
   service.setHostConfiguration({

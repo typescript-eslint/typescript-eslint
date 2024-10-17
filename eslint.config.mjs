@@ -614,6 +614,7 @@ export default tseslint.config(
       'packages/type-utils/{src,tests,typings}/**/*.ts',
       'packages/types/{src,tools}/**/*.ts',
       'packages/typescript-eslint/{src,tests}/**/*.ts',
+      'packages/typescript-estree/{src,tests,typings}/**/*.ts',
       'packages/utils/src/**/*.ts',
       'packages/visitor-keys/src/**/*.ts',
       'packages/website*/src/**/*.ts',
@@ -626,7 +627,7 @@ export default tseslint.config(
       'perfectionist/sort-union-types': [
         'error',
         {
-          groups: ['unknown', 'keyword', 'nullish'],
+          groups: ['keyword', 'unknown', 'nullish'],
           type: 'natural',
         },
       ],
@@ -679,6 +680,21 @@ export default tseslint.config(
         {
           customGroups: { top: ['valid'] },
           groups: ['top', 'unknown'],
+        },
+      ],
+    },
+  },
+  {
+    files: ['packages/typescript-estree/src/**/*.ts'],
+    rules: {
+      'perfectionist/sort-objects': [
+        'error',
+        {
+          customGroups: {
+            first: ['type'],
+            second: ['loc', 'range'],
+          },
+          groups: ['first', 'second'],
         },
       ],
     },
