@@ -1,1 +1,2 @@
-using x = 1, y = 2;
+using x = 1,
+  y = 2;

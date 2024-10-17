@@ -7,8 +7,6 @@ exports[`AST Fixtures List fixtures with Error differences 1`] = `
     "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
-    "declaration/ExportNamedDeclaration/fixtures/_error_/export-as-string-literal/fixture.ts",
-    "declaration/ExportNamedDeclaration/fixtures/_error_/literal-braced/fixture.ts",
     "declaration/FunctionDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/missing-type-param/fixture.ts",
     "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",

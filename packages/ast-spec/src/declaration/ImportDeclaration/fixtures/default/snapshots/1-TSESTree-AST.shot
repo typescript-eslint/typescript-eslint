@@ -10,61 +10,49 @@ Program {
       importKind: "value",
       source: Literal {
         type: "Literal",
-        raw: ""mod"",
+        raw: "'mod'",
         value: "mod",
 
-        range: [26, 31],
+        range: [14, 19],
         loc: {
-          start: { column: 26, line: 1 },
-          end: { column: 31, line: 1 },
+          start: { column: 14, line: 1 },
+          end: { column: 19, line: 1 },
         },
       },
       specifiers: [
-        ImportSpecifier {
-          type: "ImportSpecifier",
-          imported: Literal {
-            type: "Literal",
-            raw: ""🍎"",
-            value: "🍎",
-
-            range: [9, 13],
-            loc: {
-              start: { column: 9, line: 1 },
-              end: { column: 13, line: 1 },
-            },
-          },
-          importKind: "value",
+        ImportDefaultSpecifier {
+          type: "ImportDefaultSpecifier",
           local: Identifier {
             type: "Identifier",
             decorators: [],
             name: "a",
             optional: false,
 
-            range: [17, 18],
+            range: [7, 8],
             loc: {
-              start: { column: 17, line: 1 },
-              end: { column: 18, line: 1 },
+              start: { column: 7, line: 1 },
+              end: { column: 8, line: 1 },
             },
           },
 
-          range: [9, 18],
+          range: [7, 8],
           loc: {
-            start: { column: 9, line: 1 },
-            end: { column: 18, line: 1 },
+            start: { column: 7, line: 1 },
+            end: { column: 8, line: 1 },
           },
         },
       ],
 
-      range: [0, 32],
+      range: [0, 20],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 32, line: 1 },
+        end: { column: 20, line: 1 },
       },
     },
   ],
   sourceType: "module",
 
-  range: [0, 33],
+  range: [0, 21],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },

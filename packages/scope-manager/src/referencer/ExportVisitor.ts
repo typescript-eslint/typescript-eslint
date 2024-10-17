@@ -60,7 +60,10 @@ class ExportVisitor extends Visitor {
   }
 
   protected ExportSpecifier(node: TSESTree.ExportSpecifier): void {
-    if (node.exportKind === 'type') {
+    if (
+      node.exportKind === 'type' &&
+      node.local.type == AST_NODE_TYPES.Identifier
+    ) {
       // export { type T };
       // type exports can only reference types
       //

@@ -1,1 +1,1 @@
-import { "🍎" as a } from "mod";
+import a from 'mod';
