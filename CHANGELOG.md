@@ -1,3 +1,20 @@
+## 8.10.0 (2024-10-17)
+
+### 🚀 Features
+
+- support TypeScript 5.6 ([#9972](https://github.com/typescript-eslint/typescript-eslint/pull/9972))
+
+### 🩹 Fixes
+
+- **typescript-eslint:** propagate `name` field to extended configs in `config` helper ([#10094](https://github.com/typescript-eslint/typescript-eslint/pull/10094))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.9.0 (2024-10-14)
 
 
