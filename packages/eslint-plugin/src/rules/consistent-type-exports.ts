@@ -277,8 +277,10 @@ export default createRule<Options, MessageIds>({
             }
 
             // We have both type and value violations.
-            const allExportNames = report.typeBasedSpecifiers.map(
-              specifier => specifier.local.name,
+            const allExportNames = report.typeBasedSpecifiers.map(specifier =>
+              specifier.local.type === AST_NODE_TYPES.Identifier
+                ? specifier.local.name
+                : specifier.local.value,
             );
 
             if (allExportNames.length === 1) {
@@ -446,9 +448,16 @@ function getSourceFromExport(
  * the proper formatting.
  */
 function getSpecifierText(specifier: TSESTree.ExportSpecifier): string {
-  return `${specifier.local.name}${
-    specifier.exported.name !== specifier.local.name
-      ? ` as ${specifier.exported.name}`
-      : ''
+  const exportedName =
+    specifier.exported.type === AST_NODE_TYPES.Literal
+      ? specifier.exported.raw
+      : specifier.exported.name;
+  const localName =
+    specifier.local.type === AST_NODE_TYPES.Literal
+      ? specifier.local.raw
+      : specifier.local.name;
+
+  return `${localName}${
+    exportedName !== localName ? ` as ${exportedName}` : ''
   }`;
 }
