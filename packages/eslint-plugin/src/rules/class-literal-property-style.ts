@@ -73,6 +73,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'string',
+        description: 'Which literal class member syntax to prefer.',
         enum: ['fields', 'getters'],
       },
     ],

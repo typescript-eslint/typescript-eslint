@@ -13,5 +13,6 @@ export const es2020_symbol_wellknown = {
   ...es2015_iterable,
   ...es2015_symbol,
   RegExp: TYPE,
+  RegExpStringIterator: TYPE,
   SymbolConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

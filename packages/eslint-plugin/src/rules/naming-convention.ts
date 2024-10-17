@@ -296,7 +296,10 @@ export default createRule<Options, MessageIds>({
               break;
             case AST_NODE_TYPES.ImportSpecifier:
               // Handle `import { default as Foo }`
-              if (node.imported.name !== 'default') {
+              if (
+                node.imported.type === AST_NODE_TYPES.Identifier &&
+                node.imported.name !== 'default'
+              ) {
                 return;
               }
               modifiers.add(Modifiers.default);

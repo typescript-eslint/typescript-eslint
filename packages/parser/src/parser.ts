@@ -69,6 +69,8 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
       return ['es2021.full'];
     case ScriptTarget.ES2022:
       return ['es2022.full'];
+    case ScriptTarget.ES2023:
+      return ['es2023.full'];
     case ScriptTarget.ESNext:
       return ['esnext.full'];
     default:

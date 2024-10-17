@@ -184,10 +184,31 @@ export class RuleTester extends TestFramework {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
     });
 
-    this.#linter = new Linter({
-      configType: 'flat',
-      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
-    });
+    this.#linter = (() => {
+      const linter = new Linter({
+        configType: 'flat',
+        cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
+      });
+
+      // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
+      // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
+      //
+      // For some reason rethrowing exceptions skirts around the circular JSON error.
+      const oldVerify = linter.verify.bind(linter);
+      linter.verify = (
+        ...args: Parameters<Linter['verify']>
+      ): ReturnType<Linter['verify']> => {
+        try {
+          return oldVerify(...args);
+        } catch (error) {
+          throw new Error('Caught an error while linting', {
+            cause: error,
+          });
+        }
+      };
+
+      return linter;
+    })();
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
@@ -411,6 +432,24 @@ export class RuleTester extends TestFramework {
   }
 
   /**
+   * Runs a hook on the given item when it's assigned to the given property
+   * @throws {Error} If the property is not a function or that function throws an error
+   */
+  #runHook<MessageIds extends string, Options extends readonly unknown[]>(
+    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
+    prop: keyof Pick<typeof item, 'after' | 'before'>,
+  ): void {
+    if (hasOwnProperty(item, prop)) {
+      assert.strictEqual(
+        typeof item[prop],
+        'function',
+        `Optional test case property '${prop}' must be a function`,
+      );
+      item[prop]();
+    }
+  }
+
+  /**
    * Adds a new rule test to execute.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
@@ -497,12 +536,17 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(
-                ruleName,
-                rule,
-                valid,
-                seenValidTestCases,
-              );
+              try {
+                this.#runHook(valid, 'before');
+                this.#testValidTemplate(
+                  ruleName,
+                  rule,
+                  valid,
+                  seenValidTestCases,
+                );
+              } finally {
+                this.#runHook(valid, 'after');
+              }
             });
           });
         });
@@ -518,12 +562,17 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(
-                ruleName,
-                rule,
-                invalid,
-                seenInvalidTestCases,
-              );
+              try {
+                this.#runHook(invalid, 'before');
+                this.#testInvalidTemplate(
+                  ruleName,
+                  rule,
+                  invalid,
+                  seenInvalidTestCases,
+                );
+              } finally {
+                this.#runHook(invalid, 'after');
+              }
             });
           });
         });
@@ -713,7 +762,10 @@ export class RuleTester extends TestFramework {
               ...configWithoutCustomKeys.languageOptions?.parserOptions,
             },
           },
-          linterOptions: { reportUnusedDisableDirectives: 1 },
+          linterOptions: {
+            reportUnusedDisableDirectives: 1,
+            ...configWithoutCustomKeys.linterOptions,
+          },
         });
         messages = this.#linter.verify(code, actualConfig, filename);
       } finally {
