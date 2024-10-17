@@ -54,16 +54,16 @@ export async function insertNewRuleReferences(
     child => nodeIsHeading(child) && child.depth === 2,
   );
 
-  const eslintrc = `{
-  "rules": {
+  const rules = `{
     "@typescript-eslint/${page.file.stem}": "error"
-  }
+  }`;
+
+  const eslintrc = `{
+  "rules": ${rules}
 }`;
 
   const eslitnConfig = `{
-  rules: {
-    "@typescript-eslint/${page.file.stem}": "error"
-  }
+  rules: ${rules}
 }`;
 
   page.spliceChildren(
