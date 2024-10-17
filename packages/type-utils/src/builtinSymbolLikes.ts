@@ -12,11 +12,7 @@ import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
  * ```
  */
 export function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
-  return isBuiltinSymbolLike(
-    program,
-    type,
-    symbolName => symbolName === 'Promise',
-  );
+  return isBuiltinSymbolLike(program, type, 'Promise');
 }
 
 /**
@@ -31,11 +27,7 @@ export function isPromiseConstructorLike(
   program: ts.Program,
   type: ts.Type,
 ): boolean {
-  return isBuiltinSymbolLike(
-    program,
-    type,
-    symbolName => symbolName === 'PromiseConstructor',
-  );
+  return isBuiltinSymbolLike(program, type, 'PromiseConstructor');
 }
 
 /**
@@ -47,11 +39,7 @@ export function isPromiseConstructorLike(
  * ```
  */
 export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
-  return isBuiltinSymbolLike(
-    program,
-    type,
-    symbolName => symbolName === 'Error',
-  );
+  return isBuiltinSymbolLike(program, type, 'Error');
 }
 
 /**
@@ -141,19 +129,13 @@ export function isBuiltinTypeAliasLike(
  *
  * @param program The program the type is defined in
  * @param type The type
- * @param predicateOrSymbolName A predicate which returns true if the name of a
- *   symbol is a match and false otherwise, or the name of the symbol to match
+ * @param symbolName the name or names of the symbol to match
  */
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
   symbolName: string | string[],
 ): boolean {
-  const predicate =
-    typeof predicateOrSymbolName === 'string'
-      ? (symbolName: string): boolean => symbolName === predicateOrSymbolName
-      : predicateOrSymbolName;
-
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
     const symbol = subType.getSymbol();
     if (!symbol) {
