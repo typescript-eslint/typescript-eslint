@@ -6,11 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -66,6 +66,14 @@ g<string, string>();
     `
 declare const g: unknown;
 g<string, string>();
+    `,
+    `
+declare const f: unknown;
+f<string>\`\`;
+    `,
+    `
+function f<T = number>(template: TemplateStringsArray) {}
+f<string>\`\`;
     `,
     `
 class C<T = number> {}
@@ -129,17 +137,11 @@ class Foo<T = number> extends Bar<string> {}
 interface Bar<T = number> {}
 class Foo<T = number> implements Bar<string> {}
     `,
-    {
-      code: `
+    `
 import { F } from './missing';
 function bar<T = F>() {}
 bar<F<number>>();
-      `,
-      dependencyConstraints: {
-        // TS 4.5 improved type resolution for unresolved generics
-        typescript: '4.5',
-      },
-    },
+    `,
     `
 type A<T = Element> = T;
 type B = A<HTMLInputElement>;
@@ -185,6 +187,22 @@ g<string, string>();
       output: `
 function g<T = number, U = string>() {}
 g<string>();
+      `,
+    },
+    {
+      code: `
+function f<T = number>(templates: TemplateStringsArray, arg: T) {}
+f<number>\`\${1}\`;
+      `,
+      errors: [
+        {
+          column: 3,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+function f<T = number>(templates: TemplateStringsArray, arg: T) {}
+f\`\${1}\`;
       `,
     },
     {
@@ -300,8 +318,8 @@ bar<F<string>>();
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],
@@ -323,8 +341,8 @@ declare module 'bar' {
       `,
       errors: [
         {
-          line: 4,
           column: 12,
+          line: 4,
           messageId: 'unnecessaryTypeParameter',
         },
       ],

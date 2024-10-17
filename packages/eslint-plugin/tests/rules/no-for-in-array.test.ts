@@ -1,17 +1,16 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-for-in-array';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('no-for-in-array', rule, {
@@ -37,8 +36,11 @@ for (const x in [3, 4, 5]) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 27,
+          endLine: 2,
+          line: 2,
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
         },
       ],
     },
@@ -51,8 +53,11 @@ for (const x in z) {
       `,
       errors: [
         {
+          column: 1,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
         },
       ],
     },
@@ -66,8 +71,11 @@ const fn = (arr: number[]) => {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
         },
       ],
     },
@@ -81,8 +89,11 @@ const fn = (arr: number[] | string[]) => {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
         },
       ],
     },
@@ -96,8 +107,73 @@ const fn = <T extends any[]>(arr: T) => {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
           messageId: 'forInViolation',
-          type: AST_NODE_TYPES.ForInStatement,
+        },
+      ],
+    },
+    {
+      code: noFormat`
+for (const x
+  in
+    (
+      (
+        (
+          [3, 4, 5]
+        )
+      )
+    )
+  )
+  // weird
+  /* spot for a */
+  // comment
+  /* ) */
+  /* ( */
+  {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 4,
+          endLine: 11,
+          line: 2,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+for (const x
+  in
+    (
+      (
+        (
+          [3, 4, 5]
+        )
+      )
+    )
+  )
+  // weird
+  /* spot for a */
+  // comment
+  /* ) */
+  /* ( */
+
+  ((((console.log('body without braces ')))));
+
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 4,
+          endLine: 11,
+          line: 2,
+          messageId: 'forInViolation',
         },
       ],
     },

@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -9,14 +9,16 @@ import {
   getParserServices,
   isClosingBraceToken,
   isOpeningBraceToken,
+  nullThrows,
+  NullThrowsReasons,
   requiresQuoting,
 } from '../util';
 
 interface SwitchMetadata {
-  readonly symbolName: string | undefined;
+  readonly containsNonLiteralType: boolean;
   readonly defaultCase: TSESTree.SwitchCase | undefined;
   readonly missingLiteralBranchTypes: ts.Type[];
-  readonly containsNonLiteralType: boolean;
+  readonly symbolName: string | undefined;
 }
 
 type Options = [
@@ -39,9 +41,9 @@ type Options = [
 ];
 
 type MessageIds =
-  | 'switchIsNotExhaustive'
+  | 'addMissingCases'
   | 'dangerousDefaultCase'
-  | 'addMissingCases';
+  | 'switchIsNotExhaustive';
 
 export default createRule<Options, MessageIds>({
   name: 'switch-exhaustiveness-check',
@@ -52,29 +54,29 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
+    messages: {
+      addMissingCases: 'Add branches for missing cases.',
+      dangerousDefaultCase:
+        'The switch statement is exhaustive, so the default case is unnecessary.',
+      switchIsNotExhaustive:
+        'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
+    },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowDefaultCaseForExhaustiveSwitch: {
-            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
             type: 'boolean',
+            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
           },
           requireDefaultForNonUnion: {
-            description: `If 'true', require a 'default' clause for switches on non-union types.`,
             type: 'boolean',
+            description: `If 'true', require a 'default' clause for switches on non-union types.`,
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: {
-      switchIsNotExhaustive:
-        'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
-      dangerousDefaultCase:
-        'The switch statement is exhaustive, so the default case is unnecessary.',
-      addMissingCases: 'Add branches for missing cases.',
-    },
   },
   defaultOptions: [
     {
@@ -86,7 +88,6 @@ export default createRule<Options, MessageIds>({
     context,
     [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
   ) {
-    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -141,10 +142,10 @@ export default createRule<Options, MessageIds>({
       }
 
       return {
-        symbolName,
-        missingLiteralBranchTypes,
-        defaultCase,
         containsNonLiteralType,
+        defaultCase,
+        missingLiteralBranchTypes,
+        symbolName,
       };
     }
 
@@ -152,7 +153,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SwitchStatement,
       switchMetadata: SwitchMetadata,
     ): void {
-      const { missingLiteralBranchTypes, symbolName, defaultCase } =
+      const { defaultCase, missingLiteralBranchTypes, symbolName } =
         switchMetadata;
 
       // We only trigger the rule if a `default` case does not exist, since that
@@ -214,7 +215,8 @@ export default createRule<Options, MessageIds>({
           missingBranchType,
           ts.TypeFlags.ESSymbolLike,
         )
-          ? missingBranchName!
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            missingBranchName!
           : checker.typeToString(missingBranchType);
 
         if (
@@ -223,18 +225,17 @@ export default createRule<Options, MessageIds>({
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
           const escapedBranchName = missingBranchName
-            .replace(/'/g, "\\'")
-            .replace(/\n/g, '\\n')
-            .replace(/\r/g, '\\r');
+            .replaceAll("'", "\\'")
+            .replaceAll('\n', '\\n')
+            .replaceAll('\r', '\\r');
 
           caseTest = `${symbolName}['${escapedBranchName}']`;
         }
 
-        const errorMessage = `Not implemented yet: ${caseTest} case`;
-        const escapedErrorMessage = errorMessage.replace(/'/g, "\\'");
-
         missingCases.push(
-          `case ${caseTest}: { throw new Error('${escapedErrorMessage}') }`,
+          `case ${caseTest}: { throw new Error('Not implemented yet: ${caseTest
+            .replaceAll('\\', '\\\\')
+            .replaceAll("'", "\\'")} case') }`,
         );
       }
 
@@ -247,14 +248,20 @@ export default createRule<Options, MessageIds>({
       }
 
       // There were no existing cases.
-      const openingBrace = sourceCode.getTokenAfter(
-        node.discriminant,
-        isOpeningBraceToken,
-      )!;
-      const closingBrace = sourceCode.getTokenAfter(
-        node.discriminant,
-        isClosingBraceToken,
-      )!;
+      const openingBrace = nullThrows(
+        context.sourceCode.getTokenAfter(
+          node.discriminant,
+          isOpeningBraceToken,
+        ),
+        NullThrowsReasons.MissingToken('{', 'discriminant'),
+      );
+      const closingBrace = nullThrows(
+        context.sourceCode.getTokenAfter(
+          node.discriminant,
+          isClosingBraceToken,
+        ),
+        NullThrowsReasons.MissingToken('}', 'discriminant'),
+      );
 
       return fixer.replaceTextRange(
         [openingBrace.range[0], closingBrace.range[1]],
@@ -269,7 +276,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { missingLiteralBranchTypes, defaultCase, containsNonLiteralType } =
+      const { containsNonLiteralType, defaultCase, missingLiteralBranchTypes } =
         switchMetadata;
 
       if (
@@ -292,15 +299,13 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const { defaultCase, containsNonLiteralType } = switchMetadata;
+      const { containsNonLiteralType, defaultCase } = switchMetadata;
 
       if (containsNonLiteralType && defaultCase === undefined) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
-          data: {
-            missingBranches: 'default',
-          },
+          data: { missingBranches: 'default' },
           suggest: [
             {
               messageId: 'addMissingCases',

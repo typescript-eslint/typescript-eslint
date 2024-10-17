@@ -3,11 +3,9 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-array-constructor';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
-const messageId = 'useLiteral' as const;
+const messageId = 'useLiteral';
 
 ruleTester.run('no-array-constructor', rule, {
   valid: [
@@ -42,77 +40,77 @@ ruleTester.run('no-array-constructor', rule, {
   invalid: [
     {
       code: 'new Array();',
-      output: '[];',
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.NewExpression,
         },
       ],
+      output: '[];',
     },
     {
       code: 'Array();',
-      output: '[];',
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
+      output: '[];',
     },
     {
       code: 'new Array(x, y);',
-      output: '[x, y];',
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.NewExpression,
         },
       ],
+      output: '[x, y];',
     },
     {
       code: 'Array(x, y);',
-      output: '[x, y];',
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
+      output: '[x, y];',
     },
     {
       code: 'new Array(0, 1, 2);',
-      output: '[0, 1, 2];',
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.NewExpression,
         },
       ],
+      output: '[0, 1, 2];',
     },
     {
       code: 'Array(0, 1, 2);',
-      output: '[0, 1, 2];',
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
+      output: '[0, 1, 2];',
     },
     {
       code: `
 new Array(0, 1, 2);
       `,
-      output: `
-[0, 1, 2];
-      `,
       errors: [
         {
           messageId,
           type: AST_NODE_TYPES.NewExpression,
         },
       ],
+      output: `
+[0, 1, 2];
+      `,
     },
   ],
 });

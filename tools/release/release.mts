@@ -1,9 +1,5 @@
 import { execaSync } from 'execa';
-import {
-  releaseChangelog,
-  releasePublish,
-  releaseVersion,
-} from 'nx/src/command-line/release';
+import { releaseChangelog, releasePublish, releaseVersion } from 'nx/release';
 import yargs from 'yargs';
 
 const options = await yargs(process.argv.slice(2))
@@ -59,9 +55,17 @@ if (workspaceVersion === null) {
   console.log(
     '⏭️ No changes detected across any package, skipping publish step altogether',
   );
-} else {
-  await releasePublish({
-    dryRun: options.dryRun,
-    verbose: options.verbose,
-  });
+  // eslint-disable-next-line no-process-exit
+  process.exit(0);
 }
+
+const publishProjectsResult = await releasePublish({
+  dryRun: options.dryRun,
+  verbose: options.verbose,
+});
+
+// eslint-disable-next-line no-process-exit
+process.exit(
+  // If any of the individual project publish tasks returned a non-zero exit code, exit with code 1
+  Object.values(publishProjectsResult).some(({ code }) => code !== 0) ? 1 : 0,
+);

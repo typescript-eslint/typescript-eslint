@@ -5,11 +5,11 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
 });
 
@@ -136,12 +136,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varTrueOrUndefined === true) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToTrue: false }],
       errors: [
         {
           messageId: 'comparingNullableToTrueDirect',
         },
       ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
         declare const varTrueOrUndefined: true | undefined;
         if (varTrueOrUndefined) {
@@ -154,12 +154,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varFalseOrNull !== true) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToTrue: false }],
       errors: [
         {
           messageId: 'comparingNullableToTrueNegated',
         },
       ],
+      options: [{ allowComparingNullableBooleansToTrue: false }],
       output: `
         declare const varFalseOrNull: false | null;
         if (!varFalseOrNull) {
@@ -173,12 +173,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varBooleanOrNull === false && otherBoolean) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
         },
       ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
         declare const varBooleanOrNull: boolean | null;
         declare const otherBoolean: boolean;
@@ -193,12 +193,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (!(varBooleanOrNull === false) || otherBoolean) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
         },
       ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
         declare const varBooleanOrNull: boolean | null;
         declare const otherBoolean: boolean;
@@ -213,12 +213,12 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         if (varTrueOrFalseOrUndefined !== false && !otherBoolean) {
         }
       `,
-      options: [{ allowComparingNullableBooleansToFalse: false }],
       errors: [
         {
           messageId: 'comparingNullableToFalse',
         },
       ],
+      options: [{ allowComparingNullableBooleansToFalse: false }],
       output: `
         declare const varTrueOrFalseOrUndefined: true | false | undefined;
         declare const otherBoolean: boolean;

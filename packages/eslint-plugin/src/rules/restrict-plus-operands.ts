@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -31,7 +32,18 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
-      recommended: 'recommended',
+      recommended: {
+        recommended: true,
+        strict: [
+          {
+            allowAny: false,
+            allowBoolean: false,
+            allowNullish: false,
+            allowNumberAndString: false,
+            allowRegExp: false,
+          },
+        ],
+      },
       requiresTypeChecking: true,
     },
     messages: {
@@ -48,30 +60,30 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           allowAny: {
-            description: 'Whether to allow `any` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `any` typed values.',
           },
           allowBoolean: {
-            description: 'Whether to allow `boolean` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `boolean` typed values.',
           },
           allowNullish: {
+            type: 'boolean',
             description:
               'Whether to allow potentially `null` or `undefined` typed values.',
-            type: 'boolean',
           },
           allowNumberAndString: {
+            type: 'boolean',
             description:
               'Whether to allow `bigint`/`number` typed values and `string` typed values to be added together.',
-            type: 'boolean',
           },
           allowRegExp: {
-            description: 'Whether to allow `regexp` typed values.',
             type: 'boolean',
+            description: 'Whether to allow `regexp` typed values.',
           },
           skipCompoundAssignments: {
-            description: 'Whether to skip compound assignments such as `+=`.',
             type: 'boolean',
+            description: 'Whether to skip compound assignments such as `+=`.',
           },
         },
       },
@@ -160,12 +172,12 @@ export default createRule<Options, MessageIds>({
             isTypeFlagSet(baseType, ts.TypeFlags.Null | ts.TypeFlags.Undefined))
         ) {
           context.report({
-            data: {
-              stringLike,
-              type: typeChecker.typeToString(baseType),
-            },
-            messageId: 'invalid',
             node: baseNode,
+            messageId: 'invalid',
+            data: {
+              type: typeChecker.typeToString(baseType),
+              stringLike,
+            },
           });
           hadIndividualComplaint = true;
           continue;
@@ -182,12 +194,12 @@ export default createRule<Options, MessageIds>({
                 isDeeplyObjectType(subBaseType)
           ) {
             context.report({
-              data: {
-                stringLike,
-                type: typeChecker.typeToString(subBaseType),
-              },
-              messageId: 'invalid',
               node: baseNode,
+              messageId: 'invalid',
+              data: {
+                type: typeChecker.typeToString(subBaseType),
+                stringLike,
+              },
             });
             hadIndividualComplaint = true;
             continue;
@@ -209,13 +221,13 @@ export default createRule<Options, MessageIds>({
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
         ) {
           return context.report({
+            node,
+            messageId: 'mismatched',
             data: {
-              stringLike,
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
+              stringLike,
             },
-            messageId: 'mismatched',
-            node,
           });
         }
 
@@ -224,12 +236,12 @@ export default createRule<Options, MessageIds>({
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.BigIntLike)
         ) {
           return context.report({
+            node,
+            messageId: 'bigintAndNumber',
             data: {
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
             },
-            messageId: 'bigintAndNumber',
-            node,
           });
         }
       }

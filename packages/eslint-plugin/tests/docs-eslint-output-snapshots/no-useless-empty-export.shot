@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-useless-empty-export.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+export const value = 'Hello, world!';
+export {};
+~~~~~~~~~~ Empty export does nothing and can be removed.
+"
+`;
+
+exports[`Validating rule docs no-useless-empty-export.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+import 'some-other-module';
+export {};
+~~~~~~~~~~ Empty export does nothing and can be removed.
+"
+`;
+
+exports[`Validating rule docs no-useless-empty-export.mdx code examples ESLint output 3`] = `
+"Correct
+
+export const value = 'Hello, world!';
+"
+`;
+
+exports[`Validating rule docs no-useless-empty-export.mdx code examples ESLint output 4`] = `
+"Correct
+
+import 'some-other-module';
+"
+`;

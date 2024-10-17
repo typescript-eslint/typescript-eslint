@@ -2,11 +2,12 @@ import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
+import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
+
 import { hasOwnProperty } from '../lib/has-own-property';
 import { toJsonConfig } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
 import { fileTypes } from '../options';
-import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
 function writeQueryParam(value: string | null): string {
   return (value && lz.compressToEncodedURIComponent(value)) ?? '';
@@ -19,8 +20,8 @@ function readQueryParam(value: string | null, fallback: string): string {
 function readShowAST(value: string | null): ConfigShowAst {
   switch (value) {
     case 'es':
-    case 'ts':
     case 'scope':
+    case 'ts':
     case 'types':
       return value;
   }
@@ -46,7 +47,10 @@ function readLegacyParam(
   return undefined;
 }
 
-const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
+const parseStateFromUrl = (
+  hash: string,
+  initialState: ConfigModel,
+): Partial<ConfigModel> | undefined => {
   if (!hash) {
     return;
   }
@@ -71,6 +75,13 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       );
     }
 
+    let esQuery: ConfigModel['esQuery'] | undefined;
+    if (searchParams.has('esQuery')) {
+      esQuery = JSON.parse(
+        readQueryParam(searchParams.get('esQuery'), ''),
+      ) as ConfigModel['esQuery'];
+    }
+
     const fileType =
       searchParams.get('jsx') === 'true'
         ? '.tsx'
@@ -81,15 +92,16 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       : '';
 
     return {
-      ts: searchParams.get('ts') ?? process.env.TS_VERSION!,
+      code,
+      eslintrc: eslintrc ?? initialState.eslintrc,
+      esQuery,
+      fileType,
       showAST: readShowAST(searchParams.get('showAST')),
+      showTokens: searchParams.get('tokens') === 'true',
       sourceType:
         searchParams.get('sourceType') === 'script' ? 'script' : 'module',
-      code,
-      fileType,
-      eslintrc: eslintrc ?? '',
-      tsconfig: tsconfig ?? '',
-      showTokens: searchParams.get('tokens') === 'true',
+      ts: searchParams.get('ts') ?? process.env.TS_VERSION,
+      tsconfig: tsconfig ?? initialState.tsconfig,
     };
   } catch (e) {
     console.warn(e);
@@ -109,6 +121,12 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
     }
     if (newState.fileType) {
       searchParams.set('fileType', newState.fileType);
+    }
+    if (newState.esQuery) {
+      searchParams.set(
+        'esQuery',
+        writeQueryParam(JSON.stringify(newState.esQuery)),
+      );
     }
     searchParams.set('code', writeQueryParam(newState.code));
     searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));
@@ -163,11 +181,11 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
 
 const writeStateToLocalStorage = (newState: ConfigModel): void => {
   const config: Partial<ConfigModel> = {
-    ts: newState.ts,
     fileType: newState.fileType,
-    sourceType: newState.sourceType,
-    showAST: newState.showAST,
     scroll: newState.scroll,
+    showAST: newState.showAST,
+    sourceType: newState.sourceType,
+    ts: newState.ts,
   };
   window.localStorage.setItem('config', JSON.stringify(config));
 };
@@ -179,7 +197,7 @@ function useHashState(
   const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...retrieveStateFromLocalStorage(),
-    ...parseStateFromUrl(window.location.hash.slice(1)),
+    ...parseStateFromUrl(window.location.hash.slice(1), initialState),
   }));
 
   const updateState = useCallback(

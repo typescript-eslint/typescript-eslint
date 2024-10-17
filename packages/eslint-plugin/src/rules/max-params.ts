@@ -1,16 +1,19 @@
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 type FunctionLike =
+  | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression;
+  | TSESTree.FunctionExpression;
 
 type FunctionRuleListener<T extends FunctionLike> = (node: T) => void;
 
@@ -28,28 +31,34 @@ export default createRule<Options, MessageIds>({
         'Enforce a maximum number of parameters in function definitions',
       extendsBaseRule: true,
     },
+    messages: baseRule.meta.messages,
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
-          maximum: {
-            type: 'integer',
-            minimum: 0,
+          countVoidThis: {
+            type: 'boolean',
+            description:
+              'Whether to count a `this` declaration when the type is `void`.',
           },
           max: {
             type: 'integer',
+            description:
+              'A maximum number of parameters in function definitions.',
             minimum: 0,
           },
-          countVoidThis: {
-            type: 'boolean',
+          maximum: {
+            type: 'integer',
+            description:
+              '(deprecated) A maximum number of parameters in function definitions.',
+            minimum: 0,
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: baseRule.meta.messages,
   },
-  defaultOptions: [{ max: 3, countVoidThis: false }],
+  defaultOptions: [{ countVoidThis: false, max: 3 }],
 
   create(context, [{ countVoidThis }]) {
     const baseRules = baseRule.create(context);

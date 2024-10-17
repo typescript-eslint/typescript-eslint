@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
@@ -21,6 +21,7 @@ type MessageIds = 'baseToString';
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Require `.toString()` to only be called on objects which provide useful information when stringified',
@@ -29,23 +30,24 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       baseToString:
-        "'{{name}}' {{certainty}} evaluate to '[object Object]' when stringified.",
+        "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoredTypeNames: {
             type: 'array',
+            description:
+              'Stringified regular expressions of type names to ignore.',
             items: {
               type: 'string',
             },
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [
     {
@@ -70,12 +72,12 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
-        data: {
-          certainty,
-          name: getSourceCode(context).getText(node),
-        },
-        messageId: 'baseToString',
         node,
+        messageId: 'baseToString',
+        data: {
+          name: context.sourceCode.getText(node),
+          certainty,
+        },
       });
     }
 

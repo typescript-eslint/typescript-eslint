@@ -1,19 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type { Equal } from '../util';
-import { arraysAreEqual, createRule } from '../util';
+
+import { arraysAreEqual, createRule, nullThrows } from '../util';
 
 interface Failure {
-  unify: Unify;
   only2: boolean;
+  unify: Unify;
 }
 
 type Unify =
   | {
-      kind: 'extra-parameter';
       extraParameter: TSESTree.Parameter;
+      kind: 'extra-parameter';
       otherSignature: SignatureDefinition;
     }
   | {
@@ -66,13 +67,13 @@ type Options = [
 export default createRule<Options, MessageIds>({
   name: 'unified-signatures',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow two overloads that could be unified into one with a union or an optional/rest parameter',
       // too opinionated to be recommended
       recommended: 'strict',
     },
-    type: 'suggestion',
     messages: {
       omittingRestParameter: '{{failureStringStart}} with a rest parameter.',
       omittingSingleParameter:
@@ -82,15 +83,15 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           ignoreDifferentlyNamedParameters: {
+            type: 'boolean',
             description:
               'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
-            type: 'boolean',
           },
         },
-        type: 'object',
       },
     ],
   },
@@ -100,8 +101,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreDifferentlyNamedParameters }]) {
-    const sourceCode = getSourceCode(context);
-
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -117,7 +116,7 @@ export default createRule<Options, MessageIds>({
 
     function addFailures(failures: Failure[]): void {
       for (const failure of failures) {
-        const { unify, only2 } = failure;
+        const { only2, unify } = failure;
         switch (unify.kind) {
           case 'single-parameter-difference': {
             const { p0, p1 } = unify;
@@ -132,13 +131,17 @@ export default createRule<Options, MessageIds>({
 
             context.report({
               loc: p1.loc,
+              node: p1,
               messageId: 'singleParameterDifference',
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
-                type1: sourceCode.getText(typeAnnotation0?.typeAnnotation),
-                type2: sourceCode.getText(typeAnnotation1?.typeAnnotation),
+                type1: context.sourceCode.getText(
+                  typeAnnotation0?.typeAnnotation,
+                ),
+                type2: context.sourceCode.getText(
+                  typeAnnotation1?.typeAnnotation,
+                ),
               },
-              node: p1,
             });
             break;
           }
@@ -150,6 +153,7 @@ export default createRule<Options, MessageIds>({
 
             context.report({
               loc: extraParameter.loc,
+              node: extraParameter,
               messageId:
                 extraParameter.type === AST_NODE_TYPES.RestElement
                   ? 'omittingRestParameter'
@@ -157,7 +161,6 @@ export default createRule<Options, MessageIds>({
               data: {
                 failureStringStart: failureStringStart(lineOfOtherOverload),
               },
-              node: extraParameter,
             });
           }
         }
@@ -181,7 +184,7 @@ export default createRule<Options, MessageIds>({
             isTypeParameter,
           );
           if (unify !== undefined) {
-            result.push({ unify, only2: overloads.length === 2 });
+            result.push({ only2: overloads.length === 2, unify });
           }
         });
       }
@@ -443,8 +446,8 @@ export default createRule<Options, MessageIds>({
         a === b ||
         (a !== undefined &&
           b !== undefined &&
-          sourceCode.getText(a.typeAnnotation) ===
-            sourceCode.getText(b.typeAnnotation))
+          context.sourceCode.getText(a.typeAnnotation) ===
+            context.sourceCode.getText(b.typeAnnotation))
       );
     }
 
@@ -498,7 +501,9 @@ export default createRule<Options, MessageIds>({
       parent: ScopeNode,
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): void {
-      currentScope && scopes.push(currentScope);
+      if (currentScope) {
+        scopes.push(currentScope);
+      }
       currentScope = {
         overloads: new Map<string, OverloadNode[]>(),
         parent,
@@ -507,9 +512,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkScope(): void {
+      const scope = nullThrows(
+        currentScope,
+        'checkScope() called without a current scope',
+      );
       const failures = checkOverloads(
-        Array.from(currentScope!.overloads.values()),
-        currentScope!.typeParameters,
+        [...scope.overloads.values()],
+        scope.typeParameters,
       );
       addFailures(failures);
       currentScope = scopes.pop();
@@ -539,40 +548,40 @@ export default createRule<Options, MessageIds>({
     //----------------------------------------------------------------------
 
     return {
-      Program: createScope,
-      TSModuleBlock: createScope,
-      TSInterfaceDeclaration(node): void {
-        createScope(node.body, node.typeParameters);
-      },
       ClassDeclaration(node): void {
         createScope(node.body, node.typeParameters);
       },
+      Program: createScope,
+      TSInterfaceDeclaration(node): void {
+        createScope(node.body, node.typeParameters);
+      },
+      TSModuleBlock: createScope,
       TSTypeLiteral: createScope,
 
       // collect overloads
-      TSDeclareFunction(node): void {
-        const exportingNode = getExportingNode(node);
-        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
-      },
-      TSCallSignatureDeclaration: addOverload,
-      TSConstructSignatureDeclaration: addOverload,
-      TSMethodSignature: addOverload,
-      TSAbstractMethodDefinition(node): void {
-        if (!node.value.body) {
-          addOverload(node);
-        }
-      },
       MethodDefinition(node): void {
         if (!node.value.body) {
           addOverload(node);
         }
       },
+      TSAbstractMethodDefinition(node): void {
+        if (!node.value.body) {
+          addOverload(node);
+        }
+      },
+      TSCallSignatureDeclaration: addOverload,
+      TSConstructSignatureDeclaration: addOverload,
+      TSDeclareFunction(node): void {
+        const exportingNode = getExportingNode(node);
+        addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
+      },
+      TSMethodSignature: addOverload,
 
       // validate scopes
-      'Program:exit': checkScope,
-      'TSModuleBlock:exit': checkScope,
-      'TSInterfaceDeclaration:exit': checkScope,
       'ClassDeclaration:exit': checkScope,
+      'Program:exit': checkScope,
+      'TSInterfaceDeclaration:exit': checkScope,
+      'TSModuleBlock:exit': checkScope,
       'TSTypeLiteral:exit': checkScope,
     };
   },

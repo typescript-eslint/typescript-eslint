@@ -80,7 +80,7 @@ export interface EstreeToTsNodeTypes {
   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
   [AST_NODE_TYPES.ImportAttribute]: 'ImportAttribute' extends keyof typeof ts
     ? ts.ImportAttribute
-    : // eslint-disable-next-line deprecation/deprecation
+    : // eslint-disable-next-line @typescript-eslint/no-deprecated
       ts.AssertEntry;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
@@ -177,6 +177,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSConstructorType]: ts.ConstructorTypeNode;
   [AST_NODE_TYPES.TSConstructSignatureDeclaration]: ts.ConstructSignatureDeclaration;
   [AST_NODE_TYPES.TSDeclareFunction]: ts.FunctionDeclaration;
+  [AST_NODE_TYPES.TSEnumBody]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumDeclaration]: ts.EnumDeclaration;
   [AST_NODE_TYPES.TSEnumMember]: ts.EnumMember;
   [AST_NODE_TYPES.TSExportAssignment]: ts.ExportAssignment;

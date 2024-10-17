@@ -1,20 +1,21 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const es2022_error = {
-  ErrorOptions: TYPE,
+  AggregateErrorConstructor: TYPE,
   Error: TYPE,
   ErrorConstructor: TYPE,
+  ErrorOptions: TYPE,
   EvalErrorConstructor: TYPE,
   RangeErrorConstructor: TYPE,
   ReferenceErrorConstructor: TYPE,
   SyntaxErrorConstructor: TYPE,
   TypeErrorConstructor: TYPE,
   URIErrorConstructor: TYPE,
-  AggregateErrorConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

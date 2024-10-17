@@ -15,7 +15,7 @@ import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
 import * as lz from 'lz-string';
-import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
+import { Highlight } from 'prism-react-renderer';
 import React from 'react';
 
 import { TryInPlayground } from '../../MDXComponents/TryInPlayground';
@@ -50,15 +50,17 @@ export default function CodeBlockString({
   const showLineNumbers =
     showLineNumbersProp ?? containsLineNumbers(metastring);
 
-  const copiedCode = code
+  const codeLines = code
     .split('\n')
     .filter(
       (c, i) =>
         !(lineClassNames[i] as string[] | undefined)?.includes(
           'code-block-removed-line',
         ),
-    )
-    .join('\n');
+    );
+  const copiedCode = codeLines.join('\n');
+  const lastLineOfCodeLength = codeLines.at(-1)?.length ?? 0;
+  const needsMorePadding = lastLineOfCodeLength > 50;
 
   const eslintrcHash = parseEslintrc(metastring);
 
@@ -74,12 +76,7 @@ export default function CodeBlockString({
     >
       {title && <div className={styles.codeBlockTitle}>{title}</div>}
       <div className={styles.codeBlockContent}>
-        <Highlight
-          {...defaultProps}
-          theme={prismTheme}
-          code={code}
-          language={(language ?? 'text') as Language}
-        >
+        <Highlight theme={prismTheme} code={code} language={language ?? 'text'}>
           {({
             className,
             tokens,
@@ -95,6 +92,9 @@ export default function CodeBlockString({
               <code
                 className={clsx(
                   styles.codeBlockLines,
+                  eslintrcHash &&
+                    needsMorePadding &&
+                    styles.codeBlockLinesMorePadding,
                   showLineNumbers && styles.codeBlockLinesWithNumbering,
                 )}
               >
@@ -120,6 +120,7 @@ export default function CodeBlockString({
             )}
             codeHash={lz.compressToEncodedURIComponent(copiedCode)}
             eslintrcHash={eslintrcHash}
+            language={language}
           >
             Open in Playground
           </TryInPlayground>

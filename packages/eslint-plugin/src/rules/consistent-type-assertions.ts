@@ -1,14 +1,14 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
   createRule,
   getOperatorPrecedence,
+  getOperatorPrecedenceForNode,
   getParserServices,
-  isClosingParenToken,
-  isOpeningParenToken,
+  getTextWithParentheses,
   isParenthesized,
 } from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
@@ -24,7 +24,7 @@ export type MessageIds =
 type OptUnion =
   | {
       assertionStyle: 'angle-bracket' | 'as';
-      objectLiteralTypeAssertions?: 'allow-as-parameter' | 'allow' | 'never';
+      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
     }
   | {
       assertionStyle: 'never';
@@ -35,49 +35,53 @@ export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
-    fixable: 'code',
-    hasSuggestions: true,
     docs: {
       description: 'Enforce consistent usage of type assertions',
       recommended: 'stylistic',
     },
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
-      as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
       'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
+      as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
       never: 'Do not use any type assertions.',
-      unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
       replaceObjectTypeAssertionWithAnnotation:
         'Use const x: {{cast}} = { ... } instead.',
       replaceObjectTypeAssertionWithSatisfies:
         'Use const x = { ... } satisfies {{cast}} instead.',
+      unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
     },
     schema: [
       {
         oneOf: [
           {
             type: 'object',
+            additionalProperties: false,
             properties: {
               assertionStyle: {
                 type: 'string',
+                description: 'The expected assertion style to enforce.',
                 enum: ['never'],
               },
             },
-            additionalProperties: false,
             required: ['assertionStyle'],
           },
           {
             type: 'object',
+            additionalProperties: false,
             properties: {
               assertionStyle: {
                 type: 'string',
+                description: 'The expected assertion style to enforce.',
                 enum: ['as', 'angle-bracket'],
               },
               objectLiteralTypeAssertions: {
                 type: 'string',
+                description:
+                  'Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions.',
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
             },
-            additionalProperties: false,
             required: ['assertionStyle'],
           },
         ],
@@ -91,9 +95,6 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = getSourceCode(context);
-    const parserServices = getParserServices(context, true);
-
     function isConst(node: TSESTree.TypeNode): boolean {
       if (node.type !== AST_NODE_TYPES.TSTypeReference) {
         return false;
@@ -103,28 +104,6 @@ export default createRule<Options, MessageIds>({
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'const'
       );
-    }
-
-    function getTextWithParentheses(node: TSESTree.Node): string {
-      // Capture parentheses before and after the node
-      let beforeCount = 0;
-      let afterCount = 0;
-
-      if (isParenthesized(node, sourceCode)) {
-        const bodyOpeningParen = sourceCode.getTokenBefore(
-          node,
-          isOpeningParenToken,
-        )!;
-        const bodyClosingParen = sourceCode.getTokenAfter(
-          node,
-          isClosingParenToken,
-        )!;
-
-        beforeCount = node.range[0] - bodyOpeningParen.range[0];
-        afterCount = bodyClosingParen.range[1] - node.range[1];
-      }
-
-      return sourceCode.getText(node, beforeCount, afterCount);
     }
 
     function reportIncorrectAssertionType(
@@ -141,21 +120,21 @@ export default createRule<Options, MessageIds>({
         messageId,
         data:
           messageId !== 'never'
-            ? { cast: sourceCode.getText(node.typeAnnotation) }
+            ? { cast: context.sourceCode.getText(node.typeAnnotation) }
             : {},
         fix:
           messageId === 'as'
             ? (fixer): TSESLint.RuleFix => {
-                const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-                  node as TSESTree.TSTypeAssertion,
-                );
+                // lazily access parserServices to avoid crashing on non TS files (#9860)
+                const tsNode = getParserServices(
+                  context,
+                  true,
+                ).esTreeNodeToTSNodeMap.get(node as TSESTree.TSTypeAssertion);
 
-                /**
-                 * AsExpression has lower precedence than TypeAssertionExpression,
-                 * so we don't need to wrap expression and typeAnnotation in parens.
-                 */
-                const expressionCode = sourceCode.getText(node.expression);
-                const typeAnnotationCode = sourceCode.getText(
+                const expressionCode = context.sourceCode.getText(
+                  node.expression,
+                );
+                const typeAnnotationCode = context.sourceCode.getText(
                   node.typeAnnotation,
                 );
 
@@ -174,10 +153,20 @@ export default createRule<Options, MessageIds>({
                     : undefined,
                 );
 
-                const text = `${expressionCode} as ${typeAnnotationCode}`;
+                const expressionPrecedence = getOperatorPrecedenceForNode(
+                  node.expression,
+                );
+
+                const expressionCodeWrapped = getWrappedCode(
+                  expressionCode,
+                  expressionPrecedence,
+                  asPrecedence,
+                );
+
+                const text = `${expressionCodeWrapped} as ${typeAnnotationCode}`;
                 return fixer.replaceText(
                   node,
-                  isParenthesized(node, sourceCode)
+                  isParenthesized(node, context.sourceCode)
                     ? text
                     : getWrappedCode(text, asPrecedence, parentPrecedence),
                 );
@@ -221,7 +210,10 @@ export default createRule<Options, MessageIds>({
           node.parent.type === AST_NODE_TYPES.CallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||
           node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-          node.parent.type === AST_NODE_TYPES.JSXExpressionContainer)
+          node.parent.type === AST_NODE_TYPES.JSXExpressionContainer ||
+          (node.parent.type === AST_NODE_TYPES.TemplateLiteral &&
+            node.parent.parent.type ===
+              AST_NODE_TYPES.TaggedTemplateExpression))
       ) {
         return;
       }
@@ -235,26 +227,30 @@ export default createRule<Options, MessageIds>({
           const { parent } = node;
           suggest.push({
             messageId: 'replaceObjectTypeAssertionWithAnnotation',
-            data: { cast: sourceCode.getText(node.typeAnnotation) },
+            data: { cast: context.sourceCode.getText(node.typeAnnotation) },
             fix: fixer => [
               fixer.insertTextAfter(
                 parent.id,
-                `: ${sourceCode.getText(node.typeAnnotation)}`,
+                `: ${context.sourceCode.getText(node.typeAnnotation)}`,
               ),
-              fixer.replaceText(node, getTextWithParentheses(node.expression)),
+              fixer.replaceText(
+                node,
+                getTextWithParentheses(context.sourceCode, node.expression),
+              ),
             ],
           });
         }
         suggest.push({
           messageId: 'replaceObjectTypeAssertionWithSatisfies',
-          data: { cast: sourceCode.getText(node.typeAnnotation) },
+          data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
-            fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            fixer.replaceText(
+              node,
+              getTextWithParentheses(context.sourceCode, node.expression),
+            ),
             fixer.insertTextAfter(
               node,
-              ` satisfies ${getSourceCode(context).getText(
-                node.typeAnnotation,
-              )}`,
+              ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
             ),
           ],
         });
@@ -268,16 +264,16 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      TSTypeAssertion(node): void {
-        if (options.assertionStyle !== 'angle-bracket') {
+      TSAsExpression(node): void {
+        if (options.assertionStyle !== 'as') {
           reportIncorrectAssertionType(node);
           return;
         }
 
         checkExpression(node);
       },
-      TSAsExpression(node): void {
-        if (options.assertionStyle !== 'as') {
+      TSTypeAssertion(node): void {
+        if (options.assertionStyle !== 'angle-bracket') {
           reportIncorrectAssertionType(node);
           return;
         }

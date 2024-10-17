@@ -5,10 +5,11 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -22,89 +23,89 @@ ruleTester.run('no-confusing-void-expression', rule, {
     "console?.log('foo');",
 
     {
-      options: [{ ignoreArrowShorthand: true }],
       code: `
         () => console.log('foo');
       `,
+      options: [{ ignoreArrowShorthand: true }],
     },
     {
-      options: [{ ignoreArrowShorthand: true }],
       code: `
         foo => foo && console.log(foo);
       `,
+      options: [{ ignoreArrowShorthand: true }],
     },
     {
-      options: [{ ignoreArrowShorthand: true }],
       code: `
         foo => foo || console.log(foo);
       `,
+      options: [{ ignoreArrowShorthand: true }],
     },
     {
-      options: [{ ignoreArrowShorthand: true }],
       code: `
         foo => (foo ? console.log(true) : console.log(false));
       `,
+      options: [{ ignoreArrowShorthand: true }],
     },
 
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         !void console.log('foo');
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         +void (foo && console.log(foo));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         -void (foo || console.log(foo));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         () => void ((foo && void console.log(true)) || console.log(false));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         const x = void (foo ? console.log(true) : console.log(false));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         !(foo && void console.log(foo));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         !!(foo || void console.log(foo));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         const x = (foo && void console.log(true)) || void console.log(false);
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         () => (foo ? void console.log(true) : void console.log(false));
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: `
         return void console.log('foo');
       `,
+      options: [{ ignoreVoidOperator: true }],
     },
 
     `
@@ -127,60 +128,70 @@ function cool(input: string) {
         const x = console.log('foo');
       `,
       errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         const x = console?.log('foo');
       `,
       errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         console.error(console.log('foo'));
       `,
       errors: [{ column: 23, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         [console.log('foo')];
       `,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         ({ x: console.log('foo') });
       `,
       errors: [{ column: 15, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         void console.log('foo');
       `,
       errors: [{ column: 14, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         console.log('foo') ? true : false;
       `,
       errors: [{ column: 9, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         (console.log('foo') && true) || false;
       `,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         (cond && console.log('ok')) || console.log('error');
       `,
       errors: [{ column: 18, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: `
         !console.log('foo');
       `,
       errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
 
     {
@@ -189,41 +200,44 @@ function notcool(input: string) {
   return input, console.log(input);
 }
       `,
-      errors: [{ line: 3, column: 17, messageId: 'invalidVoidExpr' }],
+      errors: [{ column: 17, line: 3, messageId: 'invalidVoidExpr' }],
+      output: null,
     },
     {
       code: "() => console.log('foo');",
-      errors: [{ line: 1, column: 7, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 7, line: 1, messageId: 'invalidVoidExprArrow' }],
       output: `() => { console.log('foo'); };`,
     },
     {
       code: 'foo => foo && console.log(foo);',
-      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 15, line: 1, messageId: 'invalidVoidExprArrow' }],
+      output: null,
     },
     {
       code: '(foo: undefined) => foo && console.log(foo);',
-      errors: [{ line: 1, column: 28, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 28, line: 1, messageId: 'invalidVoidExprArrow' }],
       output: `(foo: undefined) => { foo && console.log(foo); };`,
     },
     {
       code: 'foo => foo || console.log(foo);',
-      errors: [{ line: 1, column: 15, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 15, line: 1, messageId: 'invalidVoidExprArrow' }],
+      output: null,
     },
     {
       code: '(foo: undefined) => foo || console.log(foo);',
-      errors: [{ line: 1, column: 28, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 28, line: 1, messageId: 'invalidVoidExprArrow' }],
       output: `(foo: undefined) => { foo || console.log(foo); };`,
     },
     {
       code: '(foo: void) => foo || console.log(foo);',
-      errors: [{ line: 1, column: 23, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 23, line: 1, messageId: 'invalidVoidExprArrow' }],
       output: `(foo: void) => { foo || console.log(foo); };`,
     },
     {
       code: 'foo => (foo ? console.log(true) : console.log(false));',
       errors: [
-        { line: 1, column: 15, messageId: 'invalidVoidExprArrow' },
-        { line: 1, column: 35, messageId: 'invalidVoidExprArrow' },
+        { column: 15, line: 1, messageId: 'invalidVoidExprArrow' },
+        { column: 35, line: 1, messageId: 'invalidVoidExprArrow' },
       ],
       output: `foo => { foo ? console.log(true) : console.log(false); };`,
     },
@@ -234,7 +248,7 @@ function notcool(input: string) {
           console.log('bar');
         }
       `,
-      errors: [{ line: 3, column: 18, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 18, line: 3, messageId: 'invalidVoidExprReturn' }],
       output: `
         function f() {
           console.log('foo'); return;
@@ -250,7 +264,7 @@ function notcool(input: string) {
           console.log('quux')
         }
       `,
-      errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 18, line: 4, messageId: 'invalidVoidExprReturn' }],
       output: `
         function f() {
           console.log('foo')
@@ -266,7 +280,7 @@ function notcool(input: string) {
           return console.log('bar');
         }
       `,
-      errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 18, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
         function f() {
           console.log('foo');
@@ -281,7 +295,7 @@ function notcool(input: string) {
           return ['bar', 'baz'].forEach(console.log)
         }
       `,
-      errors: [{ line: 4, column: 18, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 18, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
         function f() {
           console.log('foo')
@@ -298,7 +312,7 @@ function notcool(input: string) {
           console.log('bar');
         };
       `,
-      errors: [{ line: 4, column: 20, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 20, line: 4, messageId: 'invalidVoidExprReturn' }],
       output: `
         const f = () => {
           if (cond) {
@@ -315,7 +329,7 @@ function notcool(input: string) {
           console.log('bar');
         };
       `,
-      errors: [{ line: 3, column: 28, messageId: 'invalidVoidExprReturn' }],
+      errors: [{ column: 28, line: 3, messageId: 'invalidVoidExprReturn' }],
       output: `
         const f = function () {
           if (cond) { console.error('foo'); return; }
@@ -330,7 +344,8 @@ function notcool(input: string) {
           return num ? console.log('foo') : num;
         };
       `,
-      errors: [{ line: 4, column: 24, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 24, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      output: null,
     },
     {
       code: `
@@ -339,7 +354,7 @@ function notcool(input: string) {
           return undef ? console.log('foo') : undef;
         };
       `,
-      errors: [{ line: 4, column: 26, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 26, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
         const f = function () {
           let undef = undefined;
@@ -354,7 +369,8 @@ function notcool(input: string) {
           return num || console.log('foo');
         };
       `,
-      errors: [{ line: 4, column: 25, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 25, line: 4, messageId: 'invalidVoidExprReturnLast' }],
+      output: null,
     },
     {
       code: `
@@ -363,7 +379,7 @@ function notcool(input: string) {
           return bar || console.log('foo');
         };
       `,
-      errors: [{ line: 4, column: 25, messageId: 'invalidVoidExprReturnLast' }],
+      errors: [{ column: 25, line: 4, messageId: 'invalidVoidExprReturnLast' }],
       output: `
         const f = function () {
           let bar = void 0;
@@ -376,34 +392,34 @@ function notcool(input: string) {
         let num = 1;
         const foo = () => (num ? console.log('foo') : num);
       `,
-      errors: [{ line: 3, column: 34, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 34, line: 3, messageId: 'invalidVoidExprArrow' }],
+      output: null,
     },
     {
       code: `
         let bar = void 0;
         const foo = () => (bar ? console.log('foo') : bar);
       `,
-      errors: [{ line: 3, column: 34, messageId: 'invalidVoidExprArrow' }],
+      errors: [{ column: 34, line: 3, messageId: 'invalidVoidExprArrow' }],
       output: `
         let bar = void 0;
         const foo = () => { bar ? console.log('foo') : bar; };
       `,
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: "return console.log('foo');",
       errors: [
-        { line: 1, column: 8, messageId: 'invalidVoidExprReturnWrapVoid' },
+        { column: 8, line: 1, messageId: 'invalidVoidExprReturnWrapVoid' },
       ],
+      options: [{ ignoreVoidOperator: true }],
       output: "return void console.log('foo');",
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: "console.error(console.log('foo'));",
       errors: [
         {
-          line: 1,
           column: 15,
+          line: 1,
           messageId: 'invalidVoidExprWrapVoid',
           suggestions: [
             {
@@ -413,14 +429,15 @@ function notcool(input: string) {
           ],
         },
       ],
+      options: [{ ignoreVoidOperator: true }],
+      output: null,
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: "console.log('foo') ? true : false;",
       errors: [
         {
-          line: 1,
           column: 1,
+          line: 1,
           messageId: 'invalidVoidExprWrapVoid',
           suggestions: [
             {
@@ -430,14 +447,15 @@ function notcool(input: string) {
           ],
         },
       ],
+      options: [{ ignoreVoidOperator: true }],
+      output: null,
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: "const x = foo ?? console.log('foo');",
       errors: [
         {
-          line: 1,
           column: 18,
+          line: 1,
           messageId: 'invalidVoidExprWrapVoid',
           suggestions: [
             {
@@ -447,22 +465,23 @@ function notcool(input: string) {
           ],
         },
       ],
+      options: [{ ignoreVoidOperator: true }],
+      output: null,
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: 'foo => foo || console.log(foo);',
       errors: [
-        { line: 1, column: 15, messageId: 'invalidVoidExprArrowWrapVoid' },
+        { column: 15, line: 1, messageId: 'invalidVoidExprArrowWrapVoid' },
       ],
+      options: [{ ignoreVoidOperator: true }],
       output: 'foo => foo || void console.log(foo);',
     },
     {
-      options: [{ ignoreVoidOperator: true }],
       code: "!!console.log('foo');",
       errors: [
         {
-          line: 1,
           column: 3,
+          line: 1,
           messageId: 'invalidVoidExprWrapVoid',
           suggestions: [
             {
@@ -472,6 +491,8 @@ function notcool(input: string) {
           ],
         },
       ],
+      options: [{ ignoreVoidOperator: true }],
+      output: null,
     },
   ],
 });

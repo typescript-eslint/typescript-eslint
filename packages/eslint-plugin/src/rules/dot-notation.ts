@@ -1,4 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -6,6 +8,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule, getModifiers, getParserServices } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -20,49 +23,57 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce dot notation whenever possible',
-      recommended: 'stylistic',
       extendsBaseRule: true,
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
+    fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
+          allowIndexSignaturePropertyAccess: {
+            type: 'boolean',
+            default: false,
+            description:
+              'Whether to allow accessing properties matching an index signature with array notation.',
+          },
           allowKeywords: {
             type: 'boolean',
             default: true,
+            description: 'Whether to allow keywords such as ["class"]`.',
           },
           allowPattern: {
             type: 'string',
             default: '',
+            description: 'Regular expression of names to allow.',
           },
           allowPrivateClassPropertyAccess: {
             type: 'boolean',
             default: false,
+            description:
+              'Whether to allow accessing class members marked as `private` with array notation.',
           },
           allowProtectedClassPropertyAccess: {
             type: 'boolean',
             default: false,
-          },
-          allowIndexSignaturePropertyAccess: {
-            type: 'boolean',
-            default: false,
+            description:
+              'Whether to allow accessing class members marked as `protected` with array notation.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    fixable: baseRule.meta.fixable,
-    hasSuggestions: baseRule.meta.hasSuggestions,
-    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
-      allowPrivateClassPropertyAccess: false,
-      allowProtectedClassPropertyAccess: false,
       allowIndexSignaturePropertyAccess: false,
       allowKeywords: true,
       allowPattern: '',
+      allowPrivateClassPropertyAccess: false,
+      allowProtectedClassPropertyAccess: false,
     },
   ],
   create(context, [options]) {
@@ -89,7 +100,17 @@ export default createRule<Options, MessageIds>({
           node.computed
         ) {
           // for perf reasons - only fetch symbols if we have to
-          const propertySymbol = services.getSymbolAtLocation(node.property);
+          const propertySymbol =
+            services.getSymbolAtLocation(node.property) ??
+            services
+              .getTypeAtLocation(node.object)
+              .getNonNullableType()
+              .getProperties()
+              .find(
+                propertySymbol =>
+                  node.property.type === AST_NODE_TYPES.Literal &&
+                  propertySymbol.escapedName === node.property.value,
+              );
           const modifierKind = getModifiers(
             propertySymbol?.getDeclarations()?.[0],
           )?.[0].kind;

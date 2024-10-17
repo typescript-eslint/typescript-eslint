@@ -1,5 +1,6 @@
-import { isRecord } from '../ast/utils';
 import type { EslintRC, TSConfig } from '../types';
+
+import { isRecord } from '../ast/utils';
 import { ensureObject, parseJSONObject, toJson } from './json';
 
 /**
@@ -54,7 +55,7 @@ export function parseTSConfig(code?: string): TSConfig {
 const moduleRegexp = /(module\.exports\s*=)/g;
 
 function constrainedScopeEval(obj: string): unknown {
-  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-call
   return new Function(`
     "use strict";
     var module = { exports: {} };

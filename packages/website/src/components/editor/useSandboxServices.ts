@@ -1,19 +1,23 @@
-import { useColorMode } from '@docusaurus/theme-common';
 import type * as Monaco from 'monaco-editor';
+
+import { useColorMode } from '@docusaurus/theme-common';
 import { useEffect, useState } from 'react';
 import semverSatisfies from 'semver/functions/satisfies';
 
-import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
-import { createCompilerOptions } from '../lib/createCompilerOptions';
-import { createFileSystem } from '../linter/bridge';
-import { type CreateLinter, createLinter } from '../linter/createLinter';
+import type { CreateLinter } from '../linter/createLinter';
 import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
+import type { CommonEditorProps } from './types';
+
+// eslint-disable-next-line @typescript-eslint/internal/no-relative-paths-to-internal-packages
+import rootPackageJson from '../../../../../package.json';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
+import { createFileSystem } from '../linter/bridge';
+import { createLinter } from '../linter/createLinter';
 import { createTwoslashInlayProvider } from './createProvideTwoslashInlay';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
-import type { CommonEditorProps } from './types';
 
 export interface SandboxServicesProps {
   readonly onLoaded: (
@@ -42,28 +46,28 @@ export const useSandboxServices = (
     let sandboxInstance: SandboxInstance | undefined;
 
     sandboxSingleton(props.ts)
-      .then(async ({ main, sandboxFactory, lintUtils }) => {
+      .then(async ({ lintUtils, main, sandboxFactory }) => {
         const compilerOptions = createCompilerOptions();
 
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
           {
-            text: props.code,
-            monacoSettings: {
-              minimap: { enabled: false },
-              fontSize: 13,
-              wordWrap: 'off',
-              scrollBeyondLastLine: false,
-              smoothScrolling: true,
-              autoIndent: 'full',
-              formatOnPaste: true,
-              formatOnType: true,
-              wrappingIndent: 'same',
-              hover: { above: false },
-            },
-            acquireTypes: false,
+            acquireTypes: true,
             compilerOptions:
               compilerOptions as Monaco.languages.typescript.CompilerOptions,
             domID: editorEmbedId,
+            monacoSettings: {
+              autoIndent: 'full',
+              fontSize: 13,
+              formatOnPaste: true,
+              formatOnType: true,
+              hover: { above: false },
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              smoothScrolling: true,
+              wordWrap: 'off',
+              wrappingIndent: 'same',
+            },
+            text: props.code,
           },
           main,
           window.ts,
@@ -72,25 +76,42 @@ export const useSandboxServices = (
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        // registerInlayHintsProvider was added in TS 4.4 and isn't in TS <= 4.3.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        sandboxInstance.monaco.languages.registerInlayHintsProvider?.(
+        sandboxInstance.monaco.languages.registerInlayHintsProvider(
           sandboxInstance.language,
           createTwoslashInlayProvider(sandboxInstance),
         );
 
         const system = createFileSystem(props, sandboxInstance.tsvfs);
 
+        // Write files in vfs when a model is created in the editor (this is used only for ATA types)
+        sandboxInstance.monaco.editor.onDidCreateModel(model => {
+          if (!model.uri.path.includes('node_modules')) {
+            return;
+          }
+          const path = model.uri.path.replace('/file:///', '/');
+          system.writeFile(path, model.getValue());
+        });
+        // Delete files in vfs when a model is disposed in the editor (this is used only for ATA types)
+        sandboxInstance.monaco.editor.onWillDisposeModel(model => {
+          if (!model.uri.path.includes('node_modules')) {
+            return;
+          }
+          const path = model.uri.path.replace('/file:///', '/');
+          system.deleteFile(path);
+        });
+
+        // Load the lib files from typescript to vfs (eg. es2020.d.ts)
         const worker = await sandboxInstance.getWorkerProcess();
         if (worker.getLibFiles) {
           const libs = await worker.getLibFiles();
           for (const [key, value] of Object.entries(libs)) {
-            system.writeFile('/' + key, value);
+            system.writeFile(`/${key}`, value);
           }
         }
 
         window.system = system;
         window.esquery = lintUtils.esquery;
+        window.visitorKeys = lintUtils.visitorKeys;
 
         const webLinter = createLinter(
           system,
@@ -99,10 +120,13 @@ export const useSandboxServices = (
         );
 
         onLoaded(
-          Array.from(webLinter.rules.values()),
-          Array.from(
-            new Set([...sandboxInstance.supportedVersions, window.ts.version]),
-          )
+          [...webLinter.rules.values()],
+          [
+            ...new Set([
+              window.ts.version,
+              ...sandboxInstance.supportedVersions,
+            ]),
+          ]
             .filter(item =>
               semverSatisfies(item, rootPackageJson.devDependencies.typescript),
             )
@@ -110,19 +134,28 @@ export const useSandboxServices = (
         );
 
         setServices({
+          sandboxInstance,
           system,
           webLinter,
-          sandboxInstance,
         });
       })
-      .catch(setServices);
-
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          setServices(err);
+        } else {
+          setServices(new Error(String(err)));
+        }
+      });
     return (): void => {
       if (!sandboxInstance) {
         return;
       }
 
-      const editorModel = sandboxInstance.editor.getModel()!;
+      const editorModel = sandboxInstance.editor.getModel();
+      if (!editorModel) {
+        return;
+      }
+
       sandboxInstance.monaco.editor.setModelMarkers(
         editorModel,
         sandboxInstance.editor.getId(),

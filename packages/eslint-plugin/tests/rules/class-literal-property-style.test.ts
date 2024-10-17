@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/class-literal-property-style';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('class-literal-property-style', rule, {
   valid: [
@@ -220,6 +218,45 @@ class Mx {
       `,
       options: ['getters'],
     },
+    {
+      code: `
+        class A {
+          private readonly foo: string = 'bar';
+          constructor(foo: string) {
+            this.foo = foo;
+          }
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class A {
+          private readonly foo: string = 'bar';
+          constructor(foo: string) {
+            this['foo'] = foo;
+          }
+        }
+      `,
+      options: ['getters'],
+    },
+    {
+      code: `
+        class A {
+          private readonly foo: string = 'bar';
+          constructor(foo: string) {
+            const bar = new (class {
+              private readonly foo: string = 'baz';
+              constructor() {
+                this.foo = 'qux';
+              }
+            })();
+            this['foo'] = foo;
+          }
+        }
+      `,
+      options: ['getters'],
+    },
   ],
   invalid: [
     {
@@ -232,9 +269,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 7,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -258,9 +295,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 7,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -284,9 +321,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 14,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -310,9 +347,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 21,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -336,9 +373,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 15,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -362,9 +399,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 15,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -386,9 +423,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 20,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -411,9 +448,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 12,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -436,9 +473,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 12,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -461,9 +498,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 19,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -488,9 +525,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 17,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -513,9 +550,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 22,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -540,9 +577,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 21,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -564,9 +601,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 26,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -598,9 +635,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferFieldStyle',
           column: 14,
           line: 3,
+          messageId: 'preferFieldStyle',
           suggestions: [
             {
               messageId: 'preferFieldStyleSuggestion',
@@ -636,9 +673,9 @@ class Mx {
       `,
       errors: [
         {
-          messageId: 'preferGetterStyle',
           column: 19,
           line: 3,
+          messageId: 'preferGetterStyle',
           suggestions: [
             {
               messageId: 'preferGetterStyleSuggestion',
@@ -652,6 +689,127 @@ class Mx {
       }
     }
   \`; }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {
+        this.foo = 'qux';
+      }
+    })();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 3,
+          messageId: 'preferGetterStyle',
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class A {
+  private get foo() { return 'bar'; }
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {
+        this.foo = 'qux';
+      }
+    })();
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly ['foo']: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private readonly foo: string = 'baz';
+      constructor() {}
+    })();
+
+    if (bar) {
+      this.foo = 'baz';
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 24,
+          line: 6,
+          messageId: 'preferGetterStyle',
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class A {
+  private readonly ['foo']: string = 'bar';
+  constructor(foo: string) {
+    const bar = new (class {
+      private get foo() { return 'baz'; }
+      constructor() {}
+    })();
+
+    if (bar) {
+      this.foo = 'baz';
+    }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: ['getters'],
+    },
+    {
+      code: `
+class A {
+  private readonly foo: string = 'bar';
+  constructor(foo: string) {
+    function func() {
+      this.foo = 'aa';
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 3,
+          messageId: 'preferGetterStyle',
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class A {
+  private get foo() { return 'bar'; }
+  constructor(foo: string) {
+    function func() {
+      this.foo = 'aa';
+    }
+  }
 }
       `,
             },

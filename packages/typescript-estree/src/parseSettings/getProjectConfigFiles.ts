@@ -1,8 +1,10 @@
-import debug from 'debug';
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
-import type { ParseSettings } from '.';
+import debug from 'debug';
+
+import type { TSESTreeOptions } from '../parser-options';
+import type { ParseSettings } from './index';
 
 const log = debug('typescript-eslint:typescript-estree:getProjectConfigFiles');
 
@@ -20,10 +22,10 @@ export function getProjectConfigFiles(
     ParseSettings,
     'filePath' | 'tsconfigMatchCache' | 'tsconfigRootDir'
   >,
-  project: string[] | string | true | null | undefined,
+  project: TSESTreeOptions['project'],
 ): string[] | null {
   if (project !== true) {
-    if (project == null) {
+    if (project == null || project === false) {
       return null;
     }
     if (Array.isArray(project)) {

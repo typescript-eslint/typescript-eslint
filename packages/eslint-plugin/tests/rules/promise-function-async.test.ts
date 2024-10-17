@@ -7,12 +7,12 @@ const rootDir = getFixturesRootDir();
 const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('promise-function-async', rule, {
@@ -190,16 +190,17 @@ function returnsAny(): any {
   return 0;
 }
       `,
-      options: [
-        {
-          allowAny: false,
-        },
-      ],
       errors: [
         {
           messageId,
         },
       ],
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -207,16 +208,17 @@ function returnsUnknown(): unknown {
   return 0;
 }
       `,
-      options: [
-        {
-          allowAny: false,
-        },
-      ],
       errors: [
         {
           messageId,
         },
       ],
+      options: [
+        {
+          allowAny: false,
+        },
+      ],
+      output: null,
     },
     {
       code: `
@@ -386,25 +388,25 @@ class Test {
   }
 }
       `,
+      errors: [
+        {
+          line: 2,
+          messageId,
+        },
+        {
+          line: 6,
+          messageId,
+        },
+        {
+          line: 13,
+          messageId,
+        },
+      ],
       options: [
         {
           checkArrowFunctions: false,
         },
       ],
-      errors: [
-        {
-          line: 2,
-          messageId,
-        },
-        {
-          line: 6,
-          messageId,
-        },
-        {
-          line: 13,
-          messageId,
-        },
-      ],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -441,25 +443,25 @@ class Test {
   }
 }
       `,
+      errors: [
+        {
+          line: 2,
+          messageId,
+        },
+        {
+          line: 10,
+          messageId,
+        },
+        {
+          line: 13,
+          messageId,
+        },
+      ],
       options: [
         {
           checkFunctionDeclarations: false,
         },
       ],
-      errors: [
-        {
-          line: 2,
-          messageId,
-        },
-        {
-          line: 10,
-          messageId,
-        },
-        {
-          line: 13,
-          messageId,
-        },
-      ],
       output: `
 const nonAsyncPromiseFunctionExpression = async function (p: Promise<void>) {
   return p;
@@ -496,11 +498,6 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          checkFunctionExpressions: false,
-        },
-      ],
       errors: [
         {
           line: 6,
@@ -513,6 +510,11 @@ class Test {
         {
           line: 13,
           messageId,
+        },
+      ],
+      options: [
+        {
+          checkFunctionExpressions: false,
         },
       ],
       output: `
@@ -551,11 +553,6 @@ class Test {
   }
 }
       `,
-      options: [
-        {
-          checkMethodDeclarations: false,
-        },
-      ],
       errors: [
         {
           line: 2,
@@ -568,6 +565,11 @@ class Test {
         {
           line: 10,
           messageId,
+        },
+      ],
+      options: [
+        {
+          checkMethodDeclarations: false,
         },
       ],
       output: `
@@ -594,15 +596,15 @@ class PromiseType {}
 
 const returnAllowedType = () => new PromiseType();
       `,
-      options: [
-        {
-          allowedPromiseNames: ['PromiseType'],
-        },
-      ],
       errors: [
         {
           line: 4,
           messageId,
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['PromiseType'],
         },
       ],
       output: `
@@ -620,15 +622,15 @@ function foo(): Promise<string> | SPromise<boolean> {
     : Promise.resolve(false);
 }
       `,
-      options: [
-        {
-          allowedPromiseNames: ['SPromise'],
-        },
-      ],
       errors: [
         {
           line: 3,
           messageId,
+        },
+      ],
+      options: [
+        {
+          allowedPromiseNames: ['SPromise'],
         },
       ],
       output: `
@@ -649,7 +651,7 @@ class Test {
   }
 }
       `,
-      errors: [{ line: 4, column: 3, messageId }],
+      errors: [{ column: 3, line: 4, messageId }],
       output: `
 class Test {
   @decorator
@@ -675,9 +677,9 @@ class Test {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId },
-        { line: 7, column: 3, messageId },
-        { line: 10, column: 3, messageId },
+        { column: 3, line: 4, messageId },
+        { column: 3, line: 7, messageId },
+        { column: 3, line: 10, messageId },
       ],
       output: `
 class Test {
@@ -712,6 +714,23 @@ class Foo {
   }
 }
       `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId,
+        },
+        {
+          column: 3,
+          line: 7,
+          messageId,
+        },
+        {
+          column: 3,
+          line: 12,
+          messageId,
+        },
+      ],
       output: `
 class Foo {
   async catch() {
@@ -728,23 +747,6 @@ class Foo {
   }
 }
       `,
-      errors: [
-        {
-          line: 3,
-          column: 3,
-          messageId,
-        },
-        {
-          line: 7,
-          column: 3,
-          messageId,
-        },
-        {
-          line: 12,
-          column: 3,
-          messageId,
-        },
-      ],
     },
     {
       code: `
@@ -754,6 +756,13 @@ const foo = {
   },
 };
       `,
+      errors: [
+        {
+          column: 3,
+          line: 3,
+          messageId,
+        },
+      ],
       output: `
 const foo = {
   async catch() {
@@ -761,13 +770,6 @@ const foo = {
   },
 };
       `,
-      errors: [
-        {
-          line: 3,
-          column: 3,
-          messageId,
-        },
-      ],
     },
     {
       code: `

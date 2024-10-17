@@ -1,48 +1,41 @@
 import type { JSONSchema4 } from '../json-schema';
 import type { ParserServices, TSESTree } from '../ts-estree';
 import type { AST } from './AST';
+import type { FlatConfig } from './Config';
 import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
-interface RuleMetaDataDocs {
+export interface RuleRecommendationAcrossConfigs<
+  Options extends readonly unknown[],
+> {
+  recommended?: true;
+  strict: Partial<Options>;
+}
+
+export interface RuleMetaDataDocs {
   /**
-   * Concise description of the rule
+   * Concise description of the rule.
    */
   description: string;
+
   /**
-   * The recommendation level for the rule.
-   * Used by the build tools to generate the recommended and strict configs.
-   * Exclude to not include it as a recommendation.
-   */
-  recommended?: RuleRecommendation;
-  /**
-   * The URL of the rule's docs
+   * The URL of the rule's docs.
    */
   url?: string;
-  /**
-   * Does the rule require us to create a full TypeScript Program in order for it
-   * to type-check code. This is only used for documentation purposes.
-   */
-  requiresTypeChecking?: boolean;
-  /**
-   * Does the rule extend (or is it based off of) an ESLint code rule?
-   * Alternately accepts the name of the base rule, in case the rule has been renamed.
-   * This is only used for documentation purposes.
-   */
-  extendsBaseRule?: boolean | string;
 }
-interface RuleMetaData<TMessageIds extends string> {
+
+export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
   /**
    * True if the rule is deprecated, false otherwise
    */
   deprecated?: boolean;
   /**
-   * Documentation for the rule, unnecessary for custom rules/plugins
+   * Documentation for the rule
    */
-  docs?: RuleMetaDataDocs;
+  docs?: PluginDocs & RuleMetaDataDocs;
   /**
    * The fixer category. Omit if there is no fixer
    */
@@ -56,14 +49,7 @@ interface RuleMetaData<TMessageIds extends string> {
    * The key is the messageId, and the string is the parameterised error string.
    * See: https://eslint.org/docs/developer-guide/working-with-rules#messageids
    */
-  messages: Record<TMessageIds, string>;
-  /**
-   * The type of rule.
-   * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
-   * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
-   * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
-   */
-  type: 'layout' | 'problem' | 'suggestion';
+  messages: Record<MessageIds, string>;
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
@@ -72,14 +58,31 @@ interface RuleMetaData<TMessageIds extends string> {
    * The options schema. Supply an empty array if there are no options.
    */
   schema: JSONSchema4 | readonly JSONSchema4[];
+  /**
+   * The type of rule.
+   * - `"problem"` means the rule is identifying code that either will cause an error or may cause a confusing behavior. Developers should consider this a high priority to resolve.
+   * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
+   * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
+   */
+  type: 'layout' | 'problem' | 'suggestion';
 }
 
-interface RuleFix {
+export interface RuleMetaDataWithDocs<
+  MessageIds extends string,
+  PluginDocs = unknown,
+> extends RuleMetaData<MessageIds, PluginDocs> {
+  /**
+   * Documentation for the rule
+   */
+  docs: PluginDocs & RuleMetaDataDocs;
+}
+
+export interface RuleFix {
   range: Readonly<AST.Range>;
   text: string;
 }
 
-interface RuleFixer {
+export interface RuleFixer {
   insertTextAfter(
     nodeOrToken: TSESTree.Node | TSESTree.Token,
     text: string,
@@ -106,20 +109,21 @@ interface RuleFixer {
   replaceTextRange(range: Readonly<AST.Range>, text: string): RuleFix;
 }
 
-interface SuggestionReportDescriptor<TMessageIds extends string>
-  extends Omit<ReportDescriptorBase<TMessageIds>, 'fix'> {
+export interface SuggestionReportDescriptor<MessageIds extends string>
+  extends Omit<ReportDescriptorBase<MessageIds>, 'fix'> {
   readonly fix: ReportFixFunction;
 }
 
-type ReportFixFunction = (
+export type ReportFixFunction = (
   fixer: RuleFixer,
-) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
-type ReportSuggestionArray<TMessageIds extends string> =
-  SuggestionReportDescriptor<TMessageIds>[];
+) => IterableIterator<RuleFix> | readonly RuleFix[] | RuleFix | null;
 
-type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
+export type ReportSuggestionArray<MessageIds extends string> =
+  SuggestionReportDescriptor<MessageIds>[];
 
-interface ReportDescriptorBase<TMessageIds extends string> {
+export type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
+
+interface ReportDescriptorBase<MessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
@@ -131,30 +135,30 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The messageId which is being reported.
    */
-  readonly messageId: TMessageIds;
+  readonly messageId: MessageIds;
 
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // readonly desc?: string;
 }
-interface ReportDescriptorWithSuggestion<TMessageIds extends string>
-  extends ReportDescriptorBase<TMessageIds> {
+interface ReportDescriptorWithSuggestion<MessageIds extends string>
+  extends ReportDescriptorBase<MessageIds> {
   /**
    * 6.7's Suggestions API
    */
-  readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
+  readonly suggest?: Readonly<ReportSuggestionArray<MessageIds>> | null;
 }
 
 interface ReportDescriptorNodeOptionalLoc {
-  /**
-   * The Node or AST Token which the report is being attached to
-   */
-  readonly node: TSESTree.Node | TSESTree.Token;
   /**
    * An override of the location of the report
    */
   readonly loc?:
     | Readonly<TSESTree.Position>
     | Readonly<TSESTree.SourceLocation>;
+  /**
+   * The Node or AST Token which the report is being attached to
+   */
+  readonly node: TSESTree.Node | TSESTree.Token;
 }
 interface ReportDescriptorLocOnly {
   /**
@@ -162,37 +166,47 @@ interface ReportDescriptorLocOnly {
    */
   loc: Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
 }
-type ReportDescriptor<TMessageIds extends string> =
-  ReportDescriptorWithSuggestion<TMessageIds> &
-    (ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc);
+
+export type ReportDescriptor<MessageIds extends string> = (
+  | ReportDescriptorLocOnly
+  | ReportDescriptorNodeOptionalLoc
+) &
+  ReportDescriptorWithSuggestion<MessageIds>;
 
 /**
  * Plugins can add their settings using declaration
  * merging against this interface.
  */
-type SharedConfigurationSettings = Record<string, unknown>;
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface SharedConfigurationSettings {
+  [name: string]: unknown;
+}
 
-interface RuleContext<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+export interface RuleContext<
+  MessageIds extends string,
+  Options extends readonly unknown[],
 > {
   /**
    * The rule ID.
    */
   id: string;
   /**
+   * The language options configured for this run
+   */
+  languageOptions: FlatConfig.LanguageOptions;
+  /**
    * An array of the configured options for this rule.
    * This array does not include the rule severity.
    */
-  options: TOptions;
-  /**
-   * The name of the parser from configuration.
-   */
-  parserPath: string;
+  options: Options;
   /**
    * The parser options configured for this run
    */
   parserOptions: Linter.ParserOptions;
+  /**
+   * The name of the parser from configuration, if in eslintrc (legacy) config.
+   */
+  parserPath: string | undefined;
   /**
    * An object containing parser-provided services for rules
    *
@@ -204,6 +218,8 @@ interface RuleContext<
    * We do not have any shared settings in this plugin.
    */
   settings: SharedConfigurationSettings;
+
+  // Deprecated members
 
   /**
    * Returns an array of the ancestors of the currently-traversed node, starting at
@@ -225,7 +241,6 @@ interface RuleContext<
   /**
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * @since 6.6.0
    * @deprecated in favor of `RuleContext#cwd`
    */
   getCwd(): string;
@@ -233,7 +248,6 @@ interface RuleContext<
   /**
    * The current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
-   * @since 8.40.0
    */
   cwd: string;
 
@@ -246,22 +260,19 @@ interface RuleContext<
 
   /**
    * The filename associated with the source.
-   * @since 8.40.0
    */
   filename: string;
 
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
-   * @since 7.28.0
    * @deprecated in favor of `RuleContext#physicalFilename`
    */
-  getPhysicalFilename?(): string;
+  getPhysicalFilename(): string;
 
   /**
    * The full path of the file on disk without any code block information (unlike `filename`).
-   * @since 8.40.0
    */
-  physicalFilename?: string;
+  physicalFilename: string;
 
   /**
    * Returns the scope of the currently-traversed node.
@@ -282,7 +293,6 @@ interface RuleContext<
   /**
    * A SourceCode object that you can use to work with the source that
    * was passed to ESLint.
-   * @since 8.40.0
    */
   sourceCode: Readonly<SourceCode>;
 
@@ -297,7 +307,7 @@ interface RuleContext<
   /**
    * Reports a problem in the code.
    */
-  report(descriptor: ReportDescriptor<TMessageIds>): void;
+  report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
 /**
@@ -309,23 +319,9 @@ interface RuleContext<
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
-interface CodePath {
-  /**
-   * A unique string. Respective rules can use `id` to save additional
-   * information for each code path.
-   */
-  id: string;
-
-  initialSegment: CodePathSegment;
-
-  /** The final segments which includes both returned and thrown. */
-  finalSegments: CodePathSegment[];
-
-  /** The final segments which includes only returned. */
-  returnedSegments: CodePathSegment[];
-
-  /** The final segments which includes only thrown. */
-  thrownSegments: CodePathSegment[];
+export interface CodePath {
+  /** Code paths of functions this code path contains. */
+  childCodePaths: CodePath[];
 
   /**
    * Segments of the current traversal position.
@@ -334,11 +330,25 @@ interface CodePath {
    */
   currentSegments: CodePathSegment[];
 
+  /** The final segments which includes both returned and thrown. */
+  finalSegments: CodePathSegment[];
+
+  /**
+   * A unique string. Respective rules can use `id` to save additional
+   * information for each code path.
+   */
+  id: string;
+
+  initialSegment: CodePathSegment;
+
+  /** The final segments which includes only returned. */
+  returnedSegments: CodePathSegment[];
+
+  /** The final segments which includes only thrown. */
+  thrownSegments: CodePathSegment[];
+
   /** The code path of the upper function/global scope. */
   upper: CodePath | null;
-
-  /** Code paths of functions this code path contains. */
-  childCodePaths: CodePath[];
 }
 
 /**
@@ -350,7 +360,7 @@ interface CodePath {
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
-interface CodePathSegment {
+export interface CodePathSegment {
   /**
    * A unique string. Respective rules can use `id` to save additional
    * information for each segment.
@@ -386,29 +396,29 @@ interface CodePathSegment {
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
-type CodePathFunction =
+export type CodePathFunction =
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((
       fromSegment: CodePathSegment,
       toSegment: CodePathSegment,
       node: TSESTree.Node,
     ) => void)
-  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((segment: CodePathSegment, node: TSESTree.Node) => void);
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
-type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
+export type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
   node: T,
 ) => void;
 
 interface RuleListenerBaseSelectors {
+  AccessorProperty?: RuleFunction<TSESTree.AccessorProperty>;
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
   AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
-  BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
   BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
   BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
@@ -436,6 +446,7 @@ interface RuleListenerBaseSelectors {
   FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
+  ImportAttribute?: RuleFunction<TSESTree.ImportAttribute>;
   ImportDeclaration?: RuleFunction<TSESTree.ImportDeclaration>;
   ImportDefaultSpecifier?: RuleFunction<TSESTree.ImportDefaultSpecifier>;
   ImportExpression?: RuleFunction<TSESTree.ImportExpression>;
@@ -450,6 +461,7 @@ interface RuleListenerBaseSelectors {
   JSXFragment?: RuleFunction<TSESTree.JSXFragment>;
   JSXIdentifier?: RuleFunction<TSESTree.JSXIdentifier>;
   JSXMemberExpression?: RuleFunction<TSESTree.JSXMemberExpression>;
+  JSXNamespacedName?: RuleFunction<TSESTree.JSXNamespacedName>;
   JSXOpeningElement?: RuleFunction<TSESTree.JSXOpeningElement>;
   JSXOpeningFragment?: RuleFunction<TSESTree.JSXOpeningFragment>;
   JSXSpreadAttribute?: RuleFunction<TSESTree.JSXSpreadAttribute>;
@@ -464,6 +476,7 @@ interface RuleListenerBaseSelectors {
   NewExpression?: RuleFunction<TSESTree.NewExpression>;
   ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
+  PrivateIdentifier?: RuleFunction<TSESTree.PrivateIdentifier>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
   PropertyDefinition?: RuleFunction<TSESTree.PropertyDefinition>;
@@ -471,6 +484,7 @@ interface RuleListenerBaseSelectors {
   ReturnStatement?: RuleFunction<TSESTree.ReturnStatement>;
   SequenceExpression?: RuleFunction<TSESTree.SequenceExpression>;
   SpreadElement?: RuleFunction<TSESTree.SpreadElement>;
+  StaticBlock?: RuleFunction<TSESTree.StaticBlock>;
   Super?: RuleFunction<TSESTree.Super>;
   SwitchCase?: RuleFunction<TSESTree.SwitchCase>;
   SwitchStatement?: RuleFunction<TSESTree.SwitchStatement>;
@@ -480,6 +494,7 @@ interface RuleListenerBaseSelectors {
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
+  TSAbstractAccessorProperty?: RuleFunction<TSESTree.TSAbstractAccessorProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<TSESTree.TSAbstractMethodDefinition>;
   TSAbstractPropertyDefinition?: RuleFunction<TSESTree.TSAbstractPropertyDefinition>;
@@ -497,6 +512,7 @@ interface RuleListenerBaseSelectors {
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSEmptyBodyFunctionExpression?: RuleFunction<TSESTree.TSEmptyBodyFunctionExpression>;
+  TSEnumBody?: RuleFunction<TSESTree.TSEnumBody>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
@@ -508,15 +524,18 @@ interface RuleListenerBaseSelectors {
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
   TSIndexSignature?: RuleFunction<TSESTree.TSIndexSignature>;
   TSInferType?: RuleFunction<TSESTree.TSInferType>;
+  TSInstantiationExpression?: RuleFunction<TSESTree.TSInstantiationExpression>;
   TSInterfaceBody?: RuleFunction<TSESTree.TSInterfaceBody>;
   TSInterfaceDeclaration?: RuleFunction<TSESTree.TSInterfaceDeclaration>;
   TSInterfaceHeritage?: RuleFunction<TSESTree.TSInterfaceHeritage>;
   TSIntersectionType?: RuleFunction<TSESTree.TSIntersectionType>;
+  TSIntrinsicKeyword?: RuleFunction<TSESTree.TSIntrinsicKeyword>;
   TSLiteralType?: RuleFunction<TSESTree.TSLiteralType>;
   TSMappedType?: RuleFunction<TSESTree.TSMappedType>;
   TSMethodSignature?: RuleFunction<TSESTree.TSMethodSignature>;
   TSModuleBlock?: RuleFunction<TSESTree.TSModuleBlock>;
   TSModuleDeclaration?: RuleFunction<TSESTree.TSModuleDeclaration>;
+  TSNamedTupleMember?: RuleFunction<TSESTree.TSNamedTupleMember>;
   TSNamespaceExportDeclaration?: RuleFunction<TSESTree.TSNamespaceExportDeclaration>;
   TSNeverKeyword?: RuleFunction<TSESTree.TSNeverKeyword>;
   TSNonNullExpression?: RuleFunction<TSESTree.TSNonNullExpression>;
@@ -532,9 +551,11 @@ interface RuleListenerBaseSelectors {
   TSQualifiedName?: RuleFunction<TSESTree.TSQualifiedName>;
   TSReadonlyKeyword?: RuleFunction<TSESTree.TSReadonlyKeyword>;
   TSRestType?: RuleFunction<TSESTree.TSRestType>;
+  TSSatisfiesExpression?: RuleFunction<TSESTree.TSSatisfiesExpression>;
   TSStaticKeyword?: RuleFunction<TSESTree.TSStaticKeyword>;
   TSStringKeyword?: RuleFunction<TSESTree.TSStringKeyword>;
   TSSymbolKeyword?: RuleFunction<TSESTree.TSSymbolKeyword>;
+  TSTemplateLiteralType?: RuleFunction<TSESTree.TSTemplateLiteralType>;
   TSThisType?: RuleFunction<TSESTree.TSThisType>;
   TSTupleType?: RuleFunction<TSESTree.TSTupleType>;
   TSTypeAliasDeclaration?: RuleFunction<TSESTree.TSTypeAliasDeclaration>;
@@ -565,8 +586,8 @@ type RuleListenerExitSelectors = {
 };
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface RuleListenerExtension {
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface RuleListenerExtension {
   // The code path functions below were introduced in ESLint v8.7.0 but are
   // intentionally commented out because they cause unresolvable compiler
   // errors:
@@ -607,59 +628,96 @@ interface RuleListenerExtension {
   */
 }
 
-type RuleListener = RuleListenerBaseSelectors &
+export type RuleListener = RuleListenerBaseSelectors &
   RuleListenerCatchAllBaseCase &
   RuleListenerExitSelectors;
 
-interface RuleModule<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[] = [],
+export interface RuleModule<
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
+  Docs = unknown,
   // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
+  ExtendedRuleListener extends RuleListener = RuleListener,
 > {
-  /**
-   * Default options the rule will be run with
-   */
-  defaultOptions: TOptions;
-
-  /**
-   * Metadata about the rule
-   */
-  meta: RuleMetaData<TMessageIds>;
-
   /**
    * Function which returns an object with methods that ESLint calls to “visit”
    * nodes while traversing the abstract syntax tree.
    */
-  create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
+  create(
+    context: Readonly<RuleContext<MessageIds, Options>>,
+  ): ExtendedRuleListener;
+
+  /**
+   * Default options the rule will be run with
+   */
+  defaultOptions: Options;
+
+  /**
+   * Metadata about the rule
+   */
+  meta: RuleMetaData<MessageIds, Docs>;
 }
-type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
-type RuleCreateFunction<
-  TMessageIds extends string = never,
-  TOptions extends readonly unknown[] = unknown[],
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
-type AnyRuleCreateFunction = RuleCreateFunction<string, readonly unknown[]>;
+export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
-export {
-  AnyRuleCreateFunction,
-  AnyRuleModule,
-  CodePath,
-  CodePathFunction,
-  CodePathSegment,
-  ReportDescriptor,
-  ReportDescriptorMessageData,
-  ReportFixFunction,
-  ReportSuggestionArray,
-  RuleContext,
-  RuleCreateFunction,
-  RuleFix,
-  RuleFixer,
-  RuleFunction,
-  RuleListener,
-  RuleListenerExtension,
-  RuleMetaData,
-  RuleMetaDataDocs,
-  RuleModule,
-  SharedConfigurationSettings,
-};
+export interface RuleModuleWithMetaDocs<
+  MessageIds extends string,
+  Options extends readonly unknown[] = [],
+  Docs = unknown,
+  // for extending base rules
+  ExtendedRuleListener extends RuleListener = RuleListener,
+> extends RuleModule<MessageIds, Options, Docs, ExtendedRuleListener> {
+  /**
+   * Metadata about the rule
+   */
+  meta: RuleMetaDataWithDocs<MessageIds, Docs>;
+}
+
+export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
+  string,
+  unknown[]
+>;
+
+/**
+ * A loose definition of the RuleModule type for use with configs. This type is
+ * intended to relax validation of types so that we can have basic validation
+ * without being overly strict about nitty gritty details matching.
+ *
+ * For example the plugin might be declared using an old version of our types or
+ * they might use the DefinitelyTyped eslint types. Ultimately we don't need
+ * super strict validation in a config - a loose shape match is "good enough" to
+ * help validate the config is correct.
+ *
+ * @see {@link LooseParserModule}, {@link LooseProcessorModule}
+ */
+export type LooseRuleDefinition =
+  // TODO - remove RuleCreateFunction once we no longer support ESLint 8
+  | {
+      create: LooseRuleCreateFunction;
+      meta?: object | undefined;
+    }
+  | LooseRuleCreateFunction;
+/*
+eslint-disable-next-line @typescript-eslint/no-explicit-any --
+intentionally using `any` to allow bi-directional assignment (unknown and
+never only allow unidirectional)
+*/
+export type LooseRuleCreateFunction = (context: any) => Record<
+  string,
+  /*
+  eslint-disable-next-line @typescript-eslint/no-unsafe-function-type --
+  intentionally use Function here to give us the basic "is a function" validation
+  without enforcing specific argument types so that different AST types can still
+  be passed to configs
+  */
+  Function | undefined
+>;
+
+export type RuleCreateFunction<
+  MessageIds extends string = never,
+  Options extends readonly unknown[] = unknown[],
+> = (context: Readonly<RuleContext<MessageIds, Options>>) => RuleListener;
+export type AnyRuleCreateFunction = RuleCreateFunction<
+  string,
+  readonly unknown[]
+>;

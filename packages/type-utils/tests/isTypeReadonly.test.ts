@@ -1,12 +1,11 @@
+import path from 'node:path';
+
 import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
-import path from 'path';
 import type * as ts from 'typescript';
 
-import {
-  isTypeReadonly,
-  type ReadonlynessOptions,
-} from '../src/isTypeReadonly';
+import type { ReadonlynessOptions } from '../src/isTypeReadonly';
+import { isTypeReadonly } from '../src/isTypeReadonly';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
 describe('isTypeReadonly', () => {
@@ -18,6 +17,7 @@ describe('isTypeReadonly', () => {
       program: ts.Program;
     } {
       const { ast, services } = parseForESLint(code, {
+        disallowAutomaticSingleRunInference: true,
         project: './tsconfig.json',
         filePath: path.join(rootDir, 'file.ts'),
         tsconfigRootDir: rootDir,

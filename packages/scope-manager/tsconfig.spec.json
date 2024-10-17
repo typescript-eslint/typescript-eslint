@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "Node16",
     "types": ["jest", "node"]
   },
   "exclude": ["tests/fixtures"],
@@ -10,13 +9,9 @@
     "tests",
     "tools",
     "**/*.test.ts",
-    "**/*.spec.ts",
     "**/*.test.tsx",
-    "**/*.spec.tsx",
     "**/*.test.js",
-    "**/*.spec.js",
     "**/*.test.jsx",
-    "**/*.spec.jsx",
     "**/*.d.ts"
   ]
 }

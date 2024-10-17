@@ -3,7 +3,6 @@ import type { ParserOptions } from '@typescript-eslint/types';
 import type { Parser } from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
 
-import { defaultParseSettings } from './config';
 import type {
   ParseSettings,
   PlaygroundSystem,
@@ -11,15 +10,17 @@ import type {
   WebLinterModule,
 } from './types';
 
+import { defaultParseSettings } from './config';
+
 export function createParser(
   system: PlaygroundSystem,
   compilerOptions: ts.CompilerOptions,
   onUpdate: (filename: string, model: UpdateModel) => void,
   utils: WebLinterModule,
   vfs: typeof tsvfs,
-): Parser.ParserModule & {
+): {
   updateConfig: (compilerOptions: ts.CompilerOptions) => void;
-} {
+} & Parser.ParserModule {
   const registeredFiles = new Set<string>();
 
   const createEnv = (
@@ -27,7 +28,7 @@ export function createParser(
   ): tsvfs.VirtualTypeScriptEnvironment => {
     return vfs.createVirtualTypeScriptEnvironment(
       system,
-      Array.from(registeredFiles),
+      [...registeredFiles],
       window.ts,
       compilerOptions,
     );
@@ -36,9 +37,6 @@ export function createParser(
   let compilerHost = createEnv(compilerOptions);
 
   return {
-    updateConfig(compilerOptions): void {
-      compilerHost = createEnv(compilerOptions);
-    },
     parseForESLint: (
       text: string,
       options: ParserOptions = {},
@@ -57,9 +55,9 @@ export function createParser(
 
       const parseSettings: ParseSettings = {
         ...defaultParseSettings,
-        code: code,
+        code,
         codeFullText: code,
-        filePath: filePath,
+        filePath,
       };
 
       const program = compilerHost.languageService.getProgram();
@@ -67,6 +65,7 @@ export function createParser(
         throw new Error('Failed to get program');
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const tsAst = program.getSourceFile(filePath)!;
 
       const converted = utils.astConverter(tsAst, parseSettings, true);
@@ -77,20 +76,23 @@ export function createParser(
       });
 
       const checker = program.getTypeChecker();
+      const compilerOptions = program.getCompilerOptions();
 
       onUpdate(filePath, {
         storedAST: converted.estree,
-        storedTsAST: tsAst,
         storedScope: scopeManager,
+        storedTsAST: tsAst,
         typeChecker: checker,
       });
 
       return {
         ast: converted.estree,
+        scopeManager,
         services: {
-          program,
+          emitDecoratorMetadata: compilerOptions.emitDecoratorMetadata ?? false,
           esTreeNodeToTSNodeMap: converted.astMaps.esTreeNodeToTSNodeMap,
-          tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
+          experimentalDecorators:
+            compilerOptions.experimentalDecorators ?? false,
           getSymbolAtLocation: node =>
             checker.getSymbolAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
@@ -99,10 +101,14 @@ export function createParser(
             checker.getTypeAtLocation(
               converted.astMaps.esTreeNodeToTSNodeMap.get(node),
             ),
+          program,
+          tsNodeToESTreeNodeMap: converted.astMaps.tsNodeToESTreeNodeMap,
         },
-        scopeManager,
         visitorKeys: utils.visitorKeys,
       };
+    },
+    updateConfig(compilerOptions): void {
+      compilerHost = createEnv(compilerOptions);
     },
   };
 }

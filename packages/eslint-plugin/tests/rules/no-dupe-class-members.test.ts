@@ -2,9 +2,7 @@ import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-dupe-class-members';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-dupe-class-members', rule, {
   valid: [
@@ -91,7 +89,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -102,7 +100,7 @@ class A {
 };
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -113,7 +111,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -124,7 +122,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: '10' } },
+        { column: 3, data: { name: '10' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -136,8 +134,8 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
-        { line: 5, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
+        { column: 3, data: { name: 'foo' }, line: 5, messageId: 'unexpected' },
       ],
     },
     {
@@ -148,7 +146,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -159,7 +157,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -170,7 +168,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -181,7 +179,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
     {
@@ -192,7 +190,7 @@ class A {
 }
       `,
       errors: [
-        { line: 4, column: 3, messageId: 'unexpected', data: { name: 'foo' } },
+        { column: 3, data: { name: 'foo' }, line: 4, messageId: 'unexpected' },
       ],
     },
   ],

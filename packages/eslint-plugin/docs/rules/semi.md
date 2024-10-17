@@ -1,12 +1,15 @@
 ---
-description: 'Require or disallow semicolons instead of ASI.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/semi** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/semi`](https://eslint.org/docs/rules/semi) rule.
-It adds support for TypeScript features that require semicolons.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-See also the [`@typescript-eslint/member-delimiter-style`](member-delimiter-style.md) rule, which allows you to specify the delimiter for `type` and `interface` members.
+:::
+
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
+
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

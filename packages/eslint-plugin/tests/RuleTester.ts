@@ -2,7 +2,8 @@ import type {
   InvalidTestCase,
   ValidTestCase,
 } from '@typescript-eslint/rule-tester';
-import * as path from 'path';
+
+import * as path from 'node:path';
 
 export function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');
@@ -18,9 +19,9 @@ export function getFixturesRootDir(): string {
  *
  * @deprecated - DO NOT USE THIS FOR NEW RULES
  */
-export function batchedSingleLineTests<TOptions extends readonly unknown[]>(
-  test: ValidTestCase<TOptions>,
-): ValidTestCase<TOptions>[];
+export function batchedSingleLineTests<Options extends readonly unknown[]>(
+  test: ValidTestCase<Options>,
+): ValidTestCase<Options>[];
 /**
  * Converts a batch of single line tests into a number of separate test cases.
  * This makes it easier to write tests which use the same options.
@@ -35,17 +36,21 @@ export function batchedSingleLineTests<TOptions extends readonly unknown[]>(
  * @deprecated - DO NOT USE THIS FOR NEW RULES
  */
 export function batchedSingleLineTests<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  test: InvalidTestCase<TMessageIds, TOptions>,
-): InvalidTestCase<TMessageIds, TOptions>[];
+  test: InvalidTestCase<MessageIds, Options>,
+): InvalidTestCase<MessageIds, Options>[];
 export function batchedSingleLineTests<
-  TMessageIds extends string,
-  TOptions extends readonly unknown[],
+  MessageIds extends string,
+  Options extends readonly unknown[],
 >(
-  options: InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions>,
-): (InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions>)[] {
+  options:
+    | ({
+        output?: string | null;
+      } & Omit<InvalidTestCase<MessageIds, Options>, 'output'>)
+    | ValidTestCase<Options>,
+): (InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>)[] {
   // -- eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;
   const output =

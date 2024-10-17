@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-misused-new.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare class C {
+  new(): C;
+  ~~~~~~~~~ Class cannot have method named \`new\`.
+}
+
+interface I {
+  new (): I;
+  ~~~~~~~~~~ Interfaces cannot be constructed, only classes.
+  constructor(): void;
+  ~~~~~~~~~~~~~~~~~~~~ Interfaces cannot be constructed, only classes.
+}
+"
+`;
+
+exports[`Validating rule docs no-misused-new.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare class C {
+  constructor();
+}
+
+interface I {
+  new (): C;
+}
+"
+`;

@@ -38,7 +38,7 @@ describe('deepMerge', () => {
       },
     };
 
-    expect(ESLintUtils.deepMerge(a, b)).toStrictEqual(Object.assign({}, a, b));
+    expect(ESLintUtils.deepMerge(a, b)).toStrictEqual({ ...a, ...b });
   });
 
   it('deeply overwrites properties in the first one with the second', () => {

@@ -1,49 +1,54 @@
+import * as path from 'node:path';
+
 import debug from 'debug';
-import * as fs from 'fs';
-import * as path from 'path';
 import * as ts from 'typescript';
 
+import type { ParseSettings } from '../parseSettings';
+import { getParsedConfigFile } from './getParsedConfigFile';
 import type { ASTAndDefiniteProgram } from './shared';
-import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
+import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 
-export interface ProvidedProgramsSettings {
-  filePath: string;
-  tsconfigRootDir: string;
-}
-
 function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,
-  { filePath, tsconfigRootDir }: ProvidedProgramsSettings,
+  parseSettings: ParseSettings,
 ): ASTAndDefiniteProgram | undefined {
-  log('Retrieving ast for %s from provided program instance(s)', filePath);
+  log(
+    'Retrieving ast for %s from provided program instance(s)',
+    parseSettings.filePath,
+  );
 
   let astAndProgram: ASTAndDefiniteProgram | undefined;
   for (const programInstance of programInstances) {
-    astAndProgram = getAstFromProgram(programInstance, filePath);
+    astAndProgram = getAstFromProgram(programInstance, parseSettings.filePath);
     // Stop at the first applicable program instance
     if (astAndProgram) {
       break;
     }
   }
 
-  if (!astAndProgram) {
-    const relativeFilePath = path.relative(
-      tsconfigRootDir || process.cwd(),
-      filePath,
-    );
-    const errorLines = [
-      '"parserOptions.programs" has been provided for @typescript-eslint/parser.',
-      `The file was not found in any of the provided program instance(s): ${relativeFilePath}`,
-    ];
-
-    throw new Error(errorLines.join('\n'));
+  if (astAndProgram) {
+    astAndProgram.program.getTypeChecker(); // ensure parent pointers are set in source files
+    return astAndProgram;
   }
 
-  astAndProgram.program.getTypeChecker(); // ensure parent pointers are set in source files
+  const relativeFilePath = path.relative(
+    parseSettings.tsconfigRootDir,
+    parseSettings.filePath,
+  );
 
-  return astAndProgram;
+  const [typeSource, typeSources] =
+    parseSettings.projects.size > 0
+      ? ['project', 'project(s)']
+      : ['programs', 'program instance(s)'];
+
+  const errorLines = [
+    `"parserOptions.${typeSource}" has been provided for @typescript-eslint/parser.`,
+    `The file was not found in any of the provided ${typeSources}: ${relativeFilePath}`,
+  ];
+
+  throw new Error(errorLines.join('\n'));
 }
 
 /**
@@ -56,42 +61,9 @@ function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.Program {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (ts.sys === undefined) {
-    throw new Error(
-      '`createProgramFromConfigFile` is only supported in a Node-like environment.',
-    );
-  }
-
-  const parsed = ts.getParsedCommandLineOfConfigFile(
-    configFile,
-    CORE_COMPILER_OPTIONS,
-    {
-      onUnRecoverableConfigFileDiagnostic: diag => {
-        throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
-      },
-      fileExists: fs.existsSync,
-      getCurrentDirectory: () =>
-        (projectDirectory && path.resolve(projectDirectory)) || process.cwd(),
-      readDirectory: ts.sys.readDirectory,
-      readFile: file => fs.readFileSync(file, 'utf-8'),
-      useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
-    },
-  );
-  const result = parsed!; // parsed is not undefined, since we throw on failure.
-  if (result.errors.length) {
-    throw new Error(formatDiagnostics(result.errors));
-  }
-  const host = ts.createCompilerHost(result.options, true);
-  return ts.createProgram(result.fileNames, result.options, host);
-}
-
-function formatDiagnostics(diagnostics: ts.Diagnostic[]): string | undefined {
-  return ts.formatDiagnostics(diagnostics, {
-    getCanonicalFileName: f => f,
-    getCurrentDirectory: process.cwd,
-    getNewLine: () => '\n',
-  });
+  const parsed = getParsedConfigFile(ts, configFile, projectDirectory);
+  const host = ts.createCompilerHost(parsed.options, true);
+  return ts.createProgram(parsed.fileNames, parsed.options, host);
 }
 
 export { useProvidedPrograms, createProgramFromConfigFile };

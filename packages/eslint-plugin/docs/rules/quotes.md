@@ -1,10 +1,15 @@
 ---
-description: 'Enforce the consistent use of either backticks, double, or single quotes.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/quotes** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/quotes`](https://eslint.org/docs/rules/quotes) rule.
-It adds support for TypeScript features which allow quoted names, but not backtick quoted names.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
+
+:::
+
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
+
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

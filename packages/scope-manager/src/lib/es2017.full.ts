@@ -1,9 +1,10 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { dom } from './dom';
 import { dom_iterable } from './dom.iterable';
 import { es2017 } from './es2017';

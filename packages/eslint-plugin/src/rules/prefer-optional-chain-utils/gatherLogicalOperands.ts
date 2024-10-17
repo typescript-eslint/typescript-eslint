@@ -2,6 +2,8 @@ import type {
   ParserServicesWithTypeInformation,
   TSESTree,
 } from '@typescript-eslint/utils';
+import type { SourceCode } from '@typescript-eslint/utils/ts-eslint';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import {
   isBigIntLiteralType,
@@ -12,8 +14,9 @@ import {
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
+
+import { isReferenceToGlobalFunction, isTypeFlagSet } from '../../util';
 
 const enum ComparisonValueType {
   Null = 'Null', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
@@ -46,32 +49,29 @@ export const enum NullishComparisonType {
   Boolean = 'Boolean', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
 }
 export interface ValidOperand {
-  type: OperandValidity.Valid;
   comparedName: TSESTree.Node;
   comparisonType: NullishComparisonType;
   isYoda: boolean;
   node: TSESTree.Expression;
+  type: OperandValidity.Valid;
 }
 export interface InvalidOperand {
   type: OperandValidity.Invalid;
 }
-type Operand = ValidOperand | InvalidOperand;
+type Operand = InvalidOperand | ValidOperand;
 
 const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
-  operator: TSESTree.LogicalExpression['operator'],
-  checkType: 'true' | 'false',
+  disallowFalseyLiteral: boolean,
   parserServices: ParserServicesWithTypeInformation,
   options: PreferOptionalChainOptions,
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  const disallowFalseyLiteral =
-    (operator === '||' && checkType === 'false') ||
-    (operator === '&&' && checkType === 'true');
-  if (disallowFalseyLiteral) {
+  if (
+    disallowFalseyLiteral &&
     /*
     ```
     declare const x: false | {a: string};
@@ -82,19 +82,14 @@ function isValidFalseBooleanCheckType(
     We don't want to consider these two cases because the boolean expression
     narrows out the non-nullish falsy cases - so converting the chain to `x?.a`
     would introduce a build error
-    */
-    if (
-      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
+    */ (types.some(
+      t => isBooleanLiteralType(t) && t.intrinsicName === 'false',
+    ) ||
       types.some(t => isStringLiteralType(t) && t.value === '') ||
       types.some(t => isNumberLiteralType(t) && t.value === 0) ||
-      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
-    ) {
-      return false;
-    }
-  }
-
-  if (options.requireNullish === true) {
-    return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
+      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0'))
+  ) {
+    return false;
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
@@ -122,15 +117,17 @@ function isValidFalseBooleanCheckType(
 export function gatherLogicalOperands(
   node: TSESTree.LogicalExpression,
   parserServices: ParserServicesWithTypeInformation,
+  sourceCode: Readonly<SourceCode>,
   options: PreferOptionalChainOptions,
 ): {
-  operands: Operand[];
   newlySeenLogicals: Set<TSESTree.LogicalExpression>;
+  operands: Operand[];
 } {
   const result: Operand[] = [];
-  const { operands, newlySeenLogicals } = flattenLogicalOperands(node);
+  const { newlySeenLogicals, operands } = flattenLogicalOperands(node);
 
   for (const operand of operands) {
+    const areMoreOperands = operand !== operands.at(-1);
     switch (operand.type) {
       case AST_NODE_TYPES.BinaryExpression: {
         // check for "yoda" style logical: null != x
@@ -157,15 +154,25 @@ export function gatherLogicalOperands(
             comparedExpression.type === AST_NODE_TYPES.UnaryExpression &&
             comparedExpression.operator === 'typeof'
           ) {
-            // typeof x === 'undefined'
+            const argument = comparedExpression.argument;
+            if (
+              argument.type === AST_NODE_TYPES.Identifier &&
+              // typeof window === 'undefined'
+              isReferenceToGlobalFunction(argument.name, argument, sourceCode)
+            ) {
+              result.push({ type: OperandValidity.Invalid });
+              continue;
+            }
+
+            // typeof x.y === 'undefined'
             result.push({
-              type: OperandValidity.Valid,
               comparedName: comparedExpression.argument,
               comparisonType: operand.operator.startsWith('!')
                 ? NullishComparisonType.NotStrictEqualUndefined
                 : NullishComparisonType.StrictEqualUndefined,
               isYoda,
               node: operand,
+              type: OperandValidity.Valid,
             });
             continue;
           }
@@ -184,13 +191,13 @@ export function gatherLogicalOperands(
             ) {
               // x == null, x == undefined
               result.push({
-                type: OperandValidity.Valid,
                 comparedName: comparedExpression,
                 comparisonType: operand.operator.startsWith('!')
                   ? NullishComparisonType.NotEqualNullOrUndefined
                   : NullishComparisonType.EqualNullOrUndefined,
                 isYoda,
                 node: operand,
+                type: OperandValidity.Valid,
               });
               continue;
             }
@@ -204,25 +211,25 @@ export function gatherLogicalOperands(
             switch (comparedValue) {
               case ComparisonValueType.Null:
                 result.push({
-                  type: OperandValidity.Valid,
                   comparedName,
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualNull
                     : NullishComparisonType.StrictEqualNull,
                   isYoda,
                   node: operand,
+                  type: OperandValidity.Valid,
                 });
                 continue;
 
               case ComparisonValueType.Undefined:
                 result.push({
-                  type: OperandValidity.Valid,
                   comparedName,
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualUndefined
                     : NullishComparisonType.StrictEqualUndefined,
                   isYoda,
                   node: operand,
+                  type: OperandValidity.Valid,
                 });
                 continue;
 
@@ -243,18 +250,17 @@ export function gatherLogicalOperands(
           operand.operator === '!' &&
           isValidFalseBooleanCheckType(
             operand.argument,
-            node.operator,
-            'false',
+            areMoreOperands && node.operator === '||',
             parserServices,
             options,
           )
         ) {
           result.push({
-            type: OperandValidity.Valid,
             comparedName: operand.argument,
             comparisonType: NullishComparisonType.NotBoolean,
             isYoda: false,
             node: operand,
+            type: OperandValidity.Valid,
           });
           continue;
         }
@@ -270,18 +276,17 @@ export function gatherLogicalOperands(
         if (
           isValidFalseBooleanCheckType(
             operand,
-            node.operator,
-            'true',
+            areMoreOperands && node.operator === '&&',
             parserServices,
             options,
           )
         ) {
           result.push({
-            type: OperandValidity.Valid,
             comparedName: operand,
             comparisonType: NullishComparisonType.Boolean,
             isYoda: false,
             node: operand,
+            type: OperandValidity.Valid,
           });
         } else {
           result.push({ type: OperandValidity.Invalid });
@@ -291,8 +296,8 @@ export function gatherLogicalOperands(
   }
 
   return {
-    operands: result,
     newlySeenLogicals,
+    operands: result,
   };
 
   /*
@@ -317,8 +322,8 @@ export function gatherLogicalOperands(
   like `foo || foo.bar && foo.bar.baz` - separate selector
   */
   function flattenLogicalOperands(node: TSESTree.LogicalExpression): {
-    operands: TSESTree.Expression[];
     newlySeenLogicals: Set<TSESTree.LogicalExpression>;
+    operands: TSESTree.Expression[];
   } {
     const operands: TSESTree.Expression[] = [];
     const newlySeenLogicals = new Set<TSESTree.LogicalExpression>([node]);
@@ -339,8 +344,8 @@ export function gatherLogicalOperands(
     }
 
     return {
-      operands,
       newlySeenLogicals,
+      operands,
     };
   }
 

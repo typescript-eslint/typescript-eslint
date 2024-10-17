@@ -1,8 +1,8 @@
 import type { Definition } from '@typescript-eslint/scope-manager';
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
@@ -39,13 +39,13 @@ export default createRule({
         'Disallow non-null assertions in the left operand of a nullish coalescing operator',
       recommended: 'strict',
     },
+    hasSuggestions: true,
     messages: {
       noNonNullAssertedNullishCoalescing:
         'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
       suggestRemovingNonNull: 'Remove the non-null assertion.',
     },
     schema: [],
-    hasSuggestions: true,
   },
   defaultOptions: [],
   create(context) {
@@ -54,15 +54,13 @@ export default createRule({
         node: TSESTree.TSNonNullExpression,
       ): void {
         if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
-          const scope = getScope(context);
+          const scope = context.sourceCode.getScope(node);
           const identifier = node.expression;
           const variable = ASTUtils.findVariable(scope, identifier.name);
           if (variable && !hasAssignmentBeforeNode(variable, node)) {
             return;
           }
         }
-
-        const sourceCode = getSourceCode(context);
 
         context.report({
           node,
@@ -85,7 +83,7 @@ export default createRule({
               messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
                 const exclamationMark = nullThrows(
-                  sourceCode.getLastToken(
+                  context.sourceCode.getLastToken(
                     node,
                     ASTUtils.isNonNullAssertionPunctuator,
                   ),

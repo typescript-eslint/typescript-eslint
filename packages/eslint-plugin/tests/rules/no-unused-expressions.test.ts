@@ -1,22 +1,22 @@
+import type { TestCaseError } from '@typescript-eslint/rule-tester';
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-unused-expressions';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: 'module',
-    ecmaFeatures: {},
+  languageOptions: {
+    parserOptions: {
+      ecmaVersion: 6,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
-type TestCaseError = Omit<TSESLint.TestCaseError<string>, 'messageId'>;
+type RuleTestCaseError = Omit<TestCaseError<string>, 'messageId'>;
 
 // the base rule doesn't have messageIds
 function error(
-  messages: TestCaseError[],
+  messages: RuleTestCaseError[],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[] {
   return messages.map(message => ({
@@ -96,8 +96,8 @@ if (0) 0;
       `,
       errors: error([
         {
-          line: 2,
           column: 8,
+          line: 2,
         },
       ]),
     },
@@ -107,8 +107,8 @@ f(0), {};
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -118,8 +118,8 @@ a, b();
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -132,8 +132,8 @@ a() &&
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -143,8 +143,8 @@ a?.b;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -154,8 +154,8 @@ a?.b;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -165,8 +165,8 @@ a?.['b'];
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -176,8 +176,8 @@ a?.['b'];
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -187,8 +187,8 @@ a?.b()?.c;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -198,8 +198,8 @@ a?.b()?.c;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -209,8 +209,8 @@ one[2]?.[3][4];
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -220,8 +220,8 @@ one.two?.three.four;
       `,
       errors: error([
         {
-          line: 2,
           column: 1,
+          line: 2,
         },
       ]),
     },
@@ -234,10 +234,10 @@ module Foo {
       `,
       errors: error([
         {
-          line: 4,
-          endLine: 4,
           column: 3,
           endColumn: 16,
+          endLine: 4,
+          line: 4,
         },
       ]),
     },
@@ -252,10 +252,10 @@ namespace Foo {
       `,
       errors: error([
         {
-          line: 6,
-          endLine: 6,
           column: 3,
           endColumn: 16,
+          endLine: 6,
+          line: 6,
         },
       ]),
     },
@@ -269,48 +269,48 @@ function foo() {
       `,
       errors: error([
         {
-          line: 5,
-          endLine: 5,
           column: 3,
           endColumn: 16,
+          endLine: 5,
+          line: 5,
         },
       ]),
     },
     {
       code: 'foo && foo?.bar;',
-      options: [{ allowShortCircuit: true }],
       errors: error([
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 17,
+          endLine: 1,
+          line: 1,
         },
       ]),
+      options: [{ allowShortCircuit: true }],
     },
     {
       code: 'foo ? foo?.bar : bar.baz;',
-      options: [{ allowTernary: true }],
       errors: error([
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 26,
+          endLine: 1,
+          line: 1,
         },
       ]),
+      options: [{ allowTernary: true }],
     },
     {
-      code: noFormat`
+      code: `
 class Foo<T> {}
 Foo<string>;
       `,
       errors: error([
         {
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 13,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },
@@ -318,10 +318,66 @@ Foo<string>;
       code: 'Map<string, string>;',
       errors: error([
         {
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo;
+      `,
+      errors: error([
+        {
+          column: 1,
+          endColumn: 5,
+          endLine: 3,
+          line: 3,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo as any;
+      `,
+      errors: error([
+        {
+          column: 1,
+          endColumn: 12,
+          endLine: 3,
+          line: 3,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+<any>foo;
+      `,
+      errors: error([
+        {
+          column: 1,
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
+        },
+      ]),
+    },
+    {
+      code: `
+declare const foo: number | undefined;
+foo!;
+      `,
+      errors: error([
+        {
+          column: 1,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
         },
       ]),
     },

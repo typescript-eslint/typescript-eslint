@@ -1,6 +1,6 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
+
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import * as ts from 'typescript';
 
 import {
@@ -13,37 +13,20 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
 const removeFunctionRule = createRule({
-  name: 'remove-function',
-  defaultOptions: [],
-  meta: {
-    type: 'suggestion',
-    fixable: 'code',
-    docs: {
-      description:
-        'Remove function with first arg remaining in random places for test purposes.',
-    },
-    messages: {
-      removeFunction: 'Please remove this function',
-    },
-    schema: [],
-  },
-
   create(context) {
-    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context, true);
 
     const report = (node: TSESTree.CallExpression): void => {
       context.report({
-        node,
-        messageId: 'removeFunction',
         fix: fixer => {
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
           const tsArgumentNode = tsNode.arguments[0];
@@ -61,12 +44,14 @@ const removeFunctionRule = createRule({
               : ts.SyntaxKind.Unknown,
           );
 
-          const text = sourceCode.getText(node.arguments[0]);
+          const text = context.sourceCode.getText(node.arguments[0]);
           return fixer.replaceText(
             node,
             getWrappedCode(text, nodePrecedence, parentPrecedence),
           );
         },
+        messageId: 'removeFunction',
+        node,
       });
     };
 
@@ -74,10 +59,24 @@ const removeFunctionRule = createRule({
       'CallExpression[callee.name="fn"]': report,
     };
   },
+  defaultOptions: [],
+  meta: {
+    docs: {
+      description:
+        'Remove function with first arg remaining in random places for test purposes.',
+    },
+    fixable: 'code',
+    messages: {
+      removeFunction: 'Please remove this function',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+
+  name: 'remove-function',
 });
 
 ruleTester.run('getWrappedCode - removeFunctionRule', removeFunctionRule, {
-  valid: [],
   invalid: [
     // should add parens when the first argument node has lower precedence than the parent node of the CallExpression
     {
@@ -93,4 +92,5 @@ ruleTester.run('getWrappedCode - removeFunctionRule', removeFunctionRule, {
       output: 'const a = { x: "wrapObject" }',
     },
   ],
+  valid: [],
 });

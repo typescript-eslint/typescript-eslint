@@ -1,9 +1,10 @@
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
+import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
 const SENTINEL_TYPE =
   /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
@@ -33,13 +34,13 @@ function parseOptions(options: Config | string | null): Required<Config> {
   }
 
   return {
-    functions,
+    allowNamedExports,
     classes,
     enums,
-    variables,
-    typedefs,
+    functions,
     ignoreTypeReferences,
-    allowNamedExports,
+    typedefs,
+    variables,
   };
 }
 
@@ -105,24 +106,6 @@ function isNamedExports(reference: TSESLint.Scope.Reference): boolean {
     identifier.parent.type === AST_NODE_TYPES.ExportSpecifier &&
     identifier.parent.local === identifier
   );
-}
-
-/**
- * Recursively checks whether or not a given reference has a type query declaration among it's parents
- */
-function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
-  switch (node.type) {
-    case AST_NODE_TYPES.TSTypeQuery:
-      return true;
-
-    case AST_NODE_TYPES.TSQualifiedName:
-    case AST_NODE_TYPES.Identifier:
-      return referenceContainsTypeQuery(node.parent);
-
-    default:
-      // if we find a different node, there's no chance that we're in a TSTypeQuery
-      return false;
-  }
 }
 
 /**
@@ -199,8 +182,8 @@ function isInInitializer(
         return true;
       }
       if (
-        (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
-          node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
+        (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+          node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
         isInRange(node.parent.parent.right, location)
       ) {
         return true;
@@ -221,15 +204,15 @@ function isInInitializer(
 }
 
 interface Config {
-  functions?: boolean;
+  allowNamedExports?: boolean;
   classes?: boolean;
   enums?: boolean;
-  variables?: boolean;
-  typedefs?: boolean;
+  functions?: boolean;
   ignoreTypeReferences?: boolean;
-  allowNamedExports?: boolean;
+  typedefs?: boolean;
+  variables?: boolean;
 }
-type Options = [Config | 'nofunc'];
+type Options = ['nofunc' | Config];
 type MessageIds = 'noUseBeforeDefine';
 
 export default createRule<Options, MessageIds>({
@@ -252,16 +235,40 @@ export default createRule<Options, MessageIds>({
           },
           {
             type: 'object',
-            properties: {
-              functions: { type: 'boolean' },
-              classes: { type: 'boolean' },
-              enums: { type: 'boolean' },
-              variables: { type: 'boolean' },
-              typedefs: { type: 'boolean' },
-              ignoreTypeReferences: { type: 'boolean' },
-              allowNamedExports: { type: 'boolean' },
-            },
             additionalProperties: false,
+            properties: {
+              allowNamedExports: {
+                type: 'boolean',
+                description: 'Whether to ignore named exports.',
+              },
+              classes: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore references to class declarations.',
+              },
+              enums: {
+                type: 'boolean',
+                description: 'Whether to check references to enums.',
+              },
+              functions: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore references to function declarations.',
+              },
+              ignoreTypeReferences: {
+                type: 'boolean',
+                description:
+                  'Whether to ignore type references, such as in type annotations and assertions.',
+              },
+              typedefs: {
+                type: 'boolean',
+                description: 'Whether to check references to types.',
+              },
+              variables: {
+                type: 'boolean',
+                description: 'Whether to ignore references to variables.',
+              },
+            },
           },
         ],
       },
@@ -269,13 +276,13 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      functions: true,
+      allowNamedExports: false,
       classes: true,
       enums: true,
-      variables: true,
-      typedefs: true,
+      functions: true,
       ignoreTypeReferences: true,
-      allowNamedExports: false,
+      typedefs: true,
+      variables: true,
     },
   ],
   create(context, optionsWithDefault) {
@@ -318,7 +325,7 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return (
         variable.identifiers[0].range[1] <= reference.identifier.range[1] &&
-        !isInInitializer(variable, reference)
+        !(reference.isValueReference && isInInitializer(variable, reference))
       );
     }
 
@@ -378,8 +385,8 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      Program(): void {
-        findVariablesInScope(getScope(context));
+      Program(node): void {
+        findVariablesInScope(context.sourceCode.getScope(node));
       },
     };
   },

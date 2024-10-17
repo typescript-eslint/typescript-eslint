@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -9,6 +9,8 @@ import {
   getFunctionHeadLoc,
   getParserServices,
   isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 
 type Options = [
@@ -27,46 +29,51 @@ export default createRule<Options, MessageIds>({
   name: 'promise-function-async',
   meta: {
     type: 'suggestion',
-    fixable: 'code',
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       missingAsync: 'Functions that return promises must be async.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowAny: {
+            type: 'boolean',
             description:
               'Whether to consider `any` and `unknown` to be Promises.',
-            type: 'boolean',
           },
           allowedPromiseNames: {
+            type: 'array',
             description:
               'Any extra names of classes or interfaces to be considered Promises.',
-            type: 'array',
             items: {
               type: 'string',
             },
           },
           checkArrowFunctions: {
             type: 'boolean',
+            description: 'Whether to check arrow functions.',
           },
           checkFunctionDeclarations: {
             type: 'boolean',
+            description: 'Whether to check standalone function declarations.',
           },
           checkFunctionExpressions: {
             type: 'boolean',
+            description: 'Whether to check inline function expressions',
           },
           checkMethodDeclarations: {
             type: 'boolean',
+            description:
+              'Whether to check methods on classes and object literals.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -95,11 +102,12 @@ export default createRule<Options, MessageIds>({
   ) {
     const allAllowedPromiseNames = new Set([
       'Promise',
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ...allowedPromiseNames!,
     ]);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = getSourceCode(context);
 
     function validateNode(
       node:
@@ -116,6 +124,7 @@ export default createRule<Options, MessageIds>({
       if (
         !containsAllTypesByName(
           returnType,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           allowAny!,
           allAllowedPromiseNames,
           // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
@@ -143,16 +152,16 @@ export default createRule<Options, MessageIds>({
       if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         // Report without auto fixer because the return type is unknown
         return context.report({
-          messageId: 'missingAsync',
+          loc: getFunctionHeadLoc(node, context.sourceCode),
           node,
-          loc: getFunctionHeadLoc(node, sourceCode),
+          messageId: 'missingAsync',
         });
       }
 
       context.report({
-        messageId: 'missingAsync',
+        loc: getFunctionHeadLoc(node, context.sourceCode),
         node,
-        loc: getFunctionHeadLoc(node, sourceCode),
+        messageId: 'missingAsync',
         fix: fixer => {
           if (
             node.parent.type === AST_NODE_TYPES.MethodDefinition ||
@@ -162,7 +171,10 @@ export default createRule<Options, MessageIds>({
             const method = node.parent;
 
             // the token to put `async` before
-            let keyToken = sourceCode.getFirstToken(method)!;
+            let keyToken = nullThrows(
+              context.sourceCode.getFirstToken(method),
+              NullThrowsReasons.MissingToken('key token', 'method'),
+            );
 
             // if there are decorators then skip past them
             if (
@@ -171,7 +183,10 @@ export default createRule<Options, MessageIds>({
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
-              keyToken = sourceCode.getTokenAfter(lastDecorator)!;
+              keyToken = nullThrows(
+                context.sourceCode.getTokenAfter(lastDecorator),
+                NullThrowsReasons.MissingToken('key token', 'last decorator'),
+              );
             }
 
             // if current token is a keyword like `static` or `public` then skip it
@@ -179,12 +194,18 @@ export default createRule<Options, MessageIds>({
               keyToken.type === AST_TOKEN_TYPES.Keyword &&
               keyToken.range[0] < method.key.range[0]
             ) {
-              keyToken = sourceCode.getTokenAfter(keyToken)!;
+              keyToken = nullThrows(
+                context.sourceCode.getTokenAfter(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              );
             }
 
             // check if there is a space between key and previous token
-            const insertSpace = !sourceCode.isSpaceBetween!(
-              sourceCode.getTokenBefore(keyToken)!,
+            const insertSpace = !context.sourceCode.isSpaceBetween(
+              nullThrows(
+                context.sourceCode.getTokenBefore(keyToken),
+                NullThrowsReasons.MissingToken('token', 'keyword'),
+              ),
               keyToken,
             );
 

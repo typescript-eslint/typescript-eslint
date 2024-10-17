@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -22,8 +24,8 @@ export default createRule<Options, MessageIds>({
         'Disallow `this` keywords outside of classes or class-like objects',
       extendsBaseRule: true,
     },
-    messages: baseRule.meta.messages,
     hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
   defaultOptions: [{ capIsConstructor: true }],
@@ -48,10 +50,10 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      PropertyDefinition(): void {
+      AccessorProperty(): void {
         thisIsValidStack.push(true);
       },
-      'PropertyDefinition:exit'(): void {
+      'AccessorProperty:exit'(): void {
         thisIsValidStack.pop();
       },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
@@ -61,13 +63,9 @@ export default createRule<Options, MessageIds>({
               param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
           ),
         );
-        // baseRule's work
-        rules.FunctionDeclaration?.(node);
       },
-      'FunctionDeclaration:exit'(node: TSESTree.FunctionDeclaration): void {
+      'FunctionDeclaration:exit'(): void {
         thisIsValidStack.pop();
-        // baseRule's work
-        rules['FunctionDeclaration:exit']?.(node);
       },
       FunctionExpression(node: TSESTree.FunctionExpression): void {
         thisIsValidStack.push(
@@ -76,13 +74,15 @@ export default createRule<Options, MessageIds>({
               param.type === AST_NODE_TYPES.Identifier && param.name === 'this',
           ),
         );
-        // baseRule's work
-        rules.FunctionExpression?.(node);
       },
-      'FunctionExpression:exit'(node: TSESTree.FunctionExpression): void {
+      'FunctionExpression:exit'(): void {
         thisIsValidStack.pop();
-        // baseRule's work
-        rules['FunctionExpression:exit']?.(node);
+      },
+      PropertyDefinition(): void {
+        thisIsValidStack.push(true);
+      },
+      'PropertyDefinition:exit'(): void {
+        thisIsValidStack.pop();
       },
       ThisExpression(node: TSESTree.ThisExpression): void {
         const thisIsValidHere = thisIsValidStack[thisIsValidStack.length - 1];

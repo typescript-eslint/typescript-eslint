@@ -1,34 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
+import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isStaticMemberAccessOfValue,
   isTypeAssertion,
 } from '../util';
 
-type MemberExpressionWithCallExpressionParent = TSESTree.MemberExpression & {
+type MemberExpressionWithCallExpressionParent = {
   parent: TSESTree.CallExpression;
-};
-
-const getMemberExpressionName = (
-  member: TSESTree.MemberExpression,
-): string | null => {
-  if (!member.computed) {
-    return member.property.name;
-  }
-
-  if (
-    member.property.type === AST_NODE_TYPES.Literal &&
-    typeof member.property.value === 'string'
-  ) {
-    return member.property.value;
-  }
-
-  return null;
-};
+} & TSESTree.MemberExpression;
 
 export default createRule({
   name: 'prefer-reduce-type-parameter',
@@ -40,11 +25,11 @@ export default createRule({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       preferTypeParameter:
         'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
     },
-    fixable: 'code',
     schema: [],
   },
   defaultOptions: [],
@@ -52,11 +37,21 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function isArrayType(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .every(unionPart =>
+          tsutils
+            .intersectionTypeParts(unionPart)
+            .every(t => checker.isArrayType(t) || checker.isTupleType(t)),
+        );
+    }
+
     return {
       'CallExpression > MemberExpression.callee'(
         callee: MemberExpressionWithCallExpressionParent,
       ): void {
-        if (getMemberExpressionName(callee) !== 'reduce') {
+        if (!isStaticMemberAccessOfValue(callee, context, 'reduce')) {
           return;
         }
 
@@ -73,10 +68,10 @@ export default createRule({
         );
 
         // Check the owner type of the `reduce` method.
-        if (checker.isArrayType(calleeObjType)) {
+        if (isArrayType(calleeObjType)) {
           context.report({
-            messageId: 'preferTypeParameter',
             node: secondArg,
+            messageId: 'preferTypeParameter',
             fix: fixer => {
               const fixes = [
                 fixer.removeRange([
@@ -93,9 +88,7 @@ export default createRule({
                 fixes.push(
                   fixer.insertTextAfter(
                     callee,
-                    `<${getSourceCode(context).getText(
-                      secondArg.typeAnnotation,
-                    )}>`,
+                    `<${context.sourceCode.getText(secondArg.typeAnnotation)}>`,
                   ),
                 );
               }

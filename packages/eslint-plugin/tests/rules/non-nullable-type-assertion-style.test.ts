@@ -4,12 +4,12 @@ import rule from '../../src/rules/non-nullable-type-assertion-style';
 import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: getFixturesRootDir(),
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('non-nullable-type-assertion-style', rule, {
@@ -245,15 +245,13 @@ const b = (a || undefined)!;
 });
 
 const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
-  parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
-    sourceType: 'module',
-    tsconfigRootDir: getFixturesRootDir(),
-    project: './tsconfig.noUncheckedIndexedAccess.json',
-  },
-  parser: '@typescript-eslint/parser',
-  dependencyConstraints: {
-    typescript: '4.1',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.noUncheckedIndexedAccess.json',
+      projectService: false,
+      sourceType: 'module',
+      tsconfigRootDir: getFixturesRootDir(),
+    },
   },
 });
 

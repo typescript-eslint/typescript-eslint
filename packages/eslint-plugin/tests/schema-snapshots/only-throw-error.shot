@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes only-throw-error 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowThrowingAny": {
+        "description": "Whether to always allow throwing values typed as \`any\`.",
+        "type": "boolean"
+      },
+      "allowThrowingUnknown": {
+        "description": "Whether to always allow throwing values typed as \`unknown\`.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to always allow throwing values typed as \`any\`. */
+    allowThrowingAny?: boolean;
+    /** Whether to always allow throwing values typed as \`unknown\`. */
+    allowThrowingUnknown?: boolean;
+  },
+];
+"
+`;

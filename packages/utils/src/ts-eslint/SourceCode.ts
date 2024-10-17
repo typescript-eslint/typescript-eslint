@@ -42,7 +42,7 @@ declare class TokenStore {
   /**
    * Gets the first token of the given node.
    * @param node The AST node.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getFirstToken<T extends SourceCode.CursorWithSkipOptions>(
@@ -53,7 +53,7 @@ declare class TokenStore {
    * Gets the first token between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getFirstTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
@@ -65,7 +65,6 @@ declare class TokenStore {
    * Gets the first `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getFirstTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -86,7 +85,7 @@ declare class TokenStore {
   /**
    * Gets the last token of the given node.
    * @param node The AST node.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getLastToken<T extends SourceCode.CursorWithSkipOptions>(
@@ -97,7 +96,7 @@ declare class TokenStore {
    * Gets the last token between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getLastTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
@@ -109,7 +108,6 @@ declare class TokenStore {
    * Gets the last `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getLastTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -130,7 +128,7 @@ declare class TokenStore {
   /**
    * Gets the token that follows a given node or token.
    * @param node The AST node or token.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getTokenAfter<T extends SourceCode.CursorWithSkipOptions>(
@@ -150,7 +148,7 @@ declare class TokenStore {
   /**
    * Gets the token starting at the specified index.
    * @param offset Index of the start of the token's range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns The token starting at index, or null if no such token.
    */
   getTokenByRangeStart<T extends { includeComments?: boolean }>(
@@ -183,7 +181,6 @@ declare class TokenStore {
    * Gets the `count` tokens that follows a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
@@ -193,7 +190,6 @@ declare class TokenStore {
    * Gets the `count` tokens that precedes a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
@@ -213,10 +209,10 @@ declare class TokenStore {
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class SourceCodeBase extends TokenStore {
   /**
    * Represents parsed source code.
-   * @param text The source code text.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
    */
   constructor(text: string, ast: SourceCode.Program);
@@ -230,6 +226,9 @@ declare class SourceCodeBase extends TokenStore {
    * The parsed AST for the source code.
    */
   ast: SourceCode.Program;
+  applyInlineConfig(): void;
+  applyLanguageOptions(): void;
+  finalize(): void;
   /**
    * Retrieves an array containing all comments in the source code.
    * @returns An array of comment nodes.
@@ -237,7 +236,7 @@ declare class SourceCodeBase extends TokenStore {
   getAllComments(): TSESTree.Comment[];
   /**
    * Converts a (line, column) pair into a range index.
-   * @param loc A line/column location
+   * @param location A line/column location
    * @returns The range index of the location in the file.
    */
   getIndexFromLoc(location: TSESTree.Position): number;
@@ -278,12 +277,11 @@ declare class SourceCodeBase extends TokenStore {
    * Determines if two nodes or tokens have at least one whitespace character
    * between them. Order does not matter. Returns false if the given nodes or
    * tokens overlap.
-   * @since 6.7.0
    * @param first The first node or token to check between.
    * @param second The second node or token to check between.
    * @returns True if there is a whitespace character between any of the tokens found between the two given nodes or tokens.
    */
-  isSpaceBetween?(
+  isSpaceBetween(
     first: TSESTree.Node | TSESTree.Token,
     second: TSESTree.Node | TSESTree.Token,
   ): boolean;
@@ -303,28 +301,24 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * Returns the scope of the given node.
    * This information can be used track references to variables.
-   * @since 8.37.0
    */
-  getScope?(node: TSESTree.Node): Scope.Scope;
+  getScope(node: TSESTree.Node): Scope.Scope;
   /**
    * Returns an array of the ancestors of the given node, starting at
    * the root of the AST and continuing through the direct parent of the current node.
    * This array does not include the currently-traversed node itself.
-   * @since 8.38.0
    */
-  getAncestors?(node: TSESTree.Node): TSESTree.Node[];
+  getAncestors(node: TSESTree.Node): TSESTree.Node[];
   /**
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
-   * @since 8.38.0
    */
-  getDeclaredVariables?(node: TSESTree.Node): readonly Scope.Variable[];
+  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
   /**
    * Marks a variable with the given name in the current scope as used.
    * This affects the no-unused-vars rule.
-   * @since 8.39.0
    */
-  markVariableAsUsed?(name: string, node: TSESTree.Node): boolean;
+  markVariableAsUsed(name: string, node: TSESTree.Node): boolean;
   /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.
@@ -337,7 +331,7 @@ declare class SourceCodeBase extends TokenStore {
   /**
    * The parser services of this source code.
    */
-  parserServices: ParserServices;
+  parserServices?: Partial<ParserServices>;
   /**
    * The scope of this source code.
    */
@@ -401,19 +395,18 @@ namespace SourceCode {
   export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
-  export type GetFilterPredicate<TFilter, TDefault> =
+  export type GetFilterPredicate<Filter, Default> =
     // https://github.com/prettier/prettier/issues/14275
     // prettier-ignore
-    TFilter extends ((
+    Filter extends ((
       token: TSESTree.Token,
     ) => token is infer U extends TSESTree.Token)
       ? U
-      : TDefault;
-  export type GetFilterPredicateFromOptions<TOptions, TDefault> =
-    TOptions extends { filter?: FilterPredicate }
-      ? GetFilterPredicate<TOptions['filter'], TDefault>
-      : GetFilterPredicate<TOptions, TDefault>;
-
+      : Default;
+  export type GetFilterPredicateFromOptions<Options, Default> =
+    Options extends { filter?: FilterPredicate }
+      ? GetFilterPredicate<Options['filter'], Default>
+      : GetFilterPredicate<Options, Default>;
   export type ReturnTypeFromOptions<T> = T extends { includeComments: true }
     ? GetFilterPredicateFromOptions<T, TSESTree.Token>
     : GetFilterPredicateFromOptions<
@@ -422,8 +415,6 @@ namespace SourceCode {
       >;
 
   export type CursorWithSkipOptions =
-    | FilterPredicate
-    | number
     | {
         /**
          * The predicate function to choose tokens.
@@ -437,12 +428,16 @@ namespace SourceCode {
          * The count of tokens the cursor skips.
          */
         skip?: number;
-      };
+      }
+    | FilterPredicate
+    | number;
 
   export type CursorWithCountOptions =
-    | FilterPredicate
-    | number
     | {
+        /**
+         * The maximum count of tokens the cursor iterates.
+         */
+        count?: number;
         /**
          * The predicate function to choose tokens.
          */
@@ -451,11 +446,9 @@ namespace SourceCode {
          * The flag to iterate comments as well.
          */
         includeComments?: boolean;
-        /**
-         * The maximum count of tokens the cursor iterates.
-         */
-        count?: number;
-      };
+      }
+    | FilterPredicate
+    | number;
 }
 
 class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}

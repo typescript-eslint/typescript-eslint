@@ -1,7 +1,9 @@
 import type { Lib, SourceType, TSESTree } from '@typescript-eslint/types';
+
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 import type { ReferencerOptions } from './referencer';
+
 import { Referencer } from './referencer';
 import { ScopeManager } from './ScopeManager';
 
@@ -57,22 +59,22 @@ interface AnalyzeOptions {
    */
   sourceType?: SourceType;
 
+  // TODO - remove this in v8
   /**
-   * Emit design-type metadata for decorated declarations in source.
-   * Defaults to `false`.
+   * @deprecated This option never did what it was intended for and will be removed in a future major release.
    */
   emitDecoratorMetadata?: boolean;
 }
 
 const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
   childVisitorKeys: visitorKeys,
+  emitDecoratorMetadata: false,
   globalReturn: false,
   impliedStrict: false,
-  jsxPragma: 'React',
   jsxFragmentName: null,
+  jsxPragma: 'React',
   lib: ['es2018'],
   sourceType: 'script',
-  emitDecoratorMetadata: false,
 };
 
 /**
@@ -85,20 +87,18 @@ function analyze(
   const options: Required<AnalyzeOptions> = {
     childVisitorKeys:
       providedOptions?.childVisitorKeys ?? DEFAULT_OPTIONS.childVisitorKeys,
+    emitDecoratorMetadata: false,
     globalReturn: providedOptions?.globalReturn ?? DEFAULT_OPTIONS.globalReturn,
     impliedStrict:
       providedOptions?.impliedStrict ?? DEFAULT_OPTIONS.impliedStrict,
+    jsxFragmentName:
+      providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     jsxPragma:
       providedOptions?.jsxPragma === undefined
         ? DEFAULT_OPTIONS.jsxPragma
         : providedOptions.jsxPragma,
-    jsxFragmentName:
-      providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
-    sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
     lib: providedOptions?.lib ?? ['esnext'],
-    emitDecoratorMetadata:
-      providedOptions?.emitDecoratorMetadata ??
-      DEFAULT_OPTIONS.emitDecoratorMetadata,
+    sourceType: providedOptions?.sourceType ?? DEFAULT_OPTIONS.sourceType,
   };
 
   // ensure the option is lower cased
@@ -112,4 +112,4 @@ function analyze(
   return scopeManager;
 }
 
-export { analyze, AnalyzeOptions };
+export { analyze, type AnalyzeOptions };

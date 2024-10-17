@@ -1,45 +1,48 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isBuiltinSymbolLike,
+  isReferenceToGlobalFunction,
+} from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
-const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
+const GLOBAL_CANDIDATES = new Set(['global', 'globalThis', 'window']);
 const EVAL_LIKE_METHODS = new Set([
+  'execScript',
   'setImmediate',
   'setInterval',
   'setTimeout',
-  'execScript',
 ]);
 
 export default createRule({
   name: 'no-implied-eval',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow the use of `eval()`-like methods',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
-      noImpliedEvalError: 'Implied eval. Consider passing a function.',
       noFunctionConstructor:
         'Implied eval. Do not use the Function constructor to create functions.',
+      noImpliedEvalError: 'Implied eval. Consider passing a function.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getCalleeName(
-      node: TSESTree.LeftHandSideExpression,
-    ): string | null {
+    function getCalleeName(node: TSESTree.Expression): string | null {
       if (node.type === AST_NODE_TYPES.Identifier) {
         return node.name;
       }
@@ -78,15 +81,8 @@ export default createRule({
         return true;
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (symbol && symbol.escapedName === FUNCTION_CONSTRUCTOR) {
-        const declarations = symbol.getDeclarations() ?? [];
-        for (const declaration of declarations) {
-          const sourceFile = declaration.getSourceFile();
-          if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
-            return true;
-          }
-        }
+      if (isBuiltinSymbolLike(services.program, type, FUNCTION_CONSTRUCTOR)) {
+        return true;
       }
 
       const signatures = checker.getSignaturesOfType(
@@ -122,15 +118,6 @@ export default createRule({
       }
     }
 
-    function isReferenceToGlobalFunction(calleeName: string): boolean {
-      const ref = getScope(context).references.find(
-        ref => ref.identifier.name === calleeName,
-      );
-
-      // ensure it's the "global" version
-      return !ref?.resolved || ref.resolved.defs.length === 0;
-    }
-
     function checkImpliedEval(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
@@ -143,13 +130,11 @@ export default createRule({
         const type = services.getTypeAtLocation(node.callee);
         const symbol = type.getSymbol();
         if (symbol) {
-          const declarations = symbol.getDeclarations() ?? [];
-          for (const declaration of declarations) {
-            const sourceFile = declaration.getSourceFile();
-            if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
-              context.report({ node, messageId: 'noFunctionConstructor' });
-              return;
-            }
+          if (
+            isBuiltinSymbolLike(services.program, type, 'FunctionConstructor')
+          ) {
+            context.report({ node, messageId: 'noFunctionConstructor' });
+            return;
           }
         } else {
           context.report({ node, messageId: 'noFunctionConstructor' });
@@ -165,15 +150,15 @@ export default createRule({
       if (
         EVAL_LIKE_METHODS.has(calleeName) &&
         !isFunction(handler) &&
-        isReferenceToGlobalFunction(calleeName)
+        isReferenceToGlobalFunction(calleeName, node, context.sourceCode)
       ) {
         context.report({ node: handler, messageId: 'noImpliedEvalError' });
       }
     }
 
     return {
-      NewExpression: checkImpliedEval,
       CallExpression: checkImpliedEval,
+      NewExpression: checkImpliedEval,
     };
   },
 });

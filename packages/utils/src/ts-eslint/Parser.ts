@@ -16,17 +16,42 @@ export namespace Parser {
     version?: string;
   }
 
-  export type ParserModule =
+  /**
+   * A loose definition of the ParserModule type for use with configs
+   * This type intended to relax validation of configs so that parsers that have
+   * different AST types or scope managers can still be passed to configs
+   *
+   * @see {@link LooseRuleDefinition}, {@link LooseProcessorModule}
+   */
+  export type LooseParserModule =
     | {
         /**
          * Information about the parser to uniquely identify it when serializing.
          */
-        meta?: ParserMeta;
+        meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
+        /**
+         * Parses the given text into an AST
+         */
+        parseForESLint(
+          text: string,
+          options?: unknown,
+        ): {
+          // intentionally not using a Record to preserve optionals
+          [k in keyof ParseResult]: unknown;
+        };
+      }
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: { [K in keyof ParserMeta]?: ParserMeta[K] | undefined };
         /**
          * Parses the given text into an ESTree AST
          */
-        parse(text: string, options?: ParserOptions): TSESTree.Program;
-      }
+        parse(text: string, options?: unknown): unknown;
+      };
+
+  export type ParserModule =
     | {
         /**
          * Information about the parser to uniquely identify it when serializing.
@@ -36,6 +61,16 @@ export namespace Parser {
          * Parses the given text into an AST
          */
         parseForESLint(text: string, options?: ParserOptions): ParseResult;
+      }
+    | {
+        /**
+         * Information about the parser to uniquely identify it when serializing.
+         */
+        meta?: ParserMeta;
+        /**
+         * Parses the given text into an ESTree AST
+         */
+        parse(text: string, options?: ParserOptions): TSESTree.Program;
       };
 
   export interface ParseResult {
@@ -44,17 +79,17 @@ export namespace Parser {
      */
     ast: TSESTree.Program;
     /**
-     * Any parser-dependent services (such as type checkers for nodes).
-     * The value of the services property is available to rules as `context.sourceCode.parserServices`.
-     * The default is an empty object.
-     */
-    services?: ParserServices;
-    /**
      * A `ScopeManager` object.
      * Custom parsers can use customized scope analysis for experimental/enhancement syntaxes.
      * The default is the `ScopeManager` object which is created by `eslint-scope`.
      */
     scopeManager?: Scope.ScopeManager;
+    /**
+     * Any parser-dependent services (such as type checkers for nodes).
+     * The value of the services property is available to rules as `context.sourceCode.parserServices`.
+     * The default is an empty object.
+     */
+    services?: ParserServices;
     /**
      * An object to customize AST traversal.
      * The keys of the object are the type of AST nodes.
@@ -66,6 +101,6 @@ export namespace Parser {
 
   // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
   export interface VisitorKeys {
-    [nodeType: string]: string[];
+    [nodeType: string]: readonly string[];
   }
 }

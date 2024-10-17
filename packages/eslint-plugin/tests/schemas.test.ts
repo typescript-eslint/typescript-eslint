@@ -1,10 +1,8 @@
+import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import 'jest-specific-snapshot';
-
 import fs from 'node:fs';
 import path from 'node:path';
-
-import prettier from '@prettier/sync';
-import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
+import prettier from 'prettier';
 
 import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
@@ -16,9 +14,32 @@ try {
   // ignore failure as it means it already exists probably
 }
 
-const prettierConfigJson = {
-  ...(prettier.resolveConfig(__filename) ?? {}),
-  filepath: path.join(__dirname, 'schema.json'),
+const PRETTIER_CONFIG_PATH = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  '..',
+  '.prettierrc.json',
+);
+const SCHEMA_FILEPATH = path.join(__dirname, 'schema.json');
+const TS_TYPE_FILEPATH = path.join(__dirname, 'schema.ts');
+const getPrettierConfig = async (
+  filepath: string,
+): Promise<prettier.Options> => {
+  const config = await prettier.resolveConfig(filepath, {
+    config: PRETTIER_CONFIG_PATH,
+  });
+  if (config == null) {
+    throw new Error('Unable to resolve prettier config');
+  }
+  return {
+    ...config,
+    filepath,
+  };
+};
+const PRETTIER_CONFIG = {
+  schema: getPrettierConfig(SCHEMA_FILEPATH),
+  tsType: getPrettierConfig(TS_TYPE_FILEPATH),
 };
 
 const SKIPPED_RULES_FOR_TYPE_GENERATION = new Set(['indent']);
@@ -33,8 +54,8 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
       continue;
     }
 
-    (ruleName === ONLY ? it.only : it)(ruleName, () => {
-      const schemaString = prettier.format(
+    (ruleName === ONLY ? it.only : it)(ruleName, async () => {
+      const schemaString = await prettier.format(
         JSON.stringify(
           ruleDef.meta.schema,
           (k, v: unknown) => {
@@ -60,9 +81,12 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           // changes per line, or adding a prop can restructure an object
           2,
         ),
-        prettierConfigJson,
+        await PRETTIER_CONFIG.schema,
       );
-      const compilationResult = compile(ruleDef.meta.schema);
+      const compilationResult = await compile(
+        ruleDef.meta.schema,
+        PRETTIER_CONFIG.tsType,
+      );
 
       expect(
         [
@@ -143,7 +167,7 @@ describe('Rules should only define valid keys on schemas', () => {
           // definition keys and property keys should not be validated, only the values
           return Object.values(value as object);
         }
-        if (parseInt(key).toString() === key) {
+        if (`${Number(key)}` === key) {
           // hack to detect arrays as JSON.stringify will traverse them and stringify the number
           return value;
         }
@@ -162,8 +186,8 @@ describe('Rule schemas should validate options correctly', () => {
   // This override allows providing example valid options for rules which don't
   // accept their defaults.
   const overrideValidOptions: Record<string, unknown> = {
-    semi: ['never'],
     'func-call-spacing': ['never'],
+    semi: ['never'],
   };
 
   for (const [ruleName, rule] of Object.entries(rules)) {

@@ -1,20 +1,15 @@
 ---
-description: 'Require or disallow trailing commas.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/comma-dangle** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/comma-dangle`](https://eslint.org/docs/rules/comma-dangle) rule.
-It adds support for TypeScript syntax.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for more details on the `comma-dangle` rule.
+:::
 
-## Options
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
 
-In addition to the options supported by the `comma-dangle` rule in ESLint core, the rule adds the following options:
-
-- `"enums"` is for trailing comma in enum. (e.g. `enum Foo = {Bar,}`)
-- `"generics"` is for trailing comma in generic. (e.g. `function foo<T,>() {}`)
-- `"tuples"` is for trailing comma in tuple. (e.g. `type Foo = [string,]`)
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs non-nullable-type-assertion-style.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
+
+const definitely = maybe as string;
+                   ~~~~~~~~~~~~~~~ Use a ! assertion to more succinctly remove null and undefined from the type.
+const alsoDefinitely = <string>maybe;
+                       ~~~~~~~~~~~~~ Use a ! assertion to more succinctly remove null and undefined from the type.
+"
+`;
+
+exports[`Validating rule docs non-nullable-type-assertion-style.mdx code examples ESLint output 2`] = `
+"Correct
+
+const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
+
+const definitely = maybe!;
+const alsoDefinitely = maybe!;
+"
+`;

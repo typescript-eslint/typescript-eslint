@@ -1,5 +1,7 @@
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
-import { VisitorKeys, visitorKeys } from '@typescript-eslint/visitor-keys';
+import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
+
+import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 interface VisitorOptions {
   childVisitorKeys?: VisitorKeys | null;
@@ -83,4 +85,6 @@ abstract class VisitorBase {
   }
 }
 
-export { VisitorBase, VisitorOptions, VisitorKeys };
+export { VisitorBase, type VisitorOptions };
+
+export type { VisitorKeys } from '@typescript-eslint/visitor-keys';

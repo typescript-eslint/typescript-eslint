@@ -1,15 +1,16 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'path';
+import path from 'node:path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -817,17 +818,11 @@ declare const value: 'literal';
 switch (value) {
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -841,6 +836,12 @@ case "literal": { throw new Error('Not implemented yet: "literal" case') }
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -848,17 +849,11 @@ declare const value: 'literal' & { _brand: true };
 switch (value) {
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -872,6 +867,12 @@ case "literal": { throw new Error('Not implemented yet: "literal" case') }
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -881,17 +882,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -907,6 +902,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -916,32 +917,32 @@ switch (value) {
     break;
 }
       `,
+      errors: [
+        {
+          column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: '1' | '2' | number;
+switch (value) {
+  case '1':
+    break;
+  case "2": { throw new Error('Not implemented yet: "2" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: true,
           requireDefaultForNonUnion: false,
         },
       ],
-      errors: [
-        {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
-          column: 9,
-          suggestions: [
-            {
-              messageId: 'addMissingCases',
-              output: `
-declare const value: '1' | '2' | number;
-switch (value) {
-  case '1':
-    break;
-  case "2": { throw new Error('Not implemented yet: "2" case') }
-}
-      `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -951,17 +952,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -977,9 +972,9 @@ switch (value) {
           ],
         },
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -995,6 +990,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1004,17 +1005,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1028,6 +1023,12 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -1037,17 +1038,11 @@ declare const value: (string & { foo: 'bar' }) | '1' | 1 | null | undefined;
 switch (value) {
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1064,9 +1059,9 @@ case 1: { throw new Error('Not implemented yet: 1 case') }
           ],
         },
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1080,6 +1075,12 @@ default: { throw new Error('default case') }
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1089,17 +1090,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1113,6 +1108,12 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -1125,17 +1126,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1152,6 +1147,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1161,17 +1162,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
+          column: 9,
           line: 3,
-          column: 9,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1187,6 +1182,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1197,17 +1198,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1222,6 +1217,12 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -1235,17 +1236,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 5,
           column: 9,
+          line: 5,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1264,6 +1259,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1274,17 +1275,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1301,6 +1296,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1308,17 +1309,11 @@ declare const value: boolean;
 switch (value) {
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: false,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1333,6 +1328,12 @@ case true: { throw new Error('Not implemented yet: true case') }
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: false,
+        },
+      ],
     },
     {
       code: `
@@ -1342,17 +1343,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1369,6 +1364,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1378,17 +1379,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1405,9 +1400,9 @@ switch (value) {
           ],
         },
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1423,6 +1418,12 @@ switch (value) {
           ],
         },
       ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
+        },
+      ],
     },
     {
       code: `
@@ -1432,17 +1433,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1456,6 +1451,12 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -1473,17 +1474,11 @@ switch (value) {
     break;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 7,
           column: 9,
+          line: 7,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1505,9 +1500,9 @@ switch (value) {
           ],
         },
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 7,
           column: 9,
+          line: 7,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -1527,6 +1522,12 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -1554,13 +1555,44 @@ switch (day) {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 14,
           column: 9,
           data: {
             missingBranches:
               '"Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
           },
+          line: 14,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
+const day = 'Monday' as Day;
+let result = 0;
+
+switch (day) {
+  case 'Monday': {
+    result = 1;
+    break;
+  }
+  case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
+  case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
+  case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
+  case "Friday": { throw new Error('Not implemented yet: "Friday" case') }
+  case "Saturday": { throw new Error('Not implemented yet: "Saturday" case') }
+  case "Sunday": { throw new Error('Not implemented yet: "Sunday" case') }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1581,12 +1613,31 @@ function test(value: Enum): number {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 8,
           column: 11,
           data: {
             missingBranches: 'Enum.B',
           },
+          line: 8,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum Enum {
+  A,
+  B,
+}
+
+function test(value: Enum): number {
+  switch (value) {
+    case Enum.A:
+      return 1;
+    case Enum.B: { throw new Error('Not implemented yet: Enum.B case') }
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1606,12 +1657,32 @@ function test(value: Union): number {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 8,
           column: 11,
           data: {
             missingBranches: '"b" | "c"',
           },
+          line: 8,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+type A = 'a';
+type B = 'b';
+type C = 'c';
+type Union = A | B | C;
+
+function test(value: Union): number {
+  switch (value) {
+    case 'a':
+      return 1;
+    case "b": { throw new Error('Not implemented yet: "b" case') }
+    case "c": { throw new Error('Not implemented yet: "c" case') }
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1632,12 +1703,33 @@ function test(value: Union): number {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 9,
           column: 11,
           data: {
             missingBranches: 'true | 1',
           },
+          line: 9,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const A = 'a';
+const B = 1;
+const C = true;
+
+type Union = typeof A | typeof B | typeof C;
+
+function test(value: Union): number {
+  switch (value) {
+    case 'a':
+      return 1;
+    case true: { throw new Error('Not implemented yet: true case') }
+    case 1: { throw new Error('Not implemented yet: 1 case') }
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1654,12 +1746,28 @@ function test(value: DiscriminatedUnion): number {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 5,
           column: 11,
           data: {
             missingBranches: '"B"',
           },
+          line: 5,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+type DiscriminatedUnion = { type: 'A'; a: 1 } | { type: 'B'; b: 2 };
+
+function test(value: DiscriminatedUnion): number {
+  switch (value.type) {
+    case 'A':
+      return 1;
+    case "B": { throw new Error('Not implemented yet: "B" case') }
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1682,13 +1790,40 @@ switch (day) {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 13,
           column: 9,
           data: {
             missingBranches:
               '"Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday"',
           },
+          line: 13,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+type Day =
+  | 'Monday'
+  | 'Tuesday'
+  | 'Wednesday'
+  | 'Thursday'
+  | 'Friday'
+  | 'Saturday'
+  | 'Sunday';
+
+const day = 'Monday' as Day;
+
+switch (day) {
+case "Monday": { throw new Error('Not implemented yet: "Monday" case') }
+case "Tuesday": { throw new Error('Not implemented yet: "Tuesday" case') }
+case "Wednesday": { throw new Error('Not implemented yet: "Wednesday" case') }
+case "Thursday": { throw new Error('Not implemented yet: "Thursday" case') }
+case "Friday": { throw new Error('Not implemented yet: "Friday" case') }
+case "Saturday": { throw new Error('Not implemented yet: "Saturday" case') }
+case "Sunday": { throw new Error('Not implemented yet: "Sunday" case') }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1709,12 +1844,33 @@ function test(value: T): number {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 9,
           column: 11,
           data: {
             missingBranches: 'typeof b | typeof c',
           },
+          line: 9,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const a = Symbol('a');
+const b = Symbol('b');
+const c = Symbol('c');
+
+type T = typeof a | typeof b | typeof c;
+
+function test(value: T): number {
+  switch (value) {
+    case a:
+      return 1;
+    case b: { throw new Error('Not implemented yet: b case') }
+    case c: { throw new Error('Not implemented yet: c case') }
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1905,12 +2061,6 @@ switch (value) {
     return 1;
 }
       `,
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: true,
-          requireDefaultForNonUnion: true,
-        },
-      ],
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
@@ -1929,6 +2079,12 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: true,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -1964,7 +2120,7 @@ switch (value) {
 
         switch (a) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\n\\n          new-line\\'] case') }
+        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\\\n\\\\n          new-line\\'] case') }
         }
       `,
             },
@@ -1999,7 +2155,7 @@ switch (value) {
 
         switch (a) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\'a\\\\' \`b\` "c"\\'] case') }
+        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\\\'a\\\\\\' \`b\` "c"\\'] case') }
         }
       `,
             },
@@ -2025,15 +2181,15 @@ switch (myUnion) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },
@@ -2059,15 +2215,15 @@ switch (myEnum) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },
@@ -2093,15 +2249,15 @@ switch (myEnum) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },
@@ -2120,15 +2276,15 @@ switch (myBoolean) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },
@@ -2147,15 +2303,15 @@ switch (myValue) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },
@@ -2174,15 +2330,15 @@ switch (myValue) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },
@@ -2205,15 +2361,15 @@ switch (myValue) {
   }
 }
       `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
-        },
-      ],
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
         },
       ],
     },

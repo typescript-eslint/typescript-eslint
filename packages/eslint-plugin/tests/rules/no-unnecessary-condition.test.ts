@@ -1,30 +1,33 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type {
   InvalidTestCase,
   TestCaseError,
-} from '@typescript-eslint/utils/ts-eslint';
-import * as path from 'path';
+} from '@typescript-eslint/rule-tester';
+
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import * as path from 'node:path';
 
 import type {
   MessageId,
   Options,
 } from '../../src/rules/no-unnecessary-condition';
+
 import rule from '../../src/rules/no-unnecessary-condition';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
 const optionsWithExactOptionalPropertyTypes = {
-  tsconfigRootDir: rootPath,
   project: './tsconfig.exactOptionalPropertyTypes.json',
+  tsconfigRootDir: rootPath,
 };
 
 const ruleError = (
@@ -32,9 +35,9 @@ const ruleError = (
   column: number,
   messageId: MessageId,
 ): TestCaseError<MessageId> => ({
-  messageId,
-  line,
   column,
+  line,
+  messageId,
 });
 
 const necessaryConditionTest = (condition: string): string => `
@@ -73,6 +76,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 for (;;) {}
+switch (b1) {
+  case true:
+  default:
+}
     `,
     `
 declare function foo(): number | void;
@@ -365,6 +372,20 @@ if (arr?.[42]) {
 }
     `,
     `
+type ItemA = { bar: string; baz: string };
+type ItemB = { bar: string; qux: string };
+declare const foo: ItemA[] | ItemB[];
+foo[0]?.bar;
+    `,
+    `
+type TupleA = [string, number];
+type TupleB = [string, number];
+
+declare const foo: TupleA | TupleB;
+declare const index: number;
+foo[index]?.toString();
+    `,
+    `
 declare const returnsArr: undefined | (() => string[]);
 if (returnsArr?.()[42]) {
 }
@@ -577,13 +598,12 @@ declare const foo: Foo;
 const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -595,13 +615,12 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key].trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -616,13 +635,12 @@ function Foo(outer: Outer, key: BrandedKey): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -638,13 +656,12 @@ function Foo(outer: Outer, key: Foo): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     {
@@ -656,13 +673,12 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key]?.trim();
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     `
@@ -717,14 +733,16 @@ declare const x: string[] | null;
 if (x) {
 }
       `,
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
+      },
       options: [
         {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
-      },
     },
     `
 interface Foo {
@@ -776,14 +794,14 @@ foo[key] ??= 1;
 declare const foo: { bar?: number };
 foo.bar ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
 declare const foo: { bar: { baz?: number } };
 foo['bar'].baz ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     {
       code: `
@@ -792,7 +810,7 @@ type Key = 'baz' | 'qux';
 declare const key: Key;
 foo.bar[key] ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
     },
     `
 declare let foo: number;
@@ -825,13 +843,12 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
   }
 }
       `,
-      parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
-        tsconfigRootDir: getFixturesRootDir(),
-        project: './tsconfig.noUncheckedIndexedAccess.json',
-      },
-      dependencyConstraints: {
-        typescript: '4.1',
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: getFixturesRootDir(),
+        },
       },
     },
     `
@@ -856,7 +873,125 @@ type Foo = { [key: string]: () => number | undefined } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
     `,
+    `
+declare function foo(): void | { key: string };
+const bar = foo()?.key;
+    `,
+    `
+type fn = () => void;
+declare function foo(): void | fn;
+const bar = foo()?.();
+    `,
+    {
+      code: `
+class ConsistentRand {
+  #rand?: number;
+
+  getCachedRand() {
+    this.#rand ??= Math.random();
+    return this.#rand;
+  }
+}
+      `,
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+
+assert(Math.random() > 0.5);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(Math.random() > 0.5, true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // should not report because option is disabled.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(true);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // could be argued that this should report since `thisAsserter` is truthy.
+      code: `
+class ThisAsserter {
+  assertThis(this: unknown, arg2: unknown): asserts this {}
+}
+
+const thisAsserter: ThisAsserter = new ThisAsserter();
+thisAsserter.assertThis(Math.random());
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[]);
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // ok to report if we start unpacking spread params one day.
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(...[], {});
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+declare const a: string;
+assertString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      options: [{ checkTypePredicates: false }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function assertString(x: unknown): asserts x is string;
+assertString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      // Technically, this has type 'falafel' and not string.
+      code: `
+declare function isString(x: unknown): x is string;
+isString('falafel');
+      `,
+      options: [{ checkTypePredicates: true }],
+    },
   ],
+
   invalid: [
     // Ensure that it's checking in all the right places
     {
@@ -876,6 +1011,10 @@ for (let i = 0; b1 && b2; i++) {
 }
 const t1 = b1 && b2 ? 'yes' : 'no';
 const t1 = b2 && b1 ? 'yes' : 'no';
+switch (b1) {
+  case true:
+  default:
+}
       `,
       errors: [
         ruleError(4, 12, 'alwaysTruthy'),
@@ -887,7 +1026,9 @@ const t1 = b2 && b1 ? 'yes' : 'no';
         ruleError(12, 17, 'alwaysTruthy'),
         ruleError(15, 12, 'alwaysTruthy'),
         ruleError(16, 18, 'alwaysTruthy'),
+        ruleError(18, 8, 'literalBooleanExpression'),
       ],
+      output: null,
     },
     // Ensure that it's complaining about the right things
     unnecessaryConditionTest('object', 'alwaysTruthy'),
@@ -917,6 +1058,7 @@ if (b1 || b2 || true) {
         ruleError(6, 11, 'alwaysFalsy'),
         ruleError(8, 17, 'alwaysTruthy'),
       ],
+      output: null,
     },
 
     // Generic type params
@@ -927,6 +1069,7 @@ function test<T extends object>(t: T) {
 }
       `,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
+      output: null,
     },
     {
       code: `
@@ -935,6 +1078,7 @@ function test<T extends false>(t: T) {
 }
       `,
       errors: [ruleError(3, 10, 'alwaysFalsy')],
+      output: null,
     },
     {
       code: `
@@ -943,6 +1087,7 @@ function test<T extends 'a' | 'b'>(t: T) {
 }
       `,
       errors: [ruleError(3, 10, 'alwaysTruthy')],
+      output: null,
     },
 
     // Boolean expressions
@@ -953,6 +1098,7 @@ function test(a: 'a') {
 }
       `,
       errors: [ruleError(3, 10, 'literalBooleanExpression')],
+      output: null,
     },
     {
       code: `
@@ -961,6 +1107,7 @@ if (y === 0) {
 }
       `,
       errors: [ruleError(3, 5, 'literalBooleanExpression')],
+      output: null,
     },
     {
       code: `
@@ -974,6 +1121,7 @@ if (x === Foo.a) {
 }
       `,
       errors: [ruleError(8, 5, 'literalBooleanExpression')],
+      output: null,
     },
     // Workaround https://github.com/microsoft/TypeScript/issues/37160
     {
@@ -999,6 +1147,7 @@ function test(a: string) {
         ruleError(9, 14, 'noOverlapBooleanExpression'),
         ruleError(10, 14, 'noOverlapBooleanExpression'),
       ],
+      output: null,
     },
     {
       code: `
@@ -1019,6 +1168,7 @@ function test(a?: string) {
         ruleError(9, 14, 'noOverlapBooleanExpression'),
         ruleError(10, 14, 'noOverlapBooleanExpression'),
       ],
+      output: null,
     },
     {
       code: `
@@ -1039,6 +1189,7 @@ function test(a: null | string) {
         ruleError(5, 14, 'noOverlapBooleanExpression'),
         ruleError(6, 14, 'noOverlapBooleanExpression'),
       ],
+      output: null,
     },
     {
       code: `
@@ -1079,6 +1230,7 @@ function test<T extends object>(a: T) {
         ruleError(17, 15, 'noOverlapBooleanExpression'),
         ruleError(18, 15, 'noOverlapBooleanExpression'),
       ],
+      output: null,
     },
     // Nullish coalescing operator
     {
@@ -1088,6 +1240,7 @@ function test(a: string) {
 }
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
+      output: null,
     },
     {
       code: `
@@ -1096,6 +1249,7 @@ function test(a: string | false) {
 }
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
+      output: null,
     },
     {
       code: `
@@ -1104,6 +1258,7 @@ function test<T extends string>(a: T) {
 }
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
+      output: null,
     },
     // nullish + array index without optional chaining
     {
@@ -1113,6 +1268,7 @@ function test(a: { foo: string }[]) {
 }
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
+      output: null,
     },
     {
       code: `
@@ -1121,6 +1277,7 @@ function test(a: null) {
 }
       `,
       errors: [ruleError(3, 10, 'alwaysNullish')],
+      output: null,
     },
     {
       code: `
@@ -1129,6 +1286,7 @@ function test(a: null[]) {
 }
       `,
       errors: [ruleError(3, 10, 'alwaysNullish')],
+      output: null,
     },
     {
       code: `
@@ -1137,6 +1295,7 @@ function test<T extends null>(a: T) {
 }
       `,
       errors: [ruleError(3, 10, 'alwaysNullish')],
+      output: null,
     },
     {
       code: `
@@ -1145,6 +1304,7 @@ function test(a: never) {
 }
       `,
       errors: [ruleError(3, 10, 'never')],
+      output: null,
     },
     {
       code: `
@@ -1153,6 +1313,7 @@ function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
 }
       `,
       errors: [ruleError(3, 3, 'neverNullish')],
+      output: null,
     },
     // Predicate functions
     {
@@ -1182,6 +1343,7 @@ function nothing3(x: [string, string]) {
         ruleError(13, 25, 'alwaysFalsy'),
         ruleError(17, 25, 'alwaysFalsy'),
       ],
+      output: null,
     },
     // Indexing cases
     {
@@ -1193,6 +1355,7 @@ if (dict['mightNotExist']) {
 }
       `,
       errors: [ruleError(3, 5, 'alwaysTruthy')],
+      output: null,
     },
     {
       // Should still check tuples when accessed with literal numbers, since they don't have
@@ -1204,6 +1367,10 @@ if (x[0]) {
 if (x[0]?.foo) {
 }
       `,
+      errors: [
+        ruleError(3, 5, 'alwaysTruthy'),
+        ruleError(5, 9, 'neverOptionalChain'),
+      ],
       output: `
 const x = [{}] as [{ foo: string }];
 if (x[0]) {
@@ -1211,10 +1378,6 @@ if (x[0]) {
 if (x[0].foo) {
 }
       `,
-      errors: [
-        ruleError(3, 5, 'alwaysTruthy'),
-        ruleError(5, 9, 'neverOptionalChain'),
-      ],
     },
     {
       // Shouldn't mistake this for an array indexing case
@@ -1224,6 +1387,7 @@ if (arr.filter) {
 }
       `,
       errors: [ruleError(3, 5, 'alwaysTruthy')],
+      output: null,
     },
     {
       code: `
@@ -1233,11 +1397,14 @@ function truthy() {
 function falsy() {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
+[1, 2, 3].findLastIndex(falsy);
       `,
       errors: [
         ruleError(6, 18, 'alwaysTruthyFunc'),
         ruleError(7, 16, 'alwaysFalsyFunc'),
+        ruleError(8, 25, 'alwaysFalsyFunc'),
       ],
+      output: null,
     },
     // Supports generics
     // TODO: fix this
@@ -1257,12 +1424,13 @@ while (true) {}
 for (; true; ) {}
 do {} while (true);
       `,
-      options: [{ allowConstantLoopConditions: false }],
       errors: [
         ruleError(2, 8, 'alwaysTruthy'),
         ruleError(3, 8, 'alwaysTruthy'),
         ruleError(4, 14, 'alwaysTruthy'),
       ],
+      options: [{ allowConstantLoopConditions: false }],
+      output: null,
     },
     {
       code: noFormat`
@@ -1274,6 +1442,36 @@ foo ?.
 foo
   ?. bar;
       `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 let foo = { bar: true };
 foo.bar;
@@ -1283,36 +1481,6 @@ foo .
 foo
   . bar;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          column: 4,
-          endLine: 3,
-          endColumn: 6,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 7,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 5,
-          column: 5,
-          endLine: 5,
-          endColumn: 7,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 8,
-          column: 3,
-          endLine: 8,
-          endColumn: 5,
-        },
-      ],
     },
     {
       code: noFormat`
@@ -1324,6 +1492,36 @@ foo ?.
 foo
   ?. ();
       `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 let foo = () => {};
 foo();
@@ -1333,36 +1531,6 @@ foo${' '}
 foo
    ();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          column: 4,
-          endLine: 3,
-          endColumn: 6,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 7,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 5,
-          column: 5,
-          endLine: 5,
-          endColumn: 7,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 8,
-          column: 3,
-          endLine: 8,
-          endColumn: 5,
-        },
-      ],
     },
     {
       code: noFormat`
@@ -1374,6 +1542,36 @@ foo ?.
 foo
   ?. (bar);
       `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 5,
+          endColumn: 7,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 3,
+          endColumn: 5,
+          endLine: 8,
+          line: 8,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 let foo = () => {};
 foo(bar);
@@ -1383,203 +1581,173 @@ foo${' '}
 foo
    (bar);
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          column: 4,
-          endLine: 3,
-          endColumn: 6,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 5,
-          endLine: 4,
-          endColumn: 7,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 5,
-          column: 5,
-          endLine: 5,
-          endColumn: 7,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 8,
-          column: 3,
-          endLine: 8,
-          endColumn: 5,
-        },
-      ],
     },
     {
       code: 'const foo = [1, 2, 3]?.[0];',
-      output: 'const foo = [1, 2, 3][0];',
       errors: [
         {
-          messageId: 'neverOptionalChain',
-          line: 1,
-          endLine: 1,
           column: 22,
           endColumn: 24,
+          endLine: 1,
+          line: 1,
+          messageId: 'neverOptionalChain',
         },
       ],
+      output: 'const foo = [1, 2, 3][0];',
     },
     {
       code: `
 declare const x: { a?: { b: string } };
 x?.a?.b;
       `,
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 declare const x: { a?: { b: string } };
 x.a?.b;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 2,
-          endColumn: 4,
-        },
-      ],
     },
     {
       code: `
 declare const x: { a: { b?: { c: string } } };
 x.a?.b?.c;
       `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 6,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 declare const x: { a: { b?: { c: string } } };
 x.a.b?.c;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 4,
-          endColumn: 6,
-        },
-      ],
     },
     {
       code: `
 let x: { a?: string };
 x?.a;
       `,
+      errors: [
+        {
+          column: 2,
+          endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 let x: { a?: string };
 x.a;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 2,
-          endColumn: 4,
-        },
-      ],
     },
     {
       code: `
 declare const foo: { bar: { baz: { c: string } } } | null;
 foo?.bar?.baz;
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 declare const foo: { bar: { baz: { c: string } } } | null;
 foo?.bar.baz;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 9,
-          endColumn: 11,
-        },
-      ],
     },
     {
       code: `
 declare const foo: { bar?: { baz: { qux: string } } } | null;
 foo?.bar?.baz?.qux;
       `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 declare const foo: { bar?: { baz: { qux: string } } } | null;
 foo?.bar?.baz.qux;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 14,
-          endColumn: 16,
-        },
-      ],
     },
     {
       code: `
 declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
 foo?.bar?.baz?.qux?.();
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 declare const foo: { bar: { baz: { qux?: () => {} } } } | null;
 foo?.bar.baz.qux?.();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 9,
-          endColumn: 11,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 14,
-          endColumn: 16,
-        },
-      ],
     },
     {
       code: `
 declare const foo: { bar: { baz: { qux: () => {} } } } | null;
 foo?.bar?.baz?.qux?.();
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 19,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 declare const foo: { bar: { baz: { qux: () => {} } } } | null;
 foo?.bar.baz.qux();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 9,
-          endColumn: 11,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 14,
-          endColumn: 16,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 3,
-          endLine: 3,
-          column: 19,
-          endColumn: 21,
-        },
-      ],
     },
     {
       code: `
@@ -1587,34 +1755,34 @@ type baz = () => { qux: () => {} };
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar?.baz?.().qux?.();
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 22,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 type baz = () => { qux: () => {} };
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar.baz().qux();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 9,
-          endColumn: 11,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 14,
-          endColumn: 16,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 22,
-          endColumn: 24,
-        },
-      ],
     },
     {
       code: `
@@ -1622,27 +1790,27 @@ type baz = null | (() => { qux: () => {} });
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar?.baz?.().qux?.();
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 22,
+          endColumn: 24,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 type baz = null | (() => { qux: () => {} });
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar.baz?.().qux();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 9,
-          endColumn: 11,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 22,
-          endColumn: 24,
-        },
-      ],
     },
     {
       code: `
@@ -1650,27 +1818,27 @@ type baz = null | (() => { qux: () => {} } | null);
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar?.baz?.()?.qux?.();
       `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 11,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 23,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 type baz = null | (() => { qux: () => {} } | null);
 declare const foo: { bar: { baz: baz } } | null;
 foo?.bar.baz?.()?.qux();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 9,
-          endColumn: 11,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          endLine: 4,
-          column: 23,
-          endColumn: 25,
-        },
-      ],
     },
     {
       code: `
@@ -1679,32 +1847,32 @@ type Bar = { baz: null | string | { qux: string } };
 declare const foo: { fooOrBar: Foo | Bar } | null;
 foo?.fooOrBar?.baz?.qux;
       `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 16,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 type Foo = { baz: number };
 type Bar = { baz: null | string | { qux: string } };
 declare const foo: { fooOrBar: Foo | Bar } | null;
 foo?.fooOrBar.baz?.qux;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 5,
-          endLine: 5,
-          column: 14,
-          endColumn: 16,
-        },
-      ],
     },
     {
       code: `
 declare const x: { a: { b: number } }[];
 x[0].a?.b;
       `,
+      errors: [ruleError(3, 7, 'neverOptionalChain')],
       output: `
 declare const x: { a: { b: number } }[];
 x[0].a.b;
       `,
-      errors: [ruleError(3, 7, 'neverOptionalChain')],
     },
     {
       code: `
@@ -1715,23 +1883,23 @@ declare const key: Key;
 
 foo?.[key]?.trim();
       `,
-      output: `
-type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
-type Key = 'bar' | 'foo';
-declare const foo: Foo;
-declare const key: Key;
-
-foo?.[key].trim();
-      `,
       errors: [
         {
-          messageId: 'neverOptionalChain',
-          line: 7,
+          column: 11,
+          endColumn: 13,
           endLine: 7,
-          column: 11,
-          endColumn: 13,
+          line: 7,
+          messageId: 'neverOptionalChain',
         },
       ],
+      output: `
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = 'bar' | 'foo';
+declare const foo: Foo;
+declare const key: Key;
+
+foo?.[key].trim();
+      `,
     },
     {
       code: `
@@ -1740,21 +1908,21 @@ declare const foo: Foo;
 const key = 'bar';
 foo?.[key]?.trim();
       `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 13,
+          endLine: 5,
+          line: 5,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
 declare const foo: Foo;
 const key = 'bar';
 foo?.[key].trim();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 5,
-          endLine: 5,
-          column: 11,
-          endColumn: 13,
-        },
-      ],
     },
     {
       code: `
@@ -1770,6 +1938,15 @@ export function test(outer: Outer): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 30,
+          endLine: 11,
+          line: 11,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 interface Outer {
   inner?: {
@@ -1783,15 +1960,6 @@ export function test(outer: Outer): number | undefined {
   return outer.inner?.[key].charCodeAt(0);
 }
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 11,
-          endLine: 11,
-          column: 28,
-          endColumn: 30,
-        },
-      ],
     },
     {
       code: `
@@ -1807,6 +1975,15 @@ function Foo(outer: Outer, key: Bar): number | undefined {
   return outer.inner?.[key]?.charCodeAt(0);
 }
       `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 30,
+          endLine: 11,
+          line: 11,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 interface Outer {
   inner?: {
@@ -1820,15 +1997,6 @@ function Foo(outer: Outer, key: Bar): number | undefined {
   return outer.inner?.[key].charCodeAt(0);
 }
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 11,
-          endLine: 11,
-          column: 28,
-          endColumn: 30,
-        },
-      ],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2384
     {
@@ -1839,16 +2007,16 @@ function test(testVal?: true) {
   }
 }
       `,
-      output: null,
       errors: [
         {
-          messageId: 'alwaysTruthy',
-          line: 3,
-          endLine: 3,
           column: 7,
           endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
         },
       ],
+      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2255
     {
@@ -1857,7 +2025,8 @@ const a = null;
 if (!a) {
 }
       `,
-      errors: [ruleError(3, 6, 'alwaysTruthy')],
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+      output: null,
     },
     {
       code: `
@@ -1865,7 +2034,8 @@ const a = true;
 if (!a) {
 }
       `,
-      errors: [ruleError(3, 6, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
+      output: null,
     },
     {
       code: `
@@ -1877,7 +2047,8 @@ let speech: never = sayHi();
 if (!speech) {
 }
       `,
-      errors: [ruleError(7, 6, 'never')],
+      errors: [ruleError(7, 5, 'never')],
+      output: null,
     },
     {
       code: `
@@ -1887,19 +2058,22 @@ if (x) {
       `,
       errors: [
         {
-          messageId: 'noStrictNullCheck',
-          line: 0,
           column: 1,
+          line: 0,
+          messageId: 'noStrictNullCheck',
         },
         {
-          messageId: 'alwaysTruthy',
-          line: 3,
           column: 5,
+          line: 3,
+          messageId: 'alwaysTruthy',
         },
       ],
-      parserOptions: {
-        tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      languageOptions: {
+        parserOptions: {
+          tsconfigRootDir: path.join(rootPath, 'unstrict'),
+        },
       },
+      output: null,
     },
     {
       code: `
@@ -1912,6 +2086,15 @@ type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.test?.length;
       `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: `
 interface Foo {
   test: string;
@@ -1922,15 +2105,6 @@ type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.test.length;
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 9,
-          endLine: 9,
-          column: 10,
-          endColumn: 12,
-        },
-      ],
     },
     {
       code: `
@@ -1949,13 +2123,14 @@ pick({ foo: 1, bar: 2 }, 'bar');
       `,
       errors: [
         {
-          messageId: 'alwaysTruthy',
-          line: 7,
-          endLine: 7,
           column: 7,
           endColumn: 15,
+          endLine: 7,
+          line: 7,
+          messageId: 'alwaysTruthy',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -1969,13 +2144,14 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
       `,
       errors: [
         {
-          messageId: 'alwaysTruthy',
-          line: 3,
-          endLine: 3,
           column: 7,
           endColumn: 16,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -1984,13 +2160,14 @@ foo ??= 1;
       `,
       errors: [
         {
-          messageId: 'neverNullish',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -1999,13 +2176,14 @@ foo ??= 1;
       `,
       errors: [
         {
-          messageId: 'neverNullish',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2014,13 +2192,14 @@ foo ??= null;
       `,
       errors: [
         {
-          messageId: 'alwaysNullish',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysNullish',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2029,13 +2208,14 @@ foo ||= 1;
       `,
       errors: [
         {
-          messageId: 'alwaysTruthy',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2044,13 +2224,14 @@ foo ||= null;
       `,
       errors: [
         {
-          messageId: 'alwaysFalsy',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysFalsy',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2059,13 +2240,14 @@ foo &&= 1;
       `,
       errors: [
         {
-          messageId: 'alwaysTruthy',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysTruthy',
         },
       ],
+      output: null,
     },
     {
       code: `
@@ -2074,141 +2256,249 @@ foo &&= null;
       `,
       errors: [
         {
-          messageId: 'alwaysFalsy',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 4,
+          endLine: 3,
+          line: 3,
+          messageId: 'alwaysFalsy',
         },
       ],
+      output: null,
     },
     {
       code: `
 declare const foo: { bar: number };
 foo.bar ??= 1;
       `,
-      parserOptions: optionsWithExactOptionalPropertyTypes,
       errors: [
         {
-          messageId: 'neverNullish',
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 8,
+          endLine: 3,
+          line: 3,
+          messageId: 'neverNullish',
         },
       ],
+      languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
+      output: null,
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar()?.toExponential();
       `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 13,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 type Foo = { bar: () => number } | null;
 declare const foo: Foo;
 foo?.bar().toExponential();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 11,
-          endLine: 4,
-          endColumn: 13,
-        },
-      ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz()?.qux?.toExponential();
       `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 21,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 type Foo = { bar: null | { baz: () => { qux: number } } } | null;
 declare const foo: Foo;
 foo?.bar?.baz().qux.toExponential();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 16,
-          endLine: 4,
-          endColumn: 18,
-        },
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 21,
-          endLine: 4,
-          endColumn: 23,
-        },
-      ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.()?.toExponential();
       `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 type Foo = (() => number) | null;
 declare const foo: Foo;
 foo?.().toExponential();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 8,
-          endLine: 4,
-          endColumn: 10,
-        },
-      ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']()?.toExponential();
       `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']().toExponential();
       `,
-      errors: [
-        {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 15,
-          endLine: 4,
-          endColumn: 17,
-        },
-      ],
     },
     {
-      code: noFormat`
+      code: `
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.()?.toExponential();
       `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'neverOptionalChain',
+        },
+      ],
       output: noFormat`
 type Foo = { [key: string]: () => number } | null;
 declare const foo: Foo;
 foo?.['bar']?.().toExponential();
       `,
+    },
+    {
+      code: `
+        const a = true;
+        if (!!a) {
+        }
+      `,
+      errors: [ruleError(3, 13, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(true);
+      `,
       errors: [
         {
-          messageId: 'neverOptionalChain',
-          line: 4,
-          column: 17,
-          endLine: 4,
-          endColumn: 19,
+          line: 3,
+          messageId: 'alwaysTruthy',
         },
       ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert(false);
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 3,
+          messageId: 'alwaysFalsy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown, y: unknown): asserts x;
+
+assert(true, Math.random() > 0.5);
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 4,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assert(x: unknown): asserts x;
+assert({});
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function assertsString(x: unknown): asserts x is string;
+declare const a: string;
+assertsString(a);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString(a);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
+    },
+    {
+      code: `
+declare function isString(x: unknown): x is string;
+declare const a: string;
+isString('fa' + 'lafel');
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'typeGuardAlreadyIsType',
+        },
+      ],
+      options: [{ checkTypePredicates: true }],
     },
 
     // "branded" types

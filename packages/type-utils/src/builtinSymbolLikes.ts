@@ -1,11 +1,15 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
 
 /**
- * class Foo extends Promise<number> {}
- * Foo.reject
- *  ^ PromiseLike
+ * @example
+ * ```ts
+ * class DerivedClass extends Promise<number> {}
+ * DerivedClass.reject
+ * // ^ PromiseLike
+ * ```
  */
 export function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
   return isBuiltinSymbolLike(
@@ -16,9 +20,12 @@ export function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
 }
 
 /**
- * const foo = Promise
- * foo.reject
- *  ^ PromiseConstructorLike
+ * @example
+ * ```ts
+ * const value = Promise
+ * value.reject
+ * // ^ PromiseConstructorLike
+ * ```
  */
 export function isPromiseConstructorLike(
   program: ts.Program,
@@ -32,9 +39,12 @@ export function isPromiseConstructorLike(
 }
 
 /**
+ * @example
+ * ```ts
  * class Foo extends Error {}
  * new Foo()
- *      ^ ErrorLike
+ * //   ^ ErrorLike
+ * ```
  */
 export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
   return isBuiltinSymbolLike(
@@ -45,8 +55,11 @@ export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
 }
 
 /**
+ * @example
+ * ```ts
  * type T = Readonly<Error>
- *      ^ ReadonlyErrorLike
+ * //   ^ ReadonlyErrorLike
+ * ```
  */
 export function isReadonlyErrorLike(
   program: ts.Program,
@@ -62,8 +75,11 @@ export function isReadonlyErrorLike(
 }
 
 /**
+ * @example
+ * ```ts
  * type T = Readonly<{ foo: 'bar' }>
- *      ^ ReadonlyTypeLike
+ * //   ^ ReadonlyTypeLike
+ * ```
  */
 export function isReadonlyTypeLike(
   program: ts.Program,
@@ -131,7 +147,7 @@ export function isBuiltinTypeAliasLike(
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
-  predicateOrSymbolName: string | ((symbolName: string) => boolean),
+  symbolName: string | string[],
 ): boolean {
   const predicate =
     typeof predicateOrSymbolName === 'string'
@@ -144,8 +160,12 @@ export function isBuiltinSymbolLike(
       return false;
     }
 
+    const actualSymbolName = symbol.getName();
+
     if (
-      predicate(symbol.getName()) &&
+      (Array.isArray(symbolName)
+        ? symbolName.some(name => actualSymbolName === name)
+        : actualSymbolName === symbolName) &&
       isSymbolFromDefaultLibrary(program, symbol)
     ) {
       return true;
@@ -169,6 +189,16 @@ export function isBuiltinSymbolLikeRecurser(
     return type.types.every(t =>
       isBuiltinSymbolLikeRecurser(program, t, predicate),
     );
+  }
+  // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
+  if ((tsutils.isTypeParameter as (type: ts.Type) => boolean)(type)) {
+    const t = type.getConstraint();
+
+    if (t) {
+      return isBuiltinSymbolLikeRecurser(program, t, predicate);
+    }
+
+    return false;
   }
 
   const predicateResult = predicate(type);

@@ -8,21 +8,18 @@ export function serializeError(error: unknown, contents: string): unknown {
   }
 
   const {
-    name,
+    location: { end, start },
     message,
-    location: { start, end },
+    name,
   } = error;
 
-  return (
-    name +
-    '\n' +
-    codeFrameColumns(
-      contents,
-      {
-        start: { line: start.line, column: start.column + 1 },
-        end: { line: end.line, column: end.column + 1 },
-      },
-      { highlightCode: false, message },
-    )
-  );
+  return `${name}
+${codeFrameColumns(
+  contents,
+  {
+    end: { column: end.column + 1, line: end.line },
+    start: { column: start.column + 1, line: start.line },
+  },
+  { highlightCode: false, message },
+)}`;
 }

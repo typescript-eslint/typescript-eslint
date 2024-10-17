@@ -1,9 +1,10 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { es2017 } from './es2017';
 import { es2018_asyncgenerator } from './es2018.asyncgenerator';
 import { es2018_asynciterable } from './es2018.asynciterable';

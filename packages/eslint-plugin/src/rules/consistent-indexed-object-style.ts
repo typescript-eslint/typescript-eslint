@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -15,22 +15,21 @@ export default createRule<Options, MessageIds>({
       description: 'Require or disallow the `Record` type',
       recommended: 'stylistic',
     },
-    messages: {
-      preferRecord: 'A record is preferred over an index signature.',
-      preferIndexSignature: 'An index signature is preferred over a record.',
-    },
     fixable: 'code',
+    messages: {
+      preferIndexSignature: 'An index signature is preferred over a record.',
+      preferRecord: 'A record is preferred over an index signature.',
+    },
     schema: [
       {
         type: 'string',
+        description: 'Which indexed object syntax to prefer.',
         enum: ['record', 'index-signature'],
       },
     ],
   },
   defaultOptions: ['record'],
   create(context, [mode]) {
-    const sourceCode = getSourceCode(context);
-
     function checkMembers(
       members: TSESTree.TypeElement[],
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
@@ -64,7 +63,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (parentId) {
-        const scope = getScope(context);
+        const scope = context.sourceCode.getScope(parentId);
         const superVar = ASTUtils.findVariable(scope, parentId.name);
         if (superVar) {
           const isCircular = superVar.references.some(
@@ -84,8 +83,10 @@ export default createRule<Options, MessageIds>({
         messageId: 'preferRecord',
         fix: safeFix
           ? (fixer): TSESLint.RuleFix => {
-              const key = sourceCode.getText(keyType.typeAnnotation);
-              const value = sourceCode.getText(valueType.typeAnnotation);
+              const key = context.sourceCode.getText(keyType.typeAnnotation);
+              const value = context.sourceCode.getText(
+                valueType.typeAnnotation,
+              );
               const record = member.readonly
                 ? `Readonly<Record<${key}, ${value}>>`
                 : `Record<${key}, ${value}>`;
@@ -115,24 +116,20 @@ export default createRule<Options, MessageIds>({
             node,
             messageId: 'preferIndexSignature',
             fix(fixer) {
-              const key = sourceCode.getText(params[0]);
-              const type = sourceCode.getText(params[1]);
+              const key = context.sourceCode.getText(params[0]);
+              const type = context.sourceCode.getText(params[1]);
               return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
             },
           });
         },
       }),
       ...(mode === 'record' && {
-        TSTypeLiteral(node): void {
-          const parent = findParentDeclaration(node);
-          checkMembers(node.members, node, parent?.id, '', '');
-        },
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
           if (node.typeParameters?.params.length) {
             genericTypes = `<${node.typeParameters.params
-              .map(p => sourceCode.getText(p))
+              .map(p => context.sourceCode.getText(p))
               .join(', ')}>`;
           }
 
@@ -144,6 +141,10 @@ export default createRule<Options, MessageIds>({
             ';',
             !node.extends.length,
           );
+        },
+        TSTypeLiteral(node): void {
+          const parent = findParentDeclaration(node);
+          checkMembers(node.members, node, parent?.id, '', '');
         },
       }),
     };

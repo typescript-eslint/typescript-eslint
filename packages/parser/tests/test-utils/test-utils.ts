@@ -1,16 +1,17 @@
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
 
 import type { ParserOptions } from '../../src/parser';
+
 import * as parser from '../../src/parser';
 
 const defaultConfig = {
+  comment: true,
+  errorOnUnknownASTType: true,
   loc: true,
   range: true,
   raw: true,
+  sourceType: 'module' as const,
   tokens: true,
-  comment: true,
-  errorOnUnknownASTType: true,
-  sourceType: 'module',
 };
 
 /**
@@ -40,7 +41,7 @@ export function createSnapshotTestBlock(
   code: string,
   config: ParserOptions = {},
 ): () => void {
-  config = Object.assign({}, defaultConfig, config);
+  config = { ...defaultConfig, ...config };
 
   /**
    * @returns the AST object
@@ -59,7 +60,7 @@ export function createSnapshotTestBlock(
        * If we are deliberately throwing because of encountering an unknown
        * AST_NODE_TYPE, we rethrow to cause the test to fail
        */
-      if (/Unknown AST_NODE_TYPE/.exec((error as Error).message)) {
+      if ((error as Error).message.includes('Unknown AST_NODE_TYPE')) {
         throw error;
       }
       expect(parse).toThrowErrorMatchingSnapshot();
@@ -72,7 +73,7 @@ export function createSnapshotTestBlock(
  * @param config The configuration object for the parser
  */
 export function testServices(code: string, config: ParserOptions = {}): void {
-  config = Object.assign({}, defaultConfig, config);
+  config = { ...defaultConfig, ...config };
 
   const services = parser.parseForESLint(code, config).services;
   expect(services).toBeDefined();
@@ -87,6 +88,6 @@ export function formatSnapshotName(
   fileExtension = '.js',
 ): string {
   return `fixtures/${filename
-    .replace(fixturesDir + '/', '')
+    .replace(`${fixturesDir}/`, '')
     .replace(fileExtension, '')}`;
 }

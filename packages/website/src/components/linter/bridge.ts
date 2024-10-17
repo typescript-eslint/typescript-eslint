@@ -1,9 +1,11 @@
 import type * as tsvfs from '@site/src/vendor/typescript-vfs';
 import type * as ts from 'typescript';
 
-import { debounce } from '../lib/debounce';
 import type { ConfigModel } from '../types';
 import type { PlaygroundSystem } from './types';
+
+import { debounce } from '../lib/debounce';
+import { getPathRegExp } from './utils';
 
 export function createFileSystem(
   config: Pick<ConfigModel, 'code' | 'eslintrc' | 'fileType' | 'tsconfig'>,
@@ -24,10 +26,7 @@ export function createFileSystem(
     pollingInterval = 500,
   ): ts.FileWatcher => {
     const cb = pollingInterval ? debounce(callback, pollingInterval) : callback;
-
-    const escapedPath = path.replace(/\./g, '\\.').replace(/\*/g, '[^/]+');
-    const expPath = new RegExp(`^${escapedPath}$`, '');
-
+    const expPath = getPathRegExp(path);
     let handle = fileWatcherCallbacks.get(expPath);
     if (!handle) {
       handle = new Set();
@@ -73,6 +72,11 @@ export function createFileSystem(
 
   system.removeFile = (fileName): void => {
     files.delete(fileName);
+  };
+
+  system.searchFiles = (path: string): string[] => {
+    const expPath = getPathRegExp(path);
+    return [...files.keys()].filter(fileName => expPath.test(fileName));
   };
 
   return system;

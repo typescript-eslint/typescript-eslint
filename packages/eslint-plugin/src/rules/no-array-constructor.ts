@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isOptionalCallExpression } from '../util';
 
@@ -10,8 +10,8 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {
@@ -42,7 +42,7 @@ export default createRule({
             if (node.arguments.length === 0) {
               return fixer.replaceText(node, '[]');
             }
-            const fullText = getSourceCode(context).getText(node);
+            const fullText = context.sourceCode.getText(node);
             const preambleLength = node.callee.range[1] - node.range[0];
 
             return fixer.replaceText(

@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -14,6 +14,7 @@ import {
 export default createRule({
   name: 'non-nullable-type-assertion-style',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Enforce non-null assertions over explicit type casts',
       recommended: 'stylistic',
@@ -25,13 +26,11 @@ export default createRule({
         'Use a ! assertion to more succinctly remove null and undefined from the type.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
 
   create(context) {
     const services = getParserServices(context);
-    const sourceCode = getSourceCode(context);
 
     const getTypesIfNotLoose = (node: TSESTree.Node): ts.Type[] | undefined => {
       const type = services.getTypeAtLocation(node);
@@ -120,7 +119,9 @@ export default createRule({
         }
 
         if (sameTypeWithoutNullish(assertedTypes, originalTypes)) {
-          const expressionSourceCode = sourceCode.getText(node.expression);
+          const expressionSourceCode = context.sourceCode.getText(
+            node.expression,
+          );
 
           const higherPrecedenceThanUnary =
             getOperatorPrecedence(
@@ -129,6 +130,8 @@ export default createRule({
             ) > OperatorPrecedence.Unary;
 
           context.report({
+            node,
+            messageId: 'preferNonNullAssertion',
             fix(fixer) {
               return fixer.replaceText(
                 node,
@@ -137,8 +140,6 @@ export default createRule({
                   : `(${expressionSourceCode})!`,
               );
             },
-            messageId: 'preferNonNullAssertion',
-            node,
           });
         }
       },

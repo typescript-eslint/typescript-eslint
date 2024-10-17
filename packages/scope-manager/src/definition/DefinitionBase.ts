@@ -1,46 +1,43 @@
 import type { TSESTree } from '@typescript-eslint/types';
 
-import { createIdGenerator } from '../ID';
 import type { DefinitionType } from './DefinitionType';
+
+import { createIdGenerator } from '../ID';
 
 const generator = createIdGenerator();
 
 abstract class DefinitionBase<
-  TType extends DefinitionType,
-  TNode extends TSESTree.Node,
-  TParent extends TSESTree.Node | null,
-  TName extends TSESTree.Node,
+  Type extends DefinitionType,
+  Node extends TSESTree.Node,
+  Parent extends TSESTree.Node | null,
+  Name extends TSESTree.Node,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
    */
   public readonly $id: number = generator();
 
-  /**
-   * The type of the definition
-   * @public
-   */
-  public readonly type: TType;
+  public readonly type: Type;
 
   /**
    * The `Identifier` node of this definition
    * @public
    */
-  public readonly name: TName;
+  public readonly name: Name;
 
   /**
    * The enclosing node of the name.
    * @public
    */
-  public readonly node: TNode;
+  public readonly node: Node;
 
   /**
    * the enclosing statement node of the identifier.
    * @public
    */
-  public readonly parent: TParent;
+  public readonly parent: Parent;
 
-  constructor(type: TType, name: TName, node: TNode, parent: TParent) {
+  constructor(type: Type, name: Name, node: Node, parent: Parent) {
     this.type = type;
     this.name = name;
     this.node = node;

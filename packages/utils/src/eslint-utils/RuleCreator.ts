@@ -5,42 +5,44 @@ import type {
   RuleMetaDataDocs,
   RuleModule,
 } from '../ts-eslint/Rule';
-import { applyDefault } from './applyDefault';
 
-export type { RuleListener, RuleModule };
+import { applyDefault } from './applyDefault';
 
 // we automatically add the url
 export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
-export type NamedCreateRuleMeta<TMessageIds extends string> = Omit<
-  RuleMetaData<TMessageIds>,
-  'docs'
-> & {
-  docs: NamedCreateRuleMetaDocs;
-};
+
+export type NamedCreateRuleMeta<
+  MessageIds extends string,
+  PluginDocs = unknown,
+> = {
+  docs: PluginDocs & RuleMetaDataDocs;
+} & Omit<RuleMetaData<MessageIds, PluginDocs>, 'docs'>;
 
 export interface RuleCreateAndOptions<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
+  Options extends readonly unknown[],
+  MessageIds extends string,
 > {
   create: (
-    context: Readonly<RuleContext<TMessageIds, TOptions>>,
-    optionsWithDefault: Readonly<TOptions>,
+    context: Readonly<RuleContext<MessageIds, Options>>,
+    optionsWithDefault: Readonly<Options>,
   ) => RuleListener;
-  defaultOptions: Readonly<TOptions>;
+  defaultOptions: Readonly<Options>;
 }
 
 export interface RuleWithMeta<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
-> extends RuleCreateAndOptions<TOptions, TMessageIds> {
-  meta: RuleMetaData<TMessageIds>;
+  Options extends readonly unknown[],
+  MessageIds extends string,
+  Docs = unknown,
+> extends RuleCreateAndOptions<Options, MessageIds> {
+  meta: RuleMetaData<MessageIds, Docs>;
 }
 
 export interface RuleWithMetaAndName<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
-> extends RuleCreateAndOptions<TOptions, TMessageIds> {
-  meta: NamedCreateRuleMeta<TMessageIds>;
+  Options extends readonly unknown[],
+  MessageIds extends string,
+  Docs = unknown,
+> extends RuleCreateAndOptions<Options, MessageIds> {
+  meta: NamedCreateRuleMeta<MessageIds, Docs>;
   name: string;
 }
 
@@ -50,21 +52,22 @@ export interface RuleWithMetaAndName<
  * @param urlCreator Creates a documentation URL for a given rule name.
  * @returns Function to create a rule with the docs URL format.
  */
-export function RuleCreator(urlCreator: (ruleName: string) => string) {
+export function RuleCreator<PluginDocs = unknown>(
+  urlCreator: (ruleName: string) => string,
+) {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createNamedRule<
-    TOptions extends readonly unknown[],
-    TMessageIds extends string,
+    Options extends readonly unknown[],
+    MessageIds extends string,
   >({
-    name,
     meta,
+    name,
     ...rule
-  }: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>): RuleModule<
-    TMessageIds,
-    TOptions
-  > {
-    return createRule<TOptions, TMessageIds>({
+  }: Readonly<
+    RuleWithMetaAndName<Options, MessageIds, PluginDocs>
+  >): RuleModule<MessageIds, Options, PluginDocs> {
+    return createRule<Options, MessageIds, PluginDocs>({
       meta: {
         ...meta,
         docs: {
@@ -77,27 +80,21 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   };
 }
 
-/**
- * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
- *
- * @returns Well-typed TSESLint custom ESLint rule.
- * @remarks It is generally better to provide a docs URL function to RuleCreator.
- */
 function createRule<
-  TOptions extends readonly unknown[],
-  TMessageIds extends string,
+  Options extends readonly unknown[],
+  MessageIds extends string,
+  PluginDocs = unknown,
 >({
   create,
   defaultOptions,
   meta,
-}: Readonly<RuleWithMeta<TOptions, TMessageIds>>): RuleModule<
-  TMessageIds,
-  TOptions
+}: Readonly<RuleWithMeta<Options, MessageIds, PluginDocs>>): RuleModule<
+  MessageIds,
+  Options,
+  PluginDocs
 > {
   return {
-    create(
-      context: Readonly<RuleContext<TMessageIds, TOptions>>,
-    ): RuleListener {
+    create(context: Readonly<RuleContext<MessageIds, Options>>): RuleListener {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
     },
@@ -106,4 +103,19 @@ function createRule<
   };
 }
 
-RuleCreator.withoutDocs = createRule;
+/**
+ * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
+ *
+ * @returns Well-typed TSESLint custom ESLint rule.
+ * @remarks It is generally better to provide a docs URL function to RuleCreator.
+ */
+RuleCreator.withoutDocs = function withoutDocs<
+  Options extends readonly unknown[],
+  MessageIds extends string,
+>(
+  args: Readonly<RuleWithMeta<Options, MessageIds>>,
+): RuleModule<MessageIds, Options> {
+  return createRule(args);
+};
+
+export { type RuleListener, type RuleModule } from '../ts-eslint/Rule';

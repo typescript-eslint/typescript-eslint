@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -16,6 +17,11 @@ const enum State {
   Safe = 2,
 }
 
+function createDataType(type: ts.Type): '`any`' | '`error` typed' {
+  const isErrorType = tsutils.isIntrinsicErrorType(type);
+  return isErrorType ? '`error` typed' : '`any`';
+}
+
 export default createRule({
   name: 'no-unsafe-member-access',
   meta: {
@@ -26,14 +32,14 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
+      unsafeComputedMemberAccess:
+        'Computed name {{property}} resolves to an {{type}} value.',
       unsafeMemberExpression:
-        'Unsafe member access {{property}} on an `any` value.',
+        'Unsafe member access {{property}} on an {{type}} value.',
       unsafeThisMemberExpression: [
         'Unsafe member access {{property}} on an `any` value. `this` is typed as `any`.',
         'You can try to fix this by turning on the `noImplicitThis` compiler option, or adding a `this` parameter to the function.',
       ].join('\n'),
-      unsafeComputedMemberAccess:
-        'Computed name {{property}} resolves to an any value.',
     },
     schema: [],
   },
@@ -45,7 +51,6 @@ export default createRule({
       compilerOptions,
       'noImplicitThis',
     );
-    const sourceCode = getSourceCode(context);
 
     const stateCache = new Map<TSESTree.Node, State>();
 
@@ -70,7 +75,7 @@ export default createRule({
       stateCache.set(node, state);
 
       if (state === State.Unsafe) {
-        const propertyName = sourceCode.getText(node.property);
+        const propertyName = context.sourceCode.getText(node.property);
 
         let messageId: 'unsafeMemberExpression' | 'unsafeThisMemberExpression' =
           'unsafeMemberExpression';
@@ -93,6 +98,7 @@ export default createRule({
           node: node.property,
           messageId,
           data: {
+            type: createDataType(type),
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
           },
         });
@@ -102,8 +108,8 @@ export default createRule({
     }
 
     return {
-      // ignore MemberExpression if it's parent is TSClassImplements or TSInterfaceHeritage
-      ':not(TSClassImplements, TSInterfaceHeritage) > MemberExpression':
+      // ignore MemberExpressions with ancestors of type `TSClassImplements` or `TSInterfaceHeritage`
+      'MemberExpression:not(TSClassImplements MemberExpression, TSInterfaceHeritage MemberExpression)':
         checkMemberExpression,
       'MemberExpression[computed = true] > *.property'(
         node: TSESTree.Expression,
@@ -123,11 +129,12 @@ export default createRule({
         const type = services.getTypeAtLocation(node);
 
         if (isTypeAnyType(type)) {
-          const propertyName = sourceCode.getText(node);
+          const propertyName = context.sourceCode.getText(node);
           context.report({
             node,
             messageId: 'unsafeComputedMemberAccess',
             data: {
+              type: createDataType(type),
               property: `[${propertyName}]`,
             },
           });

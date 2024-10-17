@@ -6,31 +6,33 @@ type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 export type TesterConfigWithDefaults = Mutable<
-  Required<Pick<RuleTesterConfig, 'defaultFilenames' | 'parser' | 'rules'>> &
+  Required<
+    Pick<RuleTesterConfig, 'defaultFilenames' | 'languageOptions' | 'rules'>
+  > &
     RuleTesterConfig
 >;
 
 export interface RunTests<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
+  MessageIds extends string,
+  Options extends readonly unknown[],
 > {
+  readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: readonly (ValidTestCase<TOptions> | string)[];
-  readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[];
+  readonly valid: readonly (ValidTestCase<Options> | string)[];
 }
 
 export interface NormalizedRunTests<
-  TMessageIds extends string,
-  TOptions extends Readonly<unknown[]>,
+  MessageIds extends string,
+  Options extends readonly unknown[],
 > {
-  readonly valid: readonly ValidTestCase<TOptions>[];
-  readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[];
+  readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
+  readonly valid: readonly ValidTestCase<Options>[];
 }
 
-export type { ValidTestCase } from './ValidTestCase';
 export type {
   InvalidTestCase,
   SuggestionOutput,
   TestCaseError,
 } from './InvalidTestCase';
 export type { RuleTesterConfig } from './RuleTesterConfig';
+export type { ValidTestCase } from './ValidTestCase';

@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -25,6 +26,7 @@ type MessageIds = 'unnecessaryTypeParameter';
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow type arguments that are equal to the default',
       recommended: 'strict',
@@ -36,7 +38,6 @@ export default createRule<[], MessageIds>({
         'This is the default value for this type parameter, so it can be omitted.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -132,7 +133,11 @@ function getTypeParametersFromNode(
     return getTypeParametersFromType(node.typeName, checker);
   }
 
-  if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+  if (
+    ts.isCallExpression(node) ||
+    ts.isNewExpression(node) ||
+    ts.isTaggedTemplateExpression(node)
+  ) {
     return getTypeParametersFromCall(node, checker);
   }
 
@@ -165,7 +170,7 @@ function getTypeParametersFromType(
 }
 
 function getTypeParametersFromCall(
-  node: ts.CallExpression | ts.NewExpression,
+  node: ts.CallExpression | ts.NewExpression | ts.TaggedTemplateExpression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(node);
