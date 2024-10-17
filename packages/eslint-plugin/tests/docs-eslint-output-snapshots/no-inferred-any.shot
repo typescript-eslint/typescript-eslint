@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+// TypeScript's built-in types for \`.json()\` return \`Promise<any>\`
+declare function fetch(url: string): Promise<Response>;
+interface Response {
+  json(): Promise<any>;
+}
+
+const response = await fetch('/');
+const data = await response.json();
+             ~~~~~~~~~~~~~~~~~~~~~ Variable type inferred as \`any\`. To fix, add explicit type declaration.
+// If \`data\` is not an object this line will throw, but TypeScript doesn't complain.
+console.log(data.property);
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 2`] = `
+"Correct
+
+// TypeScript's built-in types for \`.json()\` return \`Promise<any>\`
+declare function fetch(url: string): Promise<Response>;
+interface Response {
+  json(): Promise<any>;
+}
+
+const response = await fetch('/');
+const data: unknown = await response.json();
+if (data && typeof data === 'object' && 'property' in data) {
+  console.log(data.property);
+}
+
+// Adding an explicit type declaration will silence the linting error, even if
+// the declared type is \`any\`.
+const data2: any = await response.json();
+console.log(data2.property);
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+const value: any = {};
+export { value };
+         ~~~~~ Exported variable type inferred as \`any\`. To fix, add explicit type declaration.
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 4`] = `
+"Correct
+
+const value: unknown = {};
+export { value };
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 5`] = `
+"Incorrect
+
+function test() {
+  const value: any = {};
+  return value;
+         ~~~~~ Function return type inferred as \`any\`. To fix, add explicit type declaration.
+}
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 6`] = `
+"Correct
+
+function test(): unknown {
+  const value: any = {};
+  return value;
+}
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 7`] = `
+"Incorrect
+
+const value: any = {};
+const value2 = value;
+               ~~~~~ Variable type inferred as \`any\`. To fix, add explicit type declaration.
+"
+`;
+
+exports[`Validating rule docs no-inferred-any.mdx code examples ESLint output 8`] = `
+"Correct
+
+const value: any = {};
+const value2: unknown = value;
+"
+`;

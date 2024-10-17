@@ -45,6 +45,7 @@ import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
 import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
+import noInferredAny from './no-inferred-any';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
 import noLoopFunc from './no-loop-func';
@@ -174,6 +175,7 @@ const rules = {
   'no-implied-eval': noImpliedEval,
   'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,
+  'no-inferred-any': noInferredAny,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,
   'no-loop-func': noLoopFunc,

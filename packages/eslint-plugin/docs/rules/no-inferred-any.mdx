@@ -1,0 +1,163 @@
+---
+description: 'Disallow implicitly inferred `any` type.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-inferred-any** for documentation.
+
+Even if you never explicitly use the `any` type in your own code, you might
+unknownigly write code that variables with the type `any` or calls functions
+which return `any`. These `any` types might come from:
+
+- Untyped JavaScript code in the same project, in a mixed TypeScript/JavaScript project
+- Imported packages that use `any` in their type declarations
+- TypeScript's built-in types for native DOM APIs
+
+When this happens, it's easy to write code that looks like it's properly typed
+because there is no explicit `any` in the code itself, but in reality has almost
+no type checking because the variables are implicitly inferred as `any`.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+// TypeScript's built-in types for `.json()` return `Promise<any>`
+declare function fetch(url: string): Promise<Response>;
+interface Response {
+  json(): Promise<any>;
+}
+
+const response = await fetch('/');
+const data = await response.json();
+// If `data` is not an object this line will throw, but TypeScript doesn't complain.
+console.log(data.property);
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+// TypeScript's built-in types for `.json()` return `Promise<any>`
+declare function fetch(url: string): Promise<Response>;
+interface Response {
+  json(): Promise<any>;
+}
+
+const response = await fetch('/');
+const data: unknown = await response.json();
+if (data && typeof data === 'object' && 'property' in data) {
+  console.log(data.property);
+}
+
+// Adding an explicit type declaration will silence the linting error, even if
+// the declared type is `any`.
+const data2: any = await response.json();
+console.log(data2.property);
+```
+
+</TabItem>
+</Tabs>
+
+## Options
+
+By default, variables, exports, and function return types are all checked by
+this rule. But specific kinds of checks can be disabled, mainly to make it
+easier to incrementically introduce the rule into an existing codebase.
+
+### `checkExports`
+
+When true, the type of any variables and return type of any functions
+`export`-ed from a module will be checked.
+
+Examples of code for this rule with `checkExports: true`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const value: any = {};
+export { value };
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+const value: unknown = {};
+export { value };
+```
+
+</TabItem>
+</Tabs>
+
+### `checkReturnTypes`
+
+When true, the return type of any functions will be checked.
+
+Examples of code for this rule with `checkReturnTypes: true`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function test() {
+  const value: any = {};
+  return value;
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function test(): unknown {
+  const value: any = {};
+  return value;
+}
+```
+
+</TabItem>
+</Tabs>
+
+### `checkVariables`
+
+When true, the type of any variable declarations (i.e. variables defined using
+`var`, `let` or `const` statements will be checked).
+
+Examples of code for this rule with `checkVariables: true`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+const value: any = {};
+const value2 = value;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+const value: any = {};
+const value2: unknown = value;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If you are okay with the possibility of `any` types from other code causing
+variables, return types, and exports to implicitly have an `any` type, or your
+project has or uses `any` types often enough that enabling this rule would be
+impractical.
+
+If you aggressively avoid the use of type inference and always give explicit
+type declarations to variables and return types in your code, then this rule may
+not be necessary.
