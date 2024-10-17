@@ -3895,9 +3895,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/api-extractor@npm:7.47.9":
-  version: 7.47.9
-  resolution: "@microsoft/api-extractor@npm:7.47.9"
+"@microsoft/api-extractor@npm:^7.47.11":
+  version: 7.47.11
+  resolution: "@microsoft/api-extractor@npm:7.47.11"
   dependencies:
     "@microsoft/api-extractor-model": 7.29.8
     "@microsoft/tsdoc": ~0.15.0
@@ -3905,7 +3905,7 @@ __metadata:
     "@rushstack/node-core-library": 5.9.0
     "@rushstack/rig-package": 0.5.3
     "@rushstack/terminal": 0.14.2
-    "@rushstack/ts-command-line": 4.22.8
+    "@rushstack/ts-command-line": 4.23.0
     lodash: ~4.17.15
     minimatch: ~3.0.3
     resolve: ~1.22.1
@@ -3914,30 +3914,7 @@ __metadata:
     typescript: 5.4.2
   bin:
     api-extractor: bin/api-extractor
-  checksum: 5e96654b388359bd9a1fb85ea7698921ca0f9dfa9c57e48fc9d28625107fea54863d57c82f4080686f190ae0d6fcd8b7fa7c070e7b8acb359b5cd62137e2bb23
-  languageName: node
-  linkType: hard
-
-"@microsoft/api-extractor@patch:@microsoft/api-extractor@npm%3A7.47.9#./.yarn/patches/@microsoft-api-extractor-npm-7.47.9-d69a694fc6.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 7.47.9
-  resolution: "@microsoft/api-extractor@patch:@microsoft/api-extractor@npm%3A7.47.9#./.yarn/patches/@microsoft-api-extractor-npm-7.47.9-d69a694fc6.patch::version=7.47.9&hash=abab87&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
-  dependencies:
-    "@microsoft/api-extractor-model": 7.29.8
-    "@microsoft/tsdoc": ~0.15.0
-    "@microsoft/tsdoc-config": ~0.17.0
-    "@rushstack/node-core-library": 5.9.0
-    "@rushstack/rig-package": 0.5.3
-    "@rushstack/terminal": 0.14.2
-    "@rushstack/ts-command-line": 4.22.8
-    lodash: ~4.17.15
-    minimatch: ~3.0.3
-    resolve: ~1.22.1
-    semver: ~7.5.4
-    source-map: ~0.6.1
-    typescript: 5.4.2
-  bin:
-    api-extractor: bin/api-extractor
-  checksum: 591e477993159a3b619c9167f4a30a641cdae07ff4b04034a746072e0b0ba9257683d8888a32e31162c3b9c2dceb7598625bb3a872a2a006c91e6ced5c816c0e
+  checksum: 1ae7634c21e20fe191b5297a03b87547b03e9db4ee3439809363e554bcc7610ebd43dd71d30db5fbee573b7f84a2e1fa6ab3bdf320500a266b7c7c1ccc6049b2
   languageName: node
   linkType: hard
 
@@ -4542,15 +4519,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rushstack/ts-command-line@npm:4.22.8":
-  version: 4.22.8
-  resolution: "@rushstack/ts-command-line@npm:4.22.8"
+"@rushstack/ts-command-line@npm:4.23.0":
+  version: 4.23.0
+  resolution: "@rushstack/ts-command-line@npm:4.23.0"
   dependencies:
     "@rushstack/terminal": 0.14.2
     "@types/argparse": 1.0.38
     argparse: ~1.0.9
     string-argv: ~0.3.1
-  checksum: b0108e4b567c364a7c62b30dc3e4d17130b6f8ba16a0457c56b8c898ba84316e72726a4e043ca5183da7bf5d0189aed585ab3ac8bce5991b8e80ac94d333cd6c
+  checksum: 4f3d77c5b2998bbc551d02e882f0c7b8e7aed0d97ad6e4ee45b2d6281a209087f738fc1a021397088ffbe666c4eae462c1d8c4a14dc031dddee2af055b12f794
   languageName: node
   linkType: hard
 
@@ -5648,7 +5625,7 @@ __metadata:
     "@babel/core": "*"
     "@babel/eslint-parser": "*"
     "@jest/types": 29.6.3
-    "@microsoft/api-extractor": ^7.47.8
+    "@microsoft/api-extractor": ^7.47.11
     glob: "*"
     jest: 29.7.0
     jest-diff: ^29.7.0
