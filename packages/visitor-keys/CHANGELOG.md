@@ -1,3 +1,27 @@
+## 8.9.0 (2024-10-14)
+
+
+### 🩹 Fixes
+
+- **visitor-keys:** reorder `TSSatisfiesExpression` and `TSTypeAssertion`
+
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Anna Bocharova
+- Arya Emami
+- auvred
+- Joshua Chen
+- Kirk Waiblinger
+- Lotfi Meklati
+- mdm317
+- Ronen Amiel
+- Sukka
+- YeonJuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.8.1 (2024-10-07)
 
 This was a version bump only for visitor-keys to align it with other projects, there were no code changes.

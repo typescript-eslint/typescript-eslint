@@ -62,9 +62,9 @@ type stillVoid = void | never;
 
 ### `allowInGenericTypeArguments`
 
-Whether `void` can be used as a valid value for generic type parameters.
+{/* insert option description */}
 
-Alternatively, you can provide an array of strings which whitelist which types may accept `void` as a generic type parameter.
+Alternatively, you can provide an array of strings which allowlist which types may accept `void` as a generic type parameter.
 
 Any types considered valid by this option will be considered valid as part of a union type with `void`.
 
@@ -98,7 +98,8 @@ type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 
 ### `allowAsThisParameter`
 
-Whether a `this` parameter of a function may be `void`.
+{/* insert option description */}
+
 This pattern can be useful to explicitly label function types that do not use a `this` argument. [See the TypeScript docs for more information](https://www.typescriptlang.org/docs/handbook/functions.html#this-parameters-in-callbacks).
 
 This option is `false` by default.
