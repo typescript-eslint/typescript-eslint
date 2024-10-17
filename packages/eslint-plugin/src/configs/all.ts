@@ -64,6 +64,7 @@ export = {
     '@typescript-eslint/no-implied-eval': 'error',
     '@typescript-eslint/no-import-type-side-effects': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
+    '@typescript-eslint/no-inferred-any': 'error',
     'no-invalid-this': 'off',
     '@typescript-eslint/no-invalid-this': 'error',
     '@typescript-eslint/no-invalid-void-type': 'error',
