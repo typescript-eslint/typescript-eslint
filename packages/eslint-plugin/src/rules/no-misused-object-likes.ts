@@ -1,5 +1,7 @@
-import { isSymbolFromDefaultLibrary } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
+import { isSymbolFromDefaultLibrary } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -12,7 +14,6 @@ const METHODS = ['assign', 'entries', 'hasOwn', 'keys', 'values'];
 
 export default createRule({
   name: 'no-misused-object-likes',
-  defaultOptions: [],
   meta: {
     type: 'problem',
     docs: {
@@ -25,9 +26,12 @@ export default createRule({
     },
     schema: [],
   },
+  defaultOptions: [],
 
   create(context) {
-    const getSymbolIfFromDefaultLibrary = (node: TSESTree.Node) => {
+    const getSymbolIfFromDefaultLibrary = (
+      node: TSESTree.Node,
+    ): ts.Symbol | undefined => {
       const services = getParserServices(context);
       const symbol = services.getTypeAtLocation(node).getSymbol();
       return isSymbolFromDefaultLibrary(services.program, symbol)
@@ -40,7 +44,7 @@ export default createRule({
         context.report({
           node,
           messageId: 'misusedObjectLike',
-          data: { used, objectClass },
+          data: { objectClass, used },
         });
       }
     };
