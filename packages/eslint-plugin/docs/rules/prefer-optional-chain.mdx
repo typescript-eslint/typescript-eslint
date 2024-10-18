@@ -89,6 +89,30 @@ This style of code isn't super common - which means having this option set to `t
 
 When this option is `false` unsafe cases will have suggestion fixers provided instead of auto-fixers - meaning you can manually apply the fix using your IDE tooling.
 
+### `allowSuggestingOnIfStatements`
+
+When this option is `true`, the rule will analyze and suggest turning simple `if` statements with a single block expression into an optional chain call
+
+<Tabs>
+
+<TabItem value="❌ Incorrect for `allowSuggestingOnIfStatements: true`">
+
+```ts option='{ "allowSuggestingOnIfStatements": true }'
+if (foo) {
+  foo.bar();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct for `allowSuggestingOnIfStatements: false`">
+
+```ts option='{ "allowSuggestingOnIfStatements": false }'
+foo?.bar();
+```
+
+</TabItem>
+</Tabs>
+
 ### `checkAny`
 
 {/* insert option description */}
