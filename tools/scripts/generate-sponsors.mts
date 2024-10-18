@@ -10,7 +10,7 @@ type MemberNodes = {
     id: string;
     imageUrl: string;
     name: string;
-    website: string;
+    website: string | null;
   };
   totalDonations: { valueInCents: number };
 }[];
@@ -38,22 +38,9 @@ const { members } = (
                     name
                     website
                   }
-                  tier {
-                    amount {
-                      valueInCents
-                    }
-                    orders(limit: 100) {
-                      nodes {
-                        amount {
-                          valueInCents
-                        }
-                      }
-                    }
-                  }
                   totalDonations {
                     valueInCents
                   }
-                  updatedAt
                 }
               }
             }
