@@ -17,8 +17,8 @@ const EXTENSION_RULES = Object.entries(rules)
   );
 
 function filterRules(
-  values: Record<string, unknown[] | string>,
-): [string, unknown[] | string][] {
+  values: Record<string, string | unknown[]>,
+): [string, string | unknown[]][] {
   return Object.entries(values).filter(([name]) =>
     name.startsWith(RULE_NAME_PREFIX),
   );
@@ -84,7 +84,7 @@ function filterAndMapRuleConfigs({
 }
 
 function itHasBaseRulesOverriden(
-  unfilteredConfigRules: Record<string, unknown[] | string>,
+  unfilteredConfigRules: Record<string, string | unknown[]>,
 ): void {
   it('has the base rules overriden by the appropriate extension rules', () => {
     const ruleNames = new Set(Object.keys(unfilteredConfigRules));
@@ -196,7 +196,7 @@ describe('recommended-type-checked-only.ts', () => {
 });
 
 describe('strict.ts', () => {
-  const unfilteredConfigRules: Record<string, unknown[] | string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs.strict.rules;
 
   it('contains all strict rules, excluding type checked ones', () => {
@@ -217,7 +217,7 @@ describe('strict.ts', () => {
 });
 
 describe('strict-type-checked.ts', () => {
-  const unfilteredConfigRules: Record<string, unknown[] | string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs['strict-type-checked'].rules;
 
   it('contains all strict rules', () => {
@@ -236,7 +236,7 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('strict-type-checked-only.ts', () => {
-  const unfilteredConfigRules: Record<string, unknown[] | string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs['strict-type-checked-only'].rules;
 
   it('contains only type-checked strict rules', () => {
@@ -257,7 +257,7 @@ describe('strict-type-checked-only.ts', () => {
 });
 
 describe('stylistic.ts', () => {
-  const unfilteredConfigRules: Record<string, unknown[] | string> =
+  const unfilteredConfigRules: Record<string, string | unknown[]> =
     plugin.configs.stylistic.rules;
 
   it('contains all stylistic rules, excluding deprecated or type checked ones', () => {

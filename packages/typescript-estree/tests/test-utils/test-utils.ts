@@ -3,7 +3,8 @@ import type {
   TSESTree,
   TSESTreeOptions,
 } from '../../src';
-import { parse as parserParse, parseAndGenerateServices } from '../../src';
+
+import { parseAndGenerateServices, parse as parserParse } from '../../src';
 
 export function parseCodeAndGenerateServices(
   code: string,

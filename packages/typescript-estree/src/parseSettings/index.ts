@@ -5,7 +5,7 @@ import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
 
-type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
+type DebugModule = 'eslint' | 'typescript' | 'typescript-eslint';
 
 // Workaround to support new TS version features for consumers on old TS versions
 declare module 'typescript' {
@@ -30,7 +30,7 @@ export interface MutableParseSettings {
   /**
    * Code of the file being parsed, or raw source file containing it.
    */
-  code: ts.SourceFile | string;
+  code: string | ts.SourceFile;
 
   /**
    * Full text of the file being parsed.

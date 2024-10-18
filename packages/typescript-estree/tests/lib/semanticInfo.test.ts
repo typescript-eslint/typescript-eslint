@@ -1,15 +1,15 @@
+import * as glob from 'glob';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-
-import * as glob from 'glob';
 import * as ts from 'typescript';
+
+import type { ParseAndGenerateServicesResult } from '../../src/parser';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import type { TSESTree } from '../../src/ts-estree';
 
 import { clearCaches } from '../../src';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
-import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
-import type { TSESTreeOptions } from '../../src/parser-options';
-import type { TSESTree } from '../../src/ts-estree';
 import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   createSnapshotTestBlock,
@@ -22,19 +22,19 @@ const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
 
-function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
+function createOptions(fileName: string): { cwd?: string } & TSESTreeOptions {
   return {
-    disallowAutomaticSingleRunInference: true,
-    loc: true,
-    range: true,
-    tokens: true,
     comment: true,
-    jsx: false,
+    disallowAutomaticSingleRunInference: true,
     errorOnUnknownASTType: true,
     filePath: fileName,
-    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
-    project: `./tsconfig.json`,
+    jsx: false,
+    loc: true,
     loggerFn: false,
+    project: `./tsconfig.json`,
+    range: true,
+    tokens: true,
+    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   };
 }
 
@@ -223,8 +223,8 @@ describe('semanticInfo', () => {
       `const x = [parseInt("5")];`,
       {
         ...createOptions('<input>'),
-        project: undefined,
         preserveNodeMaps: true,
+        project: undefined,
       },
     );
 
@@ -338,8 +338,8 @@ describe('semanticInfo', () => {
       const options = createOptions(filename);
       const optionsWithProjectTrue = {
         ...options,
-        project: true,
         programs: undefined,
+        project: true,
       };
       expect(() =>
         parseAndGenerateServices('const foo = 5;', optionsWithProjectTrue),

@@ -18,7 +18,7 @@ type Options = [
   {
     checksConditionals?: boolean;
     checksSpreads?: boolean;
-    checksVoidReturn?: ChecksVoidReturnOptions | boolean;
+    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
   },
 ];
 
@@ -43,7 +43,7 @@ type MessageId =
   | 'voidReturnVariable';
 
 function parseChecksVoidReturn(
-  checksVoidReturn: ChecksVoidReturnOptions | boolean | undefined,
+  checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
 ): ChecksVoidReturnOptions | false {
   switch (checksVoidReturn) {
     case false:

@@ -84,9 +84,9 @@ declare class LinterBase {
    * @returns The results as an array of messages or an empty array if no messages.
    */
   verify(
-    textOrSourceCode: SourceCode | string,
+    textOrSourceCode: string | SourceCode,
     config: Linter.ConfigType,
-    filenameOrOptions?: Linter.VerifyOptions | string,
+    filenameOrOptions?: string | Linter.VerifyOptions,
   ): Linter.LintMessage[];
 
   ////////////////////
@@ -183,7 +183,7 @@ namespace Linter {
     /**
      * Adds reported errors for unused `eslint-disable` directives.
      */
-    reportUnusedDisableDirectives?: SeverityString | boolean;
+    reportUnusedDisableDirectives?: boolean | SeverityString;
   }
 
   export interface FixOptions extends VerifyOptions {

@@ -4,6 +4,7 @@ import type {
   Program,
   SourceFile,
 } from 'typescript';
+
 import { flattenDiagnosticMessageText, sys } from 'typescript';
 
 export interface SemanticOrSyntacticError extends Diagnostic {

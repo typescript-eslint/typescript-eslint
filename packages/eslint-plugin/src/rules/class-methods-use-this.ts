@@ -13,7 +13,7 @@ type Options = [
   {
     enforceForClassFields?: boolean;
     exceptMethods?: string[];
-    ignoreClassesThatImplementAnInterface?: 'public-fields' | boolean;
+    ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
     ignoreOverrideMethods?: boolean;
   },
 ];
