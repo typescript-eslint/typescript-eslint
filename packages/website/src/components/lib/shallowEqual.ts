@@ -1,7 +1,7 @@
 /**
  * Shallowly compare two objects.
  */
-export function shallowEqual<T extends Record<string, unknown>>(
+export function shallowEqual<T extends Record<PropertyKey, unknown>>(
   object1: T | null | undefined,
   object2: T | null | undefined,
 ): boolean {
