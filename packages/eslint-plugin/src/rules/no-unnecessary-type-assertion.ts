@@ -18,6 +18,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { isTypeUnchanged } from '../util/isTypeUnchanged';
 
 type Options = [
   {
@@ -176,38 +177,6 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
-      if (uncast === cast) {
-        return true;
-      }
-
-      if (
-        isTypeFlagSet(uncast, ts.TypeFlags.Undefined) &&
-        isTypeFlagSet(cast, ts.TypeFlags.Undefined) &&
-        tsutils.isCompilerOptionEnabled(
-          compilerOptions,
-          'exactOptionalPropertyTypes',
-        )
-      ) {
-        const uncastParts = tsutils
-          .unionTypeParts(uncast)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        const castParts = tsutils
-          .unionTypeParts(cast)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        if (uncastParts.length !== castParts.length) {
-          return false;
-        }
-
-        const uncastPartsSet = new Set(uncastParts);
-        return castParts.every(part => uncastPartsSet.has(part));
-      }
-
-      return false;
-    }
-
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -222,7 +191,11 @@ export default createRule<Options, MessageIds>({
 
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
-        const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
+        const typeIsUnchanged = isTypeUnchanged(
+          compilerOptions,
+          uncastType,
+          castType,
+        );
 
         const wouldSameTypeBeInferred = castType.isLiteral()
           ? isImplicitlyNarrowedConstDeclaration(node)
