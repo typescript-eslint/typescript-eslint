@@ -155,10 +155,10 @@
   },
   {
     "id": "vlt",
-    "image": "https://images.opencollective.com/vlt/487acef/logo.png",
+    "image": "https://images.opencollective.com/vlt/33d4066/logo.png",
     "name": "vlt",
     "totalDonations": 50000,
-    "website": "https://vlt.sh"
+    "website": "https://vlt.sh/"
   },
   {
     "id": "Joe Alden",
@@ -271,6 +271,13 @@
     "name": "David Johnston",
     "totalDonations": 20500,
     "website": "https://blacksheepcode.com"
+  },
+  {
+    "id": "cocopon",
+    "image": "https://images.opencollective.com/cocopon/9d8fd1a/avatar.png",
+    "name": "cocopon",
+    "totalDonations": 18142,
+    "website": "https://cocopon.me"
   },
   {
     "id": "kartenmacherei",
