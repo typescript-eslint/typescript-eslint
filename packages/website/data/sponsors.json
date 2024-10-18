@@ -133,11 +133,25 @@
     "website": "https://www.codiga.io"
   },
   {
+    "id": "frontendmasters",
+    "image": "https://avatars.githubusercontent.com/u/5613852?v=4",
+    "name": "Frontend Masters",
+    "totalDonations": 63327,
+    "website": "https://FrontendMasters.com"
+  },
+  {
     "id": "DeepSource",
     "image": "https://images.opencollective.com/deepsource/0f18cea/logo.png",
     "name": "DeepSource",
     "totalDonations": 60000,
     "website": "https://deepsource.io/"
+  },
+  {
+    "id": "syntaxfm",
+    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
+    "name": "Syntax",
+    "totalDonations": 54449,
+    "website": "https://syntax.fm"
   },
   {
     "id": "Future Processing",
@@ -294,6 +308,13 @@
     "website": "https://balsa.com/"
   },
   {
+    "id": "codecov",
+    "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
+    "name": "Codecov",
+    "totalDonations": 15292,
+    "website": "https://codecov.io/"
+  },
+  {
     "id": "THE PADDING",
     "image": "https://images.opencollective.com/thepadding/55e79ad/logo.png",
     "name": "THE PADDING",
@@ -313,6 +334,13 @@
     "name": "Now4real",
     "totalDonations": 14500,
     "website": "https://now4real.com/"
+  },
+  {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 14436,
+    "website": "https://sentry.io"
   },
   {
     "id": "Knowledge Work",
