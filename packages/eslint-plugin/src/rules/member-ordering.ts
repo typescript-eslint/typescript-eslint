@@ -782,18 +782,23 @@ export default createRule<Options, MessageIds>({
         properties: {
           classes: {
             $ref: '#/items/0/$defs/baseConfig',
+            description: 'Whether to check classes.',
           },
           classExpressions: {
             $ref: '#/items/0/$defs/baseConfig',
+            description: 'Whether to check class expressions.',
           },
           default: {
             $ref: '#/items/0/$defs/baseConfig',
+            description: 'Whether to check default.',
           },
           interfaces: {
             $ref: '#/items/0/$defs/typesConfig',
+            description: 'Whether to check interfaces.',
           },
           typeLiterals: {
             $ref: '#/items/0/$defs/typesConfig',
+            description: 'Whether to check type literals.',
           },
         },
       },

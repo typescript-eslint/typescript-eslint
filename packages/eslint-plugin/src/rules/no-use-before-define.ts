@@ -231,6 +231,7 @@ export default createRule<Options, MessageIds>({
         oneOf: [
           {
             type: 'string',
+            description: 'Shorthand to disable checking only for functions.',
             enum: ['nofunc'],
           },
           {
