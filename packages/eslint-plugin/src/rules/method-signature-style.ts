@@ -31,6 +31,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'string',
+        description: 'Whether to use function properties or method shorthand.',
         enum: ['property', 'method'],
       },
     ],

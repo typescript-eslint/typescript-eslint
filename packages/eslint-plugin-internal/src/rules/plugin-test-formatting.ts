@@ -114,7 +114,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'problem',
     docs: {
-      description: `Enforce that eslint-plugin test snippets are correctly formatted`,
+      description: `Enforce that eslint-plugin test snippets are correctly and consistently formatted`,
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -124,6 +124,8 @@ export default createRule<Options, MessageIds>({
         additionalProperties: false,
         properties: {
           formatWithPrettier: {
+            description:
+              'Whether to additionally verify that test snippets pass Prettier formatting.',
             type: 'boolean',
           },
         },

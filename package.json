@@ -138,7 +138,6 @@
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.14",
     "eslint": "^9",
-    "eslint-plugin-eslint-plugin@^5.5.0": "patch:eslint-plugin-eslint-plugin@npm%3A5.5.1#./.yarn/patches/eslint-plugin-eslint-plugin-npm-5.5.1-4206c2506d.patch",
     "eslint-visitor-keys": "^3.4.1",
     "jest-config": "^29",
     "jest-resolve": "^29",

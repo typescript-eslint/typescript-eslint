@@ -100,13 +100,26 @@ export default createRule<Options, MessageIds>({
             description:
               'Changes to required accessibility modifiers for specific kinds of class members.',
             properties: {
-              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              accessors: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+                description: 'Whether to check accessors.',
+              },
+              constructors: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+                description: 'Whether to check constructors.',
+              },
+              methods: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+                description: 'Whether to check methods.',
+              },
               parameterProperties: {
                 $ref: '#/items/0/$defs/accessibilityLevel',
+                description: 'Whether to check parameterProperties.',
               },
-              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              properties: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+                description: 'Whether to check properties.',
+              },
             },
           },
         },

@@ -88,10 +88,22 @@ export default createRule<[Options], MessageIds>({
             description:
               'A minimum character length for descriptions when `allow-with-description` is enabled.',
           },
-          'ts-check': { $ref: '#/items/0/$defs/directiveConfigSchema' },
-          'ts-expect-error': { $ref: '#/items/0/$defs/directiveConfigSchema' },
-          'ts-ignore': { $ref: '#/items/0/$defs/directiveConfigSchema' },
-          'ts-nocheck': { $ref: '#/items/0/$defs/directiveConfigSchema' },
+          'ts-check': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description: 'Whether to report @ts-check comments.',
+          },
+          'ts-expect-error': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description: 'Whether to report @ts-expect-error comments.',
+          },
+          'ts-ignore': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description: 'Whether to report @ts-ignore comments.',
+          },
+          'ts-nocheck': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+            description: 'Whether to report @ts-nocheck comments.',
+          },
         },
       },
     ],

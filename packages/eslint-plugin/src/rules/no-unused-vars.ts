@@ -79,6 +79,8 @@ export default createRule<Options, MessageIds>({
         oneOf: [
           {
             type: 'string',
+            description:
+              'Set globally whether all variables or only local variables are checked.',
             enum: ['all', 'local'],
           },
           {
