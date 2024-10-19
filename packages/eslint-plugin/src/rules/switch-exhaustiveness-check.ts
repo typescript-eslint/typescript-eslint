@@ -77,13 +77,13 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
           },
+          considerDefaultExhaustiveForUnions: {
+            type: 'boolean',
+            description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
+          },
           requireDefaultForNonUnion: {
             type: 'boolean',
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
-          },
-          considerDefaultExhaustiveForUnions: {
-            description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
-            type: 'boolean',
           },
         },
       },
@@ -92,8 +92,8 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowDefaultCaseForExhaustiveSwitch: true,
-      requireDefaultForNonUnion: false,
       considerDefaultExhaustiveForUnions: false,
+      requireDefaultForNonUnion: false,
     },
   ],
   create(
@@ -101,8 +101,8 @@ export default createRule<Options, MessageIds>({
     [
       {
         allowDefaultCaseForExhaustiveSwitch,
-        requireDefaultForNonUnion,
         considerDefaultExhaustiveForUnions,
+        requireDefaultForNonUnion,
       },
     ],
   ) {

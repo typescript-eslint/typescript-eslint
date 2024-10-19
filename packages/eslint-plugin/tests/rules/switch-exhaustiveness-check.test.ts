@@ -856,8 +856,8 @@ switch (literal) {
       `,
       options: [
         {
-          considerDefaultExhaustiveForUnions: true,
           allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -2482,16 +2482,11 @@ switch (literal) {
     break;
 }
       `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2508,6 +2503,11 @@ switch (literal) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -2520,16 +2520,11 @@ switch (literal) {
     break;
 }
       `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2544,6 +2539,11 @@ switch (literal) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -2557,16 +2557,11 @@ switch (literal) {
     break;
 }
       `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2582,6 +2577,11 @@ switch (literal) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -2644,16 +2644,11 @@ switch (myEnum) {
   }
 }
       `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 10,
           column: 9,
+          line: 10,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2680,6 +2675,11 @@ switch (myEnum) {
           ],
         },
       ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
     },
     {
       code: `
@@ -2690,16 +2690,11 @@ switch (value) {
   }
 }
       `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 3,
           column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2715,6 +2710,11 @@ switch (value) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
