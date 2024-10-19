@@ -2596,16 +2596,11 @@ switch (literal) {
     break;
 }
       `,
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2623,6 +2618,11 @@ switch (literal) {
       `,
             },
           ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
