@@ -82,7 +82,11 @@ export default createRule<Options, MessageIds>({
         },
         additionalProperties: false,
         properties: {
-          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
+          accessibility: {
+            $ref: '#/items/0/$defs/accessibilityLevel',
+            description:
+              'Which accessibility modifier is required to exist or not exist.',
+          },
           ignoredMethodNames: {
             type: 'array',
             description: 'Specific method names that may be ignored.',
@@ -93,6 +97,8 @@ export default createRule<Options, MessageIds>({
           overrides: {
             type: 'object',
             additionalProperties: false,
+            description:
+              'Changes to required accessibility modifiers for specific kinds of class members.',
             properties: {
               accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
               constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },

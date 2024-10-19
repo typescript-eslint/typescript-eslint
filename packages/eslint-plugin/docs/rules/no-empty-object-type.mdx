@@ -83,7 +83,9 @@ By default, this rule flags both interfaces and object types.
 
 ### `allowInterfaces`
 
-Whether to allow empty interfaces, as one of:
+{/* insert option description */}
+
+Allowed values are:
 
 - `'always'`: to always allow interfaces with no fields
 - `'never'` _(default)_: to never allow interfaces with no fields
@@ -101,14 +103,17 @@ interface Derived extends Base {}
 
 ### `allowObjectTypes`
 
-Whether to allow empty object type literals, as one of:
+{/* insert option description */}
+
+Allowed values are:
 
 - `'always'`: to always allow object type literals with no fields
 - `'never'` _(default)_: to never allow object type literals with no fields
 
 ### `allowWithName`
 
-A stringified regular expression to allow interfaces and object type aliases with the configured name.
+{/* insert option description */}
+
 This can be useful if your existing code style includes a pattern of declaring empty types with `{}` instead of `object`.
 
 Examples of code for this rule with `{ allowWithName: 'Props$' }`:

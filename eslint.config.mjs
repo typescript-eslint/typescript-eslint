@@ -611,6 +611,7 @@ export default tseslint.config(
       'packages/rule-schema-to-typescript-types/src/**/*.ts',
       'packages/rule-tester/{src,tests,typings}/**/*.ts',
       'packages/scope-manager/{src,tests}/**/*.ts',
+      'packages/type-utils/{src,tests,typings}/**/*.ts',
       'packages/types/{src,tools}/**/*.ts',
       'packages/typescript-eslint/{src,tests}/**/*.ts',
       'packages/utils/src/**/*.ts',

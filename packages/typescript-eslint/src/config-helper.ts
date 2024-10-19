@@ -91,16 +91,16 @@ export function config(
       return config;
     }
 
-    const extension = {
-      ...(config.files && { files: config.files }),
-      ...(config.ignores && { ignores: config.ignores }),
-    };
-
     return [
-      ...extendsArr.map(conf => ({
-        ...conf,
-        ...extension,
-      })),
+      ...extendsArr.map(extension => {
+        const name = [config.name, extension.name].filter(Boolean).join('__');
+        return {
+          ...extension,
+          ...(config.files && { files: config.files }),
+          ...(config.ignores && { ignores: config.ignores }),
+          ...(name && { name }),
+        };
+      }),
       config,
     ];
   });
