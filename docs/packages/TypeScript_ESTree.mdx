@@ -34,6 +34,12 @@ Parses the given string of code with the options provided and returns an ESTree-
 ```ts
 interface ParseOptions {
   /**
+   * Specify the `sourceType`.
+   * For more details, see https://github.com/typescript-eslint/typescript-eslint/pull/9121
+   */
+  sourceType?: SourceType;
+
+  /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    * This case only usually occurs when attempting to lint invalid code.
    */
@@ -278,6 +284,11 @@ interface ProjectServiceOptions {
    * @default 'tsconfig.json'
    */
   defaultProject?: string;
+
+  /**
+   * Whether to load TypeScript plugins as configured in the TSConfig.
+   */
+  loadTypeScriptPlugins?: boolean;
 
   /**
    * The maximum number of files {@link allowDefaultProject} may match.

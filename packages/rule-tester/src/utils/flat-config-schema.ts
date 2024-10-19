@@ -216,10 +216,7 @@ function assertIsRuleSeverity(ruleId: string, value: unknown): void {
 function assertIsPluginMemberName(
   value: unknown,
 ): asserts value is PluginMemberName {
-  if (
-    typeof value !== 'string' ||
-    !/[@a-z0-9-_$]+(?:\/(?:[a-z0-9-_$]+))+$/iu.test(value)
-  ) {
+  if (typeof value !== 'string' || !/[@\w$-]+(?:\/[\w$-]+)+$/iu.test(value)) {
     throw new TypeError(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `Expected string in the form "pluginName/objectName" but found "${value}".`,
@@ -277,7 +274,7 @@ const booleanSchema = {
   validate: 'boolean',
 } satisfies ObjectPropertySchema;
 
-const ALLOWED_SEVERITIES = new Set(['error', 'warn', 'off', 2, 1, 0]);
+const ALLOWED_SEVERITIES = new Set([0, 1, 2, 'error', 'off', 'warn']);
 
 const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLevel> =
   {

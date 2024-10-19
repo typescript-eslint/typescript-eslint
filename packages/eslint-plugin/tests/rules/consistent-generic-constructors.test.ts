@@ -321,72 +321,72 @@ const a = function (a = new Foo<string>()) {};
     },
     {
       code: 'const a = new Foo<string>();',
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: 'const a: Foo<string> = new Foo();',
     },
     {
       code: 'const a = new Map<string, number>();',
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: 'const a: Map<string, number> = new Map();',
     },
     {
       code: noFormat`const a = new Map <string, number> ();`,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `const a: Map<string, number> = new Map  ();`,
     },
     {
       code: noFormat`const a = new Map< string, number >();`,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `const a: Map< string, number > = new Map();`,
     },
     {
       code: noFormat`const a = new \n Foo<string> \n ();`,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `const a: Foo<string> = new \n Foo \n ();`,
     },
     {
       code: 'const a = new Foo/* comment */ <string> /* another */();',
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `const a: Foo<string> = new Foo/* comment */  /* another */();`,
     },
     {
       code: 'const a = new Foo</* comment */ string, /* another */ number>();',
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
     },
     {
@@ -395,12 +395,12 @@ class Foo {
   a = new Foo<string>();
 }
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 class Foo {
   a: Foo<string> = new Foo();
@@ -413,12 +413,12 @@ class Foo {
   [a] = new Foo<string>();
 }
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 class Foo {
   [a]: Foo<string> = new Foo();
@@ -431,12 +431,12 @@ class Foo {
   [a + b] = new Foo<string>();
 }
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 class Foo {
   [a + b]: Foo<string> = new Foo();
@@ -447,12 +447,12 @@ class Foo {
       code: `
 function foo(a = new Foo<string>()) {}
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 function foo(a: Foo<string> = new Foo()) {}
       `,
@@ -461,12 +461,12 @@ function foo(a: Foo<string> = new Foo()) {}
       code: `
 function foo({ a } = new Foo<string>()) {}
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 function foo({ a }: Foo<string> = new Foo()) {}
       `,
@@ -475,12 +475,12 @@ function foo({ a }: Foo<string> = new Foo()) {}
       code: `
 function foo([a] = new Foo<string>()) {}
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 function foo([a]: Foo<string> = new Foo()) {}
       `,
@@ -491,12 +491,12 @@ class A {
   constructor(a = new Foo<string>()) {}
 }
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 class A {
   constructor(a: Foo<string> = new Foo()) {}
@@ -507,12 +507,12 @@ class A {
       code: `
 const a = function (a = new Foo<string>()) {};
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 const a = function (a: Foo<string> = new Foo()) {};
       `,

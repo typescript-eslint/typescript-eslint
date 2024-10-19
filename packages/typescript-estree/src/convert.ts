@@ -2029,7 +2029,7 @@ export class Converter {
                 type: AST_NODE_TYPES.ExportNamedDeclaration,
                 source: this.convertChild(node.moduleSpecifier),
                 specifiers: node.exportClause.elements.map(el =>
-                  this.convertChild(el),
+                  this.convertChild(el, node),
                 ),
                 exportKind: node.isTypeOnly ? 'type' : 'value',
                 declaration: null,
@@ -2068,13 +2068,25 @@ export class Converter {
         );
       }
 
-      case SyntaxKind.ExportSpecifier:
+      case SyntaxKind.ExportSpecifier: {
+        const local = node.propertyName ?? node.name;
+        if (
+          local.kind === SyntaxKind.StringLiteral &&
+          parent.kind === SyntaxKind.ExportDeclaration &&
+          parent.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
+        ) {
+          this.#throwError(
+            local,
+            'A string literal cannot be used as a local exported binding without `from`.',
+          );
+        }
         return this.createNode<TSESTree.ExportSpecifier>(node, {
           type: AST_NODE_TYPES.ExportSpecifier,
-          local: this.convertChild(node.propertyName ?? node.name),
+          local: this.convertChild(local),
           exported: this.convertChild(node.name),
           exportKind: node.isTypeOnly ? 'type' : 'value',
         });
+      }
 
       case SyntaxKind.ExportAssignment:
         if (node.isExportEquals) {

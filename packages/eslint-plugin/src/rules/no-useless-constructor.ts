@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -47,12 +49,12 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary constructors',
-      recommended: 'strict',
       extendsBaseRule: true,
+      recommended: 'strict',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
   },
   defaultOptions: [],
   create(context) {

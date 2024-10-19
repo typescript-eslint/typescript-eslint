@@ -14,6 +14,9 @@ if (promise) {
 const val = promise ? 123 : 456;
             ~~~~~~~ Expected non-Promise value in a boolean conditional.
 
+[1, 2, 3].filter(() => promise);
+                 ~~~~~~~~~~~~~ Expected a non-Promise value to be returned.
+
 while (promise) {
        ~~~~~~~ Expected non-Promise value in a boolean conditional.
   // Do something
@@ -33,6 +36,9 @@ if (await promise) {
 }
 
 const val = (await promise) ? 123 : 456;
+
+const returnVal = await promise;
+[1, 2, 3].filter(() => returnVal);
 
 while (await promise) {
   // Do something

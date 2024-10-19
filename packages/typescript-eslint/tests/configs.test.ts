@@ -367,4 +367,100 @@ describe('config helper', () => {
       },
     ]);
   });
+
+  it('flattens extended configs with config name', () => {
+    expect(
+      plugin.config({
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      }),
+    ).toEqual([
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule2: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      },
+    ]);
+  });
+
+  it('flattens extended configs with names if base config is unnamed', () => {
+    expect(
+      plugin.config({
+        extends: [
+          { name: 'extension-1', rules: { rule1: 'error' } },
+          { rules: { rule2: 'error' } },
+        ],
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule: 'error' },
+      }),
+    ).toEqual([
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'extension-1',
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule2: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        rules: { rule: 'error' },
+      },
+    ]);
+  });
+
+  it('merges config items names', () => {
+    expect(
+      plugin.config({
+        extends: [
+          { name: 'extension-1', rules: { rule1: 'error' } },
+          { rules: { rule2: 'error' } },
+        ],
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      }),
+    ).toEqual([
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config__extension-1',
+        rules: { rule1: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule2: 'error' },
+      },
+      {
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      },
+    ]);
+  });
 });

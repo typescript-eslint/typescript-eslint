@@ -1,13 +1,15 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+
+import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
+
+import { getTypeOfPropertyOfType } from './propertyTypes';
 import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
+  typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
@@ -20,30 +22,27 @@ const enum Readonlyness {
 }
 
 export interface ReadonlynessOptions {
-  readonly treatMethodsAsReadonly?: boolean;
   readonly allow?: TypeOrValueSpecifier[];
+  readonly treatMethodsAsReadonly?: boolean;
 }
 
 export const readonlynessOptionsSchema = {
-  type: 'object',
   additionalProperties: false,
   properties: {
+    allow: typeOrValueSpecifiersSchema,
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
-    allow: {
-      type: 'array',
-      items: typeOrValueSpecifierSchema,
-    },
   },
+  type: 'object',
 } satisfies JSONSchema4;
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
-  treatMethodsAsReadonly: false,
   allow: [],
+  treatMethodsAsReadonly: false,
 };
 
-function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
+function hasSymbol(node: ts.Node): node is { symbol: ts.Symbol } & ts.Node {
   return Object.hasOwn(node, 'symbol');
 }
 
@@ -232,11 +231,7 @@ function isTypeReadonlyRecurser(
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 
-  if (
-    options.allow?.some(specifier =>
-      typeMatchesSpecifier(type, specifier, program),
-    )
-  ) {
+  if (typeMatchesSomeSpecifier(type, options.allow, program)) {
     return Readonlyness.Readonly;
   }
 

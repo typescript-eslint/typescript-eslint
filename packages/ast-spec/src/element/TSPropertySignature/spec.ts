@@ -9,13 +9,13 @@ import type {
 } from '../../unions/PropertyName';
 
 interface TSPropertySignatureBase extends BaseNode {
+  type: AST_NODE_TYPES.TSPropertySignature;
   accessibility: Accessibility | undefined;
   computed: boolean;
   key: PropertyName;
   optional: boolean;
   readonly: boolean;
   static: boolean;
-  type: AST_NODE_TYPES.TSPropertySignature;
   typeAnnotation: TSTypeAnnotation | undefined;
 }
 

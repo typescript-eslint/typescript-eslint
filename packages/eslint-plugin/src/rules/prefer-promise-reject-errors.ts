@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -10,6 +11,7 @@ import {
   isPromiseConstructorLike,
   isPromiseLike,
   isReadonlyErrorLike,
+  isStaticMemberAccessOfValue,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -26,26 +28,26 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require using Error objects as Promise rejection reasons',
-      recommended: 'recommended',
       extendsBaseRule: true,
+      recommended: 'recommended',
       requiresTypeChecking: true,
+    },
+    messages: {
+      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowEmptyReject: {
+            type: 'boolean',
             description:
               'Whether to allow calls to `Promise.reject()` with no arguments.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
-    messages: {
-      rejectAnError: 'Expected the Promise rejection reason to be an Error.',
-    },
   },
   defaultOptions: [
     {
@@ -99,13 +101,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const rejectMethodCalled = callee.computed
-          ? callee.property.type === AST_NODE_TYPES.Literal &&
-            callee.property.value === 'reject'
-          : callee.property.name === 'reject';
-
         if (
-          !rejectMethodCalled ||
+          !isStaticMemberAccessOfValue(callee, context, 'reject') ||
           !typeAtLocationIsLikePromise(callee.object)
         ) {
           return;

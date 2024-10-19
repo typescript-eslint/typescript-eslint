@@ -143,6 +143,7 @@ const SharedVisitorKeys = (() => {
   return {
     AbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
     AnonymousFunction,
+    AsExpression: ['expression', 'typeAnnotation'],
     ClassDeclaration: [
       'decorators',
       'id',
@@ -155,7 +156,6 @@ const SharedVisitorKeys = (() => {
     Function: ['id', ...AnonymousFunction],
     FunctionType,
     PropertyDefinition: [...AbstractPropertyDefinition, 'value'],
-    TypeAssertion: ['expression', 'typeAnnotation'],
   } as const;
 })();
 
@@ -193,7 +193,7 @@ const additionalKeys: AdditionalKeys = {
   TSAbstractPropertyDefinition: SharedVisitorKeys.AbstractPropertyDefinition,
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
-  TSAsExpression: SharedVisitorKeys.TypeAssertion,
+  TSAsExpression: SharedVisitorKeys.AsExpression,
   TSAsyncKeyword: [],
   TSBigIntKeyword: [],
   TSBooleanKeyword: [],
@@ -244,12 +244,7 @@ const additionalKeys: AdditionalKeys = {
   TSQualifiedName: ['left', 'right'],
   TSReadonlyKeyword: [],
   TSRestType: ['typeAnnotation'],
-  TSSatisfiesExpression: [
-    // this is intentionally different to SharedVisitorKeys.TypeAssertion because
-    // the type annotation comes first in the source code
-    'typeAnnotation',
-    'expression',
-  ],
+  TSSatisfiesExpression: SharedVisitorKeys.AsExpression,
   TSStaticKeyword: [],
   TSStringKeyword: [],
   TSSymbolKeyword: [],
@@ -258,7 +253,7 @@ const additionalKeys: AdditionalKeys = {
   TSTupleType: ['elementTypes'],
   TSTypeAliasDeclaration: ['id', 'typeParameters', 'typeAnnotation'],
   TSTypeAnnotation: ['typeAnnotation'],
-  TSTypeAssertion: SharedVisitorKeys.TypeAssertion,
+  TSTypeAssertion: ['typeAnnotation', 'expression'],
   TSTypeLiteral: ['members'],
   TSTypeOperator: ['typeAnnotation'],
   TSTypeParameter: ['name', 'constraint', 'default'],

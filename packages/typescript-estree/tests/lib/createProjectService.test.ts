@@ -14,13 +14,15 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
   server: {
     ...jest.requireActual('typescript/lib/tsserverlibrary').server,
     ProjectService: class {
-      logger: ts.server.Logger;
       eventHandler: ts.server.ProjectServiceEventHandler | undefined;
+      host: ts.server.ServerHost;
+      logger: ts.server.Logger;
       constructor(
         ...args: ConstructorParameters<typeof ts.server.ProjectService>
       ) {
-        this.logger = args[0].logger;
         this.eventHandler = args[0].eventHandler;
+        this.host = args[0].host;
+        this.logger = args[0].logger;
         if (this.eventHandler) {
           this.eventHandler({
             eventName: 'projectLoadingStart',
@@ -65,7 +67,7 @@ describe('createProjectService', () => {
     expect(settings.allowDefaultProject).toBeUndefined();
   });
 
-  it('throws an error with a local path when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
+  it('does not throw an error when options.defaultProject is not provided and getParsedConfigFile throws a diagnostic error', () => {
     mockGetParsedConfigFile.mockImplementation(() => {
       throw new Error('tsconfig.json(1,1): error TS1234: Oh no!');
     });
@@ -78,9 +80,7 @@ describe('createProjectService', () => {
         undefined,
         undefined,
       ),
-    ).toThrow(
-      /Could not read project service default project 'tsconfig.json': .+ error TS1234: Oh no!/,
-    );
+    ).not.toThrow();
   });
 
   it('throws an error with a relative path when options.defaultProject is set to a relative path and getParsedConfigFile throws a diagnostic error', () => {
@@ -132,6 +132,7 @@ describe('createProjectService', () => {
       createProjectService(
         {
           allowDefaultProject: ['file.js'],
+          defaultProject: 'tsconfig.json',
         },
         undefined,
         undefined,
@@ -309,6 +310,34 @@ describe('createProjectService', () => {
     createProjectService(undefined, undefined, undefined);
 
     expect(process.stderr.write).toHaveBeenCalledTimes(0);
+  });
+
+  it('provides a stub require to the host system when loadTypeScriptPlugins is falsy', () => {
+    const { service } = createProjectService({}, undefined, undefined);
+
+    const required = service.host.require();
+
+    expect(required).toEqual({
+      module: undefined,
+      error: {
+        message:
+          'TypeScript plugins are not required when using parserOptions.projectService.',
+      },
+    });
+  });
+
+  it('does not provide a require to the host system when loadTypeScriptPlugins is truthy', () => {
+    const { service } = createProjectService(
+      {
+        loadTypeScriptPlugins: true,
+      },
+      undefined,
+      undefined,
+    );
+
+    expect(service.host.require).toBe(
+      jest.requireActual('typescript/lib/tsserverlibrary').sys.require,
+    );
   });
 
   it('sets a host configuration', () => {
