@@ -368,6 +368,19 @@ describe('config helper', () => {
     ]);
   });
 
+  it('throws error when some extensions are undefined', () => {
+    expect(() =>
+      plugin.config({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        extends: [undefined as any],
+        files: ['common-file'],
+        ignores: ['common-ignored'],
+        name: 'my-config',
+        rules: { rule: 'error' },
+      }),
+    ).toThrow('Some of your extensions are undefined');
+  });
+
   it('flattens extended configs with config name', () => {
     expect(
       plugin.config({

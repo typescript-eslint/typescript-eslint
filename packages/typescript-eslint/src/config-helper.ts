@@ -90,6 +90,11 @@ export function config(
     if (extendsArr == null || extendsArr.length === 0) {
       return config;
     }
+    if (!extendsArr.every(Boolean)) {
+      throw new Error(
+        'Some of your extensions are undefined, likely due to a problem with their import path.',
+      );
+    }
 
     return [
       ...extendsArr.map(extension => {
