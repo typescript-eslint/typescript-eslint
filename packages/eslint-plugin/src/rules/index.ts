@@ -67,6 +67,7 @@ import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
+import noUnnecessaryCoercion from './no-unnecessary-coercion';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryParameterPropertyAssignment from './no-unnecessary-parameter-property-assignment';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
@@ -196,6 +197,7 @@ const rules = {
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
+  'no-unnecessary-coercion': noUnnecessaryCoercion,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-parameter-property-assignment':
     noUnnecessaryParameterPropertyAssignment,
