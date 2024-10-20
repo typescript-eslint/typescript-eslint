@@ -79,7 +79,7 @@ export default createRule({
           return {
             ...getNameFromMember(member, context.sourceCode),
             callSignature: false,
-            static: !!member.static,
+            static: member.static,
           };
         case AST_NODE_TYPES.TSCallSignatureDeclaration:
           return {
