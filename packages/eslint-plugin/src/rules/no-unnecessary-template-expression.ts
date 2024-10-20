@@ -19,9 +19,7 @@ const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 // '\\\\$' <- true
 // '\\\\\\$' <- false
 function endsWithUnescapedDollarSign(str: string): boolean {
-  return new RegExp(`${String(evenNumOfBackslashesRegExp.source)}\\$$`).test(
-    str,
-  );
+  return new RegExp(`${evenNumOfBackslashesRegExp.source}\\$$`).test(str);
 }
 
 export default createRule<[], MessageId>({
@@ -171,7 +169,7 @@ export default createRule<[], MessageId>({
               // \\${ -> \\\${
               .replaceAll(
                 new RegExp(
-                  `${String(evenNumOfBackslashesRegExp.source)}(\`|\\\${)`,
+                  `${evenNumOfBackslashesRegExp.source}(\`|\\\${)`,
                   'g',
                 ),
                 '\\$1',

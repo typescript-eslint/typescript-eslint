@@ -119,6 +119,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/no-explicit-any': 'error',
       'no-constant-condition': 'off',
+      '@typescript-eslint/no-unnecessary-coercion': 'error',
       '@typescript-eslint/no-unnecessary-condition': [
         'error',
         { allowConstantLoopConditions: true },
