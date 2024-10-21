@@ -5,14 +5,13 @@ import type { ParentNodeType } from './types';
 
 import { tsEnumFlagToString, tsEnumToString } from './tsUtils';
 
-export function objType(obj: unknown): string {
-  const type = Object.prototype.toString.call(obj).slice(8, -1);
-  if (type === 'Object' && obj && typeof obj[Symbol.iterator] === 'function') {
-    return 'Iterable';
-  }
-
-  return type;
-}
+export const objType = (obj: unknown): string =>
+  typeof obj === 'object' &&
+  obj &&
+  Symbol.iterator in obj &&
+  typeof obj[Symbol.iterator] === 'function'
+    ? 'Iterable'
+    : Object.prototype.toString.call(obj).slice(8, -1);
 
 export function isRecord(value: unknown): value is Record<string, unknown> {
   return objType(value) === 'Object';

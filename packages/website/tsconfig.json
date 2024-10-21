@@ -8,7 +8,6 @@
     "jsx": "react",
     "lib": ["DOM", "ES2023"],
     "noEmit": true,
-    "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
