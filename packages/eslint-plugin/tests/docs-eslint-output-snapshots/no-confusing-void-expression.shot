@@ -80,3 +80,18 @@ function doSomething() {
 console.log(void alert('Hello, world!'));
 "
 `;
+
+exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 5`] = `
+"Options: { "ignoreVoidReturningFunctions": true }
+
+function foo(): void {
+  return console.log();
+}
+
+function onError(callback: () => void): void {
+  callback();
+}
+
+onError(() => console.log('oops'));
+"
+`;
