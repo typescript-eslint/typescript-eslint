@@ -202,6 +202,12 @@ export default createRule({
   },
 });
 
+// Usually when we encounter a generic type like `Fn<T>`, we assume it uses T
+// in multiple places because it might be something like `{a: T, b: T}`. But for
+// a few special types like Arrays, we want Array<T> (or T[]) to only count as
+// a single use.
+const SINGULAR_TYPES = new Set(['Array', 'ReadonlyArray']);
+
 function isTypeParameterRepeatedInAST(
   node: TSESTree.TSTypeParameter,
   references: Reference[],
@@ -241,7 +247,12 @@ function isTypeParameterRepeatedInAST(
       );
       if (
         grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-        grandparent.params.includes(reference.identifier.parent)
+        grandparent.params.includes(reference.identifier.parent) &&
+        !(
+          grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
+          grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
+          SINGULAR_TYPES.has(grandparent.parent.typeName.name)
+        )
       ) {
         return true;
       }
@@ -281,10 +292,10 @@ function countTypeParameterUsage(
 
   if (ts.isClassLike(node)) {
     for (const typeParameter of node.typeParameters) {
-      collectTypeParameterUsageCounts(checker, typeParameter, counts);
+      collectTypeParameterUsageCounts(checker, typeParameter, counts, true);
     }
     for (const member of node.members) {
-      collectTypeParameterUsageCounts(checker, member, counts);
+      collectTypeParameterUsageCounts(checker, member, counts, true);
     }
   } else {
     collectTypeParameterUsageCounts(checker, node, counts);
@@ -302,6 +313,7 @@ function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
+  isNodeClassLike = false,
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -325,6 +337,7 @@ function collectTypeParameterUsageCounts(
   function visitType(
     type: ts.Type | undefined,
     assumeMultipleUses: boolean,
+    isReturnType = false,
   ): void {
     // Seeing the same type > (threshold=3 ** 2) times indicates a likely
     // recursive type, like `type T = { [P in keyof T]: T }`.
@@ -380,9 +393,31 @@ function collectTypeParameterUsageCounts(
 
     // Tuple types like `[K, V]`
     // Generic type references like `Map<K, V>`
-    else if (tsutils.isTupleType(type) || tsutils.isTypeReference(type)) {
+    else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        visitType(typeArgument, true);
+        const isTuple = tsutils.isTupleType(type.target);
+
+        const isSingularInInputPosition =
+          SINGULAR_TYPES.has(
+            (type.symbol as ts.Symbol | undefined)?.getName() ?? '',
+          ) && !isReturnType;
+
+        const isNonFunctionalClassProperty =
+          isNodeClassLike &&
+          ts.isPropertyDeclaration(node) &&
+          (node.initializer
+            ? !ts.isArrowFunction(node.initializer)
+            : node.type
+              ? !ts.isFunctionTypeNode(node.type)
+              : true);
+
+        // if it's a tuple or a singular type in a input position, we don't want to assume multiple uses
+        // unless it's a class property that doesn't contain a function
+        const thisAssumeMultipleUses =
+          (!isTuple && !isSingularInInputPosition) ||
+          isNonFunctionalClassProperty;
+
+        visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
       }
     }
 
@@ -472,6 +507,7 @@ function collectTypeParameterUsageCounts(
       checker.getTypePredicateOfSignature(signature)?.type ??
         signature.getReturnType(),
       false,
+      true,
     );
   }
 
