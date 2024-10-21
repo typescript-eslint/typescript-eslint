@@ -87,6 +87,8 @@ await Promise.all([1, 2, 3].map(async x => x + 1));
 
 ### `checkThenables`
 
+{/* insert option description */}
+
 A ["Thenable"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#thenables) value is an object which has a `then` method, such as a `Promise`.
 Other Thenables include TypeScript's built-in `PromiseLike` interface and any custom object that happens to have a `.then()`.
 
@@ -132,8 +134,9 @@ await createMyThenable();
 
 ### `ignoreVoid`
 
-This option, which is `true` by default, allows you to stop the rule reporting promises consumed with the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void).
-This can be a good way to explicitly mark a promise as intentionally not awaited.
+{/* insert option description */}
+
+Placing the [`void` operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/void) in front of a Promise can be a convenient way to explicitly mark that Promise as intentionally not awaited.
 
 :::warning
 Voiding a Promise doesn't handle it or change the runtime behavior.
@@ -152,11 +155,11 @@ void returnsPromise();
 void Promise.reject('value');
 ```
 
-With this option set to `true`, and if you are using `no-void`, you should turn on the [`allowAsStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
+When this option is set to `true`, if you are using `no-void`, you should turn on the [`allowAsStatement`](https://eslint.org/docs/rules/no-void#allowasstatement) option.
 
 ### `ignoreIIFE`
 
-This allows you to skip checking of async IIFEs (Immediately Invoked Function Expressions).
+{/* insert option description */}
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
@@ -173,7 +176,9 @@ await (async function () {
 
 ### `allowForKnownSafePromises`
 
-Specific types to be marked as "safe" to be floating. For example, you may need to do this in the case of libraries whose APIs return Promises whose rejections are safely handled by the library.
+{/* insert option description */}
+
+For example, you may need to do this in the case of libraries whose APIs return Promises whose rejections are safely handled by the library.
 
 This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
@@ -225,7 +230,8 @@ returnsSafePromise();
 
 ### `allowForKnownSafeCalls`
 
-Specific functions to be marked as "safe" to be called to create floating Promises.
+{/* insert option description */}
+
 For example, you may need to do this in the case of libraries whose APIs may be called without handling the resultant Promises.
 
 This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).

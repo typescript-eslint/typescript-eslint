@@ -23,6 +23,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'string',
+        description: 'Which indexed object syntax to prefer.',
         enum: ['record', 'index-signature'],
       },
     ],

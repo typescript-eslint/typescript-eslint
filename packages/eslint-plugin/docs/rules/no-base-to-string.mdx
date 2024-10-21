@@ -29,7 +29,7 @@ class MyClass {}
 const value = new MyClass();
 value + '';
 
-// Interpolation and manual .toString() and .toLocaleString() calls too:
+// Interpolation and manual .toString() and `toLocaleString()` calls too:
 `Value: ${value}`;
 ({}).toString();
 ({}).toLocaleString();
@@ -39,7 +39,7 @@ value + '';
 <TabItem value="✅ Correct">
 
 ```ts
-// These types all have useful .toString() and .toLocaleString() methods
+// These types all have useful .toString() and `toLocaleString()` methods
 'Text' + true;
 `Value: ${123}`;
 `Arrays too: ${[1, 2, 3]}`;
@@ -68,7 +68,8 @@ const literalWithToString = {
 
 ### `ignoredTypeNames`
 
-Stringified regular expressions of type names to ignore.
+{/* insert option description */}
+
 This is useful for types missing `toString()` or `toLocaleString()` (but actually has `toString()` or `toLocaleString()`).
 There are some types missing `toString()` or `toLocaleString()` in old versions of TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
@@ -96,3 +97,4 @@ If you don't mind a risk of `"[object Object]"` or incorrect type coercions in y
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
 - [`Object.prototype.toLocaleString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString)
+- [Microsoft/TypeScript Add missing toString declarations for base types that have them](https://github.com/microsoft/TypeScript/issues/38347)

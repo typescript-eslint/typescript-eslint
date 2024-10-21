@@ -12,10 +12,10 @@ Program {
           type: "ClassBody",
           body: [],
 
-          range: [27, 29],
+          range: [26, 28],
           loc: {
-            start: { column: 27, line: 1 },
-            end: { column: 29, line: 1 },
+            start: { column: 26, line: 1 },
+            end: { column: 28, line: 1 },
           },
         },
         id: null,
@@ -32,53 +32,53 @@ Program {
                   type: "Identifier",
                   name: "U",
 
-                  range: [24, 25],
+                  range: [23, 24],
                   loc: {
-                    start: { column: 24, line: 1 },
-                    end: { column: 25, line: 1 },
+                    start: { column: 23, line: 1 },
+                    end: { column: 24, line: 1 },
                   },
                 },
 
-                range: [24, 25],
+                range: [23, 24],
                 loc: {
-                  start: { column: 24, line: 1 },
-                  end: { column: 25, line: 1 },
+                  start: { column: 23, line: 1 },
+                  end: { column: 24, line: 1 },
                 },
               },
               name: "T",
 
-              range: [8, 25],
+              range: [7, 24],
               loc: {
-                start: { column: 8, line: 1 },
-                end: { column: 25, line: 1 },
+                start: { column: 7, line: 1 },
+                end: { column: 24, line: 1 },
               },
             },
           ],
 
-          range: [7, 26],
+          range: [6, 25],
           loc: {
-            start: { column: 7, line: 1 },
-            end: { column: 26, line: 1 },
+            start: { column: 6, line: 1 },
+            end: { column: 25, line: 1 },
           },
         },
 
-        range: [1, 29],
+        range: [1, 28],
         loc: {
           start: { column: 1, line: 1 },
-          end: { column: 29, line: 1 },
+          end: { column: 28, line: 1 },
         },
       },
 
-      range: [0, 31],
+      range: [0, 30],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 31, line: 1 },
+        end: { column: 30, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 32],
+  range: [0, 31],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },
