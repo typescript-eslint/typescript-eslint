@@ -13,6 +13,11 @@ export default {
   },
   workspaces: {
     '.': {
+      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
+      ignoreBinaries: [
+        // https://github.com/webpro/knip/issues/433
+        'stylelint',
+      ],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -27,11 +32,6 @@ export default {
         'make-dir',
         'ncp',
         'tmp',
-      ],
-      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignoreBinaries: [
-        // https://github.com/webpro/knip/issues/433
-        'stylelint',
       ],
     },
     'packages/ast-spec': {
@@ -107,10 +107,6 @@ export default {
       ],
     },
     'packages/website-eslint': {
-      ignoreDependencies: [
-        // virtual module
-        'vt',
-      ],
       entry: [
         'src/index.js',
         'src/mock/assert.js',
@@ -121,6 +117,10 @@ export default {
         'src/mock/path.js',
         'src/mock/typescript.js',
         'src/mock/util.js',
+      ],
+      ignoreDependencies: [
+        // virtual module
+        'vt',
       ],
     },
     'tools/dummypkg': {},

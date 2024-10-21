@@ -1,7 +1,6 @@
+import fetch from 'cross-fetch';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-
-import fetch from 'cross-fetch';
 
 import { PACKAGES_WEBSITE } from './paths.mts';
 
@@ -24,8 +23,6 @@ const filteredTerms = ['casino', 'deepnude', 'tiktok'];
 const { members } = (
   (await (
     await fetch('https://api.opencollective.com/graphql/v2', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `
           {
@@ -60,6 +57,8 @@ const { members } = (
           }
         `,
       }),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
     })
   ).json()) as { data: { collective: { members: { nodes: MemberNodes } } } }
 ).data.collective;

@@ -1,9 +1,10 @@
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 import type * as unist from 'unist';
 
+import type { RuleDocsPage } from './RuleDocsPage';
+
 import { nodeIsCode } from '../utils/nodes';
 import { convertToPlaygroundHash } from '../utils/rules';
-import type { RuleDocsPage } from './RuleDocsPage';
 
 const optionRegex = /option='(?<option>.*?)'/;
 

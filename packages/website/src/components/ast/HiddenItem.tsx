@@ -4,15 +4,15 @@ import styles from './ASTViewer.module.css';
 import PropertyValue from './PropertyValue';
 
 export interface HiddenItemProps {
-  readonly value: [string, unknown][];
-  readonly level: string;
   readonly isArray?: boolean;
+  readonly level: string;
+  readonly value: [string, unknown][];
 }
 
 export default function HiddenItem({
-  value,
-  level,
   isArray,
+  level,
+  value,
 }: HiddenItemProps): React.JSX.Element {
   const [isComplex, setIsComplex] = useState<boolean>(true);
   const [length, setLength] = useState<number>(0);

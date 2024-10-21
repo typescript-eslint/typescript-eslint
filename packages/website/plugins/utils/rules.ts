@@ -1,12 +1,12 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
-import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 import type { VFile } from 'vfile';
+
+import * as lz from 'lz-string';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 import { nodeIsHeading } from './nodes';
 
@@ -61,9 +61,9 @@ export function isESLintPluginRuleModule(
   return !!rule?.meta.docs;
 }
 
-export type VFileWithStem = VFile & {
+export type VFileWithStem = {
   stem: string;
-};
+} & VFile;
 
 export function isVFileWithStem(file: VFile): file is VFileWithStem {
   return !!file.stem;
