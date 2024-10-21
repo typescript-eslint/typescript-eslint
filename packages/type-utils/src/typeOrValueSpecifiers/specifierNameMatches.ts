@@ -1,5 +1,6 @@
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 export function specifierNameMatches(
   type: ts.Type,

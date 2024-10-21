@@ -1,6 +1,7 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
 import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
@@ -67,19 +68,17 @@ export type TypeOrValueSpecifier =
   | string;
 
 export const typeOrValueSpecifiersSchema = {
-  type: 'array',
   items: {
     oneOf: [
       {
         type: 'string',
       },
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           from: {
-            type: 'string',
             enum: ['file'],
+            type: 'string',
           },
           name: {
             oneOf: [
@@ -87,12 +86,12 @@ export const typeOrValueSpecifiersSchema = {
                 type: 'string',
               },
               {
-                type: 'array',
-                minItems: 1,
-                uniqueItems: true,
                 items: {
                   type: 'string',
                 },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
               },
             ],
           },
@@ -101,14 +100,14 @@ export const typeOrValueSpecifiersSchema = {
           },
         },
         required: ['from', 'name'],
+        type: 'object',
       },
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           from: {
-            type: 'string',
             enum: ['lib'],
+            type: 'string',
           },
           name: {
             oneOf: [
@@ -116,25 +115,25 @@ export const typeOrValueSpecifiersSchema = {
                 type: 'string',
               },
               {
-                type: 'array',
-                minItems: 1,
-                uniqueItems: true,
                 items: {
                   type: 'string',
                 },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
               },
             ],
           },
         },
         required: ['from', 'name'],
+        type: 'object',
       },
       {
-        type: 'object',
         additionalProperties: false,
         properties: {
           from: {
-            type: 'string',
             enum: ['package'],
+            type: 'string',
           },
           name: {
             oneOf: [
@@ -142,12 +141,12 @@ export const typeOrValueSpecifiersSchema = {
                 type: 'string',
               },
               {
-                type: 'array',
-                minItems: 1,
-                uniqueItems: true,
                 items: {
                   type: 'string',
                 },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
               },
             ],
           },
@@ -156,9 +155,11 @@ export const typeOrValueSpecifiersSchema = {
           },
         },
         required: ['from', 'name', 'package'],
+        type: 'object',
       },
     ],
   },
+  type: 'array',
 } as const satisfies JSONSchema4;
 
 export function typeMatchesSpecifier(

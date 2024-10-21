@@ -30,8 +30,8 @@ const nullishTypes = ['null', 'undefined', 'null | undefined'];
 const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
 
 function typeValidTest(
-  cb: (type: string, equals: '' | '=') => ValidTestCase<Options> | string,
-): (ValidTestCase<Options> | string)[] {
+  cb: (type: string, equals: '' | '=') => string | ValidTestCase<Options>,
+): (string | ValidTestCase<Options>)[] {
   return [
     ...types.map(type => cb(type, '')),
     ...types.map(type => cb(type, '=')),
@@ -40,9 +40,9 @@ function typeValidTest(
 
 const nullishTypeTest = <
   T extends
+    | string
     | InvalidTestCase<MessageIds, Options>
-    | ValidTestCase<Options>
-    | string,
+    | ValidTestCase<Options>,
 >(
   cb: (nullish: string, type: string, equals: string) => T,
 ): T[] =>

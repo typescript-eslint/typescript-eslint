@@ -1,8 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -270,7 +270,9 @@ export default createRule<[], MessageIds>({
                   });
                 }
               }
-              if (spreadArgType.target.hasRestElement) {
+              if (
+                spreadArgType.target.combinedFlags & ts.ElementFlags.Variable
+              ) {
                 // the last element was a rest - so all remaining defined arguments can be considered "consumed"
                 // all remaining arguments should be compared against the rest type (if one exists)
                 signature.consumeRemainingArguments();

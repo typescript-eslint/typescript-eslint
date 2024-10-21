@@ -374,7 +374,7 @@ abstract class ScopeBase<
    * References in default parameters isn't resolved to variables which are in their function body.
    */
   protected defineVariable(
-    nameOrVariable: Variable | string,
+    nameOrVariable: string | Variable,
     set: Map<string, Variable>,
     variables: Variable[],
     node: TSESTree.Identifier | null,

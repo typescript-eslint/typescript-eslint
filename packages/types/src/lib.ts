@@ -87,6 +87,7 @@ type Lib =
   | 'esnext.disposable'
   | 'esnext.full'
   | 'esnext.intl'
+  | 'esnext.iterator'
   | 'esnext.object'
   | 'esnext.promise'
   | 'esnext.regexp'
