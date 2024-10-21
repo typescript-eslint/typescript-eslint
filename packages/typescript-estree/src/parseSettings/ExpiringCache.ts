@@ -17,8 +17,8 @@ export class ExpiringCache<Key, Value> implements CacheLike<Key, Value> {
   readonly #map = new Map<
     Key,
     Readonly<{
-      value: Value;
       lastSeen: [number, number];
+      value: Value;
     }>
   >();
 
@@ -26,16 +26,8 @@ export class ExpiringCache<Key, Value> implements CacheLike<Key, Value> {
     this.#cacheDurationSeconds = cacheDurationSeconds;
   }
 
-  set(key: Key, value: Value): this {
-    this.#map.set(key, {
-      value,
-      lastSeen:
-        this.#cacheDurationSeconds === 'Infinity'
-          ? // no need to waste time calculating the hrtime in infinity mode as there's no expiry
-            ZERO_HR_TIME
-          : process.hrtime(),
-    });
-    return this;
+  clear(): void {
+    this.#map.clear();
   }
 
   get(key: Key): Value | undefined {
@@ -57,7 +49,15 @@ export class ExpiringCache<Key, Value> implements CacheLike<Key, Value> {
     return undefined;
   }
 
-  clear(): void {
-    this.#map.clear();
+  set(key: Key, value: Value): this {
+    this.#map.set(key, {
+      lastSeen:
+        this.#cacheDurationSeconds === 'Infinity'
+          ? // no need to waste time calculating the hrtime in infinity mode as there's no expiry
+            ZERO_HR_TIME
+          : process.hrtime(),
+      value,
+    });
+    return this;
   }
 }
