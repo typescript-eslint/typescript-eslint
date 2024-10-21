@@ -11,11 +11,11 @@ const mockType = (): ts.Type => {
 };
 
 const mockServices = ({
-  typeAtLocation,
   baseConstraintOfType,
+  typeAtLocation,
 }: {
-  typeAtLocation: ts.Type;
   baseConstraintOfType?: ts.Type;
+  typeAtLocation: ts.Type;
 }): ParserServicesWithTypeInformation => {
   const typeChecker = {
     getBaseConstraintOfType: (_: ts.Type) => baseConstraintOfType,
@@ -25,8 +25,8 @@ const mockServices = ({
   } as ts.Program;
 
   return {
-    program,
     getTypeAtLocation: (_: TSESTree.Node) => typeAtLocation,
+    program,
   } as ParserServicesWithTypeInformation;
 };
 
@@ -36,8 +36,8 @@ describe('getConstrainedTypeAtLocation', () => {
       const typeAtLocation = mockType();
       const baseConstraintOfType = mockType();
       const services = mockServices({
-        typeAtLocation,
         baseConstraintOfType,
+        typeAtLocation,
       });
 
       expect(getConstrainedTypeAtLocation(services, node)).toBe(
