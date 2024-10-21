@@ -1,9 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { MakeRequired } from '../util';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -35,20 +37,19 @@ export type MessageId =
 export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       invalidVoidExpr:
         'Placing a void expression inside another expression is forbidden. ' +
         'Move it to its own statement instead.',
-      invalidVoidExprWrapVoid:
-        'Void expressions used inside another expression ' +
-        'must be moved to its own statement ' +
-        'or marked explicitly with the `void` operator.',
       invalidVoidExprArrow:
         'Returning a void expression from an arrow function shorthand is forbidden. ' +
         'Please add braces to the arrow function.',
@@ -64,29 +65,30 @@ export default createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
+      invalidVoidExprWrapVoid:
+        'Void expressions used inside another expression ' +
+        'must be moved to its own statement ' +
+        'or marked explicitly with the `void` operator.',
       voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoreArrowShorthand: {
+            type: 'boolean',
             description:
               'Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces.',
-            type: 'boolean',
           },
           ignoreVoidOperator: {
+            type: 'boolean',
             description:
               'Whether to ignore returns that start with the `void` operator.',
-            type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'problem',
-    fixable: 'code',
-    hasSuggestions: true,
   },
   defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
 
@@ -341,9 +343,9 @@ export default createRule<Options, MessageId>({
       );
       if (
         ![
+          AST_NODE_TYPES.ArrowFunctionExpression,
           AST_NODE_TYPES.FunctionDeclaration,
           AST_NODE_TYPES.FunctionExpression,
-          AST_NODE_TYPES.ArrowFunctionExpression,
         ].includes(blockParent.type)
       ) {
         // e.g. `if (cond) { return; }`

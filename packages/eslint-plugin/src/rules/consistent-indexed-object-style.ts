@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -14,14 +15,15 @@ export default createRule<Options, MessageIds>({
       description: 'Require or disallow the `Record` type',
       recommended: 'stylistic',
     },
-    messages: {
-      preferRecord: 'A record is preferred over an index signature.',
-      preferIndexSignature: 'An index signature is preferred over a record.',
-    },
     fixable: 'code',
+    messages: {
+      preferIndexSignature: 'An index signature is preferred over a record.',
+      preferRecord: 'A record is preferred over an index signature.',
+    },
     schema: [
       {
         type: 'string',
+        description: 'Which indexed object syntax to prefer.',
         enum: ['record', 'index-signature'],
       },
     ],
@@ -122,10 +124,6 @@ export default createRule<Options, MessageIds>({
         },
       }),
       ...(mode === 'record' && {
-        TSTypeLiteral(node): void {
-          const parent = findParentDeclaration(node);
-          checkMembers(node.members, node, parent?.id, '', '');
-        },
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
@@ -143,6 +141,10 @@ export default createRule<Options, MessageIds>({
             ';',
             !node.extends.length,
           );
+        },
+        TSTypeLiteral(node): void {
+          const parent = findParentDeclaration(node);
+          checkMembers(node.members, node, parent?.id, '', '');
         },
       }),
     };

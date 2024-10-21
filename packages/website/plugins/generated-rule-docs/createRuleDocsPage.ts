@@ -3,7 +3,7 @@ import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
 import type { VFileWithStem } from '../utils/rules';
-import { findH2Index } from '../utils/rules';
+import { findHeadingIndex } from '../utils/rules';
 import type { HeadingName } from './RuleDocsPage';
 import { requiredHeadingNames, RuleDocsPage } from './RuleDocsPage';
 
@@ -13,7 +13,7 @@ export function createRuleDocsPage(
   rule: Readonly<ESLintPluginRuleModule>,
 ): RuleDocsPage {
   const headingIndices = requiredHeadingNames.map(headingName =>
-    findH2Index(children, headingName),
+    findHeadingIndex(children, 2, headingName),
   );
 
   function insertIfMissing(

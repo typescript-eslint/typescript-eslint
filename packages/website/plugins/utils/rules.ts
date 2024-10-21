@@ -4,6 +4,7 @@ import * as path from 'node:path';
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import * as lz from 'lz-string';
+import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 import type { VFile } from 'vfile';
 
@@ -68,16 +69,22 @@ export function isVFileWithStem(file: VFile): file is VFileWithStem {
   return !!file.stem;
 }
 
-export function findH2Index(
-  children: unist.Node[],
-  headingName: string,
+export function findHeadingIndex(
+  children: readonly unist.Node[],
+  depth: 2 | 3,
+  contents: string | ((node: mdast.PhrasingContent) => boolean),
 ): number {
+  const childMatch =
+    typeof contents === 'string'
+      ? (node: mdast.PhrasingContent): boolean =>
+          node.type === 'text' && node.value === contents
+      : contents;
+
   return children.findIndex(
     node =>
       nodeIsHeading(node) &&
-      node.depth === 2 &&
+      node.depth === depth &&
       node.children.length === 1 &&
-      node.children[0].type === 'text' &&
-      node.children[0].value === headingName,
+      childMatch(node.children[0]),
   );
 }

@@ -4,12 +4,14 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { es2023 } from './es2023';
 import { esnext_array } from './esnext.array';
 import { esnext_collection } from './esnext.collection';
 import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
 import { esnext_intl } from './esnext.intl';
+import { esnext_iterator } from './esnext.iterator';
 import { esnext_object } from './esnext.object';
 import { esnext_promise } from './esnext.promise';
 import { esnext_regexp } from './esnext.regexp';
@@ -26,4 +28,5 @@ export const esnext = {
   ...esnext_array,
   ...esnext_regexp,
   ...esnext_string,
+  ...esnext_iterator,
 } as Record<string, ImplicitLibVariableOptions>;

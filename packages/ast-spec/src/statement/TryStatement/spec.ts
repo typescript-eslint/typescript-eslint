@@ -4,8 +4,8 @@ import type { CatchClause } from '../../special/CatchClause/spec';
 import type { BlockStatement } from '../BlockStatement/spec';
 
 export interface TryStatement extends BaseNode {
+  type: AST_NODE_TYPES.TryStatement;
   block: BlockStatement;
   finalizer: BlockStatement | null;
   handler: CatchClause | null;
-  type: AST_NODE_TYPES.TryStatement;
 }

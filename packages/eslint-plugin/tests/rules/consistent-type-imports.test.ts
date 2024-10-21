@@ -4,16 +4,16 @@ import rule from '../../src/rules/consistent-type-imports';
 
 const PARSER_OPTION_COMBOS = [
   {
-    experimentalDecorators: false,
     emitDecoratorMetadata: false,
+    experimentalDecorators: false,
   },
   {
-    experimentalDecorators: false,
     emitDecoratorMetadata: true,
+    experimentalDecorators: false,
   },
   {
-    experimentalDecorators: true,
     emitDecoratorMetadata: false,
+    experimentalDecorators: true,
   },
 ];
 for (const parserOptions of PARSER_OPTION_COMBOS) {
@@ -184,7 +184,7 @@ type Z = C;
 const b = B;
           `,
           options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
           ],
         },
         {
@@ -195,7 +195,7 @@ type T = A;
 const b = B;
           `,
           options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
           ],
         },
         {
@@ -206,7 +206,7 @@ type T = A;
 const b = B;
           `,
           options: [
-            { prefer: 'no-type-imports', fixStyle: 'inline-type-imports' },
+            { fixStyle: 'inline-type-imports', prefer: 'no-type-imports' },
           ],
         },
         // exports
@@ -389,6 +389,12 @@ interface Baz {
 }
 function fn(a: Foo): Foo {}
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type Foo from 'foo';
 let foo: Foo;
@@ -398,48 +404,42 @@ interface Baz {
 }
 function fn(a: Foo): Foo {}
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import Foo from 'foo';
 let foo: Foo;
           `,
-          output: `
-import type Foo from 'foo';
-let foo: Foo;
-          `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           options: [{ prefer: 'type-imports' }],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
+          output: `
+import type Foo from 'foo';
+let foo: Foo;
+          `,
         },
         {
           code: `
 import Foo from 'foo';
 let foo: Foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import type Foo from 'foo';
 let foo: Foo;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -447,17 +447,17 @@ import { A, B } from 'foo';
 let foo: A;
 let bar: B;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type { A, B } from 'foo';
 let foo: A;
 let bar: B;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -465,81 +465,81 @@ import { A as a, B as b } from 'foo';
 let foo: a;
 let bar: b;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type { A as a, B as b } from 'foo';
 let foo: a;
 let bar: b;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import Foo from 'foo';
 type Bar = typeof Foo; // TSTypeQuery
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type Foo from 'foo';
 type Bar = typeof Foo; // TSTypeQuery
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import foo from 'foo';
 type Bar = foo.Bar; // TSQualifiedName
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type foo from 'foo';
 type Bar = foo.Bar; // TSQualifiedName
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import foo from 'foo';
 type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type foo from 'foo';
 type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import * as A from 'foo';
 let foo: A.Foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type * as A from 'foo';
 let foo: A.Foo;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           // default and named
@@ -548,52 +548,52 @@ import A, { B } from 'foo';
 let foo: A;
 let bar: B;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type { B } from 'foo';
 import type A from 'foo';
 let foo: A;
 let bar: B;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: noFormat`
 import A, {} from 'foo';
 let foo: A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type A from 'foo';
 let foo: A;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import { A, B } from 'foo';
 const foo: A = B();
           `,
+          errors: [
+            {
+              data: { typeImports: '"A"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { A} from 'foo';
 import { B } from 'foo';
 const foo: A = B();
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A"' },
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -601,19 +601,19 @@ import { A, B, C } from 'foo';
 const foo: A = B();
 let bar: C;
           `,
+          errors: [
+            {
+              data: { typeImports: '"A" and "C"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { A, C } from 'foo';
 import { B } from 'foo';
 const foo: A = B();
 let bar: C;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A" and "C"' },
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -621,19 +621,19 @@ import { A, B, C, D } from 'foo';
 const foo: A = B();
 type T = { bar: C; baz: D };
           `,
+          errors: [
+            {
+              data: { typeImports: '"A", "C" and "D"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { A, C, D } from 'foo';
 import { B } from 'foo';
 const foo: A = B();
 type T = { bar: C; baz: D };
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A", "C" and "D"' },
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -641,6 +641,13 @@ import A, { B, C, D } from 'foo';
 B();
 type T = { foo: A; bar: C; baz: D };
           `,
+          errors: [
+            {
+              data: { typeImports: '"A", "C" and "D"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { C, D } from 'foo';
 import type A from 'foo';
@@ -648,13 +655,6 @@ import { B } from 'foo';
 B();
 type T = { foo: A; bar: C; baz: D };
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A", "C" and "D"' },
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -662,19 +662,19 @@ import A, { B } from 'foo';
 B();
 type T = A;
           `,
+          errors: [
+            {
+              data: { typeImports: '"A"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type A from 'foo';
 import { B } from 'foo';
 B();
 type T = A;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A"' },
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -685,6 +685,18 @@ import { C, D, E } from 'bar';
 import type { Already2 } from 'bar';
 type T = { b: B; c: C; d: D };
           `,
+          errors: [
+            {
+              data: { typeImports: '"B"' },
+              line: 4,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"C" and "D"' },
+              line: 5,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type Already1Def from 'foo';
 import type { Already1 , B } from 'foo';
@@ -693,36 +705,24 @@ import { E } from 'bar';
 import type { Already2 , C, D} from 'bar';
 type T = { b: B; c: C; d: D };
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"B"' },
-              line: 4,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"C" and "D"' },
-              line: 5,
-            },
-          ],
         },
         {
           code: `
 import A, { /* comment */ B } from 'foo';
 type T = B;
           `,
+          errors: [
+            {
+              data: { typeImports: '"B"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { /* comment */ B } from 'foo';
 import A from 'foo';
 type T = B;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"B"' },
-              line: 2,
-            },
-          ],
         },
         {
           code: noFormat`
@@ -730,6 +730,18 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = A | D;
           `,
+          errors: [
+            {
+              data: { typeImports: '"A"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"D"' },
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { A} from 'foo';
 import { B, C } from 'foo';
@@ -737,18 +749,6 @@ import type { D} from 'bar';
 import { E, F, } from 'bar';
 type T = A | D;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A"' },
-              line: 2,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"D"' },
-              line: 3,
-            },
-          ],
         },
         {
           code: noFormat`
@@ -756,6 +756,18 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = B | E;
           `,
+          errors: [
+            {
+              data: { typeImports: '"B"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"E"' },
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { B} from 'foo';
 import { A, C } from 'foo';
@@ -763,18 +775,6 @@ import type { E} from 'bar';
 import { D, F, } from 'bar';
 type T = B | E;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"B"' },
-              line: 2,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"E"' },
-              line: 3,
-            },
-          ],
         },
         {
           code: noFormat`
@@ -782,6 +782,18 @@ import { A, B, C } from 'foo';
 import { D, E, F, } from 'bar';
 type T = C | F;
           `,
+          errors: [
+            {
+              data: { typeImports: '"C"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"F"' },
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { C } from 'foo';
 import { A, B } from 'foo';
@@ -789,18 +801,6 @@ import type { F} from 'bar';
 import { D, E } from 'bar';
 type T = C | F;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"C"' },
-              line: 2,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"F"' },
-              line: 3,
-            },
-          ],
         },
         {
           // all type fix cases
@@ -811,6 +811,24 @@ import * as Types from 'namespace_type';
 import Default, { Named } from 'default_and_named_type';
 type T = Type1 | Type2 | Type | Types.A | Default | Named;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+            {
+              line: 3,
+              messageId: 'typeOverValue',
+            },
+            {
+              line: 4,
+              messageId: 'typeOverValue',
+            },
+            {
+              line: 5,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type { Type1, Type2 } from 'named_types';
 import type Type from 'default_type';
@@ -819,24 +837,6 @@ import type { Named } from 'default_and_named_type';
 import type Default from 'default_and_named_type';
 type T = Type1 | Type2 | Type | Types.A | Default | Named;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-            {
-              messageId: 'typeOverValue',
-              line: 3,
-            },
-            {
-              messageId: 'typeOverValue',
-              line: 4,
-            },
-            {
-              messageId: 'typeOverValue',
-              line: 5,
-            },
-          ],
         },
         {
           // some type fix cases
@@ -847,6 +847,28 @@ import Value3, { Type3 } from 'default_import2';
 import Type4, { Type5, Value4 } from 'default_and_named_import';
 type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
+          errors: [
+            {
+              data: { typeImports: '"Type1"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"Type2"' },
+              line: 3,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"Type3"' },
+              line: 4,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+            {
+              data: { typeImports: '"Type4" and "Type5"' },
+              line: 5,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           output: `
 import type { Type1 } from 'named_import';
 import { Value1 } from 'named_import';
@@ -859,28 +881,6 @@ import type Type4 from 'default_and_named_import';
 import { Value4 } from 'default_and_named_import';
 type T = Type1 | Type2 | Type3 | Type4 | Type5;
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"Type1"' },
-              line: 2,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"Type2"' },
-              line: 3,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"Type3"' },
-              line: 4,
-            },
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"Type4" and "Type5"' },
-              line: 5,
-            },
-          ],
         },
         // type annotations
         {
@@ -888,64 +888,64 @@ type T = Type1 | Type2 | Type3 | Type4 | Type5;
 let foo: import('foo');
 let bar: import('foo').Bar;
           `,
-          output: null,
           errors: [
             {
-              messageId: 'noImportTypeAnnotations',
               line: 2,
+              messageId: 'noImportTypeAnnotations',
             },
             {
-              messageId: 'noImportTypeAnnotations',
               line: 3,
+              messageId: 'noImportTypeAnnotations',
             },
           ],
+          output: null,
         },
         {
           code: `
 let foo: import('foo');
           `,
-          output: null,
-          options: [{ prefer: 'type-imports' }],
           errors: [
             {
-              messageId: 'noImportTypeAnnotations',
               line: 2,
+              messageId: 'noImportTypeAnnotations',
             },
           ],
+          options: [{ prefer: 'type-imports' }],
+          output: null,
         },
         {
           code: `
 import type Foo from 'foo';
 let foo: Foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import Foo from 'foo';
 let foo: Foo;
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import type { Foo } from 'foo';
 let foo: Foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import { Foo } from 'foo';
 let foo: Foo;
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         // type queries
         {
@@ -955,18 +955,18 @@ import Type from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type Type from 'foo';
 
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -975,18 +975,18 @@ import { Type } from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type { Type } from 'foo';
 
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -995,18 +995,18 @@ import * as Type from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type * as Type from 'foo';
 
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1015,6 +1015,12 @@ import type Type from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import Type from 'foo';
@@ -1022,12 +1028,6 @@ import Type from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1036,6 +1036,12 @@ import type { Type } from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import { Type } from 'foo';
@@ -1043,12 +1049,6 @@ import { Type } from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1057,6 +1057,12 @@ import type * as Type from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import * as Type from 'foo';
@@ -1064,12 +1070,6 @@ import * as Type from 'foo';
 type T = typeof Type;
 type T = typeof Type.foo;
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         // exports
         {
@@ -1078,17 +1078,17 @@ import Type from 'foo';
 
 export type { Type }; // is a type-only export
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type Type from 'foo';
 
 export type { Type }; // is a type-only export
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1096,17 +1096,17 @@ import { Type } from 'foo';
 
 export type { Type }; // is a type-only export
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type { Type } from 'foo';
 
 export type { Type }; // is a type-only export
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1114,17 +1114,17 @@ import * as Type from 'foo';
 
 export type { Type }; // is a type-only export
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type * as Type from 'foo';
 
 export type { Type }; // is a type-only export
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1134,6 +1134,12 @@ export { Type }; // is a type-only export
 export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import Type from 'foo';
@@ -1142,12 +1148,6 @@ export { Type }; // is a type-only export
 export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1157,6 +1157,12 @@ export { Type }; // is a type-only export
 export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import { Type } from 'foo';
@@ -1165,12 +1171,6 @@ export { Type }; // is a type-only export
 export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1180,6 +1180,12 @@ export { Type }; // is a type-only export
 export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import * as Type from 'foo';
@@ -1188,12 +1194,6 @@ export { Type }; // is a type-only export
 export default Type; // is a type-only export
 export type { Type }; // is a type-only export
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           // type with comments
@@ -1205,6 +1205,20 @@ import type /*comment*/ { Type } from 'foo';
 
 type T = { a: AllType; b: DefType; c: Type };
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+            {
+              line: 3,
+              messageId: 'avoidImportType',
+            },
+            {
+              line: 5,
+              messageId: 'avoidImportType',
+            },
+          ],
           options: [{ prefer: 'no-type-imports' }],
           output: `
 import /*comment*/ * as AllType from 'foo';
@@ -1214,20 +1228,6 @@ import /*comment*/ { Type } from 'foo';
 
 type T = { a: AllType; b: DefType; c: Type };
           `,
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-            {
-              messageId: 'avoidImportType',
-              line: 3,
-            },
-            {
-              messageId: 'avoidImportType',
-              line: 5,
-            },
-          ],
         },
         {
           // https://github.com/typescript-eslint/typescript-eslint/issues/2775
@@ -1235,36 +1235,36 @@ type T = { a: AllType; b: DefType; c: Type };
 import Default, * as Rest from 'module';
 const a: Rest.A = '';
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           options: [{ prefer: 'type-imports' }],
           output: `
 import type * as Rest from 'module';
 import Default from 'module';
 const a: Rest.A = '';
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import Default, * as Rest from 'module';
 const a: Default = '';
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           options: [{ prefer: 'type-imports' }],
           output: `
 import type Default from 'module';
 import * as Rest from 'module';
 const a: Default = '';
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1272,6 +1272,12 @@ import Default, * as Rest from 'module';
 const a: Default = '';
 const b: Rest.A = '';
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           options: [{ prefer: 'type-imports' }],
           output: `
 import type * as Rest from 'module';
@@ -1279,12 +1285,6 @@ import type Default from 'module';
 const a: Default = '';
 const b: Rest.A = '';
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           // type with comments
@@ -1292,18 +1292,18 @@ const b: Rest.A = '';
 import Default, /*comment*/ * as Rest from 'module';
 const a: Default = '';
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           options: [{ prefer: 'type-imports' }],
           output: `
 import type Default from 'module';
 import /*comment*/ * as Rest from 'module';
 const a: Default = '';
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           // type with comments
@@ -1311,18 +1311,18 @@ const a: Default = '';
 import Default /*comment1*/, /*comment2*/ { Data } from 'module';
 const a: Default = '';
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
           options: [{ prefer: 'type-imports' }],
           output: `
 import type Default /*comment1*/ from 'module';
 import /*comment2*/ { Data } from 'module';
 const a: Default = '';
           `,
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1332,6 +1332,12 @@ class A {
   constructor(foo: Foo) {}
 }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
 import type Foo from 'foo';
 @deco
@@ -1339,12 +1345,6 @@ class A {
   constructor(foo: Foo) {}
 }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1352,18 +1352,18 @@ import { type A, B } from 'foo';
 type T = A;
 const b = B;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'avoidImportType',
+            },
+          ],
+          options: [{ prefer: 'no-type-imports' }],
           output: `
 import { A, B } from 'foo';
 type T = A;
 const b = B;
           `,
-          options: [{ prefer: 'no-type-imports' }],
-          errors: [
-            {
-              messageId: 'avoidImportType',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1371,20 +1371,20 @@ import { A, B, type C } from 'foo';
 type T = A | C;
 const b = B;
           `,
+          errors: [
+            {
+              data: { typeImports: '"A"' },
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [{ prefer: 'type-imports' }],
           output: `
 import type { A} from 'foo';
 import { B, type C } from 'foo';
 type T = A | C;
 const b = B;
           `,
-          options: [{ prefer: 'type-imports' }],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              data: { typeImports: '"A"' },
-              line: 2,
-            },
-          ],
         },
 
         // inline-type-imports
@@ -1394,20 +1394,20 @@ import { A, B } from 'foo';
 let foo: A;
 let bar: B;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A, type B } from 'foo';
 let foo: A;
 let bar: B;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1416,21 +1416,21 @@ import { A, B } from 'foo';
 let foo: A;
 B();
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A, B } from 'foo';
 
 let foo: A;
 B();
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1438,20 +1438,20 @@ import { A, B } from 'foo';
 type T = A;
 B();
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A, B } from 'foo';
 type T = A;
 B();
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1460,25 +1460,25 @@ import { B } from 'foo';
 type T = A;
 type U = B;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+            {
+              line: 3,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A } from 'foo';
 import { type B } from 'foo';
 type T = A;
 type U = B;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-            {
-              messageId: 'typeOverValue',
-              line: 3,
-            },
-          ],
         },
         {
           code: `
@@ -1487,25 +1487,25 @@ import B from 'foo';
 type T = A;
 type U = B;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+            {
+              line: 3,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A } from 'foo';
 import type B from 'foo';
 type T = A;
 type U = B;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-            {
-              messageId: 'typeOverValue',
-              line: 3,
-            },
-          ],
         },
         {
           code: `
@@ -1514,21 +1514,21 @@ type T = B;
 type U = C;
 A();
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import A, { type B, type C } from 'foo';
 type T = B;
 type U = C;
 A();
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1537,6 +1537,15 @@ type T = B;
 type U = C;
 type V = A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import {type B, type C} from 'foo';
 import type A from 'foo';
@@ -1544,15 +1553,6 @@ type T = B;
 type U = C;
 type V = A;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1561,6 +1561,15 @@ type T = B;
 type U = D;
 type V = A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import {type B, type C as D} from 'foo';
 import type A from 'foo';
@@ -1568,53 +1577,44 @@ type T = B;
 type U = D;
 type V = A;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import { /* comment */ A, B } from 'foo';
 type T = A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { /* comment */ type A, B } from 'foo';
 type T = A;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import { B, /* comment */ A } from 'foo';
 type T = A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { B, /* comment */ type A } from 'foo';
 type T = A;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1625,6 +1625,15 @@ const foo: A = B();
 let bar: C;
 let baz: D;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A, B, type C } from 'foo';
 import type { D } from 'deez';
@@ -1633,15 +1642,6 @@ const foo: A = B();
 let bar: C;
 let baz: D;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1651,6 +1651,15 @@ const foo: A = B();
 let bar: C;
 let baz: D;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'someImportsAreOnlyTypes',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A, B, type C } from 'foo';
 import type { D } from 'deez';
@@ -1658,53 +1667,44 @@ const foo: A = B();
 let bar: C;
 let baz: D;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'someImportsAreOnlyTypes',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import A from 'foo';
 export = {} as A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import type A from 'foo';
 export = {} as A;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
 import { A } from 'foo';
 export = {} as A;
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
+          options: [
+            { fixStyle: 'inline-type-imports', prefer: 'type-imports' },
+          ],
           output: `
 import { type A } from 'foo';
 export = {} as A;
           `,
-          options: [
-            { prefer: 'type-imports', fixStyle: 'inline-type-imports' },
-          ],
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1714,6 +1714,12 @@ export = {} as A;
               constructor(foo: Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             @deco
@@ -1721,12 +1727,6 @@ export = {} as A;
               constructor(foo: Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1736,6 +1736,12 @@ export = {} as A;
               foo: Foo;
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
@@ -1743,12 +1749,6 @@ export = {} as A;
               foo: Foo;
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1758,6 +1758,12 @@ export = {} as A;
               foo(foo: Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
@@ -1765,12 +1771,6 @@ export = {} as A;
               foo(foo: Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1780,6 +1780,12 @@ export = {} as A;
               foo(): Foo {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
@@ -1787,12 +1793,6 @@ export = {} as A;
               foo(): Foo {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1801,18 +1801,18 @@ export = {} as A;
               foo(@deco foo: Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
               foo(@deco foo: Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1822,6 +1822,12 @@ export = {} as A;
               set foo(value: Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
@@ -1829,12 +1835,6 @@ export = {} as A;
               set foo(value: Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1846,6 +1846,12 @@ export = {} as A;
               set foo(value: Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
@@ -1855,12 +1861,6 @@ export = {} as A;
               set foo(value: Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1872,6 +1872,12 @@ export = {} as A;
               set ['foo'](value: Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type Foo from 'foo';
             class A {
@@ -1881,12 +1887,6 @@ export = {} as A;
               set ['foo'](value: Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         {
           code: `
@@ -1896,6 +1896,12 @@ export = {} as A;
               constructor(foo: foo.Foo) {}
             }
           `,
+          errors: [
+            {
+              line: 2,
+              messageId: 'typeOverValue',
+            },
+          ],
           output: `
             import type * as foo from 'foo';
             @deco
@@ -1903,12 +1909,6 @@ export = {} as A;
               constructor(foo: foo.Foo) {}
             }
           `,
-          errors: [
-            {
-              messageId: 'typeOverValue',
-              line: 2,
-            },
-          ],
         },
         // https://github.com/typescript-eslint/typescript-eslint/issues/7209
         {
@@ -1917,15 +1917,15 @@ import 'foo';
 import { Foo, Bar } from 'foo';
 function test(foo: Foo) {}
           `,
+          errors: [
+            { column: 1, line: 3, messageId: 'someImportsAreOnlyTypes' },
+          ],
           output: `
 import 'foo';
 import type { Foo} from 'foo';
 import { Bar } from 'foo';
 function test(foo: Foo) {}
           `,
-          errors: [
-            { messageId: 'someImportsAreOnlyTypes', line: 3, column: 1 },
-          ],
         },
         {
           code: `
@@ -1933,15 +1933,15 @@ import {} from 'foo';
 import { Foo, Bar } from 'foo';
 function test(foo: Foo) {}
           `,
+          errors: [
+            { column: 1, line: 3, messageId: 'someImportsAreOnlyTypes' },
+          ],
           output: `
 import {} from 'foo';
 import type { Foo} from 'foo';
 import { Bar } from 'foo';
 function test(foo: Foo) {}
           `,
-          errors: [
-            { messageId: 'someImportsAreOnlyTypes', line: 3, column: 1 },
-          ],
         },
       ],
     });
@@ -1953,8 +1953,8 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
   const ruleTester = new RuleTester({
     languageOptions: {
       parserOptions: {
-        experimentalDecorators: true,
         emitDecoratorMetadata: true,
+        experimentalDecorators: true,
       },
     },
   });
@@ -2110,16 +2110,16 @@ describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {
           import Foo from 'foo';
           export type T = Foo;
         `,
+        errors: [
+          {
+            line: 2,
+            messageId: 'typeOverValue',
+          },
+        ],
         output: `
           import type Foo from 'foo';
           export type T = Foo;
         `,
-        errors: [
-          {
-            messageId: 'typeOverValue',
-            line: 2,
-          },
-        ],
       },
     ],
   });

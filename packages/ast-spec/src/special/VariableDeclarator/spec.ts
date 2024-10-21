@@ -7,6 +7,7 @@ import type { Expression } from '../../unions/Expression';
 // TODO: these declarator types can probably be refined further, especially
 // their differences when used in different contexts (e.g. for...of)
 interface VariableDeclaratorBase extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclarator;
   /**
    * Whether there's definite assignment assertion (`let x!: number`).
    * If `true`, then: `id` must be an identifier with a type annotation,
@@ -22,7 +23,6 @@ interface VariableDeclaratorBase extends BaseNode {
    * in a `declare const`.
    */
   init: Expression | null;
-  type: AST_NODE_TYPES.VariableDeclarator;
 }
 
 export interface VariableDeclaratorNoInit extends VariableDeclaratorBase {

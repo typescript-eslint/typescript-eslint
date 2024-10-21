@@ -1,3 +1,103 @@
+## 8.10.0 (2024-10-17)
+
+### 🚀 Features
+
+- support TypeScript 5.6 ([#9972](https://github.com/typescript-eslint/typescript-eslint/pull/9972))
+
+### 🩹 Fixes
+
+- **typescript-eslint:** propagate `name` field to extended configs in `config` helper ([#10094](https://github.com/typescript-eslint/typescript-eslint/pull/10094))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.9.0 (2024-10-14)
+
+
+### 🚀 Features
+
+- **rule-tester:** hooks for test cases ([#10109](https://github.com/typescript-eslint/typescript-eslint/pull/10109))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] cannot assume variables are either type or value ([#10093](https://github.com/typescript-eslint/typescript-eslint/pull/10093))
+- **eslint-plugin:** [return-await] sync the behavior with await-thenable ([#10069](https://github.com/typescript-eslint/typescript-eslint/pull/10069))
+- **eslint-plugin:** [prefer-literal-enum-member] report a different error message when `allowBitwiseExpressions` is enabled ([#10096](https://github.com/typescript-eslint/typescript-eslint/pull/10096))
+- **eslint-plugin:** [no-loop-func] sync from upstream base rule ([#10103](https://github.com/typescript-eslint/typescript-eslint/pull/10103))
+- **eslint-plugin:** [no-unused-vars] never report the naming of an enum member ([#10117](https://github.com/typescript-eslint/typescript-eslint/pull/10117))
+- **eslint-plugin:** correct use-at-your-own-risk type definitions ([#10049](https://github.com/typescript-eslint/typescript-eslint/pull/10049))
+- **eslint-plugin:** handle unions in await...for ([#10110](https://github.com/typescript-eslint/typescript-eslint/pull/10110))
+- **rule-tester:** merge provided `linterOptions` ([#10131](https://github.com/typescript-eslint/typescript-eslint/pull/10131))
+- **scope-manager:** [no-use-before-define] do not treat nested namespace aliases as variable references ([#10095](https://github.com/typescript-eslint/typescript-eslint/pull/10095))
+- **typescript-estree:** improve project service error message when file extension missing from extraFileExtensions ([#10076](https://github.com/typescript-eslint/typescript-eslint/pull/10076))
+- **visitor-keys:** reorder `TSSatisfiesExpression` and `TSTypeAssertion` ([#10139](https://github.com/typescript-eslint/typescript-eslint/pull/10139))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Anna Bocharova @RobinTail
+- Arya Emami @aryaemami59
+- auvred @auvred
+- Joshua Chen
+- Kirk Waiblinger @kirkwaiblinger
+- Lotfi Meklati @lotmek
+- mdm317
+- Ronen Amiel
+- Sukka
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.8.1 (2024-10-07)
+
+
+### 🩹 Fixes
+
+- **eslint-plugin:** stop warning on @ts-nocheck comments which aren't at the beginning of the file ([#10046](https://github.com/typescript-eslint/typescript-eslint/pull/10046))
+- **typescript-estree:** fix crash when running from a `node --eval` script ([#10098](https://github.com/typescript-eslint/typescript-eslint/pull/10098))
+- **typescript-estree:** ensure mjs/mts files are always be parsed as ESM ([#10011](https://github.com/typescript-eslint/typescript-eslint/pull/10011))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+- Ronen Amiel
+- WhitePiano @goldentrash
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.8.0 (2024-09-30)
+
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-unnecessary-condition] add checkTypePredicates ([#10009](https://github.com/typescript-eslint/typescript-eslint/pull/10009))
+- **eslint-plugin:** [return-await] check for-await loop iteree ([#10008](https://github.com/typescript-eslint/typescript-eslint/pull/10008))
+
+### 🩹 Fixes
+
+- remove `export type *` in d.ts to support TS<5.0 ([#10070](https://github.com/typescript-eslint/typescript-eslint/pull/10070))
+- **eslint-plugin:** [no-unnecessary-template-expression] should underline template syntax with squiggly lines ([#10044](https://github.com/typescript-eslint/typescript-eslint/pull/10044))
+- **eslint-plugin:** [no-deprecated] max callstack exceeded when class implements itself ([#10040](https://github.com/typescript-eslint/typescript-eslint/pull/10040))
+- **eslint-plugin:** [no-misused-promises] check contextual type ([#10042](https://github.com/typescript-eslint/typescript-eslint/pull/10042))
+- **eslint-plugin:** [prefer-literal-enum-member] allow nested bitwise operations ([#10037](https://github.com/typescript-eslint/typescript-eslint/pull/10037))
+- **type-utils:** check for type parameters on `isBuiltinSymbolLikeRecurser()` ([#10026](https://github.com/typescript-eslint/typescript-eslint/pull/10026))
+- **utils:** update missing type information message ([#10043](https://github.com/typescript-eslint/typescript-eslint/pull/10043))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Josh Goldberg ✨
+- Kirk Waiblinger @kirkwaiblinger
+- Ronen Amiel
+- Tarun Chauhan @tarunrajput
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.7.0 (2024-09-23)
 
 

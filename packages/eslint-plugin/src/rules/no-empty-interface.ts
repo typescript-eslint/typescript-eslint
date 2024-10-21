@@ -1,5 +1,6 @@
-import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
@@ -15,11 +16,10 @@ export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
+    deprecated: true,
     docs: {
       description: 'Disallow the declaration of empty interfaces',
     },
-    deprecated: true,
-    replacedBy: ['@typescript-eslint/no-empty-object-type'],
     fixable: 'code',
     hasSuggestions: true,
     messages: {
@@ -27,15 +27,16 @@ export default createRule<Options, MessageIds>({
       noEmptyWithSuper:
         'An interface declaring no members is equivalent to its supertype.',
     },
+    replacedBy: ['@typescript-eslint/no-empty-object-type'],
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
           allowSingleExtends: {
+            type: 'boolean',
             description:
               'Whether to allow empty interfaces that extend a single other interface.',
-            type: 'boolean',
           },
         },
       },

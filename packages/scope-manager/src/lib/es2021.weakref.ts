@@ -4,11 +4,12 @@
 // npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE, TYPE_VALUE } from './base-config';
 
 export const es2021_weakref = {
-  WeakRef: TYPE_VALUE,
-  WeakRefConstructor: TYPE,
   FinalizationRegistry: TYPE_VALUE,
   FinalizationRegistryConstructor: TYPE,
+  WeakRef: TYPE_VALUE,
+  WeakRefConstructor: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

@@ -1,10 +1,11 @@
 /**
  * @fileoverview Really small utility functions that didn't deserve their own files
  */
-import { requiresQuoting } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
+
+import { requiresQuoting } from '@typescript-eslint/type-utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import { getStaticValue, isParenthesized } from './astUtils';
@@ -109,46 +110,46 @@ enum MemberNameType {
  */
 function getNameFromMember(
   member:
-    | TSESTree.MethodDefinition
     | TSESTree.AccessorProperty
+    | TSESTree.MethodDefinition
     | TSESTree.Property
     | TSESTree.PropertyDefinition
-    | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractAccessorProperty
+    | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
-): { type: MemberNameType; name: string } {
+): { name: string; type: MemberNameType } {
   if (member.key.type === AST_NODE_TYPES.Identifier) {
     return {
-      type: MemberNameType.Normal,
       name: member.key.name,
+      type: MemberNameType.Normal,
     };
   }
   if (member.key.type === AST_NODE_TYPES.PrivateIdentifier) {
     return {
-      type: MemberNameType.Private,
       name: `#${member.key.name}`,
+      type: MemberNameType.Private,
     };
   }
   if (member.key.type === AST_NODE_TYPES.Literal) {
     const name = `${member.key.value}`;
     if (requiresQuoting(name)) {
       return {
-        type: MemberNameType.Quoted,
         name: `"${name}"`,
+        type: MemberNameType.Quoted,
       };
     }
     return {
-      type: MemberNameType.Normal,
       name,
+      type: MemberNameType.Normal,
     };
   }
 
   return {
-    type: MemberNameType.Expression,
     name: sourceCode.text.slice(...member.key.range),
+    type: MemberNameType.Expression,
   };
 }
 
@@ -159,7 +160,7 @@ type ExcludeKeys<
 type RequireKeys<
   Obj extends Record<string, unknown>,
   Keys extends keyof Obj,
-> = ExcludeKeys<Obj, Keys> & { [k in Keys]-?: Exclude<Obj[k], undefined> };
+> = { [k in Keys]-?: Exclude<Obj[k], undefined> } & ExcludeKeys<Obj, Keys>;
 
 function getEnumNames<T extends string>(myEnum: Record<T, unknown>): T[] {
   return Object.keys(myEnum).filter(x => isNaN(Number(x))) as T[];
@@ -327,18 +328,18 @@ export {
   type Equal,
   type ExcludeKeys,
   findFirstResult,
+  findLastIndex,
   formatWordList,
   getEnumNames,
-  getStaticMemberAccessValue,
   getNameFromIndexSignature,
   getNameFromMember,
+  getStaticMemberAccessValue,
   isDefinitionFile,
-  isRestParameterDeclaration,
   isParenlessArrowFunction,
+  isRestParameterDeclaration,
   isStaticMemberAccessOfValue,
   MemberNameType,
   type RequireKeys,
   typeNodeRequiresParentheses,
   upperCaseFirst,
-  findLastIndex,
 };

@@ -3,14 +3,15 @@ id: dependency-versions
 title: Dependency Versions
 ---
 
-import packageJson from '../../package.json';
+import rootPackageJson from '../../package.json';
+import eslintPluginPackageJson from '../../packages/eslint-plugin/package.json';
 
 ## ESLint
 
 <blockquote>
   <p>
     The version range of ESLint currently supported is{' '}
-    <code>{packageJson.devDependencies.eslint}</code>.
+    <code>{eslintPluginPackageJson.peerDependencies.eslint}</code>.
   </p>
 </blockquote>
 
@@ -21,7 +22,7 @@ We generally support at least the latest two major versions of ESLint; though so
 <blockquote>
   <p>
     The version range of NodeJS currently supported is{' '}
-    <code>{packageJson.engines.node}</code>.
+    <code>{eslintPluginPackageJson.engines.node}</code>.
   </p>
 </blockquote>
 
@@ -33,7 +34,7 @@ Support for specific Current status releases are considered periodically.
 <blockquote>
   <p>
     The version range of TypeScript currently supported is{' '}
-    <code>{packageJson.devDependencies.typescript}</code>.
+    <code>{rootPackageJson.devDependencies.typescript}</code>.
   </p>
 </blockquote>
 

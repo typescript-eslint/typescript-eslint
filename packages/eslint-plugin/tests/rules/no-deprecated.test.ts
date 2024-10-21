@@ -10,8 +10,8 @@ const ruleTester = new RuleTester({
       ecmaFeatures: {
         jsx: true,
       },
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -246,13 +246,27 @@ ruleTester.run('no-deprecated', rule, {
       `,
       languageOptions: {
         parserOptions: {
-          tsconfigRootDir: rootDir,
-          projectService: false,
           project: './tsconfig.moduleResolution-node16.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
         },
       },
     },
     'call();',
+
+    // this test is to ensure the rule doesn't crash when class implements itself
+    // https://github.com/typescript-eslint/typescript-eslint/issues/10031
+    `
+      class Foo implements Foo {
+        get bar(): number {
+          return 42;
+        }
+
+        baz(): number {
+          return this.bar;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -263,10 +277,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -279,10 +293,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -295,10 +309,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -311,10 +325,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -327,10 +341,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 18,
-          line: 3,
-          endLine: 3,
           data: { name: 'aLongName' },
+          endColumn: 18,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -343,10 +357,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 19,
-          endColumn: 20,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -359,10 +373,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 19,
-          endColumn: 20,
-          line: 3,
-          endLine: 3,
           data: { name: 'a', reason: 'Reason.' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -375,10 +389,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 22,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -391,10 +405,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 20,
-          endColumn: 21,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -407,10 +421,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 22,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -426,10 +440,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 6,
-          endLine: 6,
           data: { name: 'a' },
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
           messageId: 'deprecated',
         },
       ],
@@ -442,10 +456,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 22,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -458,10 +472,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 22,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -474,10 +488,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -490,10 +504,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -506,10 +520,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -524,10 +538,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 5,
-          endLine: 5,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -542,10 +556,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 5,
-          endLine: 5,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -558,10 +572,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 19,
-          endColumn: 20,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -574,10 +588,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 23,
-          endColumn: 24,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -590,10 +604,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 29,
-          endColumn: 30,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 30,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -606,10 +620,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 26,
-          endColumn: 27,
-          line: 3,
-          endLine: 3,
           data: { name: 'a' },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
           messageId: 'deprecated',
         },
       ],
@@ -623,10 +637,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 22,
-          endColumn: 23,
-          line: 4,
-          endLine: 4,
           data: { name: 'a' },
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -641,10 +655,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -659,10 +673,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -677,10 +691,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -695,10 +709,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -715,10 +729,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -737,10 +751,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 9,
-          endLine: 9,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -757,10 +771,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -777,10 +791,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 13,
-          endColumn: 14,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 14,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -799,10 +813,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
+          data: { name: 'b' },
           endColumn: 18,
-          line: 9,
           endLine: 9,
-          data: { name: 'b' },
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -821,10 +835,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -843,10 +857,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -865,10 +879,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -887,10 +901,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -909,10 +923,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -933,10 +947,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 11,
-          endLine: 11,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 11,
+          line: 11,
           messageId: 'deprecated',
         },
       ],
@@ -956,10 +970,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 10,
-          endLine: 10,
           data: { name: 'b', reason: 'Use b(value).' },
+          endColumn: 12,
+          endLine: 10,
+          line: 10,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -976,10 +990,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 7,
-          endLine: 7,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -996,10 +1010,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 7,
-          endLine: 7,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1018,10 +1032,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1040,10 +1054,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1062,10 +1076,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 18,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1084,10 +1098,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 18,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1106,10 +1120,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 18,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1128,10 +1142,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 18,
-          line: 9,
-          endLine: 9,
           data: { name: 'b' },
+          endColumn: 18,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1148,10 +1162,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 26,
-          endColumn: 27,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 27,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -1168,10 +1182,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 7,
-          endLine: 7,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1188,10 +1202,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 7,
-          endLine: 7,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1208,10 +1222,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 7,
-          endLine: 7,
           data: { name: 'b' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1229,14 +1243,14 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 16,
-          endColumn: 20,
-          line: 8,
-          endLine: 8,
           data: {
             name: 'fail',
             reason:
               'since v10.0.0 - use fail([message]) or other assert functions instead.',
           },
+          endColumn: 20,
+          endLine: 8,
+          line: 8,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -1250,14 +1264,14 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 16,
-          endColumn: 20,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'fail',
             reason:
               'since v10.0.0 - use fail([message]) or other assert functions instead.',
           },
+          endColumn: 20,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -1274,10 +1288,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1294,10 +1308,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 11,
-          endColumn: 12,
-          line: 7,
-          endLine: 7,
           data: { name: 'a' },
+          endColumn: 12,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1312,10 +1326,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 5,
-          endLine: 5,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -1331,10 +1345,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 6,
-          endLine: 6,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 6,
+          line: 6,
           messageId: 'deprecated',
         },
       ],
@@ -1351,10 +1365,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 7,
-          endLine: 7,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1372,10 +1386,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 12,
-          line: 8,
-          endLine: 8,
           data: { name: 'foo' },
+          endColumn: 12,
+          endLine: 8,
+          line: 8,
           messageId: 'deprecated',
         },
       ],
@@ -1392,10 +1406,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 18,
-          endColumn: 19,
-          line: 6,
-          endLine: 6,
           data: { name: 'b' },
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
           messageId: 'deprecated',
         },
       ],
@@ -1420,13 +1434,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 15,
-          endColumn: 25,
-          line: 10,
-          endLine: 10,
           data: {
             name: 'isReceiver',
             reason: 'This param is not used and will be removed in the future.',
           },
+          endColumn: 25,
+          endLine: 10,
+          line: 10,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -1441,10 +1455,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 10,
-          line: 5,
-          endLine: 5,
           data: { name: 'a' },
+          endColumn: 10,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -1459,10 +1473,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 20,
-          endColumn: 21,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -1477,10 +1491,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 20,
-          endColumn: 21,
-          line: 5,
-          endLine: 5,
           data: { name: 'A' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],
@@ -1497,10 +1511,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 20,
-          endColumn: 21,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 21,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1517,10 +1531,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 20,
-          endColumn: 21,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 21,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1537,10 +1551,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 25,
-          endColumn: 26,
-          line: 7,
-          endLine: 7,
           data: { name: 'A' },
+          endColumn: 26,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1559,10 +1573,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 27,
-          endColumn: 28,
-          line: 9,
-          endLine: 9,
           data: { name: 'B' },
+          endColumn: 28,
+          endLine: 9,
+          line: 9,
           messageId: 'deprecated',
         },
       ],
@@ -1579,10 +1593,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 23,
-          line: 7,
-          endLine: 7,
           data: { name: 'anchor' },
+          endColumn: 23,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1601,10 +1615,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 18,
-          endColumn: 24,
-          line: 8,
-          endLine: 8,
           data: { name: 'anchor' },
+          endColumn: 24,
+          endLine: 8,
+          line: 8,
           messageId: 'deprecated',
         },
       ],
@@ -1621,10 +1635,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 18,
-          endColumn: 24,
-          line: 7,
-          endLine: 7,
           data: { name: 'anchor' },
+          endColumn: 24,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1641,10 +1655,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 20,
-          line: 7,
-          endLine: 7,
           data: { name: 'foo' },
+          endColumn: 20,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
@@ -1658,10 +1672,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 25,
-          endColumn: 40,
-          line: 4,
-          endLine: 4,
           data: { name: 'DeprecatedClass' },
+          endColumn: 40,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1677,10 +1691,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 16,
-          endColumn: 31,
-          line: 6,
-          endLine: 6,
           data: { name: 'DeprecatedClass' },
+          endColumn: 31,
+          endLine: 6,
+          line: 6,
           messageId: 'deprecated',
         },
       ],
@@ -1694,10 +1708,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 39,
-          line: 4,
-          endLine: 4,
           data: { name: 'deprecatedVariable' },
+          endColumn: 39,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1713,18 +1727,18 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 26,
-          endColumn: 41,
-          line: 4,
-          endLine: 4,
           data: { name: 'DeprecatedClass' },
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
         {
           column: 17,
-          endColumn: 20,
-          line: 6,
-          endLine: 6,
           data: { name: 'foo' },
+          endColumn: 20,
+          endLine: 6,
+          line: 6,
           messageId: 'deprecated',
         },
       ],
@@ -1738,10 +1752,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 27,
-          line: 4,
-          endLine: 4,
           data: { name: 'deprecatedFunction' },
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1755,10 +1769,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 34,
-          endColumn: 45,
-          line: 4,
-          endLine: 4,
           data: { name: 'NormalClass' },
+          endColumn: 45,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1772,10 +1786,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 25,
-          endColumn: 36,
-          line: 4,
-          endLine: 4,
           data: { name: 'NormalClass' },
+          endColumn: 36,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1789,10 +1803,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 41,
-          line: 4,
-          endLine: 4,
           data: { name: 'NormalClass' },
+          endColumn: 41,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1806,10 +1820,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 32,
-          line: 4,
-          endLine: 4,
           data: { name: 'NormalClass' },
+          endColumn: 32,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1823,10 +1837,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 35,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalVariable' },
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1840,10 +1854,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 44,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalVariable' },
+          endColumn: 44,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1857,10 +1871,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 31,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalVariable' },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1874,10 +1888,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 35,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalFunction' },
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1891,10 +1905,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 44,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalFunction' },
+          endColumn: 44,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1908,10 +1922,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 31,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalFunction' },
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1925,10 +1939,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 35,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalFunction' },
+          endColumn: 35,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1942,10 +1956,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 44,
-          line: 4,
-          endLine: 4,
           data: { name: 'normalFunction' },
+          endColumn: 44,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1959,10 +1973,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 52,
-          line: 4,
-          endLine: 4,
           data: { name: 'deprecatedFunctionWithOverloads' },
+          endColumn: 52,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1976,10 +1990,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 61,
-          line: 4,
-          endLine: 4,
           data: { name: 'deprecatedFunctionWithOverloads' },
+          endColumn: 61,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -1993,13 +2007,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 62,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 62,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2013,13 +2027,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 71,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 71,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2033,13 +2047,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 58,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 58,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2053,13 +2067,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 62,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 62,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2073,13 +2087,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 71,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 71,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2093,13 +2107,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 62,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 62,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2113,13 +2127,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 71,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'reexportedDeprecatedFunctionWithOverloads',
             reason: 'Reason',
           },
+          endColumn: 71,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2133,10 +2147,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 25,
-          endColumn: 55,
-          line: 4,
-          endLine: 4,
           data: { name: 'ClassWithDeprecatedConstructor' },
+          endColumn: 55,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -2150,10 +2164,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 34,
-          endColumn: 64,
-          line: 4,
-          endLine: 4,
           data: { name: 'ClassWithDeprecatedConstructor' },
+          endColumn: 64,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -2167,13 +2181,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 61,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 61,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2187,13 +2201,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 70,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 70,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2207,13 +2221,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 17,
-          endColumn: 57,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 57,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2227,13 +2241,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 61,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 61,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2247,13 +2261,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 70,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 70,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2267,13 +2281,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 21,
-          endColumn: 61,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 61,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2287,13 +2301,13 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 30,
-          endColumn: 70,
-          line: 4,
-          endLine: 4,
           data: {
             name: 'ReexportedClassWithDeprecatedConstructor',
             reason: 'Reason',
           },
+          endColumn: 70,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecatedWithReason',
         },
       ],
@@ -2307,10 +2321,10 @@ ruleTester.run('no-deprecated', rule, {
       errors: [
         {
           column: 9,
-          endColumn: 17,
-          line: 4,
-          endLine: 4,
           data: { name: 'imported' },
+          endColumn: 17,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
@@ -2322,23 +2336,23 @@ ruleTester.run('no-deprecated', rule, {
           d.default.default;
         }
       `,
-      languageOptions: {
-        parserOptions: {
-          tsconfigRootDir: rootDir,
-          projectService: false,
-          project: './tsconfig.moduleResolution-node16.json',
-        },
-      },
       errors: [
         {
           column: 21,
-          endColumn: 28,
-          line: 4,
-          endLine: 4,
           data: { name: 'default' },
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
           messageId: 'deprecated',
         },
       ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.moduleResolution-node16.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
     },
   ],
 });

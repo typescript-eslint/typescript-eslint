@@ -6,6 +6,7 @@ import type { TSQualifiedName } from '../../type/TSQualifiedName/spec';
 import type { ImportKind } from '../ExportAndImportKind';
 
 interface TSImportEqualsDeclarationBase extends BaseNode {
+  type: AST_NODE_TYPES.TSImportEqualsDeclaration;
   /**
    * The locally imported name.
    */
@@ -25,7 +26,6 @@ interface TSImportEqualsDeclarationBase extends BaseNode {
    * ```
    */
   moduleReference: Identifier | TSExternalModuleReference | TSQualifiedName;
-  type: AST_NODE_TYPES.TSImportEqualsDeclaration;
 }
 
 export interface TSImportEqualsNamespaceDeclaration

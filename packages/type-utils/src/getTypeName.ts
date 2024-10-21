@@ -23,8 +23,9 @@ export function getTypeName(
     // via AST.
     const symbol = type.getSymbol();
     const decls = symbol?.getDeclarations();
-    const typeParamDecl = decls?.[0] as ts.TypeParameterDeclaration;
+    const typeParamDecl = decls?.[0];
     if (
+      typeParamDecl != null &&
       ts.isTypeParameterDeclaration(typeParamDecl) &&
       typeParamDecl.constraint != null
     ) {

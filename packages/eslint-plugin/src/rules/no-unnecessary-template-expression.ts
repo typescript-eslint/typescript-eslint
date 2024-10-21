@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -10,6 +11,7 @@ import {
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
+import { rangeToLoc } from '../util/rangeToLoc';
 
 type MessageId = 'noUnnecessaryTemplateExpression';
 
@@ -27,13 +29,13 @@ function endsWithUnescapedDollarSign(str: string): boolean {
 export default createRule<[], MessageId>({
   name: 'no-unnecessary-template-expression',
   meta: {
-    fixable: 'code',
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary template expressions',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       noUnnecessaryTemplateExpression:
         'Template literal expression is unnecessary and can be simplified.',
@@ -46,7 +48,7 @@ export default createRule<[], MessageId>({
 
     function isUnderlyingTypeString(
       expression: TSESTree.Expression,
-    ): expression is TSESTree.StringLiteral | TSESTree.Identifier {
+    ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
       const type = getConstrainedTypeAtLocation(services, expression);
 
       const isString = (t: ts.Type): boolean => {
@@ -105,13 +107,16 @@ export default createRule<[], MessageId>({
 
         if (hasSingleStringVariable) {
           context.report({
-            node: node.expressions[0],
+            loc: rangeToLoc(context.sourceCode, [
+              node.expressions[0].range[0] - 2,
+              node.expressions[0].range[1] + 1,
+            ]),
             messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix | null {
               const wrappingCode = getMovedNodeCode({
-                sourceCode: context.sourceCode,
-                nodeToMove: node.expressions[0],
                 destinationNode: node,
+                nodeToMove: node.expressions[0],
+                sourceCode: context.sourceCode,
               });
 
               return fixer.replaceText(node, wrappingCode);
@@ -245,20 +250,17 @@ export default createRule<[], MessageId>({
             ]);
           }
 
+          const warnLocStart = prevQuasi.range[1] - 2;
+          const warnLocEnd = nextQuasi.range[0] + 1;
+
           context.report({
-            node: expression,
+            loc: rangeToLoc(context.sourceCode, [warnLocStart, warnLocEnd]),
             messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               return [
                 // Remove the quasis' parts that are related to the current expression.
-                fixer.removeRange([
-                  prevQuasi.range[1] - 2,
-                  expression.range[0],
-                ]),
-                fixer.removeRange([
-                  expression.range[1],
-                  nextQuasi.range[0] + 1,
-                ]),
+                fixer.removeRange([warnLocStart, expression.range[0]]),
+                fixer.removeRange([expression.range[1], warnLocEnd]),
 
                 ...fixers.flatMap(cb => cb(fixer)),
               ];
