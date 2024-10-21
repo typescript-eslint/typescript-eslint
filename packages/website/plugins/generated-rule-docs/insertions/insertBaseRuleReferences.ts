@@ -1,7 +1,10 @@
-import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
-import { convertToPlaygroundHash, getEslintrcString } from '../../utils/rules';
+import {
+  convertToPlaygroundHash,
+  getEslintConfigString,
+  getEslintrcString,
+} from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
@@ -27,15 +30,57 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
     page.headingIndices.howToUse + 1,
     0,
     {
-      lang: 'js',
-      type: 'code',
-      meta: 'title=".eslintrc.cjs"',
-      value: `module.exports = ${getEslintrcString(
-        extendsBaseRuleName,
-        page.file.stem,
-        true,
-      )};`,
-    } as mdast.Code,
+      type: 'mdxJsxFlowElement',
+      name: 'Tabs',
+      children: [
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'TabItem',
+          attributes: [
+            {
+              type: 'mdxJsxAttribute',
+              name: 'value',
+              value: 'Flat Config',
+            },
+          ],
+          children: [
+            {
+              type: 'code',
+              lang: 'js',
+              meta: 'title="eslint.config.mjs"',
+              value: `export default tseslint.config(${getEslintConfigString(
+                extendsBaseRuleName,
+                page.file.stem,
+                true,
+              )})`,
+            },
+          ],
+        },
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'TabItem',
+          attributes: [
+            {
+              type: 'mdxJsxAttribute',
+              name: 'value',
+              value: 'Legacy Config',
+            },
+          ],
+          children: [
+            {
+              type: 'code',
+              lang: 'js',
+              meta: 'title=".eslintrc.cjs"',
+              value: `module.exports = ${getEslintrcString(
+                extendsBaseRuleName,
+                page.file.stem,
+                true,
+              )};`,
+            },
+          ],
+        },
+      ],
+    } as MdxJsxFlowElement,
     {
       attributes: [
         {
