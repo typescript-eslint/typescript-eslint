@@ -17,7 +17,7 @@ export namespace Processor {
   export type PreProcess = (
     text: string,
     filename: string,
-  ) => ({ filename: string; text: string } | string)[];
+  ) => (string | { filename: string; text: string })[];
 
   export type PostProcess = (
     messagesList: Linter.LintMessage[][],
