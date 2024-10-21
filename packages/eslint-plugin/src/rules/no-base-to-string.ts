@@ -24,7 +24,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+        'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
@@ -82,7 +82,9 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      const toString = checker.getPropertyOfType(type, 'toString');
+      const toString =
+        checker.getPropertyOfType(type, 'toString') ??
+        checker.getPropertyOfType(type, 'toLocaleString');
       const declarations = toString?.getDeclarations();
       if (!toString || !declarations || declarations.length === 0) {
         return Usefulness.Always;
@@ -167,7 +169,7 @@ export default createRule<Options, MessageIds>({
           checkExpression(node.left, leftType);
         }
       },
-      'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
+      'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
