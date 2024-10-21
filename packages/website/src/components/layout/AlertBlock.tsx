@@ -1,8 +1,8 @@
 import React from 'react';
 
 export interface AlertBlockProps {
-  readonly type: 'danger' | 'info' | 'note' | 'success' | 'warning';
   readonly children: React.ReactNode;
+  readonly type: 'danger' | 'info' | 'note' | 'success' | 'warning';
 }
 
 function AlertBlock(props: AlertBlockProps): React.JSX.Element {

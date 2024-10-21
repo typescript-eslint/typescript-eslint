@@ -1,10 +1,9 @@
 /* eslint-disable no-process-exit, no-console */
 
+import * as esbuild from 'esbuild';
 import * as fs from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import * as path from 'node:path';
-
-import * as esbuild from 'esbuild';
 
 function requireResolved(targetPath: string): string {
   return createRequire(__filename).resolve(targetPath);
@@ -18,7 +17,7 @@ function requireMock(targetPath: string): Promise<string> {
   return fs.readFile(requireResolved(targetPath), 'utf8');
 }
 
-function makeFilter(filePath: string[] | string): { filter: RegExp } {
+function makeFilter(filePath: string | string[]): { filter: RegExp } {
   const paths = Array.isArray(filePath) ? filePath : [filePath];
   const norm = paths.map(item =>
     normalizePath(item).replaceAll('/', '[\\\\/]').replaceAll('.', '\\.'),
@@ -42,39 +41,6 @@ async function buildPackage(name: string, file: string): Promise<void> {
   const rulesPath = path.join(eslintRoot, '../lib/rules/index.js');
 
   await esbuild.build({
-    entryPoints: {
-      [name]: requireResolved(file),
-    },
-    format: 'cjs',
-    platform: 'browser',
-    bundle: true,
-    external: [],
-    minify: true,
-    treeShaking: true,
-    write: true,
-    target: 'es2020',
-    sourcemap: 'linked',
-    outdir: './dist/',
-    supported: {},
-    banner: {
-      // https://github.com/evanw/esbuild/issues/819
-      js: `define(['exports', 'vs/language/typescript/tsWorker'], function (exports) {`,
-    },
-    footer: {
-      // https://github.com/evanw/esbuild/issues/819
-      js: `});`,
-    },
-    define: {
-      'process.env.NODE_ENV': '"production"',
-      'process.env.NODE_DEBUG': 'false',
-      'process.env.IGNORE_TEST_WIN32': 'true',
-      'process.env.DEBUG': 'false',
-      'process.emitWarning': 'console.warn',
-      'process.platform': '"browser"',
-      'process.env.TIMING': 'undefined',
-      'define.amd': 'false',
-      global: 'window',
-    },
     alias: Object.fromEntries(
       [
         // built-in Node packages — alias each twice — both with and without the `node:` prefix
@@ -90,6 +56,34 @@ async function buildPackage(name: string, file: string): Promise<void> {
         ),
       ]),
     ),
+    banner: {
+      // https://github.com/evanw/esbuild/issues/819
+      js: `define(['exports', 'vs/language/typescript/tsWorker'], function (exports) {`,
+    },
+    bundle: true,
+    define: {
+      'define.amd': 'false',
+      global: 'window',
+      'process.emitWarning': 'console.warn',
+      'process.env.DEBUG': 'false',
+      'process.env.IGNORE_TEST_WIN32': 'true',
+      'process.env.NODE_DEBUG': 'false',
+      'process.env.NODE_ENV': '"production"',
+      'process.env.TIMING': 'undefined',
+      'process.platform': '"browser"',
+    },
+    entryPoints: {
+      [name]: requireResolved(file),
+    },
+    external: [],
+    footer: {
+      // https://github.com/evanw/esbuild/issues/819
+      js: `});`,
+    },
+    format: 'cjs',
+    minify: true,
+    outdir: './dist/',
+    platform: 'browser',
     plugins: [
       {
         name: 'replace-plugin',
@@ -159,6 +153,11 @@ async function buildPackage(name: string, file: string): Promise<void> {
         },
       },
     ],
+    sourcemap: 'linked',
+    supported: {},
+    target: 'es2020',
+    treeShaking: true,
+    write: true,
   });
 }
 

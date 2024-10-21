@@ -8,8 +8,8 @@ import styles from './CopyButton.module.css';
 import Tooltip from './Tooltip';
 
 export interface CopyButtonProps {
-  readonly value: unknown;
   readonly className?: string;
+  readonly value: unknown;
 }
 
 function jsonStringifyRecursive(obj: unknown): string {
@@ -29,20 +29,20 @@ function jsonStringifyRecursive(obj: unknown): string {
   );
 }
 
-function CopyButton({ value, className }: CopyButtonProps): React.JSX.Element {
+function CopyButton({ className, value }: CopyButtonProps): React.JSX.Element {
   const [on, onCopy] = useClipboard(() => jsonStringifyRecursive(value));
 
   return (
     <div className={styles.copyButtonContainer}>
       <Tooltip open={on} text="Copied">
         <button
-          onClick={onCopy}
-          disabled={on}
           aria-label={!on ? 'Copy code to clipboard' : 'Copied'}
           className={clsx(styles.copyButton, className, 'button')}
+          disabled={on}
+          onClick={onCopy}
         >
-          <CopyIcon width="18" height="18" className={styles.copyIcon} />
-          <CheckIcon width="18" height="18" className={styles.checkIcon} />
+          <CopyIcon className={styles.copyIcon} height="18" width="18" />
+          <CheckIcon className={styles.checkIcon} height="18" width="18" />
         </button>
       </Tooltip>
     </div>

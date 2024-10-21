@@ -1,18 +1,19 @@
-import Link from '@docusaurus/Link';
 import type { KeyboardEvent, MouseEvent } from 'react';
+
+import Link from '@docusaurus/Link';
 import React, { useCallback } from 'react';
 
 export interface PropertyNameProps {
-  readonly value?: string;
+  readonly className?: string;
   readonly onClick?: () => void;
   readonly onHover?: (e: boolean) => void;
-  readonly className?: string;
+  readonly value?: string;
 }
 
 export default function PropertyName({
+  className,
   onClick: onClickProp,
   onHover: onHoverProp,
-  className,
   value,
 }: PropertyNameProps): React.JSX.Element {
   const onClick = useCallback(
@@ -45,11 +46,11 @@ export default function PropertyName({
     <Link
       className={className}
       href={`#${value}`}
-      role="button"
       onClick={onClick}
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      role="button"
       tabIndex={onClickProp && 0}
     >
       {value}

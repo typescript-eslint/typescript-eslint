@@ -2,6 +2,7 @@ import type {
   ESLintPluginRuleModule,
   TypeScriptESLintRules,
 } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+
 import { fetch } from 'cross-fetch';
 // markdown-table is ESM, hence this file needs to be `.mts`
 import { markdownTable } from 'markdown-table';

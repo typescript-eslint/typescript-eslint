@@ -1,15 +1,16 @@
-import { EOL } from 'node:os';
-import * as path from 'node:path';
-
 import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
-import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
+
+import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
+import { EOL } from 'node:os';
+import * as path from 'node:path';
 import prettier from 'prettier';
+
+import type { RuleDocsPage } from '../RuleDocsPage';
 
 import { nodeIsHeading } from '../../utils/nodes';
 import { convertToPlaygroundHash } from '../../utils/rules';
-import type { RuleDocsPage } from '../RuleDocsPage';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -69,8 +70,8 @@ module.exports = ${eslintrc};
     {
       attributes: [
         {
-          type: 'mdxJsxAttribute',
           name: 'eslintrcHash',
+          type: 'mdxJsxAttribute',
           value: convertToPlaygroundHash(eslintrc),
         },
       ],
@@ -78,8 +79,8 @@ module.exports = ${eslintrc};
         {
           children: [
             {
-              value: 'Try this rule in the playground ↗',
               type: 'text',
+              value: 'Try this rule in the playground ↗',
             },
           ],
           type: 'paragraph',

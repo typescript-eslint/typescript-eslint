@@ -1,19 +1,20 @@
 import type { Selector } from 'esquery';
+
 import React, { useState } from 'react';
 
 import styles from './ESQueryFilter.module.css';
 import Text from './inputs/Text';
 
 export interface ESQueryFilterProps {
+  defaultValue?: string;
   readonly onChange: (filter: string, selector: Selector) => void;
   readonly onError: (value?: Error) => void;
-  defaultValue?: string;
 }
 
 export function ESQueryFilter({
+  defaultValue,
   onChange,
   onError,
-  defaultValue,
 }: ESQueryFilterProps): React.JSX.Element {
   const [value, setValue] = useState(defaultValue ?? '');
   const changeEvent = (value: string): void => {
@@ -30,11 +31,11 @@ export function ESQueryFilter({
   return (
     <div className={styles.searchContainer}>
       <Text
-        value={value}
-        type="search"
         name="esquery"
         onChange={changeEvent}
         placeholder="ESQuery filter"
+        type="search"
+        value={value}
       />
     </div>
   );

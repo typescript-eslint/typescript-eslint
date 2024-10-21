@@ -1,9 +1,6 @@
 import { $ as $_config } from 'execa';
 
 const $ = $_config({
-  stdout: 'inherit',
-  stderr: 'inherit',
-  verbose: true,
   env: {
     /**
      * Do not apply the special GitHub Actions group markers within the
@@ -12,6 +9,9 @@ const $ = $_config({
      */
     NX_SKIP_LOG_GROUPING: 'true',
   },
+  stderr: 'inherit',
+  stdout: 'inherit',
+  verbose: true,
 });
 
 /**

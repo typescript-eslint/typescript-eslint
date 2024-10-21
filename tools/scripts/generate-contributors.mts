@@ -2,10 +2,9 @@
 // https://developer.github.com/v3/repos/#list-contributors
 // this endpoint returns a list of contributors sorted by number of contributions
 
+import fetch from 'cross-fetch';
 import fs from 'node:fs';
 import path from 'node:path';
-
-import fetch from 'cross-fetch';
 
 import { REPO_ROOT } from './paths.mts';
 
@@ -21,18 +20,18 @@ const PAGE_LIMIT = 100;
 const contributorsApiUrl = `https://api.github.com/repos/typescript-eslint/typescript-eslint/contributors?per_page=${PAGE_LIMIT}`;
 
 interface Contributor {
-  contributions: number;
-  type: string;
-  login?: string;
-  url?: string;
   avatar_url?: string;
+  contributions: number;
   html_url?: string;
+  login?: string;
+  type: string;
+  url?: string;
 }
 interface User {
-  login: string;
-  name: string;
   avatar_url: string;
   html_url: string;
+  login: string;
+  name: string;
 }
 
 async function getData<T>(url: string | undefined): Promise<T | null> {
@@ -41,11 +40,11 @@ async function getData<T>(url: string | undefined): Promise<T | null> {
   }
 
   const response = await fetch(url, {
-    method: 'GET',
     headers: {
       Accept: 'application/vnd.github.v3+json',
       // Authorization: 'token ghp_*', // if needed, replace this with your token
     },
+    method: 'GET',
   });
 
   return (await response.json()) as Promise<T>;
@@ -54,7 +53,7 @@ async function getData<T>(url: string | undefined): Promise<T | null> {
 async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
   let lastLength = 0;
   do {
-    const contributors = await getData<Contributor[] | { message: string }>(
+    const contributors = await getData<{ message: string } | Contributor[]>(
       `${contributorsApiUrl}&page=${page}`,
     );
 

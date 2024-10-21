@@ -1,17 +1,17 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
 import type {
   AnalyzeOptions,
   ScopeManager,
   Variable,
 } from '@typescript-eslint/scope-manager';
-import { analyze } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/types';
-import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import type { TSESTreeOptions } from '@typescript-eslint/typescript-estree';
+
+import { analyze } from '@typescript-eslint/scope-manager';
+import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import { parse } from '@typescript-eslint/typescript-estree';
 import { FlatESLint } from '@typescript-eslint/utils/ts-eslint';
+import fs from 'node:fs';
+import path from 'node:path';
 import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 import ts from 'typescript';
@@ -107,7 +107,7 @@ function getVariablesFromScope(scopeManager: ScopeManager): Variable[] {
 
 const REFERENCE_REGEX = /\/ <reference lib="(.+)" \/>/;
 function getReferences(
-  ast: TSESTree.Program & { comments: TSESTree.Comment[] },
+  ast: { comments: TSESTree.Comment[] } & TSESTree.Program,
 ): Set<string> {
   const comments = ast.comments.filter(
     c =>
@@ -188,10 +188,10 @@ async function main(): Promise<void> {
         loc: true,
         range: true,
       },
-    ) as ReturnType<typeof parseAndAnalyze> & {
+    ) as {
       // https://github.com/typescript-eslint/typescript-eslint/issues/8347
-      ast: TSESTree.Program & { comments: TSESTree.Comment[] };
-    };
+      ast: { comments: TSESTree.Comment[] } & TSESTree.Program;
+    } & ReturnType<typeof parseAndAnalyze>;
 
     const code = [`export const ${sanitize(libName)} = {`];
 

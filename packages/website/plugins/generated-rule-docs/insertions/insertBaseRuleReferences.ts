@@ -1,8 +1,9 @@
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
-import { convertToPlaygroundHash, getEslintrcString } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
+
+import { convertToPlaygroundHash, getEslintrcString } from '../../utils/rules';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =
@@ -28,8 +29,8 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
     0,
     {
       lang: 'js',
-      type: 'code',
       meta: 'title=".eslintrc.cjs"',
+      type: 'code',
       value: `module.exports = ${getEslintrcString(
         extendsBaseRuleName,
         page.file.stem,
@@ -39,8 +40,8 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
     {
       attributes: [
         {
-          type: 'mdxJsxAttribute',
           name: 'eslintrcHash',
+          type: 'mdxJsxAttribute',
           value: eslintrcHash,
         },
       ],
@@ -48,8 +49,8 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
         {
           children: [
             {
-              value: 'Try this rule in the playground ↗',
               type: 'text',
+              value: 'Try this rule in the playground ↗',
             },
           ],
           type: 'paragraph',

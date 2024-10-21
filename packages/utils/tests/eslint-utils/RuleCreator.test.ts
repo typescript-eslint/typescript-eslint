@@ -13,7 +13,10 @@ describe('RuleCreator', () => {
 
   it('should create rule correctly', () => {
     const rule = createRule({
-      name: 'test',
+      create() {
+        return {};
+      },
+      defaultOptions: [],
       meta: {
         docs: {
           description: 'some description',
@@ -25,16 +28,13 @@ describe('RuleCreator', () => {
         schema: [],
         type: 'problem',
       },
-      defaultOptions: [],
-      create() {
-        return {};
-      },
+      name: 'test',
     });
     expect(rule.meta).toEqual({
       docs: {
         description: 'some description',
-        url: 'test/test',
         recommended: 'yes',
+        url: 'test/test',
       },
       messages: {
         foo: 'some message',

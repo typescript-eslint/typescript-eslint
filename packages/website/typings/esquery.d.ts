@@ -15,10 +15,10 @@ declare module 'esquery' {
 
   declare namespace query {
     interface ESQueryOptions {
-      nodeTypeKey?: string;
-      visitorKeys?: Record<string, readonly string[]>;
       fallback?: (node: Node) => string[];
       matchClass?: (className: string, node: Node, ancestry: Node[]) => boolean;
+      nodeTypeKey?: string;
+      visitorKeys?: Record<string, readonly string[]>;
     }
     /** Parse a selector and return its AST. */
     function parse(selector: string): Selector;
@@ -87,9 +87,9 @@ declare module 'esquery' {
       index: NumericLiteral;
     }
     interface BinarySelectorAtom extends SubjectSelectorAtom {
-      type: 'adjacent' | 'child' | 'descendant' | 'sibling';
       left: SubjectSelector;
       right: SubjectSelector;
+      type: 'adjacent' | 'child' | 'descendant' | 'sibling';
     }
     interface MultiSelectorAtom extends SubjectSelectorAtom {
       selectors: SubjectSelector[];
@@ -117,8 +117,8 @@ declare module 'esquery' {
     // Atoms
     //
     interface Field extends Atom {
-      type: 'field';
       name: string;
+      type: 'field';
     }
     interface Type extends Atom {
       type: 'type';
@@ -136,9 +136,9 @@ declare module 'esquery' {
       value: '*';
     }
     interface Attribute extends SubjectSelectorAtom {
-      type: 'attribute';
       name: string;
       operator?: '!=' | '<' | '<=' | '=' | '>' | '>=' | undefined;
+      type: 'attribute';
       value?: Literal | RegExpLiteral | Type | undefined;
     }
     interface NthChild extends NthSelectorAtom {
@@ -169,8 +169,8 @@ declare module 'esquery' {
       type: 'has';
     }
     interface Class extends Atom {
-      type: 'class';
       name: 'declaration' | 'expression' | 'function' | 'pattern' | 'statement';
+      type: 'class';
     }
   }
 }
