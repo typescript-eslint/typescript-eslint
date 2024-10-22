@@ -234,7 +234,7 @@ class UnusedVarsVisitor extends Visitor {
   private markVariableAsUsed(name: string, parent: TSESTree.Node): void;
 
   private markVariableAsUsed(
-    variableOrIdentifierOrName: ScopeVariable | TSESTree.Identifier | string,
+    variableOrIdentifierOrName: string | ScopeVariable | TSESTree.Identifier,
     parent?: TSESTree.Node,
   ): void {
     if (

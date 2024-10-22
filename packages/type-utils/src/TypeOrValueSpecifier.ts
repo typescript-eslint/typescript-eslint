@@ -18,7 +18,7 @@ export interface FileSpecifier {
   /**
    * Type or value name(s) to match on.
    */
-  name: string[] | string;
+  name: string | string[];
 
   /**
    * A specific file the types or values must be declared in.
@@ -36,7 +36,7 @@ export interface LibSpecifier {
   /**
    * Type or value name(s) to match on.
    */
-  name: string[] | string;
+  name: string | string[];
 }
 
 /**
@@ -49,7 +49,7 @@ export interface PackageSpecifier {
   /**
    * Type or value name(s) to match on.
    */
-  name: string[] | string;
+  name: string | string[];
 
   /**
    * Package name the type or value must be declared in.
@@ -62,10 +62,10 @@ export interface PackageSpecifier {
  * See [TypeOrValueSpecifier](/packages/type-utils/type-or-value-specifier).
  */
 export type TypeOrValueSpecifier =
+  | string
   | FileSpecifier
   | LibSpecifier
-  | PackageSpecifier
-  | string;
+  | PackageSpecifier;
 
 export const typeOrValueSpecifiersSchema = {
   items: {
