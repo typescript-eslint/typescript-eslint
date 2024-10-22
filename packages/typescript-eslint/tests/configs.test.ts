@@ -1,3 +1,4 @@
+import type { TSESLint } from '@typescript-eslint/utils';
 import type {
   FlatConfig,
   RuleRecommendation,
@@ -369,16 +370,30 @@ describe('config helper', () => {
   });
 
   it('throws error when some extensions are undefined', () => {
+    const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
+
     expect(() =>
-      plugin.config({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        extends: [undefined as any],
-        files: ['common-file'],
-        ignores: ['common-ignored'],
-        name: 'my-config',
-        rules: { rule: 'error' },
-      }),
-    ).toThrow('Some of your extensions are undefined');
+      plugin.config(
+        {
+          extends: [extension],
+          files: ['common-file'],
+          ignores: ['common-ignored'],
+          name: 'my-config',
+          rules: { rule: 'error' },
+        },
+        {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          extends: [undefined as any, extension, undefined as any],
+          files: ['common-file'],
+          ignores: ['common-ignored'],
+          name: 'my-config',
+          rules: { rule: 'error' },
+        },
+      ),
+    ).toThrow(
+      'Your config at index 1 contains undefined extensions at the following' +
+        ' indices: 0, 2',
+    );
   });
 
   it('flattens extended configs with config name', () => {
