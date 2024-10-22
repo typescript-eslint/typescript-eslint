@@ -1020,7 +1020,6 @@ switch (b1) {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     // Ensure that it's complaining about the right things
     unnecessaryConditionTest('object', 'alwaysTruthy'),
@@ -1050,7 +1049,6 @@ if (b1 || b2 || true) {
         { column: 11, line: 6, messageId: 'alwaysFalsy' },
         { column: 17, line: 8, messageId: 'alwaysTruthy' },
       ],
-      output: null,
     },
 
     // Generic type params
@@ -1061,7 +1059,6 @@ function test<T extends object>(t: T) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'alwaysTruthy' }],
-      output: null,
     },
     {
       code: `
@@ -1070,7 +1067,6 @@ function test<T extends false>(t: T) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'alwaysFalsy' }],
-      output: null,
     },
     {
       code: `
@@ -1079,7 +1075,6 @@ function test<T extends 'a' | 'b'>(t: T) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'alwaysTruthy' }],
-      output: null,
     },
 
     // Boolean expressions
@@ -1099,7 +1094,6 @@ function test(a: 'a') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1130,7 +1124,6 @@ if (y === 0) {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1145,7 +1138,6 @@ if (1 == '1') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1158,7 +1150,6 @@ if (1 == '1') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1171,7 +1162,6 @@ if (1 == '1') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1184,7 +1174,6 @@ if (1 == '1') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1197,7 +1186,18 @@ if (1 == '1') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
+    },
+    {
+      code: `
+-2n !== 2n;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'true' },
+          line: 2,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
     },
     {
       code: `
@@ -1212,7 +1212,6 @@ if (1 == '2') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1227,7 +1226,6 @@ if (1 != '2') {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1250,7 +1248,6 @@ if (x === Foo.a) {
           messageId: 'literalBooleanExpression',
         },
       ],
-      output: null,
     },
     {
       // narrowed to null. always-true because of loose nullish equality
@@ -1389,7 +1386,6 @@ function test(a: string) {
         { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
         { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
       ],
-      output: null,
     },
     {
       code: `
@@ -1410,7 +1406,6 @@ function test(a?: string) {
         { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
         { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
       ],
-      output: null,
     },
     {
       code: `
@@ -1431,7 +1426,6 @@ function test(a: null | string) {
         { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
         { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
       ],
-      output: null,
     },
     {
       code: `
@@ -1472,7 +1466,6 @@ function test<T extends object>(a: T) {
         { column: 15, line: 17, messageId: 'noOverlapBooleanExpression' },
         { column: 15, line: 18, messageId: 'noOverlapBooleanExpression' },
       ],
-      output: null,
     },
     // Nullish coalescing operator
     {
@@ -1482,7 +1475,6 @@ function test(a: string) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
-      output: null,
     },
     {
       code: `
@@ -1491,7 +1483,6 @@ function test(a: string | false) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
-      output: null,
     },
     {
       code: `
@@ -1500,7 +1491,6 @@ function test<T extends string>(a: T) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
-      output: null,
     },
     // nullish + array index without optional chaining
     {
@@ -1510,7 +1500,6 @@ function test(a: { foo: string }[]) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
-      output: null,
     },
     {
       code: `
@@ -1519,7 +1508,6 @@ function test(a: null) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
-      output: null,
     },
     {
       code: `
@@ -1528,7 +1516,6 @@ function test(a: null[]) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
-      output: null,
     },
     {
       code: `
@@ -1537,7 +1524,6 @@ function test<T extends null>(a: T) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
-      output: null,
     },
     {
       code: `
@@ -1546,7 +1532,6 @@ function test(a: never) {
 }
       `,
       errors: [{ column: 10, line: 3, messageId: 'never' }],
-      output: null,
     },
     {
       code: `
@@ -1555,7 +1540,6 @@ function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
 }
       `,
       errors: [{ column: 3, line: 3, messageId: 'neverNullish' }],
-      output: null,
     },
     // Predicate functions
     {
@@ -1585,7 +1569,6 @@ function nothing3(x: [string, string]) {
         { column: 25, line: 13, messageId: 'alwaysFalsy' },
         { column: 25, line: 17, messageId: 'alwaysFalsy' },
       ],
-      output: null,
     },
     // Indexing cases
     {
@@ -1597,7 +1580,6 @@ if (dict['mightNotExist']) {
 }
       `,
       errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
-      output: null,
     },
     {
       // Should still check tuples when accessed with literal numbers, since they don't have
@@ -1629,7 +1611,6 @@ if (arr.filter) {
 }
       `,
       errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
-      output: null,
     },
     {
       code: `
@@ -1646,7 +1627,6 @@ function falsy() {}
         { column: 16, line: 7, messageId: 'alwaysFalsyFunc' },
         { column: 25, line: 8, messageId: 'alwaysFalsyFunc' },
       ],
-      output: null,
     },
     // Supports generics
     // TODO: fix this
@@ -1672,7 +1652,6 @@ do {} while (true);
         { column: 14, line: 4, messageId: 'alwaysTruthy' },
       ],
       options: [{ allowConstantLoopConditions: false }],
-      output: null,
     },
     {
       code: noFormat`
@@ -2258,7 +2237,6 @@ function test(testVal?: true) {
           messageId: 'alwaysTruthy',
         },
       ],
-      output: null,
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2255
     {
@@ -2268,7 +2246,6 @@ if (!a) {
 }
       `,
       errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
-      output: null,
     },
     {
       code: `
@@ -2277,7 +2254,6 @@ if (!a) {
 }
       `,
       errors: [{ column: 5, line: 3, messageId: 'alwaysFalsy' }],
-      output: null,
     },
     {
       code: `
@@ -2290,7 +2266,6 @@ if (!speech) {
 }
       `,
       errors: [{ column: 5, line: 7, messageId: 'never' }],
-      output: null,
     },
     {
       code: `
@@ -2315,7 +2290,6 @@ if (x) {
           tsconfigRootDir: path.join(rootPath, 'unstrict'),
         },
       },
-      output: null,
     },
     {
       code: `
@@ -2372,7 +2346,6 @@ pick({ foo: 1, bar: 2 }, 'bar');
           messageId: 'alwaysTruthy',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2393,7 +2366,6 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
           messageId: 'alwaysTruthy',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2409,7 +2381,6 @@ foo ??= 1;
           messageId: 'neverNullish',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2425,7 +2396,6 @@ foo ??= 1;
           messageId: 'neverNullish',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2441,7 +2411,6 @@ foo ??= null;
           messageId: 'alwaysNullish',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2457,7 +2426,6 @@ foo ||= 1;
           messageId: 'alwaysTruthy',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2473,7 +2441,6 @@ foo ||= null;
           messageId: 'alwaysFalsy',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2489,7 +2456,6 @@ foo &&= 1;
           messageId: 'alwaysTruthy',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2505,7 +2471,6 @@ foo &&= null;
           messageId: 'alwaysFalsy',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2522,7 +2487,6 @@ foo.bar ??= 1;
         },
       ],
       languageOptions: { parserOptions: optionsWithExactOptionalPropertyTypes },
-      output: null,
     },
     {
       code: `
