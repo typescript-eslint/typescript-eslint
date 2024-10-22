@@ -1216,6 +1216,21 @@ if (1 == '2') {
     },
     {
       code: `
+// @ts-expect-error
+if (1 != '2') {
+}
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'true' },
+          line: 3,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
 enum Foo {
   a = 1,
   b = 2,
@@ -1236,6 +1251,86 @@ if (x === Foo.a) {
         },
       ],
       output: null,
+    },
+    {
+      // narrowed to null. always-true because of loose nullish equality
+      code: `
+function takesMaybeValue(a: null | object) {
+  if (a) {
+  } else if (a == undefined) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { trueOrFalse: 'true' },
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+    },
+    {
+      // narrowed to null. always-false because of strict undefined equality
+      code: `
+function takesMaybeValue(a: null | object) {
+  if (a) {
+  } else if (a === undefined) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { trueOrFalse: 'false' },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+    },
+    {
+      // narrowed to null. always-false because of loose nullish equality
+      code: `
+function takesMaybeValue(a: null | object) {
+  if (a) {
+  } else if (a != undefined) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { trueOrFalse: 'false' },
+          endColumn: 28,
+          endLine: 4,
+          line: 4,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+    },
+    {
+      // narrowed to null. always-true because of strict undefined equality
+      code: `
+function takesMaybeValue(a: null | object) {
+  if (a) {
+  } else if (a !== undefined) {
+  }
+}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: { trueOrFalse: 'true' },
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
     },
     // Workaround https://github.com/microsoft/TypeScript/issues/37160
     {
