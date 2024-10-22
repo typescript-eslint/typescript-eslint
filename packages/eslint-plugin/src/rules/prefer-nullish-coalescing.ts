@@ -332,7 +332,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (ignoreBooleanCoercion === true && isBooleanConstructorContext(node, context)) {
+        if (
+          ignoreBooleanCoercion === true &&
+          isBooleanConstructorContext(node, context)
+        ) {
           return;
         }
 
@@ -411,73 +414,79 @@ export default createRule<Options, MessageIds>({
   },
 });
 
-function isConditionalTest(node: TSESTree.Node,parents=new Set<TSESTree.Node | null>([node])): boolean {
-  if(node.parent) {parents.add(node.parent);}
+function isConditionalTest(node: TSESTree.Node): boolean {
+  const parent = node.parent;
+  if (parent == null) {
+    return false;
+  }
 
-  if(node.parent?.type === AST_NODE_TYPES.LogicalExpression ){
-    return isConditionalTest(node.parent,parents)
+  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
+    return isConditionalTest(parent);
   }
 
   if (
-    node.parent?.type === AST_NODE_TYPES.ConditionalExpression &&
-    (node.parent.consequent === node || node.parent.alternate === node)
+    parent.type === AST_NODE_TYPES.ConditionalExpression &&
+    (parent.consequent === node || parent.alternate === node)
   ) {
-    return isConditionalTest(node.parent,parents);
+    return isConditionalTest(parent);
   }
 
   if (
-    node.parent?.type === AST_NODE_TYPES.SequenceExpression &&
-    node.parent.expressions.at(-1) === node
+    parent.type === AST_NODE_TYPES.SequenceExpression &&
+    parent.expressions.at(-1) === node
   ) {
-    return isConditionalTest(node.parent,parents);
+    return isConditionalTest(parent);
   }
 
-    if (
-      (node.parent?.type === AST_NODE_TYPES.ConditionalExpression ||
-        node.parent?.type === AST_NODE_TYPES.DoWhileStatement ||
-        node.parent?.type === AST_NODE_TYPES.IfStatement ||
-        node.parent?.type === AST_NODE_TYPES.ForStatement ||
-        node.parent?.type === AST_NODE_TYPES.WhileStatement) &&
-      parents.has(node.parent.test)
-    ) {
-      return true;
-    }
+  if (
+    (parent.type === AST_NODE_TYPES.ConditionalExpression ||
+      parent.type === AST_NODE_TYPES.DoWhileStatement ||
+      parent.type === AST_NODE_TYPES.IfStatement ||
+      parent.type === AST_NODE_TYPES.ForStatement ||
+      parent.type === AST_NODE_TYPES.WhileStatement) &&
+    parent.test === node
+  ) {
+    return true;
+  }
 
-    return false
-
+  return false;
 }
 
 function isBooleanConstructorContext(
   node: TSESTree.Node,
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): boolean {
-  if(node.parent?.type === AST_NODE_TYPES.LogicalExpression ){
-    return isBooleanConstructorContext(node.parent,context)
+  const parent = node.parent;
+  if (parent == null) {
+    return false;
+  }
+
+  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
+    return isBooleanConstructorContext(parent, context);
   }
 
   if (
-    node.parent?.type === AST_NODE_TYPES.ConditionalExpression &&
-    (node.parent.consequent === node || node.parent.alternate === node)
+    parent.type === AST_NODE_TYPES.ConditionalExpression &&
+    (parent.consequent === node || parent.alternate === node)
   ) {
-    return isBooleanConstructorContext(node.parent,context);
+    return isBooleanConstructorContext(parent, context);
   }
 
   if (
-    node.parent?.type === AST_NODE_TYPES.SequenceExpression &&
-    node.parent.expressions.at(-1) === node
+    parent.type === AST_NODE_TYPES.SequenceExpression &&
+    parent.expressions.at(-1) === node
   ) {
-    return isBooleanConstructorContext(node.parent,context);
+    return isBooleanConstructorContext(parent, context);
   }
 
-  return isBuiltInBooleanCall(node.parent, context);
+  return isBuiltInBooleanCall(parent, context);
 }
 
 function isBuiltInBooleanCall(
-  node: TSESTree.Node | undefined,
+  node: TSESTree.Node,
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): boolean {
   if (
-    !!node &&
     node.type === AST_NODE_TYPES.CallExpression &&
     node.callee.type === AST_NODE_TYPES.Identifier &&
     // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
@@ -486,7 +495,7 @@ function isBuiltInBooleanCall(
   ) {
     const scope = context.sourceCode.getScope(node);
     const variable = scope.set.get(AST_TOKEN_TYPES.Boolean);
-    return !variable?.defs.length;
+    return variable == null || variable.defs.length === 0;
   }
   return false;
 }
