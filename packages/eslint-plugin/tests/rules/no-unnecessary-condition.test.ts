@@ -1,7 +1,4 @@
-import type {
-  InvalidTestCase,
-  TestCaseError,
-} from '@typescript-eslint/rule-tester';
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
