@@ -70,7 +70,9 @@ function toLiteralValue(
   | undefined {
   // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
-    return { value: type.value };
+    // TODO - report ts-api-utils bug. this is a workaround. for whatever reason,
+    // type.value is undefined.
+    return { value: type.intrinsicName === 'true' };
   } else if (type.flags === ts.TypeFlags.Undefined) {
     return { value: undefined };
   } else if (type.flags === ts.TypeFlags.Null) {

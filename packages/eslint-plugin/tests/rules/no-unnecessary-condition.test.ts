@@ -1332,6 +1332,39 @@ function takesMaybeValue(a: null | object) {
         },
       ],
     },
+    {
+      code: `
+true === false;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'false' },
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+true === true;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'true' },
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+    },
+    {
+      code: `
+true === undefined;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'false' },
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+    },
     // Workaround https://github.com/microsoft/TypeScript/issues/37160
     {
       code: `
