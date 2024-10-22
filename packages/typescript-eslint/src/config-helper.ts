@@ -106,8 +106,7 @@ export function config(
       throw new Error(
         `Your config at index ${configIndex} contains undefined extensions ` +
           `at the following indices: ${undefinedExtensions.join(', ')}.\n` +
-          'This is likely due to a problem with how you are specifying your ' +
-          "extension's import path.",
+          'This is likely due to a problem with extension import paths.',
       );
     }
 
