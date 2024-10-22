@@ -63,13 +63,80 @@ const isPossiblyNullish = (type: ts.Type): boolean =>
 const isAlwaysNullish = (type: ts.Type): boolean =>
   tsutils.unionTypeParts(type).every(isNullishType);
 
-// isLiteralType only covers numbers and strings, this is a more exhaustive check.
-const isLiteral = (type: ts.Type): boolean =>
-  tsutils.isBooleanLiteralType(type) ||
-  type.flags === ts.TypeFlags.Undefined ||
-  type.flags === ts.TypeFlags.Null ||
-  type.flags === ts.TypeFlags.Void ||
-  type.isLiteral();
+function toLiteralValue(
+  type: ts.Type,
+):
+  | { value: bigint | boolean | number | string | null | undefined }
+  | undefined {
+  // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
+  if (tsutils.isBooleanLiteralType(type)) {
+    return { value: type.value };
+  } else if (type.flags === ts.TypeFlags.Undefined) {
+    return { value: undefined };
+  } else if (type.flags === ts.TypeFlags.Null) {
+    return { value: null };
+  } else if (type.isLiteral()) {
+    if (typeof type.value === 'string' || typeof type.value === 'number') {
+      return { value: type.value };
+    }
+    return { value: pseudoBigIntToBigInt(type.value) };
+  }
+
+  return undefined;
+}
+
+function pseudoBigIntToBigInt(value: ts.PseudoBigInt): bigint {
+  return BigInt((value.negative ? '-' : '') + value.base10Value);
+}
+
+const BOOL_OPERATORS = new Set([
+  '<',
+  '>',
+  '<=',
+  '>=',
+  '==',
+  '===',
+  '!=',
+  '!==',
+] as const);
+
+type BoolOperator = typeof BOOL_OPERATORS extends Set<infer T> ? T : never;
+
+function isBoolOperator(operator: string): operator is BoolOperator {
+  return (BOOL_OPERATORS as Set<string>).has(operator);
+}
+
+function booleanComparison(
+  left: unknown,
+  operator: BoolOperator,
+  right: unknown,
+): boolean {
+  switch (operator) {
+    case '!=':
+      // eslint-disable-next-line eqeqeq -- intentionally comparing with loose equality
+      return left != right;
+    case '!==':
+      return left !== right;
+    case '<':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left < right;
+    case '<=':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left <= right;
+    case '==':
+      // eslint-disable-next-line eqeqeq -- intentionally comparing with loose equality
+      return left == right;
+    case '===':
+      return left === right;
+    case '>':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left > right;
+    case '>=':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left >= right;
+  }
+}
+
 // #endregion
 
 export type Options = [
@@ -115,7 +182,7 @@ export default createRule<Options, MessageId>({
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
       literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values.',
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}. Both sides of the comparison always have a literal type.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
@@ -371,19 +438,6 @@ export default createRule<Options, MessageId>({
      *      - https://github.com/microsoft/TypeScript/issues/32627
      *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
-    const BOOL_OPERATORS = new Set([
-      '<',
-      '>',
-      '<=',
-      '>=',
-      '==',
-      '===',
-      '!=',
-      '!==',
-    ] as const);
-    type BoolOperator = Parameters<typeof BOOL_OPERATORS.has>[0];
-    const isBoolOperator = (operator: string): operator is BoolOperator =>
-      (BOOL_OPERATORS as Set<string>).has(operator);
     function checkIfBoolExpressionIsNecessaryConditional(
       node: TSESTree.Node,
       left: TSESTree.Node,
@@ -392,10 +446,27 @@ export default createRule<Options, MessageId>({
     ): void {
       const leftType = getConstrainedTypeAtLocation(services, left);
       const rightType = getConstrainedTypeAtLocation(services, right);
-      if (isLiteral(leftType) && isLiteral(rightType)) {
-        context.report({ node, messageId: 'literalBooleanExpression' });
+
+      const leftLiteralValue = toLiteralValue(leftType);
+      const rightLiteralValue = toLiteralValue(rightType);
+
+      if (leftLiteralValue != null && rightLiteralValue != null) {
+        const conditionIsTrue = booleanComparison(
+          leftLiteralValue.value,
+          operator,
+          rightLiteralValue.value,
+        );
+
+        context.report({
+          node,
+          messageId: 'literalBooleanExpression',
+          data: {
+            trueOrFalse: conditionIsTrue ? 'true' : 'false',
+          },
+        });
         return;
       }
+
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;

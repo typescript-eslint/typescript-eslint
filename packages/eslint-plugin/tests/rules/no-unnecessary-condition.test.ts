@@ -30,16 +30,6 @@ const optionsWithExactOptionalPropertyTypes = {
   tsconfigRootDir: rootPath,
 };
 
-const ruleError = (
-  line: number,
-  column: number,
-  messageId: MessageId,
-): TestCaseError<MessageId> => ({
-  column,
-  line,
-  messageId,
-});
-
 const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
@@ -51,7 +41,7 @@ const unnecessaryConditionTest = (
   messageId: MessageId,
 ): InvalidTestCase<MessageId, Options> => ({
   code: necessaryConditionTest(condition),
-  errors: [ruleError(4, 12, messageId)],
+  errors: [{ column: 12, line: 4, messageId }],
 });
 
 ruleTester.run('no-unnecessary-condition', rule, {
@@ -1017,16 +1007,21 @@ switch (b1) {
 }
       `,
       errors: [
-        ruleError(4, 12, 'alwaysTruthy'),
-        ruleError(5, 12, 'alwaysTruthy'),
-        ruleError(6, 5, 'alwaysTruthy'),
-        ruleError(8, 11, 'alwaysTruthy'),
-        ruleError(10, 8, 'alwaysTruthy'),
-        ruleError(11, 14, 'alwaysTruthy'),
-        ruleError(12, 17, 'alwaysTruthy'),
-        ruleError(15, 12, 'alwaysTruthy'),
-        ruleError(16, 18, 'alwaysTruthy'),
-        ruleError(18, 8, 'literalBooleanExpression'),
+        { column: 12, line: 4, messageId: 'alwaysTruthy' },
+        { column: 12, line: 5, messageId: 'alwaysTruthy' },
+        { column: 5, line: 6, messageId: 'alwaysTruthy' },
+        { column: 11, line: 8, messageId: 'alwaysTruthy' },
+        { column: 8, line: 10, messageId: 'alwaysTruthy' },
+        { column: 14, line: 11, messageId: 'alwaysTruthy' },
+        { column: 17, line: 12, messageId: 'alwaysTruthy' },
+        { column: 12, line: 15, messageId: 'alwaysTruthy' },
+        { column: 18, line: 16, messageId: 'alwaysTruthy' },
+        {
+          column: 8,
+          data: { trueOrFalse: 'true' },
+          line: 18,
+          messageId: 'literalBooleanExpression',
+        },
       ],
       output: null,
     },
@@ -1054,9 +1049,9 @@ if (b1 || b2 || true) {
 }
       `,
       errors: [
-        ruleError(4, 5, 'alwaysTruthy'),
-        ruleError(6, 11, 'alwaysFalsy'),
-        ruleError(8, 17, 'alwaysTruthy'),
+        { column: 5, line: 4, messageId: 'alwaysTruthy' },
+        { column: 11, line: 6, messageId: 'alwaysFalsy' },
+        { column: 17, line: 8, messageId: 'alwaysTruthy' },
       ],
       output: null,
     },
@@ -1068,7 +1063,7 @@ function test<T extends object>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
-      errors: [ruleError(3, 10, 'alwaysTruthy')],
+      errors: [{ column: 10, line: 3, messageId: 'alwaysTruthy' }],
       output: null,
     },
     {
@@ -1077,7 +1072,7 @@ function test<T extends false>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
-      errors: [ruleError(3, 10, 'alwaysFalsy')],
+      errors: [{ column: 10, line: 3, messageId: 'alwaysFalsy' }],
       output: null,
     },
     {
@@ -1086,7 +1081,7 @@ function test<T extends 'a' | 'b'>(t: T) {
   return t ? 'yes' : 'no';
 }
       `,
-      errors: [ruleError(3, 10, 'alwaysTruthy')],
+      errors: [{ column: 10, line: 3, messageId: 'alwaysTruthy' }],
       output: null,
     },
 
@@ -1097,8 +1092,33 @@ function test(a: 'a') {
   return a === 'a';
 }
       `,
-      errors: [ruleError(3, 10, 'literalBooleanExpression')],
+      errors: [
+        {
+          column: 10,
+          data: {
+            trueOrFalse: 'true',
+          },
+          line: 3,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
       output: null,
+    },
+    {
+      code: `
+declare const a: '34';
+declare const b: '56';
+a > b;
+      `,
+      errors: [
+        {
+          data: {
+            trueOrFalse: 'false',
+          },
+          line: 4,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
     },
     {
       code: `
@@ -1106,7 +1126,95 @@ const y = 1;
 if (y === 0) {
 }
       `,
-      errors: [ruleError(3, 5, 'literalBooleanExpression')],
+      errors: [
+        {
+          data: { trueOrFalse: 'false' },
+          line: 3,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+// @ts-expect-error
+if (1 == '1') {
+}
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'true' },
+          line: 3,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+2.3 > 2.3;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'false' },
+          line: 2,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+2.3 >= 2.3;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'true' },
+          line: 2,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+2n < 2n;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'false' },
+          line: 2,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+2n <= 2n;
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'true' },
+          line: 2,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+// @ts-expect-error
+if (1 == '2') {
+}
+      `,
+      errors: [
+        {
+          data: { trueOrFalse: 'false' },
+          line: 3,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
       output: null,
     },
     {
@@ -1120,7 +1228,16 @@ const x = Foo.a;
 if (x === Foo.a) {
 }
       `,
-      errors: [ruleError(8, 5, 'literalBooleanExpression')],
+      errors: [
+        {
+          column: 5,
+          data: {
+            trueOrFalse: 'true',
+          },
+          line: 8,
+          messageId: 'literalBooleanExpression',
+        },
+      ],
       output: null,
     },
     // Workaround https://github.com/microsoft/TypeScript/issues/37160
@@ -1138,14 +1255,14 @@ function test(a: string) {
 }
       `,
       errors: [
-        ruleError(3, 14, 'noOverlapBooleanExpression'),
-        ruleError(4, 14, 'noOverlapBooleanExpression'),
-        ruleError(5, 14, 'noOverlapBooleanExpression'),
-        ruleError(6, 14, 'noOverlapBooleanExpression'),
-        ruleError(7, 14, 'noOverlapBooleanExpression'),
-        ruleError(8, 14, 'noOverlapBooleanExpression'),
-        ruleError(9, 14, 'noOverlapBooleanExpression'),
-        ruleError(10, 14, 'noOverlapBooleanExpression'),
+        { column: 14, line: 3, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 4, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 7, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 8, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
       ],
       output: null,
     },
@@ -1163,10 +1280,10 @@ function test(a?: string) {
 }
       `,
       errors: [
-        ruleError(7, 14, 'noOverlapBooleanExpression'),
-        ruleError(8, 14, 'noOverlapBooleanExpression'),
-        ruleError(9, 14, 'noOverlapBooleanExpression'),
-        ruleError(10, 14, 'noOverlapBooleanExpression'),
+        { column: 14, line: 7, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 8, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
       ],
       output: null,
     },
@@ -1184,10 +1301,10 @@ function test(a: null | string) {
 }
       `,
       errors: [
-        ruleError(3, 14, 'noOverlapBooleanExpression'),
-        ruleError(4, 14, 'noOverlapBooleanExpression'),
-        ruleError(5, 14, 'noOverlapBooleanExpression'),
-        ruleError(6, 14, 'noOverlapBooleanExpression'),
+        { column: 14, line: 3, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 4, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
       ],
       output: null,
     },
@@ -1213,22 +1330,22 @@ function test<T extends object>(a: T) {
 }
       `,
       errors: [
-        ruleError(3, 14, 'noOverlapBooleanExpression'),
-        ruleError(4, 14, 'noOverlapBooleanExpression'),
-        ruleError(5, 14, 'noOverlapBooleanExpression'),
-        ruleError(6, 14, 'noOverlapBooleanExpression'),
-        ruleError(7, 14, 'noOverlapBooleanExpression'),
-        ruleError(8, 14, 'noOverlapBooleanExpression'),
-        ruleError(9, 14, 'noOverlapBooleanExpression'),
-        ruleError(10, 14, 'noOverlapBooleanExpression'),
-        ruleError(11, 14, 'noOverlapBooleanExpression'),
-        ruleError(12, 15, 'noOverlapBooleanExpression'),
-        ruleError(13, 15, 'noOverlapBooleanExpression'),
-        ruleError(14, 15, 'noOverlapBooleanExpression'),
-        ruleError(15, 15, 'noOverlapBooleanExpression'),
-        ruleError(16, 15, 'noOverlapBooleanExpression'),
-        ruleError(17, 15, 'noOverlapBooleanExpression'),
-        ruleError(18, 15, 'noOverlapBooleanExpression'),
+        { column: 14, line: 3, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 4, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 5, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 6, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 7, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 8, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 9, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 10, messageId: 'noOverlapBooleanExpression' },
+        { column: 14, line: 11, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 12, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 13, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 14, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 15, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 16, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 17, messageId: 'noOverlapBooleanExpression' },
+        { column: 15, line: 18, messageId: 'noOverlapBooleanExpression' },
       ],
       output: null,
     },
@@ -1239,7 +1356,7 @@ function test(a: string) {
   return a ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'neverNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
       output: null,
     },
     {
@@ -1248,7 +1365,7 @@ function test(a: string | false) {
   return a ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'neverNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
       output: null,
     },
     {
@@ -1257,7 +1374,7 @@ function test<T extends string>(a: T) {
   return a ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'neverNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
       output: null,
     },
     // nullish + array index without optional chaining
@@ -1267,7 +1384,7 @@ function test(a: { foo: string }[]) {
   return a[0].foo ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'neverNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'neverNullish' }],
       output: null,
     },
     {
@@ -1276,7 +1393,7 @@ function test(a: null) {
   return a ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'alwaysNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
       output: null,
     },
     {
@@ -1285,7 +1402,7 @@ function test(a: null[]) {
   return a[0] ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'alwaysNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
       output: null,
     },
     {
@@ -1294,7 +1411,7 @@ function test<T extends null>(a: T) {
   return a ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'alwaysNullish')],
+      errors: [{ column: 10, line: 3, messageId: 'alwaysNullish' }],
       output: null,
     },
     {
@@ -1303,7 +1420,7 @@ function test(a: never) {
   return a ?? 'default';
 }
       `,
-      errors: [ruleError(3, 10, 'never')],
+      errors: [{ column: 10, line: 3, messageId: 'never' }],
       output: null,
     },
     {
@@ -1312,7 +1429,7 @@ function test<T extends { foo: number }, K extends 'foo'>(num: T[K]) {
   num ?? 'default';
 }
       `,
-      errors: [ruleError(3, 3, 'neverNullish')],
+      errors: [{ column: 3, line: 3, messageId: 'neverNullish' }],
       output: null,
     },
     // Predicate functions
@@ -1337,11 +1454,11 @@ function nothing3(x: [string, string]) {
 }
       `,
       errors: [
-        ruleError(2, 24, 'alwaysTruthy'),
-        ruleError(4, 10, 'alwaysFalsy'),
-        ruleError(9, 25, 'alwaysFalsy'),
-        ruleError(13, 25, 'alwaysFalsy'),
-        ruleError(17, 25, 'alwaysFalsy'),
+        { column: 24, line: 2, messageId: 'alwaysTruthy' },
+        { column: 10, line: 4, messageId: 'alwaysFalsy' },
+        { column: 25, line: 9, messageId: 'alwaysFalsy' },
+        { column: 25, line: 13, messageId: 'alwaysFalsy' },
+        { column: 25, line: 17, messageId: 'alwaysFalsy' },
       ],
       output: null,
     },
@@ -1354,7 +1471,7 @@ declare const dict: Record<string, object>;
 if (dict['mightNotExist']) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
       output: null,
     },
     {
@@ -1368,8 +1485,8 @@ if (x[0]?.foo) {
 }
       `,
       errors: [
-        ruleError(3, 5, 'alwaysTruthy'),
-        ruleError(5, 9, 'neverOptionalChain'),
+        { column: 5, line: 3, messageId: 'alwaysTruthy' },
+        { column: 9, line: 5, messageId: 'neverOptionalChain' },
       ],
       output: `
 const x = [{}] as [{ foo: string }];
@@ -1386,7 +1503,7 @@ declare const arr: object[];
 if (arr.filter) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
       output: null,
     },
     {
@@ -1400,9 +1517,9 @@ function falsy() {}
 [1, 2, 3].findLastIndex(falsy);
       `,
       errors: [
-        ruleError(6, 18, 'alwaysTruthyFunc'),
-        ruleError(7, 16, 'alwaysFalsyFunc'),
-        ruleError(8, 25, 'alwaysFalsyFunc'),
+        { column: 18, line: 6, messageId: 'alwaysTruthyFunc' },
+        { column: 16, line: 7, messageId: 'alwaysFalsyFunc' },
+        { column: 25, line: 8, messageId: 'alwaysFalsyFunc' },
       ],
       output: null,
     },
@@ -1416,7 +1533,7 @@ function falsy() {}
     // // Invalid: arrays are always falsy.
     // [[1,2], [3,4]].filter(isTruthy);
     // `,
-    //       errors: [ruleError(6, 23, 'alwaysTruthyFunc')],
+    //       errors: [({ line: 6, column: 23, messageId: 'alwaysTruthyFunc' })],
     //     },
     {
       code: `
@@ -1425,9 +1542,9 @@ for (; true; ) {}
 do {} while (true);
       `,
       errors: [
-        ruleError(2, 8, 'alwaysTruthy'),
-        ruleError(3, 8, 'alwaysTruthy'),
-        ruleError(4, 14, 'alwaysTruthy'),
+        { column: 8, line: 2, messageId: 'alwaysTruthy' },
+        { column: 8, line: 3, messageId: 'alwaysTruthy' },
+        { column: 14, line: 4, messageId: 'alwaysTruthy' },
       ],
       options: [{ allowConstantLoopConditions: false }],
       output: null,
@@ -1868,7 +1985,7 @@ foo?.fooOrBar.baz?.qux;
 declare const x: { a: { b: number } }[];
 x[0].a?.b;
       `,
-      errors: [ruleError(3, 7, 'neverOptionalChain')],
+      errors: [{ column: 7, line: 3, messageId: 'neverOptionalChain' }],
       output: `
 declare const x: { a: { b: number } }[];
 x[0].a.b;
@@ -2025,7 +2142,7 @@ const a = null;
 if (!a) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
       output: null,
     },
     {
@@ -2034,7 +2151,7 @@ const a = true;
 if (!a) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysFalsy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysFalsy' }],
       output: null,
     },
     {
@@ -2047,7 +2164,7 @@ let speech: never = sayHi();
 if (!speech) {
 }
       `,
-      errors: [ruleError(7, 5, 'never')],
+      errors: [{ column: 5, line: 7, messageId: 'never' }],
       output: null,
     },
     {
@@ -2400,7 +2517,7 @@ foo?.['bar']?.().toExponential();
         if (!!a) {
         }
       `,
-      errors: [ruleError(3, 13, 'alwaysTruthy')],
+      errors: [{ column: 13, line: 3, messageId: 'alwaysTruthy' }],
     },
     {
       code: `
