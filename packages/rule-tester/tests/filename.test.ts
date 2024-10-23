@@ -2,8 +2,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { ESLintUtils } from '@typescript-eslint/utils';
 
-const ruleTester = new RuleTester();
-
 const rule = ESLintUtils.RuleCreator.withoutDocs({
   meta: {
     docs: {
@@ -24,6 +22,8 @@ const rule = ESLintUtils.RuleCreator.withoutDocs({
 });
 
 describe('rule tester filename', () => {
+  const ruleTester = new RuleTester();
+
   ruleTester.run('absolute path', rule, {
     invalid: [
       {
@@ -36,6 +36,34 @@ describe('rule tester filename', () => {
   });
 
   ruleTester.run('relative path', rule, {
+    invalid: [
+      {
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: '../foo.js',
+      },
+    ],
+    valid: [],
+  });
+
+  const ruleTesterWithRootDir = new RuleTester({
+    languageOptions: {
+      parserOptions: { tsconfigRootDir: '/some/path/that/totally/exists/' },
+    },
+  });
+
+  ruleTesterWithRootDir.run('absolute path with root dir', rule, {
+    invalid: [
+      {
+        code: '_',
+        errors: [{ messageId: 'foo' }],
+        filename: '/an-absolute-path/foo.js',
+      },
+    ],
+    valid: [],
+  });
+
+  ruleTesterWithRootDir.run('relative path with root dir', rule, {
     invalid: [
       {
         code: '_',
