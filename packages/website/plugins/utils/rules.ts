@@ -17,7 +17,11 @@ export const eslintPluginDirectory = path.resolve(
 export const sourceUrlPrefix =
   'https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/';
 
-function getRulesString(
+/**
+ * @param withComment Whether to include a full comment note.
+ * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
+ */
+export function getRulesString(
   extendsBaseRuleName: string,
   stem: string,
   withComment: boolean,
@@ -30,33 +34,6 @@ function getRulesString(
     "${extendsBaseRuleName}": "off",
     "@typescript-eslint/${stem}": "error"
   }`;
-}
-
-/**
- * @param withComment Whether to include a full comment note.
- * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
- */
-export function getEslintrcString(
-  extendsBaseRuleName: string,
-  stem: string,
-  withComment: boolean,
-): string {
-  return `{
-  "rules": ${getRulesString(extendsBaseRuleName, stem, withComment)}
-}`;
-}
-
-/**
- * @param withComment Whether to include a full comment note.
- */
-export function getEslintConfigString(
-  extendsBaseRuleName: string,
-  stem: string,
-  withComment: boolean,
-): string {
-  return `{
-  rules: ${getRulesString(extendsBaseRuleName, stem, withComment)}
-}`;
 }
 
 export function convertToPlaygroundHash(eslintrc: string): string {

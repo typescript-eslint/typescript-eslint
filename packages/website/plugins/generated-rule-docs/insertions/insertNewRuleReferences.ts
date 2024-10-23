@@ -62,7 +62,7 @@ export async function insertNewRuleReferences(
   "rules": ${rules}
 }`;
 
-  const eslitnConfig = `{
+  const eslintConfig = `{
   rules: ${rules}
 }`;
 
@@ -88,7 +88,7 @@ export async function insertNewRuleReferences(
               type: 'code',
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
-              value: `export default tseslint.config(${eslitnConfig});`,
+              value: `export default tseslint.config(${eslintConfig});`,
             },
           ],
         },

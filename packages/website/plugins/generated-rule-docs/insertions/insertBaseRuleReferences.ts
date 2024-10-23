@@ -1,10 +1,6 @@
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
-import {
-  convertToPlaygroundHash,
-  getEslintConfigString,
-  getEslintrcString,
-} from '../../utils/rules';
+import { convertToPlaygroundHash, getRulesString } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
@@ -19,11 +15,9 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
     `See [\`eslint/${extendsBaseRuleName}\`'s options](https://eslint.org/docs/rules/${extendsBaseRuleName}#options).`,
   );
 
-  const eslintrc = getEslintrcString(
-    extendsBaseRuleName,
-    page.file.stem,
-    false,
-  );
+  const eslintrc = `{
+  "rules":${getRulesString(extendsBaseRuleName, page.file.stem, false)}
+}`;
   const eslintrcHash = convertToPlaygroundHash(eslintrc);
 
   page.spliceChildren(
@@ -48,11 +42,9 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
               type: 'code',
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
-              value: `export default tseslint.config(${getEslintConfigString(
-                extendsBaseRuleName,
-                page.file.stem,
-                true,
-              )})`,
+              value: `export default tseslint.config({
+  rules: ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
+});`,
             },
           ],
         },
@@ -71,11 +63,9 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
               type: 'code',
               lang: 'js',
               meta: 'title=".eslintrc.cjs"',
-              value: `module.exports = ${getEslintrcString(
-                extendsBaseRuleName,
-                page.file.stem,
-                true,
-              )};`,
+              value: `module.exports = {
+  "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
+};`,
             },
           ],
         },
