@@ -388,7 +388,9 @@ function parseFiltersState(str: string): FiltersState {
     const exclude = part.startsWith(NEGATION_SYMBOL);
     const key = exclude ? part.slice(1) : part;
     if (Object.hasOwn(neutralFiltersState, key)) {
-      res[key] = exclude ? 'exclude' : 'include';
+      res[key as keyof typeof neutralFiltersState] = exclude
+        ? 'exclude'
+        : 'include';
     }
   }
 
