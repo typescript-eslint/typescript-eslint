@@ -201,19 +201,20 @@ export class RuleTester extends TestFramework {
   #getLinterForFilename(filename: string | undefined): Linter {
     let basePath: string | undefined =
       this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir;
-    if (filename !== undefined) {
-      // For an absolute path (`/foo.ts`), or a path that steps
-      // up (`../foo.ts`), resolve the path relative to the base
-      // path (using the current working directory if the parser
-      // options did not specify a base path) and use the file's
-      // root as the base path so that the file is under the base
-      // path. For any other path, which would just be a plain
-      // file name (`foo.ts`), don't change the base path.
-      if (filename.startsWith('/') || filename.startsWith('..')) {
-        basePath = path.parse(
-          path.resolve(basePath ?? process.cwd(), filename),
-        ).root;
-      }
+    // For an absolute path (`/foo.ts`), or a path that steps
+    // up (`../foo.ts`), resolve the path relative to the base
+    // path (using the current working directory if the parser
+    // options did not specify a base path) and use the file's
+    // root as the base path so that the file is under the base
+    // path. For any other path, which would just be a plain
+    // file name (`foo.ts`), don't change the base path.
+    if (
+      filename !== undefined &&
+      (filename.startsWith('/') || filename.startsWith('..'))
+    ) {
+      basePath = path.parse(
+        path.resolve(basePath ?? process.cwd(), filename),
+      ).root;
     }
 
     let linterForBasePath = this.#lintersByBasePath.get(basePath);
