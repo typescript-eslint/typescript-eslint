@@ -66,6 +66,15 @@ const literalWithToString = {
 </TabItem>
 </Tabs>
 
+## Alternatives
+
+Consider using `JSON.stringify` when you want to convert non-primitive things to string for logging, debugging, etc.
+
+```typescript
+declare const o: object;
+const errorMessage = 'Found unexpected value: ' + JSON.stringify(o);
+```
+
 ## Options
 
 ### `ignoredTypeNames`

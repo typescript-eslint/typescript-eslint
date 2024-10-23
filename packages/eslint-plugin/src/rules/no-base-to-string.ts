@@ -189,17 +189,17 @@ export default createRule<Options, MessageIds>({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
       },
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (isBuiltInStringCall(node)) {
+          checkExpression(node.arguments[0]);
+        }
+      },
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
         for (const expression of node.expressions) {
           checkExpression(expression);
-        }
-      },
-      CallExpression(node: TSESTree.CallExpression): void {
-        if (isBuiltInStringCall(node)) {
-          checkExpression(node.arguments[0]);
         }
       },
     };
