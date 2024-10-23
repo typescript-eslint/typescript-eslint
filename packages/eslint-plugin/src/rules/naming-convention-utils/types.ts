@@ -17,47 +17,47 @@ import type {
 } from './enums';
 
 interface MatchRegex {
-  regex: string;
   match: boolean;
+  regex: string;
 }
 
 interface Selector {
+  custom?: MatchRegex;
+  filter?: string | MatchRegex;
   // format options
   format: PredefinedFormatsString[] | null;
-  custom?: MatchRegex;
   leadingUnderscore?: UnderscoreOptionsString;
-  trailingUnderscore?: UnderscoreOptionsString;
+  modifiers?: ModifiersString[];
   prefix?: string[];
-  suffix?: string[];
   // selector options
   selector:
     | IndividualAndMetaSelectorsString
     | IndividualAndMetaSelectorsString[];
-  modifiers?: ModifiersString[];
+  suffix?: string[];
+  trailingUnderscore?: UnderscoreOptionsString;
   types?: TypeModifiersString[];
-  filter?: MatchRegex | string;
 }
 
 interface NormalizedMatchRegex {
-  regex: RegExp;
   match: boolean;
+  regex: RegExp;
 }
 
 interface NormalizedSelector {
+  custom: NormalizedMatchRegex | null;
+  filter: NormalizedMatchRegex | null;
   // format options
   format: PredefinedFormats[] | null;
-  custom: NormalizedMatchRegex | null;
   leadingUnderscore: UnderscoreOptions | null;
-  trailingUnderscore: UnderscoreOptions | null;
-  prefix: string[] | null;
-  suffix: string[] | null;
-  // selector options
-  selector: MetaSelectors | Selectors;
   modifiers: Modifiers[] | null;
-  types: TypeModifiers[] | null;
-  filter: NormalizedMatchRegex | null;
   // calculated ordering weight based on modifiers
   modifierWeight: number;
+  prefix: string[] | null;
+  // selector options
+  selector: MetaSelectors | Selectors;
+  suffix: string[] | null;
+  trailingUnderscore: UnderscoreOptions | null;
+  types: TypeModifiers[] | null;
 }
 
 type ValidatorFunction = (

@@ -80,7 +80,7 @@ function fn(a = 5, b = true) {}
 
 ### `ignoreParameters`
 
-Whether to ignore function parameters.
+{/* insert option description */}
 
 When set to true, the following pattern is considered valid:
 
@@ -92,7 +92,7 @@ function foo(a: number = 5, b: boolean = true) {
 
 ### `ignoreProperties`
 
-Whether to ignore class properties.
+{/* insert option description */}
 
 When set to true, the following pattern is considered valid:
 
@@ -105,6 +105,8 @@ class Foo {
 ## When Not To Use It
 
 If you strongly prefer to have explicit types regardless of whether they can be inferred, this rule may not be for you.
+
+If you use the `--isolatedDeclarations` compiler option, this rule is incompatible.
 
 ## Further Reading
 

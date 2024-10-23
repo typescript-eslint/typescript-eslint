@@ -2,8 +2,8 @@ import type { Program } from 'typescript';
 
 import type { Lib } from './lib';
 
-type DebugLevel = ('eslint' | 'typescript' | 'typescript-eslint')[] | boolean;
-type CacheDurationSeconds = 'Infinity' | number;
+type DebugLevel = boolean | ('eslint' | 'typescript' | 'typescript-eslint')[];
+type CacheDurationSeconds = number | 'Infinity';
 
 type EcmaVersion =
   | 'latest'
@@ -102,9 +102,9 @@ interface ParserOptions {
   jsxPragma?: string | null;
   lib?: Lib[];
   programs?: Program[] | null;
-  project?: string[] | boolean | string | null;
+  project?: boolean | string | string[] | null;
   projectFolderIgnoreList?: string[];
-  projectService?: ProjectServiceOptions | boolean;
+  projectService?: boolean | ProjectServiceOptions;
   range?: boolean;
   sourceType?: SourceType | undefined;
   tokens?: boolean;

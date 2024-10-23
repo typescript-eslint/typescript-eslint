@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
-import { ParameterDefinition, TypeDefinition } from '../definition';
 import type { Scope } from '../scope';
-import { ScopeType } from '../scope';
 import type { Referencer } from './Referencer';
+
+import { ParameterDefinition, TypeDefinition } from '../definition';
+import { ScopeType } from '../scope';
 import { Visitor } from './Visitor';
 
 class TypeVisitor extends Visitor {
@@ -265,6 +267,11 @@ class TypeVisitor extends Visitor {
   }
 
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
+  protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
+    // check
+    this.visitChildren(node);
+  }
+
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
     let entityName:
       | TSESTree.Identifier
@@ -288,11 +295,6 @@ class TypeVisitor extends Visitor {
     }
 
     this.visit(node.typeArguments);
-  }
-
-  protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {
-    // check
-    this.visitChildren(node);
   }
 }
 

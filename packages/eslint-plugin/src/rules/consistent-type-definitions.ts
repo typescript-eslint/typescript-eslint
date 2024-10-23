@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -12,6 +13,7 @@ export default createRule({
         'Enforce type definitions to consistently use either `interface` or `type`',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`.',
       typeOverInterface: 'Use a `type` instead of an `interface`.',
@@ -19,10 +21,10 @@ export default createRule({
     schema: [
       {
         type: 'string',
+        description: 'Which type definition syntax to prefer.',
         enum: ['interface', 'type'],
       },
     ],
-    fixable: 'code',
   },
   defaultOptions: ['interface'],
   create(context, [option]) {

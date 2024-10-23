@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
+
+import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
@@ -11,7 +12,6 @@ export default createRule<[], MessageIds>({
   meta: {
     type: 'problem',
     deprecated: true,
-    replacedBy: ['@typescript-eslint/ban-ts-comment'],
     docs: {
       description: 'Enforce using `@ts-expect-error` over `@ts-ignore`',
     },
@@ -20,6 +20,7 @@ export default createRule<[], MessageIds>({
       preferExpectErrorComment:
         'Use "@ts-expect-error" to ensure an error is actually being suppressed.',
     },
+    replacedBy: ['@typescript-eslint/ban-ts-comment'],
     schema: [],
   },
   defaultOptions: [],

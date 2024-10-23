@@ -10,8 +10,8 @@ import { normalizeSeverityToNumber } from './severity';
 type PluginMemberName = `${string}/${string}`;
 
 interface ObjectPropertySchema<T = unknown> {
-  merge: ((a: T, b: T) => T) | string;
-  validate: ((value: unknown) => asserts value is T) | string;
+  merge: string | ((a: T, b: T) => T);
+  validate: string | ((value: unknown) => asserts value is T);
 }
 
 const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
@@ -274,13 +274,13 @@ const booleanSchema = {
   validate: 'boolean',
 } satisfies ObjectPropertySchema;
 
-const ALLOWED_SEVERITIES = new Set(['error', 'warn', 'off', 2, 1, 0]);
+const ALLOWED_SEVERITIES = new Set([0, 1, 2, 'error', 'off', 'warn']);
 
 const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLevel> =
   {
     merge(
-      first: SharedConfig.RuleLevel | boolean | undefined,
-      second: SharedConfig.RuleLevel | boolean | undefined,
+      first: boolean | SharedConfig.RuleLevel | undefined,
+      second: boolean | SharedConfig.RuleLevel | undefined,
     ): SharedConfig.RuleLevel {
       const value = second ?? first;
 

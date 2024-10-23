@@ -55,7 +55,7 @@ class Foo {
   method(this: void, a) {}
 }
       `,
-      options: [{ max: 2, countVoidThis: true }],
+      options: [{ countVoidThis: true, max: 2 }],
     },
   ],
   invalid: [
@@ -70,8 +70,8 @@ class Foo {
     },
     {
       code: 'const foo = a => {};',
-      options: [{ max: 0 }],
       errors: [{ messageId: 'exceed' }],
+      options: [{ max: 0 }],
     },
     {
       code: `
@@ -87,8 +87,8 @@ class Foo {
   method(this: void, a) {}
 }
       `,
-      options: [{ max: 1, countVoidThis: true }],
       errors: [{ messageId: 'exceed' }],
+      options: [{ countVoidThis: true, max: 1 }],
     },
     {
       code: `

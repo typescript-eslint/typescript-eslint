@@ -184,10 +184,31 @@ export class RuleTester extends TestFramework {
       rules: { [`${RULE_TESTER_PLUGIN_PREFIX}validate-ast`]: 'error' },
     });
 
-    this.#linter = new Linter({
-      configType: 'flat',
-      cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
-    });
+    this.#linter = (() => {
+      const linter = new Linter({
+        configType: 'flat',
+        cwd: this.#testerConfig.languageOptions.parserOptions?.tsconfigRootDir,
+      });
+
+      // This nonsense is a workaround for https://github.com/jestjs/jest/issues/14840
+      // see also https://github.com/typescript-eslint/typescript-eslint/issues/8942
+      //
+      // For some reason rethrowing exceptions skirts around the circular JSON error.
+      const oldVerify = linter.verify.bind(linter);
+      linter.verify = (
+        ...args: Parameters<Linter['verify']>
+      ): ReturnType<Linter['verify']> => {
+        try {
+          return oldVerify(...args);
+        } catch (error) {
+          throw new Error('Caught an error while linting', {
+            cause: error,
+          });
+        }
+      };
+
+      return linter;
+    })();
 
     // make sure that the parser doesn't hold onto file handles between tests
     // on linux (i.e. our CI env), there can be very a limited number of watch handles available
@@ -237,7 +258,7 @@ export class RuleTester extends TestFramework {
    * Adds the `only` property to a test to run it in isolation.
    */
   static only<Options extends readonly unknown[]>(
-    item: ValidTestCase<Options> | string,
+    item: string | ValidTestCase<Options>,
   ): ValidTestCase<Options>;
   /**
    * Adds the `only` property to a test to run it in isolation.
@@ -247,9 +268,9 @@ export class RuleTester extends TestFramework {
   ): InvalidTestCase<MessageIds, Options>;
   static only<MessageIds extends string, Options extends readonly unknown[]>(
     item:
+      | string
       | InvalidTestCase<MessageIds, Options>
-      | ValidTestCase<Options>
-      | string,
+      | ValidTestCase<Options>,
   ): InvalidTestCase<MessageIds, Options> | ValidTestCase<Options> {
     if (typeof item === 'string') {
       return { code: item, only: true };
@@ -411,6 +432,24 @@ export class RuleTester extends TestFramework {
   }
 
   /**
+   * Runs a hook on the given item when it's assigned to the given property
+   * @throws {Error} If the property is not a function or that function throws an error
+   */
+  #runHook<MessageIds extends string, Options extends readonly unknown[]>(
+    item: InvalidTestCase<MessageIds, Options> | ValidTestCase<Options>,
+    prop: keyof Pick<typeof item, 'after' | 'before'>,
+  ): void {
+    if (hasOwnProperty(item, prop)) {
+      assert.strictEqual(
+        typeof item[prop],
+        'function',
+        `Optional test case property '${prop}' must be a function`,
+      );
+      item[prop]();
+    }
+  }
+
+  /**
    * Adds a new rule test to execute.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
@@ -497,12 +536,17 @@ export class RuleTester extends TestFramework {
               return valid.name;
             })();
             constructor[getTestMethod(valid)](sanitize(testName), () => {
-              this.#testValidTemplate(
-                ruleName,
-                rule,
-                valid,
-                seenValidTestCases,
-              );
+              try {
+                this.#runHook(valid, 'before');
+                this.#testValidTemplate(
+                  ruleName,
+                  rule,
+                  valid,
+                  seenValidTestCases,
+                );
+              } finally {
+                this.#runHook(valid, 'after');
+              }
             });
           });
         });
@@ -518,12 +562,17 @@ export class RuleTester extends TestFramework {
               return invalid.name;
             })();
             constructor[getTestMethod(invalid)](sanitize(name), () => {
-              this.#testInvalidTemplate(
-                ruleName,
-                rule,
-                invalid,
-                seenInvalidTestCases,
-              );
+              try {
+                this.#runHook(invalid, 'before');
+                this.#testInvalidTemplate(
+                  ruleName,
+                  rule,
+                  invalid,
+                  seenInvalidTestCases,
+                );
+              } finally {
+                this.#runHook(invalid, 'after');
+              }
             });
           });
         });
@@ -713,9 +762,20 @@ export class RuleTester extends TestFramework {
               ...configWithoutCustomKeys.languageOptions?.parserOptions,
             },
           },
-          linterOptions: { reportUnusedDisableDirectives: 1 },
+          linterOptions: {
+            reportUnusedDisableDirectives: 1,
+            ...configWithoutCustomKeys.linterOptions,
+          },
         });
-        messages = this.#linter.verify(code, actualConfig, filename);
+        messages = this.#linter.verify(
+          code,
+          // ESLint uses an internal FlatConfigArray that extends @humanwhocodes/config-array.
+          Object.assign([], {
+            basePath: filename ? path.parse(filename).root : '',
+            getConfig: () => actualConfig,
+          }),
+          filename,
+        );
       } finally {
         SourceCode.prototype.applyInlineConfig = applyInlineConfig;
         SourceCode.prototype.applyLanguageOptions = applyLanguageOptions;
@@ -781,7 +841,7 @@ export class RuleTester extends TestFramework {
   >(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
-    itemIn: ValidTestCase<Options> | string,
+    itemIn: string | ValidTestCase<Options>,
     seenValidTestCases: Set<string>,
   ): void {
     const item: ValidTestCase<Options> =
@@ -1322,7 +1382,7 @@ function checkDuplicateTestCase(
  * value is a regular expression, it is checked against the actual
  * value.
  */
-function assertMessageMatches(actual: string, expected: RegExp | string): void {
+function assertMessageMatches(actual: string, expected: string | RegExp): void {
   if (expected instanceof RegExp) {
     // assert.js doesn't have a built-in RegExp match function
     assert.ok(

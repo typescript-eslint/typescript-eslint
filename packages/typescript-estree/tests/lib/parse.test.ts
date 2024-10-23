@@ -1,13 +1,14 @@
-import { join, resolve } from 'node:path';
-
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
+import type * as typescriptModule from 'typescript';
+
 import debug from 'debug';
 import * as fastGlobModule from 'fast-glob';
-import type * as typescriptModule from 'typescript';
+import { join, resolve } from 'node:path';
+
+import type { TSESTreeOptions } from '../../src/parser-options';
 
 import * as parser from '../../src';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
-import type { TSESTreeOptions } from '../../src/parser-options';
 import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
@@ -72,15 +73,15 @@ describe('parseAndGenerateServices', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
       comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
       filePath: 'file.ts',
+      loc: true,
+      range: true,
+      tokens: true,
     };
     const projectConfig: TSESTreeOptions = {
       ...baseConfig,
-      tsconfigRootDir: FIXTURES_DIR,
       project: './tsconfig.json',
+      tsconfigRootDir: FIXTURES_DIR,
     };
 
     it('should not impact the use of parse()', () => {
@@ -201,8 +202,8 @@ describe('parseAndGenerateServices', () => {
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
-            jsx: jsxSetting,
             filePath: join(FIXTURES_DIR, `file${ext}`),
+            jsx: jsxSetting,
           });
         });
         if (!shouldThrow) {
@@ -342,6 +343,134 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
+  describe('ESM parsing', () => {
+    describe('TLA(Top Level Await)', () => {
+      const config: TSESTreeOptions = {
+        comment: true,
+        loc: true,
+        projectService: false,
+        range: true,
+        tokens: true,
+      };
+      const code = 'await(1)';
+
+      const testParse = ({
+        ext,
+        shouldAllowTLA = false,
+        sourceType,
+      }: {
+        ext: '.js' | '.mjs' | '.mts' | '.ts';
+        shouldAllowTLA?: boolean;
+        sourceType?: 'module' | 'script';
+      }): void => {
+        const ast = parser.parse(code, {
+          ...config,
+          filePath: `file${ext}`,
+          sourceType,
+        });
+        const expressionType = (
+          ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parse(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+      const testParseAndGenerateServices = ({
+        ext,
+        shouldAllowTLA = false,
+        sourceType,
+      }: {
+        ext: '.js' | '.mjs' | '.mts' | '.ts';
+        shouldAllowTLA?: boolean;
+        sourceType?: 'module' | 'script';
+      }): void => {
+        const result = parser.parseAndGenerateServices(code, {
+          ...config,
+          filePath: `file${ext}`,
+          sourceType,
+        });
+        const expressionType = (
+          result.ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parseAndGenerateServices(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+
+      testParse({ ext: '.js' });
+      testParse({ ext: '.ts' });
+      testParse({ ext: '.mjs', shouldAllowTLA: true });
+      testParse({ ext: '.mts', shouldAllowTLA: true });
+
+      testParse({ ext: '.js', shouldAllowTLA: true, sourceType: 'module' });
+      testParse({ ext: '.ts', shouldAllowTLA: true, sourceType: 'module' });
+      testParse({ ext: '.mjs', shouldAllowTLA: true, sourceType: 'module' });
+      testParse({ ext: '.mts', shouldAllowTLA: true, sourceType: 'module' });
+
+      testParse({ ext: '.js', sourceType: 'script' });
+      testParse({ ext: '.ts', sourceType: 'script' });
+      testParse({ ext: '.mjs', sourceType: 'script' });
+      testParse({ ext: '.mts', sourceType: 'script' });
+
+      testParseAndGenerateServices({ ext: '.js' });
+      testParseAndGenerateServices({ ext: '.ts' });
+      testParseAndGenerateServices({ ext: '.mjs', shouldAllowTLA: true });
+      testParseAndGenerateServices({ ext: '.mts', shouldAllowTLA: true });
+
+      testParseAndGenerateServices({
+        ext: '.js',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+      testParseAndGenerateServices({
+        ext: '.ts',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+      testParseAndGenerateServices({
+        ext: '.mjs',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+      testParseAndGenerateServices({
+        ext: '.mts',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+
+      testParseAndGenerateServices({
+        ext: '.js',
+        sourceType: 'script',
+      });
+      testParseAndGenerateServices({
+        ext: '.ts',
+        sourceType: 'script',
+      });
+      testParseAndGenerateServices({
+        ext: '.mjs',
+        sourceType: 'script',
+      });
+      testParseAndGenerateServices({
+        ext: '.mts',
+        sourceType: 'script',
+      });
+    });
+  });
+
   if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
@@ -349,9 +478,9 @@ describe('parseAndGenerateServices', () => {
       const config: TSESTreeOptions = {
         comment: true,
         disallowAutomaticSingleRunInference: true,
-        tokens: true,
-        range: true,
         loc: true,
+        range: true,
+        tokens: true,
         tsconfigRootDir: PROJECT_DIR,
       };
       const testParse =
@@ -514,7 +643,7 @@ describe('parseAndGenerateServices', () => {
         it('extension matching the file name but not a file on disk', () => {
           expect(
             testExtraFileExtensions('other/unknownFileType.unknown', [
-              'unknown',
+              '.unknown',
             ]),
           ).toThrow(
             /unknownFileType\.unknown was not found by the project service/,
@@ -539,11 +668,11 @@ describe('parseAndGenerateServices', () => {
           const config: TSESTreeOptions = {
             comment: true,
             disallowAutomaticSingleRunInference: true,
-            tokens: true,
-            range: true,
             loc: true,
-            tsconfigRootDir: PROJECT_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            range: true,
+            tokens: true,
+            tsconfigRootDir: PROJECT_DIR,
           };
           const testParse = (filePath: string) => (): void => {
             try {
@@ -649,11 +778,11 @@ describe('parseAndGenerateServices', () => {
       const config: TSESTreeOptions = {
         comment: true,
         disallowAutomaticSingleRunInference: true,
-        tokens: true,
-        range: true,
         loc: true,
-        tsconfigRootDir: PROJECT_DIR,
         project: './**/tsconfig.json',
+        range: true,
+        tokens: true,
+        tsconfigRootDir: PROJECT_DIR,
       };
 
       const testParse =
@@ -664,8 +793,8 @@ describe('parseAndGenerateServices', () => {
         (): void => {
           parser.parseAndGenerateServices(code, {
             ...config,
-            projectFolderIgnoreList,
             filePath: join(PROJECT_DIR, filePath, './file.ts'),
+            projectFolderIgnoreList,
           });
         };
 
@@ -698,8 +827,8 @@ describe('parseAndGenerateServices', () => {
             },
             disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
-            tsconfigRootDir: FIXTURES_DIR,
             project,
+            tsconfigRootDir: FIXTURES_DIR,
           });
         }
 
