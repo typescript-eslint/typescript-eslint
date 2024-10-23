@@ -25,8 +25,8 @@ async function getPullRequest() {
 
   const { data } = await client.rest.pulls.get({
     owner,
-    repo,
     pull_number: pr.number,
+    repo,
   });
 
   return data;

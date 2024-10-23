@@ -9,53 +9,53 @@ export interface PropertyValueProps {
 }
 
 interface SimpleModel {
-  readonly value: string;
   readonly className: string;
   readonly shortValue?: string;
+  readonly value: string;
 }
 
 function getSimpleModel(data: unknown): SimpleModel {
   if (typeof data === 'string') {
     const value = JSON.stringify(data);
     return {
-      value,
       className: styles.propString,
       shortValue: value.length > 250 ? value.substring(0, 200) : undefined,
+      value,
     };
   } else if (typeof data === 'number') {
     return {
-      value: String(data),
       className: styles.propNumber,
+      value: String(data),
     };
   } else if (typeof data === 'bigint') {
     return {
-      value: `${data}n`,
       className: styles.propNumber,
+      value: `${data}n`,
     };
   } else if (data instanceof RegExp) {
     return {
-      value: String(data),
       className: styles.propRegExp,
+      value: String(data),
     };
   } else if (data == null) {
     return {
-      value: String(data),
       className: styles.propEmpty,
+      value: String(data),
     };
   } else if (typeof data === 'boolean') {
     return {
-      value: data ? 'true' : 'false',
       className: styles.propBoolean,
+      value: data ? 'true' : 'false',
     };
   } else if (data instanceof Error) {
     return {
-      value: `Error: ${data.message}`,
       className: styles.propError,
+      value: `Error: ${data.message}`,
     };
   }
   return {
-    value: objType(data),
     className: styles.propClass,
+    value: objType(data),
   };
 }
 
@@ -69,12 +69,12 @@ function PropertyValue({ value }: PropertyValueProps): React.JSX.Element {
       <span className={model.className}>
         {!expand ? `${model.shortValue}...` : model.value}{' '}
         <Link
+          className={styles.propEllipsis}
+          href="#read-more"
           onClick={(e): void => {
             e.preventDefault();
             setExpand(expand => !expand);
           }}
-          href="#read-more"
-          className={styles.propEllipsis}
         >
           {!expand ? '(read more)' : '(read less)'}
         </Link>

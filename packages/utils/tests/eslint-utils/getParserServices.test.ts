@@ -2,8 +2,9 @@
 import type * as ts from 'typescript';
 
 import type { ParserServices, TSESLint, TSESTree } from '../../src';
-import { ESLintUtils } from '../../src';
 import type { FlatConfig } from '../../src/ts-eslint';
+
+import { ESLintUtils } from '../../src';
 
 type UnknownRuleContext = Readonly<TSESLint.RuleContext<string, unknown[]>>;
 

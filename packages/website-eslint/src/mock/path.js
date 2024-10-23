@@ -207,16 +207,16 @@ export function extname(path) {
 }
 
 export default {
-  extname,
   basename,
-  dirname,
-  sep,
   delimiter,
-  relative,
-  join,
+  dirname,
+  extname,
   isAbsolute,
+  join,
   normalize,
+  relative,
   resolve,
+  sep,
 };
 
 function filter(xs, f) {

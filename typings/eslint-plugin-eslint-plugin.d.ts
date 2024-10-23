@@ -9,8 +9,8 @@ declare module 'eslint-plugin-eslint-plugin' {
       all: ClassicConfig.Config;
       recommended: ClassicConfig.Config;
       rules: ClassicConfig.Config;
-      tests: ClassicConfig.Config;
       'rules-recommended': ClassicConfig.Config;
+      tests: ClassicConfig.Config;
       'tests-recommended': ClassicConfig.Config;
     };
     rules: NonNullable<Linter.Plugin['rules']>;

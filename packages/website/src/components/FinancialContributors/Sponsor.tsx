@@ -1,8 +1,9 @@
 import Link from '@docusaurus/Link';
 import React from 'react';
 
-import styles from './styles.module.css';
 import type { SponsorData } from './types';
+
+import styles from './styles.module.css';
 
 interface SponsorProps {
   includeName?: boolean;
@@ -28,8 +29,8 @@ export function Sponsor({
     <Link
       className={styles.sponsorLink}
       href={sponsor.website ?? undefined}
-      title={sponsor.name}
       rel="noopener sponsored"
+      title={sponsor.name}
     >
       {children}
     </Link>

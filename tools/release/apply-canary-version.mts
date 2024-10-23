@@ -33,8 +33,8 @@ try {
 }
 
 console.log('\nResolved current versions: ', {
-  currentLatestVersion,
   currentCanaryVersion,
+  currentLatestVersion,
 });
 
 let nextCanaryVersion: string | null;
@@ -88,6 +88,6 @@ const command = `nx release version ${nextCanaryVersion}`;
 console.log(`\n> ${command}\n`);
 
 execaSync('npx', command.split(' '), {
-  stdio: 'inherit',
   cwd: workspaceRoot,
+  stdio: 'inherit',
 });

@@ -32,10 +32,10 @@ declare module '@eslint-community/eslint-utils' {
   export const isSemicolonToken: unknown;
   export const PatternMatcher: unknown;
   export const ReferenceTracker: {
-    readonly READ: never;
     readonly CALL: never;
     readonly CONSTRUCT: never;
     readonly ESM: never;
     new (): never;
+    readonly READ: never;
   };
 }

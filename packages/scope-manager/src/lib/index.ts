@@ -8,6 +8,9 @@ import { decorators_legacy } from './decorators.legacy';
 import { dom } from './dom';
 import { dom_asynciterable } from './dom.asynciterable';
 import { dom_iterable } from './dom.iterable';
+import { es5 } from './es5';
+import { es6 } from './es6';
+import { es7 } from './es7';
 import { es2015 } from './es2015';
 import { es2015_collection } from './es2015.collection';
 import { es2015_core } from './es2015.core';
@@ -74,9 +77,6 @@ import { es2023_array } from './es2023.array';
 import { es2023_collection } from './es2023.collection';
 import { es2023_full } from './es2023.full';
 import { es2023_intl } from './es2023.intl';
-import { es5 } from './es5';
-import { es6 } from './es6';
-import { es7 } from './es7';
 import { esnext } from './esnext';
 import { esnext_array } from './esnext.array';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -106,6 +106,9 @@ const lib = {
   dom,
   'dom.asynciterable': dom_asynciterable,
   'dom.iterable': dom_iterable,
+  es5,
+  es6,
+  es7,
   es2015,
   'es2015.collection': es2015_collection,
   'es2015.core': es2015_core,
@@ -172,9 +175,6 @@ const lib = {
   'es2023.collection': es2023_collection,
   'es2023.full': es2023_full,
   'es2023.intl': es2023_intl,
-  es5,
-  es6,
-  es7,
   esnext,
   'esnext.array': esnext_array,
   'esnext.asynciterable': esnext_asynciterable,
