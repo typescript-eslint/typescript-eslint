@@ -71,48 +71,48 @@ export async function insertNewRuleReferences(
     firstH2Index,
     0,
     {
-      type: 'mdxJsxFlowElement',
-      name: 'Tabs',
       children: [
         {
-          type: 'mdxJsxFlowElement',
-          name: 'TabItem',
           attributes: [
             {
-              type: 'mdxJsxAttribute',
               name: 'value',
+              type: 'mdxJsxAttribute',
               value: 'Flat Config',
             },
           ],
           children: [
             {
-              type: 'code',
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
+              type: 'code',
               value: `export default tseslint.config(${eslintConfig});`,
             },
           ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
         },
         {
-          type: 'mdxJsxFlowElement',
-          name: 'TabItem',
           attributes: [
             {
-              type: 'mdxJsxAttribute',
               name: 'value',
+              type: 'mdxJsxAttribute',
               value: 'Legacy Config',
             },
           ],
           children: [
             {
-              type: 'code',
               lang: 'js',
               meta: 'title=".eslintrc.cjs"',
+              type: 'code',
               value: `module.exports = ${eslintrc};`,
             },
           ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
         },
       ],
+      name: 'Tabs',
+      type: 'mdxJsxFlowElement',
     } as MdxJsxFlowElement,
     {
       attributes: [
