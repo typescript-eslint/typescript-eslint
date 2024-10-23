@@ -105,7 +105,7 @@ export function config(
     if (undefinedExtensions.length) {
       const configName =
         configWithExtends.name != null
-          ? `, named "${configWithExtends.name},"`
+          ? `, named "${configWithExtends.name}",`
           : ' (anonymous)';
       const extensionIndices = undefinedExtensions.join(', ');
       throw new Error(

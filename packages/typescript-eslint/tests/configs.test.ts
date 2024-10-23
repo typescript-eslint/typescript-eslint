@@ -391,7 +391,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1, named "my-config-2," contains undefined ' +
+      'Your config at index 1, named "my-config-2", contains undefined ' +
         'extensions at the following indices: 0, 2',
     );
   });
