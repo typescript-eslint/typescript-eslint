@@ -183,16 +183,16 @@ export default createRule<Options, MessageIds>({
           checkExpression(node.left, leftType);
         }
       },
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (isBuiltInStringCall(node)) {
+          checkExpression(node.arguments[0]);
+        }
+      },
       'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
-      },
-      CallExpression(node: TSESTree.CallExpression): void {
-        if (isBuiltInStringCall(node)) {
-          checkExpression(node.arguments[0]);
-        }
       },
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
