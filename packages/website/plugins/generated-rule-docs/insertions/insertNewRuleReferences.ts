@@ -55,18 +55,65 @@ export async function insertNewRuleReferences(
     child => nodeIsHeading(child) && child.depth === 2,
   );
 
-  const eslintrc = `{
-  "rules": {
+  const rules = `{
     "@typescript-eslint/${page.file.stem}": "error"
-  }
+  }`;
+
+  const eslintrc = `{
+  "rules": ${rules}
+}`;
+
+  const eslintConfig = `{
+  rules: ${rules}
 }`;
 
   page.spliceChildren(
     firstH2Index,
     0,
-    `\`\`\`js title=".eslintrc.cjs"
-module.exports = ${eslintrc};
-\`\`\``,
+    {
+      type: 'mdxJsxFlowElement',
+      name: 'Tabs',
+      children: [
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'TabItem',
+          attributes: [
+            {
+              type: 'mdxJsxAttribute',
+              name: 'value',
+              value: 'Flat Config',
+            },
+          ],
+          children: [
+            {
+              type: 'code',
+              lang: 'js',
+              meta: 'title="eslint.config.mjs"',
+              value: `export default tseslint.config(${eslintConfig});`,
+            },
+          ],
+        },
+        {
+          type: 'mdxJsxFlowElement',
+          name: 'TabItem',
+          attributes: [
+            {
+              type: 'mdxJsxAttribute',
+              name: 'value',
+              value: 'Legacy Config',
+            },
+          ],
+          children: [
+            {
+              type: 'code',
+              lang: 'js',
+              meta: 'title=".eslintrc.cjs"',
+              value: `module.exports = ${eslintrc};`,
+            },
+          ],
+        },
+      ],
+    } as MdxJsxFlowElement,
     {
       attributes: [
         {

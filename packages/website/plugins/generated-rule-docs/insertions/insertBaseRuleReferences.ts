@@ -1,9 +1,8 @@
-import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
 
-import { convertToPlaygroundHash, getEslintrcString } from '../../utils/rules';
+import { convertToPlaygroundHash, getRulesString } from '../../utils/rules';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =
@@ -17,26 +16,62 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
     `See [\`eslint/${extendsBaseRuleName}\`'s options](https://eslint.org/docs/rules/${extendsBaseRuleName}#options).`,
   );
 
-  const eslintrc = getEslintrcString(
-    extendsBaseRuleName,
-    page.file.stem,
-    false,
-  );
+  const eslintrc = `{
+  "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, false)}
+}`;
   const eslintrcHash = convertToPlaygroundHash(eslintrc);
 
   page.spliceChildren(
     page.headingIndices.howToUse + 1,
     0,
     {
-      lang: 'js',
-      meta: 'title=".eslintrc.cjs"',
-      type: 'code',
-      value: `module.exports = ${getEslintrcString(
-        extendsBaseRuleName,
-        page.file.stem,
-        true,
-      )};`,
-    } as mdast.Code,
+      children: [
+        {
+          attributes: [
+            {
+              name: 'value',
+              type: 'mdxJsxAttribute',
+              value: 'Flat Config',
+            },
+          ],
+          children: [
+            {
+              lang: 'js',
+              meta: 'title="eslint.config.mjs"',
+              type: 'code',
+              value: `export default tseslint.config({
+  rules: ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
+});`,
+            },
+          ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
+        },
+        {
+          attributes: [
+            {
+              name: 'value',
+              type: 'mdxJsxAttribute',
+              value: 'Legacy Config',
+            },
+          ],
+          children: [
+            {
+              lang: 'js',
+              meta: 'title=".eslintrc.cjs"',
+              type: 'code',
+              value: `module.exports = {
+  "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
+};`,
+            },
+          ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
+        },
+      ],
+      name: 'Tabs',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
     {
       attributes: [
         {
