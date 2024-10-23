@@ -95,7 +95,7 @@ export function config(
         const maybeExtension = extension as
           | TSESLint.FlatConfig.Config
           | undefined;
-        if (!maybeExtension) {
+        if (maybeExtension == null) {
           acc.push(extensionIndex);
         }
         return acc;
@@ -103,10 +103,14 @@ export function config(
       [],
     );
     if (undefinedExtensions.length) {
+      const configName =
+        configWithExtends.name != null
+          ? `, named "${configWithExtends.name},"`
+          : ' (anonymous)';
+      const extensionIndices = undefinedExtensions.join(', ');
       throw new Error(
-        `Your config at index ${configIndex} contains undefined extensions ` +
-          `at the following indices: ${undefinedExtensions.join(', ')}.\n` +
-          'This is likely due to a problem with extension import paths.',
+        `Your config at index ${configIndex}${configName} contains undefined` +
+          ` extensions at the following indices: ${extensionIndices}.`,
       );
     }
 
