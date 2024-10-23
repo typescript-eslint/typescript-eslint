@@ -16,7 +16,7 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
   );
 
   const eslintrc = `{
-  "rules":${getRulesString(extendsBaseRuleName, page.file.stem, false)}
+  "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, false)}
 }`;
   const eslintrcHash = convertToPlaygroundHash(eslintrc);
 
