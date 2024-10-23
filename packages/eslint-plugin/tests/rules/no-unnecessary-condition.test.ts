@@ -1040,6 +1040,10 @@ switch (b1) {
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
     unnecessaryConditionTest('string & number', 'never'),
+    unnecessaryConditionTest(
+      'declare const falseyBigInt: 0n; if (falseyBigInt) {}',
+      'alwaysFalsy',
+    ),
 
     // More complex logical expressions
     {
