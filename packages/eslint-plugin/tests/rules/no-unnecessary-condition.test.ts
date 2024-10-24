@@ -1047,7 +1047,7 @@ declare const falseyBigInt: 0n;
 if (falseyBigInt) {
 }
       `,
-      errors: [ruleError(2, 5, 'alwaysFalsy')],
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
     },
     {
       code: `

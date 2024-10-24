@@ -24,6 +24,8 @@ import {
   findTypeGuardAssertedArgument,
 } from '../util/assertionFunctionUtils';
 
+// Truthiness utilities
+// #region
 const valueIsPseudoBigInt = (
   value: number | string | ts.PseudoBigInt,
 ): value is ts.PseudoBigInt => {
@@ -37,8 +39,13 @@ const getValue = (type: ts.LiteralType): bigint | number | string => {
   return type.value;
 };
 
-// Truthiness utilities
-// #region
+const isFalseyBigInt = (type: ts.Type): boolean => {
+  return (
+    tsutils.isLiteralType(type) &&
+    valueIsPseudoBigInt(type.value) &&
+    !getValue(type)
+  );
+};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   //  || type.
@@ -319,6 +326,8 @@ export default createRule<Options, MessageId>({
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
       } else if (!isPossiblyFalsy(type)) {
         messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
+      } else if (isFalseyBigInt(type)) {
+        messageId = 'alwaysFalsy';
       }
 
       if (messageId) {
