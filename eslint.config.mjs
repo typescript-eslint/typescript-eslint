@@ -125,10 +125,7 @@ export default tseslint.config(
         'error',
         { prefer: 'type-imports', disallowTypeAnnotations: true },
       ],
-      '@typescript-eslint/explicit-function-return-type': [
-        'error',
-        { allowIIFEs: true },
-      ],
+      '@typescript-eslint/explicit-module-boundary-types': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       'no-constant-condition': 'off',
       '@typescript-eslint/no-unnecessary-condition': [

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'node:path';
 import * as ts from 'typescript';
 

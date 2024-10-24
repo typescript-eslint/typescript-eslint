@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-unnecessary-condition, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/restrict-plus-operands */
 // Internal fork of https://github.com/jonchardy/typedoc-plugin-no-inherit,
 // pending https://github.com/jonchardy/typedoc-plugin-no-inherit/issues/34
 // https://github.com/jonchardy/typedoc-plugin-no-inherit/tree/c799761733e31198107db87d33aea0e673a996c3
