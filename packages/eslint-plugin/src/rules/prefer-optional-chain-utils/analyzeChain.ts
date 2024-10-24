@@ -208,9 +208,13 @@ const analyzeOrChainOperand: OperandAnalyzer = (
  */
 function getReportRange(
   chain: ValidOperand[],
-  boundary: TSESTree.Range,
+  node: TSESTree.Node,
   sourceCode: SourceCode,
 ): TSESTree.Range {
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    return node.range;
+  }
+  const boundary = node.range;
   const leftNode = chain[0].node;
   const rightNode = chain[chain.length - 1].node;
   let leftMost = nullThrows(
@@ -324,7 +328,7 @@ function getReportDescriptor(
   // 6) diff(`foo.bar.baz?.bam`, `foo.bar.baz.bam()`) = `()`
   // 7) result = `foo?.bar?.baz?.bam?.()`
 
-  const parts = [];
+  const parts: FlattenedChain[] = [];
   for (const current of chain) {
     const nextOperand = flattenChainExpression(
       sourceCode,
@@ -401,7 +405,15 @@ function getReportDescriptor(
     newCode = `!${newCode}`;
   }
 
-  const reportRange = getReportRange(chain, node.range, sourceCode);
+  const reportRange = getReportRange(chain, node, sourceCode);
+
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    const chainEndedWithSemicolon =
+      sourceCode.getTokenAfter(lastOperand.node)?.value === ';';
+    if (chainEndedWithSemicolon) {
+      newCode += ';';
+    }
+  }
 
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(reportRange, newCode);
