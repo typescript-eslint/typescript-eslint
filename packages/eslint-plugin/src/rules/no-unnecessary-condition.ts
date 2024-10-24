@@ -24,12 +24,25 @@ import {
   findTypeGuardAssertedArgument,
 } from '../util/assertionFunctionUtils';
 
+const valueIsPseudoBigInt = (
+  value: number | string | ts.PseudoBigInt,
+): value is ts.PseudoBigInt => {
+  return typeof value === 'object' && 'base10Value' in value;
+};
+
+const getValue = (type: ts.LiteralType): bigint | number | string => {
+  if (valueIsPseudoBigInt(type.value)) {
+    return BigInt(type.value.base10Value);
+  }
+  return type.value;
+};
+
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   //  || type.
-  (type.isLiteral() && !!type.value);
+  (type.isLiteral() && !!getValue(type));
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
