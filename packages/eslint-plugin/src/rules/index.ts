@@ -114,6 +114,7 @@ import preferReturnThisType from './prefer-return-this-type';
 import preferStringStartsEndsWith from './prefer-string-starts-ends-with';
 import preferTsExpectError from './prefer-ts-expect-error';
 import promiseFunctionAsync from './promise-function-async';
+import relatedGetterSetterPairs from './related-getter-setter-pairs';
 import requireArraySortCompare from './require-array-sort-compare';
 import requireAwait from './require-await';
 import restrictPlusOperands from './restrict-plus-operands';
@@ -244,6 +245,7 @@ const rules = {
   'prefer-string-starts-ends-with': preferStringStartsEndsWith,
   'prefer-ts-expect-error': preferTsExpectError,
   'promise-function-async': promiseFunctionAsync,
+  'related-getter-setter-pairs': relatedGetterSetterPairs,
   'require-array-sort-compare': requireArraySortCompare,
   'require-await': requireAwait,
   'restrict-plus-operands': restrictPlusOperands,

@@ -63,6 +63,7 @@ export default (
     '@typescript-eslint/prefer-return-this-type': 'off',
     '@typescript-eslint/prefer-string-starts-ends-with': 'off',
     '@typescript-eslint/promise-function-async': 'off',
+    '@typescript-eslint/related-getter-setter-pairs': 'off',
     '@typescript-eslint/require-array-sort-compare': 'off',
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/restrict-plus-operands': 'off',
