@@ -26,10 +26,30 @@ import {
 
 // Truthiness utilities
 // #region
+const valueIsPseudoBigInt = (
+  value: number | string | ts.PseudoBigInt,
+): value is ts.PseudoBigInt => {
+  return typeof value === 'object' && 'base10Value' in value;
+};
+
+const getValue = (type: ts.LiteralType): bigint | number | string => {
+  if (valueIsPseudoBigInt(type.value)) {
+    return BigInt(type.value.base10Value);
+  }
+  return type.value;
+};
+
+const isFalseyBigInt = (type: ts.Type): boolean => {
+  return (
+    tsutils.isLiteralType(type) &&
+    valueIsPseudoBigInt(type.value) &&
+    !getValue(type)
+  );
+};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   //  || type.
-  (type.isLiteral() && !!type.value);
+  (type.isLiteral() && !!getValue(type));
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
@@ -306,6 +326,8 @@ export default createRule<Options, MessageId>({
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
       } else if (!isPossiblyFalsy(type)) {
         messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
+      } else if (isFalseyBigInt(type)) {
+        messageId = 'alwaysFalsy';
       }
 
       if (messageId) {
