@@ -5780,7 +5780,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.11.0, @typescript-eslint/types@^8.8.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.11.0, @typescript-eslint/types@^8.9.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5924,7 +5924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@8.11.0, @typescript-eslint/utils@^8.8.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.11.0, @typescript-eslint/utils@^8.9.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
@@ -9843,11 +9843,11 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-perfectionist@npm:^3.8.0":
-  version: 3.8.0
-  resolution: "eslint-plugin-perfectionist@npm:3.8.0"
+  version: 3.9.1
+  resolution: "eslint-plugin-perfectionist@npm:3.9.1"
   dependencies:
-    "@typescript-eslint/types": ^8.8.0
-    "@typescript-eslint/utils": ^8.8.0
+    "@typescript-eslint/types": ^8.9.0
+    "@typescript-eslint/utils": ^8.9.0
     minimatch: ^9.0.5
     natural-compare-lite: ^1.4.0
   peerDependencies:
@@ -9865,7 +9865,7 @@ __metadata:
       optional: true
     vue-eslint-parser:
       optional: true
-  checksum: dbaa8985ad13a26d68090b57fd973f22248aa62d9d45e655b625c4464e7992a336afdd492ab06b3d3061b851abc683efa40ca706821646fe6dd6e65ccf74ad31
+  checksum: 12bdc52586dd379bb174cb90c11d280173da88c079a3100eb2676ba9e8abf02e3989706fb06fc774331dc61909be27a0ba5c7ac591e9a777c793d7f8e5eb187d
   languageName: node
   linkType: hard
 
