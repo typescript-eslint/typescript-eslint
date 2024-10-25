@@ -172,10 +172,7 @@ function foo<T extends boolean>(a: T) {
       {
         code: `
 declare const a: string;
-a as Omit<
-  Required<Readonly<{ hello: 'world'; foo: 'bar' }>>,
-  'foo'
->;
+a as Omit<Required<Readonly<{ hello: 'world'; foo: 'bar' }>>, 'foo'>;
         `,
         errors: [
           {
