@@ -1,6 +1,7 @@
 /* eslint-disable perfectionist/sort-objects */
-import { RuleTester } from '@typescript-eslint/rule-tester';
 import { ESLintUtils } from '@typescript-eslint/utils';
+
+import { RuleTester } from '../src/RuleTester';
 
 const rule = ESLintUtils.RuleCreator.withoutDocs({
   meta: {
