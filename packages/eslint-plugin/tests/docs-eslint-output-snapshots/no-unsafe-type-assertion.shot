@@ -8,12 +8,12 @@ function f() {
 }
 
 const z = f() as number;
-          ~~~~~~~~~~~~~ Unsafe type assertion: type '42 | "oops"' is more narrow than the original type.
+          ~~~~~~~~~~~~~ Unsafe type assertion: type 'number' is more narrow than the original type.
 
 const items = [1, '2', 3, '4'];
 
 const number = items[0] as number;
-               ~~~~~~~~~~~~~~~~~~ Unsafe type assertion: type 'string | number' is more narrow than the original type.
+               ~~~~~~~~~~~~~~~~~~ Unsafe type assertion: type 'number' is more narrow than the original type.
 "
 `;
 
