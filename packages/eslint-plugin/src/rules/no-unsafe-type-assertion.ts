@@ -139,7 +139,7 @@ export default createRule({
           node,
           messageId: 'unsafeTypeAssertion',
           data: {
-            type: checker.typeToString(expressionType),
+            type: checker.typeToString(assertedType),
           },
         });
       }

@@ -56,7 +56,7 @@ a as string;
           {
             column: 1,
             data: {
-              type: 'string | number',
+              type: 'string',
             },
             endColumn: 12,
             endLine: 3,
@@ -74,7 +74,7 @@ a satisfies string as string;
           {
             column: 1,
             data: {
-              type: 'string | number',
+              type: 'string',
             },
             endColumn: 29,
             endLine: 3,
@@ -92,7 +92,7 @@ declare const a: string | number;
           {
             column: 1,
             data: {
-              type: 'string | number',
+              type: 'string',
             },
             endColumn: 10,
             endLine: 3,
@@ -110,7 +110,7 @@ a as string | boolean;
           {
             column: 1,
             data: {
-              type: 'string | undefined',
+              type: 'string | boolean',
             },
             endColumn: 22,
             endLine: 3,
@@ -129,7 +129,7 @@ a as 'foo' as 'bar';
           {
             column: 1,
             data: {
-              type: '"foo"',
+              type: '"bar"',
             },
             endColumn: 20,
             endLine: 3,
@@ -139,7 +139,7 @@ a as 'foo' as 'bar';
           {
             column: 1,
             data: {
-              type: 'string',
+              type: '"foo"',
             },
             endColumn: 11,
             endLine: 3,
@@ -159,7 +159,7 @@ function foo<T extends boolean>(a: T) {
           {
             column: 10,
             data: {
-              type: 'boolean',
+              type: 'true',
             },
             endColumn: 19,
             endLine: 3,
@@ -168,14 +168,14 @@ function foo<T extends boolean>(a: T) {
           },
         ],
       },
-      // long/complex original type
+      // long/complex asserted type
       {
         code: `
-declare const a: Omit<
+declare const a: string;
+a as Omit<
   Required<Readonly<{ hello: 'world'; foo: 'bar' }>>,
   'foo'
 >;
-a as string;
         `,
         errors: [
           {
@@ -183,9 +183,9 @@ a as string;
             data: {
               type: 'Omit<Required<Readonly<{ hello: "world"; foo: "bar"; }>>, "foo">',
             },
-            endColumn: 12,
+            endColumn: 2,
             endLine: 6,
-            line: 6,
+            line: 3,
             messageId: 'unsafeTypeAssertion',
           },
         ],
@@ -199,7 +199,7 @@ const bar = foo as number[];
           {
             column: 13,
             data: {
-              type: 'readonly number[]',
+              type: 'number[]',
             },
             endColumn: 28,
             endLine: 3,
@@ -506,7 +506,7 @@ var foo = {} as {
           {
             column: 11,
             data: {
-              type: '{}',
+              type: '{ bar: number; bas: string; }',
             },
             endColumn: 2,
             endLine: 5,
@@ -524,7 +524,7 @@ a satisfies Record<string, string> as { hello: string; world: string };
           {
             column: 1,
             data: {
-              type: '{ hello: string; }',
+              type: '{ hello: string; world: string; }',
             },
             endColumn: 71,
             endLine: 3,
@@ -578,7 +578,7 @@ a as string[];
           {
             column: 1,
             data: {
-              type: '(string | number)[]',
+              type: 'string[]',
             },
             endColumn: 14,
             endLine: 3,
@@ -687,7 +687,7 @@ a as [string];
           {
             column: 1,
             data: {
-              type: '[string | number]',
+              type: '[string]',
             },
             endColumn: 14,
             endLine: 3,
@@ -705,7 +705,7 @@ a as [string, string];
           {
             column: 1,
             data: {
-              type: '[string, number]',
+              type: '[string, string]',
             },
             endColumn: 22,
             endLine: 3,
@@ -723,7 +723,7 @@ a as [string, number];
           {
             column: 1,
             data: {
-              type: '[string]',
+              type: '[string, number]',
             },
             endColumn: 22,
             endLine: 3,
@@ -741,7 +741,7 @@ a as [string];
           {
             column: 1,
             data: {
-              type: '[string, number]',
+              type: '[string]',
             },
             endColumn: 14,
             endLine: 3,
@@ -883,7 +883,7 @@ a as Promise<string>;
           {
             column: 1,
             data: {
-              type: 'Promise<string | number>',
+              type: 'Promise<string>',
             },
             endColumn: 21,
             endLine: 3,
