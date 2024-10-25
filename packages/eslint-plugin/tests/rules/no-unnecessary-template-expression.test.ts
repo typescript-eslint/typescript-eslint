@@ -1142,3 +1142,442 @@ declare const nested: string, interpolation: string;
     },
   ],
 });
+
+describe('no-unnecessary-template-expression types', () => {
+  ruleTester.run('no-unnecessary-template-expression', rule, {
+    valid: [],
+    invalid: [
+      {
+        code: "type A = `${'1 + 1 ='} ${2}`;",
+        errors: [
+          {
+            column: 11,
+            endColumn: 23,
+            line: 1,
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+          {
+            column: 24,
+            endColumn: 28,
+            line: 1,
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `1 + 1 = 2`;',
+      },
+
+      {
+        code: "type A = `${'a'} ${true}`;",
+        errors: [
+          {
+            column: 11,
+            endColumn: 17,
+            line: 1,
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+          {
+            column: 18,
+            endColumn: 25,
+            line: 1,
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `a true`;',
+      },
+
+      /* No Symbol tests */
+
+      {
+        code: "type A = `${'`'}`;",
+        errors: [
+          {
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: "type A = '`';",
+      },
+
+      {
+        code: "type A = `back${'`'}tick`;",
+        errors: [
+          {
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `back\\`tick`;',
+      },
+
+      {
+        code: "type A = `dollar${'${`this is test`}'}sign`;",
+        errors: [
+          {
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `dollar\\${\\`this is test\\`}sign`;',
+      },
+
+      {
+        code: 'type A = `complex${\'`${"`${test}`"}`\'}case`;',
+        errors: [
+          {
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
+      },
+
+      {
+        code: "type A = `some ${'\\\\${test}'} string`;",
+        errors: [
+          {
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `some \\\\\\${test} string`;',
+      },
+
+      {
+        code: "type A = `some ${'\\\\`'} string`;",
+        errors: [
+          {
+            messageId: 'noUnnecessaryTemplateExpression',
+          },
+        ],
+        output: 'type A = `some \\\\\\` string`;',
+      },
+      /* no regex literal types tests */
+      {
+        code: "type A = ` ${''} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = `  `;',
+      },
+      {
+        code: noFormat`type A = \` \${""} \`;`,
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = `  `;',
+      },
+      {
+        code: 'type A = ` ${``} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = `  `;',
+      },
+      {
+        code: noFormat`type A = \` \${'\\\`'} \`;`,
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\` `;',
+      },
+      {
+        code: "type A = ` ${'\\\\`'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\\\` `;',
+      },
+      {
+        code: "type A = ` ${'$'}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${} `;',
+      },
+      {
+        code: noFormat`type A = \` \${'\\$'}{} \`;`,
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${} `;',
+      },
+      {
+        code: "type A = ` ${'\\\\$'}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\\\${} `;',
+      },
+      {
+        code: "type A = ` ${'\\\\$ '}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\$ {} `;',
+      },
+      {
+        code: noFormat`type A = \` \${'\\\\\\$'}{} \`;`,
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\\\${} `;',
+      },
+      {
+        code: "type A = ` \\\\${'\\\\$'}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\\\\\\\${} `;',
+      },
+      {
+        code: "type A = ` $${'{$'}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${\\${} `;',
+      },
+      {
+        code: "type A = ` $${'${$'}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` $\\${\\${} `;',
+      },
+      {
+        code: "type A = ` ${'foo$'}{} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` foo\\${} `;',
+      },
+      {
+        code: 'type A = ` ${`$`} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` $ `;',
+      },
+      {
+        code: 'type A = ` ${`$`}{} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${} `;',
+      },
+      {
+        code: 'type A = ` ${`$`} {} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` $ {} `;',
+      },
+      {
+        code: 'type A = ` ${`$`}${undefined}{} `;',
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` $${undefined}{} `;', 'type A = ` $undefined{} `;'],
+      },
+      {
+        code: 'type A = ` ${`foo$`}{} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` foo\\${} `;',
+      },
+      {
+        code: "type A = ` ${'$'}${''}{} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` \\$${''}{} `;", 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` ${'$'}${``}{} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` \\$${``}{} `;', 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` ${'foo$'}${''}${``}{} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` foo\\$${''}{} `;", 'type A = ` foo\\${} `;'],
+      },
+      {
+        code: "type A = ` $${'{}'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${} `;',
+      },
+      {
+        code: "type A = ` $${undefined}${'{}'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` $undefined${'{}'} `;", 'type A = ` $undefined{} `;'],
+      },
+      {
+        code: "type A = ` $${''}${undefined}${'{}'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` $${undefined}{} `;', 'type A = ` $undefined{} `;'],
+      },
+      {
+        code: "type A = ` \\$${'{}'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${} `;',
+      },
+      {
+        code: "type A = ` $${'foo'}${'{'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` $foo${'{'} `;", 'type A = ` $foo{ `;'],
+      },
+      {
+        code: "type A = ` $${'{ foo'}${'{'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` \\${ foo${'{'} `;", 'type A = ` \\${ foo{ `;'],
+      },
+      {
+        code: "type A = ` \\\\$${'{}'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\\\${} `;',
+      },
+      {
+        code: "type A = ` \\\\\\$${'{}'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\\\\\${} `;',
+      },
+      {
+        code: "type A = ` foo$${'{}'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` foo\\${} `;',
+      },
+      {
+        code: "type A = ` $${''}${'{}'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` \\$${'{}'} `;", 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` $${''} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` $ `;',
+      },
+      {
+        code: 'type A = ` $${`{}`} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\${} `;',
+      },
+      {
+        code: 'type A = ` $${``}${`{}`} `;',
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` \\$${`{}`} `;', 'type A = ` \\${} `;'],
+      },
+      {
+        code: 'type A = ` $${``}${`foo{}`} `;',
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` $${`foo{}`} `;', 'type A = ` $foo{} `;'],
+      },
+      {
+        code: "type A = ` $${`${''}${`${``}`}`}${`{a}`} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: [
+          "type A = ` \\$${''}${`${``}`}${`{a}`} `;",
+          'type A = ` \\$${``}{a} `;',
+          'type A = ` \\${a} `;',
+        ],
+      },
+      {
+        code: "type A = ` $${''}${`{}`} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` \\$${`{}`} `;', 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` $${``}${'{}'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` \\$${'{}'} `;", 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` $${''}${``}${'{}'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ['type A = ` \\$${``}{} `;', 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` ${'$'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` $ `;',
+      },
+      {
+        code: "type A = ` ${'$'}${'{}'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` \\$${'{}'} `;", 'type A = ` \\${} `;'],
+      },
+      {
+        code: "type A = ` ${'$'}${''}${'{'} `;",
+        errors: [
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+          { messageId: 'noUnnecessaryTemplateExpression' },
+        ],
+        output: ["type A = ` \\$${''}{ `;", 'type A = ` \\${ `;'],
+      },
+      {
+        code: 'type A = ` ${`\n\\$`}{} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \n\\${} `;',
+      },
+      {
+        code: 'type A = ` ${`\n\\\\$`}{} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \n\\\\\\${} `;',
+      },
+
+      {
+        code: "type A = `${'\\u00E5'}`;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: "type A = '\\u00E5';",
+      },
+      {
+        code: "type A = `${'\\n'}`;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: "type A = '\\n';",
+      },
+      {
+        code: "type A = ` ${'\\u00E5'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\u00E5 `;',
+      },
+      {
+        code: "type A = ` ${'\\n'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\n `;',
+      },
+      {
+        code: noFormat`type A = \` \${"\\n"} \`;`,
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\n `;',
+      },
+      {
+        code: 'type A = ` ${`\\n`} `;',
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\n `;',
+      },
+      {
+        code: noFormat`type A = \` \${ 'A\\u0307\\u0323' } \`;`,
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` A\\u0307\\u0323 `;',
+      },
+      {
+        code: "type A = ` ${'👨‍👩‍👧‍👦'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` 👨‍👩‍👧‍👦 `;',
+      },
+      {
+        code: "type A = ` ${'\\ud83d\\udc68'} `;",
+        errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+        output: 'type A = ` \\ud83d\\udc68 `;',
+      },
+    ],
+  });
+});
