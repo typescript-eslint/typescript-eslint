@@ -1,6 +1,6 @@
 // required by website
-export * from './create-program/getScriptKind';
 export * from './ast-converter';
+export * from './create-program/getScriptKind';
 export type { ParseSettings } from './parseSettings';
 
 // required by packages/utils/src/ts-estree.ts
