@@ -48,7 +48,6 @@ export default createRule<[], MessageId>({
 
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
-
         function isUnderlyingTypeString(
           expression: TSESTree.Expression,
         ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
@@ -81,7 +80,9 @@ export default createRule<[], MessageId>({
           return expression.type === AST_NODE_TYPES.TemplateLiteral;
         }
 
-        function isInfinityIdentifier(expression: TSESTree.Expression): boolean {
+        function isInfinityIdentifier(
+          expression: TSESTree.Expression,
+        ): boolean {
           return (
             expression.type === AST_NODE_TYPES.Identifier &&
             expression.name === 'Infinity'
@@ -293,21 +294,27 @@ export default createRule<[], MessageId>({
         function isLiteral(
           typeNode: TSESTree.TypeNode,
         ): typeNode is { literal: TSESTree.Literal } & TSESTree.TSLiteralType {
-          return typeNode.type === AST_NODE_TYPES.TSLiteralType && typeNode.literal.type === AST_NODE_TYPES.Literal;
+          return (
+            typeNode.type === AST_NODE_TYPES.TSLiteralType &&
+            typeNode.literal.type === AST_NODE_TYPES.Literal
+          );
         }
 
         function isTemplateLiteral(
           typeNode: TSESTree.TypeNode,
-        ): typeNode is { literal: TSESTree.TemplateLiteral } & TSESTree.TSLiteralType {
-          return typeNode.type === AST_NODE_TYPES.TSLiteralType && typeNode.literal.type === AST_NODE_TYPES.TemplateLiteral;
+        ): typeNode is {
+          literal: TSESTree.TemplateLiteral;
+        } & TSESTree.TSLiteralType {
+          return (
+            typeNode.type === AST_NODE_TYPES.TSLiteralType &&
+            typeNode.literal.type === AST_NODE_TYPES.TemplateLiteral
+          );
         }
 
         function isUndefinedType(
           typeNode: TSESTree.TypeNode,
         ): typeNode is TSESTree.TSUndefinedKeyword {
-          return (
-            typeNode.type === AST_NODE_TYPES.TSUndefinedKeyword
-          );
+          return typeNode.type === AST_NODE_TYPES.TSUndefinedKeyword;
         }
 
         const hasSingleStringVariable =
@@ -343,7 +350,7 @@ export default createRule<[], MessageId>({
             types =>
               isLiteral(types) ||
               isTemplateLiteral(types) ||
-              isUndefinedType(types)
+              isUndefinedType(types),
           )
           .reverse();
 
@@ -419,9 +426,7 @@ export default createRule<[], MessageId>({
             const quasis = type.literal.quasis;
             if (
               nextCharacterIsOpeningCurlyBrace &&
-              endsWithUnescapedDollarSign(
-                quasis[quasis.length - 1].value.raw
-              )
+              endsWithUnescapedDollarSign(quasis[quasis.length - 1].value.raw)
             ) {
               fixers.push(fixer => [
                 fixer.replaceTextRange(
@@ -430,10 +435,7 @@ export default createRule<[], MessageId>({
                 ),
               ]);
             }
-            if (
-              quasis.length === 1 &&
-              quasis[0].value.raw.length !== 0
-            ) {
+            if (quasis.length === 1 && quasis[0].value.raw.length !== 0) {
               nextCharacterIsOpeningCurlyBrace =
                 quasis[0].value.raw.startsWith('{');
             }

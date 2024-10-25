@@ -1381,7 +1381,10 @@ describe('no-unnecessary-template-expression types', () => {
           { messageId: 'noUnnecessaryTemplateExpression' },
           { messageId: 'noUnnecessaryTemplateExpression' },
         ],
-        output: ["type A = ` $undefined${'{}'} `;", 'type A = ` $undefined{} `;'],
+        output: [
+          "type A = ` $undefined${'{}'} `;",
+          'type A = ` $undefined{} `;',
+        ],
       },
       {
         code: "type A = ` $${''}${undefined}${'{}'} `;",
