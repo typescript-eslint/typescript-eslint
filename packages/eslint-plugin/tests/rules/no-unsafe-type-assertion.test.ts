@@ -180,8 +180,8 @@ a as Omit<Required<Readonly<{ hello: 'world'; foo: 'bar' }>>, 'foo'>;
             data: {
               type: 'Omit<Required<Readonly<{ hello: "world"; foo: "bar"; }>>, "foo">',
             },
-            endColumn: 2,
-            endLine: 6,
+            endColumn: 69,
+            endLine: 3,
             line: 3,
             messageId: 'unsafeTypeAssertion',
           },
