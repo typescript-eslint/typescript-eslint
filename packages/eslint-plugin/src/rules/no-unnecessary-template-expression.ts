@@ -300,9 +300,7 @@ export default createRule<[], MessageId>({
           );
         }
 
-        function isTemplateLiteral(
-          typeNode: TSESTree.TypeNode,
-        ): typeNode is {
+        function isTemplateLiteral(typeNode: TSESTree.TypeNode): typeNode is {
           literal: TSESTree.TemplateLiteral;
         } & TSESTree.TSLiteralType {
           return (
