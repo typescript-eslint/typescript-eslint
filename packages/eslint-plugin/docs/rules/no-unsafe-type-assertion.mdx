@@ -54,6 +54,8 @@ If your codebase has many unsafe type assertions, then it may be difficult to en
 It may be easier to skip the `no-unsafe-*` rules pending increasing type safety in unsafe areas of your project.
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
+If your project frequently stubs objects in test files, the rule may trigger a lot of reports. Consider disabling the rule for such files to reduce frequent warnings.
+
 ## Further Reading
 
 - More on TypeScript's [type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions)
