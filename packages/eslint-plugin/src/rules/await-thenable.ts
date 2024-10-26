@@ -127,7 +127,7 @@ export default createRule<[], MessageId>({
           );
           const type = services.getTypeAtLocation(init);
           if (isTypeAnyType(type)) {
-            return;
+            continue;
           }
 
           const hasAsyncDisposeSymbol = tsutils

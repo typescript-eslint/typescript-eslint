@@ -612,5 +612,24 @@ async function foo() {
         },
       ],
     },
+    {
+      code: `
+declare const anee: any;
+declare const disposable: Disposable;
+async function foo() {
+  await using a = anee,
+    b = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
   ],
 });
