@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
@@ -340,14 +341,17 @@ export default createRule({
             context.report({
               node,
               messageId: 'requiredPromiseAwait',
-              ...fixOrSuggest(useAutoFix, {
-                messageId: 'requiredPromiseAwaitSuggestion',
-                fix: fixer =>
-                  insertAwait(
-                    fixer,
-                    node,
-                    isHigherPrecedenceThanAwait(expression),
-                  ),
+              ...getFixOrSuggest({
+                fixOrSuggest: useAutoFix ? 'fix' : 'suggest',
+                suggestion: {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  fix: fixer =>
+                    insertAwait(
+                      fixer,
+                      node,
+                      isHigherPrecedenceThanAwait(expression),
+                    ),
+                },
               }),
             });
           }
@@ -359,9 +363,12 @@ export default createRule({
             context.report({
               node,
               messageId: 'disallowedPromiseAwait',
-              ...fixOrSuggest(useAutoFix, {
-                messageId: 'disallowedPromiseAwaitSuggestion',
-                fix: fixer => removeAwait(fixer, node),
+              ...getFixOrSuggest({
+                fixOrSuggest: useAutoFix ? 'fix' : 'suggest',
+                suggestion: {
+                  messageId: 'disallowedPromiseAwaitSuggestion',
+                  fix: fixer => removeAwait(fixer, node),
+                },
               }),
             });
           }
@@ -445,13 +452,4 @@ function getConfiguration(option: Option): RuleConfiguration {
         ordinaryContext: 'no-await',
       };
   }
-}
-
-function fixOrSuggest<MessageId extends string>(
-  useFix: boolean,
-  suggestion: TSESLint.SuggestionReportDescriptor<MessageId>,
-):
-  | { fix: TSESLint.ReportFixFunction }
-  | { suggest: TSESLint.SuggestionReportDescriptor<MessageId>[] } {
-  return useFix ? { fix: suggestion.fix } : { suggest: [suggestion] };
 }
