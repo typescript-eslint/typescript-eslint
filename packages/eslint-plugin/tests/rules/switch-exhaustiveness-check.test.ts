@@ -1,5 +1,6 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'node:path';
+
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
 
@@ -809,6 +810,37 @@ switch (value) {
           requireDefaultForNonUnion: false,
         },
       ],
+    },
+    {
+      code: `
+declare const value: number;
+
+switch (value) {
+  case 0:
+    break;
+  case 1:
+    break;
+
+  // no default
+}
+      `,
+      options: [
+        {
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'a' | 'b';
+
+switch (value) {
+  case 'a':
+    break;
+
+  // no default
+}
+      `,
     },
   ],
   invalid: [
@@ -2370,6 +2402,30 @@ switch (myValue) {
         {
           allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const myValue: 'a' | 'b';
+
+switch (myValue) {
+  case 'a':
+    return 'a';
+  case 'b':
+    return 'b';
+
+  // no default
+}
+      `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
         },
       ],
     },

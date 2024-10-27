@@ -14,6 +14,8 @@ However, if the union type or the enum changes, it's easy to forget to modify th
 
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
+If you have enabled an option that requires you to enter a default case, or if you did not enter it but want it to act as if you had entered it, specify `// no default` below.
+
 ## Options
 
 ### `allowDefaultCaseForExhaustiveSwitch`
