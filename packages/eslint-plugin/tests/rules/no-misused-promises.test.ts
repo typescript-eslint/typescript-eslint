@@ -2429,5 +2429,43 @@ arrayFn<() => void>(
         },
       ],
     },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+
+const o: HasVoidMethod = {
+  async f() {
+    return 3;
+  },
+};
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+
+const o: HasVoidMethod = {
+  async f(): Promise<number> {
+    return 3;
+  },
+};
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
   ],
 });
