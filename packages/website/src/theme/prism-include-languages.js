@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import siteConfig from '@generated/docusaurus.config';
 
 export default function prismIncludeLanguages(PrismObject) {
