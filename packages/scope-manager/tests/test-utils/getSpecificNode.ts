@@ -24,7 +24,7 @@ function getSpecificNode<
 function getSpecificNode(
   ast: TSESTree.Node,
   selector: AST_NODE_TYPES,
-  cb?: (node: TSESTree.Node) => TSESTree.Node | boolean | null | undefined,
+  cb?: (node: TSESTree.Node) => boolean | TSESTree.Node | null | undefined,
 ): TSESTree.Node {
   let node: TSESTree.Node | null | undefined = null;
   simpleTraverse(

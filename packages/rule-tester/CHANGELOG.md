@@ -1,3 +1,15 @@
+## 8.11.0 (2024-10-21)
+
+### 🩹 Fixes
+
+- **rule-tester:** allow custom filename outside directory ([#10147](https://github.com/typescript-eslint/typescript-eslint/pull/10147))
+
+### ❤️  Thank You
+
+- Lotfi Meklati @lotmek
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.10.0 (2024-10-17)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.

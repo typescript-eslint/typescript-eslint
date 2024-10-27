@@ -9,18 +9,24 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/consistent-indexed-object-style** for documentation.
 
-TypeScript supports defining arbitrary object keys using an index signature. TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature. For example, the following types are equal:
+TypeScript supports defining arbitrary object keys using an index signature or mapped type.
+TypeScript also has a builtin type named `Record` to create an empty object defining only an index signature.
+For example, the following types are equal:
 
 ```ts
-interface Foo {
+interface IndexSignatureInterface {
   [key: string]: unknown;
 }
 
-type Foo = {
+type IndexSignatureType = {
   [key: string]: unknown;
 };
 
-type Foo = Record<string, unknown>;
+type MappedType = {
+  [key in string]: unknown;
+};
+
+type RecordType = Record<string, unknown>;
 ```
 
 Using one declaration form consistently improves code readability.
@@ -38,12 +44,16 @@ Using one declaration form consistently improves code readability.
 <TabItem value="❌ Incorrect">
 
 ```ts option='"record"'
-interface Foo {
+interface IndexSignatureInterface {
   [key: string]: unknown;
 }
 
-type Foo = {
+type IndexSignatureType = {
   [key: string]: unknown;
+};
+
+type MappedType = {
+  [key in string]: unknown;
 };
 ```
 
@@ -51,7 +61,7 @@ type Foo = {
 <TabItem value="✅ Correct">
 
 ```ts option='"record"'
-type Foo = Record<string, unknown>;
+type RecordType = Record<string, unknown>;
 ```
 
 </TabItem>
@@ -63,19 +73,23 @@ type Foo = Record<string, unknown>;
 <TabItem value="❌ Incorrect">
 
 ```ts option='"index-signature"'
-type Foo = Record<string, unknown>;
+type RecordType = Record<string, unknown>;
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts option='"index-signature"'
-interface Foo {
+interface IndexSignatureInterface {
   [key: string]: unknown;
 }
 
-type Foo = {
+type IndexSignatureType = {
   [key: string]: unknown;
+};
+
+type MappedType = {
+  [key in string]: unknown;
 };
 ```
 

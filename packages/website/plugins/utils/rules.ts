@@ -21,21 +21,19 @@ export const sourceUrlPrefix =
  * @param withComment Whether to include a full comment note.
  * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
  */
-export function getEslintrcString(
+export function getRulesString(
   extendsBaseRuleName: string,
   stem: string,
   withComment: boolean,
 ): string {
-  return `{
-  "rules": {${
+  return `{${
     withComment
       ? '\n    // Note: you must disable the base rule as it can report incorrect errors'
       : ''
   }
     "${extendsBaseRuleName}": "off",
     "@typescript-eslint/${stem}": "error"
-  }
-}`;
+  }`;
 }
 
 export function convertToPlaygroundHash(eslintrc: string): string {

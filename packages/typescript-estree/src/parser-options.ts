@@ -91,7 +91,7 @@ interface ParseOptions {
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: false | ((message: string) => void);
+  loggerFn?: ((message: string) => void) | false;
 
   /**
    * Controls whether the `range` property is included on AST nodes.
@@ -190,7 +190,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Note that {@link projectService} is now preferred.
    */
-  project?: string[] | string | boolean | null;
+  project?: boolean | string | string[] | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -248,9 +248,9 @@ export interface ParserServicesNodeMaps {
 export interface ParserServicesWithTypeInformation
   extends ParserServicesNodeMaps,
     ParserServicesBase {
-  program: ts.Program;
   getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
   getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
+  program: ts.Program;
 }
 export interface ParserServicesWithoutTypeInformation
   extends ParserServicesNodeMaps,
