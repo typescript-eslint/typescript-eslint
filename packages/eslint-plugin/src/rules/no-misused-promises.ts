@@ -509,11 +509,6 @@ export default createRule<Options, MessageId>({
                     messageId: 'voidReturnProperty',
                   });
                 }
-              } else {
-                context.report({
-                  node: node.value,
-                  messageId: 'voidReturnProperty',
-                });
               }
             }
           }
