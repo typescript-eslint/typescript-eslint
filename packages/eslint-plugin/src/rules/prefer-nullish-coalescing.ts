@@ -106,7 +106,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreBooleanCoercion: {
             description:
-              'Whether to ignore any make boolean type value like `Boolean`',
+              'Whether to ignore arguments to the `Boolean` constructor',
             type: 'boolean',
           },
         },
