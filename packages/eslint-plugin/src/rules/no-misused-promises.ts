@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getFunctionHeadLoc,
+  getFunctionHeadLocation,
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
@@ -42,6 +43,19 @@ type MessageId =
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
   | 'voidReturnVariable';
+
+function findFunctionNode(
+  node: TSESTree.Node,
+):
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression
+  | TSESTree.ArrowFunctionExpression {
+  let current: TSESTree.Node | undefined = node;
+  while (current && !isFunction(current)) {
+    current = current.parent;
+  }
+  return nullThrows(current, NullThrowsReasons.MissingParent);
+}
 
 function parseChecksVoidReturn(
   checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
@@ -491,26 +505,19 @@ export default createRule<Options, MessageId>({
         );
 
         if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
-          const signature = checker.getSignatureFromDeclaration(tsNode);
-          if (signature) {
-            const returnType = checker.getReturnTypeOfSignature(signature);
-            if (tsutils.isThenableType(checker, tsNode, returnType)) {
-              const functionNode = node.value;
-              if (isFunction(functionNode)) {
-                if (functionNode.returnType) {
-                  context.report({
-                    node: functionNode.returnType,
-                    messageId: 'voidReturnProperty',
-                  });
-                } else {
-                  context.report({
-                    loc: getFunctionHeadLoc(functionNode, context.sourceCode),
-                    node: functionNode,
-                    messageId: 'voidReturnProperty',
-                  });
-                }
-              }
-            }
+          const functionNode = findFunctionNode(node.value);
+
+          if (functionNode.returnType) {
+            context.report({
+              node: functionNode.returnType,
+              messageId: 'voidReturnProperty',
+            });
+          } else {
+            context.report({
+              loc: getFunctionHeadLoc(functionNode, context.sourceCode),
+              node: functionNode,
+              messageId: 'voidReturnProperty',
+            });
           }
         }
         return;
@@ -524,13 +531,8 @@ export default createRule<Options, MessageId>({
       }
 
       // syntactically ignore some known-good cases to avoid touching type info
-      const functionNode = (() => {
-        let current: TSESTree.Node | undefined = node.parent;
-        while (current && !isFunction(current)) {
-          current = current.parent;
-        }
-        return nullThrows(current, NullThrowsReasons.MissingParent);
-      })();
+      const functionNode = findFunctionNode(node);
+
       if (
         functionNode.returnType &&
         !isPossiblyFunctionType(functionNode.returnType)
