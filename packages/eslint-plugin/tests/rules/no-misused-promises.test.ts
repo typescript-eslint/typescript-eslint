@@ -2443,6 +2443,9 @@ const o: HasVoidMethod = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnProperty',
         },
@@ -2462,6 +2465,9 @@ const o: HasVoidMethod = {
       `,
       errors: [
         {
+          column: 12,
+          endColumn: 29,
+          endLine: 7,
           line: 7,
           messageId: 'voidReturnProperty',
         },
