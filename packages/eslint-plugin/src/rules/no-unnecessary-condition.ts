@@ -29,7 +29,7 @@ import {
 const valueIsPseudoBigInt = (
   value: number | string | ts.PseudoBigInt,
 ): value is ts.PseudoBigInt => {
-  return typeof value === 'object' && 'base10Value' in value;
+  return typeof value === 'object'
 };
 
 const getValue = (type: ts.LiteralType): bigint | number | string => {
