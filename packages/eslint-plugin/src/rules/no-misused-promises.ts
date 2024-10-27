@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getFunctionHeadLoc,
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
@@ -490,10 +491,32 @@ export default createRule<Options, MessageId>({
         );
 
         if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
-          context.report({
-            node: node.value,
-            messageId: 'voidReturnProperty',
-          });
+          const signature = checker.getSignatureFromDeclaration(tsNode);
+          if (signature) {
+            const returnType = checker.getReturnTypeOfSignature(signature);
+            if (tsutils.isThenableType(checker, tsNode, returnType)) {
+              const functionNode = node.value;
+              if (isFunction(functionNode)) {
+                if (functionNode.returnType) {
+                  context.report({
+                    node: functionNode.returnType,
+                    messageId: 'voidReturnProperty',
+                  });
+                } else {
+                  context.report({
+                    loc: getFunctionHeadLoc(functionNode, context.sourceCode),
+                    node: functionNode,
+                    messageId: 'voidReturnProperty',
+                  });
+                }
+              } else {
+                context.report({
+                  node: node.value,
+                  messageId: 'voidReturnProperty',
+                });
+              }
+            }
+          }
         }
         return;
       }
