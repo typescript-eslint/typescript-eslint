@@ -29,7 +29,7 @@ import {
 const valueIsPseudoBigInt = (
   value: number | string | ts.PseudoBigInt,
 ): value is ts.PseudoBigInt => {
-  return typeof value === 'object'
+  return typeof value === 'object';
 };
 
 const getValue = (type: ts.LiteralType): bigint | number | string => {
@@ -69,7 +69,13 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+      intersectionParts.every(
+        type =>
+          !tsutils.isFalsyType(type) &&
+          // below is a workaround for ts-api-utils bug
+          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
+          !isFalseyBigInt(type),
+      ),
     );
 
 // Nullish utilities
@@ -326,8 +332,6 @@ export default createRule<Options, MessageId>({
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
       } else if (!isPossiblyFalsy(type)) {
         messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
-      } else if (isFalseyBigInt(type)) {
-        messageId = 'alwaysFalsy';
       }
 
       if (messageId) {
