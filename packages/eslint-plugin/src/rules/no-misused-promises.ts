@@ -7,7 +7,6 @@ import * as ts from 'typescript';
 import {
   createRule,
   getFunctionHeadLoc,
-  getFunctionHeadLocation,
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
@@ -47,9 +46,9 @@ type MessageId =
 function findFunctionNode(
   node: TSESTree.Node,
 ):
+  | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression {
+  | TSESTree.FunctionExpression {
   let current: TSESTree.Node | undefined = node;
   while (current && !isFunction(current)) {
     current = current.parent;
