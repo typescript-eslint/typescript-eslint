@@ -45,6 +45,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
     hasSuggestions: true,
     messages: {
       disallowedPromiseAwait:
