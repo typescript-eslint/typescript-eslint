@@ -65,7 +65,25 @@ If set to true, a `switch` statement over a union type that includes a `default`
 Otherwise, the rule enforces explicitly handling every constituent of the union type with their own explicit `case`.
 Keeping this option disabled can be useful if you want to make sure every value added to the union receives explicit handling, with the `default` case reserved for reporting an error.
 
-Examples of additional **correct** code for this rule with `{ considerDefaultExhaustiveForUnions: true }`:
+Examples of code with `{ considerDefaultExhaustiveForUnions: true }`:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+```
+
+</TabItem>
+
+<TabItem value="✅ Correct">
 
 ```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
 declare const literal: 'a' | 'b';
@@ -78,10 +96,6 @@ switch (literal) {
   default:
     break;
 }
-```
-
-```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
-declare const literal: 'a' | 'b';
 
 switch (literal) {
   case 'a':
@@ -91,18 +105,8 @@ switch (literal) {
 }
 ```
 
-Examples of additional **incorrect** code for this rule with `{ considerDefaultExhaustiveForUnions: true }`:
-
-```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
-declare const literal: 'a' | 'b';
-
-switch (literal) {
-  case 'a':
-    break;
-  default:
-    break;
-}
-```
+</TabItem>
+</Tabs>
 
 ## Examples
 
