@@ -121,10 +121,10 @@ export default createRule<[], MessageId>({
         node: TSESTree.VariableDeclaration,
       ): void {
         for (const declarator of node.declarations) {
-          const init = nullThrows(
-            declarator.init,
-            'Expected init to be present on an await using variable declarator',
-          );
+          const init = declarator.init;
+          if (init == null) {
+            continue;
+          }
           const type = services.getTypeAtLocation(init);
           if (isTypeAnyType(type)) {
             continue;

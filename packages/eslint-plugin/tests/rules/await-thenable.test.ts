@@ -270,6 +270,14 @@ async function foo() {
 }
       `,
     },
+    {
+      code: `
+async function iterateUsing(arr: Array<AsyncDisposable>) {
+  for (await using foo of arr) {
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
