@@ -139,6 +139,58 @@ function fun<T extends Error>(t: T): void {
   throw t;
 }
     `,
+    {
+      code: `
+throw undefined;
+      `,
+      options: [
+        {
+          allowThrowing: [{ from: 'lib', name: 'undefined' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+class CustomError implements Error {}
+throw new CustomError();
+      `,
+      options: [
+        {
+          allowThrowing: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+throw new Map();
+      `,
+      options: [
+        {
+          allowThrowing: [{ from: 'lib', name: 'Map' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+        import { createError } from 'errors';
+        throw createError();
+      `,
+      options: [
+        {
+          allowThrowing: [
+            { from: 'package', name: 'ErrorLike', package: 'errors' },
+          ],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -482,6 +534,24 @@ function fun<T extends number>(t: T): void {
       errors: [
         {
           messageId: 'object',
+        },
+      ],
+    },
+    {
+      code: `
+class UnknownError implements Error {}
+throw new UnknownError();
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowThrowing: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
         },
       ],
     },

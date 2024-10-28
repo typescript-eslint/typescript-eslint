@@ -3,18 +3,24 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
+import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getParserServices,
   isErrorLike,
   isTypeAnyType,
   isTypeUnknownType,
+  readonlynessOptionsDefaults,
+  readonlynessOptionsSchema,
+  typeMatchesSomeSpecifier,
 } from '../util';
 
 type MessageIds = 'object' | 'undef';
 
 type Options = [
   {
+    allowThrowing?: TypeOrValueSpecifier[];
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;
   },
@@ -39,6 +45,10 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          allowThrowing: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description: 'Type specifiers that can be thrown.',
+          },
           allowThrowingAny: {
             type: 'boolean',
             description:
@@ -55,13 +65,14 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allowThrowing: readonlynessOptionsDefaults.allow,
       allowThrowingAny: true,
       allowThrowingUnknown: true,
     },
   ],
   create(context, [options]) {
     const services = getParserServices(context);
-
+    const allowThrowing = options.allowThrowing;
     function checkThrowArgument(node: TSESTree.Node): void {
       if (
         node.type === AST_NODE_TYPES.AwaitExpression ||
@@ -71,6 +82,10 @@ export default createRule<Options, MessageIds>({
       }
 
       const type = services.getTypeAtLocation(node);
+
+      if (typeMatchesSomeSpecifier(type, allowThrowing, services.program)) {
+        return;
+      }
 
       if (type.flags & ts.TypeFlags.Undefined) {
         context.report({ node, messageId: 'undef' });
