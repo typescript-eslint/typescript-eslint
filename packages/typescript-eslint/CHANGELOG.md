@@ -1,3 +1,9 @@
+## 8.12.1 (2024-10-28)
+
+This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.12.0 (2024-10-28)
 
 ### 🚀 Features

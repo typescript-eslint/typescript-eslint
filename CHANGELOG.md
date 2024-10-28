@@ -1,3 +1,15 @@
+## 8.12.1 (2024-10-28)
+
+### 🩹 Fixes
+
+- **rule-tester:** use cwd option to set base path for tests with file name ([#10201](https://github.com/typescript-eslint/typescript-eslint/pull/10201))
+
+### ❤️  Thank You
+
+- Dave @reduckted
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.12.0 (2024-10-28)
 
 ### 🚀 Features
