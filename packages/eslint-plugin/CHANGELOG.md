@@ -1,3 +1,21 @@
+## 8.12.0 (2024-10-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-base-to-string] handle String() ([#10005](https://github.com/typescript-eslint/typescript-eslint/pull/10005))
+- **eslint-plugin:** [switch-exhaustiveness-check] add allowDefaultCaseMatchUnionMember option ([#9954](https://github.com/typescript-eslint/typescript-eslint/pull/9954))
+- **eslint-plugin:** [consistent-indexed-object-style] report mapped types ([#10160](https://github.com/typescript-eslint/typescript-eslint/pull/10160))
+- **eslint-plugin:** [prefer-nullish-coalescing] add support for assignment expressions ([#10152](https://github.com/typescript-eslint/typescript-eslint/pull/10152))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger @kirkwaiblinger
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.11.0 (2024-10-21)
 
 ### 🚀 Features

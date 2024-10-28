@@ -1,3 +1,15 @@
+## 8.12.0 (2024-10-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] add support for assignment expressions ([#10152](https://github.com/typescript-eslint/typescript-eslint/pull/10152))
+
+### ❤️  Thank You
+
+- Abraham Guo
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.11.0 (2024-10-21)
 
 ### 🩹 Fixes

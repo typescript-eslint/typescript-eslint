@@ -1,3 +1,29 @@
+## 8.12.0 (2024-10-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] add support for assignment expressions ([#10152](https://github.com/typescript-eslint/typescript-eslint/pull/10152))
+- **eslint-plugin:** [consistent-indexed-object-style] report mapped types ([#10160](https://github.com/typescript-eslint/typescript-eslint/pull/10160))
+- **eslint-plugin:** [switch-exhaustiveness-check] add allowDefaultCaseMatchUnionMember option ([#9954](https://github.com/typescript-eslint/typescript-eslint/pull/9954))
+- **eslint-plugin:** [no-base-to-string] handle String() ([#10005](https://github.com/typescript-eslint/typescript-eslint/pull/10005))
+- **typescript-eslint:** improve undefined extension handling ([#10177](https://github.com/typescript-eslint/typescript-eslint/pull/10177))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-return] don't reiterate through all type parts for each part ([#10203](https://github.com/typescript-eslint/typescript-eslint/pull/10203))
+- **website:** enable `noImplicitAny` ([#10175](https://github.com/typescript-eslint/typescript-eslint/pull/10175))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger @kirkwaiblinger
+- Maxim Stykow @mstykow
+- Terry Fu
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.11.0 (2024-10-21)
 
 ### 🚀 Features
