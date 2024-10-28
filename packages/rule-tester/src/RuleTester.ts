@@ -1276,7 +1276,7 @@ export class RuleTester extends TestFramework {
 
                     // Verify if suggestion fix makes a syntax error or not.
                     const errorMessageInSuggestion = this.#getLinterForFilename(
-                      undefined,
+                      item.filename,
                     )
                       .verify(
                         codeWithAppliedSuggestion,
