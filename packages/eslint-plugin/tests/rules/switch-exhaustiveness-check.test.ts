@@ -144,29 +144,36 @@ function test(value: Union): number {
 }
     `,
     // Switch contains default clause.
-    `
-type Day =
-  | 'Monday'
-  | 'Tuesday'
-  | 'Wednesday'
-  | 'Thursday'
-  | 'Friday'
-  | 'Saturday'
-  | 'Sunday';
+    {
+      code: `
+  type Day =
+    | 'Monday'
+    | 'Tuesday'
+    | 'Wednesday'
+    | 'Thursday'
+    | 'Friday'
+    | 'Saturday'
+    | 'Sunday';
 
-const day = 'Monday' as Day;
-let result = 0;
+  const day = 'Monday' as Day;
+  let result = 0;
 
-switch (day) {
-  case 'Monday': {
-    result = 1;
-    break;
+  switch (day) {
+    case 'Monday': {
+      result = 1;
+      break;
+    }
+    default: {
+      result = 42;
+    }
   }
-  default: {
-    result = 42;
-  }
-}
-    `,
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
     // Exhaustiveness check only works for union types...
     `
 const day = 'Monday' as string;
@@ -553,6 +560,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: false,
         },
       ],
@@ -570,6 +578,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: false,
         },
       ],
@@ -745,6 +754,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: true,
         },
       ],
@@ -762,6 +772,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: true,
         },
       ],
@@ -832,8 +843,6 @@ declare const literal: 'a' | 'b';
 switch (literal) {
   case 'a':
     break;
-  case 'b':
-    break;
   default:
     break;
 }
@@ -857,7 +866,6 @@ switch (literal) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
-          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -876,8 +884,6 @@ switch (myEnum) {
     break;
   case MyEnum.Bar:
     break;
-  case MyEnum.Baz:
-    break;
   default: {
     break;
   }
@@ -894,8 +900,6 @@ switch (myEnum) {
 declare const value: boolean;
 switch (value) {
   case false:
-    break;
-  case true:
     break;
   default: {
     break;
@@ -2507,7 +2511,7 @@ switch (literal) {
       ],
       options: [
         {
-          considerDefaultExhaustiveForUnions: true,
+          considerDefaultExhaustiveForUnions: false,
         },
       ],
     },
@@ -2539,11 +2543,6 @@ switch (literal) {
       `,
             },
           ],
-        },
-      ],
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
@@ -2581,7 +2580,7 @@ switch (literal) {
       ],
       options: [
         {
-          considerDefaultExhaustiveForUnions: true,
+          considerDefaultExhaustiveForUnions: false,
         },
       ],
     },
@@ -2622,7 +2621,7 @@ switch (literal) {
       ],
       options: [
         {
-          considerDefaultExhaustiveForUnions: true,
+          considerDefaultExhaustiveForUnions: false,
         },
       ],
     },
@@ -2677,7 +2676,7 @@ switch (myEnum) {
       ],
       options: [
         {
-          considerDefaultExhaustiveForUnions: true,
+          considerDefaultExhaustiveForUnions: false,
         },
       ],
     },
@@ -2714,7 +2713,7 @@ switch (value) {
       ],
       options: [
         {
-          considerDefaultExhaustiveForUnions: true,
+          considerDefaultExhaustiveForUnions: false,
         },
       ],
     },
