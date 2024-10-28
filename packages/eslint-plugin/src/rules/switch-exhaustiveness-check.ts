@@ -197,7 +197,7 @@ export default createRule<Options, MessageIds>({
 
       // Unless considerDefaultExhaustiveForUnions is enabled, the presence of a default case
       // always makes the switch exhaustive.
-      if (!considerDefaultExhaustiveForUnions && defaultCase != null) {
+      if (!considerDefaultExhaustiveForUnions && defaultCase) {
         return;
       }
 
@@ -239,7 +239,7 @@ export default createRule<Options, MessageIds>({
     ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
-      const defaultCase = node.cases.find(caseEl => caseEl.test == null);
+      const defaultCase = node.cases.find(caseEl => caseEl.test == null) ?? getCommentDefaultCase(node)
 
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)

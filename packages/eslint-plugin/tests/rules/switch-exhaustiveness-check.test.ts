@@ -828,8 +828,8 @@ switch (literal) {
         },
       ],
     },
-  {
-      code:`
+    {
+      code: `
 declare const literal: 'a' | 'b';
 switch (literal) {
   case 'a':
@@ -2513,7 +2513,7 @@ switch (literal) {
       `,
       errors: [
         {
-          messageId: 'dangerousDefaultCase',
+          messageId: 'switchIsNotExhaustive',
           column: 9,
           line: 4,
           suggestions: [
@@ -2767,6 +2767,45 @@ switch (myValue) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  // no default
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  // no default
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
         },
       ],
     },
