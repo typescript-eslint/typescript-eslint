@@ -65,10 +65,7 @@ If set to true, a `switch` statement over a union type that includes a `default`
 Otherwise, the rule enforces explicitly handling every constituent of the union type with their own explicit `case`.
 Keeping this option disabled can be useful if you want to make sure every value added to the union receives explicit handling, with the `default` case reserved for reporting an error.
 
-Examples of code with `{ considerDefaultExhaustiveForUnions: true }`:
-
-<Tabs>
-<TabItem value="❌ Incorrect">
+Examples of additional **correct** code with `{ considerDefaultExhaustiveForUnions: true }`:
 
 ```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
 declare const literal: 'a' | 'b';
@@ -80,37 +77,10 @@ switch (literal) {
     break;
 }
 ```
-
-</TabItem>
-
-<TabItem value="✅ Correct">
-
-```ts option='{ "considerDefaultExhaustiveForUnions": true }' showPlaygroundButton
-declare const literal: 'a' | 'b';
-
-switch (literal) {
-  case 'a':
-    break;
-  case 'b':
-    break;
-  default:
-    break;
-}
-
-switch (literal) {
-  case 'a':
-    break;
-  case 'b':
-    break;
-}
-```
-
-</TabItem>
-</Tabs>
 
 ## Examples
 
-When the switch doesn't have exhaustive cases, either filling them all out or adding a default will correct the rule's complaint.
+When the switch doesn't have exhaustive cases, either filling them all out or adding a default (if you have `considerDefaultExhaustiveForUnions` enabled) will address the rule's complaint.
 
 Here are some examples of code working with a union of literals:
 
@@ -181,7 +151,9 @@ switch (day) {
 </TabItem>
 <TabItem value="✅ Correct (Defaulted)">
 
-```ts
+```ts option='{ "considerDefaultExhaustiveForUnions": true }'
+// requires `considerDefaultExhaustiveForUnions` to be set to true
+
 type Day =
   | 'Monday'
   | 'Tuesday'
@@ -257,7 +229,9 @@ switch (fruit) {
 </TabItem>
 <TabItem value="✅ Correct (Defaulted)">
 
-```ts
+```ts option='{ "considerDefaultExhaustiveForUnions": true }'
+// requires `considerDefaultExhaustiveForUnions` to be set to true
+
 enum Fruit {
   Apple,
   Banana,

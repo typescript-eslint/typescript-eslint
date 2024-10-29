@@ -174,9 +174,9 @@ export default createRule<Options, MessageIds>({
       const { defaultCase, missingLiteralBranchTypes, symbolName } =
         switchMetadata;
 
-      // Unless considerDefaultExhaustiveForUnions is enabled, the presence of a default case
+      // If considerDefaultExhaustiveForUnions is enabled, the presence of a default case
       // always makes the switch exhaustive.
-      if (!considerDefaultExhaustiveForUnions && defaultCase != null) {
+      if (considerDefaultExhaustiveForUnions && defaultCase != null) {
         return;
       }
 
