@@ -926,6 +926,7 @@ function foo(x: string[]) {
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
           tsconfigRootDir: rootPath,
         },
       },
