@@ -912,6 +912,24 @@ switch (value) {
         },
       ],
     },
+    {
+      code: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+    case undefined:
+      break;
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
   ],
   invalid: [
     {
@@ -2716,6 +2734,43 @@ switch (value) {
           considerDefaultExhaustiveForUnions: false,
         },
       ],
+    },
+    {
+      code: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+    case undefined: { throw new Error('Not implemented yet: undefined case') }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          tsconfigRootDir: rootPath,
+        },
+      },
     },
   ],
 });

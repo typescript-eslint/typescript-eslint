@@ -155,6 +155,15 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
+          // `undefined` should cover the "missing" undefined type
+          // https://github.com/microsoft/TypeScript/blob/cb44488fcec4348a448434afbf2ebcbf2b423c61/src/compiler/checker.ts/#L2059
+          if (
+            caseTypes.has(checker.getUndefinedType()) &&
+            tsutils.isIntrinsicUndefinedType(intersectionPart)
+          ) {
+            continue;
+          }
+
           missingLiteralBranchTypes.push(intersectionPart);
         }
       }
