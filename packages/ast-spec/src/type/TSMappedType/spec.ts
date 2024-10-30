@@ -9,8 +9,8 @@ export interface TSMappedType extends BaseNode {
   constraint: TypeNode;
   key: Identifier;
   nameType: TypeNode | null;
-  optional: '+' | '-' | boolean | undefined;
-  readonly: '+' | '-' | boolean | undefined;
+  optional: boolean | '+' | '-' | undefined;
+  readonly: boolean | '+' | '-' | undefined;
   typeAnnotation: TypeNode | undefined;
   /** @deprecated Use {@link `constraint`} and {@link `key`} instead. */
   typeParameter: TSTypeParameter;

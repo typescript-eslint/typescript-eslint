@@ -1,3 +1,38 @@
+## 8.12.2 (2024-10-29)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.12.1 (2024-10-28)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.12.0 (2024-10-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] add support for assignment expressions ([#10152](https://github.com/typescript-eslint/typescript-eslint/pull/10152))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-return] don't reiterate through all type parts for each part ([#10203](https://github.com/typescript-eslint/typescript-eslint/pull/10203))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Terry Fu
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.11.0 (2024-10-21)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.10.0 (2024-10-17)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.

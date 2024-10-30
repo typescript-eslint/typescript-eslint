@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "8.10.0",
+  "version": "8.12.2",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -46,13 +46,13 @@
     "typecheck": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "8.10.0",
-    "@typescript-eslint/visitor-keys": "8.10.0"
+    "@typescript-eslint/types": "8.12.2",
+    "@typescript-eslint/visitor-keys": "8.12.2"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "8.10.0",
+    "@typescript-eslint/typescript-estree": "8.12.2",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

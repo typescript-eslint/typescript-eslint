@@ -435,7 +435,7 @@ describe('Validating rule docs', () => {
 
         function lintCodeBlock(
           token: mdast.Code,
-          shouldContainLintErrors: 'skip-check' | boolean,
+          shouldContainLintErrors: boolean | 'skip-check',
         ): void {
           const lang = token.lang?.trim();
           if (!lang || !/^tsx?\b/i.test(lang)) {

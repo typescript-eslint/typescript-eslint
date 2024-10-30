@@ -1,21 +1,21 @@
-import path from 'node:path';
-import util from 'node:util';
-
 import debug from 'debug';
 import { minimatch } from 'minimatch';
+import path from 'node:path';
+import util from 'node:util';
 import * as ts from 'typescript';
 
-import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
-import { createNoProgram } from './create-program/createSourceFile';
 import type {
   ASTAndDefiniteProgram,
   ASTAndNoProgram,
   ASTAndProgram,
 } from './create-program/shared';
+import type { MutableParseSettings } from './parseSettings';
+
+import { createProjectProgram } from './create-program/createProjectProgram';
+import { createNoProgram } from './create-program/createSourceFile';
 import { DEFAULT_EXTRA_FILE_EXTENSIONS } from './create-program/shared';
 import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/validateDefaultProjectForFilesGlob';
-import type { MutableParseSettings } from './parseSettings';
 
 const RELOAD_THROTTLE_MS = 250;
 
