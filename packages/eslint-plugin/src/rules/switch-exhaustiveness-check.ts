@@ -155,10 +155,10 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
-          // `undefined` should cover the "missing" undefined type
-          // https://github.com/microsoft/TypeScript/blob/cb44488fcec4348a448434afbf2ebcbf2b423c61/src/compiler/checker.ts/#L2059
+          // "missing", "optional" and "undefined" types are different runtime objects,
+          // but all of them have TypeFlags.Undefined type flag
           if (
-            caseTypes.has(checker.getUndefinedType()) &&
+            Array.from(caseTypes).some(tsutils.isIntrinsicUndefinedType) &&
             tsutils.isIntrinsicUndefinedType(intersectionPart)
           ) {
             continue;
