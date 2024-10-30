@@ -632,7 +632,11 @@ export class RuleTester extends TestFramework {
                 const services = getParserServices(context);
                 return {
                   Program(): void {
-                    tsDiagnostics ??= services.program.getSemanticDiagnostics();
+                    const diagnostics =
+                      services.program.getSemanticDiagnostics();
+                    if (diagnostics.length) {
+                      tsDiagnostics ??= diagnostics;
+                    }
                   },
                 };
               },

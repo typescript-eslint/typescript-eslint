@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["file.ts", "fixture-with-semantic-ts-errors.ts"]
+}
