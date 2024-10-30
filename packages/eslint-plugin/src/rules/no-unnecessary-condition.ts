@@ -34,7 +34,7 @@ const valueIsPseudoBigInt = (
 
 const getValue = (type: ts.LiteralType): bigint | number | string => {
   if (valueIsPseudoBigInt(type.value)) {
-    return BigInt(type.value.base10Value);
+    return BigInt((type.value.negative ? '-' : '') + type.value.base10Value);
   }
   return type.value;
 };
