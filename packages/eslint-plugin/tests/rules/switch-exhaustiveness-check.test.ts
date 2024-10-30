@@ -931,6 +931,29 @@ function foo(x: string[]) {
         },
       },
     },
+    {
+      code: `
+function foo(x: string[], y: string | undefined) {
+  const a = x[0];
+  if (typeof a === 'string') {
+    return;
+  }
+  switch (y) {
+    case 'hi':
+      break;
+    case a:
+      break;
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
   ],
   invalid: [
     {

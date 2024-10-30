@@ -158,7 +158,7 @@ export default createRule<Options, MessageIds>({
           // "missing", "optional" and "undefined" types are different runtime objects,
           // but all of them have TypeFlags.Undefined type flag
           if (
-            Array.from(caseTypes).some(tsutils.isIntrinsicUndefinedType) &&
+            [...caseTypes].some(tsutils.isIntrinsicUndefinedType) &&
             tsutils.isIntrinsicUndefinedType(intersectionPart)
           ) {
             continue;
