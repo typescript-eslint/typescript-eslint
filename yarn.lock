@@ -5727,6 +5727,9 @@ __metadata:
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   languageName: unknown
   linkType: soft
 
