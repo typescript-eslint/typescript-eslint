@@ -1051,6 +1051,22 @@ if (falseyBigInt) {
     },
     {
       code: `
+declare const posbigInt: 1n;
+if (posbigInt) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare const negBigInt: -2n;
+if (negBigInt) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+    },
+    {
+      code: `
 declare const b1: boolean;
 declare const b2: boolean;
 if (true && b1 && b2) {
