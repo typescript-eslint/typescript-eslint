@@ -59,6 +59,9 @@ export default createRule({
 
               const firstToken = context.sourceCode.getTokenBefore(node.id);
               if (firstToken) {
+                // replace 'type' with 'interface', and remove everything between
+                // the name and the start of the { a: string } part, including
+                // all opening parens.
                 fixes.push(fixer.replaceText(firstToken, 'interface'));
                 fixes.push(
                   fixer.replaceTextRange(
@@ -68,15 +71,27 @@ export default createRule({
                 );
               }
 
-              const afterToken = context.sourceCode.getTokenAfter(
-                node.typeAnnotation,
-              );
-              if (
-                afterToken &&
-                afterToken.type === AST_TOKEN_TYPES.Punctuator &&
-                afterToken.value === ';'
-              ) {
-                fixes.push(fixer.remove(afterToken));
+              // remove all closing parens, and the semicolon if present.
+              let rangeStart = node.typeAnnotation.range[1];
+              while (true) {
+                const afterToken =
+                  context.sourceCode.getTokenByRangeStart(rangeStart);
+
+                if (afterToken != null) {
+                  if (afterToken.value === ')') {
+                    fixes.push(fixer.remove(afterToken));
+                    rangeStart = afterToken.range[1];
+                    continue;
+                  } else if (
+                    afterToken.type === AST_TOKEN_TYPES.Punctuator &&
+                    afterToken.value === ';'
+                  ) {
+                    fixes.push(fixer.remove(afterToken));
+                    break;
+                  }
+                }
+
+                break;
               }
 
               return fixes;

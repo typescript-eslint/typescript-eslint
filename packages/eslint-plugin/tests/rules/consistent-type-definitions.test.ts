@@ -350,5 +350,41 @@ export declare type Test = {
 }
       `,
     },
+    {
+      code: noFormat`
+type Foo = ({
+  a: string;
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      code: noFormat`
+type Foo = ((((((((({
+  a: string;
+})))))))));
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
   ],
 });
