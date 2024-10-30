@@ -386,5 +386,24 @@ interface Foo {
 }
       `,
     },
+    {
+      // no closing semicolon
+      code: noFormat`
+type Foo = {
+  a: string;
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
   ],
 });
