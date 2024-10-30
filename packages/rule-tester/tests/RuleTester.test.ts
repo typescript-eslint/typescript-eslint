@@ -1,9 +1,9 @@
-import path from 'node:path';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import path from 'node:path';
 
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 
@@ -1588,27 +1588,27 @@ describe('RuleTester - semantic TS errors', () => {
     },
     defaultOptions: [],
     meta: {
+      docs: {
+        description: 'My Rule',
+        requiresTypeChecking: true,
+      },
       messages: {
         error: 'error',
       },
       schema: [],
       type: 'problem',
-      docs: {
-        description: 'My Rule',
-        requiresTypeChecking: true,
-      },
     },
   };
 
   it('does not collect diagnostics when runTSC is not passed', () => {
     expect(() => {
       ruleTester.run('my-rule', rule, {
+        invalid: [],
         valid: [
           {
             code: 'const foo: string = 5',
           },
         ],
-        invalid: [],
       });
     }).not.toThrow();
   });
@@ -1616,13 +1616,13 @@ describe('RuleTester - semantic TS errors', () => {
   it('does not collect diagnostics when runTSC is false', () => {
     expect(() => {
       ruleTester.run('my-rule', rule, {
+        invalid: [],
         valid: [
           {
             code: 'const foo: string = 5',
             runTSC: false,
           },
         ],
-        invalid: [],
       });
     }).not.toThrow();
   });
@@ -1630,13 +1630,13 @@ describe('RuleTester - semantic TS errors', () => {
   it('collects diagnostics when runTSC is true', () => {
     expect(() => {
       ruleTester.run('my-rule', rule, {
+        invalid: [],
         valid: [
           {
             code: 'const foo: string = 5',
             runTSC: true,
           },
         ],
-        invalid: [],
       });
     }).toThrow("Type 'number' is not assignable to type 'string'.");
   });
@@ -1644,12 +1644,12 @@ describe('RuleTester - semantic TS errors', () => {
   it('collects diagnostics when meta.docs.requiresTypeChecking is true', () => {
     expect(() => {
       ruleTester.run('my-rule', ruleWithRequiresTypeChecking, {
+        invalid: [],
         valid: [
           {
             code: 'const foo: string = 5',
           },
         ],
-        invalid: [],
       });
     }).toThrow("Type 'number' is not assignable to type 'string'.");
   });
@@ -1657,13 +1657,13 @@ describe('RuleTester - semantic TS errors', () => {
   it('does not collect diagnostics when meta.docs.requiresTypeChecking is true, but runTSC is false', () => {
     expect(() => {
       ruleTester.run('my-rule', ruleWithRequiresTypeChecking, {
+        invalid: [],
         valid: [
           {
             code: 'const foo: string = 5',
             runTSC: false,
           },
         ],
-        invalid: [],
       });
     }).not.toThrow();
   });
@@ -1671,13 +1671,13 @@ describe('RuleTester - semantic TS errors', () => {
   it('collects diagnostics when meta.docs.requiresTypeChecking is true, and runTSC is true', () => {
     expect(() => {
       ruleTester.run('my-rule', ruleWithRequiresTypeChecking, {
+        invalid: [],
         valid: [
           {
             code: 'const foo: string = 5',
             runTSC: true,
           },
         ],
-        invalid: [],
       });
     }).toThrow("Type 'number' is not assignable to type 'string'.");
   });
@@ -1686,13 +1686,13 @@ describe('RuleTester - semantic TS errors', () => {
     it('ignores top level await', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
+          invalid: [],
           valid: [
             {
               code: 'await Promise.resolve()',
               runTSC: true,
             },
           ],
-          invalid: [],
         });
       }).not.toThrow();
     });
@@ -1700,13 +1700,13 @@ describe('RuleTester - semantic TS errors', () => {
     it('ignores unused variables', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
+          invalid: [],
           valid: [
             {
               code: 'const foo = 5',
               runTSC: true,
             },
           ],
-          invalid: [],
         });
       }).not.toThrow();
     });
@@ -1714,6 +1714,7 @@ describe('RuleTester - semantic TS errors', () => {
     it('ignores unused properties', () => {
       expect(() => {
         ruleTester.run('my-rule', rule, {
+          invalid: [],
           valid: [
             {
               code: `
@@ -1724,7 +1725,6 @@ describe('RuleTester - semantic TS errors', () => {
               runTSC: true,
             },
           ],
-          invalid: [],
         });
       }).not.toThrow();
     });
@@ -1733,13 +1733,13 @@ describe('RuleTester - semantic TS errors', () => {
   it('collects diagnostics from imported files (not included in tsconfig.json)', () => {
     expect(() => {
       ruleTester.run('my-rule', rule, {
+        invalid: [],
         valid: [
           {
             code: 'import { foo } from "./fixture-with-semantic-ts-errors"',
             runTSC: true,
           },
         ],
-        invalid: [],
       });
     }).toThrow(
       `error TS2322: Type '"actual value"' is not assignable to type '"expected value"'.`,
@@ -1757,13 +1757,13 @@ describe('RuleTester - semantic TS errors', () => {
         },
       });
       ruleTester.run('my-rule', rule, {
+        invalid: [],
         valid: [
           {
             code: 'const foo = 1',
             runTSC: true,
           },
         ],
-        invalid: [],
       });
     }).toThrow(
       `error TS2322: Type '"actual value"' is not assignable to type '"expected value"'.`,
@@ -1807,9 +1807,9 @@ describe('RuleTester - semantic TS errors', () => {
           invalid: [
             {
               code: 'foo',
-              runTSC: true,
               errors: [{ messageId: 'error' }],
               output: ['bar', 'baz'],
+              runTSC: true,
             },
           ],
           valid: [],
@@ -1826,7 +1826,6 @@ describe('RuleTester - semantic TS errors', () => {
                 declare const foo: string;
                 foo;
               `,
-              runTSC: true,
               errors: [{ messageId: 'error' }],
               output: [
                 `
@@ -1838,6 +1837,7 @@ describe('RuleTester - semantic TS errors', () => {
                 baz;
               `,
               ],
+              runTSC: true,
             },
           ],
           valid: [],
