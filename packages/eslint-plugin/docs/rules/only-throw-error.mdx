@@ -105,7 +105,7 @@ interface Options {
   /**
    * Type specifiers that can be thrown.
    */
-  allowThrowing?: (
+  allow?: (
     | {
         from: 'file';
         name: [string, ...string[]] | string;
@@ -135,9 +135,9 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  allowThrowing: [],
-  allowThrowingAny: false,
-  allowThrowingUnknown: false,
+  allow: [],
+  allowThrowingAny: true,
+  allowThrowingUnknown: true,
 };
 ```
 

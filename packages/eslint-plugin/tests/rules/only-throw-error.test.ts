@@ -145,7 +145,7 @@ throw undefined;
       `,
       options: [
         {
-          allowThrowing: [{ from: 'lib', name: 'undefined' }],
+          allow: [{ from: 'lib', name: 'undefined' }],
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },
@@ -158,7 +158,7 @@ throw new CustomError();
       `,
       options: [
         {
-          allowThrowing: [{ from: 'file', name: 'CustomError' }],
+          allow: [{ from: 'file', name: 'CustomError' }],
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },
@@ -170,7 +170,7 @@ throw new Map();
       `,
       options: [
         {
-          allowThrowing: [{ from: 'lib', name: 'Map' }],
+          allow: [{ from: 'lib', name: 'Map' }],
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },
@@ -183,9 +183,7 @@ throw new Map();
       `,
       options: [
         {
-          allowThrowing: [
-            { from: 'package', name: 'ErrorLike', package: 'errors' },
-          ],
+          allow: [{ from: 'package', name: 'ErrorLike', package: 'errors' }],
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },
@@ -549,7 +547,7 @@ throw new UnknownError();
       ],
       options: [
         {
-          allowThrowing: [{ from: 'file', name: 'CustomError' }],
+          allow: [{ from: 'file', name: 'CustomError' }],
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },

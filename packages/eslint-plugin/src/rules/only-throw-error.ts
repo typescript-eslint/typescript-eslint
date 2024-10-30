@@ -11,16 +11,15 @@ import {
   isErrorLike,
   isTypeAnyType,
   isTypeUnknownType,
-  readonlynessOptionsDefaults,
-  readonlynessOptionsSchema,
   typeMatchesSomeSpecifier,
+  typeOrValueSpecifiersSchema,
 } from '../util';
 
 type MessageIds = 'object' | 'undef';
 
 type Options = [
   {
-    allowThrowing?: TypeOrValueSpecifier[];
+    allow?: TypeOrValueSpecifier[];
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;
   },
@@ -45,8 +44,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          allowThrowing: {
-            ...readonlynessOptionsSchema.properties.allow,
+          allow: {
+            ...typeOrValueSpecifiersSchema,
             description: 'Type specifiers that can be thrown.',
           },
           allowThrowingAny: {
@@ -65,14 +64,14 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allowThrowing: readonlynessOptionsDefaults.allow,
+      allow: [],
       allowThrowingAny: true,
       allowThrowingUnknown: true,
     },
   ],
   create(context, [options]) {
     const services = getParserServices(context);
-    const allowThrowing = options.allowThrowing;
+    const allow = options.allow;
     function checkThrowArgument(node: TSESTree.Node): void {
       if (
         node.type === AST_NODE_TYPES.AwaitExpression ||
@@ -83,7 +82,7 @@ export default createRule<Options, MessageIds>({
 
       const type = services.getTypeAtLocation(node);
 
-      if (typeMatchesSomeSpecifier(type, allowThrowing, services.program)) {
+      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
         return;
       }
 
