@@ -1,5 +1,6 @@
 import type {
   ParserServicesWithTypeInformation,
+  TSESLint,
   TSESTree,
 } from '@typescript-eslint/utils';
 
@@ -9,12 +10,12 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  forEachReturnStatement,
   getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
   isArrayMethodCallWithPredicate,
   isTypeArrayTypeOrUnionOfArrayTypes,
+  nullThrows,
 } from '../util';
 import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
@@ -55,9 +56,10 @@ export type MessageId =
   | 'conditionFixDefaultEmptyString'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultZero'
+  | 'explicitBooleanReturnType'
   | 'noStrictNullCheck'
-  | 'predicateReturnsEmptyExpression'
-  | 'predicateReturnsUndefined';
+  | 'predicateCannotBeAsync'
+  | 'predicateReturnsNonBoolean';
 
 export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -126,12 +128,13 @@ export default createRule<Options, MessageId>({
         'Explicitly treat nullish value the same as false (`value ?? false`)',
       conditionFixDefaultZero:
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
+      explicitBooleanReturnType:
+        'Explicitly return a boolean expression for type accuracy.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-      predicateReturnsEmptyExpression:
-        'Unexpected empty return from predicate function',
-      predicateReturnsUndefined:
-        'Unexpected `undefined` return value from predicate function',
+      predicateCannotBeAsync:
+        "Predicate function should not be 'async'; expected a boolean return type.",
+      predicateReturnsNonBoolean: 'Predicate function should return a boolean.',
     },
     schema: [
       {
@@ -240,6 +243,27 @@ export default createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
+    function isFunctionReturningBoolean(type: ts.Type): boolean {
+      for (const signature of type.getCallSignatures()) {
+        const returnType = signature.getReturnType();
+
+        if (
+          tsutils
+            .unionTypeParts(returnType)
+            .every(t =>
+              tsutils.isTypeFlagSet(
+                t,
+                ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
+              ),
+            )
+        ) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     /**
      * Inspects condition of a test expression. (`if`, `while`, `for`, etc.)
      */
@@ -270,63 +294,12 @@ export default createRule<Options, MessageId>({
     function traverseLogicalExpression(
       node: TSESTree.LogicalExpression,
       isCondition = false,
-    ): boolean {
+    ): void {
       // left argument is always treated as a condition
-      const isLeftReported = traverseNode(node.left, true);
+      traverseNode(node.left, true);
       // if the logical expression is used for control flow,
       // then its right argument is used for its side effects only
-      const isRightReported = traverseNode(node.right, isCondition);
-
-      return isLeftReported || isRightReported;
-    }
-
-    /**
-     * Inspects return statements of predicate functions.
-     */
-    function traverseArrayPredicateReturnStatements(
-      node: TSESTree.CallExpressionArgument,
-    ): { hasReported: boolean; hasReturnStatement: boolean } {
-      let hasReturnStatement = false;
-      let hasReported = false;
-
-      // Shorthand arrow function expression
-      if (
-        node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        node.body.type !== AST_NODE_TYPES.BlockStatement
-      ) {
-        hasReturnStatement = true;
-        hasReported = traverseNode(node.body, true);
-      }
-
-      // Any other function expression with a block body
-      else if (
-        (node.type === AST_NODE_TYPES.FunctionExpression ||
-          node.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
-        node.body.type === AST_NODE_TYPES.BlockStatement
-      ) {
-        const tsBody = services.esTreeNodeToTSNodeMap.get(node.body);
-
-        forEachReturnStatement(tsBody, tsStatement => {
-          hasReturnStatement = true;
-
-          const statement = services.tsNodeToESTreeNodeMap.get(tsStatement);
-
-          if (statement.type === AST_NODE_TYPES.ReturnStatement) {
-            if (statement.argument) {
-              hasReported ||= traverseNode(statement.argument, true);
-            } else {
-              hasReported = true;
-
-              context.report({
-                node: statement,
-                messageId: 'predicateReturnsEmptyExpression',
-              });
-            }
-          }
-        });
-      }
-
-      return { hasReported, hasReturnStatement };
+      traverseNode(node.right, isCondition);
     }
 
     function traverseCallExpression(node: TSESTree.CallExpression): void {
@@ -337,57 +310,84 @@ export default createRule<Options, MessageId>({
       if (isArrayMethodCallWithPredicate(context, services, node)) {
         const predicate = node.arguments.at(0);
 
-        if (predicate != null) {
-          const { hasReported, hasReturnStatement } =
-            traverseArrayPredicateReturnStatements(predicate);
-
-          // Don't report a function as implicitly returning `undefined` only
-          // when no other issues were found with it.
-          if (hasReported) {
-            return;
-          }
-
-          // Empty functions has their return type as `void` rather than `undefined`
-          if (
-            !hasReturnStatement &&
-            (predicate.type === AST_NODE_TYPES.FunctionExpression ||
-              predicate.type === AST_NODE_TYPES.ArrowFunctionExpression)
-          ) {
-            return context.report({
-              node: predicate,
-              messageId: 'predicateReturnsUndefined',
-            });
-          }
-
-          const type = checker.getApparentType(
-            services.getTypeAtLocation(predicate),
-          );
-
-          // Report a function as implicitly returning `undefined`
-          if (isFunctionReturningUndefined(type)) {
-            return context.report({
-              node: predicate,
-              messageId: 'predicateReturnsUndefined',
-            });
-          }
+        if (!predicate) {
+          return;
         }
-      }
-    }
 
-    function isFunctionReturningUndefined(type: ts.Type): boolean {
-      for (const signature of type.getCallSignatures()) {
-        const returnType = signature.getReturnType();
-
+        // custom-tailored message for accidental `async` function expressions
         if (
-          tsutils
-            .unionTypeParts(returnType)
-            .some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.Undefined))
+          (predicate.type === AST_NODE_TYPES.FunctionExpression ||
+            predicate.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+          predicate.async
         ) {
-          return true;
+          return context.report({
+            node: predicate,
+            messageId: 'predicateCannotBeAsync',
+          });
+        }
+
+        const type = checker.getApparentType(
+          services.getTypeAtLocation(predicate),
+        );
+
+        if (!isFunctionReturningBoolean(type)) {
+          const suggest: TSESLint.ReportSuggestionArray<MessageId> = [];
+
+          if (
+            (predicate.type === AST_NODE_TYPES.FunctionExpression ||
+              predicate.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
+            !predicate.returnType
+          ) {
+            suggest.push({
+              messageId: 'explicitBooleanReturnType',
+              fix: fixer => {
+                const lastParam = predicate.params.at(-1);
+
+                // zero parameters
+                if (!lastParam) {
+                  const closingBracket = nullThrows(
+                    context.sourceCode.getFirstToken(
+                      predicate,
+                      token => token.value === ')',
+                    ),
+                    'function expression with no arguments must have a closing parenthesis.',
+                  );
+
+                  return fixer.insertTextAfterRange(
+                    closingBracket.range,
+                    ': boolean',
+                  );
+                }
+
+                const closingBracket =
+                  context.sourceCode.getTokenAfter(lastParam);
+
+                // one or more parameters wrapped with parens
+                if (closingBracket?.value === ')') {
+                  return fixer.insertTextAfterRange(
+                    closingBracket.range,
+                    ': boolean',
+                  );
+                }
+
+                // one param not wrapped with parens
+                const parameterText = context.sourceCode.getText(lastParam);
+
+                return fixer.replaceText(
+                  predicate.params[0],
+                  `(${parameterText}): boolean`,
+                );
+              },
+            });
+          }
+
+          return context.report({
+            node: predicate,
+            messageId: 'predicateReturnsNonBoolean',
+            suggest,
+          });
         }
       }
-
-      return false;
     }
 
     /**
@@ -401,10 +401,10 @@ export default createRule<Options, MessageId>({
     function traverseNode(
       node: TSESTree.Expression,
       isCondition: boolean,
-    ): boolean {
+    ): void {
       // prevent checking the same node multiple times
       if (traversedNodes.has(node)) {
-        return false;
+        return;
       }
       traversedNodes.add(node);
 
@@ -413,24 +413,23 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        return traverseLogicalExpression(node, isCondition);
+        traverseLogicalExpression(node, isCondition);
+        return;
       }
 
       // skip if node is not a condition
       if (!isCondition) {
-        return false;
+        return;
       }
 
-      return checkNode(node);
+      checkNode(node);
     }
 
     /**
      * This function does the actual type check on a node.
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
-     *
-     * @returns true if it reported an issue, false otherwise.
      */
-    function checkNode(node: TSESTree.Expression): boolean {
+    function checkNode(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
@@ -441,25 +440,25 @@ export default createRule<Options, MessageId>({
       // boolean
       if (is('boolean') || is('truthy boolean')) {
         // boolean is always okay
-        return false;
+        return;
       }
 
       // never
       if (is('never')) {
         // never is always okay
-        return false;
+        return;
       }
 
       // nullish
       if (is('nullish')) {
         // condition is always false
         context.report({ node, messageId: 'conditionErrorNullish' });
-        return true;
+        return;
       }
 
       // Known edge case: boolean `true` and nullish values are always valid boolean expressions
       if (is('nullish', 'truthy boolean')) {
-        return false;
+        return;
       }
 
       // nullable boolean
@@ -515,9 +514,8 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // Known edge case: truthy primitives and nullish values are always valid boolean expressions
@@ -525,7 +523,7 @@ export default createRule<Options, MessageId>({
         (options.allowNumber && is('nullish', 'truthy number')) ||
         (options.allowString && is('nullish', 'truthy string'))
       ) {
-        return false;
+        return;
       }
 
       // string
@@ -599,9 +597,8 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // nullable string
@@ -674,9 +671,8 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // number
@@ -777,9 +773,8 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // nullable number
@@ -852,16 +847,15 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // object
       if (is('object')) {
         // condition is always true
         context.report({ node, messageId: 'conditionErrorObject' });
-        return true;
+        return;
       }
 
       // nullable object
@@ -901,9 +895,8 @@ export default createRule<Options, MessageId>({
               ],
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // nullable enum
@@ -941,9 +934,8 @@ export default createRule<Options, MessageId>({
               }),
             });
           }
-          return true;
         }
-        return false;
+        return;
       }
 
       // any
@@ -963,15 +955,12 @@ export default createRule<Options, MessageId>({
               },
             ],
           });
-          return true;
         }
-        return false;
+        return;
       }
 
       // other
       context.report({ node, messageId: 'conditionErrorOther' });
-
-      return true;
     }
 
     /** The types we care about */

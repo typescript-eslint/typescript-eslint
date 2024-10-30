@@ -51,17 +51,6 @@ declare const x: never;
 if (x) {
 }
     `,
-    `
-[true, false].some(function (x) {
-  return x && 1;
-});
-    `,
-    `
-[true, false].filter(x => {
-  return x;
-});
-    `,
-    '[true, false].some(x => x && 1);',
 
     // string in boolean context
     `
@@ -78,17 +67,6 @@ if (x) {
     `,
     '(x: string) => !x;',
     '<T extends string>(x: T) => (x ? 1 : 0);',
-    `
-['1', '2', '3'].every(function (x) {
-  return x;
-});
-    `,
-    `
-[].every(() => {
-  return '';
-});
-    `,
-    "['1', '2', '3'].every(x => x);",
 
     // number in boolean context
     `
@@ -105,17 +83,6 @@ if (x) {
     `,
     '(x: bigint) => !x;',
     '<T extends number>(x: T) => (x ? 1 : 0);',
-    `
-[1, 2, 3].every(function (x) {
-  return x;
-});
-    `,
-    `
-[1, 2, 3].some(x => {
-  return !x;
-});
-    `,
-    '[].find(() => 1);',
 
     // nullable object in boolean context
     `
@@ -125,17 +92,6 @@ if (x) {
     `,
     '(x?: { a: any }) => !x;',
     '<T extends {} | null | undefined>(x: T) => (x ? 1 : 0);',
-    `
-[{}, null, {}].every(function (x) {
-  return x;
-});
-    `,
-    `
-[{}, null, {}].every(x => {
-  return x ? 1 : 0;
-});
-    `,
-    '[{}, null, null].findIndex(x => !x);',
 
     // nullable boolean in boolean context
     {
@@ -155,15 +111,6 @@ if (x) {
     {
       code: `
         <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
-      `,
-      options: [{ allowNullableBoolean: true }],
-    },
-    {
-      code: `
-        declare const x: (boolean | null)[];
-        x.filter(function (t) {
-          return t;
-        });
       `,
       options: [{ allowNullableBoolean: true }],
     },
@@ -189,19 +136,6 @@ if (x) {
       `,
       options: [{ allowNullableString: true }],
     },
-    {
-      code: `
-        declare const x: (string | null)[];
-        x.findLast(function (t) {
-          return t;
-        });
-        x.findLast(t => {
-          return !t;
-        });
-        x.findLast(t => (t ? 1 : 0));
-      `,
-      options: [{ allowNullableString: true }],
-    },
 
     // nullable number in boolean context
     {
@@ -224,19 +158,6 @@ if (x) {
       `,
       options: [{ allowNullableNumber: true }],
     },
-    {
-      code: `
-        declare const x: (number | null)[];
-        x.findLast(function (t) {
-          return t;
-        });
-        x.findLast(t => {
-          return !t;
-        });
-        x.findLast(t => (t ? 1 : 0));
-      `,
-      options: [{ allowNullableNumber: true }],
-    },
 
     // any in boolean context
     {
@@ -256,19 +177,6 @@ if (x) {
     {
       code: `
         <T extends any>(x: T) => (x ? 1 : 0);
-      `,
-      options: [{ allowAny: true }],
-    },
-    {
-      code: `
-        declare const x: any[];
-        x.filter(function (t) {
-          return t;
-        });
-        x.find(t => {
-          return !t;
-        });
-        x.some(t => (t ? 1 : 0));
       `,
       options: [{ allowAny: true }],
     },
@@ -307,18 +215,6 @@ if (x) {
     {
       code: `
         0 || false || '' ? null : {};
-      `,
-      options: [{ allowNumber: true, allowString: true }],
-    },
-    {
-      code: `
-        [0, false, '', null, {}].filter(function (x) {
-          return x ? 1 : 0;
-        });
-        [0, false, '', null, {}].filter(x => {
-          return !x;
-        });
-        [0, false, '', null, {}].filter(x => x);
       `,
       options: [{ allowNumber: true, allowString: true }],
     },
@@ -385,23 +281,6 @@ if (x) {
         }
         if (!theEnum) {
         }
-      `,
-      options: [{ allowNullableEnum: true }],
-    },
-    {
-      code: `
-        enum ExampleEnum {
-          This = 'one',
-          That = 'two',
-        }
-        declare const x: (ExampleEnum | null)[];
-        x.some(function (t) {
-          return t;
-        });
-        x.every(t => {
-          return !t;
-        });
-        x.find(t => t);
       `,
       options: [{ allowNullableEnum: true }],
     },
@@ -643,17 +522,45 @@ assert(nullableString);
       }
     `,
     `
-      const x = (t: string | null) => t;
-      ['', null].filter(x);
+[true, false].some(function (x) {
+  return x;
+});
     `,
     `
-      [1, 2].filter(x => {
-        if (x === 1) {
-          return true;
-        }
+[1, null].filter(function (x) {
+  return x != null;
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x) {
+  return !!x;
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x): boolean {
+  return !!x;
+});
+    `,
+    // implicit return statements should be warned by TS's `noImplicitReturns`
+    `
+['one', 'two', ''].filter(function (x): boolean {
+  if (x) {
+    return true;
+  }
+});
+    `,
+    `
+['one', 'two', ''].filter(function (x): boolean {
+  if (x) {
+    return true;
+  }
 
-        throw new Error('oops');
-      });
+  throw new Error('oops');
+});
+    `,
+    `
+declare const predicate: (string) => boolean;
+['one', 'two', ''].filter(predicate);
     `,
   ],
 
@@ -1533,25 +1440,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        {
-          column: 36,
-          line: 7,
-          messageId: 'conditionErrorString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareStringLength',
-              output: `        ['foo', 'bar'].filter(x => x.length > 0);`,
-            },
-            {
-              messageId: 'conditionFixCompareEmptyString',
-              output: `        ['foo', 'bar'].filter(x => x !== "");`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        ['foo', 'bar'].filter(x => Boolean(x));`,
-            },
-          ],
-        },
       ],
       options: [{ allowString: false }],
     }),
@@ -1566,7 +1454,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         <T extends number>(x: T) => (x) ? 1 : 0;
         ![]["length"]; // doesn't count as array.length when computed
         declare const a: any[] & { notLength: number }; if (a.notLength) {}
-        [1, 2, 3].some(x => { return x; });
       `,
       errors: [
         {
@@ -1706,27 +1593,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        {
-          column: 38,
-          line: 9,
-          messageId: 'conditionErrorNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareZero',
-              // TODO: fix compare zero suggestion for bigint
-              output: `        [1, 2, 3].some(x => { return x !== 0; });`,
-            },
-            {
-              // TODO: remove check NaN suggestion for bigint
-              messageId: 'conditionFixCompareNaN',
-              output: `        [1, 2, 3].some(x => { return !Number.isNaN(x); });`,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `        [1, 2, 3].some(x => { return Boolean(x); });`,
-            },
-          ],
-        },
       ],
       options: [{ allowNumber: false }],
     }),
@@ -1737,20 +1603,17 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (![].length) {}
         (a: number[]) => a.length && "..."
         <T extends unknown[]>(...a: T) => a.length || "empty";
-        [[1], [2]].find(x => x.length);
       `,
       errors: [
         { column: 6, line: 2, messageId: 'conditionErrorNumber' },
         { column: 26, line: 3, messageId: 'conditionErrorNumber' },
         { column: 43, line: 4, messageId: 'conditionErrorNumber' },
-        { column: 30, line: 5, messageId: 'conditionErrorNumber' },
       ],
       options: [{ allowNumber: false }],
       output: `
         if ([].length === 0) {}
         (a: number[]) => (a.length > 0) && "..."
         <T extends unknown[]>(...a: T) => (a.length > 0) || "empty";
-        [[1], [2]].find(x => x.length > 0);
       `,
     }),
 
@@ -1760,13 +1623,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         declare const x: string | number; if (x) {}
         (x: bigint | string) => !x;
         <T extends number | bigint | string>(x: T) => x ? 1 : 0;
-        [1, 'two'].findIndex(function (x) { return x; });
       `,
       errors: [
         { column: 39, line: 2, messageId: 'conditionErrorOther' },
         { column: 34, line: 3, messageId: 'conditionErrorOther' },
         { column: 55, line: 4, messageId: 'conditionErrorOther' },
-        { column: 52, line: 5, messageId: 'conditionErrorOther' },
       ],
       options: [{ allowNumber: true, allowString: true }],
     }),
@@ -1777,7 +1638,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         declare const x: boolean | null; if (x) {}
         (x?: boolean) => !x;
         <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
-        [null, true].every(x => x);
       `,
       errors: [
         {
@@ -1825,21 +1685,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        {
-          column: 33,
-          line: 5,
-          messageId: 'conditionErrorNullableBoolean',
-          suggestions: [
-            {
-              messageId: 'conditionFixDefaultFalse',
-              output: `        [null, true].every(x => x ?? false);`,
-            },
-            {
-              messageId: 'conditionFixCompareTrue',
-              output: `        [null, true].every(x => x === true);`,
-            },
-          ],
-        },
       ],
       options: [{ allowNullableBoolean: false }],
     }),
@@ -1850,7 +1695,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         declare const x: object | null; if (x) {}
         (x?: { a: number }) => !x;
         <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
-        [{}, null].findIndex(x => { return x; });
       `,
       errors: [
         {
@@ -1886,18 +1730,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        {
-          column: 44,
-          line: 5,
-          messageId: 'conditionErrorNullableObject',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output:
-                '        [{}, null].findIndex(x => { return x != null; });',
-            },
-          ],
-        },
       ],
       options: [{ allowNullableObject: false }],
     }),
@@ -1909,7 +1741,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         (x?: string) => !x;
         <T extends string | null | undefined>(x: T) => x ? 1 : 0;
         function foo(x: '' | 'bar' | null) { if (!x) {} }
-        ['foo', null].some(x => x);
       `,
       errors: [
         {
@@ -1994,25 +1825,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        {
-          column: 33,
-          line: 6,
-          messageId: 'conditionErrorNullableString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: "        ['foo', null].some(x => x != null);",
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              output: '        [\'foo\', null].some(x => x ?? "");',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: "        ['foo', null].some(x => Boolean(x));",
-            },
-          ],
-        },
       ],
     }),
 
@@ -2023,7 +1835,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         (x?: number) => !x;
         <T extends number | null | undefined>(x: T) => x ? 1 : 0;
         function foo(x: 0 | 1 | null) { if (!x) {} }
-        [5, null].findLastIndex(x => x);
       `,
       errors: [
         {
@@ -2108,25 +1919,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             },
           ],
         },
-        {
-          column: 38,
-          line: 6,
-          messageId: 'conditionErrorNullableNumber',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: '        [5, null].findLastIndex(x => x != null);',
-            },
-            {
-              messageId: 'conditionFixDefaultZero',
-              output: '        [5, null].findLastIndex(x => x ?? 0);',
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: '        [5, null].findLastIndex(x => Boolean(x));',
-            },
-          ],
-        },
       ],
     }),
 
@@ -2140,7 +1932,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum) {
         }
-        [theEnum].filter(x => x);
       `,
       errors: [
         {
@@ -2148,13 +1939,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 20,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 31,
-          endColumn: 32,
-          endLine: 9,
-          line: 9,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2167,7 +1951,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum != null) {
         }
-        [theEnum].filter(x => x != null);
       `,
     },
     {
@@ -2179,9 +1962,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
         }
-        [theEnum].filter(function (x) {
-          return !x;
-        });
       `,
       errors: [
         {
@@ -2189,13 +1969,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 21,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 19,
-          endColumn: 20,
-          endLine: 10,
-          line: 10,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2208,9 +1981,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
-        [theEnum].filter(function (x) {
-          return x == null;
-        });
       `,
     },
     {
@@ -2222,9 +1992,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
         }
-        [theEnum].filter(x => {
-          return !x;
-        });
       `,
       errors: [
         {
@@ -2232,13 +1999,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 21,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 19,
-          endColumn: 20,
-          endLine: 10,
-          line: 10,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2251,9 +2011,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
-        [theEnum].filter(x => {
-          return x == null;
-        });
       `,
     },
     {
@@ -2265,7 +2022,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
         }
-        [theEnum].every(x => !x);
       `,
       errors: [
         {
@@ -2273,13 +2029,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 21,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 31,
-          endColumn: 32,
-          endLine: 9,
-          line: 9,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2292,7 +2041,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
-        [theEnum].every(x => x == null);
       `,
     },
     {
@@ -2304,7 +2052,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
         }
-        [theEnum].filter(x => !x);
       `,
       errors: [
         {
@@ -2312,13 +2059,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 21,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 32,
-          endColumn: 33,
-          endLine: 9,
-          line: 9,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2331,7 +2071,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
-        [theEnum].filter(x => x == null);
       `,
     },
     {
@@ -2343,7 +2082,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
         }
-        [theEnum].filter(x => !x);
       `,
       errors: [
         {
@@ -2351,13 +2089,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 21,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 32,
-          endColumn: 33,
-          endLine: 9,
-          line: 9,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2370,7 +2101,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
-        [theEnum].filter(x => x == null);
       `,
     },
     {
@@ -2382,7 +2112,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (!theEnum) {
         }
-        [theEnum].find(x => !x);
       `,
       errors: [
         {
@@ -2390,13 +2119,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endColumn: 21,
           endLine: 7,
           line: 7,
-          messageId: 'conditionErrorNullableEnum',
-        },
-        {
-          column: 30,
-          endColumn: 31,
-          endLine: 9,
-          line: 9,
           messageId: 'conditionErrorNullableEnum',
         },
       ],
@@ -2409,7 +2131,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
         if (theEnum == null) {
         }
-        [theEnum].find(x => x == null);
       `,
     },
 
@@ -2530,7 +2251,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         x => !x;
         <T extends any>(x: T) => x ? 1 : 0;
         <T>(x: T) => x ? 1 : 0;
-        [x].filter(t => t);
       `,
       errors: [
         {
@@ -2574,17 +2294,6 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
             {
               messageId: 'conditionFixCastBoolean',
               output: '        <T>(x: T) => (Boolean(x)) ? 1 : 0;',
-            },
-          ],
-        },
-        {
-          column: 25,
-          line: 6,
-          messageId: 'conditionErrorAny',
-          suggestions: [
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: '        [x].filter(t => Boolean(t));',
             },
           ],
         },
@@ -2699,231 +2408,6 @@ if (x) {
       ],
       options: [{ allowNullableObject: false }],
       output: null,
-    },
-    // multi line predicate function
-    {
-      code: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return x;
-  }
-
-  return !x;
-});
-      `,
-      errors: [
-        {
-          column: 12,
-          line: 4,
-          messageId: 'conditionErrorNullableString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return x != null;
-  }
-
-  return !x;
-});
-      `,
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              output: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return x ?? "";
-  }
-
-  return !x;
-});
-      `,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return Boolean(x);
-  }
-
-  return !x;
-});
-      `,
-            },
-          ],
-        },
-        {
-          column: 11,
-          line: 7,
-          messageId: 'conditionErrorNullableString',
-          suggestions: [
-            {
-              messageId: 'conditionFixCompareNullish',
-              output: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return x;
-  }
-
-  return x == null;
-});
-      `,
-            },
-            {
-              messageId: 'conditionFixDefaultEmptyString',
-              output: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return x;
-  }
-
-  return !(x ?? "");
-});
-      `,
-            },
-            {
-              messageId: 'conditionFixCastBoolean',
-              output: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return x;
-  }
-
-  return !Boolean(x);
-});
-      `,
-            },
-          ],
-        },
-      ],
-      output: null,
-    },
-    // implicitly return `undefined`
-    {
-      code: `
-['one', 'two'].filter(x => {
-  if (x.length > 2) {
-    return true;
-  }
-});
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 2,
-          endLine: 6,
-          line: 2,
-          messageId: 'predicateReturnsUndefined',
-        },
-      ],
-    },
-    {
-      code: `
-['one', 'two'].filter(x => {});
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 30,
-          endLine: 2,
-          line: 2,
-          messageId: 'predicateReturnsUndefined',
-        },
-      ],
-    },
-    // implicitly return `undefined` with a return type annotation
-    {
-      code: `
-['one', 'two'].filter((x): boolean | undefined => {
-  if (x.length > 2) {
-    return true;
-  }
-});
-      `,
-      errors: [
-        {
-          column: 23,
-          endColumn: 2,
-          endLine: 6,
-          line: 2,
-          messageId: 'predicateReturnsUndefined',
-        },
-      ],
-    },
-    // explicitly returning `undefined`
-    {
-      code: `
-['one', 'two'].filter(x => {
-  return undefined;
-});
-      `,
-      errors: [
-        {
-          column: 10,
-          endColumn: 19,
-          endLine: 3,
-          line: 3,
-          messageId: 'conditionErrorNullish',
-        },
-      ],
-    },
-    {
-      code: `
-['one', 'two'].filter(x => {
-  if (Math.random() > 0.5) {
-    return undefined;
-  }
-});
-      `,
-      errors: [
-        {
-          column: 12,
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'conditionErrorNullish',
-        },
-      ],
-    },
-    // empty return statements
-    {
-      code: `
-['one', 'two'].filter(x => {
-  return;
-});
-      `,
-      errors: [
-        {
-          column: 3,
-          endColumn: 10,
-          endLine: 3,
-          line: 3,
-          messageId: 'predicateReturnsEmptyExpression',
-        },
-      ],
-    },
-    {
-      code: `
-['one', null].filter(x => {
-  if (Math.random() > 0.5) {
-    return;
-  }
-
-  return x != null;
-});
-      `,
-      errors: [
-        {
-          column: 5,
-          endColumn: 12,
-          endLine: 4,
-          line: 4,
-          messageId: 'predicateReturnsEmptyExpression',
-        },
-      ],
     },
     {
       code: `
@@ -3464,6 +2948,188 @@ assert(Boolean(nullableString));
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].find(x => {
+  return x;
+});
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].find(x => {
+  return;
+});
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].findLast(x => {
+  return undefined;
+});
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+['one', 'two', ''].find(x => {
+  if (x) {
+    return true;
+  }
+});
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 2,
+          endLine: 6,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every(async x => {
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            type: 'Promise<boolean>',
+          },
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateCannotBeAsync',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every(async x => {
+  return true;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            type: 'Promise<boolean>',
+          },
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateCannotBeAsync',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every(async x => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          data: {
+            type: 'Promise<undefined>',
+          },
+          endColumn: 30,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateCannotBeAsync',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x): boolean | number => {
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x): boolean | undefined => {
+  return x != null;
+});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every(x => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 24,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare const predicate: (string) => string;
+['one', 'two', ''].findIndex(predicate);
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'predicateReturnsNonBoolean',
         },
       ],
     },
