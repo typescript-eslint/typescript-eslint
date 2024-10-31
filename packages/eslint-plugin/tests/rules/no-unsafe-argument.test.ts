@@ -74,7 +74,7 @@ const x = [new Map<string, string>()] as const;
 foo(new Set<string>(), ...x);
     `,
     `
-declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
     `,
     `
