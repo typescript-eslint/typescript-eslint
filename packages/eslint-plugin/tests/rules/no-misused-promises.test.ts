@@ -1451,6 +1451,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1472,14 +1475,23 @@ function f(): O {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 12,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnProperty',
         },
         {
+          column: 8,
+          endColumn: 21,
+          endLine: 9,
           line: 9,
           messageId: 'voidReturnProperty',
         },
         {
+          column: 5,
+          endColumn: 6,
+          endLine: 10,
           line: 10,
           messageId: 'voidReturnProperty',
         },
@@ -2465,7 +2477,7 @@ const o: HasVoidMethod = {
       `,
       errors: [
         {
-          column: 12,
+          column: 14,
           endColumn: 29,
           endLine: 7,
           line: 7,
