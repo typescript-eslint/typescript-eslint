@@ -9739,14 +9739,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-eslint-plugin@npm:^6.2.0":
-  version: 6.2.0
-  resolution: "eslint-plugin-eslint-plugin@npm:6.2.0"
+  version: 6.3.1
+  resolution: "eslint-plugin-eslint-plugin@npm:6.3.1"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     estraverse: ^5.3.0
   peerDependencies:
     eslint: ">=8.23.0"
-  checksum: 1102e02bf0d837321b56dc297b457957679262a3d8c06738c2f5503ac0aa993ac4bd9908d965b15527e50880f21fa789ee9b5c13526f01c99a8e1eeed0b6055d
+  checksum: 293445663be2c2d03f39b1f513fedfc4eeac25e2bc4cd3ad76476c8d836a86b2e31c534afe3673a783cf3d5f0d50685b43e851502ea8f7773020427dbd7efe04
   languageName: node
   linkType: hard
 
