@@ -2498,8 +2498,8 @@ const obj: HasVoidMethod = {
       `,
       errors: [
         {
-          column: 2,
-          endColumn: 3,
+          column: 3,
+          endColumn: 4,
           endLine: 6,
           line: 6,
           messageId: 'voidReturnProperty',
