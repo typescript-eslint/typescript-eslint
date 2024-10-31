@@ -6,5 +6,6 @@ indent_style = space
 indent_size = 2
 end_of_line = lf
 insert_final_newline = true
-trim_trailing_whitespace = true
+# this breaks test cases, see https://github.com/editorconfig/editorconfig-vscode/issues/359
+trim_trailing_whitespace = false
 quote_type = single
