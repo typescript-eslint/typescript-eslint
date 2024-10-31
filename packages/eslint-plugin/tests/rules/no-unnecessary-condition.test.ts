@@ -86,6 +86,11 @@ declare function foo(): number | void;
 const result1 = foo() === undefined;
 const result2 = foo() == null;
     `,
+    `
+declare const bigInt: 0n | 1n;
+if (bigInt) {
+}
+    `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
     necessaryConditionTest('0 | boolean'), // boolean and falsy literal
