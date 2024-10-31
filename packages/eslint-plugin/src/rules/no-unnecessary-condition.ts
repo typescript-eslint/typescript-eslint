@@ -74,7 +74,7 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
           !tsutils.isFalsyType(type) &&
           // below is a workaround for ts-api-utils bug
           // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
-          !isFalseyBigInt(type),
+          !isFalsyBigInt(type),
       ),
     );
 
