@@ -217,7 +217,6 @@ class A {
       `,
       errors: [
         {
-          line: 3,
           messageId: 'noUselessConstructor',
           suggestions: [
             {
@@ -232,7 +231,6 @@ class A {
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
-      only: true,
     },
     {
       code: `
@@ -245,6 +243,16 @@ class A extends B {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -260,6 +268,16 @@ class A extends B {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -275,6 +293,16 @@ class A extends B {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -290,6 +318,16 @@ class A extends B {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -305,6 +343,16 @@ class A extends B.C {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B.C {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -320,6 +368,16 @@ class A extends B {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -335,6 +393,16 @@ class A extends B {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
@@ -348,6 +416,16 @@ class A {
       errors: [
         {
           messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A {
+  
+}
+      `,
+            },
+          ],
           type: AST_NODE_TYPES.MethodDefinition,
         },
       ],
