@@ -2485,5 +2485,47 @@ const o: HasVoidMethod = {
         },
       ],
     },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+const obj: HasVoidMethod = {
+  f() {
+    return Promise.resolve('foo');
+  },
+};
+      `,
+      errors: [
+        {
+          column: 2,
+          endColumn: 3,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+const obj: HasVoidMethod = {
+  f(): Promise<void> {
+    throw new Error();
+  },
+};
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
   ],
 });
