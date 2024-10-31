@@ -39,7 +39,7 @@ const getValue = (type: ts.LiteralType): bigint | number | string => {
   return type.value;
 };
 
-const isFalseyBigInt = (type: ts.Type): boolean => {
+const isFalsyBigInt = (type: ts.Type): boolean => {
   return (
     tsutils.isLiteralType(type) &&
     valueIsPseudoBigInt(type.value) &&
