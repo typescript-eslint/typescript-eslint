@@ -43,19 +43,6 @@ type MessageId =
   | 'voidReturnReturnValue'
   | 'voidReturnVariable';
 
-function findFunctionNode(
-  node: TSESTree.Node,
-):
-  | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression {
-  let current: TSESTree.Node | undefined = node;
-  while (current && !isFunction(current)) {
-    current = current.parent;
-  }
-  return nullThrows(current, NullThrowsReasons.MissingParent);
-}
-
 function parseChecksVoidReturn(
   checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
 ): ChecksVoidReturnOptions | false {
@@ -504,11 +491,11 @@ export default createRule<Options, MessageId>({
         );
 
         if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
-          const functionNode = findFunctionNode(node.value);
+          const functionNode = node.value as TSESTree.FunctionExpression;
 
           if (functionNode.returnType) {
             context.report({
-              node: functionNode.returnType,
+              node: functionNode.returnType.typeAnnotation,
               messageId: 'voidReturnProperty',
             });
           } else {
@@ -530,7 +517,13 @@ export default createRule<Options, MessageId>({
       }
 
       // syntactically ignore some known-good cases to avoid touching type info
-      const functionNode = findFunctionNode(node);
+      const functionNode = (() => {
+        let current: TSESTree.Node | undefined = node.parent;
+        while (current && !isFunction(current)) {
+          current = current.parent;
+        }
+        return nullThrows(current, NullThrowsReasons.MissingParent);
+      })();
 
       if (
         functionNode.returnType &&
