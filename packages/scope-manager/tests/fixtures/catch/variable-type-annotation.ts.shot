@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`catch variable-type-annotation 1`] = `
+ScopeManager {
+  variables: [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: [
+        TypeDefinition$1 {
+          name: Identifier<"FooErr">,
+          node: TSTypeAliasDeclaration$1,
+        },
+      ],
+      name: "FooErr",
+      references: [
+        Reference$1 {
+          identifier: Identifier<"FooErr">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: [
+        CatchClauseDefinition$2 {
+          name: Identifier<"e">,
+          node: CatchClause$2,
+        },
+      ],
+      name: "e",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: [
+    GlobalScope$1 {
+      block: Program$3,
+      isStrict: false,
+      references: [],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "FooErr" => Variable$2,
+      },
+      type: "global",
+      upper: null,
+      variables: [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+      ],
+    },
+    BlockScope$2 {
+      block: BlockStatement$4,
+      isStrict: false,
+      references: [],
+      set: Map {},
+      type: "block",
+      upper: GlobalScope$1,
+      variables: [],
+    },
+    CatchScope$3 {
+      block: CatchClause$2,
+      isStrict: false,
+      references: [
+        Reference$1,
+      ],
+      set: Map {
+        "e" => Variable$3,
+      },
+      type: "catch",
+      upper: GlobalScope$1,
+      variables: [
+        Variable$3,
+      ],
+    },
+    BlockScope$4 {
+      block: BlockStatement$5,
+      isStrict: false,
+      references: [],
+      set: Map {},
+      type: "block",
+      upper: CatchScope$3,
+      variables: [],
+    },
+  ],
+}
+`;

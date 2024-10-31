@@ -410,6 +410,7 @@ class Referencer extends Visitor {
         },
         { processRightHandNodes: true },
       );
+      this.visitType(param.typeAnnotation);
     }
     this.visit(node.body);
 

@@ -2274,5 +2274,12 @@ export enum Foo {
       `,
       options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '_' }],
     },
+    `
+type FooError = unknown;
+try {
+} catch (e: FooError) {
+  e;
+}
+    `,
   ],
 });
