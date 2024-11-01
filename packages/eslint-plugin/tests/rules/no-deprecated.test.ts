@@ -431,6 +431,22 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        /** @deprecated */ const a = 'foo';
+        import(\`./path/\${a}.js\`);
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { name: 'a' },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         declare function log(...args: unknown): void;
 
         /** @deprecated */ const a = { b: 1 };
