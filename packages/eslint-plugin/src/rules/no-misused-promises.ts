@@ -501,7 +501,6 @@ export default createRule<Options, MessageId>({
           } else {
             context.report({
               loc: getFunctionHeadLoc(functionNode, context.sourceCode),
-              node: functionNode,
               messageId: 'voidReturnProperty',
             });
           }
