@@ -8,7 +8,7 @@ export interface ImportExpression extends BaseNode {
    * The attributes declared for the dynamic import.
    * @example
    * ```ts
-   * import('mod', \{ assert: { type: 'json' } \});
+   * import('mod', \{ assert: \{ type: 'json' \} \});
    * ```
    * @deprecated Replaced with {@link `options`}.
    */
@@ -17,7 +17,7 @@ export interface ImportExpression extends BaseNode {
    * The options bag declared for the dynamic import.
    * @example
    * ```ts
-   * import('mod', \{ assert: { type: 'json' } \});
+   * import('mod', \{ assert: \{ type: 'json' \} \});
    * ```
    */
   options: Expression | null;
