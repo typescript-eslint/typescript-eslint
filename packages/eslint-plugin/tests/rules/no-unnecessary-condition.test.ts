@@ -86,6 +86,11 @@ declare function foo(): number | void;
 const result1 = foo() === undefined;
 const result2 = foo() == null;
     `,
+    `
+declare const bigInt: 0n | 1n;
+if (bigInt) {
+}
+    `,
     necessaryConditionTest('false | 5'), // Truthy literal and falsy literal
     necessaryConditionTest('boolean | "foo"'), // boolean and truthy literal
     necessaryConditionTest('0 | boolean'), // boolean and falsy literal
@@ -1040,8 +1045,31 @@ switch (b1) {
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
     unnecessaryConditionTest('string & number', 'never'),
-
     // More complex logical expressions
+    {
+      code: `
+declare const falseyBigInt: 0n;
+if (falseyBigInt) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysFalsy')],
+    },
+    {
+      code: `
+declare const posbigInt: 1n;
+if (posbigInt) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+    },
+    {
+      code: `
+declare const negBigInt: -2n;
+if (negBigInt) {
+}
+      `,
+      errors: [ruleError(3, 5, 'alwaysTruthy')],
+    },
     {
       code: `
 declare const b1: boolean;
