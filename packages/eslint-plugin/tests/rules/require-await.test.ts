@@ -8,8 +8,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -264,18 +264,18 @@ async function numberOne(): Promise<number> {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async function 'numberOne'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
 function numberOne(): number {
   return 1;
 }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -290,18 +290,18 @@ const numberOne = async function (): Promise<number> {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async function 'numberOne'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
 const numberOne = function (): number {
   return 1;
 };
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -312,14 +312,14 @@ const numberOne = function (): number {
       code: 'const numberOne = async (): Promise<number> => 1;',
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async arrow function 'numberOne'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
-              output: 'const numberOne = (): number => 1;',
               messageId: 'removeAsync',
+              output: 'const numberOne = (): number => 1;',
             },
           ],
         },
@@ -334,18 +334,18 @@ async function values(): Promise<Array<number>> {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async function 'values'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
 function values(): Array<number> {
   return [1];
 }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -362,10 +362,10 @@ function values(): Array<number> {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -391,18 +391,18 @@ async function* foo(): void {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
 function* foo(): void {
   doSomething();
 }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -416,10 +416,10 @@ async function* foo() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -443,10 +443,10 @@ const foo = async function* () {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -468,10 +468,10 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -493,10 +493,10 @@ async function* asyncGenerator(source: Iterable<any>) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -523,10 +523,10 @@ async function* asyncGenerator(source: Iterable<any> | AsyncIterable<any>) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -556,10 +556,10 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -586,10 +586,10 @@ async function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -611,10 +611,10 @@ function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async arrow function 'fn'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -637,10 +637,10 @@ function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -663,10 +663,10 @@ function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -688,10 +688,10 @@ function* asyncGenerator() {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: {
             name: "Async generator function 'foo'",
           },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -829,8 +829,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async function 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -852,8 +852,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async function' },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -875,8 +875,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -894,8 +894,8 @@ for await (let num of asyncIterable) {
       code: 'async () => doSomething();',
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          messageId: 'missingAwait',
           suggestions: [
             { messageId: 'removeAsync', output: '() => doSomething();' },
           ],
@@ -912,8 +912,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -939,8 +939,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -966,8 +966,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -993,8 +993,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async method 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -1020,8 +1020,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async method' },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -1047,8 +1047,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async function 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -1074,8 +1074,8 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          messageId: 'missingAwait',
           suggestions: [
             {
               messageId: 'removeAsync',
@@ -1101,10 +1101,11 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async method 'async'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
         const obj = {
           async: function foo() {
@@ -1112,7 +1113,6 @@ for await (let num of asyncIterable) {
           },
         };
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -1128,16 +1128,16 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: "Async function 'foo'" },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
         /* test */ function foo() {
           doSomething();
         }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -1155,10 +1155,11 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async method' },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
         class A {
           a = 0
@@ -1167,7 +1168,6 @@ for await (let num of asyncIterable) {
           }
         }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -1183,17 +1183,17 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async arrow function' },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
         foo
         ;() => {
           return 0;
         }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },
@@ -1210,10 +1210,11 @@ for await (let num of asyncIterable) {
       `,
       errors: [
         {
-          messageId: 'missingAwait',
           data: { name: 'Async method' },
+          messageId: 'missingAwait',
           suggestions: [
             {
+              messageId: 'removeAsync',
               output: `
         class A {
           foo() {}
@@ -1222,7 +1223,6 @@ for await (let num of asyncIterable) {
           }
         }
       `,
-              messageId: 'removeAsync',
             },
           ],
         },

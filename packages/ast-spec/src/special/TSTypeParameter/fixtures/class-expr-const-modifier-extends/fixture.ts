@@ -1,1 +1,1 @@
-(class <const T extends U> {});
+(class<const T extends U> {});

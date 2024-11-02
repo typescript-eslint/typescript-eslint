@@ -19,31 +19,27 @@ declare module './generated/ast-spec' {
   interface AccessorPropertyNonComputedName {
     parent: TSESTree.ClassBody;
   }
-
-  interface VariableDeclaratorDefiniteAssignment {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface VariableDeclaratorMaybeInit {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface VariableDeclaratorNoInit {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface UsingInForOfDeclarator {
-    parent: TSESTree.VariableDeclaration;
-  }
-
-  interface UsingInNormalContextDeclarator {
-    parent: TSESTree.VariableDeclaration;
-  }
   interface TSAbstractAccessorPropertyComputedName {
     parent: TSESTree.ClassBody;
   }
   interface TSAbstractAccessorPropertyNonComputedName {
     parent: TSESTree.ClassBody;
+  }
+
+  interface VariableDeclaratorDefiniteAssignment {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface VariableDeclaratorMaybeInit {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface VariableDeclaratorNoInit {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface UsingInForOfDeclarator {
+    parent: TSESTree.VariableDeclaration;
+  }
+  interface UsingInNormalContextDeclarator {
+    parent: TSESTree.VariableDeclaration;
   }
 
   interface CatchClause {
@@ -52,10 +48,6 @@ declare module './generated/ast-spec' {
 
   interface ClassBody {
     parent: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
-  }
-
-  interface ExportSpecifier {
-    parent: TSESTree.ExportNamedDeclaration;
   }
 
   interface ImportAttribute {
@@ -138,6 +130,7 @@ declare module './generated/ast-spec' {
     parent:
       | TSESTree.ArrayExpression
       | TSESTree.CallExpression
+      | TSESTree.NewExpression
       | TSESTree.ObjectExpression;
   }
 
@@ -218,6 +211,13 @@ declare module './generated/ast-spec' {
       | TSESTree.TSInferType
       | TSESTree.TSMappedType
       | TSESTree.TSTypeParameterDeclaration;
+  }
+
+  interface ExportSpecifierWithIdentifierLocal {
+    parent: TSESTree.ExportNamedDeclaration;
+  }
+  interface ExportSpecifierWithStringOrLiteralLocal {
+    parent: TSESTree.ExportNamedDeclaration;
   }
 }
 

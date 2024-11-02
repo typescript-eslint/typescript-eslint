@@ -15,6 +15,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
         "description": "Whether to not error when running with a tsconfig that has strictNullChecks turned.",
         "type": "boolean"
+      },
+      "checkTypePredicates": {
+        "description": "Whether to check the asserted argument of a type predicate function for unnecessary conditions",
+        "type": "boolean"
       }
     },
     "type": "object"
@@ -30,6 +34,8 @@ type Options = [
     allowConstantLoopConditions?: boolean;
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    /** Whether to check the asserted argument of a type predicate function for unnecessary conditions */
+    checkTypePredicates?: boolean;
   },
 ];
 "

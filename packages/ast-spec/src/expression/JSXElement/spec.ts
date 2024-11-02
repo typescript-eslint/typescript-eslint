@@ -5,8 +5,8 @@ import type { JSXOpeningElement } from '../../jsx/JSXOpeningElement/spec';
 import type { JSXChild } from '../../unions/JSXChild';
 
 export interface JSXElement extends BaseNode {
+  type: AST_NODE_TYPES.JSXElement;
   children: JSXChild[];
   closingElement: JSXClosingElement | null;
   openingElement: JSXOpeningElement;
-  type: AST_NODE_TYPES.JSXElement;
 }

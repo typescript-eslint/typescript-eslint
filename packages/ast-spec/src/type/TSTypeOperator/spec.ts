@@ -3,7 +3,7 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSTypeOperator extends BaseNode {
-  operator: 'keyof' | 'readonly' | 'unique';
   type: AST_NODE_TYPES.TSTypeOperator;
+  operator: 'keyof' | 'readonly' | 'unique';
   typeAnnotation: TypeNode | undefined;
 }

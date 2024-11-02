@@ -184,7 +184,7 @@ declare class TokenStore {
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
@@ -193,7 +193,7 @@ declare class TokenStore {
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
@@ -205,7 +205,7 @@ declare class TokenStore {
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
@@ -415,6 +415,7 @@ namespace SourceCode {
       >;
 
   export type CursorWithSkipOptions =
+    | number
     | {
         /**
          * The predicate function to choose tokens.
@@ -429,10 +430,10 @@ namespace SourceCode {
          */
         skip?: number;
       }
-    | FilterPredicate
-    | number;
+    | FilterPredicate;
 
   export type CursorWithCountOptions =
+    | number
     | {
         /**
          * The maximum count of tokens the cursor iterates.
@@ -447,8 +448,7 @@ namespace SourceCode {
          */
         includeComments?: boolean;
       }
-    | FilterPredicate
-    | number;
+    | FilterPredicate;
 }
 
 class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}

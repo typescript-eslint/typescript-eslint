@@ -9,8 +9,8 @@ const messageId = 'await';
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -198,6 +198,35 @@ const doSomething = async (
   await callback?.();
 };
     `,
+    {
+      code: `
+async function* asyncYieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for await (const value of asyncYieldNumbers()) {
+  console.log(value);
+}
+      `,
+    },
+    {
+      code: `
+declare const anee: any;
+async function forAwait() {
+  for await (const value of anee) {
+    console.log(value);
+  }
+}
+      `,
+    },
+    {
+      code: `
+declare const asyncIter: AsyncIterable<string> | Iterable<string>;
+for await (const s of asyncIter) {
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -372,6 +401,74 @@ await obj?.a.b.c?.();
               output: `
 declare const obj: { a: { b: { c?: () => void } } } | undefined;
  obj?.a.b.c?.();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for await (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 42,
+          endLine: 7,
+          line: 7,
+          messageId: 'forAwaitOfNonThenable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+function* yieldNumbers() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+for  (const value of yieldNumbers()) {
+  console.log(value);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function* yieldNumberPromises() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+for await (const value of yieldNumberPromises()) {
+  console.log(value);
+}
+      `,
+      errors: [
+        {
+          messageId: 'forAwaitOfNonThenable',
+          suggestions: [
+            {
+              messageId: 'convertToOrdinaryFor',
+              output: `
+function* yieldNumberPromises() {
+  yield Promise.resolve(1);
+  yield Promise.resolve(2);
+  yield Promise.resolve(3);
+}
+for  (const value of yieldNumberPromises()) {
+  console.log(value);
+}
       `,
             },
           ],

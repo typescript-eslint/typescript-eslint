@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -69,14 +69,14 @@ class Foo {}
       `,
       errors: [
         {
-          messageId: 'unsafeMerging',
-          line: 2,
           column: 11,
+          line: 2,
+          messageId: 'unsafeMerging',
         },
         {
-          messageId: 'unsafeMerging',
-          line: 3,
           column: 7,
+          line: 3,
+          messageId: 'unsafeMerging',
         },
       ],
     },
@@ -87,14 +87,14 @@ interface Foo {}
       `,
       errors: [
         {
-          messageId: 'unsafeMerging',
-          line: 2,
           column: 7,
+          line: 2,
+          messageId: 'unsafeMerging',
         },
         {
-          messageId: 'unsafeMerging',
-          line: 3,
           column: 11,
+          line: 3,
+          messageId: 'unsafeMerging',
         },
       ],
     },
@@ -107,14 +107,14 @@ declare global {
       `,
       errors: [
         {
-          messageId: 'unsafeMerging',
-          line: 3,
           column: 13,
+          line: 3,
+          messageId: 'unsafeMerging',
         },
         {
-          messageId: 'unsafeMerging',
-          line: 4,
           column: 9,
+          line: 4,
+          messageId: 'unsafeMerging',
         },
       ],
     },

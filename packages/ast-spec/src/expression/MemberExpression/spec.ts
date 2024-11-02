@@ -12,15 +12,15 @@ interface MemberExpressionBase extends BaseNode {
 }
 
 export interface MemberExpressionComputedName extends MemberExpressionBase {
+  type: AST_NODE_TYPES.MemberExpression;
   computed: true;
   property: Expression;
-  type: AST_NODE_TYPES.MemberExpression;
 }
 
 export interface MemberExpressionNonComputedName extends MemberExpressionBase {
+  type: AST_NODE_TYPES.MemberExpression;
   computed: false;
   property: Identifier | PrivateIdentifier;
-  type: AST_NODE_TYPES.MemberExpression;
 }
 
 export type MemberExpression =

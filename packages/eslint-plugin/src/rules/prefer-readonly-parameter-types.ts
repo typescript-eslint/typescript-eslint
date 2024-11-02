@@ -1,7 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getParserServices,
@@ -29,6 +31,9 @@ export default createRule<Options, MessageIds>({
         'Require function parameters to be typed as `readonly` to prevent accidental mutation of inputs',
       requiresTypeChecking: true,
     },
+    messages: {
+      shouldBeReadonly: 'Parameter should be a read only type.',
+    },
     schema: [
       {
         type: 'object',
@@ -39,13 +44,13 @@ export default createRule<Options, MessageIds>({
             description: 'An array of type specifiers to ignore.',
           },
           checkParameterProperties: {
-            description: 'Whether to check class parameter properties.',
             type: 'boolean',
+            description: 'Whether to check class parameter properties.',
           },
           ignoreInferredTypes: {
+            type: 'boolean',
             description:
               "Whether to ignore parameters which don't explicitly specify a type.",
-            type: 'boolean',
           },
           treatMethodsAsReadonly: {
             ...readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
@@ -55,9 +60,6 @@ export default createRule<Options, MessageIds>({
         },
       },
     ],
-    messages: {
-      shouldBeReadonly: 'Parameter should be a read only type.',
-    },
   },
   defaultOptions: [
     {
@@ -123,8 +125,8 @@ export default createRule<Options, MessageIds>({
 
           const type = services.getTypeAtLocation(actualParam);
           const isReadOnly = isTypeReadonly(services.program, type, {
-            treatMethodsAsReadonly: !!treatMethodsAsReadonly,
             allow,
+            treatMethodsAsReadonly: !!treatMethodsAsReadonly,
           });
 
           if (!isReadOnly) {

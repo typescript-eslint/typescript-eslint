@@ -277,7 +277,7 @@ For example, [oxlint's Integration > ESLint documentation](https://oxc.rs/docs/g
 If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
 Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
 
-If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
+If you're using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
 
 - Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
 - Disabling half of them at a time to narrow down which plugin it is
