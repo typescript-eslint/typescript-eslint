@@ -195,9 +195,9 @@ export default createRule<Options, MessageIds>({
       const { defaultCase, missingLiteralBranchTypes, symbolName } =
         switchMetadata;
 
-      // Unless considerDefaultExhaustiveForUnions is enabled, the presence of a default case
+      // If considerDefaultExhaustiveForUnions is enabled, the presence of a default case
       // always makes the switch exhaustive.
-      if (!considerDefaultExhaustiveForUnions && defaultCase) {
+      if (considerDefaultExhaustiveForUnions && defaultCase) {
         return;
       }
 
@@ -239,7 +239,9 @@ export default createRule<Options, MessageIds>({
     ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
-      const defaultCase = node.cases.find(caseEl => caseEl.test == null) ?? getCommentDefaultCase(node)
+      const defaultCase =
+        node.cases.find(caseEl => caseEl.test == null) ??
+        getCommentDefaultCase(node);
 
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)

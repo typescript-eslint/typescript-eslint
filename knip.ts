@@ -20,7 +20,6 @@ export default {
         '@babel/parser',
         '@babel/types',
         '@nx/workspace',
-        'console-fail-test',
         'glob',
         'husky',
         'jest-specific-snapshot',
@@ -29,10 +28,6 @@ export default {
         'tmp',
       ],
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignoreBinaries: [
-        // https://github.com/webpro/knip/issues/433
-        'stylelint',
-      ],
     },
     'packages/ast-spec': {
       ignore: [
@@ -98,7 +93,7 @@ export default {
         '@docusaurus/useDocusaurusContext',
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
-        '@docusaurus/theme-classic',
+        '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
         '^@theme/.*',
         '^@theme-original/.*',
