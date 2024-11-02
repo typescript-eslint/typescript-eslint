@@ -138,25 +138,21 @@ foo ?? 'a string';
 `;
 
 exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 9`] = `
-"Options: { "ignoreMakeBoolean": true }
+"Options: { "ignoreBooleanCoercion": true }
 
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
-const x = !(a || b);
-const y = !!(a || b);
-const z = Boolean(a || b);
+const x = Boolean(a || b);
 "
 `;
 
 exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 10`] = `
-"Options: { "ignoreMakeBoolean": false }
+"Options: { "ignoreBooleanCoercion": false }
 
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
-const x = !(a ?? b);
-const y = !!(a ?? b);
-const z = Boolean(a ?? b);
+const x = Boolean(a ?? b);
 "
 `;
