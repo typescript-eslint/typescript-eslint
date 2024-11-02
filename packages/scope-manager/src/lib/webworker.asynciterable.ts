@@ -9,5 +9,7 @@ import { TYPE } from './base-config';
 
 export const webworker_asynciterable = {
   FileSystemDirectoryHandle: TYPE,
+  FileSystemDirectoryHandleAsyncIterator: TYPE,
   ReadableStream: TYPE,
+  ReadableStreamAsyncIterator: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

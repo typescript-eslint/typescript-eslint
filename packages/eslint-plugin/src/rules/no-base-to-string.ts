@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -24,7 +25,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+        'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
@@ -59,7 +60,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
+    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
       }
@@ -82,7 +83,9 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      const toString = checker.getPropertyOfType(type, 'toString');
+      const toString =
+        checker.getPropertyOfType(type, 'toString') ??
+        checker.getPropertyOfType(type, 'toLocaleString');
       const declarations = toString?.getDeclarations();
       if (!toString || !declarations || declarations.length === 0) {
         return Usefulness.Always;
@@ -151,6 +154,19 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
+    function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
+      if (
+        node.callee.type === AST_NODE_TYPES.Identifier &&
+        node.callee.name === 'String' &&
+        node.arguments[0]
+      ) {
+        const scope = context.sourceCode.getScope(node);
+        const variable = scope.set.get('String');
+        return !variable?.defs.length;
+      }
+      return false;
+    }
+
     return {
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
@@ -167,7 +183,12 @@ export default createRule<Options, MessageIds>({
           checkExpression(node.left, leftType);
         }
       },
-      'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (isBuiltInStringCall(node)) {
+          checkExpression(node.arguments[0]);
+        }
+      },
+      'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;

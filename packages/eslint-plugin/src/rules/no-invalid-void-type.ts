@@ -6,7 +6,7 @@ import { createRule } from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
-  allowInGenericTypeArguments?: [string, ...string[]] | boolean;
+  allowInGenericTypeArguments?: boolean | [string, ...string[]];
 }
 
 type MessageIds =
@@ -52,9 +52,15 @@ export default createRule<[Options], MessageIds>({
             description:
               'Whether `void` can be used as a valid value for generic type parameters.',
             oneOf: [
-              { type: 'boolean' },
+              {
+                type: 'boolean',
+                description:
+                  'Whether `void` can be used as a valid value for all generic type parameters.',
+              },
               {
                 type: 'array',
+                description:
+                  'Allowlist of types that may accept `void` as a generic type parameter.',
                 items: { type: 'string' },
                 minItems: 1,
               },
@@ -89,7 +95,7 @@ export default createRule<[Options], MessageIds>({
     /**
      * @brief check if the given void keyword is used as a valid generic type
      *
-     * reports if the type parametrized by void is not in the whitelist, or
+     * reports if the type parametrized by void is not in the allowlist, or
      * allowInGenericTypeArguments is false.
      * no-op if the given void keyword is not used as generic type
      */
@@ -104,7 +110,7 @@ export default createRule<[Options], MessageIds>({
         return;
       }
 
-      // check whitelist
+      // check allowlist
       if (Array.isArray(allowInGenericTypeArguments)) {
         const fullyQualifiedName = context.sourceCode
           .getText(node.parent.parent.typeName)

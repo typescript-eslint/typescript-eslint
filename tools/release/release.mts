@@ -59,9 +59,13 @@ if (workspaceVersion === null) {
   process.exit(0);
 }
 
-const publishStatus = await releasePublish({
+const publishProjectsResult = await releasePublish({
   dryRun: options.dryRun,
   verbose: options.verbose,
 });
+
 // eslint-disable-next-line no-process-exit
-process.exit(publishStatus);
+process.exit(
+  // If any of the individual project publish tasks returned a non-zero exit code, exit with code 1
+  Object.values(publishProjectsResult).some(({ code }) => code !== 0) ? 1 : 0,
+);

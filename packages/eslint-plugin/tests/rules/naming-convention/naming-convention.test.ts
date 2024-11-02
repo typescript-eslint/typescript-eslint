@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
@@ -1280,6 +1281,26 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: 'import { "🍎" as foo } from \'foo_bar\';',
+      errors: [
+        {
+          data: {
+            formats: 'PascalCase',
+            name: 'foo',
+            type: 'Import',
+          },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+      ],
+    },
   ],
   valid: [
     {
@@ -2256,6 +2277,16 @@ ruleTester.run('naming-convention', rule, {
         {
           format: ['camelCase'],
           modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: 'import { "🍎" as Foo } from \'foo_bar\';',
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
           selector: ['import'],
         },
       ],
