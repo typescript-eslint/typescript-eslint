@@ -5,8 +5,8 @@ import * as parser from '../../src';
 const PROJECT_DIR = join(__dirname, '../fixtures/projectTrue');
 
 const config = {
-  tsconfigRootDir: PROJECT_DIR,
   project: true,
+  tsconfigRootDir: PROJECT_DIR,
 } satisfies Partial<parser.TSESTreeOptions>;
 
 describe('parseAndGenerateServices', () => {
@@ -35,17 +35,15 @@ describe('parseAndGenerateServices', () => {
       });
     });
 
-    if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
-      it('throws an error when a parent project does not exist', () => {
-        expect(() =>
-          parser.parseAndGenerateServices('const a = true', {
-            ...config,
-            filePath: join(PROJECT_DIR, 'notIncluded.ts'),
-          }),
-        ).toThrow(
-          /project was set to `true` but couldn't find any tsconfig.json relative to '.+[/\\]tests[/\\]fixtures[/\\]projectTrue[/\\]notIncluded.ts' within '.+[/\\]tests[/\\]fixtures[/\\]projectTrue'./,
-        );
-      });
-    }
+    it('throws an error when a parent project does not exist', () => {
+      expect(() =>
+        parser.parseAndGenerateServices('const a = true', {
+          ...config,
+          filePath: join(PROJECT_DIR, 'notIncluded.ts'),
+        }),
+      ).toThrow(
+        /project was set to `true` but couldn't find any tsconfig.json relative to '.+[/\\]tests[/\\]fixtures[/\\]projectTrue[/\\]notIncluded.ts' within '.+[/\\]tests[/\\]fixtures[/\\]projectTrue'./,
+      );
+    });
   });
 });

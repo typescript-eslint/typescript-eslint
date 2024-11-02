@@ -1,18 +1,18 @@
-import fs from 'node:fs';
-
 import debug from 'debug';
+import fs from 'node:fs';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import { getCodeText } from '../source-files';
 import type { CanonicalPath } from './shared';
+import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
+
+import { getCodeText } from '../source-files';
 import {
   canonicalDirname,
   createDefaultCompilerOptionsFromExtra,
   createHash,
   getCanonicalFileName,
 } from './shared';
-import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
 const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
 
@@ -92,7 +92,7 @@ function saveWatchCallback(
  * Holds information about the file currently being linted
  */
 const currentLintOperationState: {
-  code: ts.SourceFile | string;
+  code: string | ts.SourceFile;
   filePath: CanonicalPath;
 } = {
   code: '',
@@ -320,7 +320,7 @@ function createWatchProgram(
         path,
         !extensions
           ? undefined
-          : extensions.concat(parseSettings.extraFileExtensions),
+          : [...extensions, ...parseSettings.extraFileExtensions],
         exclude,
         include,
         depth,

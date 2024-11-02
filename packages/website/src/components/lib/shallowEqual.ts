@@ -1,9 +1,9 @@
 /**
  * Shallowly compare two objects.
  */
-export function shallowEqual(
-  object1: object | null | undefined,
-  object2: object | null | undefined,
+export function shallowEqual<T extends Record<PropertyKey, unknown>>(
+  object1: T | null | undefined,
+  object2: T | null | undefined,
 ): boolean {
   if (object1 === object2) {
     return true;

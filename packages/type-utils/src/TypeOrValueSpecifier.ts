@@ -1,6 +1,7 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
 import { typeDeclaredInFile } from './typeOrValueSpecifiers/typeDeclaredInFile';
@@ -17,7 +18,7 @@ export interface FileSpecifier {
   /**
    * Type or value name(s) to match on.
    */
-  name: string[] | string;
+  name: string | string[];
 
   /**
    * A specific file the types or values must be declared in.
@@ -35,7 +36,7 @@ export interface LibSpecifier {
   /**
    * Type or value name(s) to match on.
    */
-  name: string[] | string;
+  name: string | string[];
 }
 
 /**
@@ -48,7 +49,7 @@ export interface PackageSpecifier {
   /**
    * Type or value name(s) to match on.
    */
-  name: string[] | string;
+  name: string | string[];
 
   /**
    * Package name the type or value must be declared in.
@@ -61,102 +62,105 @@ export interface PackageSpecifier {
  * See [TypeOrValueSpecifier](/packages/type-utils/type-or-value-specifier).
  */
 export type TypeOrValueSpecifier =
+  | string
   | FileSpecifier
   | LibSpecifier
-  | PackageSpecifier
-  | string;
+  | PackageSpecifier;
 
-export const typeOrValueSpecifierSchema: JSONSchema4 = {
-  oneOf: [
-    {
-      type: 'string',
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['file'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
+export const typeOrValueSpecifiersSchema = {
+  items: {
+    oneOf: [
+      {
+        type: 'string',
+      },
+      {
+        additionalProperties: false,
+        properties: {
+          from: {
+            enum: ['file'],
+            type: 'string',
+          },
+          name: {
+            oneOf: [
+              {
                 type: 'string',
               },
-            },
-          ],
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
+          path: {
+            type: 'string',
+          },
         },
-        path: {
-          type: 'string',
-        },
+        required: ['from', 'name'],
+        type: 'object',
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['lib'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
+      {
+        additionalProperties: false,
+        properties: {
+          from: {
+            enum: ['lib'],
+            type: 'string',
+          },
+          name: {
+            oneOf: [
+              {
                 type: 'string',
               },
-            },
-          ],
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
         },
+        required: ['from', 'name'],
+        type: 'object',
       },
-      required: ['from', 'name'],
-    },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'string',
-          enum: ['package'],
-        },
-        name: {
-          oneOf: [
-            {
-              type: 'string',
-            },
-            {
-              type: 'array',
-              minItems: 1,
-              uniqueItems: true,
-              items: {
+      {
+        additionalProperties: false,
+        properties: {
+          from: {
+            enum: ['package'],
+            type: 'string',
+          },
+          name: {
+            oneOf: [
+              {
                 type: 'string',
               },
-            },
-          ],
+              {
+                items: {
+                  type: 'string',
+                },
+                minItems: 1,
+                type: 'array',
+                uniqueItems: true,
+              },
+            ],
+          },
+          package: {
+            type: 'string',
+          },
         },
-        package: {
-          type: 'string',
-        },
+        required: ['from', 'name', 'package'],
+        type: 'object',
       },
-      required: ['from', 'name', 'package'],
-    },
-  ],
-};
+    ],
+  },
+  type: 'array',
+} as const satisfies JSONSchema4;
 
 export function typeMatchesSpecifier(
   type: ts.Type,
@@ -191,3 +195,10 @@ export function typeMatchesSpecifier(
       );
   }
 }
+
+export const typeMatchesSomeSpecifier = (
+  type: ts.Type,
+  specifiers: TypeOrValueSpecifier[] = [],
+  program: ts.Program,
+): boolean =>
+  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));

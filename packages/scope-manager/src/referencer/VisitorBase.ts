@@ -1,5 +1,6 @@
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
+
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 interface VisitorOptions {
@@ -14,9 +15,9 @@ function isNode(node: unknown): node is TSESTree.Node {
   return isObject(node) && typeof node.type === 'string';
 }
 
-type NodeVisitor = {
-  [K in AST_NODE_TYPES]?: (node: TSESTree.Node) => void;
-};
+type NodeVisitor = Partial<
+  Record<AST_NODE_TYPES, (node: TSESTree.Node) => void>
+>;
 
 abstract class VisitorBase {
   readonly #childVisitorKeys: VisitorKeys;

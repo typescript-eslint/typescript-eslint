@@ -6,9 +6,9 @@ import type { TSTypeAnnotation } from '../../special/TSTypeAnnotation/spec';
 import type { RestElement } from '../RestElement/spec';
 
 export interface ObjectPattern extends BaseNode {
+  type: AST_NODE_TYPES.ObjectPattern;
   decorators: Decorator[];
   optional: boolean;
   properties: (Property | RestElement)[];
-  type: AST_NODE_TYPES.ObjectPattern;
   typeAnnotation: TSTypeAnnotation | undefined;
 }

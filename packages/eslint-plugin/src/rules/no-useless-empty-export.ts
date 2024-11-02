@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
@@ -26,6 +27,7 @@ const exportOrImportNodeTypes = new Set([
 export default createRule({
   name: 'no-useless-empty-export',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         "Disallow empty exports that don't change anything in a module file",
@@ -36,7 +38,6 @@ export default createRule({
       uselessExport: 'Empty export does nothing and can be removed.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -67,9 +68,9 @@ export default createRule({
       if (foundOtherExport) {
         for (const emptyExport of emptyExports) {
           context.report({
-            fix: fixer => fixer.remove(emptyExport),
-            messageId: 'uselessExport',
             node: emptyExport,
+            messageId: 'uselessExport',
+            fix: fixer => fixer.remove(emptyExport),
           });
         }
       }

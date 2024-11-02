@@ -46,7 +46,7 @@ const a = 1;
 */
 
 const prettierConfig = prettier.resolveConfig(__dirname) ?? {};
-const START_OF_LINE_WHITESPACE_MATCHER = /^([ ]*)/;
+const START_OF_LINE_WHITESPACE_MATCHER = /^( *)/;
 const BACKTICK_REGEX = /`/g;
 const TEMPLATE_EXPR_OPENER = /\$\{/g;
 

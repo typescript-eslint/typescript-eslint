@@ -42,7 +42,7 @@ function printAST(ast: AST): CodeWithComments {
       const code = printAndMaybeParenthesise(ast.elementType);
       return {
         code: `${code.code}[]`,
-        commentLines: ast.commentLines.concat(code.commentLines),
+        commentLines: [...ast.commentLines, ...code.commentLines],
       };
     }
 

@@ -10,8 +10,8 @@ import { normalizeSeverityToNumber } from './severity';
 type PluginMemberName = `${string}/${string}`;
 
 interface ObjectPropertySchema<T = unknown> {
-  merge: ((a: T, b: T) => T) | string;
-  validate: ((value: unknown) => asserts value is T) | string;
+  merge: string | ((a: T, b: T) => T);
+  validate: string | ((value: unknown) => asserts value is T);
 }
 
 const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
@@ -122,7 +122,7 @@ function normalizeRuleOptions(
   ruleOptions: SharedConfig.RuleLevel | SharedConfig.RuleLevelAndOptions,
 ): SharedConfig.RuleLevelAndOptions {
   const finalOptions = Array.isArray(ruleOptions)
-    ? ruleOptions.slice(0)
+    ? [...ruleOptions]
     : [ruleOptions];
 
   finalOptions[0] = ruleSeverities.get(
@@ -216,10 +216,7 @@ function assertIsRuleSeverity(ruleId: string, value: unknown): void {
 function assertIsPluginMemberName(
   value: unknown,
 ): asserts value is PluginMemberName {
-  if (
-    typeof value !== 'string' ||
-    !/[@a-z0-9-_$]+(?:\/(?:[a-z0-9-_$]+))+$/iu.test(value)
-  ) {
+  if (typeof value !== 'string' || !/[@\w$-]+(?:\/[\w$-]+)+$/iu.test(value)) {
     throw new TypeError(
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       `Expected string in the form "pluginName/objectName" but found "${value}".`,
@@ -277,13 +274,13 @@ const booleanSchema = {
   validate: 'boolean',
 } satisfies ObjectPropertySchema;
 
-const ALLOWED_SEVERITIES = new Set(['error', 'warn', 'off', 2, 1, 0]);
+const ALLOWED_SEVERITIES = new Set([0, 1, 2, 'error', 'off', 'warn']);
 
 const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLevel> =
   {
     merge(
-      first: SharedConfig.RuleLevel | boolean | undefined,
-      second: SharedConfig.RuleLevel | boolean | undefined,
+      first: boolean | SharedConfig.RuleLevel | undefined,
+      second: boolean | SharedConfig.RuleLevel | undefined,
     ): SharedConfig.RuleLevel {
       const value = second ?? first;
 

@@ -26,14 +26,14 @@ function filterRules(
 
 interface FilterAndMapRuleConfigsSettings {
   excludeDeprecated?: boolean;
-  typeChecked?: 'exclude' | 'include-only';
   recommendations?: (RuleRecommendation | undefined)[];
+  typeChecked?: 'exclude' | 'include-only';
 }
 
 function filterAndMapRuleConfigs({
   excludeDeprecated,
-  typeChecked,
   recommendations,
+  typeChecked,
 }: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
   let result = Object.entries(rules);
 
@@ -144,8 +144,8 @@ describe('recommended.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'exclude',
       recommendations: ['recommended'],
+      typeChecked: 'exclude',
     });
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -183,8 +183,8 @@ describe('recommended-type-checked-only.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'include-only',
       recommendations: ['recommended'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -204,8 +204,8 @@ describe('strict.ts', () => {
     // note: exclude deprecated rules, this config is allowed to change between minor versions
     const ruleConfigs = filterAndMapRuleConfigs({
       excludeDeprecated: true,
-      typeChecked: 'exclude',
       recommendations: ['recommended', 'strict'],
+      typeChecked: 'exclude',
     });
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -244,8 +244,8 @@ describe('strict-type-checked-only.ts', () => {
     // note: exclude deprecated rules, this config is allowed to change between minor versions
     const ruleConfigs = filterAndMapRuleConfigs({
       excludeDeprecated: true,
-      typeChecked: 'include-only',
       recommendations: ['recommended', 'strict'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -264,8 +264,8 @@ describe('stylistic.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'exclude',
       recommendations: ['stylistic'],
+      typeChecked: 'exclude',
     });
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(
@@ -302,8 +302,8 @@ describe('stylistic-type-checked-only.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'include-only',
       recommendations: ['stylistic'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
     expect(Object.fromEntries(ruleConfigs)).toEqual(

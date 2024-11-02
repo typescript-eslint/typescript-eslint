@@ -21,3 +21,63 @@ const createValue = async () => 'value';
 await createValue();
 "
 `;
+
+exports[`Validating rule docs await-thenable.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+async function syncIterable() {
+  const arrayOfValues = [1, 2, 3];
+  for await (const value of arrayOfValues) {
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not async iterable.
+    console.log(value);
+  }
+}
+
+async function syncIterableOfPromises() {
+  const arrayOfPromises = [
+    Promise.resolve(1),
+    Promise.resolve(2),
+    Promise.resolve(3),
+  ];
+  for await (const promisedValue of arrayOfPromises) {
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not async iterable.
+    console.log(promisedValue);
+  }
+}
+"
+`;
+
+exports[`Validating rule docs await-thenable.mdx code examples ESLint output 4`] = `
+"Correct
+
+async function syncIterable() {
+  const arrayOfValues = [1, 2, 3];
+  for (const value of arrayOfValues) {
+    console.log(value);
+  }
+}
+
+async function syncIterableOfPromises() {
+  const arrayOfPromises = [
+    Promise.resolve(1),
+    Promise.resolve(2),
+    Promise.resolve(3),
+  ];
+  for (const promisedValue of await Promise.all(arrayOfPromises)) {
+    console.log(promisedValue);
+  }
+}
+
+async function validUseOfForAwaitOnAsyncIterable() {
+  async function* yieldThingsAsynchronously() {
+    yield 1;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    yield 2;
+  }
+
+  for await (const promisedValue of yieldThingsAsynchronously()) {
+    console.log(promisedValue);
+  }
+}
+"
+`;

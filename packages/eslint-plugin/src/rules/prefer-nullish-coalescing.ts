@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -53,32 +54,33 @@ export default createRule<Options, MessageIds>({
     },
     hasSuggestions: true,
     messages: {
-      preferNullishOverOr:
-        'Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.',
-      preferNullishOverTernary:
-        'Prefer using nullish coalescing operator (`??`) instead of a ternary expression, as it is simpler to read.',
-      suggestNullish: 'Fix to nullish coalescing operator (`??`).',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      preferNullishOverOr:
+        'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a logical {{ description }} (`||{{ equals }}`), as it is a safer operator.',
+      preferNullishOverTernary:
+        'Prefer using nullish coalescing operator (`??{{ equals }}`) instead of a ternary expression, as it is simpler to read.',
+      suggestNullish: 'Fix to nullish coalescing operator (`??{{ equals }}`).',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
             description:
               'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
-            type: 'boolean',
           },
           ignoreConditionalTests: {
+            type: 'boolean',
             description:
               'Whether to ignore cases that are located within a conditional test.',
-            type: 'boolean',
           },
           ignoreMixedLogicalExpressions: {
+            type: 'boolean',
             description:
               'Whether to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).',
-            type: 'boolean',
           },
           ignorePrimitives: {
             description:
@@ -86,23 +88,37 @@ export default createRule<Options, MessageIds>({
             oneOf: [
               {
                 type: 'object',
+                description: 'Which primitives types may be ignored.',
                 properties: {
-                  bigint: { type: 'boolean' },
-                  boolean: { type: 'boolean' },
-                  number: { type: 'boolean' },
-                  string: { type: 'boolean' },
+                  bigint: {
+                    type: 'boolean',
+                    description: 'Ignore bigint primitive types.',
+                  },
+                  boolean: {
+                    type: 'boolean',
+                    description: 'Ignore boolean primitive types.',
+                  },
+                  number: {
+                    type: 'boolean',
+                    description: 'Ignore number primitive types.',
+                  },
+                  string: {
+                    type: 'boolean',
+                    description: 'Ignore string primitive types.',
+                  },
                 },
               },
               {
                 type: 'boolean',
+                description: 'Ignore all primitive types.',
                 enum: [true],
               },
             ],
           },
           ignoreTernaryTests: {
+            type: 'boolean',
             description:
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
-            type: 'boolean',
           },
           ignoreBooleanCoercion: {
             description:
@@ -110,7 +126,6 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -118,7 +133,6 @@ export default createRule<Options, MessageIds>({
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignoreConditionalTests: true,
-      ignoreTernaryTests: false,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
         bigint: false,
@@ -127,6 +141,7 @@ export default createRule<Options, MessageIds>({
         string: false,
       },
       ignoreBooleanCoercion: false,
+      ignoreTernaryTests: false,
     },
   ],
   create(
@@ -157,14 +172,114 @@ export default createRule<Options, MessageIds>({
     ) {
       context.report({
         loc: {
-          start: { line: 0, column: 0 },
-          end: { line: 0, column: 0 },
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
         },
         messageId: 'noStrictNullCheck',
       });
     }
 
+    // todo: rename to something more specific?
+    function checkAssignmentOrLogicalExpression(
+      node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
+      description: string,
+      equals: string,
+    ): void {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = checker.getTypeAtLocation(tsNode.left);
+      if (!isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)) {
+        return;
+      }
+
+      if (ignoreConditionalTests === true && isConditionalTest(node)) {
+        return;
+      }
+
+      if (
+        ignoreMixedLogicalExpressions === true &&
+        isMixedLogicalExpression(node)
+      ) {
+        return;
+      }
+
+      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
+      const ignorableFlags = [
+        (ignorePrimitives === true || ignorePrimitives!.bigint) &&
+          ts.TypeFlags.BigIntLike,
+        (ignorePrimitives === true || ignorePrimitives!.boolean) &&
+          ts.TypeFlags.BooleanLike,
+        (ignorePrimitives === true || ignorePrimitives!.number) &&
+          ts.TypeFlags.NumberLike,
+        (ignorePrimitives === true || ignorePrimitives!.string) &&
+          ts.TypeFlags.StringLike,
+      ]
+        .filter((flag): flag is number => typeof flag === 'number')
+        .reduce((previous, flag) => previous | flag, 0);
+      if (
+        type.flags !== ts.TypeFlags.Null &&
+        type.flags !== ts.TypeFlags.Undefined &&
+        (type as ts.UnionOrIntersectionType).types.some(t =>
+          tsutils
+            .intersectionTypeParts(t)
+            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+        )
+      ) {
+        return;
+      }
+      /* eslint-enable @typescript-eslint/no-non-null-assertion */
+
+      const barBarOperator = nullThrows(
+        context.sourceCode.getTokenAfter(
+          node.left,
+          token =>
+            token.type === AST_TOKEN_TYPES.Punctuator &&
+            token.value === node.operator,
+        ),
+        NullThrowsReasons.MissingToken('operator', node.type),
+      );
+
+      function* fix(
+        fixer: TSESLint.RuleFixer,
+      ): IterableIterator<TSESLint.RuleFix> {
+        if (isLogicalOrOperator(node.parent)) {
+          // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
+          if (
+            node.left.type === AST_NODE_TYPES.LogicalExpression &&
+            !isLogicalOrOperator(node.left.left)
+          ) {
+            yield fixer.insertTextBefore(node.left.right, '(');
+          } else {
+            yield fixer.insertTextBefore(node.left, '(');
+          }
+          yield fixer.insertTextAfter(node.right, ')');
+        }
+        yield fixer.replaceText(
+          barBarOperator,
+          node.operator.replace('||', '??'),
+        );
+      }
+
+      context.report({
+        node: barBarOperator,
+        messageId: 'preferNullishOverOr',
+        data: { description, equals },
+        suggest: [
+          {
+            messageId: 'suggestNullish',
+            data: { equals },
+            fix,
+          },
+        ],
+      });
+    }
+
     return {
+      'AssignmentExpression[operator = "||="]'(
+        node: TSESTree.AssignmentExpression,
+      ): void {
+        checkAssignmentOrLogicalExpression(node, 'assignment', '=');
+      },
       ConditionalExpression(node: TSESTree.ConditionalExpression): void {
         if (ignoreTernaryTests) {
           return;
@@ -193,7 +308,7 @@ export default createRule<Options, MessageIds>({
             node.test.right.left,
             node.test.right.right,
           ];
-          if (node.test.operator === '||') {
+          if (['||', '||='].includes(node.test.operator)) {
             if (
               node.test.left.operator === '===' &&
               node.test.right.operator === '==='
@@ -297,9 +412,12 @@ export default createRule<Options, MessageIds>({
           context.report({
             node,
             messageId: 'preferNullishOverTernary',
+            // TODO: also account for = in the ternary clause
+            data: { equals: '' },
             suggest: [
               {
                 messageId: 'suggestNullish',
+                data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '=='
@@ -318,97 +436,10 @@ export default createRule<Options, MessageIds>({
           });
         }
       },
-
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = checker.getTypeAtLocation(tsNode.left);
-        if (!isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)) {
-          return;
-        }
-
-        if (ignoreConditionalTests === true && isConditionalTest(node)) {
-          return;
-        }
-
-        if (
-          ignoreBooleanCoercion === true &&
-          isBooleanConstructorContext(node, context)
-        ) {
-          return;
-        }
-
-        const isMixedLogical = isMixedLogicalExpression(node);
-        if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
-          return;
-        }
-
-        // https://github.com/typescript-eslint/typescript-eslint/issues/5439
-        /* eslint-disable @typescript-eslint/no-non-null-assertion */
-        const ignorableFlags = [
-          (ignorePrimitives === true || ignorePrimitives!.bigint) &&
-            ts.TypeFlags.BigIntLike,
-          (ignorePrimitives === true || ignorePrimitives!.boolean) &&
-            ts.TypeFlags.BooleanLike,
-          (ignorePrimitives === true || ignorePrimitives!.number) &&
-            ts.TypeFlags.NumberLike,
-          (ignorePrimitives === true || ignorePrimitives!.string) &&
-            ts.TypeFlags.StringLike,
-        ]
-          .filter((flag): flag is number => typeof flag === 'number')
-          .reduce((previous, flag) => previous | flag, 0);
-        if (
-          type.flags !== ts.TypeFlags.Null &&
-          type.flags !== ts.TypeFlags.Undefined &&
-          (type as ts.UnionOrIntersectionType).types.some(t =>
-            tsutils
-              .intersectionTypeParts(t)
-              .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-          )
-        ) {
-          return;
-        }
-        /* eslint-enable @typescript-eslint/no-non-null-assertion */
-
-        const barBarOperator = nullThrows(
-          context.sourceCode.getTokenAfter(
-            node.left,
-            token =>
-              token.type === AST_TOKEN_TYPES.Punctuator &&
-              token.value === node.operator,
-          ),
-          NullThrowsReasons.MissingToken('operator', node.type),
-        );
-
-        function* fix(
-          fixer: TSESLint.RuleFixer,
-        ): IterableIterator<TSESLint.RuleFix> {
-          if (isLogicalOrOperator(node.parent)) {
-            // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
-            if (
-              node.left.type === AST_NODE_TYPES.LogicalExpression &&
-              !isLogicalOrOperator(node.left.left)
-            ) {
-              yield fixer.insertTextBefore(node.left.right, '(');
-            } else {
-              yield fixer.insertTextBefore(node.left, '(');
-            }
-            yield fixer.insertTextAfter(node.right, ')');
-          }
-          yield fixer.replaceText(barBarOperator, '??');
-        }
-
-        context.report({
-          node: barBarOperator,
-          messageId: 'preferNullishOverOr',
-          suggest: [
-            {
-              messageId: 'suggestNullish',
-              fix,
-            },
-          ],
-        });
+        checkAssignmentOrLogicalExpression(node, 'or', '');
       },
     };
   },
@@ -500,7 +531,9 @@ function isBuiltInBooleanCall(
   return false;
 }
 
-function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
+function isMixedLogicalExpression(
+  node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
+): boolean {
   const seen = new Set<TSESTree.Node | undefined>();
   const queue = [node.parent, node.left, node.right];
   for (const current of queue) {
@@ -512,7 +545,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
     if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
-      } else if (current.operator === '||') {
+      } else if (['||', '||='].includes(current.operator)) {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }

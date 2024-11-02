@@ -3,12 +3,13 @@ import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
+import type { TSESTreeOptions } from '../parser-options';
+
 import {
   createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
 } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
@@ -103,14 +104,12 @@ export function resolveProjectList(
   }
 
   const uniqueCanonicalProjectPaths = new Map(
-    nonGlobProjects
-      .concat(globProjectPaths)
-      .map(project => [
-        getCanonicalFileName(
-          ensureAbsolutePath(project, options.tsconfigRootDir),
-        ),
+    [...nonGlobProjects, ...globProjectPaths].map(project => [
+      getCanonicalFileName(
         ensureAbsolutePath(project, options.tsconfigRootDir),
-      ]),
+      ),
+      ensureAbsolutePath(project, options.tsconfigRootDir),
+    ]),
   );
 
   log(

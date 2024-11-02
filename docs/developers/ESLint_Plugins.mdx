@@ -42,6 +42,9 @@ Include the following to enforce the version range allowed without making users'
 
 Those are all packages consumers are expected to be using already.
 
+You don't need to declare any dependencies on `typescript-eslint` or `@typescript-eslint/eslint-plugin`.
+Our setup guide ensures that the parser is automatically registered when configuring ESLint.
+
 ## `RuleCreator` Usage
 
 We recommend including at least the following three properties in your plugin's [`RuleCreator` extra rule docs types](./Custom_Rules.mdx#extra-rule-docs-types):

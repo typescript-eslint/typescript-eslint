@@ -177,33 +177,31 @@ export function getTypescriptOptions(): DescribedOptionDeclaration[] {
  */
 export function getTypescriptJsonSchema(): JSONSchema4 {
   const properties = Object.fromEntries(
-    getTypescriptOptions()
-      .map(item => {
-        let value;
-        if (item.type === 'boolean') {
-          value = {
-            description: item.description.message,
-            type: 'boolean',
-          };
-        } else if (item.type === 'list' && item.element?.type instanceof Map) {
-          value = {
-            description: item.description.message,
-            items: {
-              enum: Array.from(item.element.type.keys()),
-              type: 'string',
-            },
-            type: 'array',
-          };
-        } else if (item.type instanceof Map) {
-          value = {
-            description: item.description.message,
-            enum: Array.from(item.type.keys()),
+    getTypescriptOptions().flatMap(item => {
+      let value: JSONSchema4 | undefined;
+      if (item.type === 'boolean') {
+        value = {
+          description: item.description.message,
+          type: 'boolean',
+        };
+      } else if (item.type === 'list' && item.element?.type instanceof Map) {
+        value = {
+          description: item.description.message,
+          items: {
+            enum: [...item.element.type.keys()],
             type: 'string',
-          };
-        }
-        return [item.name, value] as const;
-      })
-      .filter(([, value]) => value),
+          },
+          type: 'array',
+        };
+      } else if (item.type instanceof Map) {
+        value = {
+          description: item.description.message,
+          enum: [...item.type.keys()],
+          type: 'string',
+        };
+      }
+      return value ? [[item.name, value] as const] : [];
+    }),
   );
 
   return {

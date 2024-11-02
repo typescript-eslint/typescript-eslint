@@ -87,6 +87,7 @@ type Lib =
   | 'esnext.disposable'
   | 'esnext.full'
   | 'esnext.intl'
+  | 'esnext.iterator'
   | 'esnext.object'
   | 'esnext.promise'
   | 'esnext.regexp'
@@ -100,4 +101,4 @@ type Lib =
   | 'webworker.importscripts'
   | 'webworker.iterable';
 
-export type { Lib };
+export { Lib };

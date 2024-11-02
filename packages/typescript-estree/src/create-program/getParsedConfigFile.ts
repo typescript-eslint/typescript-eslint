@@ -1,7 +1,7 @@
+import type * as ts from 'typescript/lib/tsserverlibrary';
+
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-
-import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import { CORE_COMPILER_OPTIONS } from './shared';
 
@@ -27,13 +27,17 @@ function getParsedConfigFile(
     configFile,
     CORE_COMPILER_OPTIONS,
     {
+      fileExists: fs.existsSync,
+      getCurrentDirectory,
       onUnRecoverableConfigFileDiagnostic: diag => {
         throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
       },
-      fileExists: fs.existsSync,
-      getCurrentDirectory,
       readDirectory: tsserver.sys.readDirectory,
-      readFile: file => fs.readFileSync(file, 'utf-8'),
+      readFile: file =>
+        fs.readFileSync(
+          path.isAbsolute(file) ? file : path.join(getCurrentDirectory(), file),
+          'utf-8',
+        ),
       useCaseSensitiveFileNames: tsserver.sys.useCaseSensitiveFileNames,
     },
   );

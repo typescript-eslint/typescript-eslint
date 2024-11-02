@@ -16,6 +16,7 @@ The following expressions are checked:
 
 - Arguments to the `&&`, `||` and `?:` (ternary) operators
 - Conditions for `if`, `for`, `while`, and `do-while` statements
+- `case`s in `switch` statements
 - Base values of optional chain expressions
 
 ## Examples
@@ -81,6 +82,8 @@ function bar(arg?: string | null) {
 
 ### `allowConstantLoopConditions`
 
+{/* insert option description */}
+
 Example of correct code for `{ allowConstantLoopConditions: true }`:
 
 ```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
@@ -89,7 +92,55 @@ for (; true; ) {}
 do {} while (true);
 ```
 
+### `checkTypePredicates`
+
+{/* insert option description */}
+
+Example of additional incorrect code with `{ checkTypePredicates: true }`:
+
+```ts option='{ "checkTypePredicates": true }' showPlaygroundButton
+function assert(condition: unknown): asserts condition {
+  if (!condition) {
+    throw new Error('Condition is falsy');
+  }
+}
+
+assert(false); // Unnecessary; condition is always falsy.
+
+const neverNull = {};
+assert(neverNull); // Unnecessary; condition is always truthy.
+
+function isString(value: unknown): value is string {
+  return typeof value === 'string';
+}
+
+declare const s: string;
+
+// Unnecessary; s is always a string.
+if (isString(s)) {
+}
+
+function assertIsString(value: unknown): asserts value is string {
+  if (!isString(value)) {
+    throw new Error('Value is not a string');
+  }
+}
+
+assertIsString(s); // Unnecessary; s is always a string.
+```
+
+Whether this option makes sense for your project may vary.
+Some projects may intentionally use type predicates to ensure that runtime values do indeed match the types according to TypeScript, especially in test code.
+Often, it makes sense to use eslint-disable comments in these cases, with a comment indicating why the condition should be checked at runtime, despite appearing unnecessary.
+However, in some contexts, it may be more appropriate to keep this option disabled entirely.
+
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+{/* insert option description */}
+
+:::danger Deprecated
+This option will be removed in the next major version of typescript-eslint.
+:::
 
 If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
 

@@ -170,6 +170,7 @@ jobs:
             'eslint-plugin',
             'eslint-plugin-internal',
             'parser',
+            'rule-tester',
             'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
@@ -260,7 +261,7 @@ jobs:
           path: coverage
 
       - name: Publish code coverage report
-        uses: codecov/codecov-action@v4.5.0
+        uses: codecov/codecov-action@v4.6.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/**/lcov.info

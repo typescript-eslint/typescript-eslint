@@ -339,16 +339,12 @@ describe('AST Fixtures', () => {
 
   // once we've run all the tests, snapshot the list of fixtures that have differences for easy reference
   it('List fixtures with AST differences', () => {
-    expect(
-      Array.from(fixturesWithASTDifferences).sort(),
-    ).toMatchSpecificSnapshot(
+    expect([...fixturesWithASTDifferences].sort()).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-ast.shot'),
     );
   });
   it('List fixtures with Token differences', () => {
-    expect(
-      Array.from(fixturesWithTokenDifferences).sort(),
-    ).toMatchSpecificSnapshot(
+    expect([...fixturesWithTokenDifferences].sort()).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-tokens.shot'),
     );
   });
@@ -357,7 +353,7 @@ describe('AST Fixtures', () => {
       Object.fromEntries(
         Object.entries(fixturesWithErrorDifferences).map(([key, value]) => [
           key,
-          Array.from(value).sort(),
+          [...value].sort(),
         ]),
       ),
     ).toMatchSpecificSnapshot(
@@ -366,7 +362,7 @@ describe('AST Fixtures', () => {
   });
   it('List fixtures we expect babel to not support', () => {
     expect(
-      Array.from(fixturesConfiguredToExpectBabelToNotSupport).sort(),
+      [...fixturesConfiguredToExpectBabelToNotSupport].sort(),
     ).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-without-babel-support.shot'),
     );

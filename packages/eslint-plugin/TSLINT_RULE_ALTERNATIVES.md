@@ -85,7 +85,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`no-shadowed-variable`]             | 🌟  | [`no-shadow`][no-shadow]                                                                                  |
 | [`no-sparse-arrays`]                 | 🌟  | [`no-sparse-arrays`][no-sparse-arrays]                                                                    |
 | [`no-string-literal`]                | 🌟  | [`dot-notation`][dot-notation]                                                                            |
-| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-literal`]                                                                 |
+| [`no-string-throw`]                  | ✅  | [`@typescript-eslint/only-throw-error`]                                                                   |
 | [`no-submodule-imports`]             | 🌓  | [`import/no-internal-modules`] (slightly different)                                                       |
 | [`no-switch-case-fall-through`]      | 🌟  | [`no-fallthrough`][no-fallthrough]                                                                        |
 | [`no-tautology-expression`]          | 🛑  | N/A                                                                                                       |
@@ -184,7 +184,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
 | [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
-| [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
+| [`ordered-imports`]                 | 🔌  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`@typescript-eslint/class-methods-use-this`]                                       |
 | [`prefer-method-signature`]         | ✅  | [`@typescript-eslint/method-signature-style`]                                       |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |
@@ -622,7 +622,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/no-unnecessary-boolean-literal-compare`]: https://typescript-eslint.io/rules/no-unnecessary-boolean-literal-compare
 [`@typescript-eslint/no-misused-new`]: https://typescript-eslint.io/rules/no-misused-new
 [`@typescript-eslint/no-this-alias`]: https://typescript-eslint.io/rules/no-this-alias
-[`@typescript-eslint/only-throw-literal`]: https://typescript-eslint.io/rules/only-throw-literal
+[`@typescript-eslint/only-throw-error`]: https://typescript-eslint.io/rules/only-throw-error
 [`@typescript-eslint/no-extraneous-class`]: https://typescript-eslint.io/rules/no-extraneous-class
 [`@typescript-eslint/no-unused-vars`]: https://typescript-eslint.io/rules/no-unused-vars
 [`@typescript-eslint/no-use-before-define`]: https://typescript-eslint.io/rules/no-use-before-define

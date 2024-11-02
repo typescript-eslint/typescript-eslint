@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Announcing the stable release of typescript-eslint's v8.
 slug: announcing-typescript-eslint-v8
 tags: [breaking changes, typescript-eslint, v7, v8]
@@ -18,7 +14,7 @@ We've been working on a set of breaking changes and general features that we're 
 And now, we're excited to say that typescript-eslint v8 is released as stable! 🎉
 
 We'd previously blogged about v8 in [Announcing typescript-eslint v8 Beta](./2024-05-27-announcing-typescript-eslint-v8-beta.mdx).
-This blog post contains much of the same information as that one.
+This blog post contains much of the same information as that one, and includes the list of steps you'll need to take to upgrade.
 
 <!--truncate-->
 

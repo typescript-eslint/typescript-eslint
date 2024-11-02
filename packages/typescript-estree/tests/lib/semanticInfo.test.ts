@@ -1,15 +1,15 @@
+import * as glob from 'glob';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-
-import * as glob from 'glob';
 import * as ts from 'typescript';
+
+import type { ParseAndGenerateServicesResult } from '../../src/parser';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import type { TSESTree } from '../../src/ts-estree';
 
 import { clearCaches } from '../../src';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
-import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
-import type { TSESTreeOptions } from '../../src/parser-options';
-import type { TSESTree } from '../../src/ts-estree';
 import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   createSnapshotTestBlock,
@@ -22,19 +22,19 @@ const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
 
-function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
+function createOptions(fileName: string): { cwd?: string } & TSESTreeOptions {
   return {
-    disallowAutomaticSingleRunInference: true,
-    loc: true,
-    range: true,
-    tokens: true,
     comment: true,
-    jsx: false,
+    disallowAutomaticSingleRunInference: true,
     errorOnUnknownASTType: true,
     filePath: fileName,
-    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
-    project: `./tsconfig.json`,
+    jsx: false,
+    loc: true,
     loggerFn: false,
+    project: `./tsconfig.json`,
+    range: true,
+    tokens: true,
+    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   };
 }
 
@@ -172,7 +172,7 @@ describe('semanticInfo', () => {
     ).declarations[0].init!;
     const tsBinaryExpression =
       parseResult.services.esTreeNodeToTSNodeMap.get(binaryExpression);
-    expectToBeDefined(tsBinaryExpression);
+    expect(tsBinaryExpression).toBeDefined();
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
 
     const computedPropertyString = (
@@ -181,7 +181,7 @@ describe('semanticInfo', () => {
     ).key;
     const tsComputedPropertyString =
       parseResult.services.esTreeNodeToTSNodeMap.get(computedPropertyString);
-    expectToBeDefined(tsComputedPropertyString);
+    expect(tsComputedPropertyString).toBeDefined();
     expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
   });
 
@@ -210,7 +210,7 @@ describe('semanticInfo', () => {
     expectToHaveParserServices(parseResult.services);
     const tsArrayBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(arrayBoundName);
-    expectToBeDefined(tsArrayBoundName);
+    expect(tsArrayBoundName).toBeDefined();
     checkNumberArrayType(checker, tsArrayBoundName);
 
     expect(
@@ -223,8 +223,8 @@ describe('semanticInfo', () => {
       `const x = [parseInt("5")];`,
       {
         ...createOptions('<input>'),
-        project: undefined,
         preserveNodeMaps: true,
+        project: undefined,
       },
     );
 
@@ -235,7 +235,6 @@ describe('semanticInfo', () => {
 
     const tsBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-    expectToBeDefined(tsBoundName);
     expect(tsBoundName).toBeDefined();
 
     expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
@@ -339,8 +338,8 @@ describe('semanticInfo', () => {
       const options = createOptions(filename);
       const optionsWithProjectTrue = {
         ...options,
-        project: true,
         programs: undefined,
+        project: true,
       };
       expect(() =>
         parseAndGenerateServices('const foo = 5;', optionsWithProjectTrue),
@@ -420,7 +419,7 @@ function testIsolatedFile(
   // get type checker
   expectToHaveParserServices(parseResult.services);
   const checker = parseResult.services.program.getTypeChecker();
-  expectToBeDefined(checker);
+  expect(checker).toBeDefined();
 
   // get number node (ast shape validated by snapshot)
   const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
@@ -431,7 +430,7 @@ function testIsolatedFile(
   // get corresponding TS node
   const tsArrayMember =
     parseResult.services.esTreeNodeToTSNodeMap.get(arrayMember);
-  expectToBeDefined(tsArrayMember);
+  expect(tsArrayMember).toBeDefined();
   expect(tsArrayMember.kind).toBe(ts.SyntaxKind.NumericLiteral);
   expect((tsArrayMember as ts.NumericLiteral).text).toBe('3');
 
@@ -451,7 +450,7 @@ function testIsolatedFile(
   const boundName = declaration.id as TSESTree.Identifier;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-  expectToBeDefined(tsBoundName);
+  expect(tsBoundName).toBeDefined();
   checkNumberArrayType(checker, tsBoundName);
   expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
     boundName,

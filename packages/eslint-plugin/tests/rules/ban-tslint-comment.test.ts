@@ -4,10 +4,10 @@ import rule from '../../src/rules/ban-tslint-comment';
 
 interface Testable {
   code: string;
-  text?: string;
   column?: number;
   line?: number;
   output?: string;
+  text?: string;
 }
 
 const PALANTIR_EXAMPLES: Testable[] = [
@@ -22,9 +22,9 @@ const PALANTIR_EXAMPLES: Testable[] = [
   { code: '// tslint:disable-next-line' }, // Disables all rules for the following line
   {
     code: 'someCode(); // tslint:disable-line',
-    text: '// tslint:disable-line',
     column: 13,
     output: 'someCode();',
+    text: '// tslint:disable-line',
   }, // Disables all rules for the current line
   {
     code: '// tslint:disable-next-line:rule1 rule2 rule3...',
@@ -38,11 +38,11 @@ const MORE_EXAMPLES: Testable[] = [
 // tslint:disable-line
 console.log(woah);
 `,
+    line: 2,
     output: `const woah = doSomeStuff();
 console.log(woah);
 `,
     text: '// tslint:disable-line',
-    line: 2,
   },
 ]
 
@@ -69,15 +69,15 @@ ruleTester.run('ban-tslint-comment', rule, {
   invalid: [...PALANTIR_EXAMPLES, ...MORE_EXAMPLES].map(
     ({ code, column, line, output, text }) => ({
       code,
-      output: output ?? '',
       errors: [
         {
           column: column ?? 1,
-          line: line ?? 1,
           data: { text: text ?? code },
+          line: line ?? 1,
           messageId: 'commentDetected' as const,
         },
       ],
+      output: output ?? '',
     }),
   ),
 });
