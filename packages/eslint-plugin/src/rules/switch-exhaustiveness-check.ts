@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -13,9 +14,11 @@ import {
   requiresQuoting,
 } from '../util';
 
+const DEFAULT_COMMENT_PATTERN = /^no default$/iu;
+
 interface SwitchMetadata {
   readonly containsNonLiteralType: boolean;
-  readonly defaultCase: TSESTree.SwitchCase | TSESTree.Comment | undefined;
+  readonly defaultCase: TSESTree.Comment | TSESTree.SwitchCase | undefined;
   readonly missingLiteralBranchTypes: ts.Type[];
   readonly symbolName: string | undefined;
 }
@@ -112,8 +115,6 @@ export default createRule<Options, MessageIds>({
     function getCommentDefaultCase(
       node: TSESTree.SwitchStatement,
     ): TSESTree.Comment | undefined {
-      const defaultCaseCommentConstants = ['no default', 'No Default'];
-
       const lastCase = node.cases.at(-1);
       const commentsAfterLastCase = lastCase
         ? context.sourceCode.getCommentsAfter(lastCase)
@@ -121,9 +122,7 @@ export default createRule<Options, MessageIds>({
       const defaultCaseComment = commentsAfterLastCase.at(-1);
 
       if (
-        defaultCaseCommentConstants.includes(
-          defaultCaseComment?.value.trim() || '',
-        )
+        DEFAULT_COMMENT_PATTERN.test(defaultCaseComment?.value.trim() || '')
       ) {
         return defaultCaseComment;
       }
