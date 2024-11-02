@@ -3061,6 +3061,26 @@ assert(Boolean(nullableString));
     },
     {
       code: `
+const predicate = (x: string) => {
+  if (x) {
+    return true;
+  }
+};
+
+['one', 'two', ''].find(predicate);
+      `,
+      errors: [
+        {
+          column: 25,
+          endColumn: 34,
+          endLine: 8,
+          line: 8,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
 [1, null].every(async x => {
   return x != null;
 });
@@ -3075,6 +3095,24 @@ assert(Boolean(nullableString));
           endLine: 4,
           line: 2,
           messageId: 'predicateCannotBeAsync',
+        },
+      ],
+    },
+    {
+      code: `
+const predicate = async x => {
+  return x != null;
+};
+
+[1, null].every(predicate);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 26,
+          endLine: 6,
+          line: 6,
+          messageId: 'predicateReturnsNonBoolean',
         },
       ],
     },
