@@ -233,8 +233,9 @@ export default createRule<Options, MessageIds>({
 
       /*
        * Post-process the class members and report any remaining members.
-       * Since private members can only be accessed in the current class context,
-       * we can safely assume that all usages are within the current class body.
+       * Since private members can only be accessed in the current class
+       * context, we can safely assume that all usages are within the current
+       * class body.
        */
       'ClassBody:exit'(): void {
         const unusedPrivateMembers = trackedClasses.shift();
