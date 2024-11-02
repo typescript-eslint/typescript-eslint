@@ -439,6 +439,13 @@ export default createRule<Options, MessageIds>({
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
+        if (
+          ignoreBooleanCoercion === true &&
+          isBooleanConstructorContext(node, context)
+        ) {
+          return;
+        }
+
         checkAssignmentOrLogicalExpression(node, 'or', '');
       },
     };
