@@ -1,6 +1,5 @@
-import path from 'node:path';
-
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import path from 'node:path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
 
@@ -834,8 +833,8 @@ switch (literal) {
       `,
       options: [
         {
-          requireDefaultForNonUnion: true,
           considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -940,6 +939,11 @@ switch (value) {
   // no default
 }
       `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
     },
   ],
   invalid: [
@@ -2517,9 +2521,9 @@ switch (literal) {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
           column: 9,
           line: 4,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -2734,67 +2738,6 @@ switch (value) {
   default: {
     break;
   }
-}
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          considerDefaultExhaustiveForUnions: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const myValue: 'a' | 'b';
-switch (myValue) {
-  case 'a':
-    return 'a';
-  case 'b':
-    return 'b';
-  // no default
-}
-      `,
-      errors: [
-        {
-          messageId: 'dangerousDefaultCase',
-        },
-      ],
-      options: [
-        {
-          allowDefaultCaseForExhaustiveSwitch: false,
-        },
-      ],
-    },
-    {
-      code: `
-declare const literal: 'a' | 'b' | 'c';
-
-switch (literal) {
-  case 'a':
-    break;
-  // no default
-}
-      `,
-      errors: [
-        {
-          column: 9,
-          line: 4,
-          messageId: 'switchIsNotExhaustive',
-          suggestions: [
-            {
-              messageId: 'addMissingCases',
-              output: `
-declare const literal: 'a' | 'b' | 'c';
-
-switch (literal) {
-  case 'a':
-    break;
-  case "b": { throw new Error('Not implemented yet: "b" case') }
-  case "c": { throw new Error('Not implemented yet: "c" case') }
-  // no default
 }
       `,
             },
