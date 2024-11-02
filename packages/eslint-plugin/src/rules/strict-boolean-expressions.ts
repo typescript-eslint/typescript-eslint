@@ -318,77 +318,83 @@ export default createRule<Options, MessageId>({
       if (isArrayMethodCallWithPredicate(context, services, node)) {
         const predicate = node.arguments.at(0);
 
-        if (!predicate) {
-          return;
+        if (predicate) {
+          checkArrayMethodCallPredicate(predicate);
         }
+      }
+    }
 
-        // custom message for accidental `async` function expressions
-        if (isFunctionExpressionNode(predicate) && predicate.async) {
-          return context.report({
-            node: predicate,
-            messageId: 'predicateCannotBeAsync',
-          });
-        }
+    /**
+     * Dedicated function to check array method predicate calls. Reports predicate
+     * arguments that don't return a boolean value.
+     *
+     * Ignores the `allow*` options and requires a boolean value.
+     */
+    function checkArrayMethodCallPredicate(
+      node: TSESTree.CallExpressionArgument,
+    ): void {
+      // custom message for accidental `async` function expressions
+      if (isFunctionExpressionNode(node) && node.async) {
+        return context.report({
+          node,
+          messageId: 'predicateCannotBeAsync',
+        });
+      }
 
-        const type = checker.getApparentType(
-          services.getTypeAtLocation(predicate),
-        );
+      const type = checker.getApparentType(services.getTypeAtLocation(node));
 
-        if (!isFunctionReturningBooleanType(type)) {
-          const canFix =
-            isFunctionExpressionNode(predicate) && !predicate.returnType;
+      if (!isFunctionReturningBooleanType(type)) {
+        const canFix = isFunctionExpressionNode(node) && !node.returnType;
 
-          return context.report({
-            node: predicate,
-            messageId: 'predicateReturnsNonBoolean',
-            suggest: canFix
-              ? [
-                  {
-                    messageId: 'explicitBooleanReturnType',
-                    fix: fixer => {
-                      const lastParam = predicate.params.at(-1);
+        return context.report({
+          node,
+          messageId: 'predicateReturnsNonBoolean',
+          suggest: canFix
+            ? [
+                {
+                  messageId: 'explicitBooleanReturnType',
+                  fix: fixer => {
+                    const lastParam = node.params.at(-1);
 
-                      // zero parameters
-                      if (!lastParam) {
-                        const closingBracket = nullThrows(
-                          context.sourceCode.getFirstToken(
-                            predicate,
-                            token => token.value === ')',
-                          ),
-                          'function expression with no arguments must have a closing parenthesis.',
-                        );
-
-                        return fixer.insertTextAfterRange(
-                          closingBracket.range,
-                          ': boolean',
-                        );
-                      }
-
-                      const closingBracket =
-                        context.sourceCode.getTokenAfter(lastParam);
-
-                      // one or more parameters wrapped with parens
-                      if (closingBracket?.value === ')') {
-                        return fixer.insertTextAfterRange(
-                          closingBracket.range,
-                          ': boolean',
-                        );
-                      }
-
-                      // one param not wrapped with parens
-                      const parameterText =
-                        context.sourceCode.getText(lastParam);
-
-                      return fixer.replaceText(
-                        predicate.params[0],
-                        `(${parameterText}): boolean`,
+                    // zero parameters
+                    if (!lastParam) {
+                      const closingBracket = nullThrows(
+                        context.sourceCode.getFirstToken(
+                          node,
+                          token => token.value === ')',
+                        ),
+                        'function expression with no arguments must have a closing parenthesis.',
                       );
-                    },
+
+                      return fixer.insertTextAfterRange(
+                        closingBracket.range,
+                        ': boolean',
+                      );
+                    }
+
+                    const closingBracket =
+                      context.sourceCode.getTokenAfter(lastParam);
+
+                    // one or more parameters wrapped with parens
+                    if (closingBracket?.value === ')') {
+                      return fixer.insertTextAfterRange(
+                        closingBracket.range,
+                        ': boolean',
+                      );
+                    }
+
+                    // one param not wrapped with parens
+                    const parameterText = context.sourceCode.getText(lastParam);
+
+                    return fixer.replaceText(
+                      lastParam,
+                      `(${parameterText}): boolean`,
+                    );
                   },
-                ]
-              : null,
-          });
-        }
+                },
+              ]
+            : null,
+        });
       }
     }
 
