@@ -2964,6 +2964,16 @@ assert(Boolean(nullableString));
           endLine: 4,
           line: 2,
           messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].find((x): boolean => {
+  return x;
+});
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2980,6 +2990,16 @@ assert(Boolean(nullableString));
           endLine: 4,
           line: 2,
           messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].find((x): boolean => {
+  return;
+});
+      `,
+            },
+          ],
         },
       ],
     },
@@ -2996,6 +3016,16 @@ assert(Boolean(nullableString));
           endLine: 4,
           line: 2,
           messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].findLast((x): boolean => {
+  return undefined;
+});
+      `,
+            },
+          ],
         },
       ],
     },
@@ -3014,6 +3044,18 @@ assert(Boolean(nullableString));
           endLine: 6,
           line: 2,
           messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+['one', 'two', ''].find((x): boolean => {
+  if (x) {
+    return true;
+  }
+});
+      `,
+            },
+          ],
         },
       ],
     },
@@ -3115,6 +3157,138 @@ assert(Boolean(nullableString));
           endLine: 2,
           line: 2,
           messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[1, null].every((x): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x): boolean | number => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 44,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x: number) => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 34,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[1, null].every((x: number): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every(() => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 25,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[1, null].every((): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[1, null].every((x, i) => {});
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 29,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[1, null].every((x, i): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[() => {}, null].every((x: () => void) => {});
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 45,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[() => {}, null].every((x: () => void): boolean => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+[() => {}, null].every(function (x: () => void) {});
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[() => {}, null].every(function (x: () => void): boolean {});
+      `,
+            },
+          ],
         },
       ],
     },
