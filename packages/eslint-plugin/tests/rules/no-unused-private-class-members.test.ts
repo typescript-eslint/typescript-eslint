@@ -447,5 +447,35 @@ class C {
         },
       ],
     },
+
+    //--------------------------------------------------------------------------
+    // TypeScript checks
+    //--------------------------------------------------------------------------
+    {
+      code: `
+class A {
+  private unusedMember;
+}
+      `,
+      errors: [
+        {
+          ...definedError('unusedMember'),
+          line: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  private unusedMethod() {}
+}
+      `,
+      errors: [
+        {
+          ...definedError('unusedMethod'),
+          line: 3,
+        },
+      ],
+    },
   ],
 });

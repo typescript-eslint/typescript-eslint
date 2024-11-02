@@ -34,7 +34,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const trackedClasses: Map<string, PrivateMember>[] = [];
+    const trackedClassMembers: Map<string, PrivateMember>[] = [];
 
     /**
      * The core ESLint rule tracks methods by adding an extra property of
@@ -42,7 +42,7 @@ export default createRule<Options, MessageIds>({
      * our extended rule, we create a separate data structure to track whether a
      * method is being used.
      */
-    const trackedMembersBeingUsed = new Set<
+    const trackedClassMembersUsed = new Set<
       | TSESTree.MethodDefinitionComputedName
       | TSESTree.MethodDefinitionNonComputedName
       | TSESTree.PropertyDefinitionComputedName
@@ -51,14 +51,12 @@ export default createRule<Options, MessageIds>({
 
     /**
      * Check whether the current node is in a write only assignment.
-     * @param privateIdentifierNode Node referring to a private identifier
+     * @param node Node referring to a private identifier
      * @returns Whether the node is in a write only assignment
      * @private
      */
-    function isWriteOnlyAssignment(
-      privateIdentifierNode: TSESTree.PrivateIdentifier,
-    ): boolean {
-      const parentStatement = privateIdentifierNode.parent.parent;
+    function isWriteOnlyAssignment(node: TSESTree.Identifier): boolean {
+      const parentStatement = node.parent.parent;
       if (parentStatement === undefined) {
         return false;
       }
@@ -77,7 +75,7 @@ export default createRule<Options, MessageIds>({
 
       // It is a write-only usage, since we still allow usages on the right for
       // reads.
-      if (parentStatement.left !== privateIdentifierNode.parent) {
+      if (parentStatement.left !== node.parent) {
         return false;
       }
 
@@ -98,11 +96,9 @@ export default createRule<Options, MessageIds>({
     // Public
     //--------------------------------------------------------------------------
 
-    function processPrivateIdentifier(
-      privateIdentifierNode: TSESTree.PrivateIdentifier,
-    ): void {
-      const classBody = trackedClasses.find(classProperties =>
-        classProperties.has(privateIdentifierNode.name),
+    function processPrivateIdentifier(node: TSESTree.Identifier): void {
+      const classBody = trackedClassMembers.find(classProperties =>
+        classProperties.has(node.name),
       );
 
       // Can't happen, as it is a parser error to have a missing class body, but
@@ -113,19 +109,18 @@ export default createRule<Options, MessageIds>({
 
       // In case any other usage was already detected, we can short circuit the
       // logic here.
-      const memberDefinition = classBody.get(privateIdentifierNode.name);
+      const memberDefinition = classBody.get(node.name);
       if (memberDefinition === undefined) {
         return;
       }
-      if (trackedMembersBeingUsed.has(memberDefinition.declaredNode)) {
+      if (trackedClassMembersUsed.has(memberDefinition.declaredNode)) {
         return;
       }
 
       // The definition of the class member itself
       if (
-        privateIdentifierNode.parent.type ===
-          AST_NODE_TYPES.PropertyDefinition ||
-        privateIdentifierNode.parent.type === AST_NODE_TYPES.MethodDefinition
+        node.parent.type === AST_NODE_TYPES.PropertyDefinition ||
+        node.parent.type === AST_NODE_TYPES.MethodDefinition
       ) {
         return;
       }
@@ -133,18 +128,17 @@ export default createRule<Options, MessageIds>({
       // Any usage of an accessor is considered a read, as the getter/setter can
       // have side-effects in its definition.
       if (memberDefinition.isAccessor) {
-        trackedMembersBeingUsed.add(memberDefinition.declaredNode);
+        trackedClassMembersUsed.add(memberDefinition.declaredNode);
         return;
       }
 
       // Any assignments to this member, except for assignments that also read
-      if (isWriteOnlyAssignment(privateIdentifierNode)) {
+      if (isWriteOnlyAssignment(node)) {
         return;
       }
 
-      const wrappingExpressionType = privateIdentifierNode.parent.parent?.type;
-      const parentOfWrappingExpressionType =
-        privateIdentifierNode.parent.parent?.parent?.type;
+      const wrappingExpressionType = node.parent.parent?.type;
+      const parentOfWrappingExpressionType = node.parent.parent?.parent?.type;
 
       // A statement which only increments (`this.#x++;`)
       if (
@@ -163,8 +157,7 @@ export default createRule<Options, MessageIds>({
       if (
         wrappingExpressionType === AST_NODE_TYPES.Property &&
         parentOfWrappingExpressionType === AST_NODE_TYPES.ObjectPattern &&
-        privateIdentifierNode.parent.parent?.value ===
-          privateIdentifierNode.parent
+        node.parent.parent?.value === node.parent
       ) {
         return;
       }
@@ -184,20 +177,34 @@ export default createRule<Options, MessageIds>({
       // mark the first member we encounter as used. If you were to delete the
       // member, then any subsequent usage could incorrectly mark the member of
       // an encapsulating parent class as used, which is incorrect.
-      trackedMembersBeingUsed.add(memberDefinition.declaredNode);
+      trackedClassMembersUsed.add(memberDefinition.declaredNode);
+    }
+
+    function processPropertyDefinition(
+      node: TSESTree.PropertyDefinition,
+    ): void {
+      if (
+        node.accessibility === 'private' &&
+        node.key.type === AST_NODE_TYPES.Identifier
+      ) {
+        processPrivateIdentifier(node.key);
+      }
     }
 
     return {
-      // Collect all declared members up front and assume they are all unused
+      // Collect all declared members/methods up front and assume they are all
+      // unused.
       ClassBody(classBodyNode): void {
         const privateMembers = new Map<string, PrivateMember>();
 
-        trackedClasses.unshift(privateMembers);
+        trackedClassMembers.unshift(privateMembers);
         for (const bodyMember of classBodyNode.body) {
           if (
             (bodyMember.type === AST_NODE_TYPES.PropertyDefinition ||
               bodyMember.type === AST_NODE_TYPES.MethodDefinition) &&
-            bodyMember.key.type === AST_NODE_TYPES.PrivateIdentifier
+            (bodyMember.key.type === AST_NODE_TYPES.PrivateIdentifier ||
+              (bodyMember.key.type === AST_NODE_TYPES.Identifier &&
+                bodyMember.accessibility === 'private'))
           ) {
             privateMembers.set(bodyMember.key.name, {
               declaredNode: bodyMember,
@@ -209,36 +216,31 @@ export default createRule<Options, MessageIds>({
         }
       },
 
-      /*
-       * Process all usages of the private identifier and remove a member from
-       * `declaredAndUnusedPrivateMembers` if we deem it used.
-       */
-      // Bug: We have to manually specify the type for the node or it will be
-      // inferred to `never` for some reason.
-      // https://github.com/typescript-eslint/typescript-eslint/issues/9988
-      PrivateIdentifier(
-        privateIdentifierNode: TSESTree.PrivateIdentifier,
-      ): void {
-        processPrivateIdentifier(privateIdentifierNode);
+      // Process nodes like:
+      // ```ts
+      // class A {
+      //   #myPrivateMember = 123;
+      // }
+      // ```
+      PrivateIdentifier(node): void {
+        processPrivateIdentifier(node);
       },
 
-      /**
-       * We need to repeat the logic from the `PrivateIdentitier` block above
-       */
+      // Process nodes like:
+      // ```ts
+      // class A {
+      //   private myPrivateMember = 123;
+      // }
+      // ```
       PropertyDefinition(node): void {
-        if (node.accessibility !== 'private') {
-          return;
-        }
+        processPropertyDefinition(node);
       },
 
-      /*
-       * Post-process the class members and report any remaining members.
-       * Since private members can only be accessed in the current class
-       * context, we can safely assume that all usages are within the current
-       * class body.
-       */
+      // Post-process the class members and report any remaining members. Since
+      // private members can only be accessed in the current class context, we
+      // can safely assume that all usages are within the current class body.
       'ClassBody:exit'(): void {
-        const unusedPrivateMembers = trackedClasses.shift();
+        const unusedPrivateMembers = trackedClassMembers.shift();
         if (unusedPrivateMembers === undefined) {
           return;
         }
@@ -247,7 +249,7 @@ export default createRule<Options, MessageIds>({
           classMemberName,
           { declaredNode },
         ] of unusedPrivateMembers.entries()) {
-          if (trackedMembersBeingUsed.has(declaredNode)) {
+          if (trackedClassMembersUsed.has(declaredNode)) {
             continue;
           }
           context.report({
