@@ -1,6 +1,5 @@
 import type {
   ParserServicesWithTypeInformation,
-  TSESLint,
   TSESTree,
 } from '@typescript-eslint/utils';
 
@@ -243,7 +242,7 @@ export default createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function isFunctionReturningBoolean(type: ts.Type): boolean {
+    function isFunctionReturningBooleanType(type: ts.Type): boolean {
       for (const signature of type.getCallSignatures()) {
         const returnType = signature.getReturnType();
 
@@ -262,6 +261,15 @@ export default createRule<Options, MessageId>({
       }
 
       return false;
+    }
+
+    function isFunctionExpressionNode(
+      node: TSESTree.CallExpressionArgument,
+    ): node is TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression {
+      return (
+        node.type === AST_NODE_TYPES.FunctionExpression ||
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression
+      );
     }
 
     /**
@@ -314,12 +322,8 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        // custom-tailored message for accidental `async` function expressions
-        if (
-          (predicate.type === AST_NODE_TYPES.FunctionExpression ||
-            predicate.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
-          predicate.async
-        ) {
+        // custom message for accidental `async` function expressions
+        if (isFunctionExpressionNode(predicate) && predicate.async) {
           return context.report({
             node: predicate,
             messageId: 'predicateCannotBeAsync',
@@ -330,61 +334,59 @@ export default createRule<Options, MessageId>({
           services.getTypeAtLocation(predicate),
         );
 
-        if (!isFunctionReturningBoolean(type)) {
-          const suggest: TSESLint.ReportSuggestionArray<MessageId> = [];
-
-          if (
-            (predicate.type === AST_NODE_TYPES.FunctionExpression ||
-              predicate.type === AST_NODE_TYPES.ArrowFunctionExpression) &&
-            !predicate.returnType
-          ) {
-            suggest.push({
-              messageId: 'explicitBooleanReturnType',
-              fix: fixer => {
-                const lastParam = predicate.params.at(-1);
-
-                // zero parameters
-                if (!lastParam) {
-                  const closingBracket = nullThrows(
-                    context.sourceCode.getFirstToken(
-                      predicate,
-                      token => token.value === ')',
-                    ),
-                    'function expression with no arguments must have a closing parenthesis.',
-                  );
-
-                  return fixer.insertTextAfterRange(
-                    closingBracket.range,
-                    ': boolean',
-                  );
-                }
-
-                const closingBracket =
-                  context.sourceCode.getTokenAfter(lastParam);
-
-                // one or more parameters wrapped with parens
-                if (closingBracket?.value === ')') {
-                  return fixer.insertTextAfterRange(
-                    closingBracket.range,
-                    ': boolean',
-                  );
-                }
-
-                // one param not wrapped with parens
-                const parameterText = context.sourceCode.getText(lastParam);
-
-                return fixer.replaceText(
-                  predicate.params[0],
-                  `(${parameterText}): boolean`,
-                );
-              },
-            });
-          }
+        if (!isFunctionReturningBooleanType(type)) {
+          const canFix =
+            isFunctionExpressionNode(predicate) && !predicate.returnType;
 
           return context.report({
             node: predicate,
             messageId: 'predicateReturnsNonBoolean',
-            suggest,
+            suggest: canFix
+              ? [
+                  {
+                    messageId: 'explicitBooleanReturnType',
+                    fix: fixer => {
+                      const lastParam = predicate.params.at(-1);
+
+                      // zero parameters
+                      if (!lastParam) {
+                        const closingBracket = nullThrows(
+                          context.sourceCode.getFirstToken(
+                            predicate,
+                            token => token.value === ')',
+                          ),
+                          'function expression with no arguments must have a closing parenthesis.',
+                        );
+
+                        return fixer.insertTextAfterRange(
+                          closingBracket.range,
+                          ': boolean',
+                        );
+                      }
+
+                      const closingBracket =
+                        context.sourceCode.getTokenAfter(lastParam);
+
+                      // one or more parameters wrapped with parens
+                      if (closingBracket?.value === ')') {
+                        return fixer.insertTextAfterRange(
+                          closingBracket.range,
+                          ': boolean',
+                        );
+                      }
+
+                      // one param not wrapped with parens
+                      const parameterText =
+                        context.sourceCode.getText(lastParam);
+
+                      return fixer.replaceText(
+                        predicate.params[0],
+                        `(${parameterText}): boolean`,
+                      );
+                    },
+                  },
+                ]
+              : null,
           });
         }
       }
