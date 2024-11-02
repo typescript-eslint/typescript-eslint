@@ -44,7 +44,7 @@ assert(maybeString);
 
 // array predicates return statements are boolean contexts.
 ['one', null].filter(x => x);
-                          ~ Unexpected nullable string value in conditional. Please handle the nullish/empty cases explicitly.
+                     ~~~~~~ Predicate function should return a boolean.
 "
 `;
 
