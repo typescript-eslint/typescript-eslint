@@ -129,7 +129,7 @@ export default createRule<Options, MessageId>({
       conditionFixDefaultZero:
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
       explicitBooleanReturnType:
-        'Explicitly return a boolean expression for type accuracy.',
+        'Add an explicit boolean return type annotation.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
       predicateCannotBeAsync:
