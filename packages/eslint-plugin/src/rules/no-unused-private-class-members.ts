@@ -180,17 +180,6 @@ export default createRule<Options, MessageIds>({
       trackedClassMembersUsed.add(memberDefinition.declaredNode);
     }
 
-    function processPropertyDefinition(
-      node: TSESTree.PropertyDefinition,
-    ): void {
-      if (
-        node.accessibility === 'private' &&
-        node.key.type === AST_NODE_TYPES.Identifier
-      ) {
-        processPrivateIdentifier(node.key);
-      }
-    }
-
     return {
       // Collect all declared members/methods up front and assume they are all
       // unused.
@@ -233,7 +222,12 @@ export default createRule<Options, MessageIds>({
       // }
       // ```
       PropertyDefinition(node): void {
-        processPropertyDefinition(node);
+        if (
+          node.accessibility === 'private' &&
+          node.key.type === AST_NODE_TYPES.Identifier
+        ) {
+          processPrivateIdentifier(node.key);
+        }
       },
 
       // Post-process the class members and report any remaining members. Since
