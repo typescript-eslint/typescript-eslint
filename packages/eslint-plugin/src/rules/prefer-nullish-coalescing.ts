@@ -21,6 +21,7 @@ import {
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignoreBooleanCoercion?: boolean;
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
@@ -32,7 +33,6 @@ export type Options = [
         }
       | true;
     ignoreTernaryTests?: boolean;
-    ignoreBooleanCoercion?: boolean;
   },
 ];
 
@@ -71,6 +71,11 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             description:
               'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
+          },
+          ignoreBooleanCoercion: {
+            type: 'boolean',
+            description:
+              'Whether to ignore arguments to the `Boolean` constructor',
           },
           ignoreConditionalTests: {
             type: 'boolean',
@@ -120,11 +125,6 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.',
           },
-          ignoreBooleanCoercion: {
-            description:
-              'Whether to ignore arguments to the `Boolean` constructor',
-            type: 'boolean',
-          },
         },
       },
     ],
@@ -132,6 +132,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      ignoreBooleanCoercion: false,
       ignoreConditionalTests: true,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
@@ -140,7 +141,6 @@ export default createRule<Options, MessageIds>({
         number: false,
         string: false,
       },
-      ignoreBooleanCoercion: false,
       ignoreTernaryTests: false,
     },
   ],
@@ -149,11 +149,11 @@ export default createRule<Options, MessageIds>({
     [
       {
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        ignoreBooleanCoercion,
         ignoreConditionalTests,
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
         ignoreTernaryTests,
-        ignoreBooleanCoercion,
       },
     ],
   ) {
