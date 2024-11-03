@@ -12,7 +12,7 @@ const SENTINEL_TYPE =
 /**
  * Parses a given value as options.
  */
-function parseOptions(options: Config | string | null): Required<Config> {
+function parseOptions(options: string | Config | null): Required<Config> {
   let functions = true;
   let classes = true;
   let enums = true;
@@ -237,7 +237,10 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             additionalProperties: false,
             properties: {
-              allowNamedExports: { type: 'boolean' },
+              allowNamedExports: {
+                type: 'boolean',
+                description: 'Whether to ignore named exports.',
+              },
               classes: {
                 type: 'boolean',
                 description:

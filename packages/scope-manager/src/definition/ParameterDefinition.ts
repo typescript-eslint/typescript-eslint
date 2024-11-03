@@ -21,7 +21,10 @@ class ParameterDefinition extends DefinitionBase<
   /**
    * Whether the parameter definition is a part of a rest parameter.
    */
+  public readonly isTypeDefinition = false;
+  public readonly isVariableDefinition = true;
   public readonly rest: boolean;
+
   constructor(
     name: TSESTree.BindingName,
     node: ParameterDefinition['node'],
@@ -30,9 +33,6 @@ class ParameterDefinition extends DefinitionBase<
     super(DefinitionType.Parameter, name, node, null);
     this.rest = rest;
   }
-
-  public readonly isTypeDefinition = false;
-  public readonly isVariableDefinition = true;
 }
 
 export { ParameterDefinition };
