@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
@@ -25,8 +26,8 @@ interface Config {
     accessors?: AccessibilityLevel;
     constructors?: AccessibilityLevel;
     methods?: AccessibilityLevel;
-    properties?: AccessibilityLevel;
     parameterProperties?: AccessibilityLevel;
+    properties?: AccessibilityLevel;
   };
 }
 
@@ -40,7 +41,6 @@ type MessageIds =
 export default createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
-    hasSuggestions: true,
     type: 'problem',
     docs: {
       description:
@@ -48,61 +48,68 @@ export default createRule<Options, MessageIds>({
       // too opinionated to be recommended
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
       missingAccessibility:
         'Missing accessibility modifier on {{type}} {{name}}.',
       unwantedPublicAccessibility:
         'Public accessibility modifier on {{type}} {{name}}.',
-      addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           accessibilityLevel: {
             oneOf: [
               {
                 type: 'string',
-                enum: ['explicit'],
                 description: 'Always require an accessor.',
+                enum: ['explicit'],
               },
               {
                 type: 'string',
-                enum: ['no-public'],
                 description: 'Require an accessor except when public.',
+                enum: ['no-public'],
               },
               {
                 type: 'string',
-                enum: ['off'],
                 description: 'Never check whether there is an accessor.',
+                enum: ['off'],
               },
             ],
           },
         },
-        type: 'object',
+        additionalProperties: false,
         properties: {
-          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
-          overrides: {
-            type: 'object',
-            properties: {
-              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
-              parameterProperties: {
-                $ref: '#/items/0/$defs/accessibilityLevel',
-              },
-            },
-            additionalProperties: false,
+          accessibility: {
+            $ref: '#/items/0/$defs/accessibilityLevel',
+            description:
+              'Which accessibility modifier is required to exist or not exist.',
           },
           ignoredMethodNames: {
-            description: 'Specific method names that may be ignored.',
             type: 'array',
+            description: 'Specific method names that may be ignored.',
             items: {
               type: 'string',
             },
           },
+          overrides: {
+            type: 'object',
+            additionalProperties: false,
+            description:
+              'Changes to required accessibility modifiers for specific kinds of class members.',
+            properties: {
+              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              parameterProperties: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+              },
+              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
+            },
+          },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -164,8 +171,8 @@ export default createRule<Options, MessageIds>({
           loc: rangeToLoc(context.sourceCode, publicKeyword.range),
           messageId: 'unwantedPublicAccessibility',
           data: {
-            type: nodeType,
             name: methodName,
+            type: nodeType,
           },
           fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
         });
@@ -174,8 +181,8 @@ export default createRule<Options, MessageIds>({
           loc: getMemberHeadLoc(context.sourceCode, methodDefinition),
           messageId: 'missingAccessibility',
           data: {
-            type: nodeType,
             name: methodName,
+            type: nodeType,
           },
           suggest: getMissingAccessibilitySuggestions(methodDefinition),
         });
@@ -299,8 +306,8 @@ export default createRule<Options, MessageIds>({
           loc: rangeToLoc(context.sourceCode, publicKeywordRange.range),
           messageId: 'unwantedPublicAccessibility',
           data: {
-            type: nodeType,
             name: propertyName,
+            type: nodeType,
           },
           fix: fixer => fixer.removeRange(publicKeywordRange.rangeToRemove),
         });
@@ -312,8 +319,8 @@ export default createRule<Options, MessageIds>({
           loc: getMemberHeadLoc(context.sourceCode, propertyDefinition),
           messageId: 'missingAccessibility',
           data: {
-            type: nodeType,
             name: propertyName,
+            type: nodeType,
           },
           suggest: getMissingAccessibilitySuggestions(propertyDefinition),
         });
@@ -353,8 +360,8 @@ export default createRule<Options, MessageIds>({
               ),
               messageId: 'missingAccessibility',
               data: {
-                type: nodeType,
                 name: nodeName,
+                type: nodeType,
               },
               suggest: getMissingAccessibilitySuggestions(node),
             });
@@ -368,8 +375,8 @@ export default createRule<Options, MessageIds>({
               loc: rangeToLoc(context.sourceCode, publicKeyword.range),
               messageId: 'unwantedPublicAccessibility',
               data: {
-                type: nodeType,
                 name: nodeName,
+                type: nodeType,
               },
               fix: fixer => fixer.removeRange(publicKeyword.rangeToRemove),
             });

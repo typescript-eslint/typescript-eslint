@@ -10,6 +10,976 @@ import rule from '../../../src/rules/no-shadow';
 const ruleTester = new RuleTester();
 
 ruleTester.run('no-shadow', rule, {
+  invalid: [
+    {
+      code: `
+function a(x) {
+  var b = function c() {
+    var x = 'foo';
+  };
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 12,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = x => {
+  var b = () => {
+    var x = 'foo';
+  };
+};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 9,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function a(x) {
+  var b = function () {
+    var x = 'foo';
+  };
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 12,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+function a(x) {
+  return ++x;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = 3;
+function b() {
+  var a = 10;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = 3;
+function b() {
+  var a = 10;
+}
+setTimeout(function () {
+  b();
+}, 0);
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var a = 3;
+function b() {
+  var a = 10;
+  var b = 0;
+}
+setTimeout(function () {
+  b();
+}, 0);
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          data: {
+            name: 'b',
+            shadowedColumn: 10,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+var x = 1;
+{
+  let x = 2;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+let x = 1;
+{
+  const x = 2;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  let a;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+function foo(a) {}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+{
+  let a;
+}
+let a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  let a;
+}
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  let a;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+const a = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  const a = 0;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+let a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo() {
+  let a;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+let a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo() {
+  var a;
+}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo(a) {}
+let a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo(a) {}
+var a;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 5,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+function foo(a) {}
+function a() {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 10,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+(function a() {
+  function a() {}
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+(function a() {
+  class a {}
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function a() {
+  (function a() {});
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+(function a() {
+  (class a {});
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function () {
+  var a = function (a) {};
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+(function () {
+  var a = function () {
+    function a() {}
+  };
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+(function () {
+  var a = function () {
+    class a {}
+  };
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function () {
+  var a = function () {
+    (function a() {});
+  };
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+(function () {
+  var a = function () {
+    (class a {});
+  };
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function () {
+  var a = class {
+    constructor() {
+      class a {}
+    }
+  };
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 7,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+class A {
+  constructor() {
+    var A;
+  }
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
+    {
+      code: `
+(function a() {
+  function a() {
+    function a() {}
+  }
+})();
+      `,
+      errors: [
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 11,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+        {
+          data: {
+            name: 'a',
+            shadowedColumn: 12,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  var Object = 0;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'Object',
+          },
+          messageId: 'noShadowGlobal',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo() {
+  var top = 0;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'top',
+          },
+          messageId: 'noShadowGlobal',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { globals: { top: 'readonly' } },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var Object = 0;',
+      errors: [
+        {
+          data: {
+            name: 'Object',
+          },
+          messageId: 'noShadowGlobal',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var top = 0;',
+      errors: [
+        {
+          data: {
+            name: 'top',
+          },
+          messageId: 'noShadowGlobal',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        globals: { top: 'readonly' },
+        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var Object = 0;',
+      errors: [
+        {
+          data: {
+            name: 'Object',
+          },
+          messageId: 'noShadowGlobal',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: 'var top = 0;',
+      errors: [
+        {
+          data: {
+            name: 'top',
+          },
+          messageId: 'noShadowGlobal',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: {
+        globals: { top: 'readonly' },
+        parserOptions: { ecmaFeatures: { globalReturn: true } },
+      },
+      options: [{ builtinGlobals: true }],
+    },
+    {
+      code: `
+function foo(cb) {
+  (function (cb) {
+    cb(42);
+  })(cb);
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'cb',
+            shadowedColumn: 14,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+    },
+  ],
   valid: [
     `
 var a = 3;
@@ -82,8 +1052,8 @@ var a;
 }
 let a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -92,8 +1062,8 @@ let a;
 }
 var a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -102,8 +1072,8 @@ var a;
 }
 function a() {}
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -112,8 +1082,8 @@ function a() {}
 }
 const a = 1;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -122,8 +1092,8 @@ const a = 1;
 }
 var a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -132,8 +1102,8 @@ var a;
 }
 function a() {}
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -142,8 +1112,8 @@ function foo() {
 }
 let a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -152,8 +1122,8 @@ function foo() {
 }
 var a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -162,8 +1132,8 @@ function foo() {
 }
 function a() {}
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -172,8 +1142,8 @@ function foo() {
 }
 let a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -182,8 +1152,8 @@ function foo() {
 }
 var a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -192,32 +1162,32 @@ function foo() {
 }
 function a() {}
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
 function foo(a) {}
 let a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
 function foo(a) {}
 var a;
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
 function foo(a) {}
 function a() {}
       `,
-      options: [{ hoist: 'never' }],
       languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'never' }],
     },
     {
       code: `
@@ -330,976 +1300,6 @@ function foo(cb) {
 }
       `,
       options: [{ allow: ['cb'] }],
-    },
-  ],
-  invalid: [
-    {
-      code: `
-function a(x) {
-  var b = function c() {
-    var x = 'foo';
-  };
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 12,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = x => {
-  var b = () => {
-    var x = 'foo';
-  };
-};
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 9,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function a(x) {
-  var b = function () {
-    var x = 'foo';
-  };
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 12,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var x = 1;
-function a(x) {
-  return ++x;
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = 3;
-function b() {
-  var a = 10;
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = 3;
-function b() {
-  var a = 10;
-}
-setTimeout(function () {
-  b();
-}, 0);
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var a = 3;
-function b() {
-  var a = 10;
-  var b = 0;
-}
-setTimeout(function () {
-  b();
-}, 0);
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'b',
-            shadowedLine: 3,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-var x = 1;
-{
-  let x = 2;
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-let x = 1;
-{
-  const x = 2;
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'x',
-            shadowedLine: 2,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  let a;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(a) {}
-function a() {}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  let a;
-}
-let a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  let a;
-}
-var a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  let a;
-}
-function a() {}
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-const a = 1;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-var a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-{
-  const a = 0;
-}
-function a() {}
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-let a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-var a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  let a;
-}
-function a() {}
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-let a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-var a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var a;
-}
-function a() {}
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 5,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(a) {}
-let a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(a) {}
-var a;
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 5,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(a) {}
-function a() {}
-      `,
-      options: [{ hoist: 'all' }],
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 10,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function a() {
-  function a() {}
-})();
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 11,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function a() {
-  class a {}
-})();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 11,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function a() {
-  (function a() {});
-})();
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 11,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function a() {
-  (class a {});
-})();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 11,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function () {
-  var a = function (a) {};
-})();
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function () {
-  var a = function () {
-    function a() {}
-  };
-})();
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function () {
-  var a = function () {
-    class a {}
-  };
-})();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function () {
-  var a = function () {
-    (function a() {});
-  };
-})();
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function () {
-  var a = function () {
-    (class a {});
-  };
-})();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function () {
-  var a = class {
-    constructor() {
-      class a {}
-    }
-  };
-})();
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-class A {
-  constructor() {
-    var A;
-  }
-}
-      `,
-      languageOptions: { parserOptions: { ecmaVersion: 6 } },
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'A',
-            shadowedLine: 2,
-            shadowedColumn: 7,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-(function a() {
-  function a() {
-    function a() {}
-  }
-})();
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 2,
-            shadowedColumn: 11,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'a',
-            shadowedLine: 3,
-            shadowedColumn: 12,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var Object = 0;
-}
-      `,
-      options: [{ builtinGlobals: true }],
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'Object',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo() {
-  var top = 0;
-}
-      `,
-      options: [{ builtinGlobals: true }],
-      languageOptions: { globals: { top: 'readonly' } },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'top',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var Object = 0;',
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'Object',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var top = 0;',
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        globals: { top: 'readonly' },
-        parserOptions: { ecmaVersion: 6, sourceType: 'module' },
-      },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'top',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var Object = 0;',
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        parserOptions: { ecmaFeatures: { globalReturn: true } },
-      },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'Object',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: 'var top = 0;',
-      options: [{ builtinGlobals: true }],
-      languageOptions: {
-        globals: { top: 'readonly' },
-        parserOptions: { ecmaFeatures: { globalReturn: true } },
-      },
-      errors: [
-        {
-          messageId: 'noShadowGlobal',
-          data: {
-            name: 'top',
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-function foo(cb) {
-  (function (cb) {
-    cb(42);
-  })(cb);
-}
-      `,
-      errors: [
-        {
-          messageId: 'noShadow',
-          data: {
-            name: 'cb',
-            shadowedLine: 2,
-            shadowedColumn: 14,
-          },
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
     },
   ],
 });

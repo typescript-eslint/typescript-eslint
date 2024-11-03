@@ -26,9 +26,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a! == b;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -42,9 +42,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a! === b;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -58,9 +58,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a + b! == c;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'wrapUpLeft',
@@ -74,9 +74,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(obj = new new OuterObj().InnerObj).Name! == c;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -90,9 +90,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(a==b)! ==c;',
       errors: [
         {
-          messageId: 'confusingEqual',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingEqual',
           suggestions: [
             {
               messageId: 'notNeedInEqualTest',
@@ -106,9 +106,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a! = b;',
       errors: [
         {
-          messageId: 'confusingAssign',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingAssign',
           suggestions: [
             {
               messageId: 'notNeedInAssign',
@@ -122,9 +122,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(obj = new new OuterObj().InnerObj).Name! = c;',
       errors: [
         {
-          messageId: 'confusingAssign',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingAssign',
           suggestions: [
             {
               messageId: 'notNeedInAssign',
@@ -138,9 +138,9 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: '(a=b)! =c;',
       errors: [
         {
-          messageId: 'confusingAssign',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'confusingAssign',
           suggestions: [
             {
               messageId: 'notNeedInAssign',
@@ -154,10 +154,10 @@ ruleTester.run('no-confusing-non-null-assertion', rule, {
       code: 'a! in b;',
       errors: [
         {
-          messageId: 'confusingOperator',
+          column: 1,
           data: { operator: 'in' },
           line: 1,
-          column: 1,
+          messageId: 'confusingOperator',
           suggestions: [
             {
               messageId: 'notNeedInOperator',
@@ -177,10 +177,10 @@ a !in b;
       `,
       errors: [
         {
-          messageId: 'confusingOperator',
+          column: 1,
           data: { operator: 'in' },
           line: 2,
-          column: 1,
+          messageId: 'confusingOperator',
           suggestions: [
             {
               messageId: 'notNeedInOperator',
@@ -202,10 +202,10 @@ a in b;
       code: 'a! instanceof b;',
       errors: [
         {
-          messageId: 'confusingOperator',
+          column: 1,
           data: { operator: 'instanceof' },
           line: 1,
-          column: 1,
+          messageId: 'confusingOperator',
           suggestions: [
             {
               messageId: 'notNeedInOperator',

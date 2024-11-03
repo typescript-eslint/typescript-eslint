@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -436,8 +436,14 @@ const f = <T,>(
       code: 'const func = <T,>(param: T) => null;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: unknown) => null;',
+            },
+          ],
         },
       ],
     },
@@ -445,8 +451,14 @@ const f = <T,>(
       code: 'const f1 = <T,>(): T => {};',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const f1 = (): unknown => {};',
+            },
+          ],
         },
       ],
     },
@@ -458,8 +470,18 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        interface I {
+          (value: unknown): void;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -469,7 +491,21 @@ const f = <T,>(
           m<T>(x: T): void;
         }
       `,
-      errors: [{ messageId: 'sole' }],
+      errors: [
+        {
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        interface I {
+          m(x: unknown): void;
+        }
+      `,
+            },
+          ],
+        },
+      ],
     },
     {
       code: `
@@ -481,8 +517,20 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        class Joiner {
+          join(el: string | number, other: string) {
+            return [el, other].join(',');
+          }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -492,8 +540,16 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'V', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -505,12 +561,32 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C<U> {
+          method(param: unknown): U;
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'class', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C<T> {
+          method(param: T): unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -522,12 +598,32 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {
+          method<U>(param: unknown): U;
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {
+          method<T>(param: T): unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -539,8 +635,18 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'P', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class C {
+          prop: () => unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -552,8 +658,18 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare class Foo {
+          foo(this: unknown): void;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -565,12 +681,32 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'A', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function third<B, C>(a: unknown, b: B, c: C): C {
+          return c;
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'B', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function third<A, C>(a: A, b: unknown, c: C): C {
+          return c;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -583,8 +719,19 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function foo(_: unknown) {
+          const x: unknown = null!;
+          const y: unknown = null!;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -597,22 +744,46 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function foo(_: unknown): void {
+          const x: unknown = null!;
+          const y: unknown = null!;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
     {
       code: `
-        function foo<T>(_: T): <T>(input: T) => T {
-          const x: T = null!;
-          const y: T = null!;
-        }
+function foo<T>(_: T): <T>(input: T) => T {
+  const x: T = null!;
+  const y: T = null!;
+  return null!;
+}
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function foo(_: unknown): <T>(input: T) => T {
+  const x: unknown = null!;
+  const y: unknown = null!;
+  return null!;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -629,8 +800,23 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function foo(_: unknown) {
+          function withX(): unknown {
+            return null!;
+          }
+          function withY(): unknown {
+            return null!;
+          }
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -642,8 +828,18 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function parseYAML(input: string): unknown {
+          return input as any as unknown;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -655,8 +851,18 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'K', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function printProperty<T>(obj: T, key: keyof T) {
+          console.log(obj[key]);
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -671,6 +877,17 @@ const f = <T,>(
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function fn(param: string) {
+          let v: unknown = null!;
+          return v;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -689,12 +906,44 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB1', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function both<
+          Args extends unknown[],
+          CB2 extends (...args: Args) => void,
+        >(fn1: (...args: Args) => void, fn2: CB2): (...args: Args) => void {
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'CB2', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function both<
+          Args extends unknown[],
+          CB1 extends (...args: Args) => void,
+        >(fn1: CB1, fn2: (...args: Args) => void): (...args: Args) => void {
+          return function (...args: Args) {
+            fn1(...args);
+            fn2(...args);
+          };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -708,6 +957,16 @@ const f = <T,>(
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        function getLength(x: { length: number }) {
+          return x.length;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -724,6 +983,19 @@ const f = <T,>(
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        interface Lengthy {
+          length: number;
+        }
+        function getLength(x: Lengthy) {
+          return x.length;
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -731,8 +1003,14 @@ const f = <T,>(
       code: 'declare function get<T>(): unknown;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get(): unknown;',
+            },
+          ],
         },
       ],
     },
@@ -740,8 +1018,14 @@ const f = <T,>(
       code: 'declare function get<T>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get(): unknown;',
+            },
+          ],
         },
       ],
     },
@@ -749,8 +1033,14 @@ const f = <T,>(
       code: 'declare function get<T extends object>(): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get(): object;',
+            },
+          ],
         },
       ],
     },
@@ -758,8 +1048,14 @@ const f = <T,>(
       code: 'declare function take<T>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take(param: unknown): void;',
+            },
+          ],
         },
       ],
     },
@@ -767,8 +1063,14 @@ const f = <T,>(
       code: 'declare function take<T extends object>(param: T): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take(param: object): void;',
+            },
+          ],
         },
       ],
     },
@@ -776,8 +1078,15 @@ const f = <T,>(
       code: 'declare function take<T, U = T>(param1: T, param2: U): void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function take<T>(param1: T, param2: unknown): void;',
+            },
+          ],
         },
       ],
     },
@@ -785,8 +1094,14 @@ const f = <T,>(
       code: 'declare function take<T, U extends T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take<T>(param: T): T;',
+            },
+          ],
         },
       ],
     },
@@ -794,8 +1109,14 @@ const f = <T,>(
       code: 'declare function take<T, U extends T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function take<U extends unknown>(param: U): U;',
+            },
+          ],
         },
       ],
     },
@@ -803,8 +1124,14 @@ const f = <T,>(
       code: 'declare function get<T, U = T>(param: U): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get<U = unknown>(param: U): U;',
+            },
+          ],
         },
       ],
     },
@@ -812,8 +1139,14 @@ const f = <T,>(
       code: 'declare function get<T, U extends T = T>(param: T): U;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function get<T>(param: T): T;',
+            },
+          ],
         },
       ],
     },
@@ -821,8 +1154,15 @@ const f = <T,>(
       code: 'declare function compare<T, U extends T>(param1: T, param2: U): boolean;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function compare<T>(param1: T, param2: T): boolean;',
+            },
+          ],
         },
       ],
     },
@@ -830,16 +1170,37 @@ const f = <T,>(
       code: 'declare function get<T>(param: <U, V>(param: U) => V): T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get(param: <U, V>(param: U) => V): unknown;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <V>(param: unknown) => V): T;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <U>(param: U) => unknown): T;',
+            },
+          ],
         },
       ],
     },
@@ -847,16 +1208,44 @@ const f = <T,>(
       code: 'declare function get<T>(param: <T, U>(param: T) => U): T;',
       errors: [
         {
-          messageId: 'sole',
+          column: 22,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 23,
+          line: 1,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get(param: <T, U>(param: T) => U): unknown;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
+          column: 33,
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          endColumn: 34,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <U>(param: unknown) => U): T;',
+            },
+          ],
         },
         {
-          messageId: 'sole',
+          column: 36,
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          endColumn: 37,
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function get<T>(param: <T>(param: T) => unknown): T;',
+            },
+          ],
         },
       ],
     },
@@ -864,8 +1253,14 @@ const f = <T,>(
       code: 'type Fn = <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => unknown;',
+            },
+          ],
         },
       ],
     },
@@ -873,8 +1268,14 @@ const f = <T,>(
       code: 'type Fn = <T>() => [];',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => [];',
+            },
+          ],
         },
       ],
     },
@@ -885,8 +1286,17 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        type Other = 0;
+        type Fn = () => Other;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -897,8 +1307,17 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        type Other = 0 | 1;
+        type Fn = () => Other;
+      `,
+            },
+          ],
         },
       ],
     },
@@ -906,8 +1325,14 @@ const f = <T,>(
       code: 'type Fn = <U>(param: U) => void;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'U', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = (param: unknown) => void;',
+            },
+          ],
         },
       ],
     },
@@ -915,8 +1340,14 @@ const f = <T,>(
       code: 'type Ctr = new <T>() => T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Ctr = new () => unknown;',
+            },
+          ],
         },
       ],
     },
@@ -924,8 +1355,14 @@ const f = <T,>(
       code: 'type Fn = <T>() => { [K in keyof T]: K };',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => { [K in keyof unknown]: K };',
+            },
+          ],
         },
       ],
     },
@@ -933,8 +1370,14 @@ const f = <T,>(
       code: "type Fn = <T>() => { [K in 'a']: T };",
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: "type Fn = () => { [K in 'a']: unknown };",
+            },
+          ],
         },
       ],
     },
@@ -942,8 +1385,14 @@ const f = <T,>(
       code: 'type Fn = <T>(value: unknown) => value is T;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = (value: unknown) => value is unknown;',
+            },
+          ],
         },
       ],
     },
@@ -951,8 +1400,14 @@ const f = <T,>(
       code: 'type Fn = <T extends string>() => `a${T}b`;',
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'type Fn = () => `a${string}b`;',
+            },
+          ],
         },
       ],
     },
@@ -965,8 +1420,61 @@ const f = <T,>(
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'V', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare function mapObj<K extends string>(
+          obj: { [key in K]?: unknown },
+          fn: (key: K) => number,
+        ): number[];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare function setItem<T>(T): T;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+declare function setItem(T): unknown;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface StorageService {
+  setItem<T>({ key: string, value: T }): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'never used' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+interface StorageService {
+  setItem({ key: string, value: T }): Promise<void>;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -987,12 +1495,63 @@ type Equal<X, Y> =
       `,
       errors: [
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T1', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (() => unknown extends Compute<X> ? 1 : 2) extends
+    (<T2>() => T2 extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+            },
+          ],
         },
         {
-          messageId: 'sole',
           data: { descriptor: 'function', name: 'T2', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+type Compute<A> = A extends Function ? A : { [K in keyof A]: Compute<A[K]> };
+type Equal<X, Y> =
+  (<T1>() => T1 extends Compute<X> ? 1 : 2) extends
+    (() => unknown extends Compute<Y> ? 1 : 2)
+  ? true
+  : false;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function f<T extends any>(x: T): void {
+  // @ts-expect-error
+  x.notAMethod();
+}
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+function f(x: unknown): void {
+  // @ts-expect-error
+  x.notAMethod();
+}
+      `,
+            },
+          ],
         },
       ],
     },

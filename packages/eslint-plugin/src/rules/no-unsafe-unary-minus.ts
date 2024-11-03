@@ -49,8 +49,8 @@ export default util.createRule<Options, MessageIds>({
             )
         ) {
           context.report({
-            messageId: 'unaryMinus',
             node,
+            messageId: 'unaryMinus',
             data: { type: checker.typeToString(argType) },
           });
         }

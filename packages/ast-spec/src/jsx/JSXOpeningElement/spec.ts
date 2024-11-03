@@ -6,9 +6,9 @@ import type { JSXAttribute } from '../JSXAttribute/spec';
 import type { JSXSpreadAttribute } from '../JSXSpreadAttribute/spec';
 
 export interface JSXOpeningElement extends BaseNode {
+  type: AST_NODE_TYPES.JSXOpeningElement;
   attributes: (JSXAttribute | JSXSpreadAttribute)[];
   name: JSXTagNameExpression;
   selfClosing: boolean;
-  type: AST_NODE_TYPES.JSXOpeningElement;
   typeArguments: TSTypeParameterInstantiation | undefined;
 }

@@ -11,13 +11,13 @@ import type {
 } from '../../unions/PropertyName';
 
 interface PropertyBase extends BaseNode {
+  type: AST_NODE_TYPES.Property;
   computed: boolean;
   key: PropertyName;
   kind: 'get' | 'init' | 'set';
   method: boolean;
   optional: boolean;
   shorthand: boolean;
-  type: AST_NODE_TYPES.Property;
   value:
     | AssignmentPattern
     | BindingName

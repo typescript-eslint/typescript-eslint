@@ -182,8 +182,6 @@ export interface SharedConfigurationSettings {
   [name: string]: unknown;
 }
 
-/* eslint-disable perfectionist/sort-interfaces */
-
 export interface RuleContext<
   MessageIds extends string,
   Options extends readonly unknown[],
@@ -312,8 +310,6 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
-/* eslint-enable perfectionist/sort-interfaces */
-
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
@@ -401,12 +397,12 @@ export interface CodePathSegment {
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
 export type CodePathFunction =
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((
       fromSegment: CodePathSegment,
       toSegment: CodePathSegment,
       node: TSESTree.Node,
     ) => void)
-  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((segment: CodePathSegment, node: TSESTree.Node) => void);
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
