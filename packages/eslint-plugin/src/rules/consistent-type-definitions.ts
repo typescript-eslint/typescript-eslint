@@ -1,8 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 export default createRule({
   name: 'consistent-type-definitions',
@@ -54,47 +55,45 @@ export default createRule({
             node: node.id,
             messageId: 'interfaceOverType',
             fix(fixer) {
-              const typeNode = node.typeParameters ?? node.id;
-              const fixes: TSESLint.RuleFix[] = [];
+              const typeToken = nullThrows(
+                context.sourceCode.getTokenBefore(
+                  node.id,
+                  token => token.value === 'type',
+                ),
+                NullThrowsReasons.MissingToken('type keyword', 'type alias'),
+              );
 
-              const firstToken = context.sourceCode.getTokenBefore(node.id);
-              if (firstToken) {
-                // replace 'type' with 'interface', and remove everything between
-                // the name and the start of the { a: string } part, including
-                // all opening parens.
-                fixes.push(fixer.replaceText(firstToken, 'interface'));
-                fixes.push(
-                  fixer.replaceTextRange(
-                    [typeNode.range[1], node.typeAnnotation.range[0]],
-                    ' ',
-                  ),
-                );
-              }
+              const equalsToken = nullThrows(
+                context.sourceCode.getTokenBefore(
+                  node.typeAnnotation,
+                  token => token.value === '=',
+                ),
+                NullThrowsReasons.MissingToken('=', 'type alias'),
+              );
 
-              // remove all closing parens, and the semicolon if present.
-              let rangeStart = node.typeAnnotation.range[1];
-              while (true) {
-                const afterToken =
-                  context.sourceCode.getTokenByRangeStart(rangeStart);
+              const beforeEqualsToken = nullThrows(
+                context.sourceCode.getTokenBefore(equalsToken, {
+                  includeComments: true,
+                }),
+                NullThrowsReasons.MissingToken('before =', 'type alias'),
+              );
 
-                if (afterToken != null) {
-                  if (afterToken.value === ')') {
-                    fixes.push(fixer.remove(afterToken));
-                    rangeStart = afterToken.range[1];
-                    continue;
-                  } else if (
-                    afterToken.type === AST_TOKEN_TYPES.Punctuator &&
-                    afterToken.value === ';'
-                  ) {
-                    fixes.push(fixer.remove(afterToken));
-                    break;
-                  }
-                }
+              return [
+                // replace 'type' with 'interface'.
+                fixer.replaceText(typeToken, 'interface'),
 
-                break;
-              }
+                // delete from the = to the { of the type, and put a space to be pretty.
+                fixer.replaceTextRange(
+                  [beforeEqualsToken.range[1], node.typeAnnotation.range[0]],
+                  ' ',
+                ),
 
-              return fixes;
+                // remove from the closing } through the end of the statement.
+                fixer.removeRange([
+                  node.typeAnnotation.range[1],
+                  node.range[1],
+                ]),
+              ];
             },
           });
         },

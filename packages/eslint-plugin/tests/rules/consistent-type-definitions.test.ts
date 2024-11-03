@@ -97,6 +97,18 @@ export type W<T> = {
       output: `interface T { x: number; }`,
     },
     {
+      code: noFormat`type T /* comment */={ x: number; };`,
+      errors: [
+        {
+          column: 6,
+          line: 1,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      options: ['interface'],
+      output: `interface T /* comment */ { x: number; }`,
+    },
+    {
       code: `
 export type W<T> = {
   x: T;
