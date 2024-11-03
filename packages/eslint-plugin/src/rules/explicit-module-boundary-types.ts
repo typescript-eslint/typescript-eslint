@@ -148,7 +148,7 @@ export default createRule<Options, MessageIds>({
         checkNode(node.declaration);
       },
       'ExportNamedDeclaration:not([source]):exit'(
-        node: TSESTree.ExportNamedDeclaration,
+        node: TSESTree.ExportNamedDeclarationWithoutSource,
       ): void {
         if (node.declaration) {
           checkNode(node.declaration);

@@ -1,8 +1,9 @@
 import * as ts from 'typescript';
 
+import type { TSESTree, TSNode } from './ts-estree';
+
 import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
-import type { TSESTree, TSNode } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -15,8 +16,8 @@ type LogicalOperatorKind =
   | ts.SyntaxKind.BarBarToken
   | ts.SyntaxKind.QuestionQuestionToken;
 const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
-  SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.BarBarToken,
   SyntaxKind.QuestionQuestionToken,
 ]);
 
@@ -24,58 +25,58 @@ interface TokenToText
   extends TSESTree.PunctuatorTokenToText,
     TSESTree.BinaryOperatorToText {
   [SyntaxKind.ImportKeyword]: 'import';
-  [SyntaxKind.NewKeyword]: 'new';
   [SyntaxKind.KeyOfKeyword]: 'keyof';
+  [SyntaxKind.NewKeyword]: 'new';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
   [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
 type AssignmentOperatorKind = keyof TSESTree.AssignmentOperatorToText;
 const ASSIGNMENT_OPERATORS: ReadonlySet<AssignmentOperatorKind> = new Set([
-  ts.SyntaxKind.EqualsToken,
-  ts.SyntaxKind.PlusEqualsToken,
-  ts.SyntaxKind.MinusEqualsToken,
-  ts.SyntaxKind.AsteriskEqualsToken,
+  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+  ts.SyntaxKind.AmpersandEqualsToken,
   ts.SyntaxKind.AsteriskAsteriskEqualsToken,
-  ts.SyntaxKind.SlashEqualsToken,
-  ts.SyntaxKind.PercentEqualsToken,
-  ts.SyntaxKind.LessThanLessThanEqualsToken,
+  ts.SyntaxKind.AsteriskEqualsToken,
+  ts.SyntaxKind.BarBarEqualsToken,
+  ts.SyntaxKind.BarEqualsToken,
+  ts.SyntaxKind.CaretEqualsToken,
+  ts.SyntaxKind.EqualsToken,
   ts.SyntaxKind.GreaterThanGreaterThanEqualsToken,
   ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
-  ts.SyntaxKind.AmpersandEqualsToken,
-  ts.SyntaxKind.BarEqualsToken,
-  ts.SyntaxKind.BarBarEqualsToken,
-  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+  ts.SyntaxKind.LessThanLessThanEqualsToken,
+  ts.SyntaxKind.MinusEqualsToken,
+  ts.SyntaxKind.PercentEqualsToken,
+  ts.SyntaxKind.PlusEqualsToken,
   ts.SyntaxKind.QuestionQuestionEqualsToken,
-  ts.SyntaxKind.CaretEqualsToken,
+  ts.SyntaxKind.SlashEqualsToken,
 ]);
 
 type BinaryOperatorKind = keyof TSESTree.BinaryOperatorToText;
 const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
-  SyntaxKind.InstanceOfKeyword,
-  SyntaxKind.InKeyword,
+  SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.AmpersandToken,
   SyntaxKind.AsteriskAsteriskToken,
   SyntaxKind.AsteriskToken,
-  SyntaxKind.SlashToken,
-  SyntaxKind.PercentToken,
-  SyntaxKind.PlusToken,
-  SyntaxKind.MinusToken,
-  SyntaxKind.AmpersandToken,
+  SyntaxKind.BarBarToken,
   SyntaxKind.BarToken,
   SyntaxKind.CaretToken,
-  SyntaxKind.LessThanLessThanToken,
-  SyntaxKind.GreaterThanGreaterThanToken,
-  SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
-  SyntaxKind.AmpersandAmpersandToken,
-  SyntaxKind.BarBarToken,
-  SyntaxKind.LessThanToken,
-  SyntaxKind.LessThanEqualsToken,
-  SyntaxKind.GreaterThanToken,
-  SyntaxKind.GreaterThanEqualsToken,
-  SyntaxKind.EqualsEqualsToken,
   SyntaxKind.EqualsEqualsEqualsToken,
+  SyntaxKind.EqualsEqualsToken,
   SyntaxKind.ExclamationEqualsEqualsToken,
   SyntaxKind.ExclamationEqualsToken,
+  SyntaxKind.GreaterThanEqualsToken,
+  SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+  SyntaxKind.GreaterThanGreaterThanToken,
+  SyntaxKind.GreaterThanToken,
+  SyntaxKind.InKeyword,
+  SyntaxKind.InstanceOfKeyword,
+  SyntaxKind.LessThanEqualsToken,
+  SyntaxKind.LessThanLessThanToken,
+  SyntaxKind.LessThanToken,
+  SyntaxKind.MinusToken,
+  SyntaxKind.PercentToken,
+  SyntaxKind.PlusToken,
+  SyntaxKind.SlashToken,
 ]);
 
 type DeclarationKind = TSESTree.VariableDeclaration['kind'];
@@ -200,16 +201,16 @@ function isJSDocComment(node: ts.Node): node is ts.JSDoc {
  */
 export function getBinaryExpressionType(operator: ts.BinaryOperatorToken):
   | {
-      type: AST_NODE_TYPES.AssignmentExpression;
       operator: TokenForTokenKind<AssignmentOperatorKind>;
+      type: AST_NODE_TYPES.AssignmentExpression;
     }
   | {
-      type: AST_NODE_TYPES.BinaryExpression;
       operator: TokenForTokenKind<BinaryOperatorKind>;
+      type: AST_NODE_TYPES.BinaryExpression;
     }
   | {
-      type: AST_NODE_TYPES.LogicalExpression;
       operator: TokenForTokenKind<LogicalOperatorKind>;
+      type: AST_NODE_TYPES.LogicalExpression;
     } {
   if (isAssignmentOperator(operator)) {
     return {
@@ -245,8 +246,8 @@ export function getLineAndCharacterFor(
 ): TSESTree.Position {
   const loc = ast.getLineAndCharacterOfPosition(pos);
   return {
-    line: loc.line + 1,
     column: loc.character,
+    line: loc.line + 1,
   };
 }
 
@@ -262,7 +263,7 @@ export function getLocFor(
   ast: ts.SourceFile,
 ): TSESTree.SourceLocation {
   const [start, end] = range.map(pos => getLineAndCharacterFor(pos, ast));
-  return { start, end };
+  return { end, start };
 }
 
 /**
@@ -637,22 +638,22 @@ export function convertToken(
   if (tokenType === AST_TOKEN_TYPES.RegularExpression) {
     return {
       type: tokenType,
-      value,
-      range,
       loc,
+      range,
       regex: {
-        pattern: value.slice(1, value.lastIndexOf('/')),
         flags: value.slice(value.lastIndexOf('/') + 1),
+        pattern: value.slice(1, value.lastIndexOf('/')),
       },
+      value,
     };
   }
   // @ts-expect-error TS is complaining about `value` not being the correct
   // type but it is
   return {
     type: tokenType,
-    value,
-    range,
     loc,
+    range,
+    value,
   };
 }
 
@@ -688,23 +689,23 @@ export class TSError extends Error {
     message: string,
     public readonly fileName: string,
     public readonly location: {
-      start: {
-        line: number;
+      end: {
         column: number;
+        line: number;
         offset: number;
       };
-      end: {
-        line: number;
+      start: {
         column: number;
+        line: number;
         offset: number;
       };
     },
   ) {
     super(message);
     Object.defineProperty(this, 'name', {
-      value: new.target.name,
-      enumerable: false,
       configurable: true,
+      enumerable: false,
+      value: new.target.name,
     });
   }
 
@@ -738,16 +739,16 @@ export function createError(
   endIndex: number = startIndex,
 ): TSError {
   const [start, end] = [startIndex, endIndex].map(offset => {
-    const { line, character: column } =
+    const { character: column, line } =
       ast.getLineAndCharacterOfPosition(offset);
-    return { line: line + 1, column, offset };
+    return { column, line: line + 1, offset };
   });
-  return new TSError(message, ast.fileName, { start, end });
+  return new TSError(message, ast.fileName, { end, start });
 }
 
 export function nodeHasIllegalDecorators(
   node: ts.Node,
-): node is ts.Node & { illegalDecorators: ts.Node[] } {
+): node is { illegalDecorators: ts.Node[] } & ts.Node {
   return !!(
     'illegalDecorators' in node &&
     (node.illegalDecorators as unknown[] | undefined)?.length
@@ -943,11 +944,11 @@ export function isValidAssignmentTarget(node: ts.Node): boolean {
       return isValidAssignmentTarget(
         (
           node as
-            | ts.ParenthesizedExpression
             | ts.AssertionExpression
-            | ts.SatisfiesExpression
             | ts.ExpressionWithTypeArguments
             | ts.NonNullExpression
+            | ts.ParenthesizedExpression
+            | ts.SatisfiesExpression
         ).expression,
       );
     default:

@@ -17,6 +17,9 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
       eventHandler: ts.server.ProjectServiceEventHandler | undefined;
       host: ts.server.ServerHost;
       logger: ts.server.Logger;
+      setCompilerOptionsForInferredProjects =
+        mockSetCompilerOptionsForInferredProjects;
+      setHostConfiguration = mockSetHostConfiguration;
       constructor(
         ...args: ConstructorParameters<typeof ts.server.ProjectService>
       ) {
@@ -29,9 +32,6 @@ jest.mock('typescript/lib/tsserverlibrary', () => ({
           } as ts.server.ProjectLoadingStartEvent);
         }
       }
-      setCompilerOptionsForInferredProjects =
-        mockSetCompilerOptionsForInferredProjects;
-      setHostConfiguration = mockSetHostConfiguration;
     },
   },
 }));
@@ -318,11 +318,11 @@ describe('createProjectService', () => {
     const required = service.host.require();
 
     expect(required).toEqual({
-      module: undefined,
       error: {
         message:
           'TypeScript plugins are not required when using parserOptions.projectService.',
       },
+      module: undefined,
     });
   });
 
