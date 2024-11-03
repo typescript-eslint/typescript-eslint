@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Validating rule docs no-unnecessary-coercion.mdx code examples ESLint output 1`] = `
+exports[`Validating rule docs no-unnecessary-type-conversion.mdx code examples ESLint output 1`] = `
 "Incorrect
 
 String('123');
@@ -33,7 +33,7 @@ str += '';
 "
 `;
 
-exports[`Validating rule docs no-unnecessary-coercion.mdx code examples ESLint output 2`] = `
+exports[`Validating rule docs no-unnecessary-type-conversion.mdx code examples ESLint output 2`] = `
 "Correct
 
 function foo(bar: string | number) {

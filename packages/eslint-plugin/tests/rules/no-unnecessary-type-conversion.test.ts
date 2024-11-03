@@ -1,7 +1,7 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import rule from '../../src/rules/no-unnecessary-coercion';
+import rule from '../../src/rules/no-unnecessary-type-conversion';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
@@ -15,9 +15,9 @@ const ruleTester = new RuleTester({
   },
 });
 
-const messageId = 'unnecessaryCoercion';
+const messageId = 'unnecessaryTypeConversion';
 
-ruleTester.run('no-unnecessary-coercion', rule, {
+ruleTester.run('no-unnecessary-type-conversion', rule, {
   valid: [
     `
 String(1);

@@ -67,7 +67,6 @@ import noShadow from './no-shadow';
 import noThisAlias from './no-this-alias';
 import noTypeAlias from './no-type-alias';
 import noUnnecessaryBooleanLiteralCompare from './no-unnecessary-boolean-literal-compare';
-import noUnnecessaryCoercion from './no-unnecessary-coercion';
 import noUnnecessaryCondition from './no-unnecessary-condition';
 import noUnnecessaryParameterPropertyAssignment from './no-unnecessary-parameter-property-assignment';
 import noUnnecessaryQualifier from './no-unnecessary-qualifier';
@@ -75,6 +74,7 @@ import noUnnecessaryTemplateExpression from './no-unnecessary-template-expressio
 import noUnnecessaryTypeArguments from './no-unnecessary-type-arguments';
 import noUnnecessaryTypeAssertion from './no-unnecessary-type-assertion';
 import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
+import noUnnecessaryTypeConversion from './no-unnecessary-type-conversion';
 import noUnnecessaryTypeParameters from './no-unnecessary-type-parameters';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
@@ -197,7 +197,6 @@ const rules = {
   'no-this-alias': noThisAlias,
   'no-type-alias': noTypeAlias,
   'no-unnecessary-boolean-literal-compare': noUnnecessaryBooleanLiteralCompare,
-  'no-unnecessary-coercion': noUnnecessaryCoercion,
   'no-unnecessary-condition': noUnnecessaryCondition,
   'no-unnecessary-parameter-property-assignment':
     noUnnecessaryParameterPropertyAssignment,
@@ -206,6 +205,7 @@ const rules = {
   'no-unnecessary-type-arguments': noUnnecessaryTypeArguments,
   'no-unnecessary-type-assertion': noUnnecessaryTypeAssertion,
   'no-unnecessary-type-constraint': noUnnecessaryTypeConstraint,
+  'no-unnecessary-type-conversion': noUnnecessaryTypeConversion,
   'no-unnecessary-type-parameters': noUnnecessaryTypeParameters,
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,

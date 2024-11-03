@@ -35,7 +35,7 @@ export default (
     '@typescript-eslint/no-mixed-enums': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
-    '@typescript-eslint/no-unnecessary-coercion': 'off',
+    '@typescript-eslint/no-unnecessary-type-conversion': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-unnecessary-qualifier': 'off',
     '@typescript-eslint/no-unnecessary-template-expression': 'off',
