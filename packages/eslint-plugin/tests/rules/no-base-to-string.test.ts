@@ -60,12 +60,20 @@ ruleTester.run('no-base-to-string', rule, {
       `,
     ),
 
+    // String()
+    ...literalList.map(i => `String(${i});`),
     `
 function someFunction() {}
 someFunction.toString();
 let text = \`\${someFunction}\`;
     `,
+    `
+function someFunction() {}
+someFunction.toLocaleString();
+let text = \`\${someFunction}\`;
+    `,
     'unknownObject.toString();',
+    'unknownObject.toLocaleString();',
     'unknownObject.someOtherMethod();',
     `
 class CustomToString {
@@ -79,11 +87,19 @@ class CustomToString {
 const literalWithToString = {
   toString: () => 'Hello, world!',
 };
-'' + literalToString;
+'' + literalWithToString;
     `,
     `
 const printer = (inVar: string | number | boolean) => {
   inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
+    `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toLocaleString();
 };
 printer('');
 printer(1);
@@ -118,6 +134,28 @@ tag\`\${{}}\`;
     "'' += new Error();",
     "'' += new URL();",
     "'' += new URLSearchParams();",
+    `
+let numbers = [1, 2, 3];
+String(...a);
+    `,
+    `
+Number(1);
+    `,
+    {
+      code: 'String(/regex/);',
+      options: [{ ignoredTypeNames: ['RegExp'] }],
+    },
+    `
+function String(value) {
+  return value;
+}
+declare const myValue: object;
+String(myValue);
+    `,
+    `
+import { String } from 'foo';
+String({});
+    `,
   ],
   invalid: [
     {
@@ -145,12 +183,51 @@ tag\`\${{}}\`;
       ],
     },
     {
+      code: '({}).toLocaleString();',
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
       code: "'' + {};",
       errors: [
         {
           data: {
             certainty: 'will',
             name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: 'String({});',
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+let objects = [{}, {}];
+String(...objects);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '...objects',
           },
           messageId: 'baseToString',
         },
@@ -186,6 +263,21 @@ tag\`\${{}}\`;
     {
       code: `
         let someObjectOrString = Math.random() ? { a: true } : 'text';
+        someObjectOrString.toLocaleString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'someObjectOrString',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        let someObjectOrString = Math.random() ? { a: true } : 'text';
         someObjectOrString + '';
       `,
       errors: [
@@ -202,6 +294,21 @@ tag\`\${{}}\`;
       code: `
         let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
         someObjectOrObject.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'someObjectOrObject',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
+        someObjectOrObject.toLocaleString();
       `,
       errors: [
         {

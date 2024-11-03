@@ -1,3 +1,45 @@
+## 8.12.2 (2024-10-29)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.12.1 (2024-10-28)
+
+### 🩹 Fixes
+
+- **rule-tester:** use cwd option to set base path for tests with file name ([#10201](https://github.com/typescript-eslint/typescript-eslint/pull/10201))
+
+### ❤️  Thank You
+
+- Dave @reduckted
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.12.0 (2024-10-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] add support for assignment expressions ([#10152](https://github.com/typescript-eslint/typescript-eslint/pull/10152))
+
+### ❤️  Thank You
+
+- Abraham Guo
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.11.0 (2024-10-21)
+
+### 🩹 Fixes
+
+- **rule-tester:** allow custom filename outside directory ([#10147](https://github.com/typescript-eslint/typescript-eslint/pull/10147))
+
+### ❤️  Thank You
+
+- Lotfi Meklati @lotmek
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.10.0 (2024-10-17)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.
