@@ -18,7 +18,7 @@
   ],
   ignorePaths: [
     // Integration test package.json's should never be updated as they're purposely fixed tests.
-    'tests/integration/fixtures',
+    'packages/integration-tests/fixtures',
   ],
 
   labels: ['dependencies'],
