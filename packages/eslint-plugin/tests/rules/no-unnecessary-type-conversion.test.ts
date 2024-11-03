@@ -9,13 +9,11 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
-
-const messageId = 'unnecessaryTypeConversion';
 
 ruleTester.run('no-unnecessary-type-conversion', rule, {
   valid: [
@@ -74,7 +72,7 @@ String('asdf');
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -88,7 +86,7 @@ String('asdf');
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.Identifier,
         },
       ],
@@ -102,7 +100,7 @@ String('asdf');
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.BinaryExpression,
         },
       ],
@@ -116,7 +114,7 @@ String('asdf');
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.BinaryExpression,
         },
       ],
@@ -130,7 +128,7 @@ Number(123);
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -144,7 +142,7 @@ Number(123);
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.UnaryExpression,
         },
       ],
@@ -158,7 +156,7 @@ Number(123);
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.UnaryExpression,
         },
       ],
@@ -172,7 +170,7 @@ Boolean(true);
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],
@@ -186,7 +184,7 @@ true;
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.UnaryExpression,
         },
       ],
@@ -200,7 +198,7 @@ BigInt(BigInt(1));
       `,
       errors: [
         {
-          messageId,
+          messageId: 'unnecessaryTypeConversion',
           type: AST_NODE_TYPES.CallExpression,
         },
       ],

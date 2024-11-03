@@ -4,7 +4,6 @@ import rule from '../../src/rules/promise-function-async';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const messageId = 'missingAsync';
 
 const ruleTester = new RuleTester({
   languageOptions: {
@@ -192,7 +191,7 @@ function returnsAny(): any {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -210,7 +209,7 @@ function returnsUnknown(): unknown {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -228,7 +227,7 @@ const nonAsyncPromiseFunctionExpressionA = function (p: Promise<void>) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -245,7 +244,7 @@ const nonAsyncPromiseFunctionExpressionB = function () {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -262,7 +261,7 @@ function nonAsyncPromiseFunctionDeclarationA(p: Promise<void>) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -279,7 +278,7 @@ function nonAsyncPromiseFunctionDeclarationB() {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -294,7 +293,7 @@ const nonAsyncPromiseArrowFunctionA = (p: Promise<void>) => p;
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -307,7 +306,7 @@ const nonAsyncPromiseArrowFunctionB = () => new Promise<void>();
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -325,7 +324,7 @@ const functions = {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -351,11 +350,11 @@ class Test {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 7,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -391,15 +390,15 @@ class Test {
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -446,15 +445,15 @@ class Test {
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -501,15 +500,15 @@ class Test {
       errors: [
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 13,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -556,15 +555,15 @@ class Test {
       errors: [
         {
           line: 2,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 6,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           line: 10,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -599,7 +598,7 @@ const returnAllowedType = () => new PromiseType();
       errors: [
         {
           line: 4,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -625,7 +624,7 @@ function foo(): Promise<string> | SPromise<boolean> {
       errors: [
         {
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [
@@ -651,7 +650,7 @@ class Test {
   }
 }
       `,
-      errors: [{ column: 3, line: 4, messageId }],
+      errors: [{ column: 3, line: 4, messageId: 'missingAsync' }],
       output: `
 class Test {
   @decorator
@@ -677,9 +676,9 @@ class Test {
 }
       `,
       errors: [
-        { column: 3, line: 4, messageId },
-        { column: 3, line: 7, messageId },
-        { column: 3, line: 10, messageId },
+        { column: 3, line: 4, messageId: 'missingAsync' },
+        { column: 3, line: 7, messageId: 'missingAsync' },
+        { column: 3, line: 10, messageId: 'missingAsync' },
       ],
       output: `
 class Test {
@@ -718,17 +717,17 @@ class Foo {
         {
           column: 3,
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           column: 3,
           line: 7,
-          messageId,
+          messageId: 'missingAsync',
         },
         {
           column: 3,
           line: 12,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -760,7 +759,7 @@ const foo = {
         {
           column: 3,
           line: 3,
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -779,7 +778,7 @@ function promiseInUnionWithoutExplicitReturnType(p: boolean) {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
