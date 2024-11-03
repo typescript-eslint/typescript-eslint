@@ -752,8 +752,19 @@ class Referencer extends Visitor {
   }
 
   protected UpdateExpression(node: TSESTree.UpdateExpression): void {
-    if (PatternVisitor.isPattern(node.argument)) {
-      this.visitPattern(node.argument, pattern => {
+    let argument = node.argument;
+    switch (argument.type) {
+      case AST_NODE_TYPES.TSAsExpression:
+      case AST_NODE_TYPES.TSTypeAssertion:
+        // explicitly visit the type annotation
+        this.visitType(argument.typeAnnotation);
+      // intentional fallthrough
+      case AST_NODE_TYPES.TSNonNullExpression:
+        // unwrap the expression
+        argument = argument.expression;
+    }
+    if (PatternVisitor.isPattern(argument)) {
+      this.visitPattern(argument, pattern => {
         this.currentScope().referenceValue(
           pattern,
           ReferenceFlag.ReadWrite,
