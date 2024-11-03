@@ -13,7 +13,12 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once AST 
 -       body: TSModuleBlock {
 -         type: 'TSModuleBlock',
 -         body: Array [],
--
++       body: TSModuleDeclaration {
++         type: 'TSModuleDeclaration',
++         body: TSModuleBlock {
++           type: 'TSModuleBlock',
++           body: Array [],
+
 -         range: [18, 20],
 -         loc: {
 -           start: { column: 18, line: 1 },
@@ -29,12 +34,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once AST 
 -           decorators: Array [],
 -           name: 'abd',
 -           optional: false,
-+       body: TSModuleDeclaration {
-+         type: 'TSModuleDeclaration',
-+         body: TSModuleBlock {
-+           type: 'TSModuleBlock',
-+           body: Array [],
-
+-
 -           range: [10, 13],
 +           range: [18, 20],
             loc: {
@@ -76,7 +76,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once AST 
 +           end: { column: 13, line: 1 },
           },
         },
--       kind: 'namespace',
+        kind: 'namespace',
 
         range: [0, 20],
         loc: {
