@@ -209,6 +209,8 @@ class A extends Object {
     `,
   ],
   invalid: [
+    /* eslint-disable @typescript-eslint/no-unnecessary-template-expression -- trailing whitespace */
+
     {
       code: `
 class A {
@@ -430,5 +432,6 @@ ${'  '}
         },
       ],
     },
+    /* eslint-enable @typescript-eslint/no-unnecessary-template-expression */
   ],
 });
