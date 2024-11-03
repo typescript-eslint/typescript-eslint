@@ -57,12 +57,13 @@ export default createRule<Options, MessageIds>({
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
       ): void {
-        const leftType = services.getTypeAtLocation(node.left);
-        const rightType = services.getTypeAtLocation(node.right);
         if (
-          doesUnderlyingTypeMatchFlag(leftType, ts.TypeFlags.StringLike) &&
           node.right.type === AST_NODE_TYPES.Literal &&
-          node.right.value === ''
+          node.right.value === '' &&
+          doesUnderlyingTypeMatchFlag(
+            services.getTypeAtLocation(node.left),
+            ts.TypeFlags.StringLike,
+          )
         ) {
           context.report({
             loc: {
@@ -79,11 +80,13 @@ export default createRule<Options, MessageIds>({
               fixer.removeRange([node.left.range[1], node.range[1]]),
             ],
           });
-        }
-        if (
+        } else if (
           node.left.type === AST_NODE_TYPES.Literal &&
           node.left.value === '' &&
-          doesUnderlyingTypeMatchFlag(rightType, ts.TypeFlags.StringLike)
+          doesUnderlyingTypeMatchFlag(
+            services.getTypeAtLocation(node.right),
+            ts.TypeFlags.StringLike,
+          )
         ) {
           context.report({
             loc: {
@@ -107,22 +110,29 @@ export default createRule<Options, MessageIds>({
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.arguments.length === 1
         ) {
-          const type = getConstrainedTypeAtLocation(
-            services,
-            node.arguments[0],
-          );
+          const getType = () =>
+            getConstrainedTypeAtLocation(services, node.arguments[0]);
 
           if (
-            (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike) &&
-              // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-              node.callee.name === 'String') ||
-            (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.NumberLike) &&
-              node.callee.name === 'Number') ||
-            (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.BooleanLike) &&
-              // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-              node.callee.name === 'Boolean') ||
-            (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.BigIntLike) &&
-              node.callee.name === 'BigInt')
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            (node.callee.name === 'String' &&
+              doesUnderlyingTypeMatchFlag(
+                getType(),
+                ts.TypeFlags.StringLike,
+              )) ||
+            (node.callee.name === 'Number' &&
+              doesUnderlyingTypeMatchFlag(
+                getType(),
+                ts.TypeFlags.NumberLike,
+              )) ||
+            // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+            (node.callee.name === 'Boolean' &&
+              doesUnderlyingTypeMatchFlag(
+                getType(),
+                ts.TypeFlags.BooleanLike,
+              )) ||
+            (node.callee.name === 'BigInt' &&
+              doesUnderlyingTypeMatchFlag(getType(), ts.TypeFlags.BigIntLike))
           ) {
             context.report({
               node,
