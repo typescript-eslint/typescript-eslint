@@ -2370,5 +2370,98 @@ ruleTester.run('no-deprecated', rule, {
         },
       },
     },
+    {
+      code: `
+        /** @deprecated */
+        interface Foo {}
+
+        class Bar implements Foo {}
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { name: 'Foo' },
+          endColumn: 33,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        interface Foo {}
+
+        export class Bar implements Foo {}
+      `,
+      errors: [
+        {
+          column: 37,
+          data: { name: 'Foo' },
+          endColumn: 40,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        interface Foo {}
+
+        interface Baz {}
+
+        export class Bar implements Baz, Foo {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { name: 'Foo' },
+          endColumn: 45,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        class Foo {}
+
+        export class Bar extends Foo {}
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { name: 'Foo' },
+          endColumn: 37,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        declare function decorator(constructor: Function);
+        
+        @decorator
+        export class Foo {}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'decorator' },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
   ],
 });
