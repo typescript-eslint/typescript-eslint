@@ -154,7 +154,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - AST
             end: { column: 21, line: 1 },
           },
         },
--       kind: 'namespace',
+        kind: 'namespace',
 
         range: [0, 103],
         loc: {

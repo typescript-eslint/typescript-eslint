@@ -82,7 +82,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name A
             end: { column: 8, line: 1 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [0, 15],
         loc: {
