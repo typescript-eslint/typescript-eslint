@@ -12,15 +12,14 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
         type: 'ExpressionStatement',
         expression: ImportExpression {
           type: 'ImportExpression',
-          attributes: ObjectExpression {
-            type: 'ObjectExpression',
-            properties: Array [
-              Property {
-                type: 'Property',
-                computed: false,
-                key: Identifier {
-                  type: 'Identifier',
--                 decorators: Array [],
++         attributes: ObjectExpression {
++           type: 'ObjectExpression',
++           properties: Array [
++             Property {
++               type: 'Property',
++               computed: false,
++               key: Identifier {
++                 type: 'Identifier',
 +                 name: 'assert',
 +
 +                 range: [89, 95],
@@ -92,14 +91,15 @@ exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertio
 +             end: { column: 42, line: 3 },
 +           },
 +         },
-+         options: ObjectExpression {
-+           type: 'ObjectExpression',
-+           properties: Array [
-+             Property {
-+               type: 'Property',
-+               computed: false,
-+               key: Identifier {
-+                 type: 'Identifier',
+          options: ObjectExpression {
+            type: 'ObjectExpression',
+            properties: Array [
+              Property {
+                type: 'Property',
+                computed: false,
+                key: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
                   name: 'assert',
 -                 optional: false,
 
