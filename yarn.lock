@@ -15135,10 +15135,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:~0.51.0":
-  version: 0.51.0
-  resolution: "monaco-editor@npm:0.51.0"
-  checksum: 86cd6e5a756407bc9564ae4c408cdaecbf3410b5bf88e22783e22e79e1e1d048c1cba7c26249e6b234731ffc1aad3660c27213ce1f3f441b3e04cf01a75b1f8c
+"monaco-editor@npm:~0.52.0":
+  version: 0.52.0
+  resolution: "monaco-editor@npm:0.52.0"
+  checksum: 76ab4ea38dfd2bc5687a2d777d7fc14fd7182ac6ed1ed6819b76a47924434bf3a08bcb75c68cd5aff20db86a7633ac46b335a6971ae21a8723a7dcf3e8289931
   languageName: node
   linkType: hard
 
@@ -20221,7 +20221,7 @@ __metadata:
     make-dir: "*"
     mdast-util-from-markdown: ^2.0.1
     mdast-util-mdx: ^3.0.0
-    monaco-editor: ~0.51.0
+    monaco-editor: ~0.52.0
     prettier: ^3.2.5
     prism-react-renderer: ^2.3.1
     raw-loader: ^4.0.2
