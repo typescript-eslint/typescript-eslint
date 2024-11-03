@@ -176,7 +176,10 @@ export default createRule<Options, MessageIds>({
           context.report({
             loc: {
               start: node.parent.loc.start,
-              end: node.argument.loc.start,
+              end: {
+                column: node.loc.start.column + 1,
+                line: node.loc.start.line,
+              },
             },
             messageId: 'unnecessaryTypeConversion',
             data: {
@@ -196,7 +199,10 @@ export default createRule<Options, MessageIds>({
           context.report({
             loc: {
               start: node.loc.start,
-              end: node.argument.loc.start,
+              end: {
+                column: node.loc.start.column + 1,
+                line: node.loc.start.line,
+              },
             },
             messageId: 'unnecessaryTypeConversion',
             data: {
@@ -218,7 +224,10 @@ export default createRule<Options, MessageIds>({
           context.report({
             loc: {
               start: node.parent.loc.start,
-              end: node.argument.loc.start,
+              end: {
+                column: node.loc.start.column + 1,
+                line: node.loc.start.line,
+              },
             },
             messageId: 'unnecessaryTypeConversion',
             data: {
