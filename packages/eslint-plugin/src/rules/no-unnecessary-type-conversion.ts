@@ -69,7 +69,6 @@ export default createRule<Options, MessageIds>({
               start: node.left.loc.end,
               end: node.loc.end,
             },
-            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'string',
@@ -91,7 +90,6 @@ export default createRule<Options, MessageIds>({
               start: node.loc.start,
               end: node.right.loc.start,
             },
-            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'string',
@@ -152,7 +150,6 @@ export default createRule<Options, MessageIds>({
               start: memberExpr.object.loc.end,
               end: memberExpr.parent.loc.end,
             },
-            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'string',
@@ -181,7 +178,6 @@ export default createRule<Options, MessageIds>({
               start: node.parent.loc.start,
               end: node.argument.loc.start,
             },
-            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'boolean',
@@ -202,7 +198,6 @@ export default createRule<Options, MessageIds>({
               start: node.loc.start,
               end: node.argument.loc.start,
             },
-            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'number',
@@ -225,7 +220,6 @@ export default createRule<Options, MessageIds>({
               start: node.parent.loc.start,
               end: node.argument.loc.start,
             },
-            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'number',
