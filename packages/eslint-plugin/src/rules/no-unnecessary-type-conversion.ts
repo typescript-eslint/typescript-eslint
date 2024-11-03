@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import {
@@ -16,6 +17,7 @@ type MessageIds = 'unnecessaryTypeConversion';
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-conversion',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow conversion idioms when they do not change the type or value of the expression',
@@ -27,7 +29,6 @@ export default createRule<Options, MessageIds>({
         '{{violation}} does not change the type or value of the {{type}}.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -53,6 +54,56 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
 
     return {
+      'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
+        node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
+      ): void {
+        const leftType = services.getTypeAtLocation(node.left);
+        const rightType = services.getTypeAtLocation(node.right);
+        if (
+          doesUnderlyingTypeMatchFlag(leftType, ts.TypeFlags.StringLike) &&
+          node.right.type === AST_NODE_TYPES.Literal &&
+          node.right.value === ''
+        ) {
+          context.report({
+            loc: {
+              start: node.left.loc.end,
+              end: node.loc.end,
+            },
+            node,
+            messageId: 'unnecessaryTypeConversion',
+            data: {
+              type: 'string',
+              violation: "Concatenating a string with ''",
+            },
+            fix: (fixer): RuleFix[] => [
+              fixer.removeRange([node.range[0], node.left.range[0]]),
+              fixer.removeRange([node.left.range[1], node.range[1]]),
+            ],
+          });
+        }
+        if (
+          node.left.type === AST_NODE_TYPES.Literal &&
+          node.left.value === '' &&
+          doesUnderlyingTypeMatchFlag(rightType, ts.TypeFlags.StringLike)
+        ) {
+          context.report({
+            loc: {
+              start: node.loc.start,
+              end: node.right.loc.start,
+            },
+            node,
+            messageId: 'unnecessaryTypeConversion',
+            data: {
+              type: 'string',
+              violation: "Concatenating '' with a string",
+            },
+            fix: (fixer): RuleFix[] => [
+              fixer.removeRange([node.range[0], node.right.range[0]]),
+              fixer.removeRange([node.right.range[1], node.range[1]]),
+            ],
+          });
+        }
+      },
       CallExpression(node: TSESTree.CallExpression): void {
         if (
           node.callee.type === AST_NODE_TYPES.Identifier &&
@@ -78,14 +129,14 @@ export default createRule<Options, MessageIds>({
             context.report({
               node,
               messageId: 'unnecessaryTypeConversion',
+              data: {
+                type: node.callee.name.toLowerCase(),
+                violation: `Passing a ${node.callee.name.toLowerCase()} to ${node.callee.name}()`,
+              },
               fix: (fixer): RuleFix[] => [
                 fixer.removeRange([node.range[0], node.arguments[0].range[0]]),
                 fixer.removeRange([node.arguments[0].range[1], node.range[1]]),
               ],
-              data: {
-                violation: `Passing a ${node.callee.name.toLowerCase()} to ${node.callee.name}()`,
-                type: node.callee.name.toLowerCase(),
-              },
             });
           }
         }
@@ -97,8 +148,16 @@ export default createRule<Options, MessageIds>({
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
           context.report({
+            loc: {
+              start: memberExpr.object.loc.end,
+              end: memberExpr.parent.loc.end,
+            },
             node,
             messageId: 'unnecessaryTypeConversion',
+            data: {
+              type: 'string',
+              violation: 'Using .toString() on a string',
+            },
             fix: (fixer): RuleFix[] => [
               fixer.removeRange([
                 memberExpr.parent.range[0],
@@ -109,85 +168,6 @@ export default createRule<Options, MessageIds>({
                 memberExpr.parent.range[1],
               ]),
             ],
-            loc: {
-              start: memberExpr.object.loc.end,
-              end: memberExpr.parent.loc.end,
-            },
-            data: {
-              violation: 'Using .toString() on a string',
-              type: 'string',
-            },
-          });
-        }
-      },
-      'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
-        node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
-      ): void {
-        const leftType = services.getTypeAtLocation(node.left);
-        const rightType = services.getTypeAtLocation(node.right);
-        if (
-          doesUnderlyingTypeMatchFlag(leftType, ts.TypeFlags.StringLike) &&
-          node.right.type === AST_NODE_TYPES.Literal &&
-          node.right.value === ''
-        ) {
-          context.report({
-            node,
-            messageId: 'unnecessaryTypeConversion',
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.left.range[0]]),
-              fixer.removeRange([node.left.range[1], node.range[1]]),
-            ],
-            loc: {
-              start: node.left.loc.end,
-              end: node.loc.end,
-            },
-            data: {
-              violation: "Concatenating a string with ''",
-              type: 'string',
-            },
-          });
-        }
-        if (
-          node.left.type === AST_NODE_TYPES.Literal &&
-          node.left.value === '' &&
-          doesUnderlyingTypeMatchFlag(rightType, ts.TypeFlags.StringLike)
-        ) {
-          context.report({
-            node,
-            messageId: 'unnecessaryTypeConversion',
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.right.range[0]]),
-              fixer.removeRange([node.right.range[1], node.range[1]]),
-            ],
-            loc: {
-              start: node.loc.start,
-              end: node.right.loc.start,
-            },
-            data: {
-              violation: "Concatenating '' with a string",
-              type: 'string',
-            },
-          });
-        }
-      },
-      'UnaryExpression[operator = "+"]'(node: TSESTree.UnaryExpression): void {
-        const type = services.getTypeAtLocation(node.argument);
-        if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.NumberLike)) {
-          context.report({
-            node,
-            messageId: 'unnecessaryTypeConversion',
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.argument.range[0]]),
-              fixer.removeRange([node.argument.range[1], node.range[1]]),
-            ],
-            loc: {
-              start: node.loc.start,
-              end: node.argument.loc.start,
-            },
-            data: {
-              violation: 'Using the unary + operator on a number',
-              type: 'number',
-            },
           });
         }
       },
@@ -197,20 +177,41 @@ export default createRule<Options, MessageIds>({
         const type = services.getTypeAtLocation(node.argument);
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.BooleanLike)) {
           context.report({
-            node,
-            messageId: 'unnecessaryTypeConversion',
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.parent.range[0], node.argument.range[0]]),
-              fixer.removeRange([node.argument.range[1], node.range[1]]),
-            ],
             loc: {
               start: node.parent.loc.start,
               end: node.argument.loc.start,
             },
+            node,
+            messageId: 'unnecessaryTypeConversion',
             data: {
-              violation: 'Using !! on a boolean',
               type: 'boolean',
+              violation: 'Using !! on a boolean',
             },
+            fix: (fixer): RuleFix[] => [
+              fixer.removeRange([node.parent.range[0], node.argument.range[0]]),
+              fixer.removeRange([node.argument.range[1], node.range[1]]),
+            ],
+          });
+        }
+      },
+      'UnaryExpression[operator = "+"]'(node: TSESTree.UnaryExpression): void {
+        const type = services.getTypeAtLocation(node.argument);
+        if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.NumberLike)) {
+          context.report({
+            loc: {
+              start: node.loc.start,
+              end: node.argument.loc.start,
+            },
+            node,
+            messageId: 'unnecessaryTypeConversion',
+            data: {
+              type: 'number',
+              violation: 'Using the unary + operator on a number',
+            },
+            fix: (fixer): RuleFix[] => [
+              fixer.removeRange([node.range[0], node.argument.range[0]]),
+              fixer.removeRange([node.argument.range[1], node.range[1]]),
+            ],
           });
         }
       },
@@ -220,20 +221,20 @@ export default createRule<Options, MessageIds>({
         const type = services.getTypeAtLocation(node.argument);
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.NumberLike)) {
           context.report({
-            node,
-            messageId: 'unnecessaryTypeConversion',
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.parent.range[0], node.argument.range[0]]),
-              fixer.removeRange([node.argument.range[1], node.range[1]]),
-            ],
             loc: {
               start: node.parent.loc.start,
               end: node.argument.loc.start,
             },
+            node,
+            messageId: 'unnecessaryTypeConversion',
             data: {
-              violation: 'Using ~~ on a number',
               type: 'number',
+              violation: 'Using ~~ on a number',
             },
+            fix: (fixer): RuleFix[] => [
+              fixer.removeRange([node.parent.range[0], node.argument.range[0]]),
+              fixer.removeRange([node.argument.range[1], node.range[1]]),
+            ],
           });
         }
       },
