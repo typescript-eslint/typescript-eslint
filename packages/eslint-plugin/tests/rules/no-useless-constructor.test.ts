@@ -223,7 +223,7 @@ class A {
               messageId: 'removeConstructor',
               output: `
 class A {
-  
+${'  '}
 }
       `,
             },
@@ -248,7 +248,7 @@ class A extends B {
               messageId: 'removeConstructor',
               output: `
 class A extends B {
-  
+${'  '}
 }
       `,
             },
@@ -273,7 +273,7 @@ class A extends B {
               messageId: 'removeConstructor',
               output: `
 class A extends B {
-  
+${'  '}
 }
       `,
             },
@@ -298,7 +298,7 @@ class A extends B {
               messageId: 'removeConstructor',
               output: `
 class A extends B {
-  
+${'  '}
 }
       `,
             },
@@ -323,7 +323,7 @@ class A extends B {
               messageId: 'removeConstructor',
               output: `
 class A extends B {
-  
+${'  '}
 }
       `,
             },
@@ -348,7 +348,7 @@ class A extends B.C {
               messageId: 'removeConstructor',
               output: `
 class A extends B.C {
-  
+${'  '}
 }
       `,
             },
@@ -373,7 +373,7 @@ class A extends B {
               messageId: 'removeConstructor',
               output: `
 class A extends B {
-  
+${'  '}
 }
       `,
             },
@@ -398,7 +398,7 @@ class A extends B {
               messageId: 'removeConstructor',
               output: `
 class A extends B {
-  
+${'  '}
 }
       `,
             },
@@ -421,7 +421,7 @@ class A {
               messageId: 'removeConstructor',
               output: `
 class A {
-  
+${'  '}
 }
       `,
             },

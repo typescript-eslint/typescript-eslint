@@ -12,8 +12,8 @@
   // required to make the extension pickup the flat config
   "eslint.experimental.useFlatConfig": true,
 
-  // This breaks test cases, see https://github.com/Microsoft/vscode/issues/52711
-  "files.trimTrailingWhitespace": false,
+  // When enabled, will trim trailing whitespace when saving a file.
+  "files.trimTrailingWhitespace": true,
 
   // typescript auto-format settings
   "typescript.tsdk": "node_modules/typescript/lib",
