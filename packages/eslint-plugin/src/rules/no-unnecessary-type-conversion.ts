@@ -36,19 +36,19 @@ export default createRule<Options, MessageIds>({
       type: ts.Type,
       typeFlag: ts.TypeFlags,
     ): boolean {
-      const isString = (t: ts.Type): boolean => {
+      const matchesType = (t: ts.Type): boolean => {
         return isTypeFlagSet(t, typeFlag);
       };
 
       if (type.isUnion()) {
-        return type.types.every(isString);
+        return type.types.every(matchesType);
       }
 
       if (type.isIntersection()) {
-        return type.types.some(isString);
+        return type.types.some(matchesType);
       }
 
-      return isString(type);
+      return matchesType(type);
     }
 
     const services = getParserServices(context);
