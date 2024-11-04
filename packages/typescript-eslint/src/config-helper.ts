@@ -85,10 +85,33 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
 export function config(
   ...configs: ConfigWithExtends[]
 ): TSESLint.FlatConfig.ConfigArray {
-  return configs.flatMap(configWithExtends => {
+  return configs.flatMap((configWithExtends, configIndex) => {
     const { extends: extendsArr, ...config } = configWithExtends;
     if (extendsArr == null || extendsArr.length === 0) {
       return config;
+    }
+    const undefinedExtensions = extendsArr.reduce<number[]>(
+      (acc, extension, extensionIndex) => {
+        const maybeExtension = extension as
+          | TSESLint.FlatConfig.Config
+          | undefined;
+        if (maybeExtension == null) {
+          acc.push(extensionIndex);
+        }
+        return acc;
+      },
+      [],
+    );
+    if (undefinedExtensions.length) {
+      const configName =
+        configWithExtends.name != null
+          ? `, named "${configWithExtends.name}",`
+          : ' (anonymous)';
+      const extensionIndices = undefinedExtensions.join(', ');
+      throw new Error(
+        `Your config at index ${configIndex}${configName} contains undefined` +
+          ` extensions at the following indices: ${extensionIndices}.`,
+      );
     }
 
     return [

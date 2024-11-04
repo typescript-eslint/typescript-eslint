@@ -23,6 +23,6 @@ export function insertWhenNotToUseIt(page: RuleDocsPage): void {
     0,
     ...(hasExistingText ? ['---'] : []),
     'Type checked lint rules are more powerful than traditional lint rules, but also require configuring [type checked linting](/getting-started/typed-linting).',
-    'See [Troubleshooting > Linting with Type Information > Performance](/troubleshooting/typed-linting/performance) if you experience performance degredations after enabling type checked rules.',
+    'See [Troubleshooting > Linting with Type Information > Performance](/troubleshooting/typed-linting/performance) if you experience performance degradations after enabling type checked rules.',
   );
 }

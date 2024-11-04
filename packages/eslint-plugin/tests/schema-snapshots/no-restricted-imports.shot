@@ -147,9 +147,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                       "message": {
                         "minLength": 1,
                         "type": "string"
+                      },
+                      "regex": {
+                        "type": "string"
                       }
                     },
-                    "required": ["group"],
                     "type": "object"
                   },
                   "type": "array",
@@ -202,10 +204,11 @@ type Options =
               /** Whether to allow type-only imports for a path. */
               allowTypeImports?: boolean;
               caseSensitive?: boolean;
-              group: [string, ...string[]];
+              group?: [string, ...string[]];
               importNamePattern?: string;
               importNames?: [string, ...string[]];
               message?: string;
+              regex?: string;
             }[]
           | string[];
       },

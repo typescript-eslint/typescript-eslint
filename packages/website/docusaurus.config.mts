@@ -59,6 +59,9 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
     apiKey: '74d42ed10d0f7b327d74d774570035c7',
     indexName: 'typescript-eslint',
   },
+  colorMode: {
+    respectPrefersColorScheme: true,
+  },
   metadata: [
     { name: 'msapplication-TileColor', content: '#443fd4' },
     { name: 'theme-color', content: '#443fd4' },

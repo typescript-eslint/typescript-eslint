@@ -131,7 +131,7 @@ export function discriminateAnyType(
     return AnyType.AnyArray;
   }
   for (const part of tsutils.typeParts(type)) {
-    if (tsutils.isThenableType(checker, tsNode, type)) {
+    if (tsutils.isThenableType(checker, tsNode, part)) {
       const awaitedType = checker.getAwaitedType(part);
       if (awaitedType) {
         const awaitedAnyType = discriminateAnyType(
