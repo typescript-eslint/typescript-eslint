@@ -130,25 +130,27 @@ export default createRule<[], MessageId>({
         ) {
           // Get the type of the thing being used in the method call.
           const argument = node.arguments[0];
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (argument === undefined) {
+            return;
+          }
+
           const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
           const type = checker.getTypeAtLocation(tsNode);
           if (!isTypeReferenceType(type) || type.typeArguments === undefined) {
             return;
           }
 
-          const firstTypeArg = type.typeArguments[0];
+          const typeArg = type.typeArguments[0];
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          if (firstTypeArg === undefined) {
+          if (typeArg === undefined) {
             return;
           }
 
           const typeName = getTypeNameSimple(type);
-          if (typeName !== 'Array') {
-            return;
-          }
+          const typeArgName = getTypeNameSimple(typeArg);
 
-          const firstTypeArgName = getTypeNameSimple(firstTypeArg);
-          if (firstTypeArgName !== 'Promise') {
+          if (typeName === 'Array' && typeArgName !== 'Promise') {
             context.report({
               loc: node.loc,
               messageId: 'notPromises',
