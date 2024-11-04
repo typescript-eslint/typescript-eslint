@@ -59,7 +59,9 @@ export default createRule<Options, MessageIds>({
      * @returns Whether the node is in a write only assignment
      * @private
      */
-    function isWriteOnlyAssignment(node: TSESTree.Identifier): boolean {
+    function isWriteOnlyAssignment(
+      node: TSESTree.Identifier | TSESTree.PrivateIdentifier,
+    ): boolean {
       const parentStatement = node.parent.parent;
       if (parentStatement === undefined) {
         return false;
@@ -100,7 +102,9 @@ export default createRule<Options, MessageIds>({
     // Public
     //--------------------------------------------------------------------------
 
-    function processPrivateIdentifier(node: TSESTree.Identifier): void {
+    function processPrivateIdentifier(
+      node: TSESTree.Identifier | TSESTree.PrivateIdentifier,
+    ): void {
       const classBody = trackedClassMembers.find(classProperties =>
         classProperties.has(node.name),
       );
