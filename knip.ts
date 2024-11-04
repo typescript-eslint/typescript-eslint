@@ -26,6 +26,8 @@ export default {
         'make-dir',
         'ncp',
         'tmp',
+        // imported for type purposes only
+        'website',
       ],
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
     },
