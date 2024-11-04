@@ -80,7 +80,7 @@ describe('getParsedConfigFile', () => {
           typeof ts.getParsedCommandLineOfConfigFile
         >
       ) => {
-        host.onUnRecoverableConfigFileDiagnostic({
+        return host.onUnRecoverableConfigFileDiagnostic({
           category: ts.DiagnosticCategory.Error,
           code: 1234,
           file: ts.createSourceFile('./tsconfig.json', '', {
