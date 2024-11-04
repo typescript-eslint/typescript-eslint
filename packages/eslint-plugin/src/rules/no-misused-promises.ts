@@ -437,10 +437,25 @@ export default createRule<Options, MessageId>({
           ) &&
           returnsThenable(checker, tsNode.initializer)
         ) {
-          context.report({
-            node: node.value,
-            messageId: 'voidReturnProperty',
-          });
+          if (isFunction(node.value)) {
+            const functionNode = node.value;
+            if (functionNode.returnType) {
+              context.report({
+                node: functionNode.returnType.typeAnnotation,
+                messageId: 'voidReturnProperty',
+              });
+            } else {
+              context.report({
+                loc: getFunctionHeadLoc(functionNode, context.sourceCode),
+                messageId: 'voidReturnProperty',
+              });
+            }
+          } else {
+            context.report({
+              node: node.value,
+              messageId: 'voidReturnProperty',
+            });
+          }
         }
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.name);
