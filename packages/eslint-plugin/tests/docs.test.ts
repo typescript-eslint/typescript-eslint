@@ -253,15 +253,8 @@ describe('Validating rule docs', () => {
         const headings = tokens.filter(tokenIsH2);
 
         headings.forEach(heading => {
-          // Hard-code exceptions for code in headings.
-          if (
-            heading.text ===
-            'Explicit Resource Management (`await using` Statements)'
-          ) {
-            return;
-          }
-
-          expect(heading.text).toBe(titleCase(heading.text));
+          const nonCodeText = heading.text.replace(/`[^`]*`/g, '');
+          expect(nonCodeText).toBe(titleCase(nonCodeText));
         });
       });
 
