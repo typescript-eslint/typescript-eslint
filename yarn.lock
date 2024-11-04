@@ -9032,12 +9032,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-typedoc@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "docusaurus-plugin-typedoc@npm:1.0.1"
+"docusaurus-plugin-typedoc@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "docusaurus-plugin-typedoc@npm:1.0.5"
   peerDependencies:
     typedoc-plugin-markdown: ">=4.0.0"
-  checksum: 0a1f0720f3b62d37cc7cacfa8100769e8354785215b84f33951f38d65951a04d7a3b719089717a1d5dbd653f029931a7e624908334519f16fa60798a5d8224ca
+  checksum: 21cbee69edc81cf708ceb5e6f965efa869758c53bf3e01c4d645d7d50f22d3d90b19a4679d12231435e95fac4839106453a09ae7d2b380074f19052285f8fbd3
   languageName: node
   linkType: hard
 
@@ -19580,16 +19580,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc-plugin-markdown@npm:^4.0.3":
-  version: 4.0.3
-  resolution: "typedoc-plugin-markdown@npm:4.0.3"
+"typedoc-plugin-markdown@npm:^4.2.10":
+  version: 4.2.10
+  resolution: "typedoc-plugin-markdown@npm:4.2.10"
   peerDependencies:
-    typedoc: 0.25.x
-  checksum: 46239ad6da69721626dc255c0dca9fd7600bf49a78ff7ee319fa600bdac4f405af2a6f549302b0b10439b6fb77710260a6a60ba57fd25d6388f5c081b44a173c
+    typedoc: 0.26.x
+  checksum: 71300d73d0da6657b4e95b5537beaaa376b530adec2953b4f92d58509865e2fcc870aaa9ae59ea204649a4e27fa072a0d6289d01a2756efcec25a5ecf6c8ceb7
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.26.0":
+"typedoc@npm:^0.26.11":
   version: 0.26.11
   resolution: "typedoc@npm:0.26.11"
   dependencies:
@@ -20311,7 +20311,7 @@ __metadata:
     clsx: ^2.1.0
     copy-webpack-plugin: ^12.0.0
     cross-fetch: "*"
-    docusaurus-plugin-typedoc: ^1.0.1
+    docusaurus-plugin-typedoc: ^1.0.5
     eslint: ^9.13.0
     history: ^4.9.0
     json5: ^2.2.3
@@ -20335,8 +20335,8 @@ __metadata:
     stylelint-config-standard: ^36.0.0
     stylelint-order: ^6.0.4
     tsx: "*"
-    typedoc: ^0.26.0
-    typedoc-plugin-markdown: ^4.0.3
+    typedoc: ^0.26.11
+    typedoc-plugin-markdown: ^4.2.10
     typescript: "*"
     unified: ^11.0.4
     vfile: ^6.0.1
