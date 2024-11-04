@@ -3,9 +3,11 @@
 // License      : https://github.com/eslint/eslint/blob/522d8a32f326c52886c531f43cf6a1ff15af8286/LICENSE
 
 import type { TestCaseError } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import type { MessageIds } from '../../src/rules/no-unused-private-class-members';
+
 import rule from '../../src/rules/no-unused-private-class-members';
 
 const ruleTester = new RuleTester();
@@ -13,10 +15,10 @@ const ruleTester = new RuleTester();
 /** Returns an expected error for defined-but-not-used private class member. */
 function definedError(classMemberName: string): TestCaseError<MessageIds> {
   return {
-    messageId: 'unusedPrivateClassMember',
     data: {
       classMemberName: `#${classMemberName}`,
     },
+    messageId: 'unusedPrivateClassMember',
   };
 }
 

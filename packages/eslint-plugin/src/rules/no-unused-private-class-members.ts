@@ -3,6 +3,7 @@
 // License: https://github.com/eslint/eslint/blob/522d8a32f326c52886c531f43cf6a1ff15af8286/LICENSE
 
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -29,12 +30,12 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: false,
     },
 
-    schema: [],
-
     messages: {
       unusedPrivateClassMember:
         "'{{classMemberName}}' is defined but never used.",
     },
+
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -255,8 +256,8 @@ export default createRule<Options, MessageIds>({
             continue;
           }
           context.report({
-            node: declaredNode,
             loc: declaredNode.key.loc,
+            node: declaredNode,
             messageId: 'unusedPrivateClassMember',
             data: {
               classMemberName: `#${classMemberName}`,
