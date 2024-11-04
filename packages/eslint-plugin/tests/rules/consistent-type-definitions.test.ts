@@ -417,5 +417,49 @@ interface Foo {
 }
       `,
     },
+    {
+      // no closing semicolon; ensure we don't erase subsequent code.
+      code: noFormat`
+type Foo = {
+  a: string;
+}
+type Bar = string;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+type Bar = string;
+      `,
+    },
+    {
+      // no closing semicolon; ensure we don't erase subsequent code.
+      code: noFormat`
+type Foo = ((({
+  a: string;
+})))
+
+const bar = 1;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+
+const bar = 1;
+      `,
+    },
   ],
 });
