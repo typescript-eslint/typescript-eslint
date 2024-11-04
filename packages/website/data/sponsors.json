@@ -88,7 +88,7 @@
     "image": "https://images.opencollective.com/n8n/40721f5/logo.png",
     "name": "n8n.io - n8n GmbH",
     "totalDonations": 120000,
-    "website": "https://n8n.io"
+    "website": "https://n8n.io/"
   },
   {
     "id": "Coinbase",
@@ -133,11 +133,25 @@
     "website": "https://www.codiga.io"
   },
   {
+    "id": "frontendmasters",
+    "image": "https://avatars.githubusercontent.com/u/5613852?v=4",
+    "name": "Frontend Masters",
+    "totalDonations": 63327,
+    "website": "https://FrontendMasters.com"
+  },
+  {
     "id": "DeepSource",
     "image": "https://images.opencollective.com/deepsource/0f18cea/logo.png",
     "name": "DeepSource",
     "totalDonations": 60000,
     "website": "https://deepsource.io/"
+  },
+  {
+    "id": "syntaxfm",
+    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
+    "name": "Syntax",
+    "totalDonations": 54449,
+    "website": "https://syntax.fm"
   },
   {
     "id": "Future Processing",
@@ -155,10 +169,10 @@
   },
   {
     "id": "vlt",
-    "image": "https://images.opencollective.com/vlt/487acef/logo.png",
+    "image": "https://images.opencollective.com/vlt/33d4066/logo.png",
     "name": "vlt",
     "totalDonations": 50000,
-    "website": "https://vlt.sh"
+    "website": "https://vlt.sh/"
   },
   {
     "id": "Joe Alden",
@@ -245,13 +259,6 @@
     "website": "https://www.0x.se"
   },
   {
-    "id": "Trevor Burnham",
-    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
-    "name": "Trevor Burnham",
-    "totalDonations": 22000,
-    "website": "https://trevorburnham.com"
-  },
-  {
     "id": "Evil Martians",
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
@@ -266,11 +273,25 @@
     "website": "https://www.corellium.com"
   },
   {
+    "id": "Trevor Burnham",
+    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
+    "name": "Trevor Burnham",
+    "totalDonations": 21000,
+    "website": "https://trevorburnham.com"
+  },
+  {
     "id": "David Johnston",
     "image": "https://images.opencollective.com/blacksheepcode/f186c05/avatar.png",
     "name": "David Johnston",
     "totalDonations": 20500,
     "website": "https://blacksheepcode.com"
+  },
+  {
+    "id": "cocopon",
+    "image": "https://images.opencollective.com/cocopon/9d8fd1a/avatar.png",
+    "name": "cocopon",
+    "totalDonations": 18142,
+    "website": "https://cocopon.me"
   },
   {
     "id": "kartenmacherei",
@@ -285,6 +306,13 @@
     "name": "Balsa",
     "totalDonations": 17000,
     "website": "https://balsa.com/"
+  },
+  {
+    "id": "codecov",
+    "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
+    "name": "Codecov",
+    "totalDonations": 15292,
+    "website": "https://codecov.io/"
   },
   {
     "id": "THE PADDING",
@@ -306,6 +334,13 @@
     "name": "Now4real",
     "totalDonations": 14500,
     "website": "https://now4real.com/"
+  },
+  {
+    "id": "getsentry",
+    "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
+    "name": "Sentry",
+    "totalDonations": 14436,
+    "website": "https://sentry.io"
   },
   {
     "id": "Knowledge Work",

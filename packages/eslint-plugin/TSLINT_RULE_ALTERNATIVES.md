@@ -184,7 +184,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`object-literal-shorthand`]        | 🌟  | [`object-shorthand`][object-shorthand]                                              |
 | [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
-| [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
+| [`ordered-imports`]                 | 🔌  | [`import/order`]                                                                    |
 | [`prefer-function-over-method`]     | 🌟  | [`@typescript-eslint/class-methods-use-this`]                                       |
 | [`prefer-method-signature`]         | ✅  | [`@typescript-eslint/method-signature-style`]                                       |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |

@@ -55,9 +55,13 @@ const schema: readonly JSONSchema4[] = [
     properties: {
       enforceForDeclarationWithTypeAnnotation: {
         type: 'boolean',
+        description:
+          'Whether to enforce destructuring on variable declarations with type annotations.',
       },
       enforceForRenamedProperties: {
         type: 'boolean',
+        description:
+          'Whether to enforce destructuring that use a different variable name than the property name.',
       },
     },
   },

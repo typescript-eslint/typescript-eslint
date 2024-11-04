@@ -13,7 +13,7 @@ type Options = [
   {
     enforceForClassFields?: boolean;
     exceptMethods?: string[];
-    ignoreClassesThatImplementAnInterface?: 'public-fields' | boolean;
+    ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
     ignoreOverrideMethods?: boolean;
   },
 ];
@@ -40,19 +40,19 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             default: true,
             description:
-              'Enforces that functions used as instance field initializers utilize `this`',
+              'Enforces that functions used as instance field initializers utilize `this`.',
           },
           exceptMethods: {
             type: 'array',
             description:
-              'Allows specified method names to be ignored with this rule',
+              'Allows specified method names to be ignored with this rule.',
             items: {
               type: 'string',
             },
           },
           ignoreClassesThatImplementAnInterface: {
             description:
-              'Ignore classes that specifically implement some interface',
+              'Makes the rule ignore class members that are defined within a class that `implements` a type',
             oneOf: [
               {
                 type: 'boolean',

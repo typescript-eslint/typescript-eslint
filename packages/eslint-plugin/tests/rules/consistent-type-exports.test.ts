@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-type-exports';
@@ -21,6 +22,7 @@ ruleTester.run('consistent-type-exports', rule, {
 
     "export type { Type1 } from './consistent-type-exports';",
     "export { value1 } from './consistent-type-exports';",
+    'export { value1 as "🍎" } from \'./consistent-type-exports\';',
     "export type { value1 } from './consistent-type-exports';",
     `
 const variable = 1;
@@ -74,6 +76,18 @@ export { NonTypeNS };
         },
       ],
       output: "export type { Type1 } from './consistent-type-exports';",
+    },
+    {
+      code: 'export { Type1 as "🍎" } from \'./consistent-type-exports\';',
+      errors: [
+        {
+          column: 1,
+          line: 1,
+          messageId: 'typeOverValue',
+        },
+      ],
+      output:
+        'export type { Type1 as "🍎" } from \'./consistent-type-exports\';',
     },
     {
       code: "export { Type1, value1 } from './consistent-type-exports';",

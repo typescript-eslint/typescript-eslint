@@ -1,3 +1,127 @@
+## 8.12.2 (2024-10-29)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [switch-exhaustiveness-check] invert `considerDefaultExhaustiveForUnions` ([#10223](https://github.com/typescript-eslint/typescript-eslint/pull/10223))
+
+### ❤️  Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.12.1 (2024-10-28)
+
+### 🩹 Fixes
+
+- **rule-tester:** use cwd option to set base path for tests with file name ([#10201](https://github.com/typescript-eslint/typescript-eslint/pull/10201))
+
+### ❤️  Thank You
+
+- Dave @reduckted
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.12.0 (2024-10-28)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-nullish-coalescing] add support for assignment expressions ([#10152](https://github.com/typescript-eslint/typescript-eslint/pull/10152))
+- **eslint-plugin:** [consistent-indexed-object-style] report mapped types ([#10160](https://github.com/typescript-eslint/typescript-eslint/pull/10160))
+- **eslint-plugin:** [switch-exhaustiveness-check] add allowDefaultCaseMatchUnionMember option ([#9954](https://github.com/typescript-eslint/typescript-eslint/pull/9954))
+- **eslint-plugin:** [no-base-to-string] handle String() ([#10005](https://github.com/typescript-eslint/typescript-eslint/pull/10005))
+- **typescript-eslint:** improve undefined extension handling ([#10177](https://github.com/typescript-eslint/typescript-eslint/pull/10177))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unsafe-return] don't reiterate through all type parts for each part ([#10203](https://github.com/typescript-eslint/typescript-eslint/pull/10203))
+- **website:** enable `noImplicitAny` ([#10175](https://github.com/typescript-eslint/typescript-eslint/pull/10175))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger @kirkwaiblinger
+- Maxim Stykow @mstykow
+- Terry Fu
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.11.0 (2024-10-21)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-base-to-string] add support for catching toLocaleString ([#10138](https://github.com/typescript-eslint/typescript-eslint/pull/10138))
+- **eslint-plugin:** [no-unnecessary-type-parameters] add suggestion fixer ([#10149](https://github.com/typescript-eslint/typescript-eslint/pull/10149))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [class-literal-property-style] don't report nodes with `override` keyword ([#10135](https://github.com/typescript-eslint/typescript-eslint/pull/10135))
+- **rule-tester:** allow custom filename outside directory ([#10147](https://github.com/typescript-eslint/typescript-eslint/pull/10147))
+
+### ❤️  Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Lotfi Meklati @lotmek
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.10.0 (2024-10-17)
+
+### 🚀 Features
+
+- support TypeScript 5.6 ([#9972](https://github.com/typescript-eslint/typescript-eslint/pull/9972))
+
+### 🩹 Fixes
+
+- **typescript-eslint:** propagate `name` field to extended configs in `config` helper ([#10094](https://github.com/typescript-eslint/typescript-eslint/pull/10094))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.9.0 (2024-10-14)
+
+
+### 🚀 Features
+
+- **rule-tester:** hooks for test cases ([#10109](https://github.com/typescript-eslint/typescript-eslint/pull/10109))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-parameters] cannot assume variables are either type or value ([#10093](https://github.com/typescript-eslint/typescript-eslint/pull/10093))
+- **eslint-plugin:** [return-await] sync the behavior with await-thenable ([#10069](https://github.com/typescript-eslint/typescript-eslint/pull/10069))
+- **eslint-plugin:** [prefer-literal-enum-member] report a different error message when `allowBitwiseExpressions` is enabled ([#10096](https://github.com/typescript-eslint/typescript-eslint/pull/10096))
+- **eslint-plugin:** [no-loop-func] sync from upstream base rule ([#10103](https://github.com/typescript-eslint/typescript-eslint/pull/10103))
+- **eslint-plugin:** [no-unused-vars] never report the naming of an enum member ([#10117](https://github.com/typescript-eslint/typescript-eslint/pull/10117))
+- **eslint-plugin:** correct use-at-your-own-risk type definitions ([#10049](https://github.com/typescript-eslint/typescript-eslint/pull/10049))
+- **eslint-plugin:** handle unions in await...for ([#10110](https://github.com/typescript-eslint/typescript-eslint/pull/10110))
+- **rule-tester:** merge provided `linterOptions` ([#10131](https://github.com/typescript-eslint/typescript-eslint/pull/10131))
+- **scope-manager:** [no-use-before-define] do not treat nested namespace aliases as variable references ([#10095](https://github.com/typescript-eslint/typescript-eslint/pull/10095))
+- **typescript-estree:** improve project service error message when file extension missing from extraFileExtensions ([#10076](https://github.com/typescript-eslint/typescript-eslint/pull/10076))
+- **visitor-keys:** reorder `TSSatisfiesExpression` and `TSTypeAssertion` ([#10139](https://github.com/typescript-eslint/typescript-eslint/pull/10139))
+
+### ❤️  Thank You
+
+- Abraham Guo
+- Anna Bocharova @RobinTail
+- Arya Emami @aryaemami59
+- auvred @auvred
+- Joshua Chen
+- Kirk Waiblinger @kirkwaiblinger
+- Lotfi Meklati @lotmek
+- mdm317
+- Ronen Amiel
+- Sukka
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.8.1 (2024-10-07)
 
 

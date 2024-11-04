@@ -30,7 +30,9 @@ Examples of them include `let x = "hello" as const;` and `let x = <const>"hello"
 
 ### `assertionStyle`
 
-The expected assertion style to enforce. Valid values for `assertionStyle` are:
+{/* insert option description */}
+
+Valid values for `assertionStyle` are:
 
 - `as` will enforce that you always use `... as foo`.
 - `angle-bracket` will enforce that you always use `<foo>...`
@@ -42,7 +44,7 @@ Some codebases like to go for an extra level of type safety, and ban assertions 
 
 ### `objectLiteralTypeAssertions`
 
-Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions.
+{/* insert option description */}
 
 For example, this would prefer `const x: T = { ... };` to `const x = { ... } as T;` (or similar with angle brackets).
 The type assertion in the latter case is either unnecessary or will probably hide an error.
