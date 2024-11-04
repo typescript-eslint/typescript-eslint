@@ -103,6 +103,27 @@ This rule adds the following options:
 ```ts
 interface Options {
   /**
+   * Type specifiers that can be thrown.
+   */
+  allow?: (
+    | {
+        from: 'file';
+        name: [string, ...string[]] | string;
+        path?: string;
+      }
+    | {
+        from: 'lib';
+        name: [string, ...string[]] | string;
+      }
+    | {
+        from: 'package';
+        name: [string, ...string[]] | string;
+        package: string;
+      }
+    | string
+  )[];
+
+  /**
    * Whether to always allow throwing values typed as `any`.
    */
   allowThrowingAny?: boolean;
@@ -114,8 +135,9 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  allowThrowingAny: false,
-  allowThrowingUnknown: false,
+  allow: [],
+  allowThrowingAny: true,
+  allowThrowingUnknown: true,
 };
 ```
 
