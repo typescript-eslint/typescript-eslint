@@ -27,7 +27,7 @@ export function Sponsor({
   return (
     <Link
       className={styles.sponsorLink}
-      href={sponsor.website ?? undefined}
+      href={sponsor.website}
       title={sponsor.name}
       rel="noopener sponsored"
     >
