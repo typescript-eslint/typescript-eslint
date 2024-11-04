@@ -1,12 +1,14 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import type * as ts from 'typescript';
 
 import {
   createRule,
   getParserServices,
   isAwaitKeyword,
   isTypeAnyType,
+  isTypeReferenceType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
@@ -17,7 +19,8 @@ type MessageId =
   | 'await'
   | 'convertToOrdinaryFor'
   | 'forAwaitOfNonThenable'
-  | 'removeAwait';
+  | 'removeAwait'
+  | 'notPromises';
 
 export default createRule<[], MessageId>({
   name: 'await-thenable',
@@ -35,6 +38,7 @@ export default createRule<[], MessageId>({
       forAwaitOfNonThenable:
         'Unexpected `for await...of` of a value that is not async iterable.',
       removeAwait: 'Remove unnecessary `await`.',
+      notPromises: 'Unexpected non-promise input to Promise.{methodName}.',
     },
     schema: [],
   },
@@ -112,6 +116,51 @@ export default createRule<[], MessageId>({
           });
         }
       },
+
+      // Check for e.g. `Promise.all(nonPromises)`
+      CallExpression(node): void {
+        if (
+          node.callee.type === AST_NODE_TYPES.MemberExpression &&
+          node.callee.object.type === AST_NODE_TYPES.Identifier &&
+          node.callee.object.name === 'Promise' &&
+          node.callee.property.type === AST_NODE_TYPES.Identifier &&
+          (node.callee.property.name === 'all' ||
+            node.callee.property.name === 'allSettled' ||
+            node.callee.property.name === 'race')
+        ) {
+          // Get the type of the thing being used in the method call.
+          const argument = node.arguments[0];
+          const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
+          const type = checker.getTypeAtLocation(tsNode);
+          if (!isTypeReferenceType(type) || type.typeArguments === undefined) {
+            return;
+          }
+
+          const firstTypeArg = type.typeArguments[0];
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (firstTypeArg === undefined) {
+            return;
+          }
+
+          const typeName = getTypeNameSimple(type);
+          if (typeName !== 'Array') {
+            return;
+          }
+
+          const firstTypeArgName = getTypeNameSimple(firstTypeArg);
+          if (firstTypeArgName !== 'Promise') {
+            context.report({
+              loc: node.loc,
+              messageId: 'notPromises',
+            });
+          }
+        }
+      },
     };
   },
 });
+
+/** This is a simplified version of the `getTypeName` utility function. */
+function getTypeNameSimple(type: ts.Type): string | undefined {
+  return type.getSymbol()?.escapedName as string | undefined;
+}
