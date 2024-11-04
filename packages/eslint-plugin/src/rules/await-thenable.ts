@@ -5,6 +5,7 @@ import type * as ts from 'typescript';
 
 import {
   createRule,
+  getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
   isTypeAnyType,
@@ -17,8 +18,9 @@ import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
 type MessageId =
   | 'await'
+  | 'awaitUsingOfNonAsyncDisposable'
   | 'convertToOrdinaryFor'
-  | 'forAwaitOfNonThenable'
+  | 'forAwaitOfNonAsyncIterable'
   | 'removeAwait'
   | 'notPromises';
 
@@ -34,8 +36,10 @@ export default createRule<[], MessageId>({
     hasSuggestions: true,
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      awaitUsingOfNonAsyncDisposable:
+        'Unexpected `await using` of a value that is not async disposable.',
       convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
-      forAwaitOfNonThenable:
+      forAwaitOfNonAsyncIterable:
         'Unexpected `for await...of` of a value that is not async iterable.',
       removeAwait: 'Remove unnecessary `await`.',
       notPromises: 'Unexpected non-promise input to Promise.{methodName}.',
@@ -84,21 +88,21 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const asyncIteratorSymbol = tsutils
+        const hasAsyncIteratorSymbol = tsutils
           .unionTypeParts(type)
-          .map(t =>
-            tsutils.getWellKnownSymbolPropertyOfType(
-              t,
-              'asyncIterator',
-              checker,
-            ),
-          )
-          .find(symbol => symbol != null);
+          .some(
+            typePart =>
+              tsutils.getWellKnownSymbolPropertyOfType(
+                typePart,
+                'asyncIterator',
+                checker,
+              ) != null,
+          );
 
-        if (asyncIteratorSymbol == null) {
+        if (!hasAsyncIteratorSymbol) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
-            messageId: 'forAwaitOfNonThenable',
+            messageId: 'forAwaitOfNonAsyncIterable',
             suggest: [
               // Note that this suggestion causes broken code for sync iterables
               // of promises, since the loop variable is not awaited.
@@ -117,6 +121,57 @@ export default createRule<[], MessageId>({
         }
       },
 
+      'VariableDeclaration[kind="await using"]'(
+        node: TSESTree.VariableDeclaration,
+      ): void {
+        for (const declarator of node.declarations) {
+          const init = declarator.init;
+          if (init == null) {
+            continue;
+          }
+          const type = services.getTypeAtLocation(init);
+          if (isTypeAnyType(type)) {
+            continue;
+          }
+
+          const hasAsyncDisposeSymbol = tsutils
+            .unionTypeParts(type)
+            .some(
+              typePart =>
+                tsutils.getWellKnownSymbolPropertyOfType(
+                  typePart,
+                  'asyncDispose',
+                  checker,
+                ) != null,
+            );
+
+          if (!hasAsyncDisposeSymbol) {
+            context.report({
+              node: init,
+              messageId: 'awaitUsingOfNonAsyncDisposable',
+              // let the user figure out what to do if there's
+              // await using a = b, c = d, e = f;
+              // it's rare and not worth the complexity to handle.
+              ...getFixOrSuggest({
+                fixOrSuggest:
+                  node.declarations.length === 1 ? 'suggest' : 'none',
+
+                suggestion: {
+                  messageId: 'removeAwait',
+                  fix(fixer): TSESLint.RuleFix {
+                    const awaitToken = nullThrows(
+                      context.sourceCode.getFirstToken(node, isAwaitKeyword),
+                      NullThrowsReasons.MissingToken('await', 'await using'),
+                    );
+                    return fixer.remove(awaitToken);
+                  },
+                },
+              }),
+            });
+          }
+        }
+      },
+      
       // Check for e.g. `Promise.all(nonPromises)`
       CallExpression(node): void {
         if (

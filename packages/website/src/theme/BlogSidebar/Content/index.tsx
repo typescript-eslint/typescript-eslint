@@ -1,21 +1,22 @@
+import type { Props } from '@theme/BlogSidebar/Content';
+import type { ReactNode } from 'react';
+
 import { groupBlogSidebarItemsByYear } from '@docusaurus/plugin-content-blog/client';
 import { useThemeConfig } from '@docusaurus/theme-common';
-import type { Props } from '@theme/BlogSidebar/Content';
 import Heading from '@theme/Heading';
-import type { ReactNode } from 'react';
 import React, { memo } from 'react';
 import Markdown from 'react-markdown';
 
 import styles from './styles.module.css';
 
 function BlogSidebarYearGroup({
+  children,
   year,
   yearGroupHeadingClassName,
-  children,
 }: {
+  children: ReactNode;
   year: string;
   yearGroupHeadingClassName?: string;
-  children: ReactNode;
 }): React.JSX.Element {
   return (
     <div className={styles.blogSidebarContent} role="group">
@@ -29,8 +30,8 @@ function BlogSidebarYearGroup({
 
 function BlogSidebarContent({
   items: itemsRaw,
-  yearGroupHeadingClassName,
   ListComponent,
+  yearGroupHeadingClassName,
 }: Props): ReactNode {
   const items = itemsRaw.map(item => ({
     ...item,

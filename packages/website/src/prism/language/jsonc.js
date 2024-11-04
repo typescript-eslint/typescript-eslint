@@ -2,27 +2,27 @@
 
 // https://www.json.org/json-en.html
 Prism.languages.cjson = {
-  property: {
-    pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?=\s*:)/,
-    lookbehind: true,
-    greedy: true,
-  },
-  string: {
-    pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,
-    lookbehind: true,
-    greedy: true,
-  },
+  boolean: /\b(?:false|true)\b/,
   comment: {
-    pattern: /\/\/.*|\/\*[\s\S]*?(?:\*\/|$)/,
     greedy: true,
+    pattern: /\/\/.*|\/\*[\s\S]*?(?:\*\/|$)/,
+  },
+  null: {
+    alias: 'keyword',
+    pattern: /\bnull\b/,
   },
   number: /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
-  punctuation: /[{}[\],]/,
   operator: /:/,
-  boolean: /\b(?:false|true)\b/,
-  null: {
-    pattern: /\bnull\b/,
-    alias: 'keyword',
+  property: {
+    greedy: true,
+    lookbehind: true,
+    pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?=\s*:)/,
+  },
+  punctuation: /[{}[\],]/,
+  string: {
+    greedy: true,
+    lookbehind: true,
+    pattern: /(^|[^\\])"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,
   },
 };
 

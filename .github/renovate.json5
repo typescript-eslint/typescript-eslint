@@ -11,8 +11,6 @@
     'ajv',
     // ESM only so we can't go higher until we natively run ESM internally.
     'globby',
-    // Blocked until we enable ESLint v9 locally in our own PR (#9119).
-    'eslint',
     // ESM only so we can't go higher until we natively run ESM internally.
     'execa',
   ],

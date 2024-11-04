@@ -6,9 +6,9 @@ declare module 'eslint-plugin-react' {
 
   declare const exprt: {
     configs: {
-      recommended: ClassicConfig.Config;
       all: ClassicConfig.Config;
       'jsx-runtime': ClassicConfig.Config;
+      recommended: ClassicConfig.Config;
     };
     rules: NonNullable<Linter.Plugin['rules']>;
   };
