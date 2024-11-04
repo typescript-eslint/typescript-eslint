@@ -82,7 +82,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
             end: { column: 18, line: 1 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [0, 29],
         loc: {

@@ -155,6 +155,15 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
+          // "missing", "optional" and "undefined" types are different runtime objects,
+          // but all of them have TypeFlags.Undefined type flag
+          if (
+            [...caseTypes].some(tsutils.isIntrinsicUndefinedType) &&
+            tsutils.isIntrinsicUndefinedType(intersectionPart)
+          ) {
+            continue;
+          }
+
           missingLiteralBranchTypes.push(intersectionPart);
         }
       }

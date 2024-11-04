@@ -1,7 +1,3 @@
-import fs from 'node:fs';
-import path from 'node:path';
-
-import eslintPlugin from '@typescript-eslint/eslint-plugin';
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type {
   ClassicConfig,
@@ -9,6 +5,10 @@ import type {
   Linter,
   RuleRecommendation,
 } from '@typescript-eslint/utils/ts-eslint';
+
+import eslintPlugin from '@typescript-eslint/eslint-plugin';
+import fs from 'node:fs';
+import path from 'node:path';
 import prettier from 'prettier';
 
 import {
@@ -19,11 +19,11 @@ import {
 
 // no need for us to bring in an entire dependency for a few simple terminal colors
 const chalk = {
+  blueBright: (val: string): string => `\x1B[94m${val}\x1B[39m`,
   dim: (val: string): string => `\x1B[2m${val}\x1B[22m`,
+  gray: (val: string): string => `\x1B[90m${val}\x1B[39m`,
   green: (val: string): string => `\x1B[32m${val}\x1B[39m`,
   red: (val: string): string => `\x1B[31m${val}\x1B[39m`,
-  blueBright: (val: string): string => `\x1B[94m${val}\x1B[39m`,
-  gray: (val: string): string => `\x1B[90m${val}\x1B[39m`,
 };
 
 const AUTO_GENERATED_COMMENT_LINES = [
@@ -38,14 +38,14 @@ const AUTO_GENERATED_COMMENT_LINES = [
 
 const EXTENDS_MODULES = [
   {
+    moduleRelativePath: './base',
     name: 'baseConfig',
     packageRelativePath: './configs/base',
-    moduleRelativePath: './base',
   },
   {
+    moduleRelativePath: './eslint-recommended',
     name: 'eslintRecommendedConfig',
     packageRelativePath: './configs/eslint-recommended',
-    moduleRelativePath: './eslint-recommended',
   },
 ] as const;
 const CLASSIC_EXTENDS: readonly string[] = EXTENDS_MODULES.map(
@@ -63,11 +63,11 @@ async function main(): Promise<void> {
 
   type LinterConfigRules = Record<
     string,
-    ClassicConfig.RuleLevel | [ClassicConfig.RuleLevel, ...unknown[]]
+    [ClassicConfig.RuleLevel, ...unknown[]] | ClassicConfig.RuleLevel
   >;
 
   interface LinterConfig extends ClassicConfig.Config {
-    extends?: string[] | string;
+    extends?: string | string[];
     plugins?: string[];
   }
 
@@ -97,14 +97,14 @@ async function main(): Promise<void> {
 
   type GetRuleOptions = (
     rule: ESLintPluginRuleModule,
-  ) => true | readonly unknown[] | undefined;
+  ) => readonly unknown[] | true | undefined;
 
   interface ConfigRuleSettings {
+    baseRuleForExtensionRule?: 'exclude';
     deprecated?: 'exclude';
+    forcedRuleLevel?: Linter.RuleLevel;
     getOptions?: GetRuleOptions | undefined;
     typeChecked?: 'exclude' | 'include-only';
-    baseRuleForExtensionRule?: 'exclude';
-    forcedRuleLevel?: Linter.RuleLevel;
   }
 
   /**
@@ -169,9 +169,9 @@ async function main(): Promise<void> {
   }
 
   interface WriteConfigSettings {
+    description: string;
     getConfig: () => LinterConfig;
     name: string;
-    description: string;
   }
 
   /**
@@ -324,21 +324,21 @@ async function main(): Promise<void> {
     description:
       'Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.',
     name: 'all',
+    ruleEntries: allRuleEntries,
     settings: {
       deprecated: 'exclude',
     },
-    ruleEntries: allRuleEntries,
   });
 
   await writeExtendedConfig({
     description:
       'Recommended rules for code correctness that you can drop in without additional configuration.',
+    name: 'recommended',
+    ruleEntries: filterRuleEntriesTo('recommended'),
     settings: {
       getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'exclude',
     },
-    name: 'recommended',
-    ruleEntries: filterRuleEntriesTo('recommended'),
   });
 
   await writeExtendedConfig({
@@ -354,54 +354,54 @@ async function main(): Promise<void> {
   await writeExtendedConfig({
     description:
       'A version of `recommended` that only contains type-checked rules and disables of any corresponding core ESLint rules.',
+    name: 'recommended-type-checked-only',
+    ruleEntries: filterRuleEntriesTo('recommended'),
     settings: {
       getOptions: createGetOptionsForLevel('recommended'),
       typeChecked: 'include-only',
     },
-    name: 'recommended-type-checked-only',
-    ruleEntries: filterRuleEntriesTo('recommended'),
   });
 
   await writeExtendedConfig({
     description:
       'Contains all of `recommended`, as well as additional strict rules that can also catch bugs. ',
+    name: 'strict',
+    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
     settings: {
       getOptions: createGetOptionsForLevel('strict'),
       typeChecked: 'exclude',
     },
-    name: 'strict',
-    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
   });
 
   await writeExtendedConfig({
     description:
       'Contains all of `recommended`, `recommended-type-checked`, and `strict`, along with additional strict rules that require type information.',
+    name: 'strict-type-checked',
+    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
     settings: {
       getOptions: createGetOptionsForLevel('strict'),
     },
-    name: 'strict-type-checked',
-    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
   });
 
   await writeExtendedConfig({
     description:
       'A version of `strict` that only contains type-checked rules and disables of any corresponding core ESLint rules.',
+    name: 'strict-type-checked-only',
+    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
     settings: {
       getOptions: createGetOptionsForLevel('strict'),
       typeChecked: 'include-only',
     },
-    name: 'strict-type-checked-only',
-    ruleEntries: filterRuleEntriesTo('recommended', 'strict'),
   });
 
   await writeExtendedConfig({
     description:
       'Rules considered to be best practice for modern TypeScript codebases, but that do not impact program logic.',
+    name: 'stylistic',
+    ruleEntries: filterRuleEntriesTo('stylistic'),
     settings: {
       typeChecked: 'exclude',
     },
-    name: 'stylistic',
-    ruleEntries: filterRuleEntriesTo('stylistic'),
   });
 
   await writeExtendedConfig({
@@ -414,11 +414,11 @@ async function main(): Promise<void> {
   await writeExtendedConfig({
     description:
       'A version of `stylistic` that only contains type-checked rules and disables of any corresponding core ESLint rules.',
+    name: 'stylistic-type-checked-only',
+    ruleEntries: filterRuleEntriesTo('stylistic'),
     settings: {
       typeChecked: 'include-only',
     },
-    name: 'stylistic-type-checked-only',
-    ruleEntries: filterRuleEntriesTo('stylistic'),
   });
 
   await writeConfig({
@@ -426,16 +426,16 @@ async function main(): Promise<void> {
       'A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.',
     getConfig: () => ({
       parserOptions: {
-        project: false,
         program: null,
+        project: false,
         projectService: false,
       },
       rules: allRuleEntries.reduce(
         (config, entry) =>
           reducer(config, entry, {
-            typeChecked: 'include-only',
             baseRuleForExtensionRule: 'exclude',
             forcedRuleLevel: 'off',
+            typeChecked: 'include-only',
           }),
         {},
       ),

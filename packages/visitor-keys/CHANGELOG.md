@@ -1,3 +1,15 @@
+## 8.13.0 (2024-11-04)
+
+### 🚀 Features
+
+- add `options` property to `ImportExpression` node ([#10255](https://github.com/typescript-eslint/typescript-eslint/pull/10255))
+
+### ❤️  Thank You
+
+- Yosuke Ota @ota-meshi
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.12.2 (2024-10-29)
 
 This was a version bump only for visitor-keys to align it with other projects, there were no code changes.

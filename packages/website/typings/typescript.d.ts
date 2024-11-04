@@ -10,13 +10,13 @@ declare module 'typescript' {
   const libMap: Map<string, string>;
 
   interface OptionDeclarations {
-    name: string;
-    type?: unknown;
     category?: { message: string };
     description?: { message: string };
     element?: {
       type: unknown;
     };
+    name: string;
+    type?: unknown;
   }
 
   const optionDeclarations: OptionDeclarations[];
