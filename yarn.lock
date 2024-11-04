@@ -5873,7 +5873,6 @@ __metadata:
     eslint-plugin-react: ^7.34.1
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-regexp: ^2.6.0
-    eslint-plugin-simple-import-sort: ^10.0.0
     eslint-plugin-sonarjs: ^1.0.4
     eslint-plugin-unicorn: ^55.0.0
     execa: 7.2.0
@@ -9903,15 +9902,6 @@ __metadata:
   peerDependencies:
     eslint: ">=8.44.0"
   checksum: 35063ed6cefaee69bf92591591c2477430ad0ff68aa08201408fc5d19088b021e96bf1b6535af27d9675708ef1594950454463c88ad252b6b7fd9c1e5b832e7c
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-simple-import-sort@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "eslint-plugin-simple-import-sort@npm:10.0.0"
-  peerDependencies:
-    eslint: ">=5.0.0"
-  checksum: 23221ff63f80f9c52da807d388ee8a51bc36a3b73345f60ec886e7973c28d75eb1d1e47f7f2916a7c1f94a1b5037b1450356a64a8fbd58096fd6bee57c6e3e48
   languageName: node
   linkType: hard
 

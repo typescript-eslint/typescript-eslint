@@ -3,8 +3,8 @@ import React from 'react';
 import styles from './InputLabel.module.css';
 
 export interface InputLabelProps {
-  readonly name: string;
   readonly children: React.ReactNode;
+  readonly name: string;
 }
 
 function InputLabel(props: InputLabelProps): React.JSX.Element {

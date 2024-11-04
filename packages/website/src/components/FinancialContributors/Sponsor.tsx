@@ -1,8 +1,9 @@
 import Link from '@docusaurus/Link';
 import React from 'react';
 
-import styles from './styles.module.css';
 import type { SponsorData } from './types';
+
+import styles from './styles.module.css';
 
 interface SponsorProps {
   includeName?: boolean;

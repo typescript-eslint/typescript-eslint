@@ -1,8 +1,8 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
+import type { SponsorData } from 'website/src/components/FinancialContributors/types.ts';
 
 import fetch from 'cross-fetch';
-import type { SponsorData } from 'website/src/components/FinancialContributors/types.ts';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 import { PACKAGES_WEBSITE } from './paths.mts';
 
@@ -20,8 +20,8 @@ const jsonApiFetch = async <T,>(
   const response = await fetch(url, options);
   if (!response.ok) {
     console.error({
+      response: { body: await response.text(), status: response.status },
       url,
-      response: { status: response.status, body: await response.text() },
     });
     throw new Error('API call failed.');
   }
@@ -45,8 +45,6 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
     };
   };
 }>('opencollective.com/graphql/v2', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
     query: `
       {
@@ -68,6 +66,8 @@ const openCollectiveSponsorsPromise = jsonApiFetch<{
       }
     `,
   }),
+  headers: { 'Content-Type': 'application/json' },
+  method: 'POST',
 }).then(({ data }) => {
   // TODO: remove polyfill in Node 22
   const groupBy = <T,>(

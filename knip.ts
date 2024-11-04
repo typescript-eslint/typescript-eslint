@@ -13,6 +13,7 @@ export default {
   },
   workspaces: {
     '.': {
+      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -29,7 +30,6 @@ export default {
         // imported for type purposes only
         'website',
       ],
-      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
     },
     'packages/ast-spec': {
       ignore: [
@@ -104,10 +104,6 @@ export default {
       ],
     },
     'packages/website-eslint': {
-      ignoreDependencies: [
-        // virtual module
-        'vt',
-      ],
       entry: [
         'src/index.js',
         'src/mock/assert.js',
@@ -118,6 +114,10 @@ export default {
         'src/mock/path.js',
         'src/mock/typescript.js',
         'src/mock/util.js',
+      ],
+      ignoreDependencies: [
+        // virtual module
+        'vt',
       ],
     },
     'tools/dummypkg': {},
