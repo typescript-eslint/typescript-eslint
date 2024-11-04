@@ -75,6 +75,8 @@ export default createRule({
             });
           }
         }
+
+        methodPairsStack.pop();
       },
       ':matches(MethodDefinition, TSMethodSignature)[kind=get]'(
         node: GetMethod,
@@ -102,7 +104,6 @@ export default createRule({
   },
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function getMethodFromNode(node: GetMethod | SetMethod) {
   return node.type === AST_NODE_TYPES.TSMethodSignature ? node : node.value;
 }

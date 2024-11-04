@@ -161,5 +161,104 @@ class Example {
         },
       ],
     },
+    {
+      code: `
+type GetType = { a: string; b: string };
+
+declare class Foo {
+  get a(): GetType;
+
+  set a(x: { c: string });
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'mismatch',
+        },
+      ],
+    },
+    {
+      code: `
+type GetType = { a: string; b: string };
+
+type SetTypeUnused = { c: string };
+
+declare class Foo {
+  get a(): GetType;
+
+  set a(x: { c: string });
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatch',
+        },
+      ],
+    },
+    {
+      code: `
+type GetType = { a: string; b: string };
+
+type SetType = { c: string };
+
+declare class Foo {
+  get a(): GetType;
+
+  set a(x: SetType);
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'mismatch',
+        },
+      ],
+    },
   ],
 });
+
+/*
+
+    `
+type GetType = { a: string; b: string };
+
+declare class Foo {
+  get a(): GetType;
+
+  set a(x: { c: string });
+}
+    `,
+    `
+type GetType = { a: string; b: string };
+
+type SetTypeUnused = { c: string };
+
+declare class Foo {
+  get a(): GetType;
+
+  set a(x: { c: string });
+}
+    `,
+    `
+type GetType = { a: string; b: string };
+
+type SetType = { c: string };
+
+declare class Foo {
+  get a(): GetType;
+
+  set a(x: SetType);
+}
+    `,
+    */
