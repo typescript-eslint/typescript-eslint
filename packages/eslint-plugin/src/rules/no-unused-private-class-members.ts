@@ -42,9 +42,9 @@ export default createRule<Options, MessageIds>({
 
     /**
      * The core ESLint rule tracks methods by adding an extra property of
-     * "isUsed" to the method, which obviously violates type safety. Instead, in
-     * our extended rule, we create a separate data structure to track whether a
-     * method is being used.
+     * "isUsed" to the method, which is a bug according to Joshua Goldberg.
+     * Instead, in our extended rule, we create a separate data structure to
+     * track whether a method is being used.
      */
     const trackedClassMembersUsed = new Set<
       | TSESTree.MethodDefinitionComputedName
