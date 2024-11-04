@@ -13,14 +13,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-dec
 -       body: TSModuleBlock {
 -         type: 'TSModuleBlock',
 -         body: Array [],
-+       body: TSModuleDeclaration {
-+         type: 'TSModuleDeclaration',
-+         body: TSModuleDeclaration {
-+           type: 'TSModuleDeclaration',
-+           body: TSModuleBlock {
-+             type: 'TSModuleBlock',
-+             body: Array [],
-
+-
 -         range: [30, 32],
 -         loc: {
 -           start: { column: 30, line: 1 },
@@ -38,7 +31,14 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-dec
 -             decorators: Array [],
 -             name: 'abc',
 -             optional: false,
--
++       body: TSModuleDeclaration {
++         type: 'TSModuleDeclaration',
++         body: TSModuleDeclaration {
++           type: 'TSModuleDeclaration',
++           body: TSModuleBlock {
++             type: 'TSModuleBlock',
++             body: Array [],
+
 -             range: [18, 21],
 +             range: [30, 32],
               loc: {
@@ -112,7 +112,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-dec
 +           end: { column: 21, line: 1 },
           },
         },
--       kind: 'namespace',
+        kind: 'namespace',
 
         range: [0, 32],
         loc: {

@@ -34,7 +34,7 @@ exports[`AST Fixtures legacy-fixtures declare namespace AST Alignment - AST 1`] 
             end: { column: 21, line: 3 },
           },
         },
--       kind: 'namespace',
+        kind: 'namespace',
 
         range: [73, 97],
         loc: {

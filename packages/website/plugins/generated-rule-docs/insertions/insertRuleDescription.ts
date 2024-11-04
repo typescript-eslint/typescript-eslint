@@ -6,8 +6,8 @@ export function insertRuleDescription(page: RuleDocsPage): void {
   page.spliceChildren(0, 0, `> ${page.rule.meta.docs.description}.`, {
     attributes: [
       {
-        type: 'mdxJsxAttribute',
         name: 'name',
+        type: 'mdxJsxAttribute',
         value: page.file.stem,
       },
     ],

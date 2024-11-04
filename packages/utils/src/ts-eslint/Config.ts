@@ -150,7 +150,7 @@ export namespace FlatConfig {
   export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
-    [key: string]: Config;
+    [key: string]: Config | ConfigArray;
   }
   export interface Plugin {
     /**

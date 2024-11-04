@@ -32,10 +32,10 @@ export function TeamBio({
           .map(([service, url]) => (
             <li key={service}>
               <a
+                aria-label={`${service}-link`}
                 className={`image-link ${service}-link social-link-icon ${styles.serviceIconLink}`}
                 href={url}
                 target="_blank"
-                aria-label={`${service}-link`}
               />
             </li>
           ))}

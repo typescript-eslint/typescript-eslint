@@ -1,3 +1,4 @@
+import type { TSESLint } from '@typescript-eslint/utils';
 import type {
   FlatConfig,
   RuleRecommendation,
@@ -366,6 +367,59 @@ describe('config helper', () => {
         rules: { rule: 'error' },
       },
     ]);
+  });
+
+  it('throws error containing config name when some extensions are undefined', () => {
+    const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
+
+    expect(() =>
+      plugin.config(
+        {
+          extends: [extension],
+          files: ['common-file'],
+          ignores: ['common-ignored'],
+          name: 'my-config-1',
+          rules: { rule: 'error' },
+        },
+        {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          extends: [undefined as any, extension, undefined as any],
+          files: ['common-file'],
+          ignores: ['common-ignored'],
+          name: 'my-config-2',
+          rules: { rule: 'error' },
+        },
+      ),
+    ).toThrow(
+      'Your config at index 1, named "my-config-2", contains undefined ' +
+        'extensions at the following indices: 0, 2',
+    );
+  });
+
+  it('throws error without config name when some extensions are undefined', () => {
+    const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
+
+    expect(() =>
+      plugin.config(
+        {
+          extends: [extension],
+          files: ['common-file'],
+          ignores: ['common-ignored'],
+          name: 'my-config-1',
+          rules: { rule: 'error' },
+        },
+        {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          extends: [undefined as any, extension, undefined as any],
+          files: ['common-file'],
+          ignores: ['common-ignored'],
+          rules: { rule: 'error' },
+        },
+      ),
+    ).toThrow(
+      'Your config at index 1 (anonymous) contains undefined extensions at ' +
+        'the following indices: 0, 2',
+    );
   });
 
   it('flattens extended configs with config name', () => {

@@ -6,8 +6,8 @@ declare module 'eslint-plugin-unicorn' {
 
   declare const exprt: {
     configs: {
-      recommended: ClassicConfig.Config;
       all: ClassicConfig.Config;
+      recommended: ClassicConfig.Config;
     };
     rules: NonNullable<Linter.Plugin['rules']>;
   };
