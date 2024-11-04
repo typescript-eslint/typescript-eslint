@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-indexed-object-style';
 
@@ -140,6 +140,28 @@ interface Foo {
     {
       code: 'type T = A.B;',
       options: ['index-signature'],
+    },
+
+    {
+      // mapped type that uses the key cannot be converted to record
+      code: 'type T = { [key in Foo]: key | number };',
+    },
+    {
+      code: `
+function foo(e: { readonly [key in PropertyKey]-?: key }) {}
+      `,
+    },
+
+    {
+      // `in keyof` mapped types are not convertible to Record.
+      code: `
+function f(): {
+  // intentionally not using a Record to preserve optionals
+  [k in keyof ParseResult]: unknown;
+} {
+  return {};
+}
+      `,
     },
   ],
   invalid: [
@@ -390,6 +412,162 @@ interface Foo {
       errors: [{ column: 17, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'function foo(): { [key: string]: any } {}',
+    },
+    {
+      code: 'type T = { readonly [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+      output: `type T = Readonly<Record<string, number>>;`,
+    },
+    {
+      code: 'type T = { +readonly [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+      output: `type T = Readonly<Record<string, number>>;`,
+    },
+    {
+      // There is no fix, since there isn't a builtin Mutable<T> :(
+      code: 'type T = { -readonly [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+    },
+    {
+      code: 'type T = { [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+      output: `type T = Record<string, number>;`,
+    },
+    {
+      code: `
+function foo(e: { [key in PropertyKey]?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Partial<Record<PropertyKey, string>>) {}
+      `,
+    },
+    {
+      code: `
+function foo(e: { [key in PropertyKey]+?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Partial<Record<PropertyKey, string>>) {}
+      `,
+    },
+    {
+      code: `
+function foo(e: { [key in PropertyKey]-?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Required<Record<PropertyKey, string>>) {}
+      `,
+    },
+    {
+      code: `
+function foo(e: { readonly [key in PropertyKey]-?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Readonly<Required<Record<PropertyKey, string>>>) {}
+      `,
+    },
+    {
+      code: `
+type Options = [
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
+    allow?: TypeOrValueSpecifier[];
+  },
+];
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 67,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Options = [
+  Partial<Record<(typeof optionTesters)[number]['option'], boolean>> & {
+    allow?: TypeOrValueSpecifier[];
+  },
+];
+      `,
+    },
+    {
+      code: `
+export type MakeRequired<Base, Key extends keyof Base> = {
+  [K in Key]-?: NonNullable<Base[Key]>;
+} & Omit<Base, Key>;
+      `,
+      errors: [
+        {
+          column: 58,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+export type MakeRequired<Base, Key extends keyof Base> = Required<Record<Key, NonNullable<Base[Key]>>> & Omit<Base, Key>;
+      `,
+    },
+    {
+      // in parenthesized expression is convertible to Record
+      code: noFormat`
+function f(): {
+  [k in (keyof ParseResult)]: unknown;
+} {
+  return {};
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function f(): Record<keyof ParseResult, unknown> {
+  return {};
+}
+      `,
     },
   ],
 });

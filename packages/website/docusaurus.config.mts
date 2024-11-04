@@ -60,6 +60,9 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
     appId: 'N1HUB2TU6A',
     indexName: 'typescript-eslint',
   },
+  colorMode: {
+    respectPrefersColorScheme: true,
+  },
   footer: {
     copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
     links: [

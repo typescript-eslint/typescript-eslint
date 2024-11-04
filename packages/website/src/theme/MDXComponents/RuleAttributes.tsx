@@ -22,9 +22,8 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-type MakeRequired<Base, Key extends keyof Base> = {
-  [K in Key]-?: NonNullable<Base[Key]>;
-} & Omit<Base, Key>;
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
+  Required<Record<Key, NonNullable<Base[Key]>>>;
 
 type RecommendedRuleMetaDataDocs = MakeRequired<
   ESLintPluginDocs,
@@ -62,7 +61,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Extending{' '}
-          <Link target="_blank" to={`/users/configs#${recommendation}`}>
+          <Link to={`/users/configs#${recommendation}`} target="_blank">
             <code className={styles.code}>
               "plugin:@typescript-eslint/{recommendation}"
             </code>

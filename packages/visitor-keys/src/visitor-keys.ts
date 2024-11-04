@@ -175,7 +175,7 @@ const additionalKeys: AdditionalKeys = {
   Identifier: ['decorators', 'typeAnnotation'],
   ImportAttribute: ['key', 'value'],
   ImportDeclaration: ['specifiers', 'source', 'assertions'],
-  ImportExpression: ['source', 'attributes'],
+  ImportExpression: ['source', 'options'],
   JSXClosingFragment: [],
   JSXOpeningElement: ['name', 'typeArguments', 'attributes'],
   JSXOpeningFragment: [],

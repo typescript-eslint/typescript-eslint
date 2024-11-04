@@ -97,6 +97,18 @@ export type W<T> = {
       output: `interface T { x: number; }`,
     },
     {
+      code: noFormat`type T /* comment */={ x: number; };`,
+      errors: [
+        {
+          column: 6,
+          line: 1,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      options: ['interface'],
+      output: `interface T /* comment */ { x: number; }`,
+    },
+    {
       code: `
 export type W<T> = {
   x: T;
@@ -348,6 +360,105 @@ export declare type Test = {
   foo: string;
   bar: string;
 }
+      `,
+    },
+    {
+      code: noFormat`
+type Foo = ({
+  a: string;
+});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      code: noFormat`
+type Foo = ((((((((({
+  a: string;
+})))))))));
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      // no closing semicolon
+      code: noFormat`
+type Foo = {
+  a: string;
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+      `,
+    },
+    {
+      // no closing semicolon; ensure we don't erase subsequent code.
+      code: noFormat`
+type Foo = {
+  a: string;
+}
+type Bar = string;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+type Bar = string;
+      `,
+    },
+    {
+      // no closing semicolon; ensure we don't erase subsequent code.
+      code: noFormat`
+type Foo = ((({
+  a: string;
+})))
+
+const bar = 1;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'interfaceOverType',
+        },
+      ],
+      output: `
+interface Foo {
+  a: string;
+}
+
+const bar = 1;
       `,
     },
   ],

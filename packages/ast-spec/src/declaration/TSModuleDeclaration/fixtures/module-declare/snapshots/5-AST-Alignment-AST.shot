@@ -34,7 +34,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-declare AST Alignme
             end: { column: 16, line: 1 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [0, 19],
         loc: {

@@ -26,10 +26,30 @@ import {
 
 // Truthiness utilities
 // #region
+const valueIsPseudoBigInt = (
+  value: number | string | ts.PseudoBigInt,
+): value is ts.PseudoBigInt => {
+  return typeof value === 'object';
+};
+
+const getValue = (type: ts.LiteralType): bigint | number | string => {
+  if (valueIsPseudoBigInt(type.value)) {
+    return BigInt((type.value.negative ? '-' : '') + type.value.base10Value);
+  }
+  return type.value;
+};
+
+const isFalsyBigInt = (type: ts.Type): boolean => {
+  return (
+    tsutils.isLiteralType(type) &&
+    valueIsPseudoBigInt(type.value) &&
+    !getValue(type)
+  );
+};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   //  || type.
-  (type.isLiteral() && !!type.value);
+  (type.isLiteral() && !!getValue(type));
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
@@ -49,7 +69,13 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+      intersectionParts.every(
+        type =>
+          !tsutils.isFalsyType(type) &&
+          // below is a workaround for ts-api-utils bug
+          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
+          !isFalsyBigInt(type),
+      ),
     );
 
 // Nullish utilities

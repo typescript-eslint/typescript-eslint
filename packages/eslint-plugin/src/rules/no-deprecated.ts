@@ -130,12 +130,11 @@ export default createRule({
           case AST_NODE_TYPES.ExportDefaultDeclaration:
           case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
-          case AST_NODE_TYPES.ImportExpression:
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
           case AST_NODE_TYPES.BlockStatement:
-          case AST_NODE_TYPES.ClassBody:
+          case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
