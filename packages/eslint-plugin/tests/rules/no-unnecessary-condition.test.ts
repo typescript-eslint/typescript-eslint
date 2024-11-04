@@ -1043,7 +1043,7 @@ declare const falseyBigInt: 0n;
 if (falseyBigInt) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysFalsy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysFalsy' }],
     },
     {
       code: `
@@ -1051,7 +1051,7 @@ declare const posbigInt: 1n;
 if (posbigInt) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
     },
     {
       code: `
@@ -1059,7 +1059,7 @@ declare const negBigInt: -2n;
 if (negBigInt) {
 }
       `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
+      errors: [{ column: 5, line: 3, messageId: 'alwaysTruthy' }],
     },
     {
       code: `

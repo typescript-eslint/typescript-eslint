@@ -32,9 +32,11 @@ const valueIsPseudoBigInt = (
   return typeof value === 'object';
 };
 
-const getValue = (type: ts.LiteralType): bigint | number | string => {
+const getValueOfLiteralType = (
+  type: ts.LiteralType,
+): bigint | number | string => {
   if (valueIsPseudoBigInt(type.value)) {
-    return BigInt((type.value.negative ? '-' : '') + type.value.base10Value);
+    return pseudoBigIntToBigInt(type.value);
   }
   return type.value;
 };
@@ -43,13 +45,12 @@ const isFalsyBigInt = (type: ts.Type): boolean => {
   return (
     tsutils.isLiteralType(type) &&
     valueIsPseudoBigInt(type.value) &&
-    !getValue(type)
+    !getValueOfLiteralType(type)
   );
 };
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
-  //  || type.
-  (type.isLiteral() && !!getValue(type));
+  (type.isLiteral() && !!getValueOfLiteralType(type));
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
@@ -89,7 +90,7 @@ const isPossiblyNullish = (type: ts.Type): boolean =>
 const isAlwaysNullish = (type: ts.Type): boolean =>
   tsutils.unionTypeParts(type).every(isNullishType);
 
-function toLiteralValue(
+function toStaticValue(
   type: ts.Type,
 ):
   | { value: bigint | boolean | number | string | null | undefined }
@@ -100,15 +101,15 @@ function toLiteralValue(
     // is `undefined`, contrary to what the type guard tells us.
     // See https://github.com/JoshuaKGoldberg/ts-api-utils/issues/528
     return { value: type.intrinsicName === 'true' };
-  } else if (type.flags === ts.TypeFlags.Undefined) {
+  }
+  if (type.flags === ts.TypeFlags.Undefined) {
     return { value: undefined };
-  } else if (type.flags === ts.TypeFlags.Null) {
+  }
+  if (type.flags === ts.TypeFlags.Null) {
     return { value: null };
-  } else if (type.isLiteral()) {
-    if (typeof type.value === 'string' || typeof type.value === 'number') {
-      return { value: type.value };
-    }
-    return { value: pseudoBigIntToBigInt(type.value) };
+  }
+  if (type.isLiteral()) {
+    return { value: getValueOfLiteralType(type) };
   }
 
   return undefined;
@@ -476,14 +477,14 @@ export default createRule<Options, MessageId>({
       const leftType = getConstrainedTypeAtLocation(services, left);
       const rightType = getConstrainedTypeAtLocation(services, right);
 
-      const leftLiteralValue = toLiteralValue(leftType);
-      const rightLiteralValue = toLiteralValue(rightType);
+      const leftStaticValue = toStaticValue(leftType);
+      const rightStaticValue = toStaticValue(rightType);
 
-      if (leftLiteralValue != null && rightLiteralValue != null) {
+      if (leftStaticValue != null && rightStaticValue != null) {
         const conditionIsTrue = booleanComparison(
-          leftLiteralValue.value,
+          leftStaticValue.value,
           operator,
-          rightLiteralValue.value,
+          rightStaticValue.value,
         );
 
         context.report({
