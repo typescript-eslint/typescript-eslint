@@ -27,6 +27,8 @@ export default {
         'make-dir',
         'ncp',
         'tmp',
+        // imported for type purposes only
+        'website',
       ],
     },
     'packages/ast-spec': {
