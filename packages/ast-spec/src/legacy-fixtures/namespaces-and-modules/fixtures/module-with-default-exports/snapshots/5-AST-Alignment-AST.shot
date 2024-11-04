@@ -209,7 +209,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
             end: { column: 12, line: 3 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [73, 174],
         loc: {

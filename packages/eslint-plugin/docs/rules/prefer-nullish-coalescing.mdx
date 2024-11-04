@@ -172,6 +172,30 @@ foo ?? 'a string';
 
 Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
+### `ignoreBooleanCoercion`
+
+{/* insert option description */}
+
+Whether to ignore expressions that coerce a value into a boolean: `Boolean(...)`.
+
+Incorrect code for `ignoreBooleanCoercion: false`, and correct code for `ignoreBooleanCoercion: true`:
+
+```ts option='{ "ignoreBooleanCoercion": true }' showPlaygroundButton
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a || b);
+```
+
+Correct code for `ignoreBooleanCoercion: false`:
+
+```ts option='{ "ignoreBooleanCoercion": false }' showPlaygroundButton
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ?? b);
+```
+
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
 {/* insert option description */}
