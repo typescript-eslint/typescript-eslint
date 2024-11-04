@@ -1,7 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -21,8 +22,8 @@ type MessageId =
   | 'awaitUsingOfNonAsyncDisposable'
   | 'convertToOrdinaryFor'
   | 'forAwaitOfNonAsyncIterable'
-  | 'removeAwait'
-  | 'notPromises';
+  | 'notPromises'
+  | 'removeAwait';
 
 export default createRule<[], MessageId>({
   name: 'await-thenable',
@@ -41,8 +42,8 @@ export default createRule<[], MessageId>({
       convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
       forAwaitOfNonAsyncIterable:
         'Unexpected `for await...of` of a value that is not async iterable.',
-      removeAwait: 'Remove unnecessary `await`.',
       notPromises: 'Unexpected non-promise input to Promise.{methodName}.',
+      removeAwait: 'Remove unnecessary `await`.',
     },
     schema: [],
   },
@@ -171,7 +172,7 @@ export default createRule<[], MessageId>({
           }
         }
       },
-      
+
       // Check for e.g. `Promise.all(nonPromises)`
       CallExpression(node): void {
         if (
