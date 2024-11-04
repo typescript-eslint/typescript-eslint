@@ -227,38 +227,3 @@ declare class Foo {
     },
   ],
 });
-
-/*
-
-    `
-type GetType = { a: string; b: string };
-
-declare class Foo {
-  get a(): GetType;
-
-  set a(x: { c: string });
-}
-    `,
-    `
-type GetType = { a: string; b: string };
-
-type SetTypeUnused = { c: string };
-
-declare class Foo {
-  get a(): GetType;
-
-  set a(x: { c: string });
-}
-    `,
-    `
-type GetType = { a: string; b: string };
-
-type SetType = { c: string };
-
-declare class Foo {
-  get a(): GetType;
-
-  set a(x: SetType);
-}
-    `,
-    */
