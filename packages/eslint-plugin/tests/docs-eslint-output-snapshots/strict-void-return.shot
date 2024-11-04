@@ -6,8 +6,7 @@ exports[`Validating rule docs strict-void-return.mdx code examples ESLint output
 const getNothing: () => void = () => 2137;
                                      ~~~~ Value returned in \`getNothing\` function variable, which expects a void function.
 const getString: () => string = () => 'Hello';
-const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
-const maybeString = getStringMaybe();
+const maybeString = Math.random() > 0.1 ? getNothing() : getString();
 if (maybeString) console.log(maybeString.toUpperCase()); // ❌ Crash if getNothing was called
 "
 `;
@@ -17,8 +16,7 @@ exports[`Validating rule docs strict-void-return.mdx code examples ESLint output
 
 const getNothing: () => void = () => {};
 const getString: () => string = () => 'Hello';
-const getStringMaybe = Math.random() > 0.1 ? getNothing : getString;
-const maybeString = getStringMaybe();
+const maybeString = Math.random() > 0.1 ? getNothing() : getString();
 if (maybeString) console.log(maybeString.toUpperCase()); // ✅ No crash
 "
 `;
