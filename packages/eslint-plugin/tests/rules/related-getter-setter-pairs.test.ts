@@ -79,6 +79,30 @@ class Example {
     `,
     `
 class Example {
+  get value() {
+    return '';
+  }
+  set value() {}
+}
+    `,
+    `
+class Example {
+  get value() {
+    return '';
+  }
+  set value(param) {}
+}
+    `,
+    `
+class Example {
+  get value() {
+    return '';
+  }
+  set value(param: number) {}
+}
+    `,
+    `
+class Example {
   set value() {}
 }
     `,

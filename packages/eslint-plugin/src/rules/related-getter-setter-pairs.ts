@@ -8,8 +8,12 @@ type Method = TSESTree.MethodDefinition | TSESTree.TSMethodSignature;
 
 type GetMethod = {
   kind: 'get';
-  returnType: TSESTree.TSTypeAnnotation | undefined;
+  returnType: TSESTree.TSTypeAnnotation;
 } & Method;
+
+type GetMethodRaw = {
+  returnType: TSESTree.TSTypeAnnotation | undefined;
+} & GetMethod;
 
 type SetMethod = { kind: 'set'; params: [TSESTree.Node] } & Method;
 
@@ -70,7 +74,7 @@ export default createRule({
 
           if (!checker.isTypeAssignableTo(getType, setType)) {
             context.report({
-              node: getter.returnType?.typeAnnotation ?? pair.get.key,
+              node: getter.returnType.typeAnnotation,
               messageId: 'mismatch',
             });
           }
@@ -104,6 +108,6 @@ export default createRule({
   },
 });
 
-function getMethodFromNode(node: GetMethod | SetMethod) {
+function getMethodFromNode(node: GetMethodRaw | SetMethod) {
   return node.type === AST_NODE_TYPES.TSMethodSignature ? node : node.value;
 }
