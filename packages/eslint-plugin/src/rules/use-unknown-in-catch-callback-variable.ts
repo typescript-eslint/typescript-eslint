@@ -1,8 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { ReportDescriptor } from '@typescript-eslint/utils/ts-eslint';
-import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -14,13 +15,13 @@ import {
 } from '../util';
 
 type MessageIds =
+  | 'addUnknownRestTypeAnnotationSuggestion'
+  | 'addUnknownTypeAnnotationSuggestion'
   | 'useUnknown'
   | 'useUnknownArrayDestructuringPattern'
   | 'useUnknownObjectDestructuringPattern'
-  | 'addUnknownTypeAnnotationSuggestion'
-  | 'addUnknownRestTypeAnnotationSuggestion'
-  | 'wrongTypeAnnotationSuggestion'
-  | 'wrongRestTypeAnnotationSuggestion';
+  | 'wrongRestTypeAnnotationSuggestion'
+  | 'wrongTypeAnnotationSuggestion';
 
 const useUnknownMessageBase =
   'Prefer the safe `: unknown` for a `{{method}}`{{append}} callback variable.';
@@ -28,37 +29,37 @@ const useUnknownMessageBase =
 export default createRule<[], MessageIds>({
   name: 'use-unknown-in-catch-callback-variable',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce typing arguments in Promise rejection callbacks as `unknown`',
-      requiresTypeChecking: true,
       recommended: 'strict',
+      requiresTypeChecking: true,
     },
-    type: 'suggestion',
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
+      addUnknownRestTypeAnnotationSuggestion:
+        'Add an explicit `: [unknown]` type annotation to the rejection callback rest variable.',
+      addUnknownTypeAnnotationSuggestion:
+        'Add an explicit `: unknown` type annotation to the rejection callback variable.',
       useUnknown: useUnknownMessageBase,
       useUnknownArrayDestructuringPattern: `${useUnknownMessageBase} The thrown error may not be iterable.`,
       useUnknownObjectDestructuringPattern: `${
         useUnknownMessageBase
       } The thrown error may be nullable, or may not have the expected shape.`,
-      addUnknownTypeAnnotationSuggestion:
-        'Add an explicit `: unknown` type annotation to the rejection callback variable.',
-      addUnknownRestTypeAnnotationSuggestion:
-        'Add an explicit `: [unknown]` type annotation to the rejection callback rest variable.',
-      wrongTypeAnnotationSuggestion:
-        'Change existing type annotation to `: unknown`.',
       wrongRestTypeAnnotationSuggestion:
         'Change existing type annotation to `: [unknown]`.',
+      wrongTypeAnnotationSuggestion:
+        'Change existing type annotation to `: unknown`.',
     },
-    fixable: 'code',
     schema: [],
-    hasSuggestions: true,
   },
 
   defaultOptions: [],
 
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const { esTreeNodeToTSNodeMap, program } = getParserServices(context);
     const checker = program.getTypeChecker();
 
     function isFlaggableHandlerType(type: ts.Type): boolean {
@@ -114,7 +115,7 @@ export default createRule<[], MessageIds>({
      */
     function refineReportIfPossible(
       argument: TSESTree.Expression,
-    ): undefined | Partial<ReportDescriptor<MessageIds>> {
+    ): Partial<ReportDescriptor<MessageIds>> | undefined {
       // Only know how to be helpful if a function literal has been provided.
       if (
         !(
@@ -238,12 +239,12 @@ export default createRule<[], MessageIds>({
 
         const promiseMethodInfo = (
           [
-            { method: 'catch', append: '', argIndexToCheck: 0 },
-            { method: 'then', append: ' rejection', argIndexToCheck: 1 },
+            { append: '', argIndexToCheck: 0, method: 'catch' },
+            { append: ' rejection', argIndexToCheck: 1, method: 'then' },
           ] satisfies {
-            method: string;
             append: string;
             argIndexToCheck: number;
+            method: string;
           }[]
         ).find(({ method }) => staticMemberAccessKey === method);
         if (!promiseMethodInfo) {

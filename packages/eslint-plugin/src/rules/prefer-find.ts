@@ -1,8 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
-import * as tsutils from 'ts-api-utils';
 import type { Type } from 'typescript';
+
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
@@ -16,19 +17,19 @@ import {
 export default createRule({
   name: 'prefer-find',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce the use of Array.prototype.find() over Array.prototype.filter() followed by [0] when looking for a single result',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       preferFind: 'Prefer .find(...) instead of .filter(...)[0].',
       preferFindSuggestion: 'Use .find(...) instead of .filter(...)[0].',
     },
     schema: [],
-    type: 'suggestion',
-    hasSuggestions: true,
   },
 
   defaultOptions: [],
@@ -39,8 +40,8 @@ export default createRule({
     const checker = services.program.getTypeChecker();
 
     interface FilterExpressionData {
-      isBracketSyntaxForFilter: boolean;
       filterNode: TSESTree.Node;
+      isBracketSyntaxForFilter: boolean;
     }
 
     function parseArrayFilterExpressions(
@@ -103,8 +104,8 @@ export default createRule({
             if (isArrayish(filteredObjectType)) {
               return [
                 {
-                  isBracketSyntaxForFilter,
                   filterNode,
+                  isBracketSyntaxForFilter,
                 },
               ];
             }

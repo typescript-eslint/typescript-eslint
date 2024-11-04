@@ -11,8 +11,10 @@
   "include": [
     "file.ts",
     "consistent-type-exports.ts",
+    "deprecated.ts",
     "mixed-enums-decl.ts",
     "react.tsx",
-    "var-declaration.ts"
+    "var-declaration.ts",
+    "errors.ts"
   ]
 }

@@ -1,6 +1,5 @@
-import * as path from 'node:path';
-
 import * as glob from 'glob';
+import * as path from 'node:path';
 
 import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {
@@ -10,21 +9,21 @@ import {
 } from '../../src/parser';
 
 const mockProgram = {
+  getCompilerOptions(): unknown {
+    return {};
+  },
   getSourceFile(): void {
     return;
   },
   getTypeChecker(): void {
     return;
   },
-  getCompilerOptions(): unknown {
-    return {};
-  },
 };
 
 jest.mock('../../src/ast-converter', () => {
   return {
     astConverter(): unknown {
-      return { estree: {}, astMaps: {} };
+      return { astMaps: {}, estree: {} };
     },
   };
 });
@@ -86,11 +85,11 @@ const code = 'const foo = 5;';
 // File will not be found in the first Program, but will be in the second
 const tsconfigs = ['./non-matching-tsconfig.json', './tsconfig.json'];
 const options = {
+  allowAutomaticSingleRunInference: true,
   filePath: testFiles[0],
-  tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   loggerFn: false,
   project: tsconfigs,
-  allowAutomaticSingleRunInference: true,
+  tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
 } as const;
 
 const resolvedProject = (p: string): string =>

@@ -107,14 +107,14 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
 -                     decorators: Array [],
 -                     name: 'Selection',
 -                     optional: false,
--
+
 -                     range: [140, 149],
 -                     loc: {
 -                       start: { column: 44, line: 4 },
 -                       end: { column: 53, line: 4 },
 -                     },
 -                   },
-
+-
                     range: [140, 154],
                     loc: {
                       start: { column: 44, line: 4 },
@@ -167,7 +167,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
             end: { column: 20, line: 3 },
           },
         },
--       kind: 'namespace',
+        kind: 'namespace',
 
         range: [73, 157],
         loc: {

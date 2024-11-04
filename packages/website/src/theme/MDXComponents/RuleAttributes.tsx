@@ -1,7 +1,10 @@
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+
 import Link from '@docusaurus/Link';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
-import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import React from 'react';
+
+import type { FeatureProps } from './Feature';
 
 import {
   FIXABLE_EMOJI,
@@ -10,7 +13,6 @@ import {
   STYLISTIC_CONFIG_EMOJI,
   SUGGESTIONS_EMOJI,
 } from '../../components/constants';
-import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
@@ -20,9 +22,8 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
+  Required<Record<Key, NonNullable<Base[Key]>>>;
 
 type RecommendedRuleMetaDataDocs = MakeRequired<
   ESLintPluginDocs,

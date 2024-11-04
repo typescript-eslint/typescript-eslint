@@ -1,9 +1,11 @@
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
-import { fromMarkdown } from 'mdast-util-from-markdown';
 import type * as unist from 'unist';
 
+import { fromMarkdown } from 'mdast-util-from-markdown';
+
 import type { VFileWithStem } from '../utils/rules';
-import { findH2Index } from '../utils/rules';
+
+import { findHeadingIndex } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
   howToUse: number;
@@ -28,22 +30,6 @@ export class RuleDocsPage {
   #headingIndices: RequiredHeadingIndices;
   #rule: Readonly<ESLintPluginRuleModule>;
 
-  get children(): readonly unist.Node[] {
-    return this.#children;
-  }
-
-  get file(): Readonly<VFileWithStem> {
-    return this.#file;
-  }
-
-  get headingIndices(): Readonly<RequiredHeadingIndices> {
-    return this.#headingIndices;
-  }
-
-  get rule(): Readonly<ESLintPluginRuleModule> {
-    return this.#rule;
-  }
-
   constructor(
     children: unist.Node[],
     file: Readonly<VFileWithStem>,
@@ -53,6 +39,18 @@ export class RuleDocsPage {
     this.#file = file;
     this.#headingIndices = this.#recreateHeadingIndices();
     this.#rule = rule;
+  }
+
+  #recreateHeadingIndices(): RequiredHeadingIndices {
+    return {
+      howToUse: findHeadingIndex(this.#children, 2, requiredHeadingNames[0]),
+      options: findHeadingIndex(this.#children, 2, requiredHeadingNames[1]),
+      whenNotToUseIt: findHeadingIndex(
+        this.#children,
+        2,
+        requiredHeadingNames[2],
+      ),
+    };
   }
 
   spliceChildren(
@@ -70,11 +68,19 @@ export class RuleDocsPage {
     this.#headingIndices = this.#recreateHeadingIndices();
   }
 
-  #recreateHeadingIndices(): RequiredHeadingIndices {
-    return {
-      howToUse: findH2Index(this.#children, requiredHeadingNames[0]),
-      options: findH2Index(this.#children, requiredHeadingNames[1]),
-      whenNotToUseIt: findH2Index(this.#children, requiredHeadingNames[2]),
-    };
+  get children(): readonly unist.Node[] {
+    return this.#children;
+  }
+
+  get file(): Readonly<VFileWithStem> {
+    return this.#file;
+  }
+
+  get headingIndices(): Readonly<RequiredHeadingIndices> {
+    return this.#headingIndices;
+  }
+
+  get rule(): Readonly<ESLintPluginRuleModule> {
+    return this.#rule;
   }
 }

@@ -36,560 +36,559 @@ ruleTester.run('no-restricted-types', rule, {
   invalid: [
     {
       code: 'let value: bigint;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'bigint',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { bigint: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: boolean;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'boolean',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { boolean: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: never;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'never',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { never: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: null;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'null',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { null: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: number;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'number',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { number: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: object;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'object',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { object: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: string;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'string',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { string: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: symbol;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'symbol',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { symbol: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: undefined;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'undefined',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { undefined: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: unknown;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'unknown',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { unknown: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: void;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use Ok instead.',
             name: 'void',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { void: 'Use Ok instead.' } }],
+      output: null,
     },
     {
       code: 'let value: [];',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use unknown[] instead.',
             name: '[]',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { '[]': 'Use unknown[] instead.' } }],
+      output: null,
     },
     {
       code: noFormat`let value: [  ];`,
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: ' Use unknown[] instead.',
             name: '[]',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { '[]': 'Use unknown[] instead.' } }],
+      output: null,
     },
     {
       code: 'let value: [[]];',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 13,
           data: {
             customMessage: ' Use unknown[] instead.',
             name: '[]',
           },
           line: 1,
-          column: 13,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { '[]': 'Use unknown[] instead.' } }],
+      output: null,
     },
     {
       code: 'let value: Banned;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: '',
             name: 'Banned',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { Banned: true } }],
+      output: null,
     },
     {
       code: 'let value: Banned;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: " Use '{}' instead.",
             name: 'Banned',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { Banned: "Use '{}' instead." } }],
+      output: null,
     },
     {
       code: 'let value: Banned[];',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: " Use '{}' instead.",
             name: 'Banned',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { Banned: "Use '{}' instead." } }],
+      output: null,
     },
     {
       code: 'let value: [Banned];',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 13,
           data: {
             customMessage: " Use '{}' instead.",
             name: 'Banned',
           },
           line: 1,
-          column: 13,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { Banned: "Use '{}' instead." } }],
+      output: null,
     },
     {
       code: 'let value: Banned;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
             customMessage: '',
             name: 'Banned',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [{ types: { Banned: '' } }],
+      output: null,
     },
     {
       code: 'let b: { c: Banned };',
-      output: 'let b: { c: Ok };',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 13,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 13,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
-        { types: { Banned: { message: 'Use Ok instead.', fixWith: 'Ok' } } },
+        { types: { Banned: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
+      output: 'let b: { c: Ok };',
     },
     {
       code: '1 as Banned;',
-      output: '1 as Ok;',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 6,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 6,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
-        { types: { Banned: { message: 'Use Ok instead.', fixWith: 'Ok' } } },
+        { types: { Banned: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
+      output: '1 as Ok;',
     },
     {
       code: 'class Derived implements Banned {}',
-      output: 'class Derived implements Ok {}',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 26,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 26,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
-        { types: { Banned: { message: 'Use Ok instead.', fixWith: 'Ok' } } },
+        { types: { Banned: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
+      output: 'class Derived implements Ok {}',
     },
     {
       code: 'class Derived implements Banned1, Banned2 {}',
-      output: 'class Derived implements Ok1, Ok2 {}',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 26,
           data: {
-            name: 'Banned1',
             customMessage: ' Use Ok1 instead.',
+            name: 'Banned1',
           },
           line: 1,
-          column: 26,
+          messageId: 'bannedTypeMessage',
         },
         {
-          messageId: 'bannedTypeMessage',
+          column: 35,
           data: {
-            name: 'Banned2',
             customMessage: ' Use Ok2 instead.',
+            name: 'Banned2',
           },
           line: 1,
-          column: 35,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
         {
           types: {
-            Banned1: { message: 'Use Ok1 instead.', fixWith: 'Ok1' },
-            Banned2: { message: 'Use Ok2 instead.', fixWith: 'Ok2' },
+            Banned1: { fixWith: 'Ok1', message: 'Use Ok1 instead.' },
+            Banned2: { fixWith: 'Ok2', message: 'Use Ok2 instead.' },
           },
         },
       ],
+      output: 'class Derived implements Ok1, Ok2 {}',
     },
     {
       code: 'interface Derived extends Banned {}',
-      output: 'interface Derived extends Ok {}',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 27,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 27,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
-        { types: { Banned: { message: 'Use Ok instead.', fixWith: 'Ok' } } },
+        { types: { Banned: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
+      output: 'interface Derived extends Ok {}',
     },
     {
       code: 'type Intersection = Banned & {};',
-      output: 'type Intersection = Ok & {};',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 21,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 21,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
-        { types: { Banned: { message: 'Use Ok instead.', fixWith: 'Ok' } } },
+        { types: { Banned: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
+      output: 'type Intersection = Ok & {};',
     },
     {
       code: 'type Union = Banned | {};',
-      output: 'type Union = Ok | {};',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 14,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 14,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
-        { types: { Banned: { message: 'Use Ok instead.', fixWith: 'Ok' } } },
+        { types: { Banned: { fixWith: 'Ok', message: 'Use Ok instead.' } } },
       ],
+      output: 'type Union = Ok | {};',
     },
     {
       code: 'let value: NS.Banned;',
-      output: 'let value: NS.Ok;',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
-            name: 'NS.Banned',
             customMessage: ' Use NS.Ok instead.',
+            name: 'NS.Banned',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
         {
           types: {
             'NS.Banned': {
-              message: 'Use NS.Ok instead.',
               fixWith: 'NS.Ok',
+              message: 'Use NS.Ok instead.',
             },
           },
         },
       ],
+      output: 'let value: NS.Ok;',
     },
     {
       code: 'let value: {} = {};',
-      output: 'let value: object = {};',
+      errors: [
+        {
+          column: 12,
+          data: {
+            customMessage: ' Use object instead.',
+            name: '{}',
+          },
+          line: 1,
+          messageId: 'bannedTypeMessage',
+        },
+      ],
       options: [
         {
           types: {
             '{}': {
-              message: 'Use object instead.',
               fixWith: 'object',
+              message: 'Use object instead.',
             },
           },
         },
       ],
-      errors: [
-        {
-          messageId: 'bannedTypeMessage',
-          data: {
-            name: '{}',
-            customMessage: ' Use object instead.',
-          },
-          line: 1,
-          column: 12,
-        },
-      ],
+      output: 'let value: object = {};',
     },
     {
       code: 'let value: NS.Banned;',
-      output: 'let value: NS.Ok;',
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 12,
           data: {
-            name: 'NS.Banned',
             customMessage: ' Use NS.Ok instead.',
+            name: 'NS.Banned',
           },
           line: 1,
-          column: 12,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
         {
           types: {
             '  NS.Banned  ': {
-              message: 'Use NS.Ok instead.',
               fixWith: 'NS.Ok',
+              message: 'Use NS.Ok instead.',
             },
           },
         },
       ],
+      output: 'let value: NS.Ok;',
     },
     {
       code: noFormat`let value: Type<   Banned   >;`,
-      output: `let value: Type<   Ok   >;`,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 20,
           data: {
-            name: 'Banned',
             customMessage: ' Use Ok instead.',
+            name: 'Banned',
           },
           line: 1,
-          column: 20,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
         {
           types: {
             '       Banned      ': {
-              message: 'Use Ok instead.',
               fixWith: 'Ok',
+              message: 'Use Ok instead.',
             },
           },
         },
       ],
+      output: `let value: Type<   Ok   >;`,
     },
     {
       code: 'type Intersection = Banned<any>;',
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 21,
           data: {
-            name: 'Banned<any>',
             customMessage: " Don't use `any` as a type parameter to `Banned`",
+            name: 'Banned<any>',
           },
           line: 1,
-          column: 21,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
@@ -599,19 +598,19 @@ ruleTester.run('no-restricted-types', rule, {
           },
         },
       ],
+      output: null,
     },
     {
       code: noFormat`type Intersection = Banned<A,B>;`,
-      output: null,
       errors: [
         {
-          messageId: 'bannedTypeMessage',
+          column: 21,
           data: {
-            name: 'Banned<A,B>',
             customMessage: " Don't pass `A, B` as parameters to `Banned`",
+            name: 'Banned<A,B>',
           },
           line: 1,
-          column: 21,
+          messageId: 'bannedTypeMessage',
         },
       ],
       options: [
@@ -621,6 +620,7 @@ ruleTester.run('no-restricted-types', rule, {
           },
         },
       ],
+      output: null,
     },
   ],
 });

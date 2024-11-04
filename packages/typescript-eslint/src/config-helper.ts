@@ -85,22 +85,45 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
 export function config(
   ...configs: ConfigWithExtends[]
 ): TSESLint.FlatConfig.ConfigArray {
-  return configs.flatMap(configWithExtends => {
+  return configs.flatMap((configWithExtends, configIndex) => {
     const { extends: extendsArr, ...config } = configWithExtends;
     if (extendsArr == null || extendsArr.length === 0) {
       return config;
     }
-
-    const extension = {
-      ...(config.files && { files: config.files }),
-      ...(config.ignores && { ignores: config.ignores }),
-    };
+    const undefinedExtensions = extendsArr.reduce<number[]>(
+      (acc, extension, extensionIndex) => {
+        const maybeExtension = extension as
+          | TSESLint.FlatConfig.Config
+          | undefined;
+        if (maybeExtension == null) {
+          acc.push(extensionIndex);
+        }
+        return acc;
+      },
+      [],
+    );
+    if (undefinedExtensions.length) {
+      const configName =
+        configWithExtends.name != null
+          ? `, named "${configWithExtends.name}",`
+          : ' (anonymous)';
+      const extensionIndices = undefinedExtensions.join(', ');
+      throw new Error(
+        `Your config at index ${configIndex}${configName} contains undefined` +
+          ` extensions at the following indices: ${extensionIndices}.`,
+      );
+    }
 
     return [
-      ...extendsArr.map(conf => ({
-        ...conf,
-        ...extension,
-      })),
+      ...extendsArr.map(extension => {
+        const name = [config.name, extension.name].filter(Boolean).join('__');
+        return {
+          ...extension,
+          ...(config.files && { files: config.files }),
+          ...(config.ignores && { ignores: config.ignores }),
+          ...(name && { name }),
+        };
+      }),
       config,
     ];
   });

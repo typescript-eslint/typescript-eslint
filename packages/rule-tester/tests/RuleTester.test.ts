@@ -347,6 +347,21 @@ describe('RuleTester', () => {
     expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
   });
 
+  it('provided linterOptions should be respected', () => {
+    const ruleTester = new RuleTester({
+      linterOptions: {
+        reportUnusedDisableDirectives: 0,
+      },
+    });
+
+    expect(() => {
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+        valid: ['// eslint-disable-next-line'],
+      });
+    }).not.toThrow();
+  });
+
   it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
     const ruleTester = new RuleTester({
       languageOptions: {
@@ -1012,6 +1027,227 @@ describe('RuleTester', () => {
         `);
       });
     });
+  });
+});
+
+describe('RuleTester - hooks', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  const noFooRule: RuleModule<'error'> = {
+    create(context) {
+      return {
+        'Identifier[name=foo]'(node): void {
+          context.report({
+            messageId: 'error',
+            node,
+          });
+        },
+      };
+    },
+    defaultOptions: [],
+    meta: {
+      messages: {
+        error: 'error',
+      },
+      schema: [],
+      type: 'problem',
+    },
+  };
+
+  const ruleTester = new RuleTester();
+
+  it.each(['before', 'after'])(
+    '%s should be called when assigned',
+    hookName => {
+      const hookForValid = jest.fn();
+      const hookForInvalid = jest.fn();
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            code: 'foo',
+            errors: [{ messageId: 'error' }],
+            [hookName]: hookForInvalid,
+          },
+        ],
+        valid: [
+          {
+            code: 'bar',
+            [hookName]: hookForValid,
+          },
+        ],
+      });
+      expect(hookForValid).toHaveBeenCalledTimes(1);
+      expect(hookForInvalid).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  it.each(['before', 'after'])(
+    '%s should cause test to fail when it throws error',
+    hookName => {
+      const hook = jest.fn(() => {
+        throw new Error('Something happened');
+      });
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              [hookName]: hook,
+            },
+          ],
+          valid: [],
+        }),
+      ).toThrow('Something happened');
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'bar',
+              [hookName]: hook,
+            },
+          ],
+        }),
+      ).toThrow('Something happened');
+    },
+  );
+
+  it.each(['before', 'after'])(
+    '%s should throw when not a function is assigned',
+    hookName => {
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'bar',
+              [hookName]: 42,
+            },
+          ],
+        }),
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              [hookName]: 42,
+            },
+          ],
+          valid: [],
+        }),
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
+    },
+  );
+
+  it('should call both before() and after() hooks even when the case failed', () => {
+    const hookBefore = jest.fn();
+    const hookAfter = jest.fn();
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'foo',
+          },
+        ],
+      }),
+    ).toThrow();
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'bar',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow();
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
+
+  it('should call both before() and after() hooks regardless of syntax errors', () => {
+    const hookBefore = jest.fn();
+    const hookAfter = jest.fn();
+
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'invalid javascript code',
+          },
+        ],
+      }),
+    ).toThrow(/parsing error/);
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'invalid javascript code',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow(/parsing error/);
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
+
+  it('should call after() hook even when before() throws', () => {
+    const hookBefore = jest.fn(() => {
+      throw new Error('Something happened in before()');
+    });
+    const hookAfter = jest.fn();
+
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'bar',
+          },
+        ],
+      }),
+    ).toThrow('Something happened in before()');
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'foo',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow('Something happened in before()');
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
   });
 });
 

@@ -1,7 +1,8 @@
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
-import { getUrlForRuleTest, sourceUrlPrefix } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
+
+import { getUrlForRuleTest, sourceUrlPrefix } from '../../utils/rules';
 
 export function insertResources(page: RuleDocsPage): void {
   // Add a link to view the rule's source and test code
@@ -20,8 +21,8 @@ export function insertResources(page: RuleDocsPage): void {
     page.spliceChildren(page.children.length, 0, {
       attributes: [
         {
-          type: 'mdxJsxAttribute',
           name: 'baseRule',
+          type: 'mdxJsxAttribute',
           value:
             page.rule.meta.docs.extendsBaseRule === true
               ? page.file.stem
@@ -32,8 +33,8 @@ export function insertResources(page: RuleDocsPage): void {
         {
           children: [
             {
-              value: 'Try this rule in the playground ↗',
               type: 'text',
+              value: 'Try this rule in the playground ↗',
             },
           ],
           type: 'paragraph',

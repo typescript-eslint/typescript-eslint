@@ -1,4 +1,5 @@
 import type { TSESTreeOptions } from '../../src';
+
 import { withoutProjectParserOptions } from '../../src';
 
 describe('withoutProjectParserOptions', () => {
@@ -20,9 +21,9 @@ describe('withoutProjectParserOptions', () => {
   it('allows an alternate type extending from TSESTreeOptions', () => {
     const without = withoutProjectParserOptions({
       comment: true,
+      other: true,
       project: true,
       projectService: true,
-      other: true,
     });
 
     expect(without).toEqual({

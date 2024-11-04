@@ -1,15 +1,16 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows } from '../util';
 
 type Modifier =
-  | 'private readonly'
   | 'private'
-  | 'protected readonly'
+  | 'private readonly'
   | 'protected'
-  | 'public readonly'
+  | 'protected readonly'
   | 'public'
+  | 'public readonly'
   | 'readonly';
 
 type Prefer = 'class-property' | 'parameter-property';
@@ -39,6 +40,7 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         $defs: {
           modifier: {
             type: 'string',
@@ -53,24 +55,23 @@ export default createRule<Options, MessageIds>({
             ],
           },
         },
-        type: 'object',
+        additionalProperties: false,
         properties: {
           allow: {
+            type: 'array',
             description:
               'Whether to allow certain kinds of properties to be ignored.',
-            type: 'array',
             items: {
               $ref: '#/items/0/$defs/modifier',
             },
           },
           prefer: {
+            type: 'string',
             description:
               'Whether to prefer class properties or parameter properties.',
-            type: 'string',
             enum: ['class-property', 'parameter-property'],
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -173,10 +174,6 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      'ClassDeclaration, ClassExpression'(): void {
-        propertyNodesByNameStack.push(new Map());
-      },
-
       ':matches(ClassDeclaration, ClassExpression):exit'(): void {
         const propertyNodesByName = nullThrows(
           propertyNodesByNameStack.pop(),
@@ -194,11 +191,11 @@ export default createRule<Options, MessageIds>({
             )
           ) {
             context.report({
+              node: nodes.classProperty,
+              messageId: 'preferParameterProperty',
               data: {
                 parameter: name,
               },
-              messageId: 'preferParameterProperty',
-              node: nodes.classProperty,
             });
           }
         }
@@ -215,6 +212,10 @@ export default createRule<Options, MessageIds>({
             getNodesByName(element.key.name).classProperty = element;
           }
         }
+      },
+
+      'ClassDeclaration, ClassExpression'(): void {
+        propertyNodesByNameStack.push(new Map());
       },
 
       'MethodDefinition[kind="constructor"]'(

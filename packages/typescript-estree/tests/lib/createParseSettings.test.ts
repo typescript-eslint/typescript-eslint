@@ -22,8 +22,8 @@ describe('createParseSettings', () => {
       process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
 
       const parseSettings = createParseSettings('', {
-        projectService: undefined,
         project: true,
+        projectService: undefined,
       });
 
       expect(parseSettings.projectService).toBe(projectService);
@@ -43,8 +43,8 @@ describe('createParseSettings', () => {
       process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE = 'true';
 
       const parseSettings = createParseSettings('', {
-        projectService: false,
         project: true,
+        projectService: false,
       });
 
       expect(parseSettings.projectService).toBeUndefined();
