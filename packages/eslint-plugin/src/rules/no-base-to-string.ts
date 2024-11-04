@@ -2,6 +2,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { createRule, getParserServices, getTypeName } from '../util';
@@ -14,10 +15,11 @@ enum Usefulness {
 
 type Options = [
   {
+    checkArrayJoin?: boolean;
     ignoredTypeNames?: string[];
   },
 ];
-type MessageIds = 'baseToString';
+type MessageIds = 'baseArrayJoin' | 'baseToString';
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -30,6 +32,8 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
+      baseArrayJoin:
+        "Using `join()` for {{name}} use Object's default stringification format ('[object Object]') when stringified.",
       baseToString:
         "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
     },
@@ -38,6 +42,11 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          checkArrayJoin: {
+            type: 'boolean',
+            description:
+              'Whether to check for arrays that are stringified by `Array.prototype.join`.',
+          },
           ignoredTypeNames: {
             type: 'array',
             description:
@@ -52,6 +61,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      checkArrayJoin: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
@@ -59,22 +69,35 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
+    const checkArrayJoin = option.checkArrayJoin ?? false;
 
-    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
+    function getToStringCertainty(
+      node: TSESTree.Node,
+      type?: ts.Type,
+    ): Usefulness {
       if (node.type === AST_NODE_TYPES.Literal) {
-        return;
+        return Usefulness.Always;
       }
 
       const certainty = collectToStringCertainty(
         type ?? services.getTypeAtLocation(node),
       );
+      return certainty;
+    }
+
+    function checkExpression(
+      node: TSESTree.Node,
+      type?: ts.Type,
+      messageId: MessageIds = 'baseToString',
+    ): void {
+      const certainty = getToStringCertainty(node, type);
       if (certainty === Usefulness.Always) {
         return;
       }
 
       context.report({
         node,
-        messageId: 'baseToString',
+        messageId,
         data: {
           name: context.sourceCode.getText(node),
           certainty,
@@ -202,6 +225,36 @@ export default createRule<Options, MessageIds>({
           checkExpression(expression);
         }
       },
+      ...(checkArrayJoin
+        ? {
+            'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
+              node: TSESTree.Expression,
+            ): void {
+              const memberExpr = node.parent as TSESTree.MemberExpression;
+              const type = services.getTypeAtLocation(memberExpr.object);
+              const typeParts = tsutils.typeParts(type);
+              const isArrayOrTuple = typeParts.every(
+                part => checker.isArrayType(part) || checker.isTupleType(part),
+              );
+              if (!isArrayOrTuple) {
+                return;
+              }
+
+              for (const part of typeParts) {
+                const typeArg = checker.getTypeArguments(
+                  part as ts.TypeReference,
+                )[0];
+
+                const certainty = getToStringCertainty(node, typeArg);
+
+                if (certainty !== Usefulness.Always) {
+                  checkExpression(memberExpr.object, typeArg, 'baseArrayJoin');
+                  return;
+                }
+              }
+            },
+          }
+        : undefined),
     };
   },
 });

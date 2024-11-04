@@ -63,3 +63,11 @@ let text = \`\${value}\`;
 String(/regex/);
 "
 `;
+
+exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 4`] = `
+"Options: { "checkArrayJoin": true }
+
+[{}, {}].join();
+~~~~~~~~ Using \`join()\` for [{}, {}] use Object's default stringification format ('[object Object]') when stringified.
+"
+`;

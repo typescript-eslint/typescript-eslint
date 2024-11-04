@@ -156,6 +156,14 @@ String(myValue);
 import { String } from 'foo';
 String({});
     `,
+    {
+      code: "['foo', 'bar'].join('');",
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: "([{}, 'bar'] as string[]).join('');",
+      options: [{ checkArrayJoin: true }],
+    },
   ],
   invalid: [
     {
@@ -352,6 +360,107 @@ String(...objects);
           messageId: 'baseToString',
         },
       ],
+    },
+
+    {
+      code: `
+        [{}, {}].join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '[{}, {}]',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        class A {}
+        [{}, 'str'].join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: "[{}, 'str']",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        const array = [{}, {}];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        class Foo {}
+        class Bar {}
+        const array: Foo[] | Bar[] = [new Foo(), new Bar()];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        class Foo {}
+        class Bar {}
+        const array: Foo[] & Bar[] = [new Foo(), new Bar()];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        class Foo {}
+        const tuple: [Foo, Foo] = [new Foo(), new Foo()];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
     },
   ],
 });
