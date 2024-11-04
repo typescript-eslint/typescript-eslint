@@ -1405,6 +1405,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1419,6 +1422,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1482,8 +1488,8 @@ function f(): O {
           messageId: 'voidReturnProperty',
         },
         {
-          column: 8,
-          endColumn: 21,
+          column: 5,
+          endColumn: 14,
           endLine: 9,
           line: 9,
           messageId: 'voidReturnProperty',
@@ -1795,7 +1801,15 @@ const test: ReturnsRecord = () => {
   return { asynchronous: async () => {} };
 };
       `,
-      errors: [{ line: 5, messageId: 'voidReturnProperty' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
     },
     {
       code: `
