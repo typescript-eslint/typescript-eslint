@@ -154,6 +154,7 @@ const sponsors = (
       ),
   )
   .sort((a, b) => b.totalDonations - a.totalDonations);
+
 fs.writeFileSync(
   path.join(PACKAGES_WEBSITE, 'data', 'sponsors.json'),
   `${JSON.stringify(sponsors, null, 2)}\n`,
