@@ -1,3 +1,7 @@
+// The following code is adapted from the code in eslint/eslint.
+// Source: https://github.com/eslint/eslint/blob/522d8a32f326c52886c531f43cf6a1ff15af8286/lib/rules/no-unused-private-class-members.js
+// License: https://github.com/eslint/eslint/blob/522d8a32f326c52886c531f43cf6a1ff15af8286/LICENSE
+
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
