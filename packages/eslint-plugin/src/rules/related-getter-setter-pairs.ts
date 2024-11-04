@@ -83,7 +83,7 @@ export default createRule({
         methodPairsStack.pop();
       },
       ':matches(MethodDefinition, TSMethodSignature)[kind=get]'(
-        node: GetMethod,
+        node: GetMethodRaw,
       ): void {
         const getter = getMethodFromNode(node);
 
