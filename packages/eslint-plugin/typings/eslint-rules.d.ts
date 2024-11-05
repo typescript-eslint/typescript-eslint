@@ -404,7 +404,7 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'noUselessConstructor',
+    'noUselessConstructor' | 'removeConstructor',
     [],
     unknown,
     {

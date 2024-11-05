@@ -1,7 +1,8 @@
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
-import { convertToPlaygroundHash, getRulesString } from '../../utils/rules';
 import type { RuleDocsPage } from '../RuleDocsPage';
+
+import { convertToPlaygroundHash, getRulesString } from '../../utils/rules';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =
@@ -24,58 +25,58 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
     page.headingIndices.howToUse + 1,
     0,
     {
-      type: 'mdxJsxFlowElement',
-      name: 'Tabs',
       children: [
         {
-          type: 'mdxJsxFlowElement',
-          name: 'TabItem',
           attributes: [
             {
-              type: 'mdxJsxAttribute',
               name: 'value',
+              type: 'mdxJsxAttribute',
               value: 'Flat Config',
             },
           ],
           children: [
             {
-              type: 'code',
               lang: 'js',
               meta: 'title="eslint.config.mjs"',
+              type: 'code',
               value: `export default tseslint.config({
   rules: ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
 });`,
             },
           ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
         },
         {
-          type: 'mdxJsxFlowElement',
-          name: 'TabItem',
           attributes: [
             {
-              type: 'mdxJsxAttribute',
               name: 'value',
+              type: 'mdxJsxAttribute',
               value: 'Legacy Config',
             },
           ],
           children: [
             {
-              type: 'code',
               lang: 'js',
               meta: 'title=".eslintrc.cjs"',
+              type: 'code',
               value: `module.exports = {
   "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
 };`,
             },
           ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
         },
       ],
+      name: 'Tabs',
+      type: 'mdxJsxFlowElement',
     } as MdxJsxFlowElement,
     {
       attributes: [
         {
-          type: 'mdxJsxAttribute',
           name: 'eslintrcHash',
+          type: 'mdxJsxAttribute',
           value: eslintrcHash,
         },
       ],
@@ -83,8 +84,8 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
         {
           children: [
             {
-              value: 'Try this rule in the playground ↗',
               type: 'text',
+              value: 'Try this rule in the playground ↗',
             },
           ],
           type: 'paragraph',

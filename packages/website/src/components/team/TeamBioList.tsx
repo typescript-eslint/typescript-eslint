@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { BioEntry } from './TeamBio';
+
 import { TeamBio } from './TeamBio';
 import styles from './TeamBioList.module.css';
 
