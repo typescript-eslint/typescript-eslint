@@ -2541,5 +2541,40 @@ const obj: HasVoidMethod = {
         },
       ],
     },
+    {
+      code: `
+type O = { f: () => void };
+const asyncFunction = async () => 'foo';
+const obj: O = {
+  f: asyncFunction,
+};
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async (): Promise<string> => 'foo',
+};
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
   ],
 });
