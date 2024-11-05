@@ -89,26 +89,26 @@ This style of code isn't super common - which means having this option set to `t
 
 When this option is `false` unsafe cases will have suggestion fixers provided instead of auto-fixers - meaning you can manually apply the fix using your IDE tooling.
 
-### `allowSuggestingOnIfStatements`
+### `allowIfStatements`
 
 {/* insert option description */}
 
-Examples of code for this rule with `{ allowSuggestingOnIfStatements: true }`:
+Examples of code for this rule with `{ allowIfStatements: true }`:
 
 <Tabs>
 
-<TabItem value="❌ Incorrect for `allowSuggestingOnIfStatements: true`">
+<TabItem value="❌ Incorrect for `allowIfStatements: true`">
 
-```ts option='{ "allowSuggestingOnIfStatements": true }'
+```ts option='{ "allowIfStatements": true }'
 if (foo) {
   foo.bar();
 }
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `allowSuggestingOnIfStatements: false`">
+<TabItem value="✅ Correct for `allowIfStatements: false`">
 
-```ts option='{ "allowSuggestingOnIfStatements": false }'
+```ts option='{ "allowIfStatements": false }'
 foo?.bar();
 ```
 

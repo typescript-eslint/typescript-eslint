@@ -72,7 +72,7 @@ acceptsBoolean(foo?.bar);
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 4`] = `
 "Incorrect
-Options: { "allowSuggestingOnIfStatements": true }
+Options: { "allowIfStatements": true }
 
 if (foo) {
 ~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
@@ -85,7 +85,7 @@ if (foo) {
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 5`] = `
 "Correct
-Options: { "allowSuggestingOnIfStatements": false }
+Options: { "allowIfStatements": false }
 
 foo?.bar();
 "

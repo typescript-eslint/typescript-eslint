@@ -48,15 +48,15 @@ export default createRule<
         type: 'object',
         additionalProperties: false,
         properties: {
+          allowIfStatements: {
+            type: 'boolean',
+            description:
+              'Allow autofix to optional chain on if statements with a single call expression in the consequent.',
+          },
           allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
             type: 'boolean',
             description:
               'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
-          },
-          allowSuggestingOnIfStatements: {
-            type: 'boolean',
-            description:
-              'Allow suggesting optional chain on if statements with a single expression in the consequent.',
           },
           checkAny: {
             type: 'boolean',
@@ -99,8 +99,8 @@ export default createRule<
   },
   defaultOptions: [
     {
+      allowIfStatements: false,
       allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
-      allowSuggestingOnIfStatements: false,
       checkAny: true,
       checkBigInt: true,
       checkBoolean: true,
@@ -120,7 +120,7 @@ export default createRule<
       'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]'(
         node: TSESTree.IfStatement,
       ): void {
-        if (!options.allowSuggestingOnIfStatements || node.alternate) {
+        if (!options.allowIfStatements || node.alternate) {
           return;
         }
         const ifBodyStatement =

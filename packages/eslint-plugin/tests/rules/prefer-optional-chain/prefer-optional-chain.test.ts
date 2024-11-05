@@ -675,61 +675,61 @@ describe('if block with a single statment matches part of the condition', () => 
       {
         code: noFormat`if (foo) { foo.bar(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.bar();',
       },
       {
         code: noFormat`if (foo) { foo.bar() }`, // Missing semi-colon
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.bar()',
       },
       {
         code: 'if (foo) foo.bar();', // Missing curly braces
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.bar();',
       },
       {
         code: noFormat`if (foo) foo.bar()`, // Missing semi-colon and curly braces
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.bar()',
       },
       {
         code: noFormat`if (foo) { foo(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.();',
       },
       {
         code: noFormat`if (foo) { foo[bar](); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.[bar]();',
       },
       {
         code: noFormat`if (foo[bar]) { foo[bar].baz(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo[bar]?.baz();',
       },
       {
         code: noFormat`if (foo.bar.baz()) { foo.bar.baz().bazz(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo.bar.baz()?.bazz();',
       },
       {
         code: noFormat`if (foo && foo.bar && foo.bar.baz) { foo.bar.baz.bazz(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.bar?.baz?.bazz();',
       },
       {
         code: noFormat`if (foo) { foo.bar.baz && foo.bar.baz(); }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
         output: 'foo?.bar.baz?.();',
       },
       {
@@ -740,9 +740,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
-        options: [
-          { allowSuggestingOnIfStatements: true, requireNullish: true },
-        ],
+        options: [{ allowIfStatements: true, requireNullish: true }],
         output: `
           declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
           foo?.bar?.baz?.bazz();
@@ -753,25 +751,25 @@ describe('if block with a single statment matches part of the condition', () => 
       // Option is disabled
       {
         code: noFormat`if (foo) { foo.bar(); }`,
-        options: [{ allowSuggestingOnIfStatements: false }],
+        options: [{ allowIfStatements: false }],
       },
       // Ignore no calls
       {
         code: noFormat`if (foo) { foo.bar; }`,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: noFormat`if (foo) { foo.bar?.baz; }`,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       // Ignore when comment exists before or after statement inside consequent
       {
         code: noFormat`if (foo) { /* comment */ foo.bar(); }`,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: noFormat`if (foo) { foo.bar(); /* comment */ }`,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       // Ignore when multiple statements exist - only single call expression statement allowed
       {
@@ -781,7 +779,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.baz();
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       // Ignore when else is used
       {
@@ -793,7 +791,7 @@ describe('if block with a single statment matches part of the condition', () => 
             // do something else
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -802,7 +800,7 @@ describe('if block with a single statment matches part of the condition', () => 
             x.a();
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -810,7 +808,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -818,7 +816,7 @@ describe('if block with a single statment matches part of the condition', () => 
             typeof window === 'undefined' && foo.bar();
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -826,7 +824,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar() && typeof window === 'undefined';
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -836,7 +834,7 @@ describe('if block with a single statment matches part of the condition', () => 
             }
           }
         `,
-        options: [{ allowSuggestingOnIfStatements: true }],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -844,9 +842,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
           }
         `,
-        options: [
-          { allowSuggestingOnIfStatements: true, requireNullish: true },
-        ],
+        options: [{ allowIfStatements: true, requireNullish: true }],
       },
     ],
   });
