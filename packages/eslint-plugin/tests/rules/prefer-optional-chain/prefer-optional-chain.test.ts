@@ -679,19 +679,19 @@ describe('if block with a single statment matches part of the condition', () => 
         output: 'foo?.bar();',
       },
       {
-        code: noFormat`if (foo) { foo.bar() }`, // Missing semi-colon
+        code: noFormat`if (foo) { foo.bar() }`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowIfStatements: true }],
         output: 'foo?.bar()',
       },
       {
-        code: 'if (foo) foo.bar();', // Missing curly braces
+        code: 'if (foo) foo.bar();',
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowIfStatements: true }],
         output: 'foo?.bar();',
       },
       {
-        code: noFormat`if (foo) foo.bar()`, // Missing semi-colon and curly braces
+        code: noFormat`if (foo) foo.bar()`,
         errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
         options: [{ allowIfStatements: true }],
         output: 'foo?.bar()',
@@ -748,12 +748,10 @@ describe('if block with a single statment matches part of the condition', () => 
       },
     ],
     valid: [
-      // Option is disabled
       {
         code: noFormat`if (foo) { foo.bar(); }`,
         options: [{ allowIfStatements: false }],
       },
-      // Ignore no calls
       {
         code: noFormat`if (foo) { foo.bar; }`,
         options: [{ allowIfStatements: true }],
@@ -762,7 +760,6 @@ describe('if block with a single statment matches part of the condition', () => 
         code: noFormat`if (foo) { foo.bar?.baz; }`,
         options: [{ allowIfStatements: true }],
       },
-      // Ignore when comment exists before or after statement inside consequent
       {
         code: noFormat`if (foo) { /* comment */ foo.bar(); }`,
         options: [{ allowIfStatements: true }],
@@ -771,7 +768,6 @@ describe('if block with a single statment matches part of the condition', () => 
         code: noFormat`if (foo) { foo.bar(); /* comment */ }`,
         options: [{ allowIfStatements: true }],
       },
-      // Ignore when multiple statements exist - only single call expression statement allowed
       {
         code: `
           if (foo) {
@@ -781,7 +777,6 @@ describe('if block with a single statment matches part of the condition', () => 
         `,
         options: [{ allowIfStatements: true }],
       },
-      // Ignore when else is used
       {
         code: `
           declare const x: null | { a: () => string };
