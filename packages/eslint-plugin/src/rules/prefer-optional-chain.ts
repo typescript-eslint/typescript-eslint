@@ -118,13 +118,7 @@ export default createRule<
     return {
       // specific handling for `if (foo) { foo.bar(); }` / `if (foo) foo.bar();`
       'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]'(
-        node: {
-          consequent: {
-            type:
-              | AST_NODE_TYPES.BlockStatement
-              | AST_NODE_TYPES.ExpressionStatement;
-          };
-        } & TSESTree.IfStatement,
+        node: TSESTree.IfStatement,
       ): void {
         if (!options.allowSuggestingOnIfStatements) {
           return;
