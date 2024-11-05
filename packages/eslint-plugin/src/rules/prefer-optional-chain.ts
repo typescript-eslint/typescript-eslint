@@ -120,10 +120,7 @@ export default createRule<
       'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]'(
         node: TSESTree.IfStatement,
       ): void {
-        if (!options.allowSuggestingOnIfStatements) {
-          return;
-        }
-        if (node.alternate) {
+        if (!options.allowSuggestingOnIfStatements || node.alternate) {
           return;
         }
         const ifBodyStatement =
