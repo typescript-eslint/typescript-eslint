@@ -733,6 +733,30 @@ describe('if block with a single statment matches part of the condition', () => 
         output: 'foo?.bar.baz?.();',
       },
       {
+        code: noFormat`if (foo) { /* comment */ foo.bar(); }`,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowIfStatements: true }],
+        output: '/* comment */foo?.bar();',
+      },
+      {
+        code: noFormat`if (foo) { /* comment *//* comment */ foo.bar(); }`,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowIfStatements: true }],
+        output: '/* comment *//* comment */foo?.bar();',
+      },
+      {
+        code: noFormat`if (foo) { foo.bar(); /* comment */ }`,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowIfStatements: true }],
+        output: 'foo?.bar();/* comment */',
+      },
+      {
+        code: noFormat`if (foo) { foo.bar(); /* comment *//* comment */ }`,
+        errors: [{ messageId: 'preferOptionalChain', suggestions: null }],
+        options: [{ allowIfStatements: true }],
+        output: 'foo?.bar();/* comment *//* comment */',
+      },
+      {
         code: `
           declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
           if (foo && foo.bar && foo.bar.baz) {
@@ -758,14 +782,6 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: noFormat`if (foo) { foo.bar?.baz; }`,
-        options: [{ allowIfStatements: true }],
-      },
-      {
-        code: noFormat`if (foo) { /* comment */ foo.bar(); }`,
-        options: [{ allowIfStatements: true }],
-      },
-      {
-        code: noFormat`if (foo) { foo.bar(); /* comment */ }`,
         options: [{ allowIfStatements: true }],
       },
       {

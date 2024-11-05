@@ -9,7 +9,7 @@ import type {
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -246,13 +246,17 @@ function getReportRange(
 }
 
 function getReportDescriptor(
-  sourceCode: SourceCode,
+  context: RuleContext<
+    PreferOptionalChainMessageIds,
+    [PreferOptionalChainOptions]
+  >,
   parserServices: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
 ): ReportDescriptor<PreferOptionalChainMessageIds> {
+  const sourceCode = context.sourceCode;
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -413,6 +417,25 @@ function getReportDescriptor(
     if (chainEndedWithSemicolon) {
       newCode += ';';
     }
+
+    function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
+      return comments
+        .map(({ type, value }) =>
+          type === AST_TOKEN_TYPES.Line ? `//${value}` : `/*${value}*/`,
+        )
+        .join('');
+    }
+    const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
+    if (commentsBefore.length > 0) {
+      newCode = getTextFromCommentsArray(commentsBefore) + newCode;
+    }
+    const nodeBeforeTheComment = chainEndedWithSemicolon
+      ? lastOperand.node.parent
+      : lastOperand.node;
+    const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
+    if (commentsAfter.length > 0) {
+      newCode += getTextFromCommentsArray(commentsAfter);
+    }
   }
 
   const fix: ReportFixFunction = fixer =>
@@ -567,7 +590,7 @@ export function analyzeChain(
         options,
         subChainFlat.slice(0, -1).map(({ node }) => node),
         getReportDescriptor(
-          context.sourceCode,
+          context,
           parserServices,
           node,
           operator,

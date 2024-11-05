@@ -132,13 +132,6 @@ export default createRule<
           return;
         }
 
-        const hasCommentsInIfBody =
-          context.sourceCode.getCommentsBefore(ifBodyStatement).length ||
-          context.sourceCode.getCommentsAfter(ifBodyStatement).length;
-
-        if (hasCommentsInIfBody) {
-          return;
-        }
         const ifBodyExpression = ifBodyStatement.expression;
         const currentChain: ValidOperand[] = [
           {
