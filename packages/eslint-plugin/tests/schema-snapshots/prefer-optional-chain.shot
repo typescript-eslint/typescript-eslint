@@ -54,10 +54,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Allow autofix to optional chain on if statements with a single call expression in the consequent. */
+    allowIfStatements?: boolean;
     /** Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build. */
     allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
-    /** Allow suggesting optional chain on if statements with a single expression in the consequent. */
-    allowIfStatements?: boolean;
     /** Check operands that are typed as \`any\` when inspecting "loose boolean" operands. */
     checkAny?: boolean;
     /** Check operands that are typed as \`bigint\` when inspecting "loose boolean" operands. */
