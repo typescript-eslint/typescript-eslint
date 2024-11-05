@@ -202,7 +202,6 @@ export default createRule<
           '&&',
           currentChain,
         );
-        return;
       },
 
       'LogicalExpression[operator!="??"]'(
