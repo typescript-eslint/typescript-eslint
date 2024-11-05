@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-base-to-string** for documentation.
 
-JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
+JavaScript will call `toString()` on an object when it is converted to a string, such as when concatenated with a string (`expr + ''`), when interpolated into template literals (`${expr}`), or when passed as an argument to the String constructor (`String(expr)`).
 The default Object `.toString()` and `toLocaleString()` use the format `"[object Object]"`, which is often not what was intended.
 This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` or `toLocaleString()` method.
 
@@ -31,6 +31,7 @@ value + '';
 
 // Interpolation and manual .toString() and `toLocaleString()` calls too:
 `Value: ${value}`;
+String({});
 ({}).toString();
 ({}).toLocaleString();
 ```
@@ -44,6 +45,7 @@ value + '';
 `Value: ${123}`;
 `Arrays too: ${[1, 2, 3]}`;
 (() => {}).toString();
+String(42);
 (() => {}).toLocaleString();
 
 // Defining a custom .toString class is considered acceptable
@@ -64,6 +66,15 @@ const literalWithToString = {
 </TabItem>
 </Tabs>
 
+## Alternatives
+
+Consider using `JSON.stringify` when you want to convert non-primitive things to string for logging, debugging, etc.
+
+```typescript
+declare const o: object;
+const errorMessage = 'Found unexpected value: ' + JSON.stringify(o);
+```
+
 ## Options
 
 ### `ignoredTypeNames`
@@ -82,6 +93,7 @@ The following patterns are considered correct with the default options `{ ignore
 let value = /regex/;
 value.toString();
 let text = `${value}`;
+String(/regex/);
 ```
 
 ## When Not To Use It

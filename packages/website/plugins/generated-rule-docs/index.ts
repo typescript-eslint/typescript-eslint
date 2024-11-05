@@ -1,5 +1,6 @@
-import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { Plugin } from 'unified';
+
+import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
 import { nodeIsParent } from '../utils/nodes';
 import { isESLintPluginRuleModule, isVFileWithStem } from '../utils/rules';

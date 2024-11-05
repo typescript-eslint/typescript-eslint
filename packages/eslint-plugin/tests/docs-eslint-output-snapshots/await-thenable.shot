@@ -81,3 +81,50 @@ async function validUseOfForAwaitOnAsyncIterable() {
 }
 "
 `;
+
+exports[`Validating rule docs await-thenable.mdx code examples ESLint output 5`] = `
+"Incorrect
+
+function makeSyncDisposable(): Disposable {
+  return {
+    [Symbol.dispose](): void {
+      // Dispose of the resource
+    },
+  };
+}
+
+async function shouldNotAwait() {
+  await using resource = makeSyncDisposable();
+                         ~~~~~~~~~~~~~~~~~~~~ Unexpected \`await using\` of a value that is not async disposable.
+}
+"
+`;
+
+exports[`Validating rule docs await-thenable.mdx code examples ESLint output 6`] = `
+"Correct
+
+function makeSyncDisposable(): Disposable {
+  return {
+    [Symbol.dispose](): void {
+      // Dispose of the resource
+    },
+  };
+}
+
+async function shouldNotAwait() {
+  using resource = makeSyncDisposable();
+}
+
+function makeAsyncDisposable(): AsyncDisposable {
+  return {
+    async [Symbol.asyncDispose](): Promise<void> {
+      // Dispose of the resource asynchronously
+    },
+  };
+}
+
+async function shouldAwait() {
+  await using resource = makeAsyncDisposable();
+}
+"
+`;

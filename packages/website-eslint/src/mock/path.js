@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -207,16 +208,16 @@ export function extname(path) {
 }
 
 export default {
-  extname,
   basename,
-  dirname,
-  sep,
   delimiter,
-  relative,
-  join,
+  dirname,
+  extname,
   isAbsolute,
+  join,
   normalize,
+  relative,
   resolve,
+  sep,
 };
 
 function filter(xs, f) {
