@@ -91,6 +91,12 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             label: 'Twitter',
             rel: 'me noopener',
           },
+          {
+            className: 'image-link bluesky-link social-link-icon',
+            href: 'https://bsky.app/profile/typescript-eslint.io',
+            label: 'Bluesky',
+            rel: 'me noopener',
+          },
         ],
         title: 'Community',
       },
