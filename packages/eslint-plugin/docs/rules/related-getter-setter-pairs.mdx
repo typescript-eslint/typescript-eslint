@@ -10,7 +10,7 @@ import TabItem from '@theme/TabItem';
 > See **https://typescript-eslint.io/rules/related-getter-setter-pairs** for documentation.
 
 TypeScript allows defining different types for a `get` parameter and its corresponding `set` return.
-Prior to TypeScript 4.3, the types didn't have to be related.
+Prior to TypeScript 4.3, the types had to be identical.
 From TypeScript 4.3 to 5.0, the `get` type had to be a subtype of the `set` type.
 As of TypeScript 5.1, the types may be completely unrelated as long as there is an explicit type annotation.
 
