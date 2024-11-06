@@ -85,6 +85,7 @@ import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
 import noUnusedExpressions from './no-unused-expressions';
+import noUnusedPrivateClassMembers from './no-unused-private-class-members';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
 import noUselessConstructor from './no-useless-constructor';
@@ -215,6 +216,7 @@ const rules = {
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
   'no-unused-expressions': noUnusedExpressions,
+  'no-unused-private-class-members': noUnusedPrivateClassMembers,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,
   'no-useless-constructor': noUselessConstructor,
