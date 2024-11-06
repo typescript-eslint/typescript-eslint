@@ -164,6 +164,16 @@ String({});
       code: "([{}, 'bar'] as string[]).join('');",
       options: [{ checkArrayJoin: true }],
     },
+    {
+      code: `
+        class Foo {
+          join() {}
+        }
+        const foo = new Foo();
+        foo.join();
+      `,
+      options: [{ checkArrayJoin: true }],
+    },
   ],
   invalid: [
     {
