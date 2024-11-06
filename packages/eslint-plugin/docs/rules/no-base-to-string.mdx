@@ -101,7 +101,10 @@ String(/regex/);
 {/* insert option description */}
 
 ```ts option='{ "checkArrayJoin": true }' showPlaygroundButton
-[{}, {}].join();
+[{}, 'string'].join();
+
+const array = ['string', {}];
+array.join('');
 ```
 
 ## When Not To Use It

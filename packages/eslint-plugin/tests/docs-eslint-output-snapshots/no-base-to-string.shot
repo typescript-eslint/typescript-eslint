@@ -67,7 +67,11 @@ String(/regex/);
 exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 4`] = `
 "Options: { "checkArrayJoin": true }
 
-[{}, {}].join();
-~~~~~~~~ Using \`join()\` for [{}, {}] use Object's default stringification format ('[object Object]') when stringified.
+[{}, 'string'].join();
+~~~~~~~~~~~~~~ Using \`join()\` for [{}, 'string'] use Object's default stringification format ('[object Object]') when stringified.
+
+const array = ['string', {}];
+array.join('');
+~~~~~ Using \`join()\` for array use Object's default stringification format ('[object Object]') when stringified.
 "
 `;
