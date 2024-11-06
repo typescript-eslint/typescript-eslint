@@ -1,6 +1,5 @@
-import path from 'node:path';
-
 import { workspaceRoot } from '@nx/devkit';
+import path from 'node:path';
 
 export const REPO_ROOT = workspaceRoot;
 export const PACKAGES = path.join(REPO_ROOT, 'packages');

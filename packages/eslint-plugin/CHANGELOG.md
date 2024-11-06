@@ -1,3 +1,30 @@
+## 8.13.0 (2024-11-04)
+
+### 🚀 Features
+
+- **eslint-plugin:** [only-throw-error] add allow option ([#10221](https://github.com/typescript-eslint/typescript-eslint/pull/10221))
+- **eslint-plugin:** [prefer-nullish-coalescing] add option `ignoreBooleanCoercion` ([#9924](https://github.com/typescript-eslint/typescript-eslint/pull/9924))
+- **eslint-plugin:** disable `no-class-assign` rule in `eslint-recommended` config ([#10250](https://github.com/typescript-eslint/typescript-eslint/pull/10250))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [switch-exhaustiveness-check] add support for covering a missing property with `undefined` ([#10232](https://github.com/typescript-eslint/typescript-eslint/pull/10232))
+- **eslint-plugin:** [consistent-type-definitions] don't leave trailing parens when fixing type to interface ([#10235](https://github.com/typescript-eslint/typescript-eslint/pull/10235))
+- **eslint-plugin:** [no-deprecated] report when exported class implements/extends deprecated entity ([#10259](https://github.com/typescript-eslint/typescript-eslint/pull/10259))
+- **eslint-plugin:** [no-deprecated] report on deprecated variables used inside dynamic imports ([#10261](https://github.com/typescript-eslint/typescript-eslint/pull/10261))
+- **eslint-plugin:** [no-unnecessary-condition] falsey bigint should be falsey ([#10205](https://github.com/typescript-eslint/typescript-eslint/pull/10205))
+
+### ❤️  Thank You
+
+- auvred @auvred
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger @kirkwaiblinger
+- Mark de Dios @peanutenthusiast
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.12.2 (2024-10-29)
 
 ### 🩹 Fixes

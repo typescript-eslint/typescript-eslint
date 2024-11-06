@@ -227,6 +227,57 @@ for await (const s of asyncIter) {
 }
       `,
     },
+    {
+      code: `
+declare const d: AsyncDisposable;
+
+await using foo = d;
+
+export {};
+      `,
+    },
+    {
+      code: `
+using foo = {
+  [Symbol.dispose]() {},
+};
+
+export {};
+      `,
+    },
+    {
+      code: `
+await using foo = 3 as any;
+
+export {};
+      `,
+    },
+    {
+      // bad bad code but not this rule's problem
+      code: `
+using foo = {
+  async [Symbol.dispose]() {},
+};
+
+export {};
+      `,
+    },
+    {
+      code: `
+declare const maybeAsyncDisposable: Disposable | AsyncDisposable;
+async function foo() {
+  await using _ = maybeAsyncDisposable;
+}
+      `,
+    },
+    {
+      code: `
+async function iterateUsing(arr: Array<AsyncDisposable>) {
+  for (await using foo of arr) {
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -424,7 +475,7 @@ for await (const value of yieldNumbers()) {
           endColumn: 42,
           endLine: 7,
           line: 7,
-          messageId: 'forAwaitOfNonThenable',
+          messageId: 'forAwaitOfNonAsyncIterable',
           suggestions: [
             {
               messageId: 'convertToOrdinaryFor',
@@ -456,7 +507,7 @@ for await (const value of yieldNumberPromises()) {
       `,
       errors: [
         {
-          messageId: 'forAwaitOfNonThenable',
+          messageId: 'forAwaitOfNonAsyncIterable',
           suggestions: [
             {
               messageId: 'convertToOrdinaryFor',
@@ -472,6 +523,119 @@ for  (const value of yieldNumberPromises()) {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+async function foo() {
+  await using d = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const disposable: Disposable;
+async function foo() {
+   using d = disposable;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  await using _ = {
+    async [Symbol.dispose]() {},
+  };
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function foo() {
+   using _ = {
+    async [Symbol.dispose]() {},
+  };
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+declare const asyncDisposable: AsyncDisposable;
+async function foo() {
+  await using a = disposable,
+    b = asyncDisposable,
+    c = disposable,
+    d = asyncDisposable,
+    e = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const anee: any;
+declare const disposable: Disposable;
+async function foo() {
+  await using a = anee,
+    b = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
         },
       ],
     },
