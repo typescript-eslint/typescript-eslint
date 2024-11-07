@@ -583,6 +583,34 @@ if (((a = b), b || c)) {
         },
       ],
     },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
   ],
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
