@@ -117,11 +117,9 @@ export default createRule<Options, MessageIds>({
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const signature = checker.getSignatureFromDeclaration(tsNode);
-
       if (!signature) {
         return;
       }
-
       const returnType = checker.getReturnTypeOfSignature(signature);
 
       if (
