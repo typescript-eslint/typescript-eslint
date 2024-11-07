@@ -140,7 +140,6 @@ export default createRule<Options, MessageIds>({
 
       if (
         !allowAny &&
-        // `any` and `unknown` override other types in a union so it's safe to check one
         returnTypes.some(type =>
           isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
         )
