@@ -119,21 +119,6 @@ export default createRule<Options, MessageIds>({
       if (!signatures.length) {
         return;
       }
-      const returnType = checker.getReturnTypeOfSignature(signatures[0]);
-
-      if (
-        !containsAllTypesByName(
-          returnType,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          allowAny!,
-          allAllowedPromiseNames,
-          // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
-          node.returnType == null,
-        )
-      ) {
-        // Return type is not a promise
-        return;
-      }
 
       if (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
         // Abstract method can't be async
@@ -149,13 +134,41 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+      const returnTypes = signatures.map(signature =>
+        checker.getReturnTypeOfSignature(signature),
+      );
+
+      if (
+        !allowAny &&
+        // `any` and `unknown` override other types in a union so it's safe to check one
+        returnTypes.some(type =>
+          isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
+        )
+      ) {
         // Report without auto fixer because the return type is unknown
         return context.report({
           loc: getFunctionHeadLoc(node, context.sourceCode),
           node,
           messageId: 'missingAsync',
         });
+      }
+
+      if (
+        // require all potential return types to be promise/any/unknown
+        returnTypes.some(
+          type =>
+            !containsAllTypesByName(
+              type,
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              allowAny!,
+              allAllowedPromiseNames,
+              // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
+              node.returnType == null,
+            ),
+        )
+      ) {
+        // Return type is not a promise
+        return;
       }
 
       context.report({

@@ -182,6 +182,44 @@ async function asyncFunctionReturningUnion(p: boolean) {
   return p ? Promise.resolve(5) : 5;
 }
     `,
+    `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): number;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number> | number {
+  return Promise.resolve(5);
+}
+    `,
+    `
+function overloadingThatCanReturnPromise(a: boolean): number;
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number> | number {
+  return Promise.resolve(5);
+}
+    `,
+    {
+      code: `
+export function overloadingThatIncludeUnknown(): number;
+export function overloadingThatIncludeUnknown(a: boolean): unknown;
+export function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+export function overloadingThatIncludeAny(): number;
+export function overloadingThatIncludeAny(a: boolean): unknown;
+export function overloadingThatIncludeAny(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      options: [{ allowAny: true }],
+    },
   ],
   invalid: [
     {
@@ -787,6 +825,61 @@ async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
   return p ? Promise.resolve(5) : 5;
 }
       `,
+    },
+    {
+      code: `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): Promise<string>;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number | string> {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      output: `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): Promise<string>;
+async function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number | string> {
+  return Promise.resolve(5);
+}
+      `,
+    },
+    {
+      code: `
+export function overloadingThatIncludeAny(): number;
+export function overloadingThatIncludeAny(a: boolean): any;
+export function overloadingThatIncludeAny(a?: boolean): any | number {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      options: [{ allowAny: false }],
+    },
+    {
+      code: `
+function overloadingThatIncludeUnknown(): number;
+function overloadingThatIncludeUnknown(a: boolean): unknown;
+function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      options: [{ allowAny: false }],
     },
   ],
 });
