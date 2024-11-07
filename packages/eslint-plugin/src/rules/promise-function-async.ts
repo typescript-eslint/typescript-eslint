@@ -122,7 +122,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const returnType = signature.getReturnType();
+      const returnType = checker.getReturnTypeOfSignature(signature);
 
       if (
         !containsAllTypesByName(
