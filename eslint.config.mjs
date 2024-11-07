@@ -212,7 +212,12 @@ export default tseslint.config(
       ],
       'logical-assignment-operators': 'error',
       'no-console': 'error',
-      'no-else-return': 'error',
+      'no-else-return': [
+        'error',
+        {
+          allowElseIf: false,
+        },
+      ],
       'no-fallthrough': [
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
