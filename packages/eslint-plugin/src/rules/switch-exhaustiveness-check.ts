@@ -41,6 +41,11 @@ type Options = [
     requireDefaultForNonUnion?: boolean;
 
     /**
+     * Regular expression to evaluate comments to mean default case
+     */
+    defalutCaseCommentPattern?: string;
+
+    /**
      * If `true`, the `default` clause is used to determine whether the switch statement is exhaustive for union types.
      *
      * @default false
@@ -83,6 +88,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
           },
+          defalutCaseCommentPattern: {
+            type: 'string',
+            description: `Regular expression to evaluate comments to mean default case`,
+          },
           requireDefaultForNonUnion: {
             type: 'boolean',
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
@@ -104,6 +113,7 @@ export default createRule<Options, MessageIds>({
       {
         allowDefaultCaseForExhaustiveSwitch,
         considerDefaultExhaustiveForUnions,
+        defalutCaseCommentPattern,
         requireDefaultForNonUnion,
       },
     ],
@@ -120,10 +130,12 @@ export default createRule<Options, MessageIds>({
         ? context.sourceCode.getCommentsAfter(lastCase)
         : [];
       const defaultCaseComment = commentsAfterLastCase.at(-1);
+      const commentRegExp =
+        defalutCaseCommentPattern != null
+          ? new RegExp(defalutCaseCommentPattern, 'u')
+          : DEFAULT_COMMENT_PATTERN;
 
-      if (
-        DEFAULT_COMMENT_PATTERN.test(defaultCaseComment?.value.trim() || '')
-      ) {
+      if (commentRegExp.test(defaultCaseComment?.value.trim() || '')) {
         return defaultCaseComment;
       }
 
@@ -181,7 +193,7 @@ export default createRule<Options, MessageIds>({
 
       return {
         containsNonLiteralType,
-        defaultCase: defaultCase ? defaultCase : getCommentDefaultCase(node),
+        defaultCase: defaultCase ?? getCommentDefaultCase(node),
         missingLiteralBranchTypes,
         symbolName,
       };
@@ -196,7 +208,7 @@ export default createRule<Options, MessageIds>({
 
       // If considerDefaultExhaustiveForUnions is enabled, the presence of a default case
       // always makes the switch exhaustive.
-      if (considerDefaultExhaustiveForUnions && defaultCase) {
+      if (considerDefaultExhaustiveForUnions && defaultCase != null) {
         return;
       }
 
@@ -221,6 +233,7 @@ export default createRule<Options, MessageIds>({
                   fixer,
                   node,
                   missingLiteralBranchTypes,
+                  defaultCase,
                   symbolName?.toString(),
                 );
               },
@@ -234,13 +247,11 @@ export default createRule<Options, MessageIds>({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
       missingBranchTypes: (ts.Type | null)[], // null means default branch
+      defaultCase: TSESTree.Comment | TSESTree.SwitchCase | undefined,
       symbolName?: string,
     ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
-      const defaultCase =
-        node.cases.find(caseEl => caseEl.test == null) ??
-        getCommentDefaultCase(node);
 
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)
@@ -362,7 +373,7 @@ export default createRule<Options, MessageIds>({
             {
               messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix {
-                return fixSwitch(fixer, node, [null]);
+                return fixSwitch(fixer, node, [null], defaultCase);
               },
             },
           ],
