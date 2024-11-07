@@ -1129,7 +1129,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 22,
           data: { funcName: 'foo' },
           line: 4,
-          messageId: 'asyncNoTryCatchFuncInArg',
+          messageId: 'asyncFuncInArg',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -1185,7 +1185,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           data: { funcName: 'foo' },
           line: 5,
-          messageId: 'nonVoidReturnInArgOverload',
+          messageId: 'nonVoidReturnInArg',
         },
       ],
       output: `
@@ -1627,7 +1627,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 56,
           data: { funcName: 'win.addEventListener' },
           line: 21,
-          messageId: 'nonVoidReturnInArgOverload',
+          messageId: 'nonVoidReturnInArg',
         },
         {
           column: 46,
@@ -1671,7 +1671,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 26,
           data: { funcName: 'foo' },
           line: 4,
-          messageId: 'asyncFuncInArgOverload',
+          messageId: 'asyncFuncInArg',
         },
       ],
       output: `
@@ -1692,7 +1692,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 29,
           data: { funcName: 'arr.forEach' },
           line: 3,
-          messageId: 'asyncNoTryCatchFuncInArg',
+          messageId: 'asyncFuncInArg',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -1830,7 +1830,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 24,
           data: { varName: 'cb' },
           line: 1,
-          messageId: 'genFuncInVar',
+          messageId: 'nonVoidFuncInVar',
         },
       ],
       output: `const cb: () => void = function foo() {}`,
@@ -1932,7 +1932,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 57,
           data: { varName: 'foo' },
           line: 2,
-          messageId: 'asyncNoTryCatchFuncInVar',
+          messageId: 'asyncFuncInVar',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -1977,7 +1977,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 42,
           data: { varName: 'foo' },
           line: 2,
-          messageId: 'asyncNoTryCatchFuncInVar',
+          messageId: 'asyncFuncInVar',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -2161,7 +2161,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 81,
           data: { varName: 'foo' },
           line: 2,
-          messageId: 'asyncNoTryCatchFuncInVar',
+          messageId: 'asyncFuncInVar',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -2404,7 +2404,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 34,
           data: { attrName: 'cb', elemName: 'Foo' },
           line: 4,
-          messageId: 'genFuncInAttr',
+          messageId: 'nonVoidFuncInAttr',
         },
       ],
       filename: 'react.tsx',
@@ -2432,7 +2432,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 17,
           data: { attrName: 'cb', elemName: 'Foo' },
           line: 6,
-          messageId: 'genFuncInAttr',
+          messageId: 'nonVoidFuncInAttr',
         },
       ],
       filename: 'react.tsx',
@@ -2502,9 +2502,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 33,
-          data: { propName: 'cb' },
+          data: { varName: 'cb' },
           line: 3,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2525,9 +2525,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 13,
-          data: { propName: 'cb' },
+          data: { varName: 'cb' },
           line: 6,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2553,9 +2553,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 13,
-          data: { propName: 'cb' },
+          data: { varName: 'cb' },
           line: 5,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2580,9 +2580,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 13,
-          data: { propName: '1234' },
+          data: { varName: '1234' },
           line: 5,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2605,9 +2605,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 48,
-          data: { propName: '1_000_000_000_000_000_000_000' },
+          data: { varName: '1_000_000_000_000_000_000_000' },
           line: 4,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2631,9 +2631,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 11,
-          data: { propName: 'cb' },
+          data: { varName: 'cb' },
           line: 4,
-          messageId: 'asyncNoTryCatchFuncInProp',
+          messageId: 'asyncFuncInVar',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -2677,15 +2677,15 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 16,
-          data: { propName: 'cb1' },
+          data: { varName: 'cb1' },
           line: 4,
-          messageId: 'nonVoidFuncInProp',
+          messageId: 'nonVoidFuncInVar',
         },
         {
           column: 16,
-          data: { propName: 'cb2' },
+          data: { varName: 'cb2' },
           line: 5,
-          messageId: 'nonVoidFuncInProp',
+          messageId: 'nonVoidFuncInVar',
         },
       ],
       output: null,
@@ -2727,11 +2727,11 @@ ruleTester.run('strict-void-return', rule, {
         };
       `,
       errors: [
-        { column: 13, line: 4, messageId: 'genFuncInOther' },
+        { column: 13, line: 4, messageId: 'nonVoidFuncInOther' },
         {
           column: 22,
           line: 7,
-          messageId: 'asyncNoTryCatchFuncInOther',
+          messageId: 'asyncFuncInOther',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -2779,9 +2779,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 30,
-          data: { propName: 'cb' },
+          data: { varName: 'cb' },
           line: 3,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2799,9 +2799,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 35,
-          data: { propName: 'foo' },
+          data: { varName: 'foo' },
           line: 3,
-          messageId: 'nonVoidReturnInProp',
+          messageId: 'nonVoidReturnInVar',
         },
       ],
       output: `
@@ -2819,9 +2819,9 @@ ruleTester.run('strict-void-return', rule, {
       errors: [
         {
           column: 36,
-          data: { propName: 'foo' },
+          data: { varName: 'foo' },
           line: 3,
-          messageId: 'nonVoidFuncInProp',
+          messageId: 'nonVoidFuncInVar',
         },
       ],
       output: null,
@@ -3093,7 +3093,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           data: { baseName: 'Foo', className: 'Bar', memberName: 'cb' },
           line: 9,
-          messageId: 'genFuncInExtMember',
+          messageId: 'nonVoidFuncInExtMember',
         },
       ],
       output: `
@@ -3173,7 +3173,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           data: { baseName: 'Foo', className: 'Bar', memberName: 'cb' },
           line: 6,
-          messageId: 'genFuncInExtMember',
+          messageId: 'nonVoidFuncInExtMember',
         },
       ],
       output: [
@@ -3211,7 +3211,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           data: { baseName: 'Foo', className: 'Bar', memberName: 'cb' },
           line: 6,
-          messageId: 'asyncNoTryCatchFuncInImplMember',
+          messageId: 'asyncFuncInImplMember',
           suggestions: [
             {
               messageId: 'suggestWrapInTryCatch',
@@ -3344,7 +3344,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           data: { baseName: 'Foo2', className: 'Bar', memberName: 'cb2' },
           line: 10,
-          messageId: 'genFuncInImplMember',
+          messageId: 'nonVoidFuncInImplMember',
         },
       ],
       output: [
@@ -3398,7 +3398,7 @@ ruleTester.run('strict-void-return', rule, {
           column: 11,
           data: { baseName: 'Foo2', className: 'Bar', memberName: 'cb2' },
           line: 10,
-          messageId: 'genFuncInImplMember',
+          messageId: 'nonVoidFuncInImplMember',
         },
       ],
       output: [

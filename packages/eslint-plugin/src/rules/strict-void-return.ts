@@ -22,19 +22,15 @@ type Options = [
 
 type ErrorPlaceId =
   | 'Arg'
-  | 'ArgOverload'
   | 'Attr'
   | 'ExtMember'
   | 'ImplMember'
   | 'Other'
-  | 'Prop'
   | 'Return'
   | 'Var';
 
 type ErrorMessageId =
   | `asyncFuncIn${ErrorPlaceId}`
-  | `asyncNoTryCatchFuncIn${ErrorPlaceId}`
-  | `genFuncIn${ErrorPlaceId}`
   | `nonVoidFuncIn${ErrorPlaceId}`
   | `nonVoidReturnIn${ErrorPlaceId}`;
 
@@ -55,99 +51,49 @@ export default util.createRule<Options, MessageId>({
     hasSuggestions: true,
     messages: {
       asyncFuncInArg:
-        'Async callback passed as an argument to `{{funcName}}`, which expects a void callback.',
-      asyncFuncInArgOverload:
-        'Async callback passed as an argument to `{{funcName}}`, whose other overload expects a void callback.',
+        'Possibly unhandled promise-returning callback passed as an argument to `{{funcName}}`, which expects it to be a void callback.',
       asyncFuncInAttr:
-        'Async event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void `{{attrName}}` event handler.',
+        'Possibly unhandled promise-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects it to be a void event handler.',
       asyncFuncInExtMember:
-        'Async function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
+        'Possibly unhandled promise-returning function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
       asyncFuncInImplMember:
-        'Async function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
+        'Possibly unhandled promise-returning function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
       asyncFuncInOther:
-        'Async function used in a context where a void function was expected.',
-      asyncFuncInProp:
-        'Async function passed as `{{propName}}` method of an object, which expects a void `{{propName}}` method.',
+        'Possibly unhandled promise-returning function used in a context where a void function is expected.',
       asyncFuncInReturn:
-        'Async callback returned from a function, which must return a void callback.',
+        'Possibly unhandled promise-returning callback returned from a function, which is expected to return a void callback.',
       asyncFuncInVar:
-        'Async function assigned to `{{varName}}` variable, which expects a void function.',
-
-      asyncNoTryCatchFuncInArg:
-        'Async callback not wrapped with a try-catch block and passed as an argument to `{{funcName}}`, which expects a void callback.',
-      asyncNoTryCatchFuncInArgOverload:
-        'Async callback not wrapped with a try-catch block and passed as an argument to `{{funcName}}`, whose other overload expects a void callback.',
-      asyncNoTryCatchFuncInAttr:
-        'Async event handler `{{attrName}}` not wrapped with a try-catch block and passed as a prop to `{{elemName}}`, which expects a void `{{attrName}}` event handler.',
-      asyncNoTryCatchFuncInExtMember:
-        'Async function not wrapped with a try-catch block and provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
-      asyncNoTryCatchFuncInImplMember:
-        'Async function not wrapped with a try-catch block and provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
-      asyncNoTryCatchFuncInOther:
-        'Async function not wrapped with a try-catch block and used in a context where a void function was expected.',
-      asyncNoTryCatchFuncInProp:
-        'Async function not wrapped with a try-catch block and passed as `{{propName}}` method of an object, which expects a void `{{propName}}` method.',
-      asyncNoTryCatchFuncInReturn:
-        'Async callback not wrapped with a try-catch block and returned from a function, which must return a void callback.',
-      asyncNoTryCatchFuncInVar:
-        'Async function not wrapped with a try-catch block and assigned to `{{varName}}` variable, which expects a void function.',
-
-      genFuncInArg:
-        'Generator callback passed as an argument to `{{funcName}}`, which expects a void callback.',
-      genFuncInArgOverload:
-        'Generator callback passed as an argument to `{{funcName}}`, whose other overload expects a void callback.',
-      genFuncInAttr:
-        'Generator event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void `{{attrName}}` event handler.',
-      genFuncInExtMember:
-        'Generator function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
-      genFuncInImplMember:
-        'Generator function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
-      genFuncInOther:
-        'Generator function used in a context where a void function was expected.',
-      genFuncInProp:
-        'Generator function passed as `{{propName}}` method of an object, which expects a void `{{propName}}` method.',
-      genFuncInReturn:
-        'Generator callback returned from a function, which must return a void callback.',
-      genFuncInVar:
-        'Generator function assigned to `{{varName}}` variable, which expects a void function.',
+        'Possibly unhandled promise-returning function assigned to `{{varName}}`, which is expected to be a void function.',
 
       nonVoidFuncInArg:
-        'Value-returning callback passed as an argument to `{{funcName}}`, which expects a void callback.',
-      nonVoidFuncInArgOverload:
-        'Value-returning callback passed as an argument to `{{funcName}}`, whose other overload expects a void callback.',
+        'Value-returning callback passed as an argument to `{{funcName}}`, which expects it to be a void callback.',
       nonVoidFuncInAttr:
-        'Value-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void `{{attrName}}` event handler.',
+        'Value-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects it to be a void event handler.',
       nonVoidFuncInExtMember:
         'Value-returning function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
       nonVoidFuncInImplMember:
         'Value-returning function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
       nonVoidFuncInOther:
-        'Value-returning function used in a context where a void function was expected.',
-      nonVoidFuncInProp:
-        'Value-returning function passed as `{{propName}}` method of an object, which expects a void `{{propName}}` method.',
+        'Value-returning function used in a context where a void function is expected.',
       nonVoidFuncInReturn:
-        'Value-returning callback returned from a function, which must return a void callback.',
+        'Value-returning callback returned from a function, which is expected to return a void callback.',
       nonVoidFuncInVar:
-        'Value-returning function assigned to `{{varName}}` variable, which expects a void function.',
+        'Value-returning function assigned to `{{varName}}`, which is expected to be a void function.',
 
       nonVoidReturnInArg:
-        'Value returned in a callback argument to `{{funcName}}`, which expects a void callback.',
-      nonVoidReturnInArgOverload:
-        'Value returned in a callback argument to `{{funcName}}`, whose other overload expects a void callback.',
+        'Value returned in a callback argument to `{{funcName}}`, which expects it to be a void callback.',
       nonVoidReturnInAttr:
-        'Value returned in `{{attrName}}` event handler prop of `{{elemName}}`, which expects a void `{{attrName}}` event handler.',
+        'Value returned in `{{attrName}}` event handler prop of `{{elemName}}`, which expects it to be a void event handler.',
       nonVoidReturnInExtMember:
         'Value returned in `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
       nonVoidReturnInImplMember:
         'Value returned in `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
       nonVoidReturnInOther:
-        'Value returned in a context where a void return was expected.',
-      nonVoidReturnInProp:
-        'Value returned in `{{propName}}` method of an object, which expects a void `{{propName}}` method.',
+        'Value returned in a context where a void return is expected.',
       nonVoidReturnInReturn:
-        'Value returned in a callback returned from a function, which must return a void callback',
+        'Value returned in a callback returned from a function, which is expected to return a void callback',
       nonVoidReturnInVar:
-        'Value returned in `{{varName}}` function variable, which expects a void function.',
+        'Value returned in `{{varName}}`, which is expected to be a void function.',
 
       suggestWrapInAsyncIIFE:
         'Wrap the function body in an immediately-invoked async function expression.',
@@ -316,6 +262,16 @@ export default util.createRule<Options, MessageId>({
         util.getNameFromExpression(sourceCode, callNode.callee) ?? 'function';
 
       const callTsNode = parserServices.esTreeNodeToTSNodeMap.get(callNode);
+
+      const funcType = checker.getTypeAtLocation(callTsNode.expression);
+      const funcSignatures = tsutils
+        .unionTypeParts(funcType)
+        .flatMap(type =>
+          ts.isCallExpression(callTsNode)
+            ? type.getCallSignatures()
+            : type.getConstructSignatures(),
+        );
+
       for (const [argIdx, argNode] of callNode.arguments.entries()) {
         if (argNode.type === AST_NODE_TYPES.SpreadElement) {
           continue;
@@ -327,14 +283,6 @@ export default util.createRule<Options, MessageId>({
         }
 
         // Check against the types from all of the call signatures
-        const funcType = checker.getTypeAtLocation(callTsNode.expression);
-        const funcSignatures = tsutils
-          .unionTypeParts(funcType)
-          .flatMap(type =>
-            ts.isCallExpression(callTsNode)
-              ? type.getCallSignatures()
-              : type.getConstructSignatures(),
-          );
         const argExpectedReturnTypes = funcSignatures
           .map(s => s.parameters[argIdx])
           .filter(Boolean)
@@ -362,7 +310,7 @@ export default util.createRule<Options, MessageId>({
           )
         ) {
           // We treat this argument as void even though it might be technically any.
-          reportIfNonVoidFunction(argNode, 'ArgOverload', { funcName });
+          reportIfNonVoidFunction(argNode, 'Arg', { funcName });
         }
       }
     }
@@ -412,13 +360,13 @@ export default util.createRule<Options, MessageId>({
           propTsNode,
         );
         if (isVoidReturningFunctionType(propExpectedType)) {
-          reportIfNonVoidFunction(propNode.value, 'Prop', { propName });
+          reportIfNonVoidFunction(propNode.value, 'Var', { varName: propName });
         }
         return;
       }
 
       // Object property is a regular property.
-      checkExpressionNode(propNode.value, 'Prop', { propName });
+      checkExpressionNode(propNode.value, 'Var', { varName: propName });
     }
 
     /**
@@ -460,7 +408,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       // Check in comparison to the contextual type.
-      checkExpressionNode(propNode.value, 'Prop', { propName: memberName });
+      checkExpressionNode(propNode.value, 'Var', { varName: memberName });
     }
 
     /**
@@ -564,7 +512,7 @@ export default util.createRule<Options, MessageId>({
           // Fix it by removing the generator star.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `genFuncIn${msgId}`,
+            messageId: `nonVoidFuncIn${msgId}`,
             data,
             fix: fixer => removeGeneratorStarFix(fixer, funcNode),
           });
@@ -574,7 +522,7 @@ export default util.createRule<Options, MessageId>({
         // Report an error.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-          messageId: `genFuncIn${msgId}`,
+          messageId: `nonVoidFuncIn${msgId}`,
           data,
         });
       }
@@ -642,7 +590,7 @@ export default util.createRule<Options, MessageId>({
           // Suggest wrapping it in a try-catch block in addition to async IIFE.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncNoTryCatchFuncIn${msgId}`,
+            messageId: `asyncFuncIn${msgId}`,
             data,
             suggest: [
               {
