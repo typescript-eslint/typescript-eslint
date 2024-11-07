@@ -345,11 +345,7 @@ class FooListener implements EventListenerObject {
 
 ### `allowReturnPromiseIfTryCatch`
 
-Whether to allow returned promises
-if they are returned from an async function expression
-whose whole body is wrapped in a try-catch block.
-
-This offers an alternative to an async IIFE for handling errors in async callbacks.
+{/* insert option description */}
 
 Additional incorrect code when the option is **disabled**:
 
@@ -386,9 +382,7 @@ const cb: () => void = () => {
 
 ### `allowReturnUndefined`
 
-Whether to allow a function returning `undefined` to be used in place expecting a `void` function.
-When disabled, `void` operator can't be used to discard the return value, because it evaluates to undefined.
-Disable this to enforce a consistent style across the codebase.
+{/* insert option description */}
 
 :::note
 Note that even when disabled it will still allow `return functionReturningVoid()`.
@@ -428,7 +422,7 @@ cb = () => {
 
 ### `allowReturnNull`
 
-Whether to allow a function returning `null` to be used in place expecting a `void` function.
+{/* insert option description */}
 
 Additional incorrect code when the option is **disabled**:
 
@@ -463,7 +457,7 @@ cb = () => {
 
 ### `allowReturnAny`
 
-Whether to allow a function returning `any` to be used in place expecting a `void` function.
+{/* insert option description */}
 
 Additional incorrect code when the option is **disabled**:
 

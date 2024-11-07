@@ -104,10 +104,26 @@ export default util.createRule<Options, MessageId>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          allowReturnAny: { type: 'boolean' },
-          allowReturnNull: { type: 'boolean' },
-          allowReturnPromiseIfTryCatch: { type: 'boolean' },
-          allowReturnUndefined: { type: 'boolean' },
+          allowReturnAny: {
+            type: 'boolean',
+            description:
+              'Whether to allow functions returning `any` to be used in place expecting a `void` function.',
+          },
+          allowReturnNull: {
+            type: 'boolean',
+            description:
+              'Whether to allow functions returning `null` to be used in place expecting a `void` function.',
+          },
+          allowReturnPromiseIfTryCatch: {
+            type: 'boolean',
+            description:
+              'Whether to allow functions returning a promise if the function is na async function expression whose whole body is wrapped in a try-catch block. This offers an alternative to an async IIFE for handling errors in async callbacks.',
+          },
+          allowReturnUndefined: {
+            type: 'boolean',
+            description:
+              "Whether to allow functions returning `undefined` to be used in place expecting a `void` function. When disabled, `void` operator can't be used to discard the return value, because it evaluates to undefined. Disable this to enforce a consistent style across the codebase.",
+          },
         },
       },
     ],
