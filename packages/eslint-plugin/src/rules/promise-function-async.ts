@@ -115,8 +115,26 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      const signatures = services.getTypeAtLocation(node).getCallSignatures();
-      if (!signatures.length) {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const signature = checker.getSignatureFromDeclaration(tsNode);
+
+      if (!signature) {
+        return;
+      }
+
+      const returnType = signature.getReturnType();
+
+      if (
+        !containsAllTypesByName(
+          returnType,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          allowAny!,
+          allAllowedPromiseNames,
+          // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
+          node.returnType == null,
+        )
+      ) {
+        // Return type is not a promise
         return;
       }
 
@@ -134,40 +152,13 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const returnTypes = signatures.map(signature =>
-        checker.getReturnTypeOfSignature(signature),
-      );
-
-      if (
-        !allowAny &&
-        returnTypes.some(type =>
-          isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
-        )
-      ) {
+      if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
         // Report without auto fixer because the return type is unknown
         return context.report({
           loc: getFunctionHeadLoc(node, context.sourceCode),
           node,
           messageId: 'missingAsync',
         });
-      }
-
-      if (
-        // require all potential return types to be promise/any/unknown
-        returnTypes.some(
-          type =>
-            !containsAllTypesByName(
-              type,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              allowAny!,
-              allAllowedPromiseNames,
-              // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
-              node.returnType == null,
-            ),
-        )
-      ) {
-        // Return type is not a promise
-        return;
       }
 
       context.report({
