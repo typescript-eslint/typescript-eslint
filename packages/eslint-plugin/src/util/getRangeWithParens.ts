@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { ASTUtils, ESLintUtils } from '@typescript-eslint/utils';
 
 /**

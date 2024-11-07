@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 /**
@@ -9,11 +10,11 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 function getIdentifierFromExpression(
   node: TSESTree.Expression | TSESTree.PrivateIdentifier,
 ):
-  | TSESTree.Literal
   | TSESTree.Identifier
+  | TSESTree.Literal
+  | TSESTree.MemberExpression
   | TSESTree.PrivateIdentifier
   | TSESTree.Super
-  | TSESTree.MemberExpression
   | null {
   if (
     node.type === AST_NODE_TYPES.Literal ||

@@ -1,5 +1,4 @@
 import assert from 'node:assert';
-
 import * as ts from 'typescript';
 
 /**
@@ -8,7 +7,7 @@ import * as ts from 'typescript';
  */
 export function* getBaseTypesOfClassMember(
   checker: ts.TypeChecker,
-  memberTsNode: ts.PropertyDeclaration | ts.MethodDeclaration,
+  memberTsNode: ts.MethodDeclaration | ts.PropertyDeclaration,
 ): Generator<{
   baseType: ts.Type;
   baseMemberType: ts.Type;
@@ -34,7 +33,7 @@ export function* getBaseTypesOfClassMember(
         memberTsNode,
       );
       const heritageToken = clauseNode.token;
-      yield { baseType, baseMemberType, heritageToken };
+      yield { baseMemberType, baseType, heritageToken };
     }
   }
 }
