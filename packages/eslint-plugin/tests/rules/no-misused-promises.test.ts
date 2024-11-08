@@ -1042,6 +1042,68 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+interface Interface {
+  identifier: () => void;
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  // well known symbols
+  [Symbol.iterator]: () => void;
+  [Symbol.asyncIterator]: () => void;
+
+  // less sure if this one is possible to lint for
+  [staticSymbol]: () => void;
+}
+
+class Clazz implements Interface {
+  identifier(): void {}
+  1(): void {}
+  [2](): void {}
+  stringLiteral(): void {}
+  ['computedStringLiteral'](): void {}
+  [Symbol.iterator](): void {}
+  [Symbol.asyncIterator](): void {}
+  [staticSymbol](): void {}
+}
+      `,
+      options: [{ checksVoidReturn: { inheritedMethods: true } }],
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+interface Interface {
+  identifier: () => void;
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  // well known symbols
+  [Symbol.iterator]: () => void;
+  [Symbol.asyncIterator]: () => void;
+
+  // less sure if this one is possible to lint for
+  [staticSymbol]: () => void;
+}
+
+class Clazz implements Interface {
+  async identifier() {}
+  async 1() {}
+  async [2]() {}
+  async stringLiteral() {}
+  async ['computedStringLiteral']() {}
+  async [Symbol.iterator]() {}
+  async [Symbol.asyncIterator]() {}
+  async [staticSymbol]() {}
+}
+      `,
+      options: [{ checksVoidReturn: { inheritedMethods: false } }],
+    },
     "const notAFn1: string = '';",
     'const notAFn2: number = 1;',
     'const notAFn3: boolean = true;',
@@ -2440,8 +2502,9 @@ interface Interface {
   2: () => void;
   stringLiteral: () => void;
   computedStringLiteral: () => void;
-  // well known symbol
+  // well known symbols
   [Symbol.iterator]: () => void;
+  [Symbol.asyncIterator]: () => void;
 
   // less sure if this one is possible to lint for
   [staticSymbol]: () => void;
@@ -2454,14 +2517,11 @@ class Clazz implements Interface {
   async stringLiteral() {}
   async ['computedStringLiteral']() {}
   async [Symbol.iterator]() {}
+  async [Symbol.asyncIterator]() {}
   async [staticSymbol]() {}
 }
       `,
       errors: [
-        {
-          line: 18,
-          messageId: 'voidReturnInheritedMethod',
-        },
         {
           line: 19,
           messageId: 'voidReturnInheritedMethod',
@@ -2480,6 +2540,14 @@ class Clazz implements Interface {
         },
         {
           line: 23,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 25,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
