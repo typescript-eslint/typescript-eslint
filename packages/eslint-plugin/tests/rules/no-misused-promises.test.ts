@@ -1108,7 +1108,8 @@ const obj: O = {
   async 'stringLiteral'() {},
   async ['computedStringLiteral']() {},
   async [Symbol.iterator]() {},
-  async [staticSymbol]() {}
+  async [staticSymbol]() {},
+  async ownProperty() {},
 };
       `,
     },
@@ -1132,6 +1133,7 @@ class MySubclassExtendsMyClass extends MyClass {
   ['computedStringLiteral'](): void {}
   [Symbol.asyncIterator](): void {}
   [staticSymbol](): void {}
+  ownProperty(): void {}
 }
       `,
     },
@@ -1155,6 +1157,55 @@ class MySubclassExtendsMyClass extends MyClass {
   async ['computedStringLiteral'](): Promise<void> {}
   async [Symbol.asyncIterator](): Promise<void> {}
   async [staticSymbol](): Promise<void> {}
+  async ownProperty(): Promise<void> {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+interface MyInterface {
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.asyncIterator](): void;
+  [staticSymbol](): void;
+}
+
+class MySubinterfaceExtendsMyInterface extends MyInterface {
+  async 1(): void;
+  async [2](): void;
+  async 'stringLiteral'(): void;
+  async ['computedStringLiteral'](): void;
+  async [Symbol.asyncIterator](): void;
+  async [staticSymbol](): void;
+  async ownProperty(): void;
+}
+      `,
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+interface MyInterface {
+  1(): Promise<void>;
+  2(): Promise<void>;
+  stringLiteral(): Promise<void>;
+  computedStringLiteral(): Promise<void>;
+  [Symbol.asyncIterator](): Promise<void>;
+  [staticSymbol](): Promise<void>;
+}
+
+class MySubinterfaceExtendsMyInterface extends MyInterface {
+  async 1(): Promise<void>;
+  async [2](): Promise<void>;
+  async 'stringLiteral'(): Promise<void>;
+  async ['computedStringLiteral'](): Promise<void>;
+  async [Symbol.asyncIterator](): Promise<void>;
+  async [staticSymbol](): Promise<void>;
+  async ownProperty(): Promise<void>;
 }
       `,
     },
@@ -2552,6 +2603,9 @@ const obj: O = {
   },
   async [staticSymbol]() {
     return 0;
+  },
+  async ownProperty() {
+    return 0;
   }
 };
       `,
@@ -2622,6 +2676,9 @@ class MySubclassExtendsMyClass extends MyClass {
   async [staticSymbol](): Promise<void> {
     await Promise.resolve();
   }
+  async ownProperty(): Promise<void> {
+    await Promise.resolve();
+  }
 }
       `,
       errors: [
@@ -2643,6 +2700,52 @@ class MySubclassExtendsMyClass extends MyClass {
         },
         {
           line: 38,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+interface MyInterface {
+  1(): void
+  2(): void
+  stringLiteral(): void
+  computedStringLiteral(): void
+  [Symbol.asyncIterator](): void
+  [staticSymbol](): void
+}
+
+interface MySubinterfaceExtendsMyInterface extends MyInterface {
+  1(): Promise<void>
+  [2](): Promise<void>
+  'stringLiteral'(): Promise<void>
+  ['computedStringLiteral'](): Promise<void>
+  [Symbol.asyncIterator](): Promise<void>
+  [staticSymbol](): Promise<void>
+  ownProperty(): Promise<void>
+}
+      `,
+      errors: [
+        {
+          line: 14,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 17,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 18,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
