@@ -2033,7 +2033,7 @@ class MyClass {
   computedStringLiteral(): void {
     return;
   }
-  [Symbol.iterator](): void {
+  [Symbol.asyncIterator](): void {
     return;
   }
 }
@@ -2054,7 +2054,7 @@ class MySubclassExtendsMyClass extends MyClass {
   async ['computedStringLiteral'](): Promise<void> {
     await Promise.resolve();
   }
-  async [Symbol.iterator](): Promise<void> {
+  async [Symbol.asyncIterator](): Promise<void> {
     await Promise.resolve();
   }
 }
@@ -2230,7 +2230,7 @@ abstract class MyAbstractClass {
   abstract 2(): void;
   abstract stringLiteral(): void;
   abstract computedStringLiteral(): void;
-  abstract [Symbol.iterator](): void;
+  abstract [Symbol.asyncIterator](): void;
 }
 
 class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
@@ -2249,7 +2249,7 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   async ['computedStringLiteral'](): Promise<void> {
     await Promise.resolve();
   }
-  async [Symbol.iterator](): Promise<void> {
+  async [Symbol.asyncIterator](): Promise<void> {
     await Promise.resolve();
   }
 }
@@ -3113,7 +3113,7 @@ const MyClassExpression = class {
   computedStringLiteral(): void {
     return;
   }
-  [Symbol.iterator](): void {
+  [Symbol.asyncIterator](): void {
     return;
   }
 };
@@ -3134,7 +3134,7 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
   async ['computedStringLiteral'](): Promise<void> {
     await Promise.resolve();
   }
-  async [Symbol.iterator](): Promise<void> {
+  async [Symbol.asyncIterator](): Promise<void> {
     await Promise.resolve();
   }
 }
