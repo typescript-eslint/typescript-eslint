@@ -2566,12 +2566,34 @@ interface MySubInterface extends MyInterface {
       ],
     },
     {
-      code: `
-type MyTypeIntersection = { setThing(): void } & { thing: number };
+      code: noFormat`
+type MyTypeIntersection = {
+  setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
+} & { thing: number };
 
 class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
   thing = 1;
   async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.iterator](): Promise<void> {
     await Promise.resolve();
   }
 }
@@ -2579,25 +2601,98 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
       errors: [
         {
           data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 6,
+          line: 13,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyTypeIntersection' },
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyTypeIntersection' },
+          line: 19,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyTypeIntersection' },
+          line: 22,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyTypeIntersection' },
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyTypeIntersection' },
+          line: 28,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
       code: `
+type WhenTrue = {
+  setThing(): Promise<void>;
+  1(): Promise<void>;
+  2(): Promise<void>;
+  stringLiteral(): Promise<void>;
+  computedStringLiteral(): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
+};
+
+type WhenFalse = {
+  setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
+};
+
 type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
-  ? { setThing(): Promise<void> }
-  : { setThing(): void };
+  ? WhenTrue
+  : WhenFalse;
 
 interface MyAsyncInterface extends MyGenericType<false> {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
-          data: { heritageTypeName: '{ setThing(): void; }' },
-          line: 7,
+          data: { heritageTypeName: 'WhenFalse' },
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'WhenFalse' },
+          line: 26,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'WhenFalse' },
+          line: 27,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'WhenFalse' },
+          line: 28,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'WhenFalse' },
+          line: 29,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'WhenFalse' },
+          line: 30,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2606,25 +2701,90 @@ interface MyAsyncInterface extends MyGenericType<false> {
       code: `
 interface MyInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 interface MyOtherInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 interface MyThirdInterface extends MyInterface, MyOtherInterface {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 11,
+          line: 21,
           messageId: 'voidReturnInheritedMethod',
         },
         {
           data: { heritageTypeName: 'MyOtherInterface' },
-          line: 11,
+          line: 21,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 22,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherInterface' },
+          line: 22,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 23,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherInterface' },
+          line: 23,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherInterface' },
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherInterface' },
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 26,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherInterface' },
+          line: 26,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
