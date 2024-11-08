@@ -3031,13 +3031,33 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface MyInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 const MyClassExpressionExtendsMyClass = class implements MyInterface {
   setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+  1(): Promise<void> {
+    await Promise.resolve();
+  }
+  [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  [Symbol.iterator](): Promise<void> {
     await Promise.resolve();
   }
 };
@@ -3045,15 +3065,55 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 7,
+          line: 12,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 18,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 21,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 27,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 const MyClassExpression = class {
   setThing(): void {
+    return;
+  }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
     return;
   }
 };
@@ -3062,12 +3122,52 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.iterator](): Promise<void> {
+    await Promise.resolve();
+  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClassExpression' },
-          line: 9,
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 27,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 30,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 33,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 36,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 39,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -3078,17 +3178,57 @@ const MyClassExpression = class {
   setThing(): void {
     return;
   }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
+    return;
+  }
 };
 type MyClassExpressionType = typeof MyClassExpression;
 
 interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'typeof MyClassExpression' },
-          line: 10,
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'typeof MyClassExpression' },
+          line: 26,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'typeof MyClassExpression' },
+          line: 27,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'typeof MyClassExpression' },
+          line: 28,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'typeof MyClassExpression' },
+          line: 29,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
