@@ -2298,5 +2298,36 @@ if (f(a ?? b)) {
         },
       ],
     },
+    {
+      code: `
+declare const a: string | undefined;
+declare const b: string;
+
+if (+(a || b)) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const a: string | undefined;
+declare const b: string;
+
+if (+(a ?? b)) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
   ],
 });
