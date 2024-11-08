@@ -1477,7 +1477,6 @@ const obj: O = {
   'stringLiteral': async () => 'foo',
   ['computedStringLiteral']: async () => 'foo',
   [Symbol.iterator]: async () => 'foo',
-  [staticSymbol]: async () => 'foo',
 };
       `,
       errors: [
@@ -1582,8 +1581,17 @@ const obj: O = {
       ],
     },
     {
-      code: `
-type O = { f: () => void; g: () => void; h: () => void };
+      code: noFormat`
+type O = {
+  f: () => void;
+  g: () => void;
+  h: () => void;
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  [Symbol.iterator]: () => void;
+};
 function f(): O {
   const h = async () => 0;
   return {
@@ -1592,20 +1600,55 @@ function f(): O {
     },
     g: async () => 0,
     h,
+    async 1() {
+      return 123;
+    },
+    async [2]() {
+      return 123;
+    },
+    async 'stringLiteral'() {
+      return 123;
+    },
+    async ['computedStringLiteral']() {
+      return 123;
+    },
+    async [Symbol.iterator]() {
+      return 123;
+    },
   };
 }
       `,
       errors: [
         {
-          line: 6,
+          line: 15,
           messageId: 'voidReturnProperty',
         },
         {
-          line: 9,
+          line: 18,
           messageId: 'voidReturnProperty',
         },
         {
-          line: 10,
+          line: 19,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 20,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 23,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 26,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 29,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 32,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -1973,9 +2016,24 @@ consume(...cbs);
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
     {
-      code: `
+      code: noFormat`
 class MyClass {
   setThing(): void {
+    return;
+  }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
     return;
   }
 }
@@ -1984,32 +2042,117 @@ class MySubclassExtendsMyClass extends MyClass {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.iterator](): Promise<void> {
+    await Promise.resolve();
+  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 9,
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 27,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 30,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 33,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 36,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 39,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 class MyClass {
   setThing(): void {
+    return;
+  }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
     return;
   }
 }
 
 abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): Promise<void>;
+  abstract 1(): Promise<void>;
+  abstract [2](): Promise<void>;
+  abstract 'stringLiteral'(): Promise<void>;
+  abstract ['computedStringLiteral'](): Promise<void>;
+  abstract [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 9,
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 26,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 27,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 28,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 29,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2020,54 +2163,179 @@ class MyClass {
   setThing(): void {
     return;
   }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
+    return;
+  }
 }
 
 interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 9,
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 25,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 26,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 27,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 28,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 29,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 abstract class MyAbstractClass {
   abstract setThing(): void;
+  abstract 1(): void;
+  abstract 2(): void;
+  abstract stringLiteral(): void;
+  abstract computedStringLiteral(): void;
+  abstract [Symbol.iterator](): void;
 }
 
 class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.iterator](): Promise<void> {
+    await Promise.resolve();
+  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyAbstractClass' },
-          line: 7,
+          line: 12,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 18,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 21,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 27,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 abstract class MyAbstractClass {
   abstract setThing(): void;
+  abstract 1(): void;
+  abstract 2(): void;
+  abstract stringLiteral(): void;
+  abstract computedStringLiteral(): void;
+  abstract [Symbol.iterator](): void;
 }
 
 abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
   abstract setThing(): Promise<void>;
+  abstract 1(): Promise<void>;
+  abstract [2](): Promise<void>;
+  abstract 'stringLiteral'(): Promise<void>;
+  abstract ['computedStringLiteral'](): Promise<void>;
+  abstract [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyAbstractClass' },
-          line: 7,
+          line: 12,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 13,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 14,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2076,28 +2344,84 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
+  abstract setThing(): void;
+  abstract 1(): void;
+  abstract 2(): void;
+  abstract stringLiteral(): void;
+  abstract computedStringLiteral(): void;
+  abstract [Symbol.iterator](): void;
 }
 
 interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyAbstractClass' },
-          line: 7,
+          line: 13,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 14,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 17,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 18,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface MyInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 class MyInterfaceSubclass implements MyInterface {
   async setThing(): Promise<void> {
+    await Promise.resolve();
+  }
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.iterator](): Promise<void> {
     await Promise.resolve();
   }
 }
@@ -2105,25 +2429,85 @@ class MyInterfaceSubclass implements MyInterface {
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 7,
+          line: 12,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 18,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 21,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 24,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 27,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface MyInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
   abstract setThing(): Promise<void>;
+  abstract 1(): Promise<void>;
+  abstract [2](): Promise<void>;
+  abstract 'stringLiteral'(): Promise<void>;
+  abstract ['computedStringLiteral'](): Promise<void>;
+  abstract [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 7,
+          line: 12,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 13,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 14,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2132,16 +2516,51 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       code: `
 interface MyInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 interface MySubInterface extends MyInterface {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 7,
+          line: 12,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 13,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 14,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 15,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 16,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
