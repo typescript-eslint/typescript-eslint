@@ -455,9 +455,6 @@ export default createRule<Options, MessageId>({
           });
         }
       } else if (ts.isMethodDeclaration(tsNode)) {
-        if (ts.isComputedPropertyName(tsNode.name)) {
-          return;
-        }
         const obj = tsNode.parent;
 
         // Below condition isn't satisfied unless something goes wrong,
@@ -477,9 +474,14 @@ export default createRule<Options, MessageId>({
         if (objType === undefined) {
           return;
         }
-        const propertySymbol = checker.getPropertyOfType(
+        const staticAccessValue = getStaticMemberAccessValue(node, context);
+        if (!staticAccessValue) {
+          return;
+        }
+        const propertySymbol = getMemberIfExists(
           objType,
-          tsNode.name.text,
+          staticAccessValue,
+          checker,
         );
         if (propertySymbol === undefined) {
           return;
