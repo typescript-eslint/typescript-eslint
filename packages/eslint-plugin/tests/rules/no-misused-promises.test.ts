@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-misused-promises';
 import { getFixturesRootDir } from '../RuleTester';
@@ -1042,68 +1042,6 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       options: [{ checksVoidReturn: { inheritedMethods: true } }],
     },
-    {
-      code: `
-const staticSymbol = Symbol.for('static symbol');
-
-interface Interface {
-  identifier: () => void;
-  1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  // well known symbols
-  [Symbol.iterator]: () => void;
-  [Symbol.asyncIterator]: () => void;
-
-  // less sure if this one is possible to lint for
-  [staticSymbol]: () => void;
-}
-
-class Clazz implements Interface {
-  identifier(): void {}
-  1(): void {}
-  [2](): void {}
-  stringLiteral(): void {}
-  ['computedStringLiteral'](): void {}
-  [Symbol.iterator](): void {}
-  [Symbol.asyncIterator](): void {}
-  [staticSymbol](): void {}
-}
-      `,
-      options: [{ checksVoidReturn: { inheritedMethods: true } }],
-    },
-    {
-      code: `
-const staticSymbol = Symbol.for('static symbol');
-
-interface Interface {
-  identifier: () => void;
-  1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  // well known symbols
-  [Symbol.iterator]: () => void;
-  [Symbol.asyncIterator]: () => void;
-
-  // less sure if this one is possible to lint for
-  [staticSymbol]: () => void;
-}
-
-class Clazz implements Interface {
-  async identifier() {}
-  async 1() {}
-  async [2]() {}
-  async stringLiteral() {}
-  async ['computedStringLiteral']() {}
-  async [Symbol.iterator]() {}
-  async [Symbol.asyncIterator]() {}
-  async [staticSymbol]() {}
-}
-      `,
-      options: [{ checksVoidReturn: { inheritedMethods: false } }],
-    },
     "const notAFn1: string = '';",
     'const notAFn2: number = 1;',
     'const notAFn3: boolean = true;',
@@ -1445,43 +1383,126 @@ const g = async () => 1,
     {
       code: `
 const obj: {
-  f?: () => void;
+  identifier?: () => void;
+  1?: () => void;
+  computedStringLiteral?: () => void;
+  [Symbol.iterator]?: () => void;
 } = {};
-obj.f = async () => {
+obj.identifier = async () => {
+  return 0;
+};
+obj[1] = async () => {
+  return 0;
+};
+obj['computedStringLiteral'] = async () => {
+  return 0;
+};
+obj[Symbol.iterator] = async () => {
   return 0;
 };
       `,
       errors: [
         {
-          line: 5,
+          line: 8,
+          messageId: 'voidReturnVariable',
+        },
+        {
+          line: 11,
+          messageId: 'voidReturnVariable',
+        },
+        {
+          line: 14,
+          messageId: 'voidReturnVariable',
+        },
+        {
+          line: 17,
           messageId: 'voidReturnVariable',
         },
       ],
     },
     {
-      code: `
-type O = { f: () => void };
+      code: noFormat`
+type O = {
+  identifier: () => void;
+  1: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  [Symbol.iterator]: () => void;
+};
 const obj: O = {
-  f: async () => 'foo',
+  identifier: async () => 'foo',
+  [1]: async () => 'foo',
+  'stringLiteral': async () => 'foo',
+  ['computedStringLiteral']: async () => 'foo',
+  [Symbol.iterator]: async () => 'foo',
 };
       `,
       errors: [
         {
-          line: 4,
+          line: 10,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 11,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 12,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 13,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 14,
           messageId: 'voidReturnProperty',
         },
       ],
     },
     {
-      code: `
-type O = { f: () => void };
+      code: noFormat`
+type O = {
+  identifier: () => void;
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  [Symbol.iterator]: () => void;
+};
 const obj: O = {
-  f: async () => 'foo',
+  identifier: async () => 'foo',
+  1: async () => 'foo',
+  [2]: async () => 'foo',
+  'stringLiteral': async () => 'foo',
+  ['computedStringLiteral']: async () => 'foo',
+  [Symbol.iterator]: async () => 'foo',
+  [staticSymbol]: async () => 'foo',
 };
       `,
       errors: [
         {
-          line: 4,
+          line: 11,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 12,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 13,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 14,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 15,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 16,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -1503,17 +1524,59 @@ const obj: O = {
       ],
     },
     {
-      code: `
-type O = { f: () => void };
+      code: noFormat`
+type O = {
+  identifier: () => void;
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  [Symbol.iterator]: () => void;
+};
 const obj: O = {
-  async f() {
+  async identifier() {
+    return 0;
+  },
+  async 1() {
+    return 0;
+  },
+  async [2]() {
+    return 0;
+  },
+  async 'stringLiteral'() {
+    return 0;
+  },
+  async ['computedStringLiteral']() {
+    return 0;
+  },
+  async [Symbol.iterator]() {
     return 0;
   },
 };
       `,
       errors: [
         {
-          line: 4,
+          line: 11,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 14,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 17,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 20,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 23,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 26,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -2488,67 +2551,6 @@ arrayFn<() => void>(
         {
           line: 8,
           messageId: 'voidReturnArgument',
-        },
-      ],
-    },
-
-    {
-      code: `
-const staticSymbol = Symbol.for('static symbol');
-
-interface Interface {
-  identifier: () => void;
-  1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  // well known symbols
-  [Symbol.iterator]: () => void;
-  [Symbol.asyncIterator]: () => void;
-
-  // less sure if this one is possible to lint for
-  [staticSymbol]: () => void;
-}
-
-class Clazz implements Interface {
-  async identifier() {}
-  async 1() {}
-  async [2]() {}
-  async stringLiteral() {}
-  async ['computedStringLiteral']() {}
-  async [Symbol.iterator]() {}
-  async [Symbol.asyncIterator]() {}
-  async [staticSymbol]() {}
-}
-      `,
-      errors: [
-        {
-          line: 19,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 20,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 21,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 22,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 23,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
