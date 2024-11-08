@@ -1066,6 +1066,98 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
 ) => T;
 useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
     `,
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+type O = {
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  [Symbol.iterator]: () => void;
+  [staticSymbol]: () => void;
+};
+
+const obj: O = {
+  1() {},
+  [2]() {},
+  'stringLiteral'() {},
+  ['computedStringLiteral']() {},
+  [Symbol.iterator]() {},
+  [staticSymbol]() {}
+};
+      `,
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+type O = {
+  1: () => Promise<void>;
+  2: () => Promise<void>;
+  stringLiteral: () => Promise<void>;
+  computedStringLiteral: () => Promise<void>;
+  [Symbol.iterator]: () => Promise<void>;
+  [staticSymbol]: () => Promise<void>;
+};
+
+const obj: O = {
+  async 1() {},
+  async [2]() {},
+  async 'stringLiteral'() {},
+  async ['computedStringLiteral']() {},
+  async [Symbol.iterator]() {},
+  async [staticSymbol]() {}
+};
+      `,
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+class MyClass {
+  1(): void {}
+  2(): void {}
+  stringLiteral(): void {}
+  computedStringLiteral(): void {}
+  [Symbol.asyncIterator](): void {}
+  [staticSymbol](): void {}
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  1(): void {}
+  [2](): void {}
+  'stringLiteral'(): void {}
+  ['computedStringLiteral'](): void {}
+  [Symbol.asyncIterator](): void {}
+  [staticSymbol](): void {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+class MyClass {
+  1(): Promise<void> {}
+  2(): Promise<void> {}
+  stringLiteral(): Promise<void> {}
+  computedStringLiteral(): Promise<void> {}
+  [Symbol.asyncIterator](): Promise<void> {}
+  [staticSymbol](): Promise<void> {}
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async 1(): Promise<void> {}
+  async [2](): Promise<void> {}
+  async 'stringLiteral'(): Promise<void> {}
+  async ['computedStringLiteral'](): Promise<void> {}
+  async [Symbol.asyncIterator](): Promise<void> {}
+  async [staticSymbol](): Promise<void> {}
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -1383,125 +1475,43 @@ const g = async () => 1,
     {
       code: `
 const obj: {
-  identifier?: () => void;
-  1?: () => void;
-  computedStringLiteral?: () => void;
-  [Symbol.iterator]?: () => void;
+  f?: () => void;
 } = {};
-obj.identifier = async () => {
-  return 0;
-};
-obj[1] = async () => {
-  return 0;
-};
-obj['computedStringLiteral'] = async () => {
-  return 0;
-};
-obj[Symbol.iterator] = async () => {
+obj.f = async () => {
   return 0;
 };
       `,
       errors: [
         {
-          line: 8,
-          messageId: 'voidReturnVariable',
-        },
-        {
-          line: 11,
-          messageId: 'voidReturnVariable',
-        },
-        {
-          line: 14,
-          messageId: 'voidReturnVariable',
-        },
-        {
-          line: 17,
+          line: 5,
           messageId: 'voidReturnVariable',
         },
       ],
     },
     {
-      code: noFormat`
-type O = {
-  identifier: () => void;
-  1: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  [Symbol.iterator]: () => void;
-};
+      code: `
+type O = { f: () => void };
 const obj: O = {
-  identifier: async () => 'foo',
-  [1]: async () => 'foo',
-  'stringLiteral': async () => 'foo',
-  ['computedStringLiteral']: async () => 'foo',
-  [Symbol.iterator]: async () => 'foo',
+  f: async () => 'foo',
 };
       `,
       errors: [
         {
-          line: 10,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 11,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 12,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 13,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 14,
+          line: 4,
           messageId: 'voidReturnProperty',
         },
       ],
     },
     {
-      code: noFormat`
-type O = {
-  identifier: () => void;
-  1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  [Symbol.iterator]: () => void;
-};
+      code: `
+type O = { f: () => void };
 const obj: O = {
-  identifier: async () => 'foo',
-  1: async () => 'foo',
-  [2]: async () => 'foo',
-  'stringLiteral': async () => 'foo',
-  ['computedStringLiteral']: async () => 'foo',
-  [Symbol.iterator]: async () => 'foo',
+  f: async () => 'foo',
 };
       `,
       errors: [
         {
-          line: 11,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 12,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 13,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 14,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 15,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 16,
+          line: 4,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -1523,75 +1533,24 @@ const obj: O = {
       ],
     },
     {
-      code: noFormat`
-type O = {
-  identifier: () => void;
-  1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  [Symbol.iterator]: () => void;
-};
+      code: `
+type O = { f: () => void };
 const obj: O = {
-  async identifier() {
-    return 0;
-  },
-  async 1() {
-    return 0;
-  },
-  async [2]() {
-    return 0;
-  },
-  async 'stringLiteral'() {
-    return 0;
-  },
-  async ['computedStringLiteral']() {
-    return 0;
-  },
-  async [Symbol.iterator]() {
+  async f() {
     return 0;
   },
 };
       `,
       errors: [
         {
-          line: 11,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 14,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 17,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 20,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 23,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 26,
+          line: 4,
           messageId: 'voidReturnProperty',
         },
       ],
     },
     {
-      code: noFormat`
-type O = {
-  f: () => void;
-  g: () => void;
-  h: () => void;
-  1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  [Symbol.iterator]: () => void;
-};
+      code: `
+type O = { f: () => void; g: () => void; h: () => void };
 function f(): O {
   const h = async () => 0;
   return {
@@ -1600,55 +1559,20 @@ function f(): O {
     },
     g: async () => 0,
     h,
-    async 1() {
-      return 123;
-    },
-    async [2]() {
-      return 123;
-    },
-    async 'stringLiteral'() {
-      return 123;
-    },
-    async ['computedStringLiteral']() {
-      return 123;
-    },
-    async [Symbol.iterator]() {
-      return 123;
-    },
   };
 }
       `,
       errors: [
         {
-          line: 15,
+          line: 6,
           messageId: 'voidReturnProperty',
         },
         {
-          line: 18,
+          line: 9,
           messageId: 'voidReturnProperty',
         },
         {
-          line: 19,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 20,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 23,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 26,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 29,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 32,
+          line: 10,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -2016,24 +1940,9 @@ consume(...cbs);
       errors: [{ line: 4, messageId: 'voidReturnArgument' }],
     },
     {
-      code: noFormat`
+      code: `
 class MyClass {
   setThing(): void {
-    return;
-  }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.asyncIterator](): void {
     return;
   }
 }
@@ -2042,117 +1951,32 @@ class MySubclassExtendsMyClass extends MyClass {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.asyncIterator](): Promise<void> {
-    await Promise.resolve();
-  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 30,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 33,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 36,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 39,
+          line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: noFormat`
+      code: `
 class MyClass {
   setThing(): void {
-    return;
-  }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.iterator](): void {
     return;
   }
 }
 
 abstract class MyAbstractClassExtendsMyClass extends MyClass {
   abstract setThing(): Promise<void>;
-  abstract 1(): Promise<void>;
-  abstract [2](): Promise<void>;
-  abstract 'stringLiteral'(): Promise<void>;
-  abstract ['computedStringLiteral'](): Promise<void>;
-  abstract [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 26,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 28,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 29,
+          line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2161,181 +1985,38 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       code: `
 class MyClass {
   setThing(): void {
-    return;
-  }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.iterator](): void {
     return;
   }
 }
 
 interface MyInterfaceExtendsMyClass extends MyClass {
   setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 26,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 28,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 29,
+          line: 9,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: noFormat`
+      code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
-  abstract 1(): void;
-  abstract 2(): void;
-  abstract stringLiteral(): void;
-  abstract computedStringLiteral(): void;
-  abstract [Symbol.asyncIterator](): void;
 }
 
 class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.asyncIterator](): Promise<void> {
-    await Promise.resolve();
-  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyAbstractClass' },
-          line: 12,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 18,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 21,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-      ],
-    },
-    {
-      code: noFormat`
-abstract class MyAbstractClass {
-  abstract setThing(): void;
-  abstract 1(): void;
-  abstract 2(): void;
-  abstract stringLiteral(): void;
-  abstract computedStringLiteral(): void;
-  abstract [Symbol.iterator](): void;
-}
-
-abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
-  abstract setThing(): Promise<void>;
-  abstract 1(): Promise<void>;
-  abstract [2](): Promise<void>;
-  abstract 'stringLiteral'(): Promise<void>;
-  abstract ['computedStringLiteral'](): Promise<void>;
-  abstract [Symbol.iterator](): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 12,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 13,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 14,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 17,
+          line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2344,170 +2025,54 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       code: `
 abstract class MyAbstractClass {
   abstract setThing(): void;
-  abstract setThing(): void;
-  abstract 1(): void;
-  abstract 2(): void;
-  abstract stringLiteral(): void;
-  abstract computedStringLiteral(): void;
-  abstract [Symbol.iterator](): void;
 }
 
-interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
-  setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
+abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass {
+  abstract setThing(): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyAbstractClass' },
-          line: 13,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 14,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 17,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyAbstractClass' },
-          line: 18,
+          line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: noFormat`
+      code: `
+abstract class MyAbstractClass {
+  abstract setThing(): void;
+}
+
+interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyAbstractClass' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
 interface MyInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
 }
 
 class MyInterfaceSubclass implements MyInterface {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.iterator](): Promise<void> {
-    await Promise.resolve();
-  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 12,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 18,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 21,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-      ],
-    },
-    {
-      code: noFormat`
-interface MyInterface {
-  setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
-}
-
-abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
-  abstract setThing(): Promise<void>;
-  abstract 1(): Promise<void>;
-  abstract [2](): Promise<void>;
-  abstract 'stringLiteral'(): Promise<void>;
-  abstract ['computedStringLiteral'](): Promise<void>;
-  abstract [Symbol.iterator](): Promise<void>;
-}
-      `,
-      errors: [
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 12,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 13,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 14,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 17,
+          line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2516,183 +2081,71 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       code: `
 interface MyInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
 }
 
-interface MySubInterface extends MyInterface {
-  setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
+abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
+  abstract setThing(): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 12,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 13,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 14,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 17,
+          line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: noFormat`
-type MyTypeIntersection = {
+      code: `
+interface MyInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
-} & { thing: number };
+}
+
+interface MySubInterface extends MyInterface {
+  setThing(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyInterface' },
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+type MyTypeIntersection = { setThing(): void } & { thing: number };
 
 class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
   thing = 1;
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.iterator](): Promise<void> {
-    await Promise.resolve();
-  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 13,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 19,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 22,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyTypeIntersection' },
-          line: 28,
+          line: 6,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
       code: `
-type WhenTrue = {
-  setThing(): Promise<void>;
-  1(): Promise<void>;
-  2(): Promise<void>;
-  stringLiteral(): Promise<void>;
-  computedStringLiteral(): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
-};
-
-type WhenFalse = {
-  setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
-};
-
 type MyGenericType<IsAsync extends boolean = true> = IsAsync extends true
-  ? WhenTrue
-  : WhenFalse;
+  ? { setThing(): Promise<void> }
+  : { setThing(): void };
 
 interface MyAsyncInterface extends MyGenericType<false> {
   setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
-          data: { heritageTypeName: 'WhenFalse' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'WhenFalse' },
-          line: 26,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'WhenFalse' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'WhenFalse' },
-          line: 28,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'WhenFalse' },
-          line: 29,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'WhenFalse' },
-          line: 30,
+          data: { heritageTypeName: '{ setThing(): void; }' },
+          line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2701,90 +2154,25 @@ interface MyAsyncInterface extends MyGenericType<false> {
       code: `
 interface MyInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
 }
 
 interface MyOtherInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
 }
 
 interface MyThirdInterface extends MyInterface, MyOtherInterface {
   setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 21,
+          line: 11,
           messageId: 'voidReturnInheritedMethod',
         },
         {
           data: { heritageTypeName: 'MyOtherInterface' },
-          line: 21,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 22,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherInterface' },
-          line: 22,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 23,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherInterface' },
-          line: 23,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherInterface' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherInterface' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 26,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherInterface' },
-          line: 26,
+          line: 11,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -2793,21 +2181,6 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
       code: `
 class MyClass {
   setThing(): void {
-    return;
-  }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.iterator](): void {
     return;
   }
 }
@@ -2816,132 +2189,37 @@ class MyOtherClass {
   setThing(): void {
     return;
   }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.iterator](): void {
-    return;
-  }
 }
 
 interface MyInterface extends MyClass, MyOtherClass {
   setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 45,
+          line: 15,
           messageId: 'voidReturnInheritedMethod',
         },
         {
           data: { heritageTypeName: 'MyOtherClass' },
-          line: 45,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 46,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherClass' },
-          line: 46,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 47,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherClass' },
-          line: 47,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 48,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherClass' },
-          line: 48,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 49,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherClass' },
-          line: 49,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 50,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyOtherClass' },
-          line: 50,
+          line: 15,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: noFormat`
+      code: `
 interface MyAsyncInterface {
   setThing(): Promise<void>;
-  1(): Promise<void>;
-  2(): Promise<void>;
-  stringLiteral(): Promise<void>;
-  computedStringLiteral(): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
 }
 
 interface MySyncInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
 }
 
 class MyClass {
   setThing(): void {
-    return;
-  }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.iterator](): void {
     return;
   }
 }
@@ -2950,224 +2228,37 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.iterator](): Promise<void> {
-    await Promise.resolve();
-  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 42,
+          line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
         {
           data: { heritageTypeName: 'MySyncInterface' },
-          line: 42,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 45,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MySyncInterface' },
-          line: 45,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 48,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MySyncInterface' },
-          line: 48,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 51,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MySyncInterface' },
-          line: 51,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 54,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MySyncInterface' },
-          line: 54,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClass' },
-          line: 57,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MySyncInterface' },
-          line: 57,
+          line: 17,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: noFormat`
+      code: `
 interface MyInterface {
   setThing(): void;
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.iterator](): void;
 }
 
 const MyClassExpressionExtendsMyClass = class implements MyInterface {
   setThing(): Promise<void> {
     await Promise.resolve();
   }
-  1(): Promise<void> {
-    await Promise.resolve();
-  }
-  [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  [Symbol.iterator](): Promise<void> {
-    await Promise.resolve();
-  }
 };
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyInterface' },
-          line: 12,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 18,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 21,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyInterface' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-      ],
-    },
-    {
-      code: noFormat`
-const MyClassExpression = class {
-  setThing(): void {
-    return;
-  }
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.asyncIterator](): void {
-    return;
-  }
-};
-
-class MyClassExtendsMyClassExpression extends MyClassExpression {
-  async setThing(): Promise<void> {
-    await Promise.resolve();
-  }
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.asyncIterator](): Promise<void> {
-    await Promise.resolve();
-  }
-}
-      `,
-      errors: [
-        {
-          data: { heritageTypeName: 'MyClassExpression' },
-          line: 24,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClassExpression' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClassExpression' },
-          line: 30,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClassExpression' },
-          line: 33,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClassExpression' },
-          line: 36,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'MyClassExpression' },
-          line: 39,
+          line: 7,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -3178,19 +2269,26 @@ const MyClassExpression = class {
   setThing(): void {
     return;
   }
-  1(): void {
-    return;
+};
+
+class MyClassExtendsMyClassExpression extends MyClassExpression {
+  async setThing(): Promise<void> {
+    await Promise.resolve();
   }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.iterator](): void {
+}
+      `,
+      errors: [
+        {
+          data: { heritageTypeName: 'MyClassExpression' },
+          line: 9,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
+    {
+      code: `
+const MyClassExpression = class {
+  setThing(): void {
     return;
   }
 };
@@ -3198,37 +2296,12 @@ type MyClassExpressionType = typeof MyClassExpression;
 
 interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
   setThing(): Promise<void>;
-  1(): Promise<void>;
-  [2](): Promise<void>;
-  'stringLiteral'(): Promise<void>;
-  ['computedStringLiteral'](): Promise<void>;
-  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'typeof MyClassExpression' },
-          line: 25,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'typeof MyClassExpression' },
-          line: 26,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'typeof MyClassExpression' },
-          line: 27,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'typeof MyClassExpression' },
-          line: 28,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          data: { heritageTypeName: 'typeof MyClassExpression' },
-          line: 29,
+          line: 10,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
@@ -3445,6 +2518,132 @@ arrayFn<() => void>(
         {
           line: 8,
           messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+type O = {
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  [Symbol.iterator]: () => void;
+  [staticSymbol]: () => void;
+};
+
+const obj: O = {
+  async 1() {
+    return 0;
+  },
+  async [2]() {
+    return 0;
+  },
+  async 'stringLiteral'() {
+    return 0;
+  },
+  async ['computedStringLiteral']() {
+    return 0;
+  },
+  async [Symbol.iterator]() {
+    return 0;
+  },
+  async [staticSymbol]() {
+    return 0;
+  }
+};
+      `,
+      errors: [
+        {
+          line: 14,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 17,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 20,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 23,
+          messageId: 'voidReturnProperty',
+        },
+        {
+          line: 26,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+const staticSymbol = Symbol.for('static symbol');
+
+class MyClass {
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.asyncIterator](): void {
+    return;
+  }
+  [staticSymbol](): void {
+    return;
+  }
+}
+
+class MySubclassExtendsMyClass extends MyClass {
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.asyncIterator](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [staticSymbol](): Promise<void> {
+    await Promise.resolve();
+  }
+}
+      `,
+      errors: [
+        {
+          line: 26,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 29,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 32,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 35,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 38,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
