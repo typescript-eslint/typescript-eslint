@@ -2795,43 +2795,153 @@ class MyClass {
   setThing(): void {
     return;
   }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
+    return;
+  }
 }
 
 class MyOtherClass {
   setThing(): void {
     return;
   }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
+    return;
+  }
 }
 
 interface MyInterface extends MyClass, MyOtherClass {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  [2](): Promise<void>;
+  'stringLiteral'(): Promise<void>;
+  ['computedStringLiteral'](): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 15,
+          line: 45,
           messageId: 'voidReturnInheritedMethod',
         },
         {
           data: { heritageTypeName: 'MyOtherClass' },
-          line: 15,
+          line: 45,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 46,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherClass' },
+          line: 46,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 47,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherClass' },
+          line: 47,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 48,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherClass' },
+          line: 48,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 49,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherClass' },
+          line: 49,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 50,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyOtherClass' },
+          line: 50,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
     {
-      code: `
+      code: noFormat`
 interface MyAsyncInterface {
   setThing(): Promise<void>;
+  1(): Promise<void>;
+  2(): Promise<void>;
+  stringLiteral(): Promise<void>;
+  computedStringLiteral(): Promise<void>;
+  [Symbol.iterator](): Promise<void>;
 }
 
 interface MySyncInterface {
   setThing(): void;
+  1(): void;
+  2(): void;
+  stringLiteral(): void;
+  computedStringLiteral(): void;
+  [Symbol.iterator](): void;
 }
 
 class MyClass {
   setThing(): void {
+    return;
+  }
+  1(): void {
+    return;
+  }
+  2(): void {
+    return;
+  }
+  stringLiteral(): void {
+    return;
+  }
+  computedStringLiteral(): void {
+    return;
+  }
+  [Symbol.iterator](): void {
     return;
   }
 }
@@ -2840,17 +2950,82 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
   async setThing(): Promise<void> {
     await Promise.resolve();
   }
+  async 1(): Promise<void> {
+    await Promise.resolve();
+  }
+  async [2](): Promise<void> {
+    await Promise.resolve();
+  }
+  async 'stringLiteral'(): Promise<void> {
+    await Promise.resolve();
+  }
+  async ['computedStringLiteral'](): Promise<void> {
+    await Promise.resolve();
+  }
+  async [Symbol.iterator](): Promise<void> {
+    await Promise.resolve();
+  }
 }
       `,
       errors: [
         {
           data: { heritageTypeName: 'MyClass' },
-          line: 17,
+          line: 42,
           messageId: 'voidReturnInheritedMethod',
         },
         {
           data: { heritageTypeName: 'MySyncInterface' },
-          line: 17,
+          line: 42,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 45,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 45,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 48,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 48,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 51,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 51,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 54,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 54,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MyClass' },
+          line: 57,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          data: { heritageTypeName: 'MySyncInterface' },
+          line: 57,
           messageId: 'voidReturnInheritedMethod',
         },
       ],
