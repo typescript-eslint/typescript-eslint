@@ -2429,5 +2429,60 @@ arrayFn<() => void>(
         },
       ],
     },
+
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+interface Interface {
+  identifier: () => void;
+  1: () => void;
+  2: () => void;
+  stringLiteral: () => void;
+  computedStringLiteral: () => void;
+  // well known symbol
+  [Symbol.iterator]: () => void;
+
+  // less sure if this one is possible to lint for
+  [staticSymbol]: () => void;
+}
+
+class Clazz implements Interface {
+  async identifier() {}
+  async 1() {}
+  async [2]() {}
+  async stringLiteral() {}
+  async ['computedStringLiteral']() {}
+  async [Symbol.iterator]() {}
+  async [staticSymbol]() {}
+}
+      `,
+      errors: [
+        {
+          line: 18,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 19,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 20,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 21,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 22,
+          messageId: 'voidReturnInheritedMethod',
+        },
+        {
+          line: 23,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
   ],
 });

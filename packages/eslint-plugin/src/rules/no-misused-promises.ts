@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
+  getStaticMemberAccessValue,
   isArrayMethodCallWithPredicate,
   isFunction,
   isRestParameterDeclaration,
@@ -568,11 +569,26 @@ export default createRule<Options, MessageId>({
           continue;
         }
 
+        if (
+          node.type !== AST_NODE_TYPES.MethodDefinition &&
+          node.type !== AST_NODE_TYPES.TSAbstractMethodDefinition &&
+          node.type !== AST_NODE_TYPES.TSMethodSignature &&
+          node.type !== AST_NODE_TYPES.TSPropertySignature
+        ) {
+          continue;
+        }
+
+        const staticAccessValue = getStaticMemberAccessValue(node, context);
+
+        if (!staticAccessValue) {
+          continue;
+        }
+
         for (const heritageType of heritageTypes) {
           checkHeritageTypeForMemberReturningVoid(
             nodeMember,
             heritageType,
-            memberName,
+            staticAccessValue,
           );
         }
       }
@@ -588,9 +604,13 @@ export default createRule<Options, MessageId>({
     function checkHeritageTypeForMemberReturningVoid(
       nodeMember: ts.Node,
       heritageType: ts.Type,
-      memberName: string,
+      staticAccessValue: string | symbol,
     ): void {
-      const heritageMember = getMemberIfExists(heritageType, memberName);
+      const heritageMember = getMemberIfExists(
+        heritageType,
+        staticAccessValue,
+        checker,
+      );
       if (heritageMember === undefined) {
         return;
       }
@@ -944,18 +964,44 @@ function getHeritageTypes(
     .map(typeExpression => checker.getTypeAtLocation(typeExpression));
 }
 
+function getWellKnownStringOfSymbol(symbol: symbol): string | null {
+  switch (symbol) {
+    case Symbol.iterator:
+      return 'iterator';
+    case Symbol.asyncIterator:
+      return 'asyncIterator';
+  }
+
+  return null;
+}
+
 /**
- * @returns The member with the given name in `type`, if it exists.
+ * @returns The member with the given name or known-symbol in `type`, if it exists.
  */
 function getMemberIfExists(
   type: ts.Type,
-  memberName: string,
+  staticAccessValue: string | symbol,
+  checker: ts.TypeChecker,
 ): ts.Symbol | undefined {
-  const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
-  const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
-  return (
-    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
-  );
+  if (typeof staticAccessValue === 'string') {
+    const escapedMemberName = ts.escapeLeadingUnderscores(staticAccessValue);
+    const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
+    return (
+      symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
+    );
+  }
+
+  const wellKnownSymbolName = getWellKnownStringOfSymbol(staticAccessValue);
+
+  if (wellKnownSymbolName) {
+    return tsutils.getWellKnownSymbolPropertyOfType(
+      type,
+      wellKnownSymbolName,
+      checker,
+    );
+  }
+
+  return undefined;
 }
 
 function isStaticMember(node: TSESTree.Node): boolean {

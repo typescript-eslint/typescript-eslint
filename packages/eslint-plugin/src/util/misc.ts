@@ -239,7 +239,9 @@ type NodeWithKey =
   | TSESTree.Property
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractMethodDefinition
-  | TSESTree.TSAbstractPropertyDefinition;
+  | TSESTree.TSAbstractPropertyDefinition
+  | TSESTree.TSMethodSignature
+  | TSESTree.TSPropertySignature;
 
 /**
  * Gets a member being accessed or declared if its value can be determined statically, and
