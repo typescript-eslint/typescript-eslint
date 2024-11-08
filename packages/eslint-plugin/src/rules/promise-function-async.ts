@@ -116,10 +116,10 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      const signature = checker.getSignatureFromDeclaration(tsNode);
-      if (!signature) {
-        return;
-      }
+      const signature = nullThrows(
+        checker.getSignatureFromDeclaration(tsNode),
+        'Signature should always be defined for function-like nodes',
+      );
       const returnType = checker.getReturnTypeOfSignature(signature);
 
       if (
