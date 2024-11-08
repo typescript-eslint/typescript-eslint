@@ -418,23 +418,30 @@ function getReportDescriptor(
       newCode += ';';
     }
 
-    function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
-      return comments
-        .map(({ type, value }) =>
-          type === AST_TOKEN_TYPES.Line ? `//${value}` : `/*${value}*/`,
-        )
-        .join('');
-    }
-    const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
-    if (commentsBefore.length > 0) {
-      newCode = getTextFromCommentsArray(commentsBefore) + newCode;
-    }
     const nodeBeforeTheComment = chainEndedWithSemicolon
       ? lastOperand.node.parent
       : lastOperand.node;
+    const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
     const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
-    if (commentsAfter.length > 0) {
-      newCode += getTextFromCommentsArray(commentsAfter);
+    if (commentsBefore.length || commentsAfter.length) {
+      const indentationCount = node.loc.start.column;
+      const indentation = ' '.repeat(indentationCount);
+      const newLineIndentation = `\n${indentation}`;
+      function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
+        return comments
+          .map(({ type, value }) =>
+            type === AST_TOKEN_TYPES.Line ? `//${value}` : `/*${value}*/`,
+          )
+          .join(newLineIndentation);
+      }
+      if (commentsBefore.length > 0) {
+        const commentsText = getTextFromCommentsArray(commentsBefore);
+        newCode = `${commentsText}\n${indentation}${newCode}`;
+      }
+      if (commentsAfter.length > 0) {
+        const commentsText = getTextFromCommentsArray(commentsAfter);
+        newCode = `${newCode}\n${indentation}${commentsText}`;
+      }
     }
   }
 

@@ -733,28 +733,72 @@ describe('if block with a single statment matches part of the condition', () => 
         output: 'foo?.bar.baz?.();',
       },
       {
-        code: noFormat`if (foo) { /* comment */ foo.bar(); }`,
+        code: `
+          if (foo) {
+            // before expression
+            /** multi
+            line */
+            // single-line
+            foo.bar(); /* after semicolon */
+            // after expression
+          }
+        `,
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [{ allowIfStatements: true }],
-        output: '/* comment */foo?.bar();',
+        output: `
+          // before expression
+          /** multi
+            line */
+          // single-line
+          foo?.bar();
+          /* after semicolon */
+          // after expression
+        `,
       },
       {
-        code: noFormat`if (foo) { /* comment *//* comment */ foo.bar(); }`,
+        code: `
+          if (foo) {
+            // comment1
+            // comment2
+            foo.bar();
+          }
+        `,
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [{ allowIfStatements: true }],
-        output: '/* comment *//* comment */foo?.bar();',
+        output: `
+          // comment1
+          // comment2
+          foo?.bar();
+        `,
       },
       {
-        code: noFormat`if (foo) { foo.bar(); /* comment */ }`,
+        code: `
+          if (foo) {
+            foo.bar(); // comment
+          }
+        `,
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [{ allowIfStatements: true }],
-        output: 'foo?.bar();/* comment */',
+        output: `
+          foo?.bar();
+          // comment
+        `,
       },
       {
-        code: noFormat`if (foo) { foo.bar(); /* comment *//* comment */ }`,
+        code: `
+          if (foo) {
+            foo.bar();
+            // comment 1
+            // comment 2
+          }
+        `,
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [{ allowIfStatements: true }],
-        output: 'foo?.bar();/* comment *//* comment */',
+        output: `
+          foo?.bar();
+          // comment 1
+          // comment 2
+        `,
       },
       {
         code: `
