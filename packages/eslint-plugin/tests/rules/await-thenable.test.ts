@@ -278,6 +278,41 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
 }
       `,
     },
+    {
+      code: `
+async function wrapper<T>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends unknown>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends any>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends number | Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -636,6 +671,32 @@ async function foo() {
           endLine: 6,
           line: 6,
           messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+async function wrapper<T extends number>(value: T) {
+  return await value;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function wrapper<T extends number>(value: T) {
+  return  value;
+}
+      `,
+            },
+          ],
         },
       ],
     },
