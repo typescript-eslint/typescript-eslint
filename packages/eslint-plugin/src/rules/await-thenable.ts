@@ -3,12 +3,14 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
+  Awaitable,
   createRule,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
   isTypeAnyType,
   isTypeUnknownType,
+  needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -57,7 +59,7 @@ export default createRule<[], MessageId>({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        if (!tsutils.isThenableType(checker, originalNode.expression, type)) {
+        if (needsToBeAwaited(checker, originalNode, type) === Awaitable.Never) {
           context.report({
             node,
             messageId: 'await',
