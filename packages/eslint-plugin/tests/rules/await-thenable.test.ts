@@ -313,6 +313,22 @@ async function wrapper<T extends number | Promise<unknown>>(value: T) {
 }
       `,
     },
+    {
+      code: `
+async function wrapper<T extends number | unknown>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -693,6 +709,36 @@ async function wrapper<T extends number>(value: T) {
               output: `
 async function wrapper<T extends number>(value: T) {
   return  value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return  value;
+  }
 }
       `,
             },
