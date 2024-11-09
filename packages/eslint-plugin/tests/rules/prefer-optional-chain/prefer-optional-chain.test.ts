@@ -743,9 +743,13 @@ describe('if block with a single statment matches part of the condition', () => 
             // after expression
           }
         `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           // before expression
           /** multi
             line */
@@ -754,6 +758,11 @@ describe('if block with a single statment matches part of the condition', () => 
           /* after semicolon */
           // after expression
         `,
+              },
+            ],
+          },
+        ],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -763,13 +772,22 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
           }
         `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           // comment1
           // comment2
           foo?.bar();
         `,
+              },
+            ],
+          },
+        ],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -777,12 +795,21 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar(); // comment
           }
         `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           foo?.bar();
           // comment
         `,
+              },
+            ],
+          },
+        ],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -792,13 +819,22 @@ describe('if block with a single statment matches part of the condition', () => 
             // comment 2
           }
         `,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: `
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: [
+              {
+                messageId: 'optionalChainSuggest',
+                output: `
           foo?.bar();
           // comment 1
           // comment 2
         `,
+              },
+            ],
+          },
+        ],
+        options: [{ allowIfStatements: true }],
       },
       {
         code: `

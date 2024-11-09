@@ -424,6 +424,7 @@ function getReportDescriptor(
     const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
     const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
     if (commentsBefore.length || commentsAfter.length) {
+      useSuggestionFixer = true;
       const indentationCount = node.loc.start.column;
       const indentation = ' '.repeat(indentationCount);
       const newLineIndentation = `\n${indentation}`;
