@@ -176,15 +176,12 @@ function doesImmediatelyReturnFunctionExpression({
 /**
  * Checks if a function belongs to:
  * ```
- * () => ({ action: 'xxx' } as const)
+ * ({ action: 'xxx' } as const)
  * ```
  */
-function returnsConstAssertionDirectly(
-  node: TSESTree.ArrowFunctionExpression,
-): boolean {
-  const { body } = node;
-  if (isTypeAssertion(body)) {
-    const { typeAnnotation } = body;
+function isConstAssertion(node: TSESTree.Node): boolean {
+  if (isTypeAssertion(node)) {
+    const { typeAnnotation } = node;
     if (typeAnnotation.type === AST_NODE_TYPES.TSTypeReference) {
       const { typeName } = typeAnnotation;
       if (
@@ -256,11 +253,20 @@ function isValidFunctionExpressionReturnType(
   }
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/653
-  return (
-    options.allowDirectConstAssertionInArrowFunctions === true &&
-    node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-    returnsConstAssertionDirectly(node)
-  );
+  if (
+    !options.allowDirectConstAssertionInArrowFunctions ||
+    node.type !== AST_NODE_TYPES.ArrowFunctionExpression
+  ) {
+    return false;
+  }
+
+  const { body } = node;
+
+  if (body.type === AST_NODE_TYPES.TSSatisfiesExpression) {
+    return isConstAssertion(body.expression);
+  }
+
+  return isConstAssertion(body);
 }
 
 /**
