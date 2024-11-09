@@ -9,16 +9,15 @@ import type {
 
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
-import { TSDeclareFunction, TSFunctionType } from '@babel/types';
 
 type FunctionLike =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression;
+  | TSESTree.FunctionExpression
+  | TSESTree.TSDeclareFunction
+  | TSESTree.TSFunctionType;
 
-type FunctionRuleListener<
-  T extends FunctionLike | TSDeclareFunction | TSFunctionType,
-> = (node: T) => void;
+type FunctionRuleListener<T extends FunctionLike> = (node: T) => void;
 
 const baseRule = getESLintCoreRule('max-params');
 
