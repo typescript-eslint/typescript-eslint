@@ -1,17 +1,16 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  Awaitable,
   createRule,
   getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
-  isTypeAnyType,
-  isTypeUnknownType,
+  needsToBeAwaited,
   nullThrows,
 } from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
@@ -304,16 +303,16 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tsutils.isThenableType(checker, expression, type);
+      const awaited = needsToBeAwaited(checker, expression, type);
 
       // handle awaited _non_thenables
 
-      if (!isThenable) {
+      if (awaited !== Awaitable.Always) {
         if (isAwait) {
-          // any/unknown could be thenable; do not enforce whether they are `await`ed.
-          if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+          if (awaited === Awaitable.May) {
             return;
           }
+
           context.report({
             node,
             messageId: 'nonPromiseAwait',
