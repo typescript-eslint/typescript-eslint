@@ -58,8 +58,9 @@ export default createRule<[], MessageId>({
         }
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+        const certainty = needsToBeAwaited(checker, originalNode, type);
 
-        if (needsToBeAwaited(checker, originalNode, type) === Awaitable.Never) {
+        if (certainty === Awaitable.Never) {
           context.report({
             node,
             messageId: 'await',

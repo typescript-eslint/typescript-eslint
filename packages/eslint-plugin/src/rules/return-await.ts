@@ -303,13 +303,13 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const awaited = needsToBeAwaited(checker, expression, type);
+      const certainty = needsToBeAwaited(checker, expression, type);
 
       // handle awaited _non_thenables
 
-      if (awaited !== Awaitable.Always) {
+      if (certainty !== Awaitable.Always) {
         if (isAwait) {
-          if (awaited === Awaitable.May) {
+          if (certainty === Awaitable.May) {
             return;
           }
 
