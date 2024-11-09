@@ -315,13 +315,6 @@ async function wrapper<T extends number | Promise<unknown>>(value: T) {
     },
     {
       code: `
-async function wrapper<T extends number | unknown>(value: T) {
-  return await value;
-}
-      `,
-    },
-    {
-      code: `
 class C<T> {
   async wrapper<T>(value: T) {
     return await value;
