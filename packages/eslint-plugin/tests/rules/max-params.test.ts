@@ -98,5 +98,19 @@ class Foo {
       `,
       errors: [{ messageId: 'exceed' }],
     },
+    {
+      code: `
+function makeDate(m: number, d: number, y: number): Date;
+      `,
+      options: [{ max: 1 }],
+      errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: `
+type sum = (a: number, b:number) => number
+      `,
+      options: [{ max: 1 }],
+      errors: [{ messageId: 'exceed' }],
+    },
   ],
 });
