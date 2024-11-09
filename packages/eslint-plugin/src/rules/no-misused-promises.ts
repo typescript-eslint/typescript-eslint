@@ -575,7 +575,8 @@ export default createRule<Options, MessageId>({
           node.type !== AST_NODE_TYPES.MethodDefinition &&
           node.type !== AST_NODE_TYPES.TSAbstractMethodDefinition &&
           node.type !== AST_NODE_TYPES.TSMethodSignature &&
-          node.type !== AST_NODE_TYPES.TSPropertySignature
+          node.type !== AST_NODE_TYPES.TSPropertySignature &&
+          node.type !== AST_NODE_TYPES.PropertyDefinition
         ) {
           continue;
         }

@@ -1114,6 +1114,19 @@ const obj: O = {
       `,
     },
     {
+      code: `
+let a;
+
+type O = {
+  [a]: () => Promise<void>;
+};
+
+const obj: O = {
+  async [a]() {},
+};
+      `,
+    },
+    {
       code: noFormat`
 const staticSymbol = Symbol.for('static symbol');
 
@@ -1206,6 +1219,19 @@ class MySubinterfaceExtendsMyInterface extends MyInterface {
   async [Symbol.asyncIterator](): Promise<void>;
   async [staticSymbol](): Promise<void>;
   async ownProperty(): Promise<void>;
+}
+      `,
+    },
+    {
+      code: `
+let a;
+
+interface MyInterface {
+  [a](): void;
+}
+
+class MySubinterfaceExtendsMyInterface implements MyInterface {
+  [a]: () => Promise<void>;
 }
       `,
     },
