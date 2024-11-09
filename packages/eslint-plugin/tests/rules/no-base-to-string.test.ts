@@ -458,6 +458,23 @@ String(...objects);
     {
       code: `
         class Foo {}
+        const tuple: [string, Foo] = ['string', new Foo()];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        class Foo {}
         const tuple: [Foo, Foo] = [new Foo(), new Foo()];
         tuple.join('');
       `,
@@ -470,6 +487,28 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
+      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        const array = ['string', {}];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          tsconfigRootDir: rootDir,
+        },
+      },
       options: [{ checkArrayJoin: true }],
     },
   ],

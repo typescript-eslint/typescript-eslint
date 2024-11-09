@@ -240,18 +240,8 @@ export default createRule<Options, MessageIds>({
                 return;
               }
 
-              for (const part of typeParts) {
-                const typeArg = checker.getTypeArguments(
-                  part as ts.TypeReference,
-                )[0];
-
-                const certainty = getToStringCertainty(node, typeArg);
-
-                if (certainty !== Usefulness.Always) {
-                  checkExpression(memberExpr.object, typeArg, 'baseArrayJoin');
-                  return;
-                }
-              }
+              const typeArg = type.getNumberIndexType();
+              checkExpression(memberExpr.object, typeArg, 'baseArrayJoin');
             },
           }
         : undefined),
