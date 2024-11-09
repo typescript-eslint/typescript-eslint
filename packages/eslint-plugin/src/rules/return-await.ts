@@ -312,7 +312,6 @@ export default createRule({
           if (certainty === Awaitable.May) {
             return;
           }
-
           context.report({
             node,
             messageId: 'nonPromiseAwait',
