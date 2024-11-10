@@ -5,8 +5,8 @@ import React from 'react';
 import styles from './PackageLink.module.css';
 
 export interface PackageLinkProps {
-  scope?: string;
   packageName: string;
+  scope?: string;
 }
 
 export function PackageLink({

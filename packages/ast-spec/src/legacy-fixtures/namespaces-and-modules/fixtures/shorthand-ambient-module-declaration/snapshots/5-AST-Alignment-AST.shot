@@ -23,7 +23,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-m
             end: { column: 31, line: 3 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [73, 105],
         loc: {

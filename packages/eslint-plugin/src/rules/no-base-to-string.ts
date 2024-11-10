@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -59,7 +60,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
+    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
       }
@@ -153,6 +154,19 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
+    function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
+      if (
+        node.callee.type === AST_NODE_TYPES.Identifier &&
+        node.callee.name === 'String' &&
+        node.arguments[0]
+      ) {
+        const scope = context.sourceCode.getScope(node);
+        const variable = scope.set.get('String');
+        return !variable?.defs.length;
+      }
+      return false;
+    }
+
     return {
       'AssignmentExpression[operator = "+="], BinaryExpression[operator = "+"]'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
@@ -167,6 +181,11 @@ export default createRule<Options, MessageIds>({
           node.left.type !== AST_NODE_TYPES.PrivateIdentifier
         ) {
           checkExpression(node.left, leftType);
+        }
+      },
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (isBuiltInStringCall(node)) {
+          checkExpression(node.arguments[0]);
         }
       },
       'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(

@@ -13,8 +13,8 @@ describe('applyDefault', () => {
   it('returns applies a deepMerge to each element in the array', () => {
     const defaults: Record<string, string>[] = [
       {
-        prop: 'setting1',
         other: 'other',
+        prop: 'setting1',
       },
       {
         prop: 'setting2',
@@ -22,16 +22,16 @@ describe('applyDefault', () => {
     ];
     const user: Record<string, string>[] = [
       {
-        prop: 'new',
         other: 'something',
+        prop: 'new',
       },
     ];
     const result = ESLintUtils.applyDefault(defaults, user);
 
     expect(result).toEqual([
       {
-        prop: 'new',
         other: 'something',
+        prop: 'new',
       },
       {
         prop: 'setting2',
@@ -64,8 +64,8 @@ describe('applyDefault', () => {
     const defaults: unknown[] = [null];
     const user: unknown[] = [
       {
-        prop: 'setting1',
         other: 'other',
+        prop: 'setting1',
       },
     ];
     const result = ESLintUtils.applyDefault(defaults, user);

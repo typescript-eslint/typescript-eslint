@@ -1,8 +1,7 @@
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
-
 import fetch from 'cross-fetch';
 import makeDir from 'make-dir';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 
@@ -27,13 +26,13 @@ async function getFileAndStoreLocally(
 ): Promise<void> {
   console.log('Fetching', url);
   const response = await fetch(BASE_HOST + url, {
-    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
+    method: 'GET',
   });
 
   const config = await prettier.resolveConfig(path);
 
-  let contents = (await response.text()) as string;
+  let contents = await response.text();
   contents = [...banner, '', editFunc(contents)].join('\n');
   contents = await prettier.format(contents, {
     parser: 'typescript',
