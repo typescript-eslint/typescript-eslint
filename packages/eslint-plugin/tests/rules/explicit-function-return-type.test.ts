@@ -1779,8 +1779,8 @@ const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
         {
           column: 30,
           endColumn: 32,
-          endLine: 2,
-          line: 2,
+          endLine: 7,
+          line: 7,
           messageId: 'missingReturnType',
         },
       ],

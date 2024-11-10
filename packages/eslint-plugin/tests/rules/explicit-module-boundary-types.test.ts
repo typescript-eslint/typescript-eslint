@@ -372,7 +372,8 @@ interface R {
   value: number;
 }
 
-const func1 = (value: number) => ({ type: 'X', value }) as const satisfies R;
+export const func1 = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R;
       `,
       options: [
         {
@@ -382,7 +383,7 @@ const func1 = (value: number) => ({ type: 'X', value }) as const satisfies R;
     },
     {
       code: `
-const func4 = (value: number) => x as const satisfies number;
+export const func4 = (value: number) => x as const satisfies number;
       `,
       options: [
         {
@@ -392,7 +393,7 @@ const func4 = (value: number) => x as const satisfies number;
     },
     {
       code: `
-const func4 = (value: number) => x as const satisfies string;
+export const func4 = (value: number) => x as const satisfies string;
       `,
       options: [
         {
@@ -1244,14 +1245,15 @@ interface R {
   value: number;
 }
 
-const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
+export const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R;
       `,
       errors: [
         {
           column: 37,
           endColumn: 39,
-          endLine: 2,
-          line: 2,
+          endLine: 7,
+          line: 7,
           messageId: 'missingReturnType',
         },
       ],
