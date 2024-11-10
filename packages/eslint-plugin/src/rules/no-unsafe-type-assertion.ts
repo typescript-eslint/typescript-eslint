@@ -58,7 +58,6 @@ export default createRule({
         node.typeAnnotation,
       );
 
-      // consider unchanged type as safe
       if (expressionType === assertedType) {
         return;
       }
@@ -76,47 +75,46 @@ export default createRule({
         return;
       }
 
-      // handle cases when casting of an any expression.
-      const expressionAny = isUnsafeAssignment(
+      const unsafeExpressionAny = isUnsafeAssignment(
         expressionType,
         assertedType,
         checker,
         node.expression,
       );
 
-      if (expressionAny) {
+      if (unsafeExpressionAny) {
         context.report({
           node,
           messageId: 'unsafeOfAnyTypeAssertion',
           data: {
-            type: getAnyTypeName(expressionAny.sender),
+            type: getAnyTypeName(unsafeExpressionAny.sender),
           },
         });
 
         return;
       }
 
-      // handle cases when casting to an any type.
-      const assertedAny = isUnsafeAssignment(
+      const unsafeAssertedAny = isUnsafeAssignment(
         assertedType,
         expressionType,
         checker,
         node.typeAnnotation,
       );
 
-      if (assertedAny) {
+      if (unsafeAssertedAny) {
         context.report({
           node,
           messageId: 'unsafeToAnyTypeAssertion',
           data: {
-            type: getAnyTypeName(assertedAny.sender),
+            type: getAnyTypeName(unsafeAssertedAny.sender),
           },
         });
 
         return;
       }
 
-      // fallback to checking assignability
+      // Use the widened type in case of an object literal so `isTypeAssignableTo()`
+      // won't fail on excess property check.
       const nodeWidenedType = isObjectLiteralType(expressionType)
         ? checker.getWidenedType(expressionType)
         : expressionType;
