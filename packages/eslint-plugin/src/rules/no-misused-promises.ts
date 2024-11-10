@@ -4,6 +4,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { NodeWithKey } from '../util';
+
 import {
   createRule,
   getParserServices,
@@ -571,17 +573,10 @@ export default createRule<Options, MessageId>({
           continue;
         }
 
-        if (
-          node.type !== AST_NODE_TYPES.MethodDefinition &&
-          node.type !== AST_NODE_TYPES.TSAbstractMethodDefinition &&
-          node.type !== AST_NODE_TYPES.TSMethodSignature &&
-          node.type !== AST_NODE_TYPES.TSPropertySignature &&
-          node.type !== AST_NODE_TYPES.PropertyDefinition
-        ) {
-          continue;
-        }
-
-        const staticAccessValue = getStaticMemberAccessValue(node, context);
+        const staticAccessValue = getStaticMemberAccessValue(
+          node as NodeWithKey,
+          context,
+        );
 
         if (!staticAccessValue) {
           continue;

@@ -233,7 +233,7 @@ function isParenlessArrowFunction(
   );
 }
 
-type NodeWithKey =
+export type NodeWithKey =
   | TSESTree.MemberExpression
   | TSESTree.MethodDefinition
   | TSESTree.Property
