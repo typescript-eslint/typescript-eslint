@@ -1,6 +1,5 @@
-import path from 'node:path';
-
 import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
+import path from 'node:path';
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
