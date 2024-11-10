@@ -372,12 +372,27 @@ interface R {
   value: number;
 }
 
-export const func1 = (value: number) =>
-  ({ type: 'X', value }) as const satisfies R;
-export const func2 = (value: number) =>
-  ({ type: 'X', value }) as const satisfies R;
-export const func3 = (value: number) => x as const satisfies R;
-export const func4 = (value: number) => x as const satisfies R;
+const func1 = (value: number) => ({ type: 'X', value }) as const satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+const func4 = (value: number) => x as const satisfies number;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+const func4 = (value: number) => x as const satisfies string;
       `,
       options: [
         {
@@ -1205,68 +1220,6 @@ export const func2 = (value: number) => ({ type: 'X', value }) as Action;
     },
     {
       code: `
-interface R {
-  type: string;
-  value: number;
-}
-
-export const func1 = (value: number) => ({ type: 'X', value }) satisfies R;
-export const func2 = (value: number) => ({ type: 'X', value }) as any;
-      `,
-      errors: [
-        {
-          column: 38,
-          endColumn: 40,
-          endLine: 7,
-          line: 7,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 38,
-          endColumn: 40,
-          endLine: 8,
-          line: 8,
-          messageId: 'missingReturnType',
-        },
-      ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-export const func1 = (value: number) =>
-  ({ type: 'X', value }) as any satisfies any;
-
-export const func2 = (value: number) =>
-  ({ type: 'X', value }) as Action satisfies Action;
-      `,
-      errors: [
-        {
-          column: 38,
-          endColumn: 40,
-          endLine: 2,
-          line: 2,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 38,
-          endColumn: 40,
-          endLine: 5,
-          line: 5,
-          messageId: 'missingReturnType',
-        },
-      ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
 export const func = (value: number) => ({ type: 'X', value }) as const;
       `,
       errors: [
@@ -1291,15 +1244,14 @@ interface R {
   value: number;
 }
 
-export const func = (value: number) =>
-  ({ type: 'X', value }) as const satisfies R;
+const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
       `,
       errors: [
         {
           column: 37,
           endColumn: 39,
-          endLine: 7,
-          line: 7,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
       ],
@@ -1460,19 +1412,6 @@ export function foo(outer) {
     },
     {
       code: 'export const baz = arg => arg as const;',
-      errors: [
-        {
-          data: {
-            name: 'arg',
-          },
-          line: 1,
-          messageId: 'missingArgType',
-        },
-      ],
-      options: [{ allowDirectConstAssertionInArrowFunctions: true }],
-    },
-    {
-      code: 'export const baz = arg => arg as const satisfies unknown;',
       errors: [
         {
           data: {

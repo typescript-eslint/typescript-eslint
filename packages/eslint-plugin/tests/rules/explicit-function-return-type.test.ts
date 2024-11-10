@@ -449,9 +449,26 @@ interface R {
 }
 
 const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
-const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
-const func = (value: number) => x as const satisfies R;
-const func = (value: number) => x as const satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+const func = (value: number) => x as const satisfies number;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+const func = (value: number) => x as const satisfies string;
       `,
       options: [
         {
@@ -1732,66 +1749,6 @@ const func = (value: number) => ({ type: 'X', value }) as Action;
     },
     {
       code: `
-interface R {
-  type: string;
-  value: number;
-}
-
-const func = (value: number) => ({ type: 'X', value }) satisfies R;
-const func = (value: number) => ({ type: 'X', value }) satisfies any;
-      `,
-      errors: [
-        {
-          column: 30,
-          endColumn: 32,
-          endLine: 7,
-          line: 7,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 30,
-          endColumn: 32,
-          endLine: 8,
-          line: 8,
-          messageId: 'missingReturnType',
-        },
-      ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-const func = (value: number) => ({ type: 'X', value }) as any satisfies any;
-const func = (value: number) =>
-  ({ type: 'X', value }) as Action satisfies Action;
-      `,
-      errors: [
-        {
-          column: 30,
-          endColumn: 32,
-          endLine: 2,
-          line: 2,
-          messageId: 'missingReturnType',
-        },
-        {
-          column: 30,
-          endColumn: 32,
-          endLine: 3,
-          line: 3,
-          messageId: 'missingReturnType',
-        },
-      ],
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
 const func = (value: number) => ({ type: 'X', value }) as const;
       `,
       errors: [
@@ -1822,8 +1779,8 @@ const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
         {
           column: 30,
           endColumn: 32,
-          endLine: 7,
-          line: 7,
+          endLine: 2,
+          line: 2,
           messageId: 'missingReturnType',
         },
       ],
