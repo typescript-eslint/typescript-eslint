@@ -262,11 +262,9 @@ function isValidFunctionExpressionReturnType(
 
   const { body } = node;
 
-  if (body.type === AST_NODE_TYPES.TSSatisfiesExpression) {
-    return isConstAssertion(body.expression);
-  }
-
-  return isConstAssertion(body);
+  return isConstAssertion(
+    body.type === AST_NODE_TYPES.TSSatisfiesExpression ? body.expression : body,
+  );
 }
 
 /**
