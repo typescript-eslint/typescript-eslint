@@ -11,7 +11,6 @@ import {
   isTypeUnknownType,
   isUnsafeAssignment,
 } from '../util';
-import { isTypeUnchanged } from '../util/isTypeUnchanged';
 
 export default createRule({
   name: 'no-unsafe-type-assertion',
@@ -35,7 +34,6 @@ export default createRule({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const compilerOptions = services.program.getCompilerOptions();
 
     function getAnyTypeName(type: ts.Type): string {
       return tsutils.isIntrinsicErrorType(type) ? 'error typed' : '`any`';
@@ -61,13 +59,7 @@ export default createRule({
       );
 
       // consider unchanged type as safe
-      const typeIsUnchanged = isTypeUnchanged(
-        compilerOptions,
-        expressionType,
-        assertedType,
-      );
-
-      if (typeIsUnchanged) {
+      if (expressionType === assertedType) {
         return;
       }
 
