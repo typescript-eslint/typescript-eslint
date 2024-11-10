@@ -57,6 +57,18 @@ class Foo {
       `,
       options: [{ countVoidThis: true, max: 2 }],
     },
+    {
+      code: `
+declare function makeDate(m: number, d: number, y: number): Date;
+      `,
+      options: [{ max: 3 }],
+    },
+    {
+      code: `
+type sum = (a: number, b: number) => number;
+      `,
+      options: [{ max: 2 }],
+    },
   ],
   invalid: [
     { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
@@ -100,17 +112,17 @@ class Foo {
     },
     {
       code: `
-function makeDate(m: number, d: number, y: number): Date;
+declare function makeDate(m: number, d: number, y: number): Date;
       `,
-      options: [{ max: 1 }],
       errors: [{ messageId: 'exceed' }],
+      options: [{ max: 1 }],
     },
     {
       code: `
-type sum = (a: number, b:number) => number
+type sum = (a: number, b: number) => number;
       `,
-      options: [{ max: 1 }],
       errors: [{ messageId: 'exceed' }],
+      options: [{ max: 1 }],
     },
   ],
 });
