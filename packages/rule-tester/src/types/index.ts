@@ -18,7 +18,7 @@ export interface RunTests<
 > {
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: readonly (ValidTestCase<Options> | string)[];
+  readonly valid: readonly (string | ValidTestCase<Options>)[];
 }
 
 export interface NormalizedRunTests<

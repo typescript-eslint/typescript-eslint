@@ -1,9 +1,10 @@
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 import type * as unist from 'unist';
 
+import type { RuleDocsPage } from './RuleDocsPage';
+
 import { nodeIsCode } from '../utils/nodes';
 import { convertToPlaygroundHash } from '../utils/rules';
-import type { RuleDocsPage } from './RuleDocsPage';
 
 const optionRegex = /option='(?<option>.*?)'/;
 
@@ -39,6 +40,8 @@ export function addESLintHashToCodeBlocksMeta(
     if (
       nodeIsCode(node) &&
       (insideTab || node.meta?.includes('showPlaygroundButton')) &&
+      !node.meta?.includes('title="eslint.config.mjs"') &&
+      !node.meta?.includes('title=".eslintrc.cjs"') &&
       !node.meta?.includes('eslintrcHash=')
     ) {
       let playgroundEslintrc = eslintrc;

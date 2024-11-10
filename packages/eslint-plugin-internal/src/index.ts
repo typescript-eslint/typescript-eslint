@@ -9,9 +9,9 @@ const { name, version } = require('../package.json') as {
 };
 
 export = {
-  rules,
   meta: {
     name,
     version,
   },
+  rules,
 } satisfies Linter.Plugin;

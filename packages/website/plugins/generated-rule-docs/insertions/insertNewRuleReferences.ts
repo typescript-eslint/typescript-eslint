@@ -1,15 +1,16 @@
-import { EOL } from 'node:os';
-import * as path from 'node:path';
-
 import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
-import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import type * as mdast from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx';
+
+import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
+import { EOL } from 'node:os';
+import * as path from 'node:path';
 import prettier from 'prettier';
+
+import type { RuleDocsPage } from '../RuleDocsPage';
 
 import { nodeIsHeading } from '../../utils/nodes';
 import { convertToPlaygroundHash } from '../../utils/rules';
-import type { RuleDocsPage } from '../RuleDocsPage';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -54,23 +55,70 @@ export async function insertNewRuleReferences(
     child => nodeIsHeading(child) && child.depth === 2,
   );
 
-  const eslintrc = `{
-  "rules": {
+  const rules = `{
     "@typescript-eslint/${page.file.stem}": "error"
-  }
+  }`;
+
+  const eslintrc = `{
+  "rules": ${rules}
+}`;
+
+  const eslintConfig = `{
+  rules: ${rules}
 }`;
 
   page.spliceChildren(
     firstH2Index,
     0,
-    `\`\`\`js title=".eslintrc.cjs"
-module.exports = ${eslintrc};
-\`\`\``,
+    {
+      children: [
+        {
+          attributes: [
+            {
+              name: 'value',
+              type: 'mdxJsxAttribute',
+              value: 'Flat Config',
+            },
+          ],
+          children: [
+            {
+              lang: 'js',
+              meta: 'title="eslint.config.mjs"',
+              type: 'code',
+              value: `export default tseslint.config(${eslintConfig});`,
+            },
+          ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
+        },
+        {
+          attributes: [
+            {
+              name: 'value',
+              type: 'mdxJsxAttribute',
+              value: 'Legacy Config',
+            },
+          ],
+          children: [
+            {
+              lang: 'js',
+              meta: 'title=".eslintrc.cjs"',
+              type: 'code',
+              value: `module.exports = ${eslintrc};`,
+            },
+          ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
+        },
+      ],
+      name: 'Tabs',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
     {
       attributes: [
         {
-          type: 'mdxJsxAttribute',
           name: 'eslintrcHash',
+          type: 'mdxJsxAttribute',
           value: convertToPlaygroundHash(eslintrc),
         },
       ],
@@ -78,8 +126,8 @@ module.exports = ${eslintrc};
         {
           children: [
             {
-              value: 'Try this rule in the playground ↗',
               type: 'text',
+              value: 'Try this rule in the playground ↗',
             },
           ],
           type: 'paragraph',

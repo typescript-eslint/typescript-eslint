@@ -144,7 +144,8 @@ function test(value: Union): number {
 }
     `,
     // Switch contains default clause.
-    `
+    {
+      code: `
 type Day =
   | 'Monday'
   | 'Tuesday'
@@ -166,7 +167,13 @@ switch (day) {
     result = 42;
   }
 }
-    `,
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
     // Exhaustiveness check only works for union types...
     `
 const day = 'Monday' as string;
@@ -553,6 +560,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: false,
         },
       ],
@@ -570,6 +578,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: false,
         },
       ],
@@ -745,6 +754,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: true,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: true,
         },
       ],
@@ -762,6 +772,7 @@ switch (value) {
       options: [
         {
           allowDefaultCaseForExhaustiveSwitch: false,
+          considerDefaultExhaustiveForUnions: true,
           requireDefaultForNonUnion: true,
         },
       ],
@@ -809,6 +820,139 @@ switch (value) {
           requireDefaultForNonUnion: false,
         },
       ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+switch (literal) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+      `,
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  case false:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+    case undefined:
+      break;
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
+    {
+      code: `
+function foo(x: string[], y: string | undefined) {
+  const a = x[0];
+  if (typeof a === 'string') {
+    return;
+  }
+  switch (y) {
+    case 'hi':
+      break;
+    case a:
+      break;
+  }
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
     },
   ],
   invalid: [
@@ -2372,6 +2516,286 @@ switch (myValue) {
           requireDefaultForNonUnion: false,
         },
       ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  default:
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  default:
+  case 'a':
+    break;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b';
+
+switch (literal) {
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  default:
+  case 'a':
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  default:
+    break;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  default:
+    break;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  default: {
+    break;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 10,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+enum MyEnum {
+  Foo = 'Foo',
+  Bar = 'Bar',
+  Baz = 'Baz',
+}
+
+declare const myEnum: MyEnum;
+
+switch (myEnum) {
+  case MyEnum.Foo:
+    break;
+  case MyEnum.Bar: { throw new Error('Not implemented yet: MyEnum.Bar case') }
+  case MyEnum.Baz: { throw new Error('Not implemented yet: MyEnum.Baz case') }
+  default: {
+    break;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: boolean;
+switch (value) {
+  default: {
+    break;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const value: boolean;
+switch (value) {
+  case false: { throw new Error('Not implemented yet: false case') }
+  case true: { throw new Error('Not implemented yet: true case') }
+  default: {
+    break;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 3,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+function foo(x: string[]) {
+  switch (x[0]) {
+    case 'hi':
+      break;
+    case undefined: { throw new Error('Not implemented yet: undefined case') }
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
     },
   ],
 });

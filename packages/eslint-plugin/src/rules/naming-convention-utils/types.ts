@@ -23,7 +23,7 @@ interface MatchRegex {
 
 interface Selector {
   custom?: MatchRegex;
-  filter?: MatchRegex | string;
+  filter?: string | MatchRegex;
   // format options
   format: PredefinedFormatsString[] | null;
   leadingUnderscore?: UnderscoreOptionsString;

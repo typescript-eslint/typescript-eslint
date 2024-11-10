@@ -5,9 +5,9 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { createRule, getStringLength, nullThrows } from '../util';
 
 type DirectiveConfig =
+  | boolean
   | 'allow-with-description'
-  | { descriptionFormat: string }
-  | boolean;
+  | { descriptionFormat: string };
 
 interface Options {
   minimumDescriptionLength?: number;

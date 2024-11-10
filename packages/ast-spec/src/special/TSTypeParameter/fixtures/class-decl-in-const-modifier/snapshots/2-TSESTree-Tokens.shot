@@ -34,21 +34,21 @@ exports[`AST Fixtures special TSTypeParameter class-decl-in-const-modifier TSEST
   },
   Keyword {
     type: "Keyword",
-    value: "in",
+    value: "const",
 
-    range: [8, 10],
+    range: [8, 13],
     loc: {
       start: { column: 8, line: 1 },
-      end: { column: 10, line: 1 },
+      end: { column: 13, line: 1 },
     },
   },
   Keyword {
     type: "Keyword",
-    value: "const",
+    value: "in",
 
-    range: [11, 16],
+    range: [14, 16],
     loc: {
-      start: { column: 11, line: 1 },
+      start: { column: 14, line: 1 },
       end: { column: 16, line: 1 },
     },
   },

@@ -80,7 +80,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
             end: { column: 29, line: 3 },
           },
         },
--       kind: 'module',
+        kind: 'module',
 
         range: [73, 129],
         loc: {

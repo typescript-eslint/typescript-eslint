@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { ESLintUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -13,14 +14,14 @@ This rule simply warns against using them, as using them will likely introduce t
 const BANNED_PROPERTIES = [
   {
     type: 'Symbol',
-    property: 'declarations',
     fixWith: 'getDeclarations()',
+    property: 'declarations',
   },
   {
     // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
     type: 'Type',
-    property: 'symbol',
     fixWith: 'getSymbol()',
+    property: 'symbol',
   },
 ];
 
@@ -35,13 +36,13 @@ export default createRule({
     },
     fixable: 'code',
     hasSuggestions: true,
-    schema: [],
     messages: {
       doNotUse: 'Do not use {{type}}.{{property}} because it is poorly typed.',
       doNotUseWithFixer:
         'Do not use {{type}}.{{property}} because it is poorly typed. Use {{type}}.{{fixWith}} instead.',
       suggestedFix: 'Use {{type}}.{{fixWith}} instead.',
     },
+    schema: [],
   },
   defaultOptions: [],
   create(context) {

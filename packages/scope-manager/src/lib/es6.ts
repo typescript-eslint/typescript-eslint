@@ -5,6 +5,7 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 
+import { es5 } from './es5';
 import { es2015_collection } from './es2015.collection';
 import { es2015_core } from './es2015.core';
 import { es2015_generator } from './es2015.generator';
@@ -14,7 +15,6 @@ import { es2015_proxy } from './es2015.proxy';
 import { es2015_reflect } from './es2015.reflect';
 import { es2015_symbol } from './es2015.symbol';
 import { es2015_symbol_wellknown } from './es2015.symbol.wellknown';
-import { es5 } from './es5';
 
 export const es6 = {
   ...es5,
