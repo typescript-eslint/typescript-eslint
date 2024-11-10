@@ -9,9 +9,11 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-type-assertion** for documentation.
 
-This rule forbids using type assertions to narrow a type, as it can lead to unsafe assumptions that bypass TypeScript’s type-checking.
+Type assertions are a way to tell TypeScript what the type of a value is. This can be useful but also unsafe if you use type assertions to narrow down a type.
 
-Instead, it's better to rely on type guards to ensure type safety and avoid potential runtime errors caused by unsafe type assertions.
+This rule forbids using type assertions to narrow a type, as this bypasses TypeScript's type-checking. Type assertions that broaden a type are safe because TypeScript essentially knows _less_ about a type.
+
+Instead of using type assertions to narrow a type, it's better to rely on type guards, which help avoid potential runtime errors caused by unsafe type assertions.
 
 ## Examples
 
