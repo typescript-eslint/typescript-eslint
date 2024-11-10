@@ -44,21 +44,23 @@ function typeDeclaredInDeclarationFile(
     `@types/${packageName.replace(/^@([^/]+)\//, '$1__')}`,
   ]);
   const packageNameMatcher = new RegExp(packageNameRegExp);
+  const { typeRoots } = program.getCompilerOptions();
   const fileNameMatcher = new RegExp(
     `(?:${escapeAlternates(
-      (program.getCompilerOptions().typeRoots ?? ['node_modules']).map(
-        typeRoot =>
-          getCanonicalFileName(
-            path.join(program.getCurrentDirectory(), typeRoot),
-          ),
-      ),
+      typeRoots
+        ? typeRoots.map(typeRoot =>
+            getCanonicalFileName(
+              path.join(program.getCurrentDirectory(), typeRoot),
+            ),
+          )
+        : ['node_modules'],
     )})/(?:${packageNameRegExp})/`,
   );
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
       (packageIdName == null
-        ? fileNameMatcher.test(declaration.fileName)
+        ? fileNameMatcher.test(getCanonicalFileName(declaration.fileName))
         : packageNameMatcher.test(packageIdName)) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );

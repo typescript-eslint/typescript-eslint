@@ -4,7 +4,7 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import Ajv from 'ajv';
 import path from 'node:path';
 
-import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
+import type { TypeOrValueSpecifier } from '../src';
 
 import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
