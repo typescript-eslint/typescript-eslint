@@ -5160,6 +5160,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/eslint-scope@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@types/eslint-scope@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  languageName: node
+  linkType: soft
+
 "@types/eslint-visitor-keys@npm:*":
   version: 3.3.0
   resolution: "@types/eslint-visitor-keys@npm:3.3.0"
@@ -6304,15 +6310,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn-import-attributes@npm:^1.9.5":
-  version: 1.9.5
-  resolution: "acorn-import-attributes@npm:1.9.5"
-  peerDependencies:
-    acorn: ^8
-  checksum: 1c0c49b6a244503964ae46ae850baccf306e84caf99bc2010ed6103c69a423987b07b520a6c619f075d215388bd4923eccac995886a54309eda049ab78a4be95
-  languageName: node
-  linkType: hard
-
 "acorn-jsx@npm:^5.0.0, acorn-jsx@npm:^5.3.2":
   version: 5.3.2
   resolution: "acorn-jsx@npm:5.3.2"
@@ -6329,7 +6326,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.0.0, acorn@npm:^8.0.4, acorn@npm:^8.14.0, acorn@npm:^8.4.1, acorn@npm:^8.7.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
+"acorn@npm:^8.0.0, acorn@npm:^8.0.4, acorn@npm:^8.14.0, acorn@npm:^8.4.1, acorn@npm:^8.8.2, acorn@npm:^8.9.0":
   version: 8.14.0
   resolution: "acorn@npm:8.14.0"
   bin:
@@ -7256,7 +7253,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"browserslist@npm:^4.0.0, browserslist@npm:^4.18.1, browserslist@npm:^4.21.10, browserslist@npm:^4.23.0, browserslist@npm:^4.23.3, browserslist@npm:^4.24.0":
+"browserslist@npm:^4.0.0, browserslist@npm:^4.18.1, browserslist@npm:^4.23.0, browserslist@npm:^4.23.3, browserslist@npm:^4.24.0":
   version: 4.24.2
   resolution: "browserslist@npm:4.24.2"
   dependencies:
@@ -13276,12 +13273,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "jiti@npm:2.3.3"
+"jiti@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "jiti@npm:2.4.0"
   bin:
     jiti: lib/jiti-cli.mjs
-  checksum: f1a2b87d937569c966f00a8c9153c8f3e02445b31e034fdaed1b9639a4ecfae3c4df24c7644d5b4764c566f8dee09132a5b55cd049b48e618024accd31d8e6b3
+  checksum: b7d8c441214e48f6c1be2952a83f40e2b1eb6e94fe81b1fd89370d11a7e322c61eb3fbd9a8d47029e14338414091ebbb575e1a92c645ab30fea6240c5c4957c7
   languageName: node
   linkType: hard
 
@@ -13518,15 +13515,15 @@ __metadata:
   linkType: hard
 
 "knip@npm:^5.9.4":
-  version: 5.34.4
-  resolution: "knip@npm:5.34.4"
+  version: 5.36.3
+  resolution: "knip@npm:5.36.3"
   dependencies:
     "@nodelib/fs.walk": 1.2.8
     "@snyk/github-codeowners": 1.1.0
     easy-table: 1.2.0
     enhanced-resolve: ^5.17.1
     fast-glob: ^3.3.2
-    jiti: ^2.3.3
+    jiti: ^2.4.0
     js-yaml: ^4.1.0
     minimist: ^1.2.8
     picocolors: ^1.1.0
@@ -13543,7 +13540,7 @@ __metadata:
   bin:
     knip: bin/knip.js
     knip-bun: bin/knip-bun.js
-  checksum: e07ee43440681a917a3a1f6e12d6115b65a6c23acbd3d35754ad66008846a95a8212a2d11e72e93eaf6b16a3cb188019e88fae4d8c2ef4789ea569db21950378
+  checksum: e9315dbe6ecea1c1e95215dc9e678cd9605a8015e68cec2c36566764892e0d2b8320b0277d2c911610221811af7d47e27c011b847ad3cb5cef82fef09bcd1608
   languageName: node
   linkType: hard
 
@@ -15189,8 +15186,8 @@ __metadata:
   linkType: hard
 
 "mocha@npm:^10.4.0":
-  version: 10.7.0
-  resolution: "mocha@npm:10.7.0"
+  version: 10.8.2
+  resolution: "mocha@npm:10.8.2"
   dependencies:
     ansi-colors: ^4.1.3
     browser-stdout: ^1.3.1
@@ -15215,7 +15212,7 @@ __metadata:
   bin:
     _mocha: bin/_mocha
     mocha: bin/mocha.js
-  checksum: e04c4ce7a61cacf0edd66a8e5ce04b14c1adaaac66c1c7765d5408f3c27b75583e104baa92709c40f207b7ff51bc80b85c4aa7b4e5ce25dbddd1e55d66aa774b
+  checksum: 68cb519503f1e8ffd9b0651e1aef75dfe4754425186756b21e53169da44b5bcb1889e2b743711205082763d3f9a42eb8eb2c13bb1a718a08cb3a5f563bfcacdc
   languageName: node
   linkType: hard
 
@@ -19303,11 +19300,11 @@ __metadata:
   linkType: hard
 
 "ts-api-utils@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "ts-api-utils@npm:1.3.0"
+  version: 1.4.0
+  resolution: "ts-api-utils@npm:1.4.0"
   peerDependencies:
     typescript: ">=4.2.0"
-  checksum: c746ddabfdffbf16cb0b0db32bb287236a19e583057f8649ee7c49995bb776e1d3ef384685181c11a1a480369e022ca97512cb08c517b2d2bd82c83754c97012
+  checksum: 477601317dc8a6d961788663ee76984005ed20c70689bd6f807eed2cad258d3731edcc4162d438ce04782ca62a05373ba51e484180fc2a081d8dab2bf693a5af
   languageName: node
   linkType: hard
 
@@ -20225,16 +20222,16 @@ __metadata:
   linkType: hard
 
 "webpack@npm:^5.88.1, webpack@npm:^5.91.0":
-  version: 5.95.0
-  resolution: "webpack@npm:5.95.0"
+  version: 5.96.1
+  resolution: "webpack@npm:5.96.1"
   dependencies:
-    "@types/estree": ^1.0.5
+    "@types/eslint-scope": ^3.7.7
+    "@types/estree": ^1.0.6
     "@webassemblyjs/ast": ^1.12.1
     "@webassemblyjs/wasm-edit": ^1.12.1
     "@webassemblyjs/wasm-parser": ^1.12.1
-    acorn: ^8.7.1
-    acorn-import-attributes: ^1.9.5
-    browserslist: ^4.21.10
+    acorn: ^8.14.0
+    browserslist: ^4.24.0
     chrome-trace-event: ^1.0.2
     enhanced-resolve: ^5.17.1
     es-module-lexer: ^1.2.1
@@ -20256,7 +20253,7 @@ __metadata:
       optional: true
   bin:
     webpack: bin/webpack.js
-  checksum: 0c3dfe288de4d62f8f3dc25478a618894883cab739121330763b7847e43304630ea2815ae2351a5f8ff6ab7c9642caf530d503d89bda261fe2cd220e524dd5d1
+  checksum: ec3662f64895fae408440a997f87299e374c9d9f911f77b880bab46402f52221c7836bdf101fc2556338d07fc7cb86da50661f944eb1d1041a8361a5b9247876
   languageName: node
   linkType: hard
 
