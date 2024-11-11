@@ -1,3 +1,25 @@
+## 8.14.0 (2024-11-11)
+
+### 🚀 Features
+
+- **eslint-plugin:** [await-thenable] report unnecessary `await using` statements ([#10209](https://github.com/typescript-eslint/typescript-eslint/pull/10209))
+- **eslint-plugin:** [no-confusing-void-expression] add an option to ignore void<->void ([#10067](https://github.com/typescript-eslint/typescript-eslint/pull/10067))
+
+### 🩹 Fixes
+
+- **scope-manager:** fix asserted increments not being marked as write references ([#10271](https://github.com/typescript-eslint/typescript-eslint/pull/10271))
+- **eslint-plugin:** [no-misused-promises] improve report loc for methods ([#10216](https://github.com/typescript-eslint/typescript-eslint/pull/10216))
+- **eslint-plugin:** [no-unnecessary-condition] improve error message for literal comparisons ([#10194](https://github.com/typescript-eslint/typescript-eslint/pull/10194))
+
+### ❤️  Thank You
+
+- Gyumong @Gyumong
+- Jan Ochwat @janek515
+- Kirk Waiblinger @kirkwaiblinger
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.13.0 (2024-11-04)
 
 ### 🚀 Features
