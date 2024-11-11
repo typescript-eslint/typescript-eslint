@@ -393,6 +393,17 @@ export const func4 = (value: number) => x as const satisfies number;
     },
     {
       code: `
+export const func4 = (value: number) =>
+  x as const satisfies 10 satisfies number satisfies any;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
 export const func4 = (value: number) => x as const satisfies string;
       `,
       options: [

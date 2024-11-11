@@ -468,6 +468,27 @@ const func = (value: number) => x as const satisfies number;
     },
     {
       code: `
+const func = (value: number) => x as const satisfies 10 satisfies number;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+const func = (value: number) =>
+  x as const satisfies 10 satisfies number satisfies any;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
 const func = (value: number) => x as const satisfies string;
       `,
       options: [
