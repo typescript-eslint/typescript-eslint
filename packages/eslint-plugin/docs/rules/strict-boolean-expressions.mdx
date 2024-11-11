@@ -63,7 +63,7 @@ declare function assert(value: unknown): asserts value;
 let maybeString = Math.random() > 0.5 ? '' : undefined;
 assert(maybeString);
 
-// array predicates return statements are boolean contexts.
+// array predicates' return types are boolean contexts.
 ['one', null].filter(x => x);
 ```
 
