@@ -9,7 +9,6 @@ import {
   getParserServices,
   isAwaitKeyword,
   isTypeAnyType,
-  isTypeUnknownType,
   needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
@@ -53,9 +52,6 @@ export default createRule<[], MessageId>({
     return {
       AwaitExpression(node): void {
         const type = services.getTypeAtLocation(node.argument);
-        if (isTypeAnyType(type) || isTypeUnknownType(type)) {
-          return;
-        }
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
         const certainty = needsToBeAwaited(checker, originalNode, type);
