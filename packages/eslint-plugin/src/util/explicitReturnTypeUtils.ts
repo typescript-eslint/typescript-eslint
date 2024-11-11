@@ -260,11 +260,12 @@ function isValidFunctionExpressionReturnType(
     return false;
   }
 
-  const { body } = node;
+  let body = node.body;
+  while (body.type === AST_NODE_TYPES.TSSatisfiesExpression) {
+    body = body.expression;
+  }
 
-  return isConstAssertion(
-    body.type === AST_NODE_TYPES.TSSatisfiesExpression ? body.expression : body,
-  );
+  return isConstAssertion(body);
 }
 
 /**
