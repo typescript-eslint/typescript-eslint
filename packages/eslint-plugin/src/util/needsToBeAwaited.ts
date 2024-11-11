@@ -17,26 +17,25 @@ export function needsToBeAwaited(
   node: ts.Node,
   type: ts.Type,
 ): Awaitable {
+  // can't use `getConstrainedTypeAtLocation` directly since it's bugged for
+  // unconstrained generics.
+  const constrainedType = !tsutils.isTypeParameter(type)
+    ? type
+    : checker.getBaseConstraintOfType(type);
+
+  // unconstrained generic types should be treated as unknown
+  if (constrainedType == null) {
+    return Awaitable.May;
+  }
+
   // `any` and `unknown` types may need to be awaited
-  if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+  if (isTypeAnyType(constrainedType) || isTypeUnknownType(constrainedType)) {
     return Awaitable.May;
   }
 
   // 'thenable' values should always be be awaited
-  if (tsutils.isThenableType(checker, node, type)) {
+  if (tsutils.isThenableType(checker, node, constrainedType)) {
     return Awaitable.Always;
-  }
-
-  // recurse into a type parameter constraint
-  if (tsutils.isTypeParameter(type)) {
-    const constraint = type.getConstraint();
-
-    // if there's no constraint, this may need to be awaited
-    if (!constraint) {
-      return Awaitable.May;
-    }
-
-    return needsToBeAwaited(checker, node, constraint);
   }
 
   // anything else should not be awaited
