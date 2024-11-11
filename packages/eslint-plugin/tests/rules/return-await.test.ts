@@ -478,6 +478,24 @@ class C<T> {
 }
       `,
     },
+    {
+      code: `
+class C<R> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends unknown> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -1597,6 +1615,68 @@ async function outerFunction() {
   };
 
   const innerFunction = async () => asyncFn();
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends number>(value: T) {
+  return await value;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: `
+async function wrapper<T extends number>(value: T) {
+  return value;
+}
+      `,
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'nonPromiseAwait',
+        },
+      ],
+      output: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return value;
+  }
 }
       `,
     },

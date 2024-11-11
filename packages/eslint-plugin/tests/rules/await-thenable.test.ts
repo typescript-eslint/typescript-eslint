@@ -322,6 +322,24 @@ class C<T> {
 }
       `,
     },
+    {
+      code: `
+class C<R> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends unknown> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -730,6 +748,36 @@ class C<T> {
               output: `
 class C<T> {
   async wrapper<T extends string>(value: T) {
+    return  value;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
     return  value;
   }
 }
