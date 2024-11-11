@@ -372,7 +372,7 @@ interface R {
   value: number;
 }
 
-export const func1 = (value: number) =>
+export const func = (value: number) =>
   ({ type: 'X', value }) as const satisfies R;
       `,
       options: [
@@ -383,7 +383,13 @@ export const func1 = (value: number) =>
     },
     {
       code: `
-export const func4 = (value: number) => x as const satisfies number;
+interface R {
+  type: string;
+  value: number;
+}
+
+export const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R;
       `,
       options: [
         {
@@ -393,18 +399,13 @@ export const func4 = (value: number) => x as const satisfies number;
     },
     {
       code: `
-export const func4 = (value: number) =>
-  x as const satisfies 10 satisfies number satisfies any;
-      `,
-      options: [
-        {
-          allowDirectConstAssertionInArrowFunctions: true,
-        },
-      ],
-    },
-    {
-      code: `
-export const func4 = (value: number) => x as const satisfies string;
+interface R {
+  type: string;
+  value: number;
+}
+
+export const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
       `,
       options: [
         {
