@@ -524,6 +524,13 @@ function isBooleanConstructorContext(
     return isBooleanConstructorContext(parent, context);
   }
 
+  if (
+    parent.type === AST_NODE_TYPES.UnaryExpression &&
+    parent.operator === '!'
+  ) {
+    return isBooleanConstructorContext(parent, context);
+  }
+
   return isBuiltInBooleanCall(parent, context);
 }
 
