@@ -661,6 +661,8 @@ export default createRule<Options, MessageIds>({
       const { defaultSpecifier, namedSpecifiers, namespaceSpecifier } =
         classifySpecifier(node);
 
+      let yielded = false;
+
       if (namespaceSpecifier && !defaultSpecifier) {
         // import * as types from 'foo'
 
@@ -668,7 +670,7 @@ export default createRule<Options, MessageIds>({
         if (node.attributes.length === 0) {
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         }
-        return;
+        yielded = true;
       } else if (defaultSpecifier) {
         if (
           report.typeSpecifiers.includes(defaultSpecifier) &&
@@ -677,7 +679,7 @@ export default createRule<Options, MessageIds>({
         ) {
           // import Type from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, true);
-          return;
+          yielded = true;
         } else if (
           fixStyle === 'inline-type-imports' &&
           !report.typeSpecifiers.includes(defaultSpecifier) &&
@@ -687,7 +689,7 @@ export default createRule<Options, MessageIds>({
           // if there is a default specifier but it isn't a type specifier, then just add the inline type modifier to the named specifiers
           // import AValue, {BValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
-          return;
+          yielded = true;
         }
       } else if (!namespaceSpecifier) {
         if (
@@ -698,7 +700,7 @@ export default createRule<Options, MessageIds>({
         ) {
           // import {AValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
-          return;
+          yielded = true;
         } else if (
           namedSpecifiers.every(specifier =>
             report.typeSpecifiers.includes(specifier),
@@ -706,8 +708,12 @@ export default createRule<Options, MessageIds>({
         ) {
           // import {Type1, Type2} from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
-          return;
+          yielded = true;
         }
+      }
+
+      if (yielded) {
+        return;
       }
 
       const typeNamedSpecifiers = namedSpecifiers.filter(specifier =>
