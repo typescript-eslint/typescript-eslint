@@ -5,7 +5,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, getTypeName } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
+} from '../util';
 
 enum Usefulness {
   Always = 'always',
@@ -15,7 +20,6 @@ enum Usefulness {
 
 type Options = [
   {
-    checkArrayJoin?: boolean;
     ignoredTypeNames?: string[];
   },
 ];
@@ -33,7 +37,7 @@ export default createRule<Options, MessageIds>({
     },
     messages: {
       baseArrayJoin:
-        "Using `join()` for {{name}} use Object's default stringification format ('[object Object]') when stringified.",
+        "Using `join()` for {{name}} {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
       baseToString:
         "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
     },
@@ -42,11 +46,6 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          checkArrayJoin: {
-            type: 'boolean',
-            description:
-              'Whether to check for arrays that are stringified by `Array.prototype.join`.',
-          },
           ignoredTypeNames: {
             type: 'array',
             description:
@@ -61,7 +60,6 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      checkArrayJoin: false,
       ignoredTypeNames: ['Error', 'RegExp', 'URL', 'URLSearchParams'],
     },
   ],
@@ -69,7 +67,6 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
-    const checkArrayJoin = option.checkArrayJoin ?? false;
 
     function getToStringCertainty(
       node: TSESTree.Node,
@@ -211,12 +208,29 @@ export default createRule<Options, MessageIds>({
           checkExpression(node.arguments[0]);
         }
       },
+      'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
+        const typeParts = tsutils.typeParts(type);
+        const isArrayOrTuple = typeParts.every(
+          part => checker.isArrayType(part) || checker.isTupleType(part),
+        );
+        if (!isArrayOrTuple) {
+          return;
+        }
+
+        const typeArg = type.getNumberIndexType();
+        checkExpression(memberExpr.object, typeArg, 'baseArrayJoin');
+      },
       'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
       },
+
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
@@ -225,26 +239,6 @@ export default createRule<Options, MessageIds>({
           checkExpression(expression);
         }
       },
-      ...(checkArrayJoin
-        ? {
-            'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
-              node: TSESTree.Expression,
-            ): void {
-              const memberExpr = node.parent as TSESTree.MemberExpression;
-              const type = services.getTypeAtLocation(memberExpr.object);
-              const typeParts = tsutils.typeParts(type);
-              const isArrayOrTuple = typeParts.every(
-                part => checker.isArrayType(part) || checker.isTupleType(part),
-              );
-              if (!isArrayOrTuple) {
-                return;
-              }
-
-              const typeArg = type.getNumberIndexType();
-              checkExpression(memberExpr.object, typeArg, 'baseArrayJoin');
-            },
-          }
-        : undefined),
     };
   },
 });

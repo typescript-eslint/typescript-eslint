@@ -156,24 +156,33 @@ String(myValue);
 import { String } from 'foo';
 String({});
     `,
-    {
-      code: "['foo', 'bar'].join('');",
-      options: [{ checkArrayJoin: true }],
-    },
-    {
-      code: "([{}, 'bar'] as string[]).join('');",
-      options: [{ checkArrayJoin: true }],
-    },
-    {
-      code: `
-        class Foo {
-          join() {}
-        }
-        const foo = new Foo();
-        foo.join();
-      `,
-      options: [{ checkArrayJoin: true }],
-    },
+    `
+['foo', 'bar'].join('');
+    `,
+
+    `
+([{}, 'bar'] as string[]).join('');
+    `,
+    `
+class Foo {
+  join() {}
+}
+const foo = new Foo();
+foo.join();
+    `,
+    `
+function foo<T extends string>(array: T[]) {
+  return array.join();
+}
+    `,
+    `
+class Foo {
+  toString() {
+    return '';
+  }
+}
+[new Foo()].join();
+    `,
   ],
   invalid: [
     {
@@ -385,7 +394,6 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
@@ -401,7 +409,6 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
@@ -417,7 +424,6 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
@@ -435,7 +441,6 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
@@ -453,7 +458,6 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
@@ -464,13 +468,12 @@ String(...objects);
       errors: [
         {
           data: {
-            certainty: 'will',
+            certainty: 'may',
             name: 'tuple',
           },
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
@@ -487,17 +490,16 @@ String(...objects);
           messageId: 'baseArrayJoin',
         },
       ],
-      options: [{ checkArrayJoin: true }],
     },
     {
       code: `
-        const array = ['string', {}];
+        const array = ['string', { foo: 'bar' }];
         array.join('');
       `,
       errors: [
         {
           data: {
-            certainty: 'will',
+            certainty: 'may',
             name: 'array',
           },
           messageId: 'baseArrayJoin',
@@ -509,7 +511,59 @@ String(...objects);
           tsconfigRootDir: rootDir,
         },
       },
-      options: [{ checkArrayJoin: true }],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          return array.join();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          return array;
+        }
+        foo([{ foo: 'foo' }]).join();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: "foo([{ foo: 'foo' }])",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          return array;
+        }
+        foo([{ foo: 'foo' }, 'bar']).join();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: "foo([{ foo: 'foo' }, 'bar'])",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
     },
   ],
 });

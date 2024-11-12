@@ -8,10 +8,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
-      "checkArrayJoin": {
-        "description": "Whether to check for arrays that are stringified by \`Array.prototype.join\`.",
-        "type": "boolean"
-      },
       "ignoredTypeNames": {
         "description": "Stringified regular expressions of type names to ignore.",
         "items": {
@@ -29,8 +25,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to check for arrays that are stringified by \`Array.prototype.join\`. */
-    checkArrayJoin?: boolean;
     /** Stringified regular expressions of type names to ignore. */
     ignoredTypeNames?: string[];
   },
