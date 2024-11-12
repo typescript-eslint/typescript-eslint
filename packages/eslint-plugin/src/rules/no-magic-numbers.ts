@@ -107,34 +107,37 @@ export default createRule<Options, MessageIds>({
           isAllowed = options.ignoreReadonlyClassProperties === true;
         }
 
-        switch (isAllowed) {
-          // If we’ve hit a case where the ignore option is true we can return now
-          case true:
-            return;
-          // If the ignore option is *not* set we can report it now
-          case false: {
-            let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
-              node;
-            let raw = node.raw;
+        let returnEarly = false;
 
-            if (
-              node.parent.type === AST_NODE_TYPES.UnaryExpression &&
-              // the base rule only shows the operator for negative numbers
-              // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/lib/rules/no-magic-numbers.js#L126
-              node.parent.operator === '-'
-            ) {
-              fullNumberNode = node.parent;
-              raw = `${node.parent.operator}${node.raw}`;
-            }
-
-            context.report({
-              node: fullNumberNode,
-              messageId: 'noMagic',
-              data: { raw },
-            });
-
-            return;
+        // If we’ve hit a case where the ignore option is true we can return now
+        if (isAllowed === true) {
+          returnEarly = true;
+        }
+        // If the ignore option is *not* set we can report it now
+        else if (isAllowed === false) {
+          let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
+            node;
+          let raw = node.raw;
+          if (
+            node.parent.type === AST_NODE_TYPES.UnaryExpression &&
+            // the base rule only shows the operator for negative numbers
+            // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/lib/rules/no-magic-numbers.js#L126
+            node.parent.operator === '-'
+          ) {
+            fullNumberNode = node.parent;
+            raw = `${node.parent.operator}${node.raw}`;
           }
+          context.report({
+            node: fullNumberNode,
+            messageId: 'noMagic',
+            data: { raw },
+          });
+
+          returnEarly = true;
+        }
+
+        if (returnEarly) {
+          return;
         }
 
         // Let the base rule deal with the rest
