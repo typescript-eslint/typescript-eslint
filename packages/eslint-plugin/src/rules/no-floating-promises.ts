@@ -335,6 +335,8 @@ export default createRule<Options, MessageId>({
         return { isUnhandled: false };
       }
 
+      let output = { isUnhandled: true };
+
       if (node.type === AST_NODE_TYPES.CallExpression) {
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
@@ -374,7 +376,7 @@ export default createRule<Options, MessageId>({
         }
 
         // All other cases are unhandled.
-        return { isUnhandled: true };
+        output = { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
@@ -392,7 +394,7 @@ export default createRule<Options, MessageId>({
       }
 
       // Anything else is unhandled.
-      return { isUnhandled: true };
+      return output;
     }
 
     function isPromiseArray(node: ts.Node): boolean {

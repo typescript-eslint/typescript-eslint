@@ -45,9 +45,11 @@ export default createRule({
     };
 
     const couldBeNullish = (type: ts.Type): boolean => {
+      let output =
+        (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
       if (type.flags & ts.TypeFlags.TypeParameter) {
         const constraint = type.getConstraint();
-        return constraint == null || couldBeNullish(constraint);
+        output = constraint == null || couldBeNullish(constraint);
       } else if (tsutils.isUnionType(type)) {
         for (const part of type.types) {
           if (couldBeNullish(part)) {
@@ -56,7 +58,7 @@ export default createRule({
         }
         return false;
       }
-      return (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
+      return output;
     };
 
     const sameTypeWithoutNullish = (

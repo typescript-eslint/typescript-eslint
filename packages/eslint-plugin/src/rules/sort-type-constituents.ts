@@ -97,12 +97,13 @@ function getGroup(node: TSESTree.TypeNode): Group {
 }
 
 function caseSensitiveSort(a: string, b: string): number {
+  let output = 0;
   if (a < b) {
-    return -1;
+    output = -1;
   } else if (a > b) {
     return 1;
   }
-  return 0;
+  return output;
 }
 
 export type Options = [

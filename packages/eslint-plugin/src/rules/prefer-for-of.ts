@@ -69,6 +69,8 @@ export default createRule({
       if (!node) {
         return false;
       }
+
+      let output = false;
       switch (node.type) {
         case AST_NODE_TYPES.UpdateExpression:
           // x++ or ++x
@@ -79,7 +81,7 @@ export default createRule({
           if (isMatchingIdentifier(node.left, name)) {
             if (node.operator === '+=') {
               // x += 1
-              return isLiteral(node.right, 1);
+              output = isLiteral(node.right, 1);
             } else if (node.operator === '=') {
               // x = x + 1 or x = 1 + x
               const expr = node.right;
@@ -94,7 +96,7 @@ export default createRule({
             }
           }
       }
-      return false;
+      return output;
     }
 
     function contains(outer: TSESTree.Node, inner: TSESTree.Node): boolean {
