@@ -1,3 +1,15 @@
+## 8.14.0 (2024-11-11)
+
+### 🩹 Fixes
+
+- **scope-manager:** fix asserted increments not being marked as write references ([#10271](https://github.com/typescript-eslint/typescript-eslint/pull/10271))
+
+### ❤️  Thank You
+
+- Jan Ochwat @janek515
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.13.0 (2024-11-04)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.
