@@ -21,5 +21,17 @@ let x: number | undefined = 1;
 let x: number | undefined = 1;
 (x as number) += 1;
     `,
+    `
+let x: number | undefined = 1;
+x!++;
+    `,
+    `
+let x: number | undefined = 1;
+(<number>x)++;
+    `,
+    `
+let x: number | undefined = 1;
+(x as number)++;
+    `,
   ],
 });

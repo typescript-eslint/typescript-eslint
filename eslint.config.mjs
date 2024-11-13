@@ -108,11 +108,6 @@ export default tseslint.config(
       //
       // our plugin :D
       //
-
-      '@typescript-eslint/no-confusing-void-expression': [
-        'error',
-        { ignoreVoidReturningFunctions: true },
-      ],
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
@@ -122,6 +117,10 @@ export default tseslint.config(
           'ts-ignore': true,
           'ts-nocheck': true,
         },
+      ],
+      '@typescript-eslint/no-confusing-void-expression': [
+        'error',
+        { ignoreVoidReturningFunctions: true },
       ],
       // TODO: enable it once we drop support for TS<5.0
       // https://github.com/typescript-eslint/typescript-eslint/issues/10065
