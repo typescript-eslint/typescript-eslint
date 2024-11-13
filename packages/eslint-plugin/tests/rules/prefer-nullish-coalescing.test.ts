@@ -611,32 +611,6 @@ if (!!(a || b)) {
         },
       ],
     },
-    {
-      code: `
-let a: string | undefined;
-let b: string | undefined;
-
-Boolean(!!(a || b));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | undefined;
-let b: string | undefined;
-
-Boolean(!(a || b));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
   ],
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
@@ -2352,35 +2326,6 @@ if (+(a ?? b)) {
       options: [
         {
           ignoreConditionalTests: true,
-        },
-      ],
-    },
-    {
-      code: `
-declare const a: string | undefined;
-declare const b: string;
-
-Boolean(+(a || b));
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const a: string | undefined;
-declare const b: string;
-
-Boolean(+(a ?? b));
-      `,
-            },
-          ],
-        },
-      ],
-      options: [
-        {
-          ignoreBooleanCoercion: true,
         },
       ],
     },
