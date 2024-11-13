@@ -661,8 +661,6 @@ export default createRule<Options, MessageIds>({
       const { defaultSpecifier, namedSpecifiers, namespaceSpecifier } =
         classifySpecifier(node);
 
-      let yielded = false;
-
       if (namespaceSpecifier && !defaultSpecifier) {
         // import * as types from 'foo'
 
@@ -670,8 +668,10 @@ export default createRule<Options, MessageIds>({
         if (node.attributes.length === 0) {
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         }
-        yielded = true;
-      } else if (defaultSpecifier) {
+        return;
+      }
+
+      if (defaultSpecifier) {
         if (
           report.typeSpecifiers.includes(defaultSpecifier) &&
           namedSpecifiers.length === 0 &&
@@ -679,8 +679,10 @@ export default createRule<Options, MessageIds>({
         ) {
           // import Type from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, true);
-          yielded = true;
-        } else if (
+          return;
+        }
+
+        if (
           fixStyle === 'inline-type-imports' &&
           !report.typeSpecifiers.includes(defaultSpecifier) &&
           namedSpecifiers.length > 0 &&
@@ -689,7 +691,7 @@ export default createRule<Options, MessageIds>({
           // if there is a default specifier but it isn't a type specifier, then just add the inline type modifier to the named specifiers
           // import AValue, {BValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
-          yielded = true;
+          return;
         }
       } else if (!namespaceSpecifier) {
         if (
@@ -700,20 +702,18 @@ export default createRule<Options, MessageIds>({
         ) {
           // import {AValue, Type1, Type2} from 'foo'
           yield* fixInlineTypeImportDeclaration(fixer, report, sourceImports);
-          yielded = true;
-        } else if (
+          return;
+        }
+
+        if (
           namedSpecifiers.every(specifier =>
             report.typeSpecifiers.includes(specifier),
           )
         ) {
           // import {Type1, Type2} from 'foo'
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
-          yielded = true;
+          return;
         }
-      }
-
-      if (yielded) {
-        return;
       }
 
       const typeNamedSpecifiers = namedSpecifiers.filter(specifier =>

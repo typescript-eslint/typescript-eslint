@@ -543,7 +543,6 @@ function isMixedLogicalExpression(
 ): boolean {
   const seen = new Set<TSESTree.Node | undefined>();
   const queue = [node.parent, node.left, node.right];
-  let output = false;
   for (const current of queue) {
     if (seen.has(current)) {
       continue;
@@ -552,14 +551,15 @@ function isMixedLogicalExpression(
 
     if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
-        output = true;
-        break;
-      } else if (['||', '||='].includes(current.operator)) {
+        return true;
+      }
+
+      if (['||', '||='].includes(current.operator)) {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }
     }
   }
 
-  return output;
+  return false;
 }

@@ -256,29 +256,30 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      let output = false;
-
       if (
         node.type === AST_NODE_TYPES.VariableDeclarator ||
         node.type === AST_NODE_TYPES.FunctionDeclaration
       ) {
-        output =
+        return (
           node.id?.type === AST_NODE_TYPES.Identifier &&
-          options.allowedNames.includes(node.id.name);
-      } else if (
+          options.allowedNames.includes(node.id.name)
+        );
+      }
+
+      if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (node.type === AST_NODE_TYPES.Property && node.method) ||
         node.type === AST_NODE_TYPES.PropertyDefinition
       ) {
-        output = isStaticMemberAccessOfValue(
+        return isStaticMemberAccessOfValue(
           node,
           context,
           ...options.allowedNames,
         );
       }
 
-      return output;
+      return false;
     }
 
     function isExportedHigherOrderFunction({

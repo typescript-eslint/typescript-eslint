@@ -107,14 +107,12 @@ export default createRule<Options, MessageIds>({
           isAllowed = options.ignoreReadonlyClassProperties === true;
         }
 
-        let returnEarly = false;
-
         // If we’ve hit a case where the ignore option is true we can return now
         if (isAllowed === true) {
-          returnEarly = true;
+          return;
         }
         // If the ignore option is *not* set we can report it now
-        else if (isAllowed === false) {
+        if (isAllowed === false) {
           let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
             node;
           let raw = node.raw;
@@ -133,10 +131,6 @@ export default createRule<Options, MessageIds>({
             data: { raw },
           });
 
-          returnEarly = true;
-        }
-
-        if (returnEarly) {
           return;
         }
 
