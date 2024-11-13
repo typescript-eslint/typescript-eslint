@@ -259,6 +259,10 @@ export namespace FlatConfig {
      */
     ignores?: string[];
     /**
+     * Language specifier.
+     */
+    language?: string;
+    /**
      * An object containing settings related to how JavaScript is configured for linting.
      */
     languageOptions?: LanguageOptions;
