@@ -41,9 +41,9 @@ type Options = [
     requireDefaultForNonUnion?: boolean;
 
     /**
-     * Regular expression to evaluate comments to mean default case
+     * Regular expression for a comment that can indicate an intentionally omitted default case.
      */
-    defalutCaseCommentPattern?: string;
+    defaultCaseCommentPattern?: string;
 
     /**
      * If `true`, the `default` clause is used to determine whether the switch statement is exhaustive for union types.
@@ -88,9 +88,9 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
           },
-          defalutCaseCommentPattern: {
+          defaultCaseCommentPattern: {
             type: 'string',
-            description: `Regular expression to evaluate comments to mean default case`,
+            description: `Regular expression for a comment that can indicate an intentionally omitted default case.`,
           },
           requireDefaultForNonUnion: {
             type: 'boolean',
@@ -113,7 +113,7 @@ export default createRule<Options, MessageIds>({
       {
         allowDefaultCaseForExhaustiveSwitch,
         considerDefaultExhaustiveForUnions,
-        defalutCaseCommentPattern,
+        defaultCaseCommentPattern,
         requireDefaultForNonUnion,
       },
     ],
@@ -131,8 +131,8 @@ export default createRule<Options, MessageIds>({
         : [];
       const defaultCaseComment = commentsAfterLastCase.at(-1);
       const commentRegExp =
-        defalutCaseCommentPattern != null
-          ? new RegExp(defalutCaseCommentPattern, 'u')
+        defaultCaseCommentPattern != null
+          ? new RegExp(defaultCaseCommentPattern, 'u')
           : DEFAULT_COMMENT_PATTERN;
 
       if (commentRegExp.test(defaultCaseComment?.value.trim() || '')) {

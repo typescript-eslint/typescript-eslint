@@ -945,6 +945,21 @@ switch (value) {
         },
       ],
     },
+    {
+      code: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  // skip default
+}
+      `,
+      options: [
+        {
+          defaultCaseCommentPattern: '^skip\\sdefault',
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -2808,6 +2823,45 @@ switch (literal) {
       options: [
         {
           considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  // skip default
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  // skip default
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          defaultCaseCommentPattern: '^skip\\sdefault',
         },
       ],
     },
