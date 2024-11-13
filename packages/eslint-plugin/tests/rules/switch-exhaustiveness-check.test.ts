@@ -956,6 +956,7 @@ switch (value) {
       `,
       options: [
         {
+          considerDefaultExhaustiveForUnions: true,
           defaultCaseCommentPattern: '^skip\\sdefault',
         },
       ],
@@ -2861,6 +2862,7 @@ switch (literal) {
       ],
       options: [
         {
+          considerDefaultExhaustiveForUnions: false,
           defaultCaseCommentPattern: '^skip\\sdefault',
         },
       ],
