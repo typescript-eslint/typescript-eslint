@@ -17,7 +17,7 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      description: 'Disallow type assertions that widen a type',
+      description: 'Disallow type assertions that narrow a type',
       requiresTypeChecking: true,
     },
     messages: {
