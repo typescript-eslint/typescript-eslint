@@ -127,7 +127,6 @@ export default createRule({
       while (true) {
         switch (current.type) {
           case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportDefaultDeclaration:
           case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
             return true;

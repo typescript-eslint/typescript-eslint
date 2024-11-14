@@ -101,6 +101,23 @@ ruleTester.run('no-deprecated', rule, {
       a('b');
     `,
     `
+      function a(value: 'b' | undefined): void;
+      /** @deprecated */
+      function a(value: 'c' | undefined): void;
+      function a(value: string | undefined): void {
+        // ...
+      }
+
+      export default a('b');
+    `,
+    `
+      function notDeprecated(): object {
+        return {};
+      }
+
+      export default notDeprecated();
+    `,
+    `
       import { deprecatedFunctionWithOverloads } from './deprecated';
 
       const foo = deprecatedFunctionWithOverloads();
@@ -2459,6 +2476,26 @@ ruleTester.run('no-deprecated', rule, {
           endColumn: 19,
           endLine: 5,
           line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        function a(): object {
+          return {};
+        }
+
+        export default a();
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { name: 'a' },
+          endColumn: 25,
+          endLine: 7,
+          line: 7,
           messageId: 'deprecated',
         },
       ],
