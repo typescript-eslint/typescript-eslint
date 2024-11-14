@@ -1066,53 +1066,426 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
 ) => T;
 useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
     `,
+    // assignment with various symbols, matching `() => void` with `() => {}`
     {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
-
+      code: `
 type O = {
   1: () => void;
-  2: () => void;
-  stringLiteral: () => void;
-  computedStringLiteral: () => void;
-  [Symbol.iterator]: () => void;
-  [staticSymbol]: () => void;
 };
 
 const obj: O = {
   1() {},
-  [2]() {},
-  'stringLiteral'() {},
-  ['computedStringLiteral']() {},
-  [Symbol.iterator]() {},
-  [staticSymbol]() {}
+};
+      `,
+    },
+    {
+      code: `
+type O = {
+  1: () => void;
+};
+
+const obj: O = {
+  [1]() {},
 };
       `,
     },
     {
       code: noFormat`
+type O = {
+  stringLiteral: () => void;
+};
+
+const obj: O = {
+  'stringLiteral'() {},
+};
+      `,
+    },
+    {
+      code: `
+type O = {
+  computedStringLiteral: () => void;
+};
+
+const obj: O = {
+  ['computedStringLiteral']() {},
+};
+      `,
+    },
+    {
+      code: `
+type O = {
+  [Symbol.iterator]: () => void;
+};
+
+const obj: O = {
+  [Symbol.iterator]() {},
+};
+      `,
+    },
+    {
+      code: `
 const staticSymbol = Symbol.for('static symbol');
 
 type O = {
+  [staticSymbol]: () => void;
+};
+
+const obj: O = {
+  [staticSymbol]() {},
+};
+      `,
+    },
+    // assignment with various symbols, matching `() => Promise<void>` with `async () => {}`
+    {
+      code: `
+type O = {
   1: () => Promise<void>;
-  2: () => Promise<void>;
-  stringLiteral: () => Promise<void>;
-  computedStringLiteral: () => Promise<void>;
-  [Symbol.iterator]: () => Promise<void>;
-  [staticSymbol]: () => Promise<void>;
 };
 
 const obj: O = {
   async 1() {},
-  async [2]() {},
-  async 'stringLiteral'() {},
-  async ['computedStringLiteral']() {},
-  async [Symbol.iterator]() {},
-  async [staticSymbol]() {},
-  async ownProperty() {},
 };
       `,
     },
+    {
+      code: `
+type O = {
+  1: () => Promise<void>;
+};
+
+const obj: O = {
+  async [1]() {},
+};
+      `,
+    },
+    {
+      code: noFormat`
+type O = {
+  stringLiteral: () => Promise<void>;
+};
+
+const obj: O = {
+  async 'stringLiteral'() {},
+};
+      `,
+    },
+    {
+      code: `
+type O = {
+  computedStringLiteral: () => Promise<void>;
+};
+
+const obj: O = {
+  async ['computedStringLiteral']() {},
+};
+      `,
+    },
+    {
+      code: `
+type O = {
+  [Symbol.iterator]: () => Promise<void>;
+};
+
+const obj: O = {
+  async [Symbol.iterator]() {},
+};
+      `,
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+type O = {
+  [staticSymbol]: () => Promise<void>;
+};
+
+const obj: O = {
+  async [staticSymbol]() {},
+};
+      `,
+    },
+    // classes with various symbols, matching `() => void` with `() => {}`
+    {
+      code: `
+class MyClass {
+  1(): void {}
+}
+
+class MySubclass extends MyClass {
+  1(): void {}
+}
+      `,
+    },
+    {
+      code: `
+class MyClass {
+  1(): void {}
+}
+
+class MySubclass extends MyClass {
+  [1](): void {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class MyClass {
+  stringLiteral(): void {}
+}
+
+class MySubclass extends MyClass {
+  'stringLiteral'(): void {}
+}
+
+      `,
+    },
+    {
+      code: `
+class MyClass {
+  computedStringLiteral(): void {}
+}
+
+class MySubclass extends MyClass {
+  ['computedStringLiteral'](): void {}
+}
+      `,
+    },
+    {
+      code: `
+class MyClass {
+  [Symbol.iterator](): void {}
+}
+
+class MySubclass extends MyClass {
+  [Symbol.iterator](): void {}
+}
+      `,
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+class MyClass {
+  [staticSymbol](): void {}
+}
+
+class MySubclass extends MyClass {
+  [staticSymbol](): void {}
+}
+      `,
+    },
+    // classes with various symbols, matching `() => Promise<void>` with `async () => {}`
+    {
+      code: `
+class MyClass {
+  1(): Promise<void> {}
+}
+
+class MySubclass extends MyClass {
+  async 1(): void {}
+}
+      `,
+    },
+    {
+      code: `
+class MyClass {
+  1(): Promise<void> {}
+}
+
+class MySubclass extends MyClass {
+  async [1](): void {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+class MyClass {
+  stringLiteral(): Promise<void> {}
+}
+
+class MySubclass extends MyClass {
+  async 'stringLiteral'(): void {}
+}
+
+      `,
+    },
+    {
+      code: `
+class MyClass {
+  computedStringLiteral(): Promise<void> {}
+}
+
+class MySubclass extends MyClass {
+  async ['computedStringLiteral'](): void {}
+}
+      `,
+    },
+    {
+      code: `
+class MyClass {
+  [Symbol.iterator](): Promise<void> {}
+}
+
+class MySubclass extends MyClass {
+  async [Symbol.iterator](): void {}
+}
+      `,
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+class MyClass {
+  [staticSymbol](): Promise<void> {}
+}
+
+class MySubclass extends MyClass {
+  async [staticSymbol](): void {}
+}
+      `,
+    },
+    // interfaces with various symbols, matching `() => void` with `() => {}`
+    {
+      code: `
+interface MyInterface {
+  1(): void;
+}
+
+class MySubclass extends MyInterface {
+  1(): void {}
+}
+      `,
+    },
+    {
+      code: `
+interface MyInterface {
+  1(): void;
+}
+
+class MySubclass extends MyInterface {
+  [1](): void {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+interface MyInterface {
+  stringLiteral(): void;
+}
+
+class MySubclass extends MyInterface {
+  'stringLiteral'(): void {}
+}
+
+      `,
+    },
+    {
+      code: `
+interface MyInterface {
+  computedStringLiteral(): void;
+}
+
+class MySubclass extends MyInterface {
+  ['computedStringLiteral'](): void {}
+}
+      `,
+    },
+    {
+      code: `
+interface MyInterface {
+  [Symbol.iterator](): void;
+}
+
+class MySubclass extends MyInterface {
+  [Symbol.iterator](): void {}
+}
+      `,
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+interface MyInterface {
+  [staticSymbol](): void;
+}
+
+class MySubclass extends MyInterface {
+  [staticSymbol](): void {}
+}
+      `,
+    },
+
+    // classes with various symbols, matching `() => Promise<void>` with `async () => {}`
+    {
+      code: `
+interface MyInterface {
+  1(): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async 1(): void {}
+}
+      `,
+    },
+    {
+      code: `
+interface MyInterface {
+  1(): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async [1](): void {}
+}
+      `,
+    },
+    {
+      code: noFormat`
+interface MyInterface {
+  stringLiteral(): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async 'stringLiteral'(): void {}
+}
+
+      `,
+    },
+    {
+      code: `
+interface MyInterface {
+  computedStringLiteral(): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async ['computedStringLiteral'](): void {}
+}
+      `,
+    },
+    {
+      code: `
+interface MyInterface {
+  [Symbol.iterator](): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async [Symbol.iterator](): void {}
+}
+      `,
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+interface MyInterface {
+  [staticSymbol](): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async [staticSymbol](): void {}
+}
+      `,
+    },
+    // `undefined` symbol
     {
       code: `
 let a;
@@ -1124,102 +1497,6 @@ type O = {
 const obj: O = {
   async [a]() {},
 };
-      `,
-    },
-    {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
-
-class MyClass {
-  1(): void {}
-  2(): void {}
-  stringLiteral(): void {}
-  computedStringLiteral(): void {}
-  [Symbol.asyncIterator](): void {}
-  [staticSymbol](): void {}
-}
-
-class MySubclassExtendsMyClass extends MyClass {
-  1(): void {}
-  [2](): void {}
-  'stringLiteral'(): void {}
-  ['computedStringLiteral'](): void {}
-  [Symbol.asyncIterator](): void {}
-  [staticSymbol](): void {}
-  ownProperty(): void {}
-}
-      `,
-    },
-    {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
-
-class MyClass {
-  1(): Promise<void> {}
-  2(): Promise<void> {}
-  stringLiteral(): Promise<void> {}
-  computedStringLiteral(): Promise<void> {}
-  [Symbol.asyncIterator](): Promise<void> {}
-  [staticSymbol](): Promise<void> {}
-}
-
-class MySubclassExtendsMyClass extends MyClass {
-  async 1(): Promise<void> {}
-  async [2](): Promise<void> {}
-  async 'stringLiteral'(): Promise<void> {}
-  async ['computedStringLiteral'](): Promise<void> {}
-  async [Symbol.asyncIterator](): Promise<void> {}
-  async [staticSymbol](): Promise<void> {}
-  async ownProperty(): Promise<void> {}
-}
-      `,
-    },
-    {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
-
-interface MyInterface {
-  1(): void;
-  2(): void;
-  stringLiteral(): void;
-  computedStringLiteral(): void;
-  [Symbol.asyncIterator](): void;
-  [staticSymbol](): void;
-}
-
-class MySubinterfaceExtendsMyInterface extends MyInterface {
-  async 1(): void;
-  async [2](): void;
-  async 'stringLiteral'(): void;
-  async ['computedStringLiteral'](): void;
-  async [Symbol.asyncIterator](): void;
-  async [staticSymbol](): void;
-  async ownProperty(): void;
-}
-      `,
-    },
-    {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
-
-interface MyInterface {
-  1(): Promise<void>;
-  2(): Promise<void>;
-  stringLiteral(): Promise<void>;
-  computedStringLiteral(): Promise<void>;
-  [Symbol.asyncIterator](): Promise<void>;
-  [staticSymbol](): Promise<void>;
-}
-
-class MySubinterfaceExtendsMyInterface extends MyInterface {
-  async 1(): Promise<void>;
-  async [2](): Promise<void>;
-  async 'stringLiteral'(): Promise<void>;
-  async ['computedStringLiteral'](): Promise<void>;
-  async [Symbol.asyncIterator](): Promise<void>;
-  async [staticSymbol](): Promise<void>;
-  async ownProperty(): Promise<void>;
-}
       `,
     },
     {
@@ -2745,175 +3022,280 @@ const obj: O = {
         },
       ],
     },
+    // assignment with various symbols, matching `() => void` with `async () => {}`
     {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
+      code: `
 type O = {
   1: () => void;
-  2: () => void;
+};
+
+const obj: O = {
+  async 1() {},
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = {
+  1: () => void;
+};
+
+const obj: O = {
+  async [1]() {},
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: noFormat`
+type O = {
   stringLiteral: () => void;
+};
+
+const obj: O = {
+  async 'stringLiteral'() {},
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = {
   computedStringLiteral: () => void;
+};
+
+const obj: O = {
+  async ['computedStringLiteral']() {},
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = {
   [Symbol.iterator]: () => void;
+};
+
+const obj: O = {
+  async [Symbol.iterator]() {},
+};
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+const staticSymbol = Symbol.for('static symbol');
+
+type O = {
   [staticSymbol]: () => void;
 };
+
 const obj: O = {
-  async 1() {
-    return 0;
-  },
-  async [2]() {
-    return 0;
-  },
-  async 'stringLiteral'() {
-    return 0;
-  },
-  async ['computedStringLiteral']() {
-    return 0;
-  },
-  async [Symbol.iterator]() {
-    return 0;
-  },
-  async [staticSymbol]() {
-    return 0;
-  },
-  async ownProperty() {
-    return 0;
-  }
+  async [staticSymbol]() {},
 };
       `,
       errors: [
         {
-          line: 14,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 17,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 20,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 23,
-          messageId: 'voidReturnProperty',
-        },
-        {
-          line: 26,
+          line: 6,
           messageId: 'voidReturnProperty',
         },
       ],
     },
+    // classes with various symbols, matching `() => void` with `async () => {}`
     {
-      code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
+      code: `
 class MyClass {
-  1(): void {
-    return;
-  }
-  2(): void {
-    return;
-  }
-  stringLiteral(): void {
-    return;
-  }
-  computedStringLiteral(): void {
-    return;
-  }
-  [Symbol.asyncIterator](): void {
-    return;
-  }
-  [staticSymbol](): void {
-    return;
-  }
+  1(): void {}
 }
-class MySubclassExtendsMyClass extends MyClass {
-  async 1(): Promise<void> {
-    await Promise.resolve();
-  }
-  async [2](): Promise<void> {
-    await Promise.resolve();
-  }
-  async 'stringLiteral'(): Promise<void> {
-    await Promise.resolve();
-  }
-  async ['computedStringLiteral'](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [Symbol.asyncIterator](): Promise<void> {
-    await Promise.resolve();
-  }
-  async [staticSymbol](): Promise<void> {
-    await Promise.resolve();
-  }
-  async ownProperty(): Promise<void> {
-    await Promise.resolve();
-  }
+
+class MySubclass extends MyClass {
+  async 1(): Promise<void> {}
 }
       `,
       errors: [
         {
-          line: 26,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  1(): void {}
+}
+
+class MySubclass extends MyClass {
+  async [1](): Promise<void> {}
+}
+      `,
+      errors: [
         {
-          line: 29,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 32,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 35,
-          messageId: 'voidReturnInheritedMethod',
-        },
-        {
-          line: 38,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
       ],
     },
     {
       code: noFormat`
-const staticSymbol = Symbol.for('static symbol');
-interface MyInterface {
-  1(): void
-  2(): void
-  stringLiteral(): void
-  computedStringLiteral(): void
-  [Symbol.asyncIterator](): void
-  [staticSymbol](): void
+class MyClass {
+  stringLiteral(): void {}
 }
-interface MySubinterfaceExtendsMyInterface extends MyInterface {
-  1(): Promise<void>
-  [2](): Promise<void>
-  'stringLiteral'(): Promise<void>
-  ['computedStringLiteral'](): Promise<void>
-  [Symbol.asyncIterator](): Promise<void>
-  [staticSymbol](): Promise<void>
-  ownProperty(): Promise<void>
+
+class MySubclass extends MyClass {
+  async 'stringLiteral'(): Promise<void> {}
 }
       `,
       errors: [
         {
-          line: 14,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  computedStringLiteral(): void {}
+}
+
+class MySubclass extends MyClass {
+  async ['computedStringLiteral'](): Promise<void> {}
+}
+      `,
+      errors: [
         {
-          line: 15,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    {
+      code: `
+class MyClass {
+  [Symbol.asyncIterator](): void {}
+}
+
+class MySubclass extends MyClass {
+  async [Symbol.asyncIterator](): Promise<void> {}
+}
+      `,
+      errors: [
         {
-          line: 16,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    // interfaces with various symbols, matching `() => void` with `() => Promise<void>`
+    {
+      code: `
+interface MyInterface {
+  1(): void;
+}
+
+interface MySubinterface extends MyInterface {
+  1(): Promise<void>;
+}
+      `,
+      errors: [
         {
-          line: 17,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  1(): void;
+}
+
+interface MySubinterface extends MyInterface {
+  [1](): Promise<void>;
+}
+      `,
+      errors: [
         {
-          line: 18,
-          messageId: 'voidReturnInheritedMethod',
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  stringLiteral(): void;
+}
+
+interface MySubinterface extends MyInterface {
+  'stringLiteral'(): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  computedStringLiteral(): void;
+}
+
+interface MySubinterface extends MyInterface {
+  ['computedStringLiteral'](): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+interface MyInterface {
+  [Symbol.asyncIterator](): void;
+}
+
+interface MySubinterface extends MyInterface {
+  [Symbol.asyncIterator](): Promise<void>;
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnProperty',
         },
       ],
     },
