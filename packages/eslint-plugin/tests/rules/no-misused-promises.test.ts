@@ -1574,6 +1574,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1588,6 +1591,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1620,6 +1626,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1641,14 +1650,23 @@ function f(): O {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 12,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnProperty',
         },
         {
+          column: 5,
+          endColumn: 14,
+          endLine: 9,
           line: 9,
           messageId: 'voidReturnProperty',
         },
         {
+          column: 5,
+          endColumn: 6,
+          endLine: 10,
           line: 10,
           messageId: 'voidReturnProperty',
         },
@@ -1952,7 +1970,15 @@ const test: ReturnsRecord = () => {
   return { asynchronous: async () => {} };
 };
       `,
-      errors: [{ line: 5, messageId: 'voidReturnProperty' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
     },
     {
       code: `
@@ -2599,9 +2625,129 @@ arrayFn<() => void>(
       ],
     },
     {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+
+const o: HasVoidMethod = {
+  async f() {
+    return 3;
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+
+const o: HasVoidMethod = {
+  async f(): Promise<number> {
+    return 3;
+  },
+};
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+const obj: HasVoidMethod = {
+  f() {
+    return Promise.resolve('foo');
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+const obj: HasVoidMethod = {
+  f(): Promise<void> {
+    throw new Error();
+  },
+};
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const asyncFunction = async () => 'foo';
+const obj: O = {
+  f: asyncFunction,
+};
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async (): Promise<string> => 'foo',
+};
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
       code: noFormat`
 const staticSymbol = Symbol.for('static symbol');
-
 type O = {
   1: () => void;
   2: () => void;
@@ -2610,7 +2756,6 @@ type O = {
   [Symbol.iterator]: () => void;
   [staticSymbol]: () => void;
 };
-
 const obj: O = {
   async 1() {
     return 0;
@@ -2661,7 +2806,6 @@ const obj: O = {
     {
       code: noFormat`
 const staticSymbol = Symbol.for('static symbol');
-
 class MyClass {
   1(): void {
     return;
@@ -2682,7 +2826,6 @@ class MyClass {
     return;
   }
 }
-
 class MySubclassExtendsMyClass extends MyClass {
   async 1(): Promise<void> {
     await Promise.resolve();
@@ -2733,7 +2876,6 @@ class MySubclassExtendsMyClass extends MyClass {
     {
       code: noFormat`
 const staticSymbol = Symbol.for('static symbol');
-
 interface MyInterface {
   1(): void
   2(): void
@@ -2742,7 +2884,6 @@ interface MyInterface {
   [Symbol.asyncIterator](): void
   [staticSymbol](): void
 }
-
 interface MySubinterfaceExtendsMyInterface extends MyInterface {
   1(): Promise<void>
   [2](): Promise<void>
