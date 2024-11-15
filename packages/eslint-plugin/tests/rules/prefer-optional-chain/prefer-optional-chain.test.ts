@@ -673,67 +673,148 @@ describe('if block with a single statment matches part of the condition', () => 
   ruleTester.run('prefer-optional-chain', rule, {
     invalid: [
       {
-        code: noFormat`if (foo) { foo.bar(); }`,
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) {
+            foo.bar();
+          }
+        `,
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [{ allowIfStatements: true }],
-        output: 'foo?.bar();',
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          foo?.bar();
+        `,
       },
       {
-        code: noFormat`if (foo) { foo.bar() }`,
+        // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) {
+            foo.bar()
+          }
+        `,
         errors: [{ messageId: 'preferOptionalChain' }],
         options: [{ allowIfStatements: true }],
-        output: 'foo?.bar()',
-      },
-      {
-        code: 'if (foo) foo.bar();',
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo?.bar();',
-      },
-      {
-        code: noFormat`if (foo) foo.bar()`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo?.bar()',
-      },
-      {
-        code: noFormat`if (foo) { foo(); }`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo?.();',
-      },
-      {
-        code: noFormat`if (foo) { foo[bar](); }`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo?.[bar]();',
-      },
-      {
-        code: noFormat`if (foo[bar]) { foo[bar].baz(); }`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo[bar]?.baz();',
-      },
-      {
-        code: noFormat`if (foo.bar.baz()) { foo.bar.baz().bazz(); }`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo.bar.baz()?.bazz();',
-      },
-      {
-        code: noFormat`if (foo && foo.bar && foo.bar.baz) { foo.bar.baz.bazz(); }`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo?.bar?.baz?.bazz();',
-      },
-      {
-        code: noFormat`if (foo) { foo.bar.baz && foo.bar.baz(); }`,
-        errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
-        output: 'foo?.bar.baz?.();',
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          foo?.bar()
+        `,
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) foo.bar();
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          foo?.bar();
+        `,
+      },
+      {
+        // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) foo.bar()
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          foo?.bar()
+        `,
+      },
+      {
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) {
+            foo();
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          foo?.();
+        `,
+      },
+      {
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          declare const bar: 'bar';
+          if (foo) {
+            foo[bar]();
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          declare const bar: 'bar';
+          foo?.[bar]();
+        `,
+      },
+      {
+        code: `
+          declare const foo: { bar?: { baz: () => void } };
+          declare const bar: 'bar';
+          if (foo[bar]) {
+            foo[bar].baz();
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: { bar?: { baz: () => void } };
+          declare const bar: 'bar';
+          foo[bar]?.baz();
+        `,
+      },
+      {
+        code: `
+          declare const foo: { bar: { baz: () => undefined | { bazz: () => void } } };
+          if (foo.bar.baz()) {
+            foo.bar.baz().bazz();
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: { bar: { baz: () => undefined | { bazz: () => void } } };
+          foo.bar.baz()?.bazz();
+        `,
+      },
+      {
+        code: `
+          declare const foo: { bar: { baz: () => undefined | { bazz: () => void } } };
+          if (foo && foo.bar && foo.bar.baz) {
+            foo.bar.baz.bazz();
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: { bar: { baz: () => undefined | { bazz: () => void } } };
+          foo?.bar?.baz?.bazz();
+        `,
+      },
+      {
+        code: `
+          if (foo) {
+            foo.bar.baz && foo.bar.baz();
+          }
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          foo?.bar.baz?.();
+        `,
+      },
+      {
+        code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             // before expression
             /** multi
@@ -750,6 +831,7 @@ describe('if block with a single statment matches part of the condition', () => 
               {
                 messageId: 'optionalChainSuggest',
                 output: `
+          declare const foo: undefined | { bar: () => void };
           // before expression
           /** multi
             line */
@@ -766,6 +848,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             // comment1
             // comment2
@@ -779,6 +862,7 @@ describe('if block with a single statment matches part of the condition', () => 
               {
                 messageId: 'optionalChainSuggest',
                 output: `
+          declare const foo: undefined | { bar: () => void };
           // comment1
           // comment2
           foo?.bar();
@@ -791,6 +875,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             foo.bar(); // comment
           }
@@ -802,6 +887,7 @@ describe('if block with a single statment matches part of the condition', () => 
               {
                 messageId: 'optionalChainSuggest',
                 output: `
+          declare const foo: undefined | { bar: () => void };
           foo?.bar();
           // comment
         `,
@@ -813,6 +899,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             foo.bar();
             // comment 1
@@ -826,6 +913,7 @@ describe('if block with a single statment matches part of the condition', () => 
               {
                 messageId: 'optionalChainSuggest',
                 output: `
+          declare const foo: undefined | { bar: () => void };
           foo?.bar();
           // comment 1
           // comment 2
@@ -853,19 +941,35 @@ describe('if block with a single statment matches part of the condition', () => 
     ],
     valid: [
       {
-        code: noFormat`if (foo) { foo.bar(); }`,
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) {
+            foo.bar();
+          }
+        `,
         options: [{ allowIfStatements: false }],
       },
       {
-        code: noFormat`if (foo) { foo.bar; }`,
-        options: [{ allowIfStatements: true }],
-      },
-      {
-        code: noFormat`if (foo) { foo.bar?.baz; }`,
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) {
+            foo.bar;
+          }
+        `,
         options: [{ allowIfStatements: true }],
       },
       {
         code: `
+          declare const foo: undefined | { bar: { baz: unknown } };
+          if (foo) {
+            foo.bar?.baz;
+          }
+        `,
+        options: [{ allowIfStatements: true }],
+      },
+      {
+        code: `
+          declare const foo: undefined | { bar: VoidFunction; baz: VoidFunction };
           if (foo) {
             foo.bar();
             foo.baz();
@@ -895,6 +999,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const x: null | { bar: () => string };
           if (foo && typeof window === 'undefined') {
             foo.bar();
           }
@@ -903,6 +1008,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             typeof window === 'undefined' && foo.bar();
           }
@@ -911,6 +1017,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             foo.bar() && typeof window === 'undefined';
           }
@@ -919,6 +1026,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: undefined | { bar: () => void };
           if (foo) {
             if (foo.bar) {
               console.log(window);
@@ -929,6 +1037,7 @@ describe('if block with a single statment matches part of the condition', () => 
       },
       {
         code: `
+          declare const foo: false | { bar: () => void };
           if (foo) {
             foo.bar();
           }
