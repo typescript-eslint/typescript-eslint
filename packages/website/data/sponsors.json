@@ -73,7 +73,7 @@
     "id": "THANKS.DEV",
     "image": "https://images.opencollective.com/thanks-dev/ed78b39/logo.png",
     "name": "THANKS.DEV",
-    "totalDonations": 208805,
+    "totalDonations": 239092,
     "website": "https://thanks.dev"
   },
   {
@@ -154,6 +154,13 @@
     "website": "https://www.future-processing.com/"
   },
   {
+    "id": "syntaxfm",
+    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
+    "name": "Syntax",
+    "totalDonations": 51579,
+    "website": "https://syntax.fm"
+  },
+  {
     "id": "Skunk Team",
     "image": "https://images.opencollective.com/skunk-team/3ddba2f/logo.png",
     "name": "Skunk Team",
@@ -173,13 +180,6 @@
     "name": "Joe Alden",
     "totalDonations": 48000,
     "website": "https://joealden.com"
-  },
-  {
-    "id": "syntaxfm",
-    "image": "https://avatars.githubusercontent.com/u/130389858?v=4",
-    "name": "Syntax",
-    "totalDonations": 47542,
-    "website": "https://syntax.fm"
   },
   {
     "id": "CryptoNewsZ",
@@ -322,25 +322,25 @@
     "website": "https://paddn.com/"
   },
   {
-    "id": "Now4real",
-    "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
-    "name": "Now4real",
-    "totalDonations": 14500,
-    "website": "https://now4real.com/"
-  },
-  {
     "id": "codecov",
     "image": "https://avatars.githubusercontent.com/u/8226205?v=4",
     "name": "Codecov",
-    "totalDonations": 13681,
+    "totalDonations": 14808,
     "website": "https://codecov.io/"
   },
   {
     "id": "getsentry",
     "image": "https://avatars.githubusercontent.com/u/1396951?v=4",
     "name": "Sentry",
-    "totalDonations": 12985,
+    "totalDonations": 14519,
     "website": "https://sentry.io"
+  },
+  {
+    "id": "Now4real",
+    "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
+    "name": "Now4real",
+    "totalDonations": 14500,
+    "website": "https://now4real.com/"
   },
   {
     "id": "Knowledge Work",
