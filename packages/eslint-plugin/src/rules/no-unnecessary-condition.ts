@@ -41,41 +41,32 @@ const getValueOfLiteralType = (
   return type.value;
 };
 
-const isFalsyBigInt = (type: ts.Type): boolean => {
-  return (
-    tsutils.isLiteralType(type) &&
-    valueIsPseudoBigInt(type.value) &&
-    !getValueOfLiteralType(type)
-  );
-};
-const isTruthyLiteral = (type: ts.Type): boolean =>
-  tsutils.isTrueLiteralType(type) ||
-  (type.isLiteral() && !!getValueOfLiteralType(type));
-
-const isPossiblyFalsy = (type: ts.Type): boolean =>
+const isPossiblyFalsy = (
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  falsyTypes: ts.Type[],
+): boolean =>
   tsutils
     .unionTypeParts(type)
-    // Intersections like `string & {}` can also be possibly falsy,
-    // requiring us to look into the intersection.
     .flatMap(type => tsutils.intersectionTypeParts(type))
-    // PossiblyFalsy flag includes literal values, so exclude ones that
-    // are definitely truthy
-    .filter(t => !isTruthyLiteral(t))
-    .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
+    .some(type =>
+      falsyTypes.some(falsyType => checker.isTypeAssignableTo(falsyType, type)),
+    );
 
-const isPossiblyTruthy = (type: ts.Type): boolean =>
+const isPossiblyTruthy = (checker: ts.TypeChecker, type: ts.Type): boolean =>
   tsutils
     .unionTypeParts(type)
-    .map(type => tsutils.intersectionTypeParts(type))
+    .map(unionPart => tsutils.intersectionTypeParts(unionPart))
     .some(intersectionParts =>
-      // It is possible to define intersections that are always falsy,
-      // like `"" & { __brand: string }`.
       intersectionParts.every(
-        type =>
-          !tsutils.isFalsyType(type) &&
-          // below is a workaround for ts-api-utils bug
-          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
-          !isFalsyBigInt(type),
+        // It is possible to define intersections that are always falsy,
+        // like `"" & { __brand: string }`.
+        intersectionPart =>
+          !getFalsyTypes(checker)
+            .map(({ type }) => type)
+            .some(falsyType =>
+              checker.isTypeAssignableTo(intersectionPart, falsyType),
+            ),
       ),
     );
 
@@ -165,6 +156,47 @@ function booleanComparison(
       // @ts-expect-error: we don't care if the comparison seems unintentional.
       return left >= right;
   }
+}
+
+function getFalsyTypes(checker: ts.TypeChecker) {
+  // Missing 0n.
+  return [
+    {
+      type: checker.getNullType(),
+      value: null,
+    },
+    {
+      type: checker.getUndefinedType(),
+      value: undefined,
+    },
+    {
+      type: checker.getFalseType(),
+      value: false,
+    },
+    {
+      type: checker.getStringLiteralType(''),
+      value: '',
+    },
+    {
+      type: checker.getNumberLiteralType(0),
+      value: 0,
+    },
+    {
+      type: checker.getNumberLiteralType(-0),
+      value: -0,
+    },
+    {
+      type: checker.getNumberLiteralType(NaN),
+      value: NaN,
+    },
+    {
+      type: checker.getBigIntLiteralType({ base10Value: '0', negative: false }),
+      value: 0n,
+    },
+  ] as const satisfies {
+    type: ts.Type;
+    value: unknown;
+  }[];
 }
 
 // #endregion
@@ -399,9 +431,15 @@ export default createRule<Options, MessageId>({
 
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
-      } else if (!isPossiblyTruthy(type)) {
+      } else if (!isPossiblyTruthy(checker, type)) {
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
-      } else if (!isPossiblyFalsy(type)) {
+      } else if (
+        !isPossiblyFalsy(
+          checker,
+          type,
+          getFalsyTypes(checker).map(({ type }) => type),
+        )
+      ) {
         messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
       }
 
@@ -655,13 +693,21 @@ export default createRule<Options, MessageId>({
         if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
           return;
         }
-        if (!returnTypes.some(isPossiblyFalsy)) {
+        if (
+          !returnTypes.some(type =>
+            isPossiblyFalsy(
+              checker,
+              type,
+              getFalsyTypes(checker).map(({ type }) => type),
+            ),
+          )
+        ) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(isPossiblyTruthy)) {
+        if (!returnTypes.some(type => isPossiblyTruthy(checker, type))) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
