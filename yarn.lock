@@ -5814,6 +5814,8 @@ __metadata:
     rimraf: "*"
     ts-api-utils: ^1.3.0
     typescript: "*"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -5978,6 +5980,9 @@ __metadata:
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -19557,6 +19562,8 @@ __metadata:
     prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
