@@ -3431,10 +3431,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:^8.57.0":
-  version: 8.57.0
-  resolution: "@eslint/js@npm:8.57.0"
-  checksum: 315dc65b0e9893e2bff139bddace7ea601ad77ed47b4550e73da8c9c2d2766c7a575c3cddf17ef85b8fd6a36ff34f91729d0dcca56e73ca887c10df91a41b0bb
+"@eslint/js@npm:^9.0.0":
+  version: 9.15.0
+  resolution: "@eslint/js@npm:9.15.0"
+  checksum: 8b2aa35b62c1969c5e3aa5e33b4e072cc450b95ee9bc08b5a84aa5cbed10a01a9a8f0463b8bb3768ceeb5abfaa82abfb95650061338c3b467835757b62ffc4ba
   languageName: node
   linkType: hard
 
@@ -5877,7 +5877,7 @@ __metadata:
     "@babel/types": ^7.24.0
     "@eslint/compat": ^1.0.1
     "@eslint/eslintrc": ^2.1.4
-    "@eslint/js": ^8.57.0
+    "@eslint/js": ^9.0.0
     "@jest/types": 29.6.3
     "@nx/devkit": 20.0.0
     "@nx/eslint": 20.0.0
@@ -11117,16 +11117,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globalthis@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "globalthis@npm:1.0.3"
-  dependencies:
-    define-properties: ^1.1.3
-  checksum: fbd7d760dc464c886d0196166d92e5ffb4c84d0730846d6621a39fbbc068aeeb9c8d1421ad330e94b7bca4bb4ea092f5f21f3d36077812af5d098b4dc006c998
-  languageName: node
-  linkType: hard
-
-"globalthis@npm:^1.0.4":
+"globalthis@npm:^1.0.3, globalthis@npm:^1.0.4":
   version: 1.0.4
   resolution: "globalthis@npm:1.0.4"
   dependencies:
