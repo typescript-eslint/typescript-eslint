@@ -201,18 +201,18 @@ function overloadingThatCanReturnPromise(
 }
     `,
     `
-export function a(): Promise<void>;
-export function a(x: boolean): void;
-export function a(x?: boolean) {
+function a(): Promise<void>;
+function a(x: boolean): void;
+function a(x?: boolean) {
   if (x == null) return Promise.reject(new Error());
   throw new Error();
 }
     `,
     {
       code: `
-export function overloadingThatIncludeUnknown(): number;
-export function overloadingThatIncludeUnknown(a: boolean): unknown;
-export function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+function overloadingThatIncludeUnknown(): number;
+function overloadingThatIncludeUnknown(a: boolean): unknown;
+function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
   return Promise.resolve(5);
 }
       `,
@@ -220,9 +220,9 @@ export function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
     },
     {
       code: `
-export function overloadingThatIncludeAny(): number;
-export function overloadingThatIncludeAny(a: boolean): unknown;
-export function overloadingThatIncludeAny(a?: boolean): unknown | number {
+function overloadingThatIncludeAny(): number;
+function overloadingThatIncludeAny(a: boolean): unknown;
+function overloadingThatIncludeAny(a?: boolean): unknown | number {
   return Promise.resolve(5);
 }
       `,
@@ -861,9 +861,9 @@ async function overloadingThatCanReturnPromise(
     },
     {
       code: `
-export function overloadingThatIncludeAny(): number;
-export function overloadingThatIncludeAny(a: boolean): any;
-export function overloadingThatIncludeAny(a?: boolean): any | number {
+function overloadingThatIncludeAny(): number;
+function overloadingThatIncludeAny(a: boolean): any;
+function overloadingThatIncludeAny(a?: boolean): any | number {
   return Promise.resolve(5);
 }
       `,
