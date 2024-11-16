@@ -200,6 +200,14 @@ function overloadingThatCanReturnPromise(
   return Promise.resolve(5);
 }
     `,
+    `
+export function a(): Promise<void>;
+export function a(x: boolean): void;
+export function a(x?: boolean) {
+  if (x == null) return Promise.reject(new Error());
+  throw new Error();
+}
+    `,
     {
       code: `
 export function overloadingThatIncludeUnknown(): number;
