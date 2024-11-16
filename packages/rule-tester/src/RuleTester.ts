@@ -2,7 +2,7 @@
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/lib/rule-tester/rule-tester.js
 
 import type * as ParserType from '@typescript-eslint/parser';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree, TSUtils } from '@typescript-eslint/utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
@@ -482,7 +482,7 @@ export class RuleTester extends TestFramework {
   run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
-    test: RunTests<MessageIds, Options>,
+    test: RunTests<TSUtils.NoInfer<MessageIds>, TSUtils.NoInfer<Options>>,
   ): void {
     const constructor = this.constructor as typeof RuleTester;
 
@@ -537,7 +537,7 @@ export class RuleTester extends TestFramework {
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
-      test: ValidTestCase<Options>,
+      test: ValidTestCase<TSUtils.NoInfer<Options>>,
     ): 'it' | 'itOnly' | 'itSkip' {
       if (test.skip) {
         return 'itSkip';
@@ -594,7 +594,8 @@ export class RuleTester extends TestFramework {
                 this.#testInvalidTemplate(
                   ruleName,
                   rule,
-                  invalid,
+                  // no need to pass no infer type parameter down to private methods
+                  invalid as InvalidTestCase<MessageIds, Options>,
                   seenInvalidTestCases,
                 );
               } finally {
