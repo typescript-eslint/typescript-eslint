@@ -453,7 +453,7 @@ function test({
 function test({
   [Symbol.iterator]: renamed,
 }: {
-\u0020\u0020
+  
   [Symbol.iterator]: boolean;
 }) {}
       `,
@@ -712,7 +712,7 @@ function test({
   used,
 }: {
   used: boolean;
-\u0020\u0020
+  
   [i: string]: boolean;
 }) {}
       `,
@@ -734,7 +734,7 @@ function test({
 }: {
   used: boolean;
   [i: number]: boolean;
-\u0020\u0020
+  
 }) {}
       `,
             },
@@ -896,7 +896,7 @@ function test({
   used1: string;
   used2: boolean;
   used3: number;
-\u0020\u0020
+  
 }) {}
       `,
             },
@@ -937,7 +937,7 @@ function test({
   used1: {
     used2: boolean;
     used3: number;
-\u0020\u0020\u0020\u0020
+    
   };
 }) {}
       `,
@@ -1028,7 +1028,7 @@ function test({
 }: {
   hello: string;
   2: number;
-\u0020\u0020
+  
 }) {}
       `,
             },
