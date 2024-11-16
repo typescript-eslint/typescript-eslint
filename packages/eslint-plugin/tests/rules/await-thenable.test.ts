@@ -278,6 +278,68 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
 }
       `,
     },
+    {
+      code: `
+async function wrapper<T>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends unknown>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends any>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends number | Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends unknown> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -636,6 +698,92 @@ async function foo() {
           endLine: 6,
           line: 6,
           messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+async function wrapper<T extends number>(value: T) {
+  return await value;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function wrapper<T extends number>(value: T) {
+  return  value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return  value;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return  value;
+  }
+}
+      `,
+            },
+          ],
         },
       ],
     },
