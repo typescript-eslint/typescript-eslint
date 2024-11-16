@@ -13,11 +13,11 @@ export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 
 export type NamedCreateRuleMeta<
   MessageIds extends string,
-  Options extends readonly unknown[],
   PluginDocs = unknown,
+  Options extends readonly unknown[] = [],
 > = {
   docs: PluginDocs & RuleMetaDataDocs;
-} & Omit<RuleMetaData<MessageIds, Options, PluginDocs>, 'docs'>;
+} & Omit<RuleMetaData<MessageIds, PluginDocs, Options>, 'docs'>;
 
 export interface RuleCreateAndOptions<
   Options extends readonly unknown[],
@@ -35,7 +35,7 @@ export interface RuleWithMeta<
   MessageIds extends string,
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: RuleMetaData<MessageIds, Options, Docs>;
+  meta: RuleMetaData<MessageIds, Docs, Options>;
 }
 
 export interface RuleWithMetaAndName<
@@ -43,7 +43,7 @@ export interface RuleWithMetaAndName<
   MessageIds extends string,
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: NamedCreateRuleMeta<MessageIds, Options, Docs>;
+  meta: NamedCreateRuleMeta<MessageIds, Docs, Options>;
   name: string;
 }
 
@@ -62,7 +62,6 @@ export function RuleCreator<PluginDocs = unknown>(
     Options extends readonly unknown[],
     MessageIds extends string,
   >({
-    defaultOptions,
     meta,
     name,
     ...rule
@@ -70,10 +69,8 @@ export function RuleCreator<PluginDocs = unknown>(
     RuleWithMetaAndName<Options, MessageIds, PluginDocs>
   >): RuleModule<MessageIds, Options, PluginDocs> {
     return createRule<Options, MessageIds, PluginDocs>({
-      defaultOptions,
       meta: {
         ...meta,
-        defaultOptions,
         docs: {
           ...meta.docs,
           url: urlCreator(name),

@@ -18,7 +18,6 @@ describe('RuleCreator', () => {
       },
       defaultOptions: [],
       meta: {
-        defaultOptions: [],
         docs: {
           description: 'some description',
           recommended: 'yes',
@@ -32,7 +31,6 @@ describe('RuleCreator', () => {
       name: 'test',
     });
     expect(rule.meta).toEqual({
-      defaultOptions: [],
       docs: {
         description: 'some description',
         recommended: 'yes',

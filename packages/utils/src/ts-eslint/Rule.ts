@@ -29,8 +29,8 @@ export interface RuleMetaDataDocs {
 
 export interface RuleMetaData<
   MessageIds extends string,
-  Options extends readonly unknown[],
   PluginDocs = unknown,
+  Options extends readonly unknown[] = [],
 > {
   /**
    * True if the rule is deprecated, false otherwise
@@ -70,14 +70,17 @@ export interface RuleMetaData<
    */
   type: 'layout' | 'problem' | 'suggestion';
 
+  /**
+   * Default options the rule will be run with
+   */
   defaultOptions?: Options;
 }
 
 export interface RuleMetaDataWithDocs<
   MessageIds extends string,
-  Options extends readonly unknown[],
   PluginDocs = unknown,
-> extends RuleMetaData<MessageIds, Options, PluginDocs> {
+  Options extends readonly unknown[] = [],
+> extends RuleMetaData<MessageIds, PluginDocs, Options> {
   /**
    * Documentation for the rule
    */
@@ -662,7 +665,7 @@ export interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<MessageIds, Options, Docs>;
+  meta: RuleMetaData<MessageIds, Docs, Options>;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
@@ -677,7 +680,7 @@ export interface RuleModuleWithMetaDocs<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaDataWithDocs<MessageIds, Options, Docs>;
+  meta: RuleMetaDataWithDocs<MessageIds, Docs, Options>;
 }
 
 export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
