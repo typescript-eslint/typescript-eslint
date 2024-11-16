@@ -253,7 +253,7 @@ describe('Validating rule docs', () => {
         const headings = tokens.filter(tokenIsH2);
 
         headings.forEach(heading => {
-          const nonCodeText = heading.text.replace(/`[^`]*`/g, '');
+          const nonCodeText = heading.text.replaceAll(/`[^`]*`/g, '');
           expect(nonCodeText).toBe(titleCase(nonCodeText));
         });
       });
