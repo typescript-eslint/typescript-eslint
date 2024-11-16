@@ -16,6 +16,19 @@ const baseRule = getESLintCoreRule('no-magic-numbers');
 type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [
+  {
+    detectObjects: false,
+    enforceConst: false,
+    ignore: [],
+    ignoreArrayIndexes: false,
+    ignoreEnums: false,
+    ignoreNumericLiteralTypes: false,
+    ignoreReadonlyClassProperties: false,
+    ignoreTypeIndexes: false,
+  },
+];
+
 // Extend base schema with additional property to ignore TS numeric literal types
 const schema = deepMerge(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
@@ -49,6 +62,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Disallow magic numbers',
       extendsBaseRule: true,
@@ -56,18 +70,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [schema],
   },
-  defaultOptions: [
-    {
-      detectObjects: false,
-      enforceConst: false,
-      ignore: [],
-      ignoreArrayIndexes: false,
-      ignoreEnums: false,
-      ignoreNumericLiteralTypes: false,
-      ignoreReadonlyClassProperties: false,
-      ignoreTypeIndexes: false,
-    },
-  ],
+  defaultOptions,
   create(context, [options]) {
     const rules = baseRule.create(context);
 

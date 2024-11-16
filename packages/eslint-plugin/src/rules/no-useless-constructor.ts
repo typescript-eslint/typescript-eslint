@@ -15,6 +15,8 @@ const baseRule = getESLintCoreRule('no-useless-constructor');
 type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [];
+
 /**
  * Check if method with accessibility is not useless
  */
@@ -47,6 +49,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-useless-constructor',
   meta: {
     type: 'problem',
+    defaultOptions,
     docs: {
       description: 'Disallow unnecessary constructors',
       extendsBaseRule: true,
@@ -56,7 +59,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  defaultOptions: [],
+  defaultOptions,
   create(context) {
     const rules = baseRule.create(context);
     return {

@@ -15,10 +15,13 @@ const baseRule = getESLintCoreRule('init-declarations');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = ['always'];
+
 export default createRule<Options, MessageIds>({
   name: 'init-declarations',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description:
         'Require or disallow initialization in variable declarations',
@@ -28,7 +31,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  defaultOptions: ['always'],
+  defaultOptions,
   create(context, [mode]) {
     // Make a custom context to adjust the loc of reports where the base
     // rule's behavior is a bit too aggressive with TS-specific syntax (namely,

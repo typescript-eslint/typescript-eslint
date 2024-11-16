@@ -22,10 +22,13 @@ const baseRule = getESLintCoreRule('max-params');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [{ countVoidThis: false, max: 3 }];
+
 export default createRule<Options, MessageIds>({
   name: 'max-params',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description:
         'Enforce a maximum number of parameters in function definitions',
@@ -58,7 +61,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [{ countVoidThis: false, max: 3 }],
+  defaultOptions,
 
   create(context, [{ countVoidThis }]) {
     const baseRules = baseRule.create(context);

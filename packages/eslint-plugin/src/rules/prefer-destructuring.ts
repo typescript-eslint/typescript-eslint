@@ -23,6 +23,20 @@ type Options = [BaseOptions[0], EnforcementOptions];
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [
+  {
+    AssignmentExpression: {
+      array: true,
+      object: true,
+    },
+    VariableDeclarator: {
+      array: true,
+      object: true,
+    },
+  },
+  {},
+];
+
 const destructuringTypeConfig: JSONSchema4 = {
   type: 'object',
   additionalProperties: false,
@@ -71,6 +85,7 @@ export default createRule<Options, MessageIds>({
   name: 'prefer-destructuring',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Require destructuring from arrays and/or objects',
       extendsBaseRule: true,
@@ -81,19 +96,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema,
   },
-  defaultOptions: [
-    {
-      AssignmentExpression: {
-        array: true,
-        object: true,
-      },
-      VariableDeclarator: {
-        array: true,
-        object: true,
-      },
-    },
-    {},
-  ],
+  defaultOptions,
   create(context, [enabledTypes, options]) {
     const {
       enforceForDeclarationWithTypeAnnotation = false,
