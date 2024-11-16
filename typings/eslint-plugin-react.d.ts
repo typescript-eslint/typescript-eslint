@@ -1,14 +1,13 @@
 declare module 'eslint-plugin-react' {
-  import type {
-    ClassicConfig,
-    Linter,
-  } from '@typescript-eslint/utils/ts-eslint';
+  import type { FlatConfig, Linter } from '@typescript-eslint/utils/ts-eslint';
 
   declare const exprt: {
     configs: {
-      all: ClassicConfig.Config;
-      'jsx-runtime': ClassicConfig.Config;
-      recommended: ClassicConfig.Config;
+      flat: {
+        all: FlatConfig.Config;
+        'jsx-runtime': FlatConfig.Config;
+        recommended: FlatConfig.Config;
+      };
     };
     rules: NonNullable<Linter.Plugin['rules']>;
   };
