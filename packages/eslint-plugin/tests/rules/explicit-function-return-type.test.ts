@@ -463,7 +463,8 @@ interface R {
   value: number;
 }
 
-const func = (value: number) => ({ type: 'X', value }) as const satisfies R satisfies R;
+const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R;
       `,
       options: [
         {
@@ -478,7 +479,8 @@ interface R {
   value: number;
 }
 
-const func = (value: number) => ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
+const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
       `,
       options: [
         {
