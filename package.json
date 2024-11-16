@@ -10,11 +10,9 @@
     "hoistingLimits": "workspaces"
   },
   "contributors": [
-    "James Henry <typescript-eslint@jameshenry.blog>",
-    "Nicholas C. Zakas",
     "Brad Zacher <brad.zacher@gmail.com>",
-    "armano2",
-    "Jed Fox"
+    "Josh Goldberg <npm@joshuakgoldberg.com>",
+    "James Henry <typescript-eslint@jameshenry.blog>"
   ],
   "type": "commonjs",
   "license": "BSD-2-Clause",

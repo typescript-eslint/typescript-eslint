@@ -56,6 +56,9 @@
     "@typescript-eslint/parser": "8.14.0",
     "@typescript-eslint/utils": "8.14.0"
   },
+  "peerDependencies": {
+    "eslint": "^8.57.0 || ^9.0.0"
+  },
   "devDependencies": {
     "@jest/types": "29.6.3",
     "downlevel-dts": "*",
