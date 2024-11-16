@@ -27,7 +27,11 @@ export interface RuleMetaDataDocs {
   url?: string;
 }
 
-export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
+export interface RuleMetaData<
+  MessageIds extends string,
+  Options extends readonly unknown[],
+  PluginDocs = unknown,
+> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -65,12 +69,15 @@ export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
    * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
   type: 'layout' | 'problem' | 'suggestion';
+
+  defaultOptions?: Options;
 }
 
 export interface RuleMetaDataWithDocs<
   MessageIds extends string,
+  Options extends readonly unknown[],
   PluginDocs = unknown,
-> extends RuleMetaData<MessageIds, PluginDocs> {
+> extends RuleMetaData<MessageIds, Options, PluginDocs> {
   /**
    * Documentation for the rule
    */
@@ -655,7 +662,7 @@ export interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<MessageIds, Docs>;
+  meta: RuleMetaData<MessageIds, Options, Docs>;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
@@ -670,7 +677,7 @@ export interface RuleModuleWithMetaDocs<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaDataWithDocs<MessageIds, Docs>;
+  meta: RuleMetaDataWithDocs<MessageIds, Options, Docs>;
 }
 
 export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<
