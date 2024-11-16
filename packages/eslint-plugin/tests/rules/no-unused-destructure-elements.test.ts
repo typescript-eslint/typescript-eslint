@@ -222,6 +222,9 @@ function test({
     'function test({ used }: { [i: `_${string}`] }) {}',
     'function test({ hello: used }: { [b] }) {}',
     'function test({ hello: used }: { [i: string, j: number]: string }) {}',
+    `
+function test<R extends string>({ a }: { [i: R]: string }) {}
+    `,
   ],
   invalid: [
     // non-exhaustive destructuring
@@ -1159,6 +1162,28 @@ const { hello }: { hello: string; world: string } = obj;
 declare const obj: unknown;
 
 const { hello }: { hello: string;  } = obj;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test<R extends string>({ 1: a }: { [i: R]: string }) {}
+      `,
+      errors: [
+        {
+          column: 45,
+          data: { key: '[string]', type: 'index signature' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[string]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test<R extends string>({ 1: a }: {  }) {}
       `,
             },
           ],

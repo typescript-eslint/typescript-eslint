@@ -6,6 +6,7 @@ import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getStaticMemberAccessValue,
 } from '../util';
@@ -139,7 +140,10 @@ export default createRule({
         // an index signature must have exactly one parameter, having more
         // is valid syntax, but invalid typescript
         const indexParameter = indexSignature.parameters[0];
-        const indexParameterType = services.getTypeAtLocation(indexParameter);
+        const indexParameterType = getConstrainedTypeAtLocation(
+          services,
+          indexParameter,
+        );
 
         if (
           indexSignatureHasMatchingKey(
