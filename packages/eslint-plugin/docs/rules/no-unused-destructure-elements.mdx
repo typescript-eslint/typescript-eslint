@@ -1,0 +1,39 @@
+---
+description: 'Enforce complete destructuring of inline objects and tuple types.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-unused-destructure-elements** for documentation.
+
+This rule enforces full destructuring of inline object and tuple types, ensuring all properties and elements are explicitly handled.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function foo({ bar }: { bar: string; bazz: string }) {}
+
+const [hello]: [string, number] = arr;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function foo({ bar, bazz }: { bar: string; bazz: string }) {}
+
+const [hello, world]: [string, number] = arr;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your project uses destructuring where only partial values are relevant, this rule may not suit your needs. Consider turning it off.
