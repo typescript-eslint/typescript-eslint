@@ -78,7 +78,7 @@ export default createRule({
 
         const memberKey = getStaticMemberAccessValue(property, context);
 
-        // collect dynamic types which cannot be statically analyzed
+        // collect dynamic keys which we failed to statically analyzed
         if (memberKey === undefined) {
           dynamicProperties.add({ property });
           continue;
