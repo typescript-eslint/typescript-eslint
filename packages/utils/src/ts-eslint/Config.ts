@@ -259,7 +259,7 @@ export namespace FlatConfig {
      */
     ignores?: string[];
     /**
-     * Language specifier.
+     * Language specifier in the form `namespace/language-name` where `namespace` is a plugin name set in the `plugins` field.
      */
     language?: string;
     /**
