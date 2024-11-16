@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-unused-destructure-elements.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function foo({ bar }: { bar: string; bazz: string }) {}
+                                     ~~~~~~~~~~~~ Unused property 'bazz' in destructuring.
+
+const [hello]: [string, number] = arr;
+                        ~~~~~~ Unused key '1' in destructuring.
+"
+`;
+
+exports[`Validating rule docs no-unused-destructure-elements.mdx code examples ESLint output 2`] = `
+"Correct
+
+function foo({ bar, bazz }: { bar: string; bazz: string }) {}
+
+const [hello, world]: [string, number] = arr;
+"
+`;
