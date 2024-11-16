@@ -71,7 +71,11 @@ export interface RuleMetaData<
   type: 'layout' | 'problem' | 'suggestion';
 
   /**
-   * Default options the rule will be run with
+   * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
+   * This merging will be applied directly to `context.options`.
+   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   *
+   * since ESLint 9.15.0
    */
   defaultOptions?: Options;
 }
