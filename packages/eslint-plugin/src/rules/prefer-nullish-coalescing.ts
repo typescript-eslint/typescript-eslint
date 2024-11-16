@@ -477,6 +477,13 @@ function isConditionalTest(node: TSESTree.Node): boolean {
   }
 
   if (
+    parent.type === AST_NODE_TYPES.UnaryExpression &&
+    parent.operator === '!'
+  ) {
+    return isConditionalTest(parent);
+  }
+
+  if (
     (parent.type === AST_NODE_TYPES.ConditionalExpression ||
       parent.type === AST_NODE_TYPES.DoWhileStatement ||
       parent.type === AST_NODE_TYPES.IfStatement ||

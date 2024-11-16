@@ -3,12 +3,13 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
+  Awaitable,
   createRule,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
   isTypeAnyType,
-  isTypeUnknownType,
+  needsToBeAwaited,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
@@ -51,13 +52,11 @@ export default createRule<[], MessageId>({
     return {
       AwaitExpression(node): void {
         const type = services.getTypeAtLocation(node.argument);
-        if (isTypeAnyType(type) || isTypeUnknownType(type)) {
-          return;
-        }
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
+        const certainty = needsToBeAwaited(checker, originalNode, type);
 
-        if (!tsutils.isThenableType(checker, originalNode.expression, type)) {
+        if (certainty === Awaitable.Never) {
           context.report({
             node,
             messageId: 'await',

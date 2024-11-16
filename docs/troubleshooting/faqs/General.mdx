@@ -239,18 +239,22 @@ For example, the following config enables only the recommended config's type-che
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
+{/* prettier-ignore */}
 ```js title="eslint.config.mjs"
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(...tseslint.configs.recommendedTypeCheckedOnly, {
-  languageOptions: {
-    parserOptions: {
-      projectService: true,
-      tsconfigRootDir: import.meta.dirname,
+export default tseslint.config(
+  tseslint.configs.recommendedTypeCheckedOnly,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
-});
+);
 ```
 
 </TabItem>

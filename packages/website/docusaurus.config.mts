@@ -69,6 +69,12 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       {
         items: [
           {
+            className: 'image-link bluesky-link social-link-icon',
+            href: 'https://bsky.app/profile/typescript-eslint.io',
+            label: 'Bluesky',
+            rel: 'me noopener',
+          },
+          {
             className: 'image-link discord-link social-link-icon',
             href: 'https://discord.gg/FSxKq8Tdyg',
             label: 'Discord',

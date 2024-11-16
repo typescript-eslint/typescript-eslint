@@ -33,16 +33,15 @@ export default tseslint.config(
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      // https://github.com/import-js/eslint-plugin-import/issues/2948
-      ['import']: fixupPluginRules(importPlugin),
+      ['import']: importPlugin,
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
-      ['jsx-a11y']: jsxA11yPlugin,
+      // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
+      ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
       // https://github.com/facebook/react/issues/28313
+      ['react']: reactPlugin,
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
-      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
-      ['react']: fixupPluginRules(reactPlugin),
       ['regexp']: regexpPlugin,
       ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
@@ -86,8 +85,8 @@ export default tseslint.config(
 
   // extends ...
   eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
 
   // base config
@@ -462,7 +461,7 @@ export default tseslint.config(
   //
 
   {
-    extends: [...compat.config(eslintPluginPlugin.configs.recommended)],
+    extends: [eslintPluginPlugin.configs['flat/recommended']],
     files: [
       'packages/eslint-plugin-internal/**/*.{ts,tsx,cts,mts}',
       'packages/eslint-plugin-tslint/**/*.{ts,tsx,cts,mts}',
@@ -568,9 +567,10 @@ export default tseslint.config(
 
   {
     extends: [
-      ...compat.config(jsxA11yPlugin.configs.recommended),
-      ...fixupConfigRules(compat.config(reactPlugin.configs.recommended)),
-      ...fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
+      jsxA11yPlugin.flatConfigs.recommended,
+      reactPlugin.configs.flat.recommended,
+      // https://github.com/facebook/react/pull/30774
+      fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     rules: {

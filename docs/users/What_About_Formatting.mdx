@@ -56,8 +56,8 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  ...someOtherConfig,
+  tseslint.configs.recommended,
+  someOtherConfig,
   // Add this line
   prettierConfig,
 );
