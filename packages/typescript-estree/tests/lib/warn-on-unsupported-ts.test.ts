@@ -27,7 +27,7 @@ describe('Warn on unsupported TypeScript version', () => {
     parser.parse('');
     expect(console.log).toHaveBeenCalledWith(
       expect.stringContaining(
-        'WARNING: @typescript-eslint/typescript-estree does not support your TypeScript version.',
+        'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
       ),
     );
   });
