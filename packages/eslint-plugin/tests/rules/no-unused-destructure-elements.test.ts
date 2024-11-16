@@ -237,9 +237,6 @@ function test({
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}
     `,
-    `
-function test({ _a }: { [i: \`_\${string}\`]: number | string }) {}
-    `,
   ],
   invalid: [
     // non-exhaustive destructuring
@@ -1251,6 +1248,29 @@ function test<R extends string>({ 1: a }: { [i: R]: string }) {}
               messageId: 'removeUnusedKey',
               output: `
 function test<R extends string>({ 1: a }: {  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    // misc
+    {
+      code: `
+function test({ used }: { [i: \`_\${string}\`]: number | string }) {}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { key: '[`_${string}`]', type: 'index signature' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[`_${string}`]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test({ used }: {  }) {}
       `,
             },
           ],
