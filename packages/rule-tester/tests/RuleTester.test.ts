@@ -3,6 +3,7 @@ import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
+import path from 'node:path';
 
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 
@@ -1545,6 +1546,303 @@ describe('RuleTester - multipass fixer', () => {
           valid: [],
         });
       }).toThrow('Outputs do not match.');
+    });
+  });
+});
+
+describe('RuleTester - semantic TS errors', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  const ruleTester = new RuleTester({
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: path.join(__dirname, 'fixtures'),
+      },
+    },
+  });
+  const rule: RuleModule<'error'> = {
+    create() {
+      return {};
+    },
+    defaultOptions: [],
+    meta: {
+      messages: {
+        error: 'error',
+      },
+      schema: [],
+      type: 'problem',
+    },
+  };
+  const ruleWithRequiresTypeChecking: RuleModule<
+    'error',
+    [],
+    {
+      requiresTypeChecking: boolean;
+    }
+  > = {
+    create() {
+      return {};
+    },
+    defaultOptions: [],
+    meta: {
+      docs: {
+        description: 'My Rule',
+        requiresTypeChecking: true,
+      },
+      messages: {
+        error: 'error',
+      },
+      schema: [],
+      type: 'problem',
+    },
+  };
+
+  it('does not collect diagnostics when runTSC is not passed', () => {
+    expect(() => {
+      ruleTester.run('my-rule', rule, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo: string = 5',
+          },
+        ],
+      });
+    }).not.toThrow();
+  });
+
+  it('does not collect diagnostics when runTSC is false', () => {
+    expect(() => {
+      ruleTester.run('my-rule', rule, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo: string = 5',
+            runTSC: false,
+          },
+        ],
+      });
+    }).not.toThrow();
+  });
+
+  it('collects diagnostics when runTSC is true', () => {
+    expect(() => {
+      ruleTester.run('my-rule', rule, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo: string = 5',
+            runTSC: true,
+          },
+        ],
+      });
+    }).toThrow("Type 'number' is not assignable to type 'string'.");
+  });
+
+  it('collects diagnostics when meta.docs.requiresTypeChecking is true', () => {
+    expect(() => {
+      ruleTester.run('my-rule', ruleWithRequiresTypeChecking, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo: string = 5',
+          },
+        ],
+      });
+    }).toThrow("Type 'number' is not assignable to type 'string'.");
+  });
+
+  it('does not collect diagnostics when meta.docs.requiresTypeChecking is true, but runTSC is false', () => {
+    expect(() => {
+      ruleTester.run('my-rule', ruleWithRequiresTypeChecking, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo: string = 5',
+            runTSC: false,
+          },
+        ],
+      });
+    }).not.toThrow();
+  });
+
+  it('collects diagnostics when meta.docs.requiresTypeChecking is true, and runTSC is true', () => {
+    expect(() => {
+      ruleTester.run('my-rule', ruleWithRequiresTypeChecking, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo: string = 5',
+            runTSC: true,
+          },
+        ],
+      });
+    }).toThrow("Type 'number' is not assignable to type 'string'.");
+  });
+
+  describe('common errors are ignored', () => {
+    it('ignores top level await', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'await Promise.resolve()',
+              runTSC: true,
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('ignores unused variables', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'const foo = 5',
+              runTSC: true,
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+
+    it('ignores unused properties', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [],
+          valid: [
+            {
+              code: `
+                export class Foo {
+                  private bar = 1;
+                }
+              `,
+              runTSC: true,
+            },
+          ],
+        });
+      }).not.toThrow();
+    });
+  });
+
+  it('collects diagnostics from imported files (not included in tsconfig.json)', () => {
+    expect(() => {
+      ruleTester.run('my-rule', rule, {
+        invalid: [],
+        valid: [
+          {
+            code: 'import { foo } from "./fixture-with-semantic-ts-errors"',
+            runTSC: true,
+          },
+        ],
+      });
+    }).toThrow(
+      `error TS2322: Type '"actual value"' is not assignable to type '"expected value"'.`,
+    );
+  });
+
+  it('collects diagnostics from files included in tsconfig.json', () => {
+    expect(() => {
+      const ruleTester = new RuleTester({
+        languageOptions: {
+          parserOptions: {
+            project: './tsconfig-includes-fixture-with-semantic-ts-errors.json',
+            tsconfigRootDir: path.join(__dirname, 'fixtures'),
+          },
+        },
+      });
+      ruleTester.run('my-rule', rule, {
+        invalid: [],
+        valid: [
+          {
+            code: 'const foo = 1',
+            runTSC: true,
+          },
+        ],
+      });
+    }).toThrow(
+      `error TS2322: Type '"actual value"' is not assignable to type '"expected value"'.`,
+    );
+  });
+
+  describe('multipass fixer', () => {
+    const rule: RuleModule<'error'> = {
+      create(context) {
+        return {
+          'ExpressionStatement > Identifier[name=bar]'(node): void {
+            context.report({
+              fix: fixer => fixer.replaceText(node, 'baz'),
+              messageId: 'error',
+              node,
+            });
+          },
+          'ExpressionStatement > Identifier[name=foo]'(node): void {
+            context.report({
+              fix: fixer => fixer.replaceText(node, 'bar'),
+              messageId: 'error',
+              node,
+            });
+          },
+        };
+      },
+      defaultOptions: [],
+      meta: {
+        fixable: 'code',
+        messages: {
+          error: 'error',
+        },
+        schema: [],
+        type: 'problem',
+      },
+    };
+
+    it('reports the first diagnostics that comes up', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              output: ['bar', 'baz'],
+              runTSC: true,
+            },
+          ],
+          valid: [],
+        });
+      }).toThrow("Cannot find name 'foo'.");
+    });
+
+    it('reports the first diagnostics that comes up (even if TS errors appear after applying fixes)', () => {
+      expect(() => {
+        ruleTester.run('my-rule', rule, {
+          invalid: [
+            {
+              code: `
+                declare const foo: string;
+                foo;
+              `,
+              errors: [{ messageId: 'error' }],
+              output: [
+                `
+                declare const foo: string;
+                bar;
+              `,
+                `
+                declare const foo: string;
+                baz;
+              `,
+              ],
+              runTSC: true,
+            },
+          ],
+          valid: [],
+        });
+      }).toThrow("Cannot find name 'bar'.");
     });
   });
 });

@@ -64,6 +64,10 @@ export interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly options?: Readonly<Options>;
   /**
+   * TODO: add description (or maybe even give a better name?)
+   */
+  readonly runTSC?: boolean;
+  /**
    * Settings for the test case.
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;

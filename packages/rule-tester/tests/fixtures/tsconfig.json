@@ -10,13 +10,5 @@
     "experimentalDecorators": true,
     "skipLibCheck": true
   },
-  "include": [
-    "file.ts",
-    "consistent-type-exports.ts",
-    "deprecated.ts",
-    "mixed-enums-decl.ts",
-    "react.tsx",
-    "var-declaration.ts",
-    "errors.ts"
-  ]
+  "include": ["file.ts"]
 }

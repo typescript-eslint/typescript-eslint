@@ -7,5 +7,6 @@
     "resolveJsonModule": true
   },
   "include": ["src", "typings"],
+  "exclude": ["./tests/fixtures/fixture-with-semantic-ts-errors.ts"],
   "references": [{ "path": "../utils/tsconfig.build.json" }]
 }
