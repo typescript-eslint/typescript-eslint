@@ -1100,6 +1100,44 @@ function test({ [s]: used }: { _one: string; _two: number;  }) {}
         },
       ],
     },
+    {
+      code: `
+declare const a: \`b\${string}\`;
+
+function test({
+  [a]: used,
+}: {
+  [j: string]: string;
+  [i: \`b\${string}\`]: string;
+  [i: \`a\${string}\`]: string;
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '[`a${string}`]', type: 'index signature' },
+          line: 9,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[`a${string}`]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+declare const a: \`b\${string}\`;
+
+function test({
+  [a]: used,
+}: {
+  [j: string]: string;
+  [i: \`b\${string}\`]: string;
+  
+}) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
     // non-function-parameters destructuring
     {
       code: `
