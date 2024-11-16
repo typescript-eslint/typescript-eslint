@@ -278,6 +278,22 @@ async function iterateUsing(arr: Array<AsyncDisposable>) {
 }
       `,
     },
+    {
+      code: `
+declare const promises: Array<Promise<void>>;
+await Promise.all(promises);
+await Promise.allSettled(promises);
+await Promise.race(promises);
+      `,
+    },
+    {
+      code: `
+declare const promises: Iterable<Promise<void>>;
+await Promise.all(promises);
+await Promise.allSettled(promises);
+await Promise.race(promises);
+      `,
+    },
   ],
 
   invalid: [
@@ -636,6 +652,25 @@ async function foo() {
           endLine: 6,
           line: 6,
           messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const booleans: boolean[];
+await Promise.all(booleans);
+await Promise.allSettled(booleans);
+await Promise.race(booleans);
+      `,
+      errors: [
+        {
+          messageId: 'notPromises',
+        },
+        {
+          messageId: 'notPromises',
+        },
+        {
+          messageId: 'notPromises',
         },
       ],
     },

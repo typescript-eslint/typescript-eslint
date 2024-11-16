@@ -1,5 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -8,6 +10,7 @@ import {
   getParserServices,
   isAwaitKeyword,
   isTypeAnyType,
+  isTypeReferenceType,
   isTypeUnknownType,
   nullThrows,
   NullThrowsReasons,
@@ -19,6 +22,7 @@ type MessageId =
   | 'awaitUsingOfNonAsyncDisposable'
   | 'convertToOrdinaryFor'
   | 'forAwaitOfNonAsyncIterable'
+  | 'notPromises'
   | 'removeAwait';
 
 export default createRule<[], MessageId>({
@@ -38,6 +42,7 @@ export default createRule<[], MessageId>({
       convertToOrdinaryFor: 'Convert to an ordinary `for...of` loop.',
       forAwaitOfNonAsyncIterable:
         'Unexpected `for await...of` of a value that is not async iterable.',
+      notPromises: 'Unexpected non-promise input to Promise.{methodName}.',
       removeAwait: 'Remove unnecessary `await`.',
     },
     schema: [],
@@ -167,6 +172,53 @@ export default createRule<[], MessageId>({
           }
         }
       },
+
+      // Check for e.g. `Promise.all(nonPromises)`
+      CallExpression(node): void {
+        if (
+          node.callee.type === AST_NODE_TYPES.MemberExpression &&
+          node.callee.object.type === AST_NODE_TYPES.Identifier &&
+          node.callee.object.name === 'Promise' &&
+          node.callee.property.type === AST_NODE_TYPES.Identifier &&
+          (node.callee.property.name === 'all' ||
+            node.callee.property.name === 'allSettled' ||
+            node.callee.property.name === 'race')
+        ) {
+          // Get the type of the thing being used in the method call.
+          const argument = node.arguments[0];
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (argument === undefined) {
+            return;
+          }
+
+          const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
+          const type = checker.getTypeAtLocation(tsNode);
+          if (!isTypeReferenceType(type) || type.typeArguments === undefined) {
+            return;
+          }
+
+          const typeArg = type.typeArguments[0];
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if (typeArg === undefined) {
+            return;
+          }
+
+          const typeName = getTypeNameSimple(type);
+          const typeArgName = getTypeNameSimple(typeArg);
+
+          if (typeName === 'Array' && typeArgName !== 'Promise') {
+            context.report({
+              loc: node.loc,
+              messageId: 'notPromises',
+            });
+          }
+        }
+      },
     };
   },
 });
+
+/** This is a simplified version of the `getTypeName` utility function. */
+function getTypeNameSimple(type: ts.Type): string | undefined {
+  return type.getSymbol()?.escapedName as string | undefined;
+}
