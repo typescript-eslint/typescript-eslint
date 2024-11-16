@@ -153,7 +153,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        // require at least one return type to be promise/any/unknown
+        // require all potential return types to be promise/any/unknown
         returnTypes.some(
           type =>
             !containsAllTypesByName(
