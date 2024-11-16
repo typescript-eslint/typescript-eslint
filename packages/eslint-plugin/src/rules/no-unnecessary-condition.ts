@@ -53,7 +53,11 @@ const isPossiblyFalsy = (
       falsyTypes.some(falsyType => checker.isTypeAssignableTo(falsyType, type)),
     );
 
-const isPossiblyTruthy = (checker: ts.TypeChecker, type: ts.Type): boolean =>
+const isPossiblyTruthy = (
+  checker: ts.TypeChecker,
+  type: ts.Type,
+  falsyTypes: ts.Type[],
+): boolean =>
   tsutils
     .unionTypeParts(type)
     .map(unionPart => tsutils.intersectionTypeParts(unionPart))
@@ -62,11 +66,9 @@ const isPossiblyTruthy = (checker: ts.TypeChecker, type: ts.Type): boolean =>
         // It is possible to define intersections that are always falsy,
         // like `"" & { __brand: string }`.
         intersectionPart =>
-          !getFalsyTypes(checker)
-            .map(({ type }) => type)
-            .some(falsyType =>
-              checker.isTypeAssignableTo(intersectionPart, falsyType),
-            ),
+          !falsyTypes.some(falsyType =>
+            checker.isTypeAssignableTo(intersectionPart, falsyType),
+          ),
       ),
     );
 
@@ -181,6 +183,7 @@ function getFalsyTypes(checker: ts.TypeChecker) {
       type: checker.getNumberLiteralType(0),
       value: 0,
     },
+    // i honestly don't think this matters, but idk :shrug:
     {
       type: checker.getNumberLiteralType(-0),
       value: -0,
@@ -189,6 +192,7 @@ function getFalsyTypes(checker: ts.TypeChecker) {
       type: checker.getNumberLiteralType(NaN),
       value: NaN,
     },
+    // only available after TS
     {
       type: checker.getBigIntLiteralType({ base10Value: '0', negative: false }),
       value: 0n,
@@ -319,6 +323,8 @@ export default createRule<Options, MessageId>({
       });
     }
 
+    const falsyTypes = getFalsyTypes(checker).map(({ type }) => type);
+
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
       const nodeType = getConstrainedTypeAtLocation(services, node);
       return tsutils
@@ -431,15 +437,9 @@ export default createRule<Options, MessageId>({
 
       if (isTypeFlagSet(type, ts.TypeFlags.Never)) {
         messageId = 'never';
-      } else if (!isPossiblyTruthy(checker, type)) {
+      } else if (!isPossiblyTruthy(checker, type, falsyTypes)) {
         messageId = !isUnaryNotArgument ? 'alwaysFalsy' : 'alwaysTruthy';
-      } else if (
-        !isPossiblyFalsy(
-          checker,
-          type,
-          getFalsyTypes(checker).map(({ type }) => type),
-        )
-      ) {
+      } else if (!isPossiblyFalsy(checker, type, falsyTypes)) {
         messageId = !isUnaryNotArgument ? 'alwaysTruthy' : 'alwaysFalsy';
       }
 
@@ -694,20 +694,16 @@ export default createRule<Options, MessageId>({
           return;
         }
         if (
-          !returnTypes.some(type =>
-            isPossiblyFalsy(
-              checker,
-              type,
-              getFalsyTypes(checker).map(({ type }) => type),
-            ),
-          )
+          !returnTypes.some(type => isPossiblyFalsy(checker, type, falsyTypes))
         ) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(type => isPossiblyTruthy(checker, type))) {
+        if (
+          !returnTypes.some(type => isPossiblyTruthy(checker, type, falsyTypes))
+        ) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
