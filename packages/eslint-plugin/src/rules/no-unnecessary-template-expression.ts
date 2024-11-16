@@ -279,14 +279,9 @@ export default createRule<[], MessageId>({
             return isTypeFlagSet(t, ts.TypeFlags.StringLike);
           };
 
-          // Does it apply to union and intersection types?
-          // if (type.isUnion()) {
-          //   return type.types.every(isString);
-          // }
-
-          // if (type.isIntersection()) {
-          //   return type.types.some(isString);
-          // }
+          if (type.isUnion()) {
+            return false;
+          }
 
           return isString(type);
         }
