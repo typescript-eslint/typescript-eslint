@@ -1145,7 +1145,96 @@ declare const nested: string, interpolation: string;
 
 describe('no-unnecessary-template-expression types', () => {
   ruleTester.run('no-unnecessary-template-expression', rule, {
-    valid: [],
+    valid: [
+      "type TestedType = 'a';",
+      'type TestedType = `a`;',
+      `
+        type Str = 'a';
+        type TestedType = \`\${Str}b\`;
+      `,
+
+      `
+        type Num = 1;
+        type TestedType = \`\${Num}b\`;
+      `,
+
+      `
+        type Boo = true;
+        type TestedType = \`\${Boo}b\`;
+      `,
+
+      `
+        type nullish = null;
+        type TestedType = \`\${nullish}-undefined\`;
+      `,
+
+      `
+        type undefinedish = undefined;
+        type TestedType = \`\${undefinedish}\`;
+      `,
+
+      `
+        type Left = 'a';
+        type Right = 'b';
+        type TestedType = \`\${Left}\${Right}\`;
+      `,
+
+      `
+        type Left = 'a';
+        type Right = 'c';
+        type TestedType = \`\${Left}b\${Right}\`;
+      `,
+
+      `
+        type Left = 'a';
+        type Center = 'b';
+        type Right = 'c';
+        type TestedType = \`\${Left}\${Center}\${Right}\`;
+      `,
+
+      `
+        type Union = string | number;
+        type TestedType = \`\${Union}\`;
+      `,
+
+      `
+        type unknown = unknown;
+        type TestedType = \`\${unknown}\`;
+      `,
+
+      `
+        type Never = never;
+        type TestedType = \`\${Never}\`;
+      `,
+
+      `
+        type Any = any;
+        type TestedType = \`\${any}\`;
+      `,
+
+      `
+        function func<T extends number>(arg: T) {
+          type TestedType = \`\${typeof arg}\`;
+        }
+      `,
+
+      `
+        type TestedType = \`with
+
+        new line\`;
+      `,
+
+      `
+        type A = 'a';
+        type TestedType = \`\${A} with
+
+        new line\`;
+      `,
+
+      noFormat`
+        type TestedType = \`with windows \r new line\`;
+      `,
+    ],
     invalid: [
       {
         code: "type A = `${'1 + 1 ='} ${2}`;",
@@ -1473,8 +1562,8 @@ describe('no-unnecessary-template-expression types', () => {
           { messageId: 'noUnnecessaryTemplateExpression' },
         ],
         output: [
-          "type A = ` \\$${''}${`${``}`}${`{a}`} `;",
-          'type A = ` \\$${``}{a} `;',
+          'type A = ` $${`${``}`}{a} `;',
+          'type A = ` $${``}{a} `;',
           'type A = ` \\${a} `;',
         ],
       },
