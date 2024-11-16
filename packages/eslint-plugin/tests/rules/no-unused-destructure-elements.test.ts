@@ -134,6 +134,18 @@ declare const s: \`_\${string}\${string}_\`;
 
 function test({ [s]: used }: { [i: \`_\${string}_\`]: string }) {}
     `,
+    {
+      code: `
+function test({ _used }: { [i: \`_\${string}\`]: string }) {}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
     // destructure with dynamic keys
     `
 declare const s: 'bar' | 'foo';
@@ -1140,6 +1152,32 @@ function test({
           ],
         },
       ],
+    },
+    {
+      code: 'function test({ _used }: { unused: string; [i: `_${string}`]: string }) {}',
+      errors: [
+        {
+          column: 28,
+          data: { key: 'unused', type: 'property' },
+          line: 1,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output:
+                'function test({ _used }: {  [i: `_${string}`]: string }) {}',
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
     },
     // non-function-parameters destructuring
     {

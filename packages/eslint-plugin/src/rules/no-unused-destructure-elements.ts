@@ -1,14 +1,15 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
   getStaticMemberAccessValue,
+  isTypeFlagSet,
 } from '../util';
 
 interface PropertyDestructure {
@@ -39,6 +40,31 @@ export default createRule({
   create(context) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
+    const isNoUncheckedIndexedAccess =
+      !!compilerOptions.noUncheckedIndexedAccess;
+
+    function isTypeMatchingIndexSignatureType(
+      indexSignatureType: ts.Type,
+      comparedType: ts.Type,
+    ): boolean {
+      if (isNoUncheckedIndexedAccess) {
+        const uncastParts = tsutils
+          .unionTypeParts(indexSignatureType)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        const castParts = tsutils.unionTypeParts(comparedType);
+
+        if (uncastParts.length !== castParts.length) {
+          return false;
+        }
+
+        const uncastPartsSet = new Set(uncastParts);
+        return castParts.every(part => uncastPartsSet.has(part));
+      }
+
+      return indexSignatureType === comparedType;
+    }
 
     /**
      * Recursive function to report on missing destructuring in object nodes.
@@ -328,7 +354,7 @@ export default createRule({
           destructure.property.value,
         );
 
-        if (destructure.type === indexType) {
+        if (isTypeMatchingIndexSignatureType(destructure.type, indexType)) {
           return true;
         }
       }
