@@ -221,8 +221,8 @@ function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
     {
       code: `
 function overloadingThatIncludeAny(): number;
-function overloadingThatIncludeAny(a: boolean): unknown;
-function overloadingThatIncludeAny(a?: boolean): unknown | number {
+function overloadingThatIncludeAny(a: boolean): any;
+function overloadingThatIncludeAny(a?: boolean): any | number {
   return Promise.resolve(5);
 }
       `,
