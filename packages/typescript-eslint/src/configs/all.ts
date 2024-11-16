@@ -122,6 +122,7 @@ export default (
       '@typescript-eslint/no-unsafe-return': 'error',
       '@typescript-eslint/no-unsafe-type-assertion': 'error',
       '@typescript-eslint/no-unsafe-unary-minus': 'error',
+      '@typescript-eslint/no-unused-destructure-elements': 'error',
       'no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-expressions': 'error',
       'no-unused-vars': 'off',
