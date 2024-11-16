@@ -24,7 +24,7 @@ export default createRule({
     type: 'problem',
     docs: {
       description:
-        'Enforce complete destructuring of inline objects and tuple types',
+        'Disallow partial destructuring of inline objects and tuple types',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
