@@ -238,7 +238,7 @@ function test({
 function test<R extends string>({ a }: { [i: R]: string }) {}
     `,
     `
-function test({ used: _a }: { [i: \`_\${string}\`]: number | string }) {}
+function test({ _a }: { [i: \`_\${string}\`]: number | string }) {}
     `,
   ],
   invalid: [
@@ -1181,6 +1181,32 @@ function test({
           tsconfigRootDir: rootDir,
         },
       },
+    },
+    {
+      code: `
+declare const c: \`ba\${'r' | 'zz'}\`;
+
+function test({ [c]: a }: { foo: string; bar: number; bazz: string }) {}
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { key: 'foo', type: 'property' },
+          line: 4,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'foo', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+declare const c: \`ba\${'r' | 'zz'}\`;
+
+function test({ [c]: a }: {  bar: number; bazz: string }) {}
+      `,
+            },
+          ],
+        },
+      ],
     },
     // non-function-parameters destructuring
     {
