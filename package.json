@@ -59,7 +59,7 @@
     "@babel/parser": "^7.24.4",
     "@babel/types": "^7.24.0",
     "@eslint/compat": "^1.0.1",
-    "@eslint/eslintrc": "^2.1.4",
+    "@eslint/eslintrc": "^3.0.0",
     "@eslint/js": "^8.57.0",
     "@jest/types": "29.6.3",
     "@nx/devkit": "20.0.0",
