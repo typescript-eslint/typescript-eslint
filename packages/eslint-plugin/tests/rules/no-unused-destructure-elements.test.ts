@@ -41,6 +41,11 @@ ruleTester.run('no-unused-destructure-elements', rule, {
     "function test({ ['used']: used }: { used: string }) {}",
     'function test({ [Symbol.iterator]: used }: { [Symbol.iterator]: string }) {}',
     'function test({ [1]: used }: { 1: string }) {}',
+    `
+const symol = Symbol.for('symbol');
+
+function test({ [symol]: used }: { [symol]: string }) {}
+    `,
     // destructuring over an array (as opposed to a tuple)
     'function test([]: string[]) {}',
     'function test([used]: string[]) {}',
@@ -451,6 +456,80 @@ function test({
 \u0020\u0020
   [Symbol.iterator]: boolean;
 }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test({ used }: { used: boolean; [Symbol.iterator]: boolean }) {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { key: 'Symbol(Symbol.iterator)', type: 'property' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'Symbol(Symbol.iterator)', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test({ used }: { used: boolean;  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const symol = Symbol.for('symbol');
+
+function test({ [symol]: renamed }: { unused: boolean; [symol]: boolean }) {}
+      `,
+      errors: [
+        {
+          column: 39,
+          data: { key: 'unused', type: 'property' },
+          line: 4,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+const symol = Symbol.for('symbol');
+
+function test({ [symol]: renamed }: {  [symol]: boolean }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const symol = Symbol.for('symbol');
+
+function test({ used }: { used: boolean; [symol]: boolean }) {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { key: 'Symbol(symbol)', type: 'property' },
+          line: 4,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'Symbol(symbol)', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+const symol = Symbol.for('symbol');
+
+function test({ used }: { used: boolean;  }) {}
       `,
             },
           ],
