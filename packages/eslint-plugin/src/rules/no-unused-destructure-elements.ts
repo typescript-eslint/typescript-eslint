@@ -18,22 +18,6 @@ interface PropertyDestructure {
   property: TSESTree.Property;
 }
 
-type ObjectPatternWithTypeAnnotation = TSESTree.ObjectPattern & {
-  typeAnnotation: {
-    typeAnnotation: {
-      type: AST_NODE_TYPES.TSTypeLiteral;
-    };
-  };
-};
-
-type ArrayPatternWithTypeAnnotation = TSESTree.ArrayPattern & {
-  typeAnnotation: {
-    typeAnnotation: {
-      type: AST_NODE_TYPES.TSTupleType;
-    };
-  };
-};
-
 export default createRule({
   name: 'no-unused-destructure-elements',
   meta: {
@@ -376,12 +360,16 @@ export default createRule({
 
     return {
       "ArrayPattern[typeAnnotation.typeAnnotation.type='TSTupleType']"(
-        node: ArrayPatternWithTypeAnnotation,
+        node: TSESTree.ArrayPattern & {
+          typeAnnotation: TSESTree.TSTypeAnnotation;
+        },
       ): void {
         checkParam(node, node.typeAnnotation.typeAnnotation);
       },
       "ObjectPattern[typeAnnotation.typeAnnotation.type='TSTypeLiteral']"(
-        node: ObjectPatternWithTypeAnnotation,
+        node: TSESTree.ObjectPattern & {
+          typeAnnotation: TSESTree.TSTypeAnnotation;
+        },
       ): void {
         checkParam(node, node.typeAnnotation.typeAnnotation);
       },
