@@ -237,6 +237,9 @@ function test({
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}
     `,
+    `
+function test({ used: _a }: { [i: \`_\${string}\`]: number | string }) {}
+    `,
   ],
   invalid: [
     // non-exhaustive destructuring
