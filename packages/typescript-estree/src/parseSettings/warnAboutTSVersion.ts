@@ -3,6 +3,8 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from './index';
 
+import { version as TYPESCRIPT_ESTREE_VERSION } from '../version';
+
 /**
  * This needs to be kept in sync with package.json in the typescript-eslint monorepo
  */
@@ -38,11 +40,12 @@ export function warnAboutTSVersion(
     const border = '=============';
     const versionWarning = [
       border,
-      'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
+      'WARNING: @typescript-eslint/typescript-estree does not support your TypeScript version.',
       'You may find that it works just fine, or you may not.',
       `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
       `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
       'Please only submit bug reports when using the officially supported version.',
+      `Your @typescript-eslint/typescript-estre version: ${TYPESCRIPT_ESTREE_VERSION}`,
       border,
     ].join('\n\n');
 
