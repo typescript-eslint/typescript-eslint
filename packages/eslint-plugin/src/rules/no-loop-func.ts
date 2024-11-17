@@ -15,13 +15,11 @@ const baseRule = getESLintCoreRule('no-loop-func');
 type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const defaultOptions: Options = [];
-
 export default createRule<Options, MessageIds>({
   name: 'no-loop-func',
   meta: {
     type: 'suggestion',
-    defaultOptions,
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
@@ -31,7 +29,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [],
   },
-  defaultOptions,
+  defaultOptions: [],
   create(context) {
     const SKIPPED_IIFE_NODES = new Set<
       | TSESTree.ArrowFunctionExpression
