@@ -17,10 +17,21 @@ const baseRule = getESLintCoreRule('dot-notation');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [
+  {
+    allowIndexSignaturePropertyAccess: false,
+    allowKeywords: true,
+    allowPattern: '',
+    allowPrivateClassPropertyAccess: false,
+    allowProtectedClassPropertyAccess: false,
+  },
+];
+
 export default createRule<Options, MessageIds>({
   name: 'dot-notation',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Enforce dot notation whenever possible',
       extendsBaseRule: true,
@@ -67,15 +78,7 @@ export default createRule<Options, MessageIds>({
       },
     ],
   },
-  defaultOptions: [
-    {
-      allowIndexSignaturePropertyAccess: false,
-      allowKeywords: true,
-      allowPattern: '',
-      allowPrivateClassPropertyAccess: false,
-      allowProtectedClassPropertyAccess: false,
-    },
-  ],
+  defaultOptions,
   create(context, [options]) {
     const rules = baseRule.create(context);
     const services = getParserServices(context);
