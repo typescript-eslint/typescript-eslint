@@ -1238,6 +1238,35 @@ function test({
     },
     {
       code: `
+function test({ none }: { [i: \`_\${string}\`]: number | string }) {}
+      `,
+      errors: [
+        {
+          column: 28,
+          data: { key: 'unused', type: 'property' },
+          line: 1,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test({ none }: {  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          projectService: false,
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
+    {
+      code: `
 declare const c: \`ba\${'r' | 'zz'}\`;
 
 function test({ [c]: a }: { foo: string; bar: number; bazz: string }) {}
