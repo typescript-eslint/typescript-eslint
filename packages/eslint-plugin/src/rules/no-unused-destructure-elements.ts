@@ -281,19 +281,21 @@ export default createRule({
       const indexParameterTypeParts =
         tsutils.unionTypeParts(indexParameterType);
 
+      const indexParameterHasNumberType = indexParameterTypeParts.some(
+        tsutils.isIntrinsicNumberType,
+      );
+
+      const indexParameterHasStringType = indexParameterTypeParts.some(
+        tsutils.isIntrinsicStringType,
+      );
+
       // check remaining properties for a match
       for (const key of remainingProperties.keys()) {
-        if (
-          typeof key === 'number' &&
-          indexParameterTypeParts.some(tsutils.isIntrinsicNumberType)
-        ) {
+        if (typeof key === 'number' && indexParameterHasNumberType) {
           return true;
         }
 
-        if (
-          typeof key === 'string' &&
-          indexParameterTypeParts.some(tsutils.isIntrinsicStringType)
-        ) {
+        if (typeof key === 'string' && indexParameterHasStringType) {
           return true;
         }
       }
@@ -304,10 +306,8 @@ export default createRule({
           destructure.property.key,
         );
 
-        for (const type of tsutils.unionTypeParts(destructure.type)) {
-          if (checker.isTypeAssignableTo(type, indexParameterType)) {
-            return true;
-          }
+        if (checker.isTypeAssignableTo(destructure.type, indexParameterType)) {
+          return true;
         }
       }
 

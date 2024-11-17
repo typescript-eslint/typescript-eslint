@@ -163,17 +163,6 @@ declare const s: string | number;
 function test({ [s]: used }: { foo: string; bar: string; 1: string }) {}
     `,
     `
-declare const s: string | number;
-
-function test({
-  [s]: used,
-}: {
-  foo: string;
-  bar: string;
-  [i: number]: string;
-}) {}
-    `,
-    `
 declare const s: number;
 
 function test({ [s]: used }: { [i: number]: string }) {}
@@ -1061,6 +1050,44 @@ function test({
 }: {
   hello: string;
   2: number;
+  
+}) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const s: string | number;
+
+function test({
+  [s]: used,
+}: {
+  foo: string;
+  bar: string;
+  [i: number]: string;
+}) {}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { key: '[number]', type: 'index signature' },
+          line: 9,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[number]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+declare const s: string | number;
+
+function test({
+  [s]: used,
+}: {
+  foo: string;
+  bar: string;
   
 }) {}
       `,
