@@ -203,14 +203,32 @@ declare const s: \`_\${string}_\`;
 
 function test({ [s]: used }: { [i: string]: string }) {}
     `,
-    // non-function-parameters destructuring
+    // different kinds of destructuring
     `
 declare const obj: unknown;
 const { used1, used2 }: { used1: string; used2: string } = obj;
     `,
     `
-declare const obj: unknown;
-const { hello: used1, world: used2 }: { hello: string; world: string } = obj;
+class Test {
+  constructor({ used1, used2 }: { used1: string; used2: string }) {}
+}
+    `,
+    `
+class Test {
+  test({ used1, used2 }: { used1: string; used2: string }) {}
+}
+    `,
+    `
+const test = ({ used1, used2 }: { used1: string; used2: string }) => {};
+    `,
+    `
+const test = ({ used1, used2 }: { used1: string; used2: string }) => 1;
+    `,
+    `
+function test({ used1, used2 }: { used1?: string; used2: string }) {}
+    `,
+    `
+function test({ used1 = 'default', used2 }: { used1: string; used2: string }) {}
     `,
     // skipping a tuple item
     'function test([, used]: [boolean, number]) {}',
@@ -1205,27 +1223,167 @@ function test({ [c]: a }: {  bar: number; bazz: string }) {}
         },
       ],
     },
-    // non-function-parameters destructuring
+    // different kinds of destructuring
     {
       code: `
 declare const obj: unknown;
 
-const { hello }: { hello: string; world: string } = obj;
+const { used }: { used: string; unused: string } = obj;
       `,
       errors: [
         {
-          column: 35,
-          data: { key: 'world', type: 'property' },
+          column: 33,
+          data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
           suggestions: [
             {
-              data: { key: 'world', type: 'property' },
+              data: { key: 'unused', type: 'property' },
               messageId: 'removeUnusedKey',
               output: `
 declare const obj: unknown;
 
-const { hello }: { hello: string;  } = obj;
+const { used }: { used: string;  } = obj;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  constructor({ used }: { used: string; unused: string }) {}
+}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          line: 3,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+class Test {
+  constructor({ used }: { used: string;  }) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class Test {
+  test({ used }: { used: string; unused: string }) {}
+}
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { key: 'unused', type: 'property' },
+          line: 3,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+class Test {
+  test({ used }: { used: string;  }) {}
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const test = ({ used }: { used: string; unused: string }) => {};
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+const test = ({ used }: { used: string;  }) => {};
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const test = ({ used }: { used: string; unused: string }) => 1;
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: 'unused', type: 'property' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+const test = ({ used }: { used: string;  }) => 1;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test({ used }: { used?: string; unused: string }) {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { key: 'unused', type: 'property' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test({ used }: { used?: string;  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test({ used = 'default' }: { used: string; unused: string }) {}
+      `,
+      errors: [
+        {
+          column: 53,
+          data: { key: 'unused', type: 'property' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test({ used = 'default' }: { used: string;  }) {}
       `,
             },
           ],
