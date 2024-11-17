@@ -78,7 +78,6 @@ export default createRule({
         PropertyDestructure
       >();
       const dynamicProperties = new Set<PropertyDestructure>();
-      const indexSignatures: TSESTree.TSIndexSignature[] = [];
 
       // collect used properties
       for (const property of node.properties) {
@@ -101,7 +100,37 @@ export default createRule({
       // remove used type members, report on anything that's unused
       for (const member of typeAnnotation.members) {
         if (member.type === AST_NODE_TYPES.TSIndexSignature) {
-          indexSignatures.push(member);
+          // an index signature must have exactly one parameter, having more
+          // is valid syntax, but invalid typescript
+          const indexParameter = member.parameters[0];
+          const indexParameterType = getConstrainedTypeAtLocation(
+            services,
+            indexParameter,
+          );
+
+          if (
+            indexSignatureHasMatchingKey(
+              indexParameterType,
+              dynamicProperties,
+              remainingProperties,
+            )
+          ) {
+            continue;
+          }
+
+          // Template literal index signatures are used if any remaining property's type is the same
+          if (
+            tsutils.isTemplateLiteralType(indexParameterType) &&
+            indexSignatureHasMatchingValue(remainingProperties.values(), member)
+          ) {
+            continue;
+          }
+
+          reportOnMember(member, {
+            type: 'index signature',
+            key: `[${checker.typeToString(indexParameterType)}]`,
+          });
+
           continue;
         }
 
@@ -159,43 +188,6 @@ export default createRule({
             key: String(memberKey),
           });
         }
-      }
-
-      // check and report on any unused index signatures
-      for (const indexSignature of indexSignatures) {
-        // an index signature must have exactly one parameter, having more
-        // is valid syntax, but invalid typescript
-        const indexParameter = indexSignature.parameters[0];
-        const indexParameterType = getConstrainedTypeAtLocation(
-          services,
-          indexParameter,
-        );
-
-        if (
-          indexSignatureHasMatchingKey(
-            indexParameterType,
-            dynamicProperties,
-            remainingProperties,
-          )
-        ) {
-          continue;
-        }
-
-        // Template literal index signatures are used if any remaining property's type is the same
-        if (
-          tsutils.isTemplateLiteralType(indexParameterType) &&
-          indexSignatureHasMatchingValue(
-            remainingProperties.values(),
-            indexSignature,
-          )
-        ) {
-          continue;
-        }
-
-        reportOnMember(indexSignature, {
-          type: 'index signature',
-          key: `[${checker.typeToString(indexParameterType)}]`,
-        });
       }
     }
 
