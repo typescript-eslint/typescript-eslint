@@ -140,7 +140,8 @@ export default createRule({
         return;
       }
 
-      // Template literal index signatures are used if any remaining property's type is the same
+      // Template literal index signatures are used if any remaining property's type is the
+      // same, this may miss some unused template literal index signatures
       if (
         tsutils.isTemplateLiteralType(indexParameterType) &&
         indexSignatureHasMatchingValue(remainingProperties, member)
@@ -235,8 +236,6 @@ export default createRule({
 
     /**
      * Attempts to find a dynamic property that matches a given member key.
-     *
-     * @returns `TSESTree.Property` if it finds one, or `false` otherwise.
      */
     function getDynamicKeyForMember(
       memberKey: number | string | symbol,
