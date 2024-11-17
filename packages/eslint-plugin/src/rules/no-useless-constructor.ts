@@ -47,6 +47,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-useless-constructor',
   meta: {
     type: 'problem',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow unnecessary constructors',
       extendsBaseRule: true,
