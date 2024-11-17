@@ -100,37 +100,7 @@ export default createRule({
       // remove used type members, report on anything that's unused
       for (const member of typeAnnotation.members) {
         if (member.type === AST_NODE_TYPES.TSIndexSignature) {
-          // an index signature must have exactly one parameter, having more
-          // is valid syntax, but invalid typescript
-          const indexParameter = member.parameters[0];
-          const indexParameterType = getConstrainedTypeAtLocation(
-            services,
-            indexParameter,
-          );
-
-          if (
-            indexSignatureHasMatchingKey(
-              indexParameterType,
-              dynamicProperties,
-              remainingProperties,
-            )
-          ) {
-            continue;
-          }
-
-          // Template literal index signatures are used if any remaining property's type is the same
-          if (
-            tsutils.isTemplateLiteralType(indexParameterType) &&
-            indexSignatureHasMatchingValue(remainingProperties.values(), member)
-          ) {
-            continue;
-          }
-
-          reportOnMember(member, {
-            type: 'index signature',
-            key: `[${checker.typeToString(indexParameterType)}]`,
-          });
-
+          checkIndexSignature(member, remainingProperties, dynamicProperties);
           continue;
         }
 
@@ -138,57 +108,103 @@ export default createRule({
           member.type === AST_NODE_TYPES.TSMethodSignature ||
           member.type === AST_NODE_TYPES.TSPropertySignature
         ) {
-          const memberKey = getStaticMemberAccessValue(member, context);
-
-          if (memberKey === undefined) {
-            continue;
-          }
-
-          // check if this is used by a remaining property
-          const remainingProperty = remainingProperties.get(memberKey);
-
-          if (remainingProperty) {
-            remainingProperties.delete(memberKey);
-
-            if (
-              member.type === AST_NODE_TYPES.TSPropertySignature &&
-              member.typeAnnotation
-            ) {
-              checkParam(
-                remainingProperty.property.value,
-                member.typeAnnotation.typeAnnotation,
-              );
-            }
-
-            continue;
-          }
-
-          // check if this is used by a dynamic index type
-          const dynamicProperty = memberKeyMatchesDynamicProperty(
-            memberKey,
-            dynamicProperties,
-          );
-
-          if (dynamicProperty) {
-            if (
-              member.type === AST_NODE_TYPES.TSPropertySignature &&
-              member.typeAnnotation
-            ) {
-              checkParam(
-                dynamicProperty.value,
-                member.typeAnnotation.typeAnnotation,
-              );
-            }
-
-            continue;
-          }
-
-          reportOnMember(member, {
-            type: 'property',
-            key: String(memberKey),
-          });
+          checkStaticMember(member, remainingProperties, dynamicProperties);
+          continue;
         }
       }
+    }
+
+    function checkIndexSignature(
+      member: TSESTree.TSIndexSignature,
+      remainingProperties: Map<number | string | symbol, PropertyDestructure>,
+      dynamicProperties: Set<PropertyDestructure>,
+    ) {
+      // an index signature must have exactly one parameter, having more
+      // is valid syntax, but invalid typescript
+      const indexParameter = member.parameters[0];
+      const indexParameterType = getConstrainedTypeAtLocation(
+        services,
+        indexParameter,
+      );
+
+      if (
+        indexSignatureHasMatchingKey(
+          indexParameterType,
+          dynamicProperties,
+          remainingProperties,
+        )
+      ) {
+        return;
+      }
+
+      // Template literal index signatures are used if any remaining property's type is the same
+      if (
+        tsutils.isTemplateLiteralType(indexParameterType) &&
+        indexSignatureHasMatchingValue(remainingProperties.values(), member)
+      ) {
+        return;
+      }
+
+      reportOnMember(member, {
+        type: 'index signature',
+        key: `[${checker.typeToString(indexParameterType)}]`,
+      });
+    }
+
+    function checkStaticMember(
+      member: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
+      remainingProperties: Map<number | string | symbol, PropertyDestructure>,
+      dynamicProperties: Set<PropertyDestructure>,
+    ): void {
+      const memberKey = getStaticMemberAccessValue(member, context);
+
+      if (memberKey === undefined) {
+        return;
+      }
+
+      // check if this is used by a remaining property
+      const remainingProperty = remainingProperties.get(memberKey);
+
+      if (remainingProperty) {
+        remainingProperties.delete(memberKey);
+
+        if (
+          member.type === AST_NODE_TYPES.TSPropertySignature &&
+          member.typeAnnotation
+        ) {
+          checkParam(
+            remainingProperty.property.value,
+            member.typeAnnotation.typeAnnotation,
+          );
+        }
+
+        return;
+      }
+
+      // check if this is used by a dynamic index type
+      const dynamicProperty = memberKeyMatchesDynamicProperty(
+        memberKey,
+        dynamicProperties,
+      );
+
+      if (dynamicProperty) {
+        if (
+          member.type === AST_NODE_TYPES.TSPropertySignature &&
+          member.typeAnnotation
+        ) {
+          checkParam(
+            dynamicProperty.value,
+            member.typeAnnotation.typeAnnotation,
+          );
+        }
+
+        return;
+      }
+
+      reportOnMember(member, {
+        type: 'property',
+        key: String(memberKey),
+      });
     }
 
     /**
@@ -211,6 +227,7 @@ export default createRule({
           return;
         }
 
+        // missing destructure
         if (property === undefined) {
           reportOnMember(member, { type: 'key', key: String(index) });
           continue;
