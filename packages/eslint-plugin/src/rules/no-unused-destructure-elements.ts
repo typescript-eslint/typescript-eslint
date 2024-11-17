@@ -243,7 +243,8 @@ export default createRule({
       dynamicProperties: DynamicProperties,
     ): TSESTree.Property | undefined {
       for (const destructure of dynamicProperties) {
-        destructure.type ??= services.getTypeAtLocation(
+        destructure.type ??= getConstrainedTypeAtLocation(
+          services,
           destructure.property.key,
         );
 

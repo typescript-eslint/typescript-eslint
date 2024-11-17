@@ -241,8 +241,20 @@ function test({
     'function test({ used }: { [i: `_${string}`] }) {}',
     'function test({ hello: used }: { [b] }) {}',
     'function test({ hello: used }: { [i: string, j: number]: string }) {}',
+    // generic type constraints
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}
+    `,
+    `
+function test<R extends 'used1' | 'used2'>(
+  a: R,
+  {
+    [a]: used,
+  }: {
+    used1: string;
+    used2: string;
+  },
+) {}
     `,
   ],
   invalid: [
@@ -1417,6 +1429,30 @@ function test({ used = 'default' }: { used: string;  }) {}
         },
       ],
     },
+    // misc
+    {
+      code: `
+function test({ used }: { [i: \`_\${string}\`]: number | string }) {}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { key: '[`_${string}`]', type: 'index signature' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[`_${string}`]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test({ used }: {  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    // generic type constraints
     {
       code: `
 function test<R extends string>({ 1: a }: { [i: R]: string }) {}
@@ -1439,23 +1475,40 @@ function test<R extends string>({ 1: a }: {  }) {}
         },
       ],
     },
-    // misc
     {
       code: `
-function test({ used }: { [i: \`_\${string}\`]: number | string }) {}
+function test<R extends 'used1' | 'used2'>(
+  a: R,
+  {
+    [a]: used,
+  }: {
+    used1: string;
+    used2: number;
+    unused: boolean;
+  },
+) {}
       `,
       errors: [
         {
-          column: 27,
-          data: { key: '[`_${string}`]', type: 'index signature' },
-          line: 2,
+          column: 5,
+          data: { key: 'unused', type: 'property' },
+          line: 9,
           messageId: 'partialDestructuring',
           suggestions: [
             {
-              data: { key: '[`_${string}`]', type: 'index signature' },
+              data: { key: 'unused', type: 'property' },
               messageId: 'removeUnusedKey',
               output: `
-function test({ used }: {  }) {}
+function test<R extends 'used1' | 'used2'>(
+  a: R,
+  {
+    [a]: used,
+  }: {
+    used1: string;
+    used2: number;
+    
+  },
+) {}
       `,
             },
           ],
