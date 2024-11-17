@@ -20,6 +20,10 @@ interface PropertyDestructure {
   property: TSESTree.Property;
 }
 
+type RemainingProperties = Map<number | string | symbol, PropertyDestructure>;
+
+type DynamicProperties = Set<PropertyDestructure>;
+
 export default createRule({
   name: 'no-unused-destructure-elements',
   meta: {
@@ -48,11 +52,8 @@ export default createRule({
       node: TSESTree.ObjectPattern,
       typeAnnotation: TSESTree.TSTypeLiteral,
     ): void {
-      const remainingProperties = new Map<
-        number | string | symbol,
-        PropertyDestructure
-      >();
-      const dynamicProperties = new Set<PropertyDestructure>();
+      const remainingProperties: RemainingProperties = new Map();
+      const dynamicProperties: DynamicProperties = new Set();
 
       // collect used properties
       for (const property of node.properties) {
@@ -118,8 +119,8 @@ export default createRule({
 
     function checkIndexSignature(
       member: TSESTree.TSIndexSignature,
-      remainingProperties: Map<number | string | symbol, PropertyDestructure>,
-      dynamicProperties: Set<PropertyDestructure>,
+      remainingProperties: RemainingProperties,
+      dynamicProperties: DynamicProperties,
     ) {
       // an index signature must have exactly one parameter, having more
       // is valid syntax, but invalid typescript
@@ -142,7 +143,7 @@ export default createRule({
       // Template literal index signatures are used if any remaining property's type is the same
       if (
         tsutils.isTemplateLiteralType(indexParameterType) &&
-        indexSignatureHasMatchingValue(remainingProperties.values(), member)
+        indexSignatureHasMatchingValue(remainingProperties, member)
       ) {
         return;
       }
@@ -155,8 +156,8 @@ export default createRule({
 
     function checkStaticMember(
       member: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
-      remainingProperties: Map<number | string | symbol, PropertyDestructure>,
-      dynamicProperties: Set<PropertyDestructure>,
+      remainingProperties: RemainingProperties,
+      dynamicProperties: DynamicProperties,
     ): void {
       const memberKey = getStaticMemberAccessValue(member, context);
 
@@ -239,7 +240,7 @@ export default createRule({
      */
     function getDynamicKeyForMember(
       memberKey: number | string | symbol,
-      dynamicProperties: Set<PropertyDestructure>,
+      dynamicProperties: DynamicProperties,
     ): TSESTree.Property | undefined {
       for (const destructure of dynamicProperties) {
         destructure.type ??= services.getTypeAtLocation(
@@ -274,8 +275,8 @@ export default createRule({
      */
     function indexSignatureHasMatchingKey(
       indexParameterType: ts.Type,
-      dynamicProperties: Set<PropertyDestructure>,
-      remainingProperties: Map<number | string | symbol, PropertyDestructure>,
+      dynamicProperties: DynamicProperties,
+      remainingProperties: RemainingProperties,
     ) {
       const indexParameterTypeParts =
         tsutils.unionTypeParts(indexParameterType);
@@ -318,7 +319,7 @@ export default createRule({
      * property's value type, `false` otherwise
      */
     function indexSignatureHasMatchingValue(
-      remainingDestructures: IterableIterator<PropertyDestructure>,
+      remainingProperties: RemainingProperties,
       indexSignature: TSESTree.TSIndexSignature,
     ): boolean {
       // `{ used }: { [i: `_${string}`] }`
@@ -330,7 +331,7 @@ export default createRule({
         indexSignature.typeAnnotation.typeAnnotation,
       );
 
-      for (const destructure of remainingDestructures) {
+      for (const destructure of remainingProperties.values()) {
         destructure.type ??= services.getTypeAtLocation(
           destructure.property.value,
         );
