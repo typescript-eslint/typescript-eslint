@@ -468,7 +468,7 @@ String(...objects);
       errors: [
         {
           data: {
-            certainty: 'may',
+            certainty: 'will',
             name: 'tuple',
           },
           messageId: 'baseArrayJoin',
@@ -485,6 +485,38 @@ String(...objects);
         {
           data: {
             certainty: 'will',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        const tuple: [Foo | string, string] = [new Foo(), 'string'];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [string, string] | [Foo, Foo];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
             name: 'tuple',
           },
           messageId: 'baseArrayJoin',

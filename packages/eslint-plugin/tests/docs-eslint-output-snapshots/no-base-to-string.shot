@@ -23,8 +23,8 @@ String({});
  ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 
 // Stringifying objects or instances in an array with the \`Array.prototype.join\`.
-[{}, class MyClass {}].join('');
-~~~~~~~~~~~~~~~~~~~~~~ Using \`join()\` for [{}, class MyClass {}] may use Object's default stringification format ('[object Object]') when stringified.
+[{}, new MyClass()].join('');
+~~~~~~~~~~~~~~~~~~~ Using \`join()\` for [{}, new MyClass()] will use Object's default stringification format ('[object Object]') when stringified.
 "
 `;
 

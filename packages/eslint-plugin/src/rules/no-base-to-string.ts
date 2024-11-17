@@ -68,38 +68,69 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function getToStringCertainty(
-      node: TSESTree.Node,
-      type?: ts.Type,
-    ): Usefulness {
+    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
-        return Usefulness.Always;
+        return;
       }
-
       const certainty = collectToStringCertainty(
         type ?? services.getTypeAtLocation(node),
       );
-      return certainty;
-    }
-
-    function checkExpression(
-      node: TSESTree.Node,
-      type?: ts.Type,
-      messageId: MessageIds = 'baseToString',
-    ): void {
-      const certainty = getToStringCertainty(node, type);
       if (certainty === Usefulness.Always) {
         return;
       }
 
       context.report({
         node,
-        messageId,
+        messageId: 'baseToString',
         data: {
           name: context.sourceCode.getText(node),
           certainty,
         },
       });
+    }
+
+    function checkExpressionForArrayJoin(
+      node: TSESTree.Node,
+      type: ts.Type,
+    ): void {
+      const certainty = collectJoinCertainty(type);
+
+      if (certainty === Usefulness.Always) {
+        return;
+      }
+
+      context.report({
+        node,
+        messageId: 'baseArrayJoin',
+        data: {
+          name: context.sourceCode.getText(node),
+          certainty,
+        },
+      });
+    }
+
+    function collectJoinCertainty(type: ts.Type): Usefulness {
+      const typeParts = tsutils.typeParts(type);
+
+      const isArrayOrTuple = typeParts.every(
+        part => checker.isArrayType(part) || checker.isTupleType(part),
+      );
+      if (!isArrayOrTuple) {
+        return Usefulness.Always;
+      }
+
+      if (checker.isTupleType(type)) {
+        const typeArgs = checker.getTypeArguments(type);
+        const certainties = typeArgs.map(t => collectToStringCertainty(t));
+        if (certainties.some(certainty => certainty === Usefulness.Never)) {
+          return Usefulness.Never;
+        }
+      }
+      const elemType = type.getNumberIndexType();
+      if (!elemType) {
+        return Usefulness.Always;
+      }
+      return collectToStringCertainty(elemType);
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
@@ -213,16 +244,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
-        const typeParts = tsutils.typeParts(type);
-        const isArrayOrTuple = typeParts.every(
-          part => checker.isArrayType(part) || checker.isTupleType(part),
-        );
-        if (!isArrayOrTuple) {
-          return;
-        }
-
-        const typeArg = type.getNumberIndexType();
-        checkExpression(memberExpr.object, typeArg, 'baseArrayJoin');
+        checkExpressionForArrayJoin(memberExpr.object, type);
       },
       'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
