@@ -44,31 +44,6 @@ export default createRule({
     const isNoUncheckedIndexedAccess =
       !!compilerOptions.noUncheckedIndexedAccess;
 
-    function isTypeMatchingIndexSignatureType(
-      indexSignatureType: ts.Type,
-      comparedType: ts.Type,
-    ): boolean {
-      if (isNoUncheckedIndexedAccess) {
-        const uncastParts = tsutils
-          .unionTypeParts(indexSignatureType)
-          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
-
-        const castParts = tsutils.unionTypeParts(comparedType);
-
-        if (uncastParts.length !== castParts.length) {
-          return false;
-        }
-
-        const uncastPartsSet = new Set(uncastParts);
-        return castParts.every(part => uncastPartsSet.has(part));
-      }
-
-      return indexSignatureType === comparedType;
-    }
-
-    /**
-     * Recursive function to report on missing destructuring in object nodes.
-     */
     function checkObject(
       node: TSESTree.ObjectPattern,
       typeAnnotation: TSESTree.TSTypeLiteral,
@@ -111,6 +86,33 @@ export default createRule({
           checkStaticMember(member, remainingProperties, dynamicProperties);
           continue;
         }
+      }
+    }
+
+    function checkTuple(
+      param: TSESTree.ArrayPattern,
+      typeAnnotation: TSESTree.TSTupleType,
+    ): void {
+      for (const [index, member] of typeAnnotation.elementTypes.entries()) {
+        const property = param.elements.at(index);
+
+        if (
+          // bail in case of `[, ...]`
+          // eslint-disable-next-line eqeqeq
+          property === null ||
+          // bail on a rest element
+          property?.type === AST_NODE_TYPES.RestElement
+        ) {
+          return;
+        }
+
+        // missing destructure
+        if (property === undefined) {
+          reportOnMember(member, { type: 'key', key: String(index) });
+          continue;
+        }
+
+        checkParam(property, member);
       }
     }
 
@@ -182,7 +184,7 @@ export default createRule({
       }
 
       // check if this is used by a dynamic index type
-      const dynamicProperty = memberKeyMatchesDynamicProperty(
+      const dynamicProperty = getDynamicKeyForMember(
         memberKey,
         dynamicProperties,
       );
@@ -205,36 +207,6 @@ export default createRule({
         type: 'property',
         key: String(memberKey),
       });
-    }
-
-    /**
-     * Recursive function to report on missing destructuring in array nodes.
-     */
-    function checkTuple(
-      param: TSESTree.ArrayPattern,
-      typeAnnotation: TSESTree.TSTupleType,
-    ): void {
-      for (const [index, member] of typeAnnotation.elementTypes.entries()) {
-        const property = param.elements.at(index);
-
-        if (
-          // bail in case of `[, ...]`
-          // eslint-disable-next-line eqeqeq
-          property === null ||
-          // bail on a rest element
-          property?.type === AST_NODE_TYPES.RestElement
-        ) {
-          return;
-        }
-
-        // missing destructure
-        if (property === undefined) {
-          reportOnMember(member, { type: 'key', key: String(index) });
-          continue;
-        }
-
-        checkParam(property, member);
-      }
     }
 
     /**
@@ -265,7 +237,7 @@ export default createRule({
      *
      * @returns `TSESTree.Property` if it finds one, or `false` otherwise.
      */
-    function memberKeyMatchesDynamicProperty(
+    function getDynamicKeyForMember(
       memberKey: number | string | symbol,
       dynamicProperties: Set<PropertyDestructure>,
     ): TSESTree.Property | undefined {
@@ -369,6 +341,35 @@ export default createRule({
       }
 
       return false;
+    }
+
+    /**
+     * Compares an index-signature value-type with another type. If `isNoUncheckedIndexedAccess`
+     * is enabled, will filter out `undefined` from the index-signature's type.
+     */
+    function isTypeMatchingIndexSignatureType(
+      indexSignatureType: ts.Type,
+      comparedType: ts.Type,
+    ): boolean {
+      if (isNoUncheckedIndexedAccess) {
+        const indexSignatureParts = tsutils
+          .unionTypeParts(indexSignatureType)
+          .filter(part => !isTypeFlagSet(part, ts.TypeFlags.Undefined));
+
+        const comparedTypeParts = tsutils.unionTypeParts(comparedType);
+
+        if (indexSignatureParts.length !== comparedTypeParts.length) {
+          return false;
+        }
+
+        const indexSignaturePartsSet = new Set(indexSignatureParts);
+
+        return comparedTypeParts.every(part =>
+          indexSignaturePartsSet.has(part),
+        );
+      }
+
+      return indexSignatureType === comparedType;
     }
 
     function reportOnMember(
