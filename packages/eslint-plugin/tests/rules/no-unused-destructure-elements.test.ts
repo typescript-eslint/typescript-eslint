@@ -1242,13 +1242,13 @@ function test({ none }: { [i: \`_\${string}\`]: number | string }) {}
       `,
       errors: [
         {
-          column: 28,
-          data: { key: 'unused', type: 'property' },
-          line: 1,
+          column: 27,
+          data: { key: '[`_${string}`]', type: 'index signature' },
+          line: 2,
           messageId: 'partialDestructuring',
           suggestions: [
             {
-              data: { key: 'unused', type: 'property' },
+              data: { key: '[`_${string}`]', type: 'index signature' },
               messageId: 'removeUnusedKey',
               output: `
 function test({ none }: {  }) {}
