@@ -101,7 +101,6 @@
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-regexp": "^2.7.0",
-    "eslint-plugin-sonarjs": "^2.0.4",
     "eslint-plugin-unicorn": "^56.0.0",
     "execa": "7.2.0",
     "glob": "^10.3.12",
