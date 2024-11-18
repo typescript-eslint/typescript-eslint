@@ -119,6 +119,7 @@ function test({
   [i: string]: { hello: string; world: string };
 }) {}
     `,
+    'function test({ used }: { [i: string, j: number]: number }) {}',
     // template literals as keys of index signatures
     `
 function test({ _used }: { [i: \`_\${string}\`]: string }) {}
