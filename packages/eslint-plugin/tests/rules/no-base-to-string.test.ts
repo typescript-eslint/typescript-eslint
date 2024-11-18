@@ -164,13 +164,6 @@ String({});
 ([{}, 'bar'] as string[]).join('');
     `,
     `
-class Foo {
-  join() {}
-}
-const foo = new Foo();
-foo.join();
-    `,
-    `
 function foo<T extends string>(array: T[]) {
   return array.join();
 }
@@ -182,6 +175,45 @@ class Foo {
   }
 }
 [new Foo()].join();
+    `,
+    `
+class Foo {
+  join() {}
+}
+const foo = new Foo();
+foo.join();
+    `,
+    `
+declare const array: string[];
+array.join('');
+    `,
+    `
+class Foo {}
+declare const array: (string & Foo)[];
+array.join('');
+    `,
+    `
+class Foo {}
+class Bar {}
+declare const array: (string & Foo)[] | (string & Bar)[];
+array.join('');
+    `,
+    `
+class Foo {}
+class Bar {}
+declare const array: (string & Foo)[] & (string & Bar)[];
+array.join('');
+    `,
+    `
+class Foo {}
+class Bar {}
+declare const tuple: [string & Foo, string & Bar];
+tuple.join('');
+    `,
+    `
+class Foo {}
+declare const tuple: [string] & [Foo];
+tuple.join('');
     `,
   ],
   invalid: [
@@ -380,7 +412,56 @@ String(...objects);
         },
       ],
     },
-
+    {
+      code: `
+class Foo {}
+declare const foo: string | Foo;
+\`\${foo}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+class Bar {}
+declare const foo: Bar | Foo;
+\`\${foo}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+class Bar {}
+declare const foo: Bar & Foo;
+\`\${foo}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
     {
       code: `
         [{}, {}].join('');
@@ -390,21 +471,6 @@ String(...objects);
           data: {
             certainty: 'will',
             name: '[{}, {}]',
-          },
-          messageId: 'baseArrayJoin',
-        },
-      ],
-    },
-    {
-      code: `
-        class A {}
-        [{}, 'str'].join('');
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'may',
-            name: "[{}, 'str']",
           },
           messageId: 'baseArrayJoin',
         },
@@ -427,9 +493,56 @@ String(...objects);
     },
     {
       code: `
+        class A {}
+        [new A(), 'str'].join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: "[new A(), 'str']",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const array: (string | Foo)[];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const array: (string & Foo) | (string | Foo)[];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
         class Foo {}
         class Bar {}
-        const array: Foo[] | Bar[] = [new Foo(), new Bar()];
+        declare const array: Foo[] & Bar[];
         array.join('');
       `,
       errors: [
@@ -445,14 +558,13 @@ String(...objects);
     {
       code: `
         class Foo {}
-        class Bar {}
-        const array: Foo[] & Bar[] = [new Foo(), new Bar()];
+        declare const array: string[] | Foo[];
         array.join('');
       `,
       errors: [
         {
           data: {
-            certainty: 'will',
+            certainty: 'may',
             name: 'array',
           },
           messageId: 'baseArrayJoin',
@@ -462,7 +574,7 @@ String(...objects);
     {
       code: `
         class Foo {}
-        const tuple: [string, Foo] = ['string', new Foo()];
+        declare const tuple: [string, Foo];
         tuple.join('');
       `,
       errors: [
@@ -478,7 +590,7 @@ String(...objects);
     {
       code: `
         class Foo {}
-        const tuple: [Foo, Foo] = [new Foo(), new Foo()];
+        declare const tuple: [Foo, Foo];
         tuple.join('');
       `,
       errors: [
@@ -494,7 +606,7 @@ String(...objects);
     {
       code: `
         class Foo {}
-        const tuple: [Foo | string, string] = [new Foo(), 'string'];
+        declare const tuple: [Foo | string, string];
         tuple.join('');
       `,
       errors: [
@@ -517,6 +629,22 @@ String(...objects);
         {
           data: {
             certainty: 'may',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [Foo, string] & [Foo, Foo];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
             name: 'tuple',
           },
           messageId: 'baseArrayJoin',

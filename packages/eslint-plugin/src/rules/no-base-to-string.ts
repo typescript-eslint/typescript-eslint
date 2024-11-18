@@ -10,6 +10,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  nullThrows,
 } from '../util';
 
 enum Usefulness {
@@ -109,14 +110,44 @@ export default createRule<Options, MessageIds>({
       });
     }
 
-    function collectJoinCertainty(type: ts.Type): Usefulness {
-      const typeParts = tsutils.typeParts(type);
+    function collectUnionTypeCertainty(
+      type: ts.UnionType,
+      collectSubTypeCertainty: (type: ts.Type) => Usefulness,
+    ): Usefulness {
+      const certainties = type.types.map(t => collectSubTypeCertainty(t));
+      if (certainties.every(certainty => certainty === Usefulness.Never)) {
+        return Usefulness.Never;
+      }
 
-      const isArrayOrTuple = typeParts.every(
-        part => checker.isArrayType(part) || checker.isTupleType(part),
-      );
-      if (!isArrayOrTuple) {
+      if (certainties.every(certainty => certainty === Usefulness.Always)) {
         return Usefulness.Always;
+      }
+
+      return Usefulness.Sometimes;
+    }
+
+    function collectIntersectionTypeCertainty(
+      type: ts.IntersectionType,
+      collectSubTypeCertainty: (type: ts.Type) => Usefulness,
+    ): Usefulness {
+      for (const subType of type.types) {
+        const subtypeUsefulness = collectSubTypeCertainty(subType);
+
+        if (subtypeUsefulness === Usefulness.Always) {
+          return Usefulness.Always;
+        }
+      }
+
+      return Usefulness.Never;
+    }
+
+    function collectJoinCertainty(type: ts.Type): Usefulness {
+      if (tsutils.isUnionType(type)) {
+        return collectUnionTypeCertainty(type, collectJoinCertainty);
+      }
+
+      if (tsutils.isIntersectionType(type)) {
+        return collectIntersectionTypeCertainty(type, collectJoinCertainty);
       }
 
       if (checker.isTupleType(type)) {
@@ -125,12 +156,23 @@ export default createRule<Options, MessageIds>({
         if (certainties.some(certainty => certainty === Usefulness.Never)) {
           return Usefulness.Never;
         }
-      }
-      const elemType = type.getNumberIndexType();
-      if (!elemType) {
+
+        if (certainties.some(certainty => certainty === Usefulness.Sometimes)) {
+          return Usefulness.Sometimes;
+        }
+
         return Usefulness.Always;
       }
-      return collectToStringCertainty(elemType);
+
+      if (checker.isArrayType(type)) {
+        const elemType = nullThrows(
+          type.getNumberIndexType(),
+          'array should have number index type',
+        );
+        return collectToStringCertainty(elemType);
+      }
+
+      return Usefulness.Always;
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
@@ -164,45 +206,13 @@ export default createRule<Options, MessageIds>({
       }
 
       if (type.isIntersection()) {
-        for (const subType of type.types) {
-          const subtypeUsefulness = collectToStringCertainty(subType);
-
-          if (subtypeUsefulness === Usefulness.Always) {
-            return Usefulness.Always;
-          }
-        }
-
-        return Usefulness.Never;
+        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
       }
 
       if (!type.isUnion()) {
         return Usefulness.Never;
       }
-
-      let allSubtypesUseful = true;
-      let someSubtypeUseful = false;
-
-      for (const subType of type.types) {
-        const subtypeUsefulness = collectToStringCertainty(subType);
-
-        if (subtypeUsefulness !== Usefulness.Always && allSubtypesUseful) {
-          allSubtypesUseful = false;
-        }
-
-        if (subtypeUsefulness !== Usefulness.Never && !someSubtypeUseful) {
-          someSubtypeUseful = true;
-        }
-      }
-
-      if (allSubtypesUseful && someSubtypeUseful) {
-        return Usefulness.Always;
-      }
-
-      if (someSubtypeUseful) {
-        return Usefulness.Sometimes;
-      }
-
-      return Usefulness.Never;
+      return collectUnionTypeCertainty(type, collectToStringCertainty);
     }
 
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
