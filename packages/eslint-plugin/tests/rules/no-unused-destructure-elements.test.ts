@@ -203,6 +203,11 @@ function test({
   [i: number]: string;
 }) {}
     `,
+    `
+declare const a: number | 'bar' | 'foo';
+
+function test({ [a]: used }: { [i: number]: number; foo: string }) {}
+    `,
     // different kinds of destructuring
     `
 declare const obj: unknown;
