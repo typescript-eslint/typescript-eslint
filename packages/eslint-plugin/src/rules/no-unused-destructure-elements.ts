@@ -305,8 +305,10 @@ export default createRule({
           destructure.property.key,
         );
 
-        if (checker.isTypeAssignableTo(destructure.type, indexParameterType)) {
-          return true;
+        for (const type of tsutils.unionTypeParts(destructure.type)) {
+          if (checker.isTypeAssignableTo(type, indexParameterType)) {
+            return true;
+          }
         }
       }
 
