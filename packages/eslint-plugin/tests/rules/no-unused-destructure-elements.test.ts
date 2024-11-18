@@ -209,6 +209,11 @@ declare const a: number | 'bar' | 'foo';
 
 function test({ [a]: used }: { [i: number]: number; foo: string }) {}
     `,
+    `
+declare const s: number;
+
+function test({ [s]: used }: { hello: string; 2: number; 3: boolean }) {}
+    `,
     // different kinds of destructuring
     `
 declare const obj: unknown;
@@ -895,13 +900,13 @@ function test({ [s]: used }: {  1: string; 2: string }) {}
     },
     {
       code: `
-declare const s: 'used' | 'unexisting';
+declare const s: 'used1' | 'used2';
 
-function test({ [s]: used }: { used: string; unused: number }) {}
+function test({ [s]: _ }: { used1: string; used2: boolean; unused: number }) {}
       `,
       errors: [
         {
-          column: 46,
+          column: 60,
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
@@ -910,9 +915,9 @@ function test({ [s]: used }: { used: string; unused: number }) {}
               data: { key: 'unused', type: 'property' },
               messageId: 'removeUnusedKey',
               output: `
-declare const s: 'used' | 'unexisting';
+declare const s: 'used1' | 'used2';
 
-function test({ [s]: used }: { used: string;  }) {}
+function test({ [s]: _ }: { used1: string; used2: boolean;  }) {}
       `,
             },
           ],
@@ -967,9 +972,20 @@ function test({
   [s]: { [s]: used },
 }: {
   used1: {
+    used1: string;
     used2: boolean;
     used3: number;
     unused: number;
+  };
+  used2: {
+    used1: string;
+    used2: boolean;
+    used3: number;
+  };
+  used3: {
+    used1: string;
+    used2: boolean;
+    used3: number;
   };
 }) {}
       `,
@@ -977,7 +993,7 @@ function test({
         {
           column: 5,
           data: { key: 'unused', type: 'property' },
-          line: 10,
+          line: 11,
           messageId: 'partialDestructuring',
           suggestions: [
             {
@@ -990,9 +1006,20 @@ function test({
   [s]: { [s]: used },
 }: {
   used1: {
+    used1: string;
     used2: boolean;
     used3: number;
     
+  };
+  used2: {
+    used1: string;
+    used2: boolean;
+    used3: number;
+  };
+  used3: {
+    used1: string;
+    used2: boolean;
+    used3: number;
   };
 }) {}
       `,
@@ -1003,33 +1030,7 @@ function test({
     },
     {
       code: `
-declare const s: string;
-
-function test({ [s]: used }: { hello: string; world: number; 3: boolean }) {}
-      `,
-      errors: [
-        {
-          column: 62,
-          data: { key: '3', type: 'property' },
-          line: 4,
-          messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '3', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-declare const s: string;
-
-function test({ [s]: used }: { hello: string; world: number;  }) {}
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-declare const s: number;
+declare const s: 2 | 3;
 
 function test({ [s]: used }: { hello: string; 2: number; 3: boolean }) {}
       `,
@@ -1044,7 +1045,7 @@ function test({ [s]: used }: { hello: string; 2: number; 3: boolean }) {}
               data: { key: 'hello', type: 'property' },
               messageId: 'removeUnusedKey',
               output: `
-declare const s: number;
+declare const s: 2 | 3;
 
 function test({ [s]: used }: {  2: number; 3: boolean }) {}
       `,
@@ -1055,36 +1056,28 @@ function test({ [s]: used }: {  2: number; 3: boolean }) {}
     },
     {
       code: `
-declare const s: number | string;
+const m = Symbol.for('static');
 
-function test({
-  [s]: used,
-}: {
-  hello: string;
-  2: number;
-  [Symbol.iterator]: string;
-}) {}
+declare const s: 'hello' | typeof m;
+
+function test({ [s]: used }: { hello: string; 2: number; [m]: string }) {}
       `,
       errors: [
         {
-          column: 3,
-          data: { key: 'Symbol(Symbol.iterator)', type: 'property' },
-          line: 9,
+          column: 47,
+          data: { key: '2', type: 'property' },
+          line: 6,
           messageId: 'partialDestructuring',
           suggestions: [
             {
-              data: { key: 'Symbol(Symbol.iterator)', type: 'property' },
+              data: { key: '2', type: 'property' },
               messageId: 'removeUnusedKey',
               output: `
-declare const s: number | string;
+const m = Symbol.for('static');
 
-function test({
-  [s]: used,
-}: {
-  hello: string;
-  2: number;
-  
-}) {}
+declare const s: 'hello' | typeof m;
+
+function test({ [s]: used }: { hello: string;  [m]: string }) {}
       `,
             },
           ],
