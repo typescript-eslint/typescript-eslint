@@ -66,6 +66,13 @@ export default createRule({
 
         // collect dynamic keys which we failed to statically analyzed
         if (memberKey === undefined) {
+          const valueType = services.getTypeAtLocation(property.value);
+
+          // bail if a dynamic property misses; this is a type-error
+          if (tsutils.isIntrinsicErrorType(valueType)) {
+            return;
+          }
+
           dynamicProperties.add({ property });
           continue;
         }
@@ -204,6 +211,24 @@ export default createRule({
         return;
       }
 
+      // check if this type matches a computed type
+      if (member.computed) {
+        const memberKeyType = services.getTypeAtLocation(member.key);
+
+        for (const destructure of dynamicProperties) {
+          destructure.type ??= getConstrainedTypeAtLocation(
+            services,
+            destructure.property.key,
+          );
+
+          for (const type of tsutils.unionTypeParts(destructure.type)) {
+            if (checker.isTypeAssignableTo(type, memberKeyType)) {
+              return;
+            }
+          }
+        }
+      }
+
       reportOnMember(member, {
         type: 'property',
         key: String(memberKey),
@@ -247,19 +272,11 @@ export default createRule({
         );
 
         for (const type of tsutils.unionTypeParts(destructure.type)) {
-          if (
-            typeof memberKey === 'string' &&
-            ((tsutils.isStringLiteralType(type) && type.value === memberKey) ||
-              tsutils.isIntrinsicStringType(type))
-          ) {
+          if (tsutils.isStringLiteralType(type) && type.value === memberKey) {
             return destructure.property;
           }
 
-          if (
-            typeof memberKey === 'number' &&
-            ((tsutils.isNumberLiteralType(type) && type.value === memberKey) ||
-              tsutils.isIntrinsicNumberType(type))
-          ) {
+          if (tsutils.isNumberLiteralType(type) && type.value === memberKey) {
             return destructure.property;
           }
         }
