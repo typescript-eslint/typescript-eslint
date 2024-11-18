@@ -1,3 +1,9 @@
+## 8.15.0 (2024-11-18)
+
+This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.14.0 (2024-11-11)
 
 ### 🚀 Features

@@ -1,3 +1,15 @@
+## 8.15.0 (2024-11-18)
+
+### 🚀 Features
+
+- **typescript-eslint:** allow infinitely deep array nesting in config function and extends ([#10333](https://github.com/typescript-eslint/typescript-eslint/pull/10333))
+
+### ❤️  Thank You
+
+- Brad Zacher @bradzacher
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.14.0 (2024-11-11)
 
 This was a version bump only for rule-schema-to-typescript-types to align it with other projects, there were no code changes.

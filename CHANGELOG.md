@@ -1,3 +1,38 @@
+## 8.15.0 (2024-11-18)
+
+### 🚀 Features
+
+- **eslint-plugin:** added related-getter-setter-pairs rule ([#10192](https://github.com/typescript-eslint/typescript-eslint/pull/10192))
+- **eslint-plugin:** new rule `no-unsafe-type-assertion` ([#10051](https://github.com/typescript-eslint/typescript-eslint/pull/10051))
+- **eslint-plugin:** [prefer-nullish-coalescing] fix detection of `ignoreConditionalTests` involving boolean `!` operator ([#10299](https://github.com/typescript-eslint/typescript-eslint/pull/10299))
+- **rule-tester:** run method - avoid to infer type parameter from `tests` param ([#10324](https://github.com/typescript-eslint/typescript-eslint/pull/10324))
+- **typescript-eslint:** allow infinitely deep array nesting in config function and extends ([#10333](https://github.com/typescript-eslint/typescript-eslint/pull/10333))
+- **utils:** add new optional `language` field to `FlatConfig.Config` type ([#10326](https://github.com/typescript-eslint/typescript-eslint/pull/10326))
+
+### 🩹 Fixes
+
+- add missing peer dependencies ([#9744](https://github.com/typescript-eslint/typescript-eslint/pull/9744))
+- **eslint-plugin:** [consistent-indexed-object-style] handle circular mapped types ([#10301](https://github.com/typescript-eslint/typescript-eslint/pull/10301))
+- **eslint-plugin:** [await-thenable, return-await] don't flag awaiting unconstrained type parameter as unnecessary ([#10314](https://github.com/typescript-eslint/typescript-eslint/pull/10314))
+- **eslint-plugin:** [explicit-module-boundary-types] and [explicit-function-return-type] don't report on `as const satisfies` ([#10315](https://github.com/typescript-eslint/typescript-eslint/pull/10315))
+- **eslint-plugin:** report deprecations used in default export ([#10330](https://github.com/typescript-eslint/typescript-eslint/pull/10330))
+- **utils:** add defaultOptions to meta in rule ([#10339](https://github.com/typescript-eslint/typescript-eslint/pull/10339))
+
+### ❤️  Thank You
+
+- Bartosz @burtek
+- Brad Zacher @bradzacher
+- Ethan Wu
+- Josh Goldberg ✨
+- Kim Sang Du @developer-bandi
+- Luis Sebastian Urrutia Fuentes @LuisUrrutia
+- Marco Pasqualetti @marcalexiei
+- Phillip Huang
+- Ronen Amiel
+- Szydlak @wszydlak
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.14.0 (2024-11-11)
 
 ### 🚀 Features
