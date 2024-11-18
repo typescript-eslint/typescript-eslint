@@ -80,7 +80,7 @@
     "ajv": "^6.12.6",
     "cross-env": "^7.0.3",
     "cross-fetch": "*",
-    "eslint": "^9.13.0",
+    "eslint": "*",
     "jest": "29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "json-schema": "*",

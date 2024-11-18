@@ -29,7 +29,7 @@
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
     "esbuild": "~0.24.0",
-    "eslint": "^9.13.0",
+    "eslint": "*",
     "esquery": "*",
     "prettier": "^3.2.5",
     "tsx": "*"
