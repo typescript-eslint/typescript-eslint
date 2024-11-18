@@ -97,20 +97,19 @@ export default createRule({
       for (const [index, member] of typeAnnotation.elementTypes.entries()) {
         const property = param.elements.at(index);
 
-        if (
-          // bail in case of `[, ...]`
-          // eslint-disable-next-line eqeqeq
-          property === null ||
-          // bail on a rest element
-          property?.type === AST_NODE_TYPES.RestElement
-        ) {
-          return;
-        }
-
         // missing destructure
         if (property === undefined) {
           reportOnMember(member, { type: 'key', key: String(index) });
           continue;
+        }
+
+        if (
+          // bail in case of `[, ...]`
+          property == null ||
+          // bail on a rest element
+          property.type === AST_NODE_TYPES.RestElement
+        ) {
+          return;
         }
 
         checkParam(property, member);

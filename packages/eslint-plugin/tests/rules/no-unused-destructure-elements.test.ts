@@ -241,6 +241,7 @@ function test({
     'function test({ used }: { [i: `_${string}`] }) {}',
     'function test({ hello: used }: { [b] }) {}',
     'function test({ hello: used }: { [i: string, j: number]: string }) {}',
+    'function test({ 1: a }: [string, number, boolean]) {}',
     // generic type constraints
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}
@@ -256,6 +257,9 @@ function test<R extends 'used1' | 'used2'>(
   },
 ) {}
     `,
+    'function test<R>({ a }: { [i: `${string}`]: R }) {}',
+    'function test<R extends boolean>({ a }: { [i: `${string}`]: R }) {}',
+    'function test<R extends boolean>({ a }: { [i: `${string}`]: number | R }) {}',
   ],
   invalid: [
     // non-exhaustive destructuring
@@ -1498,6 +1502,72 @@ function test<R extends string>({ 1: a }: { [i: R]: string }) {}
               messageId: 'removeUnusedKey',
               output: `
 function test<R extends string>({ 1: a }: {  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test<R>({ a }: { [i: \`_\${string}_\`]: R }) {}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { key: '[`_${string}_`]', type: 'index signature' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[`_${string}_`]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test<R>({ a }: {  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test<R extends boolean>({ a }: { [i: \`_\${string}_\`]: R }) {}
+      `,
+      errors: [
+        {
+          column: 43,
+          data: { key: '[`_${string}_`]', type: 'index signature' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[`_${string}_`]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test<R extends boolean>({ a }: {  }) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+function test<R extends boolean>({ a }: { [i: \`_\${string}_\`]: number | R }) {}
+      `,
+      errors: [
+        {
+          column: 43,
+          data: { key: '[`_${string}_`]', type: 'index signature' },
+          line: 2,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '[`_${string}_`]', type: 'index signature' },
+              messageId: 'removeUnusedKey',
+              output: `
+function test<R extends boolean>({ a }: {  }) {}
       `,
             },
           ],
