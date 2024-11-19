@@ -36,9 +36,11 @@ interface User {
   name: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- intentional 'unsafe' single generic in return type
 async function getData<T>(
   url: string,
 ): Promise<{ body: T; linkHeader: string | null }>;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- intentional 'unsafe' single generic in return type
 async function getData<T>(
   url: string | undefined,
 ): Promise<{ body: T; linkHeader: string | null } | null>;
@@ -73,7 +75,7 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
     );
 
     if (!Array.isArray(contributors.body)) {
-      throw new Error(contributors.body?.message ?? 'An error occurred');
+      throw new Error(contributors.body.message);
     }
 
     const thresholdedContributors = contributors.body.filter(
@@ -82,12 +84,11 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
     yield thresholdedContributors;
 
     if (
-      contributors.linkHeader == null ||
       // https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api?apiVersion=2022-11-28#using-link-headers
       // > The URL for the next page is followed by rel="next".
       // > the link to the last page won't be included if it can't be calculated.
       // i.e. if there's no "next" link then there's no next page and we're at the end
-      !contributors.linkHeader.includes('rel="next"')
+      !contributors.linkHeader?.includes('rel="next"')
     ) {
       break;
     }
