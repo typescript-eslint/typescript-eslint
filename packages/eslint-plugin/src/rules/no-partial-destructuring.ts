@@ -45,8 +45,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
-    const isNoUncheckedIndexedAccess =
-      !!compilerOptions.noUncheckedIndexedAccess;
+    const isNoUncheckedIndexedAccess = compilerOptions.noUncheckedIndexedAccess;
 
     /**
      * Checks and reports a destructuring node and and its matching type annotation.
