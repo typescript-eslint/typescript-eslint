@@ -264,6 +264,9 @@ function test({
     'function test({ hello: used }: { [b] }) {}',
     'function test({ hello: used }: { [i: string, j: number]: string }) {}',
     'function test({ 1: a }: [string, number, boolean]) {}',
+    'function test({ foo }: { foo(): void }) {}',
+    'function test({ foo }: { (): void }) {}',
+    'function test({}: { (): void }) {}',
     // generic type constraints
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}
@@ -1084,6 +1087,67 @@ function test({ [s]: used }: { hello: string;  [m]: string }) {}
         },
       ],
     },
+    {
+      code: `
+declare const s: 'hello' | typeof Symbol.iterator;
+
+function test({
+  [s]: { world: used },
+}: {
+  hello: { world: number; unused: string };
+  2: number;
+  [Symbol.iterator]: { world: boolean };
+}) {}
+      `,
+      errors: [
+        {
+          column: 27,
+          data: { key: 'unused', type: 'property' },
+          line: 7,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'unused', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+declare const s: 'hello' | typeof Symbol.iterator;
+
+function test({
+  [s]: { world: used },
+}: {
+  hello: { world: number;  };
+  2: number;
+  [Symbol.iterator]: { world: boolean };
+}) {}
+      `,
+            },
+          ],
+        },
+        {
+          column: 3,
+          data: { key: '2', type: 'property' },
+          line: 8,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: '2', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: `
+declare const s: 'hello' | typeof Symbol.iterator;
+
+function test({
+  [s]: { world: used },
+}: {
+  hello: { world: number; unused: string };
+  
+  [Symbol.iterator]: { world: boolean };
+}) {}
+      `,
+            },
+          ],
+        },
+      ],
+    },
     // template literals as keys of index signatures
     {
       code: 'function test({ used }: { used: string; [i: `_${string}`]: string }) {}',
@@ -1452,6 +1516,24 @@ function test({ used }: { [i: \`_\${string}\`]: number | string }) {}
               output: `
 function test({ used }: {  }) {}
       `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: 'function test({ foo }: { foo(): void; bar(): string }) {}',
+      errors: [
+        {
+          column: 39,
+          data: { key: 'bar', type: 'property' },
+          line: 1,
+          messageId: 'partialDestructuring',
+          suggestions: [
+            {
+              data: { key: 'bar', type: 'property' },
+              messageId: 'removeUnusedKey',
+              output: 'function test({ foo }: { foo(): void;  }) {}',
             },
           ],
         },

@@ -48,6 +48,29 @@ export default createRule({
     const isNoUncheckedIndexedAccess =
       !!compilerOptions.noUncheckedIndexedAccess;
 
+    /**
+     * Checks and reports a destructuring node and and its matching type annotation.
+     *
+     * _Ignores non-destructuring nodes._
+     */
+    function checkParam(param: TSESTree.Node, paramType: TSESTree.Node): void {
+      if (
+        param.type === AST_NODE_TYPES.ObjectPattern &&
+        paramType.type === AST_NODE_TYPES.TSTypeLiteral
+      ) {
+        return checkObject(param, paramType);
+      }
+
+      if (
+        param.type === AST_NODE_TYPES.ArrayPattern &&
+        paramType.type === AST_NODE_TYPES.TSTupleType
+      ) {
+        return checkTuple(param, paramType);
+      }
+
+      // do nothing otherwise
+    }
+
     function checkObject(
       node: TSESTree.ObjectPattern,
       typeAnnotation: TSESTree.TSTypeLiteral,
@@ -123,17 +146,19 @@ export default createRule({
       }
     }
 
+    /**
+     * Checks if an index signature property is covered by at least one destructure property.
+     */
     function checkIndexSignature(
       member: TSESTree.TSIndexSignature,
       remainingProperties: RemainingProperties,
       dynamicProperties: DynamicProperties,
     ) {
-      // an index signature must have exactly one parameter, having more
-      // is valid syntax, but invalid typescript
-      const indexParameter = member.parameters[0];
       const indexParameterType = getConstrainedTypeAtLocation(
         services,
-        indexParameter,
+        // an index signature must have exactly one parameter, having more
+        // is valid syntax, but invalid typescript
+        member.parameters[0],
       );
 
       if (
@@ -161,6 +186,9 @@ export default createRule({
       });
     }
 
+    /**
+     * Checks if an non index-signature property is covered by at least one destructure property.
+     */
     function checkStaticMember(
       member: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
       remainingProperties: RemainingProperties,
@@ -193,6 +221,7 @@ export default createRule({
 
       // check if this is used by a dynamic index type
       const dynamicProperty = getDynamicKeyForMember(
+        member,
         memberKey,
         dynamicProperties,
       );
@@ -211,24 +240,6 @@ export default createRule({
         return;
       }
 
-      // check if this type matches a computed type
-      if (member.computed) {
-        const memberKeyType = services.getTypeAtLocation(member.key);
-
-        for (const destructure of dynamicProperties) {
-          destructure.type ??= getConstrainedTypeAtLocation(
-            services,
-            destructure.property.key,
-          );
-
-          for (const type of tsutils.unionTypeParts(destructure.type)) {
-            if (checker.isTypeAssignableTo(type, memberKeyType)) {
-              return;
-            }
-          }
-        }
-      }
-
       reportOnMember(member, {
         type: 'property',
         key: String(memberKey),
@@ -236,32 +247,10 @@ export default createRule({
     }
 
     /**
-     * Checks and reports a destructuring node and and its matching type annotation.
-     *
-     * _Ignores non-destructuring nodes._
-     */
-    function checkParam(param: TSESTree.Node, paramType: TSESTree.Node): void {
-      if (
-        param.type === AST_NODE_TYPES.ObjectPattern &&
-        paramType.type === AST_NODE_TYPES.TSTypeLiteral
-      ) {
-        return checkObject(param, paramType);
-      }
-
-      if (
-        param.type === AST_NODE_TYPES.ArrayPattern &&
-        paramType.type === AST_NODE_TYPES.TSTupleType
-      ) {
-        return checkTuple(param, paramType);
-      }
-
-      // do nothing otherwise
-    }
-
-    /**
      * Attempts to find a dynamic property that matches a given member key.
      */
     function getDynamicKeyForMember(
+      member: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
       memberKey: number | string | symbol,
       dynamicProperties: DynamicProperties,
     ): TSESTree.Property | undefined {
@@ -278,6 +267,24 @@ export default createRule({
 
           if (tsutils.isNumberLiteralType(type) && type.value === memberKey) {
             return destructure.property;
+          }
+        }
+      }
+
+      // compare types for computed type keys
+      if (member.computed) {
+        const memberKeyType = services.getTypeAtLocation(member.key);
+
+        for (const destructure of dynamicProperties) {
+          destructure.type ??= getConstrainedTypeAtLocation(
+            services,
+            destructure.property.key,
+          );
+
+          for (const type of tsutils.unionTypeParts(destructure.type)) {
+            if (checker.isTypeAssignableTo(type, memberKeyType)) {
+              return destructure.property;
+            }
           }
         }
       }
