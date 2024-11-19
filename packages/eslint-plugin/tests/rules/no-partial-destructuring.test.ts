@@ -3,6 +3,8 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from '../../src/rules/no-partial-destructuring';
 import { getFixturesRootDir } from '../RuleTester';
 
+const emptyline = '';
+
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
@@ -516,7 +518,7 @@ function test({
 function test({
   [Symbol.iterator]: renamed,
 }: {
-
+  ${emptyline}
   [Symbol.iterator]: boolean;
 }) {}
       `,
@@ -775,7 +777,7 @@ function test({
   used,
 }: {
   used: boolean;
-
+  ${emptyline}
   [i: string]: boolean;
 }) {}
       `,
@@ -797,7 +799,7 @@ function test({
 }: {
   used: boolean;
   [i: number]: boolean;
-
+  ${emptyline}
 }) {}
       `,
             },
@@ -959,7 +961,7 @@ function test({
   used1: string;
   used2: boolean;
   used3: number;
-
+  ${emptyline}
 }) {}
       `,
             },
@@ -1012,7 +1014,7 @@ function test({
     used1: string;
     used2: boolean;
     used3: number;
-
+    ${emptyline}
   };
   used2: {
     used1: string;
@@ -1139,7 +1141,7 @@ function test({
   [s]: { world: used },
 }: {
   hello: { world: number; unused: string };
-
+  ${emptyline}
   [Symbol.iterator]: { world: boolean };
 }) {}
       `,
@@ -1242,7 +1244,7 @@ function test({
 }: {
   [j: string]: string;
   [i: \`b\${string}\`]: string;
-
+  ${emptyline}
 }) {}
       `,
             },
@@ -1659,7 +1661,7 @@ function test<R extends 'used1' | 'used2'>(
   }: {
     used1: string;
     used2: number;
-
+    ${emptyline}
   },
 ) {}
       `,
