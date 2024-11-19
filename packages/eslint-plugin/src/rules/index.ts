@@ -58,6 +58,7 @@ import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
 import noNonNullAssertion from './no-non-null-assertion';
+import noPartialDestructuring from './no-partial-destructuring';
 import noRedeclare from './no-redeclare';
 import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
@@ -85,7 +86,6 @@ import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnsafeTypeAssertion from './no-unsafe-type-assertion';
 import noUnsafeUnaryMinus from './no-unsafe-unary-minus';
-import noUnusedDestructureElements from './no-unused-destructure-elements';
 import noUnusedExpressions from './no-unused-expressions';
 import noUnusedVars from './no-unused-vars';
 import noUseBeforeDefine from './no-use-before-define';
@@ -190,6 +190,7 @@ const rules = {
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
   'no-non-null-assertion': noNonNullAssertion,
+  'no-partial-destructuring': noPartialDestructuring,
   'no-redeclare': noRedeclare,
   'no-redundant-type-constituents': noRedundantTypeConstituents,
   'no-require-imports': noRequireImports,
@@ -218,7 +219,6 @@ const rules = {
   'no-unsafe-return': noUnsafeReturn,
   'no-unsafe-type-assertion': noUnsafeTypeAssertion,
   'no-unsafe-unary-minus': noUnsafeUnaryMinus,
-  'no-unused-destructure-elements': noUnusedDestructureElements,
   'no-unused-expressions': noUnusedExpressions,
   'no-unused-vars': noUnusedVars,
   'no-use-before-define': noUseBeforeDefine,

@@ -1,6 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-unused-destructure-elements';
+import rule from '../../src/rules/no-partial-destructuring';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
@@ -14,7 +14,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-unused-destructure-elements', rule, {
+ruleTester.run('no-partial-destructuring', rule, {
   valid: [
     // not destructuring on a type
     'function test() {}',
@@ -516,7 +516,7 @@ function test({
 function test({
   [Symbol.iterator]: renamed,
 }: {
-  
+
   [Symbol.iterator]: boolean;
 }) {}
       `,
@@ -775,7 +775,7 @@ function test({
   used,
 }: {
   used: boolean;
-  
+
   [i: string]: boolean;
 }) {}
       `,
@@ -797,7 +797,7 @@ function test({
 }: {
   used: boolean;
   [i: number]: boolean;
-  
+
 }) {}
       `,
             },
@@ -959,7 +959,7 @@ function test({
   used1: string;
   used2: boolean;
   used3: number;
-  
+
 }) {}
       `,
             },
@@ -1012,7 +1012,7 @@ function test({
     used1: string;
     used2: boolean;
     used3: number;
-    
+
   };
   used2: {
     used1: string;
@@ -1139,7 +1139,7 @@ function test({
   [s]: { world: used },
 }: {
   hello: { world: number; unused: string };
-  
+
   [Symbol.iterator]: { world: boolean };
 }) {}
       `,
@@ -1242,7 +1242,7 @@ function test({
 }: {
   [j: string]: string;
   [i: \`b\${string}\`]: string;
-  
+
 }) {}
       `,
             },
@@ -1659,7 +1659,7 @@ function test<R extends 'used1' | 'used2'>(
   }: {
     used1: string;
     used2: number;
-    
+
   },
 ) {}
       `,

@@ -25,12 +25,12 @@ type RemainingProperties = Map<number | string | symbol, PropertyDestructure>;
 type DynamicProperties = Set<PropertyDestructure>;
 
 export default createRule({
-  name: 'no-unused-destructure-elements',
+  name: 'no-partial-destructuring',
   meta: {
     type: 'problem',
     docs: {
       description:
-        'Disallow partial destructuring of inline objects and tuple types',
+        'Disallow destructuring patterns that do not fully handle all elements of inline object and tuple types',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

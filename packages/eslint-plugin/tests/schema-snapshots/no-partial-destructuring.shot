@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-destructure-elements 1`] = `
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-partial-destructuring 1`] = `
 "
 # SCHEMA:
 
