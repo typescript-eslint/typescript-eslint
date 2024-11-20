@@ -126,7 +126,7 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const fixableExpressions = node.expressions
+        const fixableExpressionsReversed = node.expressions
           .map((expression, index) => ({
             expression,
             nextQuasi: node.quasis[index + 1],
@@ -142,19 +142,25 @@ export default createRule<[], MessageId>({
             }
 
             if (isLiteral(expression)) {
-              return !(
-                typeof expression.value === 'string' &&
-                nextQuasi.value.raw.startsWith('\n') &&
-                /^\s+$/.test(expression.value)
-              );
+              // allow trailing whitespace literal
+              if (startsWithNewLine(nextQuasi.value.raw)) {
+                return !(
+                  typeof expression.value === 'string' &&
+                  isWhitespace(expression.value)
+                );
+              }
+              return true;
             }
 
             if (isTemplateLiteral(expression)) {
-              return !(
-                expression.quasis.length === 1 &&
-                expression.quasis[0].value.raw.startsWith('\n') &&
-                /^\s+$/.test(expression.quasis[0].value.raw)
-              );
+              // allow trailing whitespace literal
+              if (startsWithNewLine(nextQuasi.value.raw)) {
+                return !(
+                  expression.quasis.length === 1 &&
+                  isWhitespace(expression.quasis[0].value.raw)
+                );
+              }
+              return true;
             }
 
             return false;
@@ -163,7 +169,11 @@ export default createRule<[], MessageId>({
 
         let nextCharacterIsOpeningCurlyBrace = false;
 
-        for (const { expression, nextQuasi, prevQuasi } of fixableExpressions) {
+        for (const {
+          expression,
+          nextQuasi,
+          prevQuasi,
+        } of fixableExpressionsReversed) {
           const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
             [];
 
@@ -292,3 +302,11 @@ export default createRule<[], MessageId>({
     };
   },
 });
+
+function isWhitespace(x: string): boolean {
+  return /^\s+$/.test(x);
+}
+
+function startsWithNewLine(x: string): boolean {
+  return x.startsWith('\n') || x.startsWith('\r\n');
+}

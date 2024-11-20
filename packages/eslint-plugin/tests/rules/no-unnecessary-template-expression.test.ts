@@ -917,6 +917,19 @@ this code has trailing position template expression but it isn\\'t whitespace
     \`;
     `,
   },
+  {
+    code: noFormat`
+\`trailing whitespace followed by escaped windows newline: \${' '}\\r\\n\`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: `
+\`trailing whitespace followed by escaped windows newline:  \\r\\n\`;
+    `,
+  },
 ];
 
 describe('fixer should not change runtime value', () => {
@@ -1064,6 +1077,9 @@ this code has trailing whitespace: \${'    '}
 \`
 this code has trailing whitespace: \${' '}
     \`;
+    `,
+    noFormat`
+\`this code has trailing whitespace with a windows \\\r new line: \${' '}\r\n\`;
     `,
   ],
 
