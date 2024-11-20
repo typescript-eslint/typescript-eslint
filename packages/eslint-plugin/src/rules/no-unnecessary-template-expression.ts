@@ -304,7 +304,15 @@ export default createRule<[], MessageId>({
 });
 
 function isWhitespace(x: string): boolean {
-  return /^\s+$/.test(x);
+  // allow empty string too since we went to allow
+  // `      ${''}
+  // `;
+  //
+  // in addition to
+  // `${'        '}
+  // `;
+  //
+  return /^\s*$/.test(x);
 }
 
 function startsWithNewLine(x: string): boolean {
