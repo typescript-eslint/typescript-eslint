@@ -885,6 +885,38 @@ const invalidCases: readonly InvalidTestCase<
     errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
     output: '` \\ud83d\\udc68 `;',
   },
+  {
+    code: `
+\`
+this code does not have trailing whitespace: \${' '}\\n even though it might look it.\`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: `
+\`
+this code does not have trailing whitespace:  \\n even though it might look it.\`;
+    `,
+  },
+  {
+    code: `
+\`
+this code has trailing position template expression \${'but it isn\\'t whitespace'}
+    \`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: `
+\`
+this code has trailing position template expression but it isn\\'t whitespace
+    \`;
+    `,
+  },
 ];
 
 describe('fixer should not change runtime value', () => {
@@ -1022,6 +1054,16 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
 
     `
 \`not a useless \${String.raw\`nested interpolation \${a}\`}\`;
+    `,
+    `
+\`
+this code has trailing whitespace: \${'    '}
+    \`;
+    `,
+    `
+\`
+this code has trailing whitespace: \${' '}
+    \`;
     `,
   ],
 

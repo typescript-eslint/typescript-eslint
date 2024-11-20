@@ -127,26 +127,47 @@ export default createRule<[], MessageId>({
         }
 
         const fixableExpressions = node.expressions
-          .filter(
-            expression =>
-              isLiteral(expression) ||
-              isTemplateLiteral(expression) ||
+          .map((expression, index) => ({
+            expression,
+            nextQuasi: node.quasis[index + 1],
+            prevQuasi: node.quasis[index],
+          }))
+          .filter(({ expression, nextQuasi }) => {
+            if (
               isUndefinedIdentifier(expression) ||
               isInfinityIdentifier(expression) ||
-              isNaNIdentifier(expression),
-          )
+              isNaNIdentifier(expression)
+            ) {
+              return true;
+            }
+
+            if (isLiteral(expression)) {
+              return !(
+                typeof expression.value === 'string' &&
+                nextQuasi.value.raw.startsWith('\n') &&
+                /^\s+$/.test(expression.value)
+              );
+            }
+
+            if (isTemplateLiteral(expression)) {
+              return !(
+                expression.quasis.length === 1 &&
+                expression.quasis[0].value.raw.startsWith('\n') &&
+                /^\s+$/.test(expression.quasis[0].value.raw)
+              );
+            }
+
+            return false;
+          })
           .reverse();
 
         let nextCharacterIsOpeningCurlyBrace = false;
 
-        for (const expression of fixableExpressions) {
+        for (const { expression, nextQuasi, prevQuasi } of fixableExpressions) {
           const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
             [];
-          const index = node.expressions.indexOf(expression);
-          const prevQuasi = node.quasis[index];
-          const nextQuasi = node.quasis[index + 1];
 
-          if (nextQuasi.value.raw.length !== 0) {
+          if (nextQuasi.value.raw !== '') {
             nextCharacterIsOpeningCurlyBrace =
               nextQuasi.value.raw.startsWith('{');
           }
