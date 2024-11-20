@@ -269,6 +269,8 @@ function test({
     'function test({ foo }: { foo(): void }) {}',
     'function test({ foo }: { (): void }) {}',
     'function test({}: { (): void }) {}',
+    'function test({ bar: [a] }: { bar: [...string[], number] }) {}',
+    'function test({ bar: [a, b, c] }: { bar: [...number[]] }) {}',
     // generic type constraints
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}

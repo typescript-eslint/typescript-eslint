@@ -124,9 +124,13 @@ export default createRule({
       typeAnnotation: TSESTree.TSTupleType,
     ): void {
       for (const [index, member] of typeAnnotation.elementTypes.entries()) {
+        // bail on rest type `[...string[]]`
+        if (member.type === AST_NODE_TYPES.TSRestType) {
+          return;
+        }
+
         const property = param.elements.at(index);
 
-        // missing destructure
         if (property === undefined) {
           reportOnMember(member, { type: 'key', key: String(index) });
           continue;
@@ -170,7 +174,7 @@ export default createRule({
         return;
       }
 
-      // Template literal index signatures are used if any remaining property's type is the
+      // Template literal index signatures count as used if any remaining property's type is the
       // same, this may miss some unused template literal index signatures
       if (
         tsutils.isTemplateLiteralType(indexParameterType) &&
