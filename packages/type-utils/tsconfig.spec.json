@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/scope-manager",
+    "outDir": "../../dist/out-tsc/packages/type-utils",
     "module": "NodeNext",
     "types": ["jest", "node"]
   },
@@ -12,7 +12,7 @@
     "src/**/*.d.ts",
     "tests"
   ],
-  "exclude": ["**/fixtures/**", "tests/eslint-scope"],
+  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"

@@ -515,7 +515,7 @@ declare module 'eslint/lib/rules/prefer-const' {
 declare module 'eslint/lib/rules/prefer-destructuring' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-  interface DestructuringTypeConfig {
+  export interface DestructuringTypeConfig {
     array?: boolean;
     object?: boolean;
   }
@@ -525,7 +525,7 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
         VariableDeclarator?: DestructuringTypeConfig;
       }
     | DestructuringTypeConfig;
-  interface Option1 {
+  export interface Option1 {
     enforceForRenamedProperties?: boolean;
   }
   const rule: TSESLint.RuleModule<
@@ -571,7 +571,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
       | Record<string, never>;
   }
 
-  interface ObjectOfPathsAndPatterns {
+  export interface ObjectOfPathsAndPatterns {
     paths?: rule.ArrayOfStringOrObject;
     patterns?: rule.ArrayOfStringOrObjectPatterns;
   }

@@ -1,17 +1,19 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "resolveJsonModule": true,
-    "declaration": true,
-    "types": ["node", "jest"]
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.build.tsbuildinfo",
+    "emitDeclarationOnly": false,
+    "types": ["node"]
   },
-  "include": ["src", "typings"],
-  "exclude": ["**/*.test.ts"],
+  "include": ["src/**/*.ts"],
+  "exclude": ["jest.config.js", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
+    { "path": "../visitor-keys/tsconfig.build.json" },
+    { "path": "../ast-spec/tsconfig.build.json" },
     { "path": "../types/tsconfig.build.json" },
-    { "path": "../visitor-keys/tsconfig.build.json" }
+    { "path": "../typescript-estree/tsconfig.build.json" }
   ]
 }

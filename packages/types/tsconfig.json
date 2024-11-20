@@ -1,9 +1,10 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "typings", "tests", "tools"],
-  "references": []
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "../ast-spec" },
+    { "path": "./tsconfig.build.json" },
+    { "path": "./tsconfig.tools.json" }
+  ]
 }

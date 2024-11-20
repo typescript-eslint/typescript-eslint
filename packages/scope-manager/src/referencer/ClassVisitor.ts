@@ -29,7 +29,7 @@ class ClassVisitor extends Visitor {
     classVisitor.visitClass(node);
   }
 
-  visit(node: TSESTree.Node | null | undefined): void {
+  override visit(node: TSESTree.Node | null | undefined): void {
     // make sure we only handle the nodes we are designed to handle
     if (node && node.type in this) {
       super.visit(node);

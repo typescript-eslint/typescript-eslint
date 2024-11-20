@@ -1,6 +1,21 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
+  "plugins": [
+    {
+      "plugin": "@nx/js/typescript",
+      "exclude": [".", "packages/integration-tests/fixtures/**"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        },
+        "build": {
+          "targetName": "build",
+          "configName": "tsconfig.build.json"
+        }
+      }
+    }
+  ],
   "release": {
     "projects": [
       "!repo",

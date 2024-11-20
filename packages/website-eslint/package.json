@@ -3,7 +3,8 @@
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
-    "dist"
+    "dist",
+    "!*.tsbuildinfo"
   ],
   "repository": {
     "type": "git",
@@ -29,7 +30,7 @@
     "build": "tsx ./build.ts",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "devDependencies": {
     "@eslint/js": "*",

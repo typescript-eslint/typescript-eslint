@@ -4,6 +4,7 @@
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "_ts4.3",
     "package.json",
     "README.md",
@@ -60,7 +61,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.4.0",

@@ -1,21 +1,36 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "emitDecoratorMetadata": false,
     "esModuleInterop": true,
-    "lib": ["ES2023"],
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "experimentalDecorators": false,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "lib": ["es2022"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmitOnError": true,
+    // TODO: Check but I think Brad requested to enforce via linting
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitOverride": true,
     "noImplicitReturns": true,
-    "paths": {},
+    // TODO: Check but I think Brad requested to enforce via linting
+    "noUnusedLocals": false,
     "pretty": true,
-    "resolveJsonModule": true,
+    "removeComments": false,
+    "resolveJsonModule": false,
+    "skipDefaultLibCheck": false,
     "skipLibCheck": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "strict": true,
-    "target": "ES2022"
+    "target": "es2022",
+    "verbatimModuleSyntax": false
   }
 }

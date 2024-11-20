@@ -1,28 +1,20 @@
 {
   "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "allowJs": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "lib": ["DOM", "ES2023"],
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "paths": {
-      "@site/*": ["./*"]
-    },
-    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
-  },
-  "include": [
-    "src",
-    "tests",
-    "tools",
-    "plugins",
-    "typings",
-    "sidebars/*.js",
-    "./*.mts",
-    "./*.ts"
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "../website-eslint" },
+    { "path": "../rule-tester" },
+    { "path": "../type-utils" },
+    { "path": "../rule-schema-to-typescript-types" },
+    { "path": "../utils" },
+    { "path": "../eslint-plugin" },
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "../typescript-estree" },
+    { "path": "../scope-manager" },
+    { "path": "../parser" },
+    { "path": "./tsconfig.build.json" }
   ]
 }

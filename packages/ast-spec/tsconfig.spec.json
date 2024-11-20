@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/scope-manager",
+    "outDir": "../../dist/out-tsc/packages/ast-spec",
     "module": "NodeNext",
     "types": ["jest", "node"]
   },
@@ -10,10 +10,13 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
-    "tests"
+    "tests",
+    "typings"
   ],
-  "exclude": ["**/fixtures/**", "tests/eslint-scope"],
   "references": [
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
     {
       "path": "./tsconfig.build.json"
     }
