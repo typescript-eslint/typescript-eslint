@@ -1073,11 +1073,6 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
 this code has trailing whitespace: \${'    '}
     \`;
     `,
-    `
-\`
-this code has trailing whitespace: \${' '}
-    \`;
-    `,
     noFormat`
 \`this code has trailing whitespace with a windows \\\r new line: \${' '}\r\n\`;
     `,
