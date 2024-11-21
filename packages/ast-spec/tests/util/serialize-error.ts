@@ -2,7 +2,7 @@ import { codeFrameColumns } from '@babel/code-frame';
 
 import { TSError } from './parsers/typescript-estree-import';
 
-export function serializeError(error: unknown, contents: string): unknown {
+export function serializeError(error: any, contents: string): unknown {
   if (!(error instanceof TSError)) {
     return error;
   }
