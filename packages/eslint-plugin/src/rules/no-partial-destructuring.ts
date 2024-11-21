@@ -84,17 +84,17 @@ export default createRule({
           return;
         }
 
+        const valueType = services.getTypeAtLocation(property.value);
+
+        // bail if misses; this is a type-error
+        if (tsutils.isIntrinsicErrorType(valueType)) {
+          return;
+        }
+
         const memberKey = getStaticMemberAccessValue(property, context);
 
         // collect dynamic keys which we failed to statically analyzed
         if (memberKey === undefined) {
-          const valueType = services.getTypeAtLocation(property.value);
-
-          // bail if a dynamic property misses; this is a type-error
-          if (tsutils.isIntrinsicErrorType(valueType)) {
-            return;
-          }
-
           dynamicProperties.add({ property });
           continue;
         }
