@@ -233,6 +233,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-restricted-imports',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow specified modules when loaded by `import`',
       extendsBaseRule: true,

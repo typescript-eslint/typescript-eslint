@@ -18,6 +18,10 @@ TODO - convert this to /utils/ts-eslint
 */
 import type { TSESLint } from '@typescript-eslint/utils';
 
+export type InfiniteDepthConfigWithExtends =
+  | ConfigWithExtends
+  | InfiniteDepthConfigWithExtends[];
+
 export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
    * Allows you to "extend" a set of configs similar to `extends` from the
@@ -59,7 +63,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
    * ]
    * ```
    */
-  extends?: TSESLint.FlatConfig.ConfigArray;
+  extends?: InfiniteDepthConfigWithExtends[];
 }
 
 /**
@@ -83,14 +87,21 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
  * ```
  */
 export function config(
-  ...configs: ConfigWithExtends[]
+  ...configs: InfiniteDepthConfigWithExtends[]
 ): TSESLint.FlatConfig.ConfigArray {
-  return configs.flatMap((configWithExtends, configIndex) => {
+  const flattened =
+    // @ts-expect-error -- intentionally an infinite type
+    configs.flat(Infinity) as ConfigWithExtends[];
+  return flattened.flatMap((configWithExtends, configIndex) => {
     const { extends: extendsArr, ...config } = configWithExtends;
     if (extendsArr == null || extendsArr.length === 0) {
       return config;
     }
-    const undefinedExtensions = extendsArr.reduce<number[]>(
+    const extendsArrFlattened = extendsArr.flat(
+      Infinity,
+    ) as ConfigWithExtends[];
+
+    const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
       (acc, extension, extensionIndex) => {
         const maybeExtension = extension as
           | TSESLint.FlatConfig.Config
@@ -115,7 +126,7 @@ export function config(
     }
 
     return [
-      ...extendsArr.map(extension => {
+      ...extendsArrFlattened.map(extension => {
         const name = [config.name, extension.name].filter(Boolean).join('__');
         return {
           ...extension,

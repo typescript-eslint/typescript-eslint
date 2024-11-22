@@ -325,17 +325,7 @@ class Referencer extends Visitor {
   }
 
   protected AssignmentExpression(node: TSESTree.AssignmentExpression): void {
-    let left = node.left;
-    switch (left.type) {
-      case AST_NODE_TYPES.TSAsExpression:
-      case AST_NODE_TYPES.TSTypeAssertion:
-        // explicitly visit the type annotation
-        this.visitType(left.typeAnnotation);
-      // intentional fallthrough
-      case AST_NODE_TYPES.TSNonNullExpression:
-        // unwrap the expression
-        left = left.expression;
-    }
+    const left = this.visitExpressionTarget(node.left);
 
     if (PatternVisitor.isPattern(left)) {
       if (node.operator === '=') {
@@ -752,8 +742,10 @@ class Referencer extends Visitor {
   }
 
   protected UpdateExpression(node: TSESTree.UpdateExpression): void {
-    if (PatternVisitor.isPattern(node.argument)) {
-      this.visitPattern(node.argument, pattern => {
+    const argument = this.visitExpressionTarget(node.argument);
+
+    if (PatternVisitor.isPattern(argument)) {
+      this.visitPattern(argument, pattern => {
         this.currentScope().referenceValue(
           pattern,
           ReferenceFlag.ReadWrite,
@@ -810,6 +802,21 @@ class Referencer extends Visitor {
     this.visit(node.body);
 
     this.close(node);
+  }
+
+  private visitExpressionTarget(left: TSESTree.Node) {
+    switch (left.type) {
+      case AST_NODE_TYPES.TSAsExpression:
+      case AST_NODE_TYPES.TSTypeAssertion:
+        // explicitly visit the type annotation
+        this.visitType(left.typeAnnotation);
+      // intentional fallthrough
+      case AST_NODE_TYPES.TSNonNullExpression:
+        // unwrap the expression
+        left = left.expression;
+    }
+
+    return left;
   }
 }
 

@@ -1,3 +1,21 @@
+## 8.15.0 (2024-11-18)
+
+### 🚀 Features
+
+- **rule-tester:** run method - avoid to infer type parameter from `tests` param ([#10324](https://github.com/typescript-eslint/typescript-eslint/pull/10324))
+
+### ❤️  Thank You
+
+- Marco Pasqualetti @marcalexiei
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.14.0 (2024-11-11)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.13.0 (2024-11-04)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.

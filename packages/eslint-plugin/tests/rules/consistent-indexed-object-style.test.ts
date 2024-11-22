@@ -33,6 +33,7 @@ interface Foo {
     'type Foo = { [key: string]: string | Foo };',
     'type Foo = { [key: string]: Foo };',
     'type Foo = { [key: string]: Foo } | Foo;',
+    'type Foo = { [key in string]: Foo };',
     `
 interface Foo {
   [key: string]: Foo;

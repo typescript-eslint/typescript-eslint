@@ -97,7 +97,13 @@ export default createRule<Options, MessageId>({
       },
     ],
   },
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  defaultOptions: [
+    {
+      ignoreArrowShorthand: false,
+      ignoreVoidOperator: false,
+      ignoreVoidReturningFunctions: false,
+    },
+  ],
 
   create(context, [options]) {
     const services = getParserServices(context);
