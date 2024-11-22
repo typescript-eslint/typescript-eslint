@@ -219,9 +219,11 @@ async function main(): Promise<void> {
       const importName = ((): BASE_CONFIG_EXPORT_NAMES => {
         if (variable.isTypeVariable && variable.isValueVariable) {
           return BASE_CONFIG_EXPORT_NAMES.TYPE_AND_VALUE;
-        } else if (variable.isTypeVariable) {
+        }
+        if (variable.isTypeVariable) {
           return BASE_CONFIG_EXPORT_NAMES.TYPE;
-        } else if (variable.isValueVariable) {
+        }
+        if (variable.isValueVariable) {
           return BASE_CONFIG_EXPORT_NAMES.VALUE;
         }
         // shouldn't happen

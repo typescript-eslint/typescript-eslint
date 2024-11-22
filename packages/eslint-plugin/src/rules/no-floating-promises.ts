@@ -335,8 +335,6 @@ export default createRule<Options, MessageId>({
         return { isUnhandled: false };
       }
 
-      let output = { isUnhandled: true };
-
       if (node.type === AST_NODE_TYPES.CallExpression) {
         // If the outer expression is a call, a `.catch()` or `.then()` with
         // rejection handler handles the promise.
