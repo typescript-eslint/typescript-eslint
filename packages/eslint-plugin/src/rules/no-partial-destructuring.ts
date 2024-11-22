@@ -39,10 +39,9 @@ export default createRule({
         'Disallow destructuring patterns that do not fully handle all elements of inline object and tuple types',
       requiresTypeChecking: true,
     },
-    hasSuggestions: true,
+    fixable: 'code',
     messages: {
       partialDestructuring: "Unused {{type}} '{{key}}' in destructuring.",
-      removeUnusedKey: "Remove unused {{type}} '{{key}}' from destructuring.",
     },
     schema: [],
   },
@@ -415,21 +414,15 @@ export default createRule({
         node: member,
         messageId: 'partialDestructuring',
         data,
-        suggest: [
-          {
-            messageId: 'removeUnusedKey',
-            data,
-            fix: fixer => {
-              const nextToken = context.sourceCode.getTokenAfter(member);
+        fix: fixer => {
+          const nextToken = context.sourceCode.getTokenAfter(member);
 
-              if (nextToken?.value === ',') {
-                return fixer.removeRange([member.range[0], nextToken.range[1]]);
-              }
+          if (nextToken?.value === ',') {
+            return fixer.removeRange([member.range[0], nextToken.range[1]]);
+          }
 
-              return fixer.remove(member);
-            },
-          },
-        ],
+          return fixer.remove(member);
+        },
       });
     }
 
