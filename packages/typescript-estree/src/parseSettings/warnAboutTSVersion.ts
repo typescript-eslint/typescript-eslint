@@ -40,14 +40,17 @@ export function warnAboutTSVersion(
     const border = '=============';
     const versionWarning = [
       border,
+      '\n',
       'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
-      'You may find that it works just fine, or you may not.',
-      `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
-      `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
+      '\n',
+      `* @typescript-eslint/typescript-estree version: ${TYPESCRIPT_ESTREE_VERSION}`,
+      `* Supported TypeScript versions: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+      `* Your TypeScript version: ${ACTIVE_TYPESCRIPT_VERSION}`,
+      '\n',
       'Please only submit bug reports when using the officially supported version.',
-      `Your @typescript-eslint/typescript-estree version: ${TYPESCRIPT_ESTREE_VERSION}`,
+      '\n',
       border,
-    ].join('\n\n');
+    ].join('\n');
 
     parseSettings.log(versionWarning);
   }
