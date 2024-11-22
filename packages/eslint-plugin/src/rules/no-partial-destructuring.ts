@@ -24,6 +24,12 @@ type RemainingProperties = Map<number | string | symbol, PropertyDestructure>;
 
 type DynamicProperties = Set<PropertyDestructure>;
 
+interface TypeAnnotationOf<T> {
+  typeAnnotation: TSESTree.TSTypeAnnotation & {
+    typeAnnotation: T;
+  };
+}
+
 export default createRule({
   name: 'no-partial-destructuring',
   meta: {
@@ -429,18 +435,14 @@ export default createRule({
 
     return {
       "ArrayPattern[typeAnnotation.typeAnnotation.type='TSTupleType']"(
-        node: TSESTree.ArrayPattern & {
-          typeAnnotation: TSESTree.TSTypeAnnotation;
-        },
+        node: TSESTree.ArrayPattern & TypeAnnotationOf<TSESTree.TSTupleType>,
       ): void {
-        checkParam(node, node.typeAnnotation.typeAnnotation);
+        checkTuple(node, node.typeAnnotation.typeAnnotation);
       },
       "ObjectPattern[typeAnnotation.typeAnnotation.type='TSTypeLiteral']"(
-        node: TSESTree.ObjectPattern & {
-          typeAnnotation: TSESTree.TSTypeAnnotation;
-        },
+        node: TSESTree.ObjectPattern & TypeAnnotationOf<TSESTree.TSTypeLiteral>,
       ): void {
-        checkParam(node, node.typeAnnotation.typeAnnotation);
+        checkObject(node, node.typeAnnotation.typeAnnotation);
       },
     };
   },
