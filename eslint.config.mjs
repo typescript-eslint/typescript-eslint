@@ -14,7 +14,6 @@ import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
-import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import url from 'node:url';
@@ -43,7 +42,6 @@ export default tseslint.config(
       ['react']: reactPlugin,
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
       ['regexp']: regexpPlugin,
-      ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
     },
     /* eslint-enable no-useless-computed-key */
@@ -210,7 +208,12 @@ export default tseslint.config(
       ],
       'logical-assignment-operators': 'error',
       'no-console': 'error',
-      'no-else-return': 'error',
+      'no-else-return': [
+        'error',
+        {
+          allowElseIf: false,
+        },
+      ],
       'no-fallthrough': [
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
@@ -335,8 +338,6 @@ export default tseslint.config(
       'regexp/prefer-quantifier': 'error',
       'regexp/prefer-question-quantifier': 'error',
       'regexp/prefer-w': 'error',
-
-      'sonarjs/no-duplicated-branches': 'error',
 
       //
       // eslint-plugin-unicorn

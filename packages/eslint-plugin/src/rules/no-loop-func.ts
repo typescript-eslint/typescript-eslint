@@ -19,6 +19,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-loop-func',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',

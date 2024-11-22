@@ -26,6 +26,7 @@ export default createRule<Options, MessageIds>({
   name: 'max-params',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description:
         'Enforce a maximum number of parameters in function definitions',

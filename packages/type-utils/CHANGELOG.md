@@ -1,3 +1,15 @@
+## 8.15.0 (2024-11-18)
+
+### 🩹 Fixes
+
+- add missing peer dependencies ([#9744](https://github.com/typescript-eslint/typescript-eslint/pull/9744))
+
+### ❤️  Thank You
+
+- Ethan Wu
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.14.0 (2024-11-11)
 
 This was a version bump only for type-utils to align it with other projects, there were no code changes.
