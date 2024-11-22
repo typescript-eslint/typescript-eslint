@@ -1765,7 +1765,9 @@ export class Converter {
               right: this.convertChild(node.initializer),
               typeAnnotation: undefined,
             });
-          } else if (node.dotDotDotToken) {
+          }
+
+          if (node.dotDotDotToken) {
             return this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
               argument: arrayItem,
