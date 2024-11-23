@@ -199,12 +199,16 @@ export function getBinaryExpressionType(operator: ts.BinaryOperatorToken):
       type: AST_NODE_TYPES.AssignmentExpression,
       operator: getTextForTokenKind(operator.kind),
     };
-  } else if (isLogicalOperator(operator)) {
+  }
+
+  if (isLogicalOperator(operator)) {
     return {
       type: AST_NODE_TYPES.LogicalExpression,
       operator: getTextForTokenKind(operator.kind),
     };
-  } else if (isESTreeBinaryOperator(operator)) {
+  }
+
+  if (isESTreeBinaryOperator(operator)) {
     return {
       type: AST_NODE_TYPES.BinaryExpression,
       operator: getTextForTokenKind(operator.kind),
@@ -483,7 +487,8 @@ export function getTokenType(
   if (keywordKind) {
     if (keywordKind === SyntaxKind.NullKeyword) {
       return AST_TOKEN_TYPES.Null;
-    } else if (
+    }
+    if (
       keywordKind >= SyntaxKind.FirstFutureReservedWord &&
       keywordKind <= SyntaxKind.LastKeyword
     ) {
