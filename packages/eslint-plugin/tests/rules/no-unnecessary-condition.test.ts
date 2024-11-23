@@ -997,6 +997,30 @@ declare let foo: { toFixed(): string };
 foo &&= 1;
       `,
     },
+    {
+      code: `
+function usesEmptyObject(x: {}) {
+  if (x) {
+  }
+}
+      `,
+    },
+    {
+      code: `
+function usesEmptyObject(x: { toFixed(): string }) {
+  if (x) {
+  }
+}
+      `,
+    },
+    {
+      code: `
+function usesEmptyObject(x: { toString(): string }) {
+  if (x) {
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -2783,5 +2807,18 @@ isString('fa' + 'lafel');
       '((string & { __brandA: string }) | (number & { __brandB: string })) & ("foo" | 123)',
       'alwaysTruthy',
     ),
+    {
+      code: `
+const neverNull: object = {};
+if (neverNull) {
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
   ],
 });
