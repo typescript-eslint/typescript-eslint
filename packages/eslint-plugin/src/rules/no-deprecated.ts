@@ -271,11 +271,32 @@ export default createRule({
       );
     }
 
+    function getJSXAttributeDeprecation(
+      openingElement: TSESTree.JSXOpeningElement,
+      node: IdentifierLike,
+    ): string | undefined {
+      if (openingElement.name.type !== AST_NODE_TYPES.JSXIdentifier) {
+        return;
+      }
+      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
+      const contextType = checker.getContextualType(tsNode);
+      if (!contextType) {
+        return;
+      }
+      const symbol = contextType.getProperty(node.name);
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
         return getCallLikeDeprecation(callLikeNode);
       }
+
+      if (node.parent.type === AST_NODE_TYPES.JSXAttribute) {
+        return getJSXAttributeDeprecation(node.parent.parent, node);
+      }
+
       if (node.parent.type === AST_NODE_TYPES.Property) {
         return getJsDocDeprecation(
           services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
