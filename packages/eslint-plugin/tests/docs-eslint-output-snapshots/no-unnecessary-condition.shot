@@ -79,7 +79,7 @@ function assert(condition: unknown): asserts condition {
 assert(false); // Unnecessary; condition is always falsy.
        ~~~~~ Unnecessary conditional, value is always falsy.
 
-const neverNull = {};
+const neverNull = { someProperty: 'someValue' };
 assert(neverNull); // Unnecessary; condition is always truthy.
        ~~~~~~~~~ Unnecessary conditional, value is always truthy.
 
