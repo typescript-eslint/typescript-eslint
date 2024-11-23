@@ -269,11 +269,7 @@ export default createRule({
         );
 
         for (const type of tsutils.unionTypeParts(destructure.type)) {
-          if (tsutils.isStringLiteralType(type) && type.value === memberKey) {
-            return destructure.property;
-          }
-
-          if (tsutils.isNumberLiteralType(type) && type.value === memberKey) {
+          if (tsutils.isLiteralType(type) && type.value === memberKey) {
             return destructure.property;
           }
         }
