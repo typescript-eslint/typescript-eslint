@@ -163,7 +163,6 @@ function booleanComparison(
 }
 
 function getFalsyTypes(checker: ts.TypeChecker) {
-  // Missing 0n.
   return [
     {
       type: checker.getNullType(),
@@ -190,11 +189,12 @@ function getFalsyTypes(checker: ts.TypeChecker) {
       type: checker.getNumberLiteralType(-0),
       value: -0,
     },
+    // this doesn't seem to have any effect. I don't think you can create a NaN literal type in TS.
     {
       type: checker.getNumberLiteralType(NaN),
       value: NaN,
     },
-    // only available after TS
+    // not available in all supported versions; see https://github.com/microsoft/TypeScript/issues/58563
     {
       type: checker.getBigIntLiteralType({ base10Value: '0', negative: false }),
       value: 0n,
