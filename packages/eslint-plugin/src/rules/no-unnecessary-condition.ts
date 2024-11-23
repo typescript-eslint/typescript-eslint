@@ -48,6 +48,8 @@ const isPossiblyFalsy = (
 ): boolean =>
   tsutils
     .unionTypeParts(type)
+    // Intersections like `string & {}` can also be possibly falsy,
+    // requiring us to look into the intersection.
     .flatMap(type => tsutils.intersectionTypeParts(type))
     .some(type =>
       falsyTypes.some(falsyType => checker.isTypeAssignableTo(falsyType, type)),
