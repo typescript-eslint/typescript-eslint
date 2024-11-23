@@ -286,9 +286,9 @@ ruleTester.run('no-deprecated', rule, {
       `,
       errors: [
         {
-          column: 20,
+          column: 22,
           data: { name: 'b' },
-          endColumn: 21,
+          endColumn: 23,
           endLine: 11,
           line: 11,
           messageId: 'deprecated',
