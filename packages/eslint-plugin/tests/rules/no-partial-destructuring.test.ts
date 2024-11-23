@@ -301,15 +301,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: 'function test({}: {  }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({}: {  }) {}',
     },
     {
       code: 'function test({}: { 1: boolean }) {}',
@@ -319,15 +313,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: '1', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '1', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: 'function test({}: {  }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({}: {  }) {}',
     },
     {
       code: 'function test({ used }: { unused: boolean; used: boolean }) {}',
@@ -337,15 +325,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: 'function test({ used }: {  used: boolean }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({ used }: {  used: boolean }) {}',
     },
     {
       code: 'function test([]: [boolean]) {}',
@@ -355,15 +337,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: '0', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '0', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output: 'function test([]: []) {}',
-            },
-          ],
         },
       ],
+      output: 'function test([]: []) {}',
     },
     {
       code: 'function test([a]: [boolean, number]) {}',
@@ -373,15 +349,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: '1', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '1', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output: 'function test([a]: [boolean, ]) {}',
-            },
-          ],
         },
       ],
+      output: 'function test([a]: [boolean, ]) {}',
     },
     {
       code: 'function test([a]: [boolean, number, string]) {}',
@@ -391,28 +361,15 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: '1', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '1', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output: 'function test([a]: [boolean,  string]) {}',
-            },
-          ],
         },
         {
           column: 38,
           data: { key: '2', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '2', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output: 'function test([a]: [boolean, number, ]) {}',
-            },
-          ],
         },
       ],
+      output: 'function test([a]: [boolean,  ]) {}',
     },
     {
       code: 'function test([{ used }]: [{ used: string; unused: number }, number]) {}',
@@ -422,30 +379,15 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output:
-                'function test([{ used }]: [{ used: string;  }, number]) {}',
-            },
-          ],
         },
         {
           column: 62,
           data: { key: '1', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '1', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output:
-                'function test([{ used }]: [{ used: string; unused: number }, ]) {}',
-            },
-          ],
         },
       ],
+      output: 'function test([{ used }]: [{ used: string;  }, ]) {}',
     },
     {
       code: 'function test([[used]]: [[string, number], number]) {}',
@@ -455,28 +397,15 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: '1', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '1', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output: 'function test([[used]]: [[string, ], number]) {}',
-            },
-          ],
         },
         {
           column: 44,
           data: { key: '1', type: 'key' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '1', type: 'key' },
-              messageId: 'removeUnusedKey',
-              output: 'function test([[used]]: [[string, number], ]) {}',
-            },
-          ],
         },
       ],
+      output: 'function test([[used]]: [[string, ], ]) {}',
     },
     // complex keys to statically analyze
     {
@@ -487,16 +416,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output:
-                "function test({ ['used']: renamed }: {  used: boolean }) {}",
-            },
-          ],
         },
       ],
+      output: "function test({ ['used']: renamed }: {  used: boolean }) {}",
     },
     {
       code: `
@@ -513,11 +435,9 @@ function test({
           data: { key: 'unused', type: 'property' },
           line: 5,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 function test({
   [Symbol.iterator]: renamed,
 }: {
@@ -525,10 +445,6 @@ function test({
   [Symbol.iterator]: boolean;
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -540,17 +456,11 @@ function test({ used }: { used: boolean; [Symbol.iterator]: boolean }) {}
           data: { key: 'Symbol(Symbol.iterator)', type: 'property' },
           line: 2,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'Symbol(Symbol.iterator)', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-function test({ used }: { used: boolean;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: `
+function test({ used }: { used: boolean;  }) {}
+      `,
     },
     {
       code: `
@@ -564,19 +474,13 @@ function test({ [symol]: renamed }: { unused: boolean; [symol]: boolean }) {}
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 const symol = Symbol.for('symbol');
 
 function test({ [symol]: renamed }: {  [symol]: boolean }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -590,19 +494,13 @@ function test({ used }: { used: boolean; [symol]: boolean }) {}
           data: { key: 'Symbol(symbol)', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'Symbol(symbol)', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 const symol = Symbol.for('symbol');
 
 function test({ used }: { used: boolean;  }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: 'function test({ [1]: renamed }: { unused: boolean; 1: boolean }) {}',
@@ -612,148 +510,82 @@ function test({ used }: { used: boolean;  }) {}
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: 'function test({ [1]: renamed }: {  1: boolean }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({ [1]: renamed }: {  1: boolean }) {}',
     },
     // index signatures
     {
-      code: `
-        function test({}: { [i: string]: boolean }) {}
-      `,
+      code: 'function test({}: { [i: string]: boolean }) {}',
       errors: [
         {
-          column: 29,
+          column: 21,
           data: { key: '[string]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[string]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-        function test({}: {  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({}: {  }) {}',
     },
     {
-      code: `
-        function test({}: { [i: string | number]: boolean }) {}
-      `,
+      code: 'function test({}: { [i: string | number]: boolean }) {}',
       errors: [
         {
-          column: 29,
+          column: 21,
           data: { key: '[string | number]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[string | number]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-        function test({}: {  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({}: {  }) {}',
     },
     {
-      code: `
-        function test({ used }: { used: boolean; [i: string]: boolean }) {}
-      `,
+      code: 'function test({ used }: { used: boolean; [i: string]: boolean }) {}',
       errors: [
         {
-          column: 50,
+          column: 42,
           data: { key: '[string]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[string]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-        function test({ used }: { used: boolean;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({ used }: { used: boolean;  }) {}',
     },
     {
-      code: `
-        function test({ used }: { [i: number]: boolean; [i: string]: boolean }) {}
-      `,
+      code: 'function test({ used }: { [i: number]: boolean; [i: string]: boolean }) {}',
       errors: [
         {
-          column: 35,
+          column: 27,
           data: { key: '[number]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[number]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-        function test({ used }: {  [i: string]: boolean }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({ used }: {  [i: string]: boolean }) {}',
     },
     {
-      code: `
-        function test({ 1: used }: { [i: number]: boolean; [i: string]: boolean }) {}
-      `,
+      code: 'function test({ 1: used }: { [i: number]: boolean; [i: string]: boolean }) {}',
       errors: [
         {
-          column: 60,
+          column: 52,
           data: { key: '[string]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[string]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-        function test({ 1: used }: { [i: number]: boolean;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({ 1: used }: { [i: number]: boolean;  }) {}',
     },
     {
-      code: `
-        function test({ used }: { unused: string; [i: string]: boolean }) {}
-      `,
+      code: 'function test({ used }: { unused: string; [i: string]: boolean }) {}',
       errors: [
         {
-          column: 35,
+          column: 27,
           data: { key: 'unused', type: 'property' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-        function test({ used }: {  [i: string]: boolean }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({ used }: {  [i: string]: boolean }) {}',
     },
     {
       code: `
@@ -771,44 +603,23 @@ function test({
           data: { key: '[number]', type: 'index signature' },
           line: 6,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[number]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-function test({
-  used,
-}: {
-  used: boolean;
-  ${emptyline}
-  [i: string]: boolean;
-}) {}
-      `,
-            },
-          ],
         },
         {
           column: 3,
           data: { key: '[string]', type: 'index signature' },
           line: 7,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[string]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 function test({
   used,
 }: {
   used: boolean;
-  [i: number]: boolean;
+  ${emptyline}
   ${emptyline}
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     // destructure with dynamic keys
     {
@@ -823,19 +634,13 @@ function test({ [s]: used }: { [i: number]: string; unused: string }) {}
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 1;
 
 function test({ [s]: used }: { [i: number]: string;  }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -849,36 +654,19 @@ function test({ [s]: used }: { unused: string; 1: string; 2: string }) {}
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-declare const s: 1;
-
-function test({ [s]: used }: {  1: string; 2: string }) {}
-      `,
-            },
-          ],
         },
         {
           column: 59,
           data: { key: '2', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '2', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-declare const s: 1;
-
-function test({ [s]: used }: { unused: string; 1: string;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: `
+declare const s: 1;
+
+function test({ [s]: used }: {  1: string;  }) {}
+      `,
     },
     {
       code: `
@@ -892,19 +680,13 @@ function test({ [s]: used }: { unused: string; 1: string; 2: string }) {}
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 1 | 2;
 
 function test({ [s]: used }: {  1: string; 2: string }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -918,19 +700,13 @@ function test({ [s]: _ }: { used1: string; used2: boolean; unused: number }) {}
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 'used1' | 'used2';
 
 function test({ [s]: _ }: { used1: string; used2: boolean;  }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -951,11 +727,9 @@ function test({
           data: { key: 'unused', type: 'property' },
           line: 10,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 'used1' | 'used2' | 'used3';
 
 function test({
@@ -967,10 +741,6 @@ function test({
   ${emptyline}
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1003,11 +773,9 @@ function test({
           data: { key: 'unused', type: 'property' },
           line: 11,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 'used1' | 'used2' | 'used3';
 
 function test({
@@ -1031,10 +799,6 @@ function test({
   };
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1048,19 +812,13 @@ function test({ [s]: used }: { hello: string; 2: number; 3: boolean }) {}
           data: { key: 'hello', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'hello', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 2 | 3;
 
 function test({ [s]: used }: {  2: number; 3: boolean }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1076,21 +834,15 @@ function test({ [s]: used }: { hello: string; 2: number; [m]: string }) {}
           data: { key: '2', type: 'property' },
           line: 6,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '2', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 const m = Symbol.for('static');
 
 declare const s: 'hello' | typeof m;
 
 function test({ [s]: used }: { hello: string;  [m]: string }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1110,48 +862,25 @@ function test({
           data: { key: 'unused', type: 'property' },
           line: 7,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-declare const s: 'hello' | typeof Symbol.iterator;
-
-function test({
-  [s]: { world: used },
-}: {
-  hello: { world: number;  };
-  2: number;
-  [Symbol.iterator]: { world: boolean };
-}) {}
-      `,
-            },
-          ],
         },
         {
           column: 3,
           data: { key: '2', type: 'property' },
           line: 8,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '2', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: 'hello' | typeof Symbol.iterator;
 
 function test({
   [s]: { world: used },
 }: {
-  hello: { world: number; unused: string };
+  hello: { world: number;  };
   ${emptyline}
   [Symbol.iterator]: { world: boolean };
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     // template literals as keys of index signatures
     {
@@ -1162,15 +891,9 @@ function test({
           data: { key: '[`_${string}`]', type: 'index signature' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[`_${string}`]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: 'function test({ used }: { used: string;  }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({ used }: { used: string;  }) {}',
     },
     {
       code: 'function test({ _used }: { unused: string; [i: `_${string}`]: string }) {}',
@@ -1180,16 +903,9 @@ function test({
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output:
-                'function test({ _used }: {  [i: `_${string}`]: string }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({ _used }: {  [i: `_${string}`]: string }) {}',
     },
     {
       code: `
@@ -1203,19 +919,13 @@ function test({ [s]: used }: { _one: string; _two: number; three: boolean }) {}
           data: { key: 'three', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'three', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const s: \`_\${'one' | 'two'}\`;
 
 function test({ [s]: used }: { _one: string; _two: number;  }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1235,11 +945,9 @@ function test({
           data: { key: '[`a${string}`]', type: 'index signature' },
           line: 9,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[`a${string}`]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const a: \`b\${string}\`;
 
 function test({
@@ -1250,10 +958,6 @@ function test({
   ${emptyline}
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: 'function test({ _used }: { unused: string; [i: `_${string}`]: string }) {}',
@@ -1263,14 +967,6 @@ function test({
           data: { key: 'unused', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output:
-                'function test({ _used }: {  [i: `_${string}`]: string }) {}',
-            },
-          ],
         },
       ],
       languageOptions: {
@@ -1280,26 +976,16 @@ function test({
           tsconfigRootDir: rootDir,
         },
       },
+      output: 'function test({ _used }: {  [i: `_${string}`]: string }) {}',
     },
     {
-      code: `
-function test({ used }: { used: string; [i: \`_\${string}\`]: number | string }) {}
-      `,
+      code: 'function test({ used }: { used: string; [i: `_${string}`]: number | string }) {}',
       errors: [
         {
           column: 41,
           data: { key: '[`_${string}`]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[`_${string}`]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-function test({ used }: { used: string;  }) {}
-      `,
-            },
-          ],
         },
       ],
       languageOptions: {
@@ -1309,6 +995,7 @@ function test({ used }: { used: string;  }) {}
           tsconfigRootDir: rootDir,
         },
       },
+      output: 'function test({ used }: { used: string;  }) {}',
     },
     {
       code: `
@@ -1322,19 +1009,13 @@ function test({ [c]: a }: { foo: string; bar: number; bazz: string }) {}
           data: { key: 'foo', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'foo', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const c: \`ba\${'r' | 'zz'}\`;
 
 function test({ [c]: a }: {  bar: number; bazz: string }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     // different kinds of destructuring
     {
@@ -1349,19 +1030,13 @@ const { used }: { used: string; unused: string } = obj;
           data: { key: 'unused', type: 'property' },
           line: 4,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 declare const obj: unknown;
 
 const { used }: { used: string;  } = obj;
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1375,19 +1050,13 @@ class Test {
           data: { key: 'unused', type: 'property' },
           line: 3,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 class Test {
   constructor({ used }: { used: string;  }) {}
 }
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1401,107 +1070,61 @@ class Test {
           data: { key: 'unused', type: 'property' },
           line: 3,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 class Test {
   test({ used }: { used: string;  }) {}
 }
       `,
-            },
-          ],
-        },
-      ],
     },
     {
-      code: `
-const test = ({ used }: { used: string; unused: string }) => {};
-      `,
+      code: 'const test = ({ used }: { used: string; unused: string }) => {};',
       errors: [
         {
           column: 41,
           data: { key: 'unused', type: 'property' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-const test = ({ used }: { used: string;  }) => {};
-      `,
-            },
-          ],
         },
       ],
+      output: 'const test = ({ used }: { used: string;  }) => {};',
     },
     {
-      code: `
-const test = ({ used }: { used: string; unused: string }) => 1;
-      `,
+      code: 'const test = ({ used }: { used: string; unused: string }) => 1;',
       errors: [
         {
           column: 41,
           data: { key: 'unused', type: 'property' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-const test = ({ used }: { used: string;  }) => 1;
-      `,
-            },
-          ],
         },
       ],
+      output: 'const test = ({ used }: { used: string;  }) => 1;',
     },
     {
-      code: `
-function test({ used }: { used?: string; unused: string }) {}
-      `,
+      code: 'function test({ used }: { used?: string; unused: string }) {}',
       errors: [
         {
           column: 42,
           data: { key: 'unused', type: 'property' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-function test({ used }: { used?: string;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test({ used }: { used?: string;  }) {}',
     },
     {
-      code: `
-function test({ used = 'default' }: { used: string; unused: string }) {}
-      `,
+      code: "function test({ used = 'default' }: { used: string; unused: string }) {}",
       errors: [
         {
           column: 53,
           data: { key: 'unused', type: 'property' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
-function test({ used = 'default' }: { used: string;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: "function test({ used = 'default' }: { used: string;  }) {}",
     },
     // misc
     {
@@ -1512,15 +1135,9 @@ function test({ used = 'default' }: { used: string;  }) {}
           data: { key: 'bar', type: 'property' },
           line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'bar', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: 'function test({ foo }: { foo(): void;  }) {}',
-            },
-          ],
         },
       ],
+      output: 'function test({ foo }: { foo(): void;  }) {}',
     },
     // generic type constraints
     {
@@ -1538,11 +1155,9 @@ function test<R extends string>({
           data: { key: '[string]', type: 'index signature' },
           line: 6,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[string]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 function test<R extends string>({
   1: a,
 }: {
@@ -1550,32 +1165,18 @@ function test<R extends string>({
   ${emptyline}
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
-      code: `
-function test<R>({ a }: { [i: string]: number; [i: \`_\${string}_\`]: R }) {}
-      `,
+      code: 'function test<R>({ a }: { [i: string]: number; [i: `_${string}_`]: R }) {}',
       errors: [
         {
           column: 48,
           data: { key: '[`_${string}_`]', type: 'index signature' },
-          line: 2,
+          line: 1,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[`_${string}_`]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
-function test<R>({ a }: { [i: string]: number;  }) {}
-      `,
-            },
-          ],
         },
       ],
+      output: 'function test<R>({ a }: { [i: string]: number;  }) {}',
     },
     {
       code: `
@@ -1592,11 +1193,9 @@ function test<R extends boolean>({
           data: { key: '[`_${string}_`]', type: 'index signature' },
           line: 6,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[`_${string}_`]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 function test<R extends boolean>({
   a,
 }: {
@@ -1604,10 +1203,6 @@ function test<R extends boolean>({
   ${emptyline}
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1624,11 +1219,9 @@ function test<R extends boolean>({
           data: { key: '[`_${string}_`]', type: 'index signature' },
           line: 6,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: '[`_${string}_`]', type: 'index signature' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 function test<R extends boolean>({
   a,
 }: {
@@ -1636,10 +1229,6 @@ function test<R extends boolean>({
   ${emptyline}
 }) {}
       `,
-            },
-          ],
-        },
-      ],
     },
     {
       code: `
@@ -1660,11 +1249,9 @@ function test<R extends 'used1' | 'used2'>(
           data: { key: 'unused', type: 'property' },
           line: 9,
           messageId: 'partialDestructuring',
-          suggestions: [
-            {
-              data: { key: 'unused', type: 'property' },
-              messageId: 'removeUnusedKey',
-              output: `
+        },
+      ],
+      output: `
 function test<R extends 'used1' | 'used2'>(
   a: R,
   {
@@ -1676,10 +1263,6 @@ function test<R extends 'used1' | 'used2'>(
   },
 ) {}
       `,
-            },
-          ],
-        },
-      ],
     },
   ],
 });
