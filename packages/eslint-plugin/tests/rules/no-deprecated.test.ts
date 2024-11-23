@@ -205,21 +205,6 @@ ruleTester.run('no-deprecated', rule, {
         default as ts,
       } from 'typescript';
     `,
-
-    // TODO: Can anybody figure out how to get this to report on `b`?
-    // getContextualType retrieves the union type, but it has no symbol...
-    `
-      interface AProps {
-        /** @deprecated */
-        b: number | string;
-      }
-
-      function A(props: AProps) {
-        return <div />;
-      }
-
-      const a = <A b="" />;
-    `,
     `
       namespace A {
         /** @deprecated */
@@ -286,6 +271,30 @@ ruleTester.run('no-deprecated', rule, {
     `,
   ],
   invalid: [
+    {
+      code: `
+        interface AProps {
+          /** @deprecated */
+          b: number | string;
+        }
+
+        function A(props: AProps) {
+          return <div />;
+        }
+
+        const a = <A b="" />;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: { name: 'b' },
+          endColumn: 21,
+          endLine: 11,
+          line: 11,
+          messageId: 'deprecated',
+        },
+      ],
+    },
     {
       code: `
         /** @deprecated */ var a = undefined;
@@ -2465,7 +2474,7 @@ ruleTester.run('no-deprecated', rule, {
       code: `
         /** @deprecated */
         declare function decorator(constructor: Function);
-        
+
         @decorator
         export class Foo {}
       `,
@@ -2497,6 +2506,19 @@ ruleTester.run('no-deprecated', rule, {
           endLine: 7,
           line: 7,
           messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: 'const a = <div aria-grabbed></div>;',
+      errors: [
+        {
+          column: 16,
+          data: { name: 'aria-grabbed', reason: 'in ARIA 1.1' },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'deprecatedWithReason',
         },
       ],
     },
