@@ -113,11 +113,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
         // If the ignore option is *not* set we can report it now
-        else if (isAllowed === false) {
+        if (isAllowed === false) {
           let fullNumberNode: TSESTree.Literal | TSESTree.UnaryExpression =
             node;
           let raw = node.raw;
-
           if (
             node.parent.type === AST_NODE_TYPES.UnaryExpression &&
             // the base rule only shows the operator for negative numbers
@@ -127,7 +126,6 @@ export default createRule<Options, MessageIds>({
             fullNumberNode = node.parent;
             raw = `${node.parent.operator}${node.raw}`;
           }
-
           context.report({
             node: fullNumberNode,
             messageId: 'noMagic',
