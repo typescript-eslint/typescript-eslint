@@ -1,3 +1,15 @@
+## 8.16.0 (2024-11-25)
+
+### 🩹 Fixes
+
+- **typescript-estree:** update conditions for unsupported version warning ([#10385](https://github.com/typescript-eslint/typescript-eslint/pull/10385))
+
+### ❤️  Thank You
+
+- Inga @inga-lovinde
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.15.0 (2024-11-18)
 
 This was a version bump only for typescript-estree to align it with other projects, there were no code changes.
