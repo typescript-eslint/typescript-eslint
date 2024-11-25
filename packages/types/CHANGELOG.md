@@ -1,3 +1,15 @@
+## 8.16.0 (2024-11-25)
+
+### 🚀 Features
+
+- support TypeScript 5.7 ([#10372](https://github.com/typescript-eslint/typescript-eslint/pull/10372))
+
+### ❤️  Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.15.0 (2024-11-18)
 
 This was a version bump only for types to align it with other projects, there were no code changes.
