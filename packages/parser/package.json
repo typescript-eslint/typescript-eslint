@@ -49,7 +49,8 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "eslint": "^8.57.0 || ^9.0.0"
+    "eslint": "^8.57.0 || ^9.0.0",
+    "typescript": ">=4.8.4 <5.8.0"
   },
   "dependencies": {
     "@typescript-eslint/scope-manager": "8.17.0",
@@ -67,11 +68,6 @@
     "prettier": "^3.2.5",
     "rimraf": "*",
     "typescript": "*"
-  },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
   },
   "funding": {
     "type": "opencollective",
