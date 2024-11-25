@@ -15,7 +15,7 @@
     "James Henry <typescript-eslint@jameshenry.blog>"
   ],
   "type": "commonjs",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
