@@ -275,11 +275,8 @@ export default createRule({
       openingElement: TSESTree.JSXOpeningElement,
       node: IdentifierLike,
     ): string | undefined {
-      if (openingElement.name.type !== AST_NODE_TYPES.JSXIdentifier) {
-        return;
-      }
       const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
-      const contextType = checker.getContextualType(tsNode);
+      const contextType = checker.getContextualType(tsNode as ts.Expression);
       if (!contextType) {
         return;
       }
