@@ -2522,5 +2522,64 @@ ruleTester.run('no-deprecated', rule, {
         },
       ],
     },
+    {
+      code: `
+        declare namespace JSX {
+          interface IntrinsicElements {
+            'foo-bar:baz-bam': {
+              name: string;
+              /**
+               * @deprecated
+               */
+              deprecatedProp: string;
+            };
+          }
+        }
+
+        const componentDashed = <foo-bar:baz-bam name="e" deprecatedProp="oh no" />;
+      `,
+      errors: [
+        {
+          column: 59,
+          data: { name: 'deprecatedProp' },
+          endColumn: 73,
+          endLine: 14,
+          line: 14,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as React from 'react';
+
+        interface Props {
+          /**
+           * @deprecated
+           */
+          deprecatedProp: string;
+        }
+
+        interface Tab {
+          List: React.FC<Props>;
+        }
+
+        const Tab: Tab = {
+          List: () => <div>Hi</div>,
+        };
+
+        const anotherExample = <Tab.List deprecatedProp="oh no" />;
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { name: 'deprecatedProp' },
+          endColumn: 56,
+          endLine: 19,
+          line: 19,
+          messageId: 'deprecated',
+        },
+      ],
+    },
   ],
 });
