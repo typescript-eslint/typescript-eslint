@@ -11,9 +11,8 @@ export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
       const parsed = parseJSONObject(code);
-      if ('rules' in parsed) {
-        parsed.rules = ensureObject(parsed.rules);
-      }
+      parsed.rules = ensureObject(parsed.rules);
+
       if ('extends' in parsed) {
         parsed.extends =
           Array.isArray(parsed.extends) || typeof parsed.extends === 'string'

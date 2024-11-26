@@ -1,3 +1,17 @@
+## 8.16.0 (2024-11-25)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-base-to-string] check Array.prototype.join ([#10287](https://github.com/typescript-eslint/typescript-eslint/pull/10287))
+- **eslint-plugin:** [max-params] add function overload and function type support ([#10312](https://github.com/typescript-eslint/typescript-eslint/pull/10312))
+
+### ❤️  Thank You
+
+- Kim Sang Du @developer-bandi
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.15.0 (2024-11-18)
 
 ### 🚀 Features

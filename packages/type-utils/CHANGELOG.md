@@ -1,3 +1,9 @@
+## 8.16.0 (2024-11-25)
+
+This was a version bump only for type-utils to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.15.0 (2024-11-18)
 
 ### 🩹 Fixes
