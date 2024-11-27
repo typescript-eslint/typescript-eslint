@@ -601,6 +601,24 @@ declare function f<T extends string | null>(x: T): boolean;
 
 ['one', null].filter(f);
     `,
+    `
+declare function f(x: number, i: number): string;
+declare function f(x: string | null): boolean;
+
+['one', null].filter(f);
+    `,
+    `
+declare function f(x: number, i: number): string;
+declare function f(x: string | null, i: number): boolean;
+
+['one', null].filter(f);
+    `,
+    `
+declare function f(x: number): string;
+declare function f(x: string | null, i: number | boolean): boolean;
+
+['one', null].filter(f);
+    `,
   ],
 
   invalid: [
@@ -3457,6 +3475,74 @@ declare function f(x: string | null): boolean;
       code: `
 declare function f<T extends number | boolean>(x: T): string;
 declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number, i: number): string;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number, i: number): string;
+declare function f(x: number | null, i: string): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number, i: number | boolean): string;
+declare function f(x: number | null, i: string): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number): string;
+declare function f(x: number, i: string): boolean;
 
 [35].filter(f);
       `,
