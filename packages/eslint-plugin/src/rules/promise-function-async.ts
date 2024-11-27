@@ -115,11 +115,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      const signatures = services.getTypeAtLocation(node).getCallSignatures();
-      if (!signatures.length) {
-        return;
-      }
-
       if (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
         // Abstract method can't be async
         return;
@@ -131,6 +126,11 @@ export default createRule<Options, MessageIds>({
         (node.parent.kind === 'get' || node.parent.kind === 'set')
       ) {
         // Getters and setters can't be async
+        return;
+      }
+
+      const signatures = services.getTypeAtLocation(node).getCallSignatures();
+      if (!signatures.length) {
         return;
       }
 
