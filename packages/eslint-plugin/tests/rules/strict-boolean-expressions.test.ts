@@ -562,6 +562,45 @@ assert(nullableString);
 declare const predicate: (string) => boolean;
 ['one', 'two', ''].filter(predicate);
     `,
+    `
+declare function notNullish<T>(x: T): x is NonNullable<T>;
+['one', null].filter(notNullish);
+    `,
+    `
+declare function isString(x: string | null): x is string;
+['one', null].filter(isString);
+    `,
+    `
+declare function f(x: number): string;
+declare function f(x: string | null): boolean;
+
+['one', null].filter(f);
+    `,
+    `
+declare function f(x: number): string;
+declare function f(x: string | boolean | null): boolean;
+
+['one', null].filter(f);
+    `,
+    `
+declare function f(x: number): string;
+declare function f(x: string | boolean | null): boolean;
+declare function f(x: string | null): boolean;
+
+['one', null].filter(f);
+    `,
+    `
+declare function f(x: number): string;
+declare function f<T>(x: T): boolean;
+
+['one', null].filter(f);
+    `,
+    `
+declare function f(x: number): string;
+declare function f<T extends string | null>(x: T): boolean;
+
+['one', null].filter(f);
+    `,
   ],
 
   invalid: [
@@ -3341,6 +3380,92 @@ declare const predicate: (string) => string;
           endColumn: 39,
           endLine: 3,
           line: 3,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number): string;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f(x: number): string;
+declare function f(x: number | boolean): boolean;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 6,
+          line: 6,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f<T>(x: T): string;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f<T extends number>(x: T): string;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+declare function f<T extends number | boolean>(x: T): string;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 14,
+          endLine: 5,
+          line: 5,
           messageId: 'predicateReturnsNonBoolean',
         },
       ],
