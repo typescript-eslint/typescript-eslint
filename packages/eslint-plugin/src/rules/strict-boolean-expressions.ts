@@ -261,14 +261,22 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function isTypeParameter(type: ts.Type): boolean {
+      // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
+      return (tsutils.isTypeParameter as (type: ts.Type) => boolean)(type);
+    }
+
     function isParameterAssignableTo(
       parameter: ts.Symbol,
       expected: ts.Type,
     ): boolean {
       const parameterType = checker.getTypeOfSymbol(parameter);
-      const constrained = checker.getBaseConstraintOfType(parameterType);
 
-      // treat as if this is `unknown`
+      const constrained = isTypeParameter(parameterType)
+        ? checker.getBaseConstraintOfType(parameterType)
+        : parameterType;
+
+      // treat a type parameter without constraint as `unknown`
       if (!constrained) {
         return true;
       }
