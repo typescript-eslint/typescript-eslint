@@ -261,6 +261,10 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    /**
+     * Returns the call signatures that match the type of an array predicate function
+     * for an array of type `type`.
+     */
     function getMatchingArrayPredicateSignatures(
       type: ts.Type,
       arrayType: ts.Type,
@@ -272,6 +276,7 @@ export default createRule<Options, MessageId>({
 
         const valueParameter = parameters.at(0);
 
+        // value parameter should match the array's type
         if (
           valueParameter &&
           !checker.isTypeAssignableTo(
@@ -284,6 +289,7 @@ export default createRule<Options, MessageId>({
 
         const indexParameter = parameters.at(1);
 
+        // index parameter should match the number type
         if (
           indexParameter &&
           !checker.isTypeAssignableTo(
