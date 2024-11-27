@@ -261,6 +261,21 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
+    function isParameterAssignableTo(
+      parameter: ts.Symbol,
+      expected: ts.Type,
+    ): boolean {
+      const parameterType = checker.getTypeOfSymbol(parameter);
+      const constrained = checker.getBaseConstraintOfType(parameterType);
+
+      // treat as if this is `unknown`
+      if (!constrained) {
+        return true;
+      }
+
+      return checker.isTypeAssignableTo(expected, constrained);
+    }
+
     /**
      * Returns the call signatures that match the type of an array predicate function
      * for an array of type `type`.
@@ -279,10 +294,7 @@ export default createRule<Options, MessageId>({
         // value parameter should match the array's type
         if (
           valueParameter &&
-          !checker.isTypeAssignableTo(
-            arrayType,
-            checker.getTypeOfSymbol(valueParameter),
-          )
+          !isParameterAssignableTo(valueParameter, arrayType)
         ) {
           continue;
         }
@@ -292,10 +304,7 @@ export default createRule<Options, MessageId>({
         // index parameter should match the number type
         if (
           indexParameter &&
-          !checker.isTypeAssignableTo(
-            checker.getNumberType(),
-            checker.getTypeOfSymbol(indexParameter),
-          )
+          !isParameterAssignableTo(indexParameter, checker.getNumberType())
         ) {
           continue;
         }
@@ -411,9 +420,9 @@ export default createRule<Options, MessageId>({
         if (isFunctionReturningBooleanType(type)) {
           return;
         }
-      } else if (
-        isArrayPredicateFunctionReturningBooleanType(type, arrayNode)
-      ) {
+      }
+      // Check only call signatures that match those of an array predicate
+      else if (isArrayPredicateFunctionReturningBooleanType(type, arrayNode)) {
         return;
       }
 
