@@ -18,7 +18,6 @@ type Types = Record<
 
 export type Options = [
   {
-    extendDefaults?: boolean;
     types?: Types;
   },
 ];
