@@ -277,9 +277,12 @@ export default createRule({
     ): string | undefined {
       const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
 
-      const symbol = checker
-        .getContextualType(tsNode as ts.Expression)
-        ?.getProperty(node.name);
+      const contextualType = nullThrows(
+        checker.getContextualType(tsNode as ts.Expression),
+        'Expected jsx opening element name to have contextualType',
+      );
+
+      const symbol = contextualType.getProperty(node.name);
 
       return getJsDocDeprecation(symbol);
     }
