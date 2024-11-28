@@ -249,18 +249,6 @@ export default createRule<Options, MessageId>({
       );
     }
 
-    function isFunctionReturningBooleanType(type: ts.Type): boolean {
-      for (const signature of type.getCallSignatures()) {
-        const returnType = signature.getReturnType();
-
-        if (tsutils.unionTypeParts(returnType).every(isBooleanType)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
     function isTypeParameter(type: ts.Type): boolean {
       // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
       return (tsutils.isTypeParameter as (type: ts.Type) => boolean)(type);
@@ -290,8 +278,12 @@ export default createRule<Options, MessageId>({
      */
     function getMatchingArrayPredicateSignatures(
       type: ts.Type,
-      arrayType: ts.Type,
+      arrayNode: TSESTree.Expression,
     ): ts.Signature[] {
+      const [arrayType] = checker.getTypeArguments(
+        getConstrainedTypeAtLocation(services, arrayNode) as ts.TypeReference,
+      );
+
       const signatures: ts.Signature[] = [];
 
       for (const signature of type.getCallSignatures()) {
@@ -321,21 +313,6 @@ export default createRule<Options, MessageId>({
       }
 
       return signatures;
-    }
-
-    function isArrayPredicateFunctionReturningBooleanType(
-      type: ts.Type,
-      arrayNode: TSESTree.Expression,
-    ): boolean {
-      const [arrayType] = checker.getTypeArguments(
-        getConstrainedTypeAtLocation(services, arrayNode) as ts.TypeReference,
-      );
-
-      const signatures = getMatchingArrayPredicateSignatures(type, arrayType);
-
-      return signatures.every(signature =>
-        tsutils.unionTypeParts(signature.getReturnType()).every(isBooleanType),
-      );
     }
 
     function isFunctionExpressionNode(
@@ -424,13 +401,17 @@ export default createRule<Options, MessageId>({
         services.getTypeAtLocation(predicateNode),
       );
 
-      if (isFunctionExpression) {
-        if (isFunctionReturningBooleanType(type)) {
-          return;
-        }
-      }
-      // Check only call signatures that match those of an array predicate
-      else if (isArrayPredicateFunctionReturningBooleanType(type, arrayNode)) {
+      const signatures = isFunctionExpression
+        ? type.getCallSignatures()
+        : getMatchingArrayPredicateSignatures(type, arrayNode);
+
+      if (
+        signatures.every(signature =>
+          tsutils
+            .unionTypeParts(signature.getReturnType())
+            .every(isBooleanType),
+        )
+      ) {
         return;
       }
 
