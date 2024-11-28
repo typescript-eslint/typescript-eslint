@@ -276,11 +276,11 @@ export default createRule({
       node: IdentifierLike,
     ): string | undefined {
       const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
-      const contextType = checker.getContextualType(tsNode as ts.Expression);
-      if (!contextType) {
-        return;
-      }
-      const symbol = contextType.getProperty(node.name);
+
+      const symbol = checker
+        .getContextualType(tsNode as ts.Expression)
+        ?.getProperty(node.name);
+
       return getJsDocDeprecation(symbol);
     }
 
