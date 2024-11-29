@@ -237,7 +237,8 @@ export default createRule<[Options], MessageIds>({
       for (const member of getMembers(node.parent)) {
         if (
           member.type !== AST_NODE_TYPES.TSDeclareFunction &&
-          member.type !== AST_NODE_TYPES.MethodDefinition
+          (member.type !== AST_NODE_TYPES.MethodDefinition ||
+            member.value.type === AST_NODE_TYPES.FunctionExpression)
         ) {
           continue;
         }

@@ -538,6 +538,24 @@ class SomeClass {
         },
       ],
     },
+    {
+      code: `
+class SomeClass {
+  f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 27,
+          line: 3,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
   ],
 });
 
