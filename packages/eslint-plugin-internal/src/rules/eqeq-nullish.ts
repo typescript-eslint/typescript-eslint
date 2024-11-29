@@ -17,7 +17,7 @@ export default createRule({
     hasSuggestions: true,
     messages: {
       unexpectedComparison:
-        'Unexpected strict comparison ({{strictOperator}}) with `{{nullishKind}}`. In this codebase, we prefer to use loose equality as a general-purpose nullish check when possible.',
+        'Unexpected strict comparison (`{{strictOperator}}`) with `{{nullishKind}}`. In this codebase, we prefer to use loose equality as a general-purpose nullish check when possible.',
       useLooseComparisonSuggestion:
         'Use loose comparison (`{{looseOperator}} null`) instead, to check both nullish values.',
     },
