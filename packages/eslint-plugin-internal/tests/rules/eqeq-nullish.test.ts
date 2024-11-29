@@ -85,6 +85,8 @@ ruleTester.run('eqeq-nullish', rule, {
   valid: [
     'null == a;',
     'foo != null;',
+    'foo === bar;',
+    'foo !== bar;',
     // We're not trying to duplicate eqeqeq's reports.
     'a == b;',
     'something == undefined;',
