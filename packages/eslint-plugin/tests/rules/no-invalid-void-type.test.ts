@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-invalid-void-type';
 
@@ -120,6 +120,94 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type promiseNeverUnion = Promise<void> | never;',
     'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
+    `
+function f(): void;
+function f(x: string): string;
+function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+class SomeClass {
+  f(): void;
+  f(x: string): string;
+  f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+class SomeClass {
+  ['f'](): void;
+  ['f'](x: string): string;
+  ['f'](x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+class SomeClass {
+  [Symbol.iterator](): void;
+  [Symbol.iterator](x: string): string;
+  [Symbol.iterator](x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    noFormat`
+class SomeClass {
+  'f'(): void;
+  'f'(x: string): string;
+  'f'(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+class SomeClass {
+  1(): void;
+  1(x: string): string;
+  1(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+const staticSymbol = Symbol.for('static symbol');
+
+class SomeClass {
+  [staticSymbol](): void;
+  [staticSymbol](x: string): string;
+  [staticSymbol](x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
+    `
+declare module foo {
+  function f(): void;
+  function f(x: string): string;
+  function f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
   ],
   invalid: [
     {

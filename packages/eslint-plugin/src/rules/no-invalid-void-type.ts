@@ -2,7 +2,12 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getStaticMemberAccessValue } from '../util';
+
+type Member =
+  | TSESTree.ClassElement
+  | TSESTree.ProgramStatement
+  | TSESTree.TypeElement;
 
 interface Options {
   allowAsThisParameter?: boolean;
@@ -174,6 +179,78 @@ export default createRule<[Options], MessageIds>({
       );
     }
 
+    function getMembers(node: TSESTree.Node): Member[] {
+      switch (node.type) {
+        case AST_NODE_TYPES.ClassBody:
+        case AST_NODE_TYPES.Program:
+        case AST_NODE_TYPES.TSModuleBlock:
+        case AST_NODE_TYPES.BlockStatement:
+          return node.body;
+      }
+
+      return [];
+    }
+
+    function findDeclaringFunction(
+      node: TSESTree.TSUnionType,
+    ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
+      if (node.parent.type !== AST_NODE_TYPES.TSTypeAnnotation) {
+        return null;
+      }
+
+      if (node.parent.parent.type === AST_NODE_TYPES.FunctionDeclaration) {
+        return node.parent.parent;
+      }
+
+      if (
+        node.parent.parent.type === AST_NODE_TYPES.FunctionExpression &&
+        node.parent.parent.parent.type === AST_NODE_TYPES.MethodDefinition
+      ) {
+        return node.parent.parent.parent;
+      }
+
+      return null;
+    }
+
+    function getFunctionDeclarationName(
+      node:
+        | TSESTree.FunctionDeclaration
+        | TSESTree.MethodDefinition
+        | TSESTree.TSDeclareFunction,
+    ): string | symbol | undefined {
+      if (
+        node.type === AST_NODE_TYPES.FunctionDeclaration ||
+        node.type === AST_NODE_TYPES.TSDeclareFunction
+      ) {
+        return node.id?.name;
+      }
+
+      return getStaticMemberAccessValue(node, context);
+    }
+
+    function hasOverloadMethods(
+      node: TSESTree.FunctionDeclaration | TSESTree.MethodDefinition,
+    ): boolean {
+      const nodeKey = getFunctionDeclarationName(node);
+
+      for (const member of getMembers(node.parent)) {
+        if (
+          member.type !== AST_NODE_TYPES.TSDeclareFunction &&
+          member.type !== AST_NODE_TYPES.MethodDefinition
+        ) {
+          continue;
+        }
+
+        const memberKey = getFunctionDeclarationName(member);
+
+        if (memberKey === nodeKey) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
     return {
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
         // checks T<..., void, ...> against specification of allowInGenericArguments option
@@ -201,6 +278,15 @@ export default createRule<[Options], MessageIds>({
           isValidUnionType(node.parent)
         ) {
           return;
+        }
+
+        // using `void` as part of the return type of function overloading implementation
+        if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
+          const declaringFunction = findDeclaringFunction(node.parent);
+
+          if (declaringFunction && hasOverloadMethods(declaringFunction)) {
+            return;
+          }
         }
 
         // this parameter is ok to be void.
