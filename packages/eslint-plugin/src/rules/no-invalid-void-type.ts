@@ -4,11 +4,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStaticMemberAccessValue } from '../util';
 
-type Member =
-  | TSESTree.ClassElement
-  | TSESTree.ProgramStatement
-  | TSESTree.TypeElement;
-
 interface Options {
   allowAsThisParameter?: boolean;
   allowInGenericTypeArguments?: boolean | [string, ...string[]];
@@ -179,7 +174,12 @@ export default createRule<[Options], MessageIds>({
       );
     }
 
-    function getMembers(node: TSESTree.Node): Member[] {
+    function getMembers(
+      node: TSESTree.Node,
+    ):
+      | TSESTree.ClassElement[]
+      | TSESTree.ProgramStatement[]
+      | TSESTree.Statement[] {
       switch (node.type) {
         case AST_NODE_TYPES.ClassBody:
         case AST_NODE_TYPES.Program:
