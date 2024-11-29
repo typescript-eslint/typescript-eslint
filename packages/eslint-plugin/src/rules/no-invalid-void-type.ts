@@ -186,9 +186,9 @@ export default createRule<[Options], MessageIds>({
         case AST_NODE_TYPES.TSModuleBlock:
         case AST_NODE_TYPES.BlockStatement:
           return node.body;
+        default:
+          return [];
       }
-
-      return [];
     }
 
     function findDeclaringFunction(
