@@ -35,6 +35,10 @@ export default createRule({
               (child.type === AST_NODE_TYPES.Literal && child.raw === 'null'),
           );
 
+          if (offendingChild == null) {
+            return;
+          }
+
           const operatorToken = nullThrows(
             context.sourceCode.getFirstTokenBetween(
               node.left,
@@ -44,43 +48,44 @@ export default createRule({
             NullThrowsReasons.MissingToken(node.operator, 'binary expression'),
           );
 
-          if (offendingChild != null) {
-            const wasLeft = node.left === offendingChild;
-            const nullishKind =
-              offendingChild.type === AST_NODE_TYPES.Identifier
-                ? 'undefined'
-                : 'null';
-            const looseOperator = node.operator === '===' ? '==' : '!=';
-            context.report({
-              loc: wasLeft
-                ? {
-                    start: node.left.loc.start,
-                    end: operatorToken.loc.end,
-                  }
-                : {
-                    start: operatorToken.loc.start,
-                    end: node.right.loc.end,
-                  },
+          const wasLeft = node.left === offendingChild;
 
-              messageId: 'unexpectedComparison',
-              data: {
-                nullishKind,
-                strictOperator: node.operator,
-              },
-              suggest: [
-                {
-                  messageId: 'useLooseComparisonSuggestion',
-                  data: {
-                    looseOperator,
-                  },
-                  fix: fixer => [
-                    fixer.replaceText(offendingChild, 'null'),
-                    fixer.replaceText(operatorToken, looseOperator),
-                  ],
+          const nullishKind =
+            offendingChild.type === AST_NODE_TYPES.Identifier
+              ? 'undefined'
+              : 'null';
+
+          const looseOperator = node.operator === '===' ? '==' : '!=';
+
+          context.report({
+            loc: wasLeft
+              ? {
+                  start: node.left.loc.start,
+                  end: operatorToken.loc.end,
+                }
+              : {
+                  start: operatorToken.loc.start,
+                  end: node.right.loc.end,
                 },
-              ],
-            });
-          }
+
+            messageId: 'unexpectedComparison',
+            data: {
+              nullishKind,
+              strictOperator: node.operator,
+            },
+            suggest: [
+              {
+                messageId: 'useLooseComparisonSuggestion',
+                data: {
+                  looseOperator,
+                },
+                fix: fixer => [
+                  fixer.replaceText(offendingChild, 'null'),
+                  fixer.replaceText(operatorToken, looseOperator),
+                ],
+              },
+            ],
+          });
         }
       },
     };
