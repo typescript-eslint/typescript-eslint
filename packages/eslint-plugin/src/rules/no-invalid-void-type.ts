@@ -191,22 +191,23 @@ export default createRule<[Options], MessageIds>({
       }
     }
 
-    function findDeclaringFunction(
-      node: TSESTree.TSUnionType,
+    function getParentFunctionDeclarationNode(
+      node: TSESTree.Node,
     ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
-      if (node.parent.type !== AST_NODE_TYPES.TSTypeAnnotation) {
-        return null;
-      }
+      let current = node.parent;
+      while (current) {
+        if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
+          return current;
+        }
 
-      if (node.parent.parent.type === AST_NODE_TYPES.FunctionDeclaration) {
-        return node.parent.parent;
-      }
+        if (
+          current.type === AST_NODE_TYPES.FunctionExpression &&
+          current.parent.type === AST_NODE_TYPES.MethodDefinition
+        ) {
+          return current.parent;
+        }
 
-      if (
-        node.parent.parent.type === AST_NODE_TYPES.FunctionExpression &&
-        node.parent.parent.parent.type === AST_NODE_TYPES.MethodDefinition
-      ) {
-        return node.parent.parent.parent;
+        current = current.parent;
       }
 
       return null;
@@ -282,7 +283,9 @@ export default createRule<[Options], MessageIds>({
 
         // using `void` as part of the return type of function overloading implementation
         if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
-          const declaringFunction = findDeclaringFunction(node.parent);
+          const declaringFunction = getParentFunctionDeclarationNode(
+            node.parent,
+          );
 
           if (declaringFunction && hasOverloadMethods(declaringFunction)) {
             return;

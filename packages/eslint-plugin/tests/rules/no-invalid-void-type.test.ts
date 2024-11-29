@@ -219,6 +219,26 @@ declare module foo {
   }
 }
     `,
+    `
+function f(): Promise<void>;
+function f(x: string): Promise<string>;
+async function f(x?: string): Promise<void | string> {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+class SomeClass {
+  f(): Promise<void>;
+  f(x: string): Promise<string>;
+  f(x?: string): Promise<void | string> {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+    `,
   ],
   invalid: [
     {
