@@ -320,7 +320,7 @@ export default createRule<Options, MessageIds>({
 
       if (
         missingLiteralBranchTypes.length === 0 &&
-        defaultCase !== undefined &&
+        defaultCase != null &&
         !containsNonLiteralType
       ) {
         context.report({
@@ -340,7 +340,7 @@ export default createRule<Options, MessageIds>({
 
       const { containsNonLiteralType, defaultCase } = switchMetadata;
 
-      if (containsNonLiteralType && defaultCase === undefined) {
+      if (containsNonLiteralType && defaultCase == null) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',

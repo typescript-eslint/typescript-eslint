@@ -55,7 +55,7 @@ export default createRule({
       const targetSymbol = checker.getAliasedSymbol(symbol);
       while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
         const reason = getJsDocDeprecation(symbol);
-        if (reason !== undefined) {
+        if (reason != null) {
           return reason;
         }
         const immediateAliasedSymbol: ts.Symbol | undefined =
@@ -216,8 +216,7 @@ export default createRule({
 
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
-        symbol !== undefined &&
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+        symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
           ? checker.getAliasedSymbol(symbol)
           : symbol;
       const symbolDeclarationKind = aliasedSymbol?.declarations?.[0].kind;
@@ -293,7 +292,7 @@ export default createRule({
       }
 
       const reason = getDeprecationReason(node);
-      if (reason === undefined) {
+      if (reason == null) {
         return;
       }
 

@@ -63,6 +63,7 @@ const serializer: NewPlugin = {
 
     for (const key of keys) {
       const value = node[key];
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- I don't know whether this is safe to fix
       if (value === undefined) {
         continue;
       }
