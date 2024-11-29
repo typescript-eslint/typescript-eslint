@@ -273,7 +273,7 @@ export default createRule({
 
     function getJSXAttributeDeprecation(
       openingElement: TSESTree.JSXOpeningElement,
-      node: IdentifierLike,
+      propertyName: string,
     ): string | undefined {
       const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
 
@@ -282,7 +282,7 @@ export default createRule({
         'Expected jsx opening element name to have contextualType',
       );
 
-      const symbol = contextualType.getProperty(node.name);
+      const symbol = contextualType.getProperty(propertyName);
 
       return getJsDocDeprecation(symbol);
     }
@@ -294,7 +294,7 @@ export default createRule({
       }
 
       if (node.parent.type === AST_NODE_TYPES.JSXAttribute) {
-        return getJSXAttributeDeprecation(node.parent.parent, node);
+        return getJSXAttributeDeprecation(node.parent.parent, node.name);
       }
 
       if (node.parent.type === AST_NODE_TYPES.Property) {
