@@ -232,11 +232,12 @@ export default createRule<[Options], MessageIds>({
     function hasOverloadMethods(
       node: TSESTree.FunctionDeclaration | TSESTree.MethodDefinition,
     ): boolean {
+      // `export default function () {}`
       if (node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
         for (const member of getMembers(node.parent.parent)) {
           if (
-            member.type !== AST_NODE_TYPES.ExportDefaultDeclaration ||
-            member.declaration.type !== AST_NODE_TYPES.TSDeclareFunction
+            member.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
+            member.declaration.type === AST_NODE_TYPES.TSDeclareFunction
           ) {
             return true;
           }
@@ -245,6 +246,25 @@ export default createRule<[Options], MessageIds>({
         return false;
       }
 
+      // `export function f() {}`
+      if (
+        node.type === AST_NODE_TYPES.FunctionDeclaration &&
+        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
+      ) {
+        for (const member of getMembers(node.parent.parent)) {
+          if (
+            member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+            member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
+            member.declaration.id?.name === node.id?.name
+          ) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      // otherwise...
       const nodeKey = getFunctionDeclarationName(node);
 
       for (const member of getMembers(node.parent)) {
