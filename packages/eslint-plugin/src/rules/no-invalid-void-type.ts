@@ -186,9 +186,10 @@ export default createRule<[Options], MessageIds>({
         case AST_NODE_TYPES.TSModuleBlock:
         case AST_NODE_TYPES.BlockStatement:
           return node.body;
-        default:
-          return [];
       }
+
+      /* istanbul ignore next */
+      return [];
     }
 
     function getParentFunctionDeclarationNode(
@@ -255,7 +256,9 @@ export default createRule<[Options], MessageIds>({
           if (
             member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
             member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
-            member.declaration.id?.name === node.id?.name
+            // both declarations ids cannot be `null` as their parents are not default exports
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            member.declaration.id!.name === node.id!.name
           ) {
             return true;
           }

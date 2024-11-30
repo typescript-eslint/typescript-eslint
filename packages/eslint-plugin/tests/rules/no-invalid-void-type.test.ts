@@ -232,7 +232,7 @@ async function f(x?: string): Promise<void | string> {
 class SomeClass {
   f(): Promise<void>;
   f(x: string): Promise<string>;
-  f(x?: string): Promise<void | string> {
+  async f(x?: string): Promise<void | string> {
     if (x !== undefined) {
       return x;
     }
@@ -268,6 +268,17 @@ export function f(x?: string): string | void {
     return x;
   }
 }
+    `,
+    `
+export function f(): void;
+export function f(x: string): string;
+export function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+
+export {};
     `,
   ],
   invalid: [
@@ -582,6 +593,26 @@ class SomeClass {
         {
           column: 27,
           line: 3,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'export default function (x?: string): string | void {}',
+      errors: [
+        {
+          column: 48,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: 'export function f(x?: string): string | void {}',
+      errors: [
+        {
+          column: 41,
+          line: 1,
           messageId: 'invalidVoidUnionConstituent',
         },
       ],
