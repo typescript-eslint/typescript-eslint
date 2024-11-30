@@ -232,6 +232,19 @@ export default createRule<[Options], MessageIds>({
     function hasOverloadMethods(
       node: TSESTree.FunctionDeclaration | TSESTree.MethodDefinition,
     ): boolean {
+      if (node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
+        for (const member of getMembers(node.parent.parent)) {
+          if (
+            member.type !== AST_NODE_TYPES.ExportDefaultDeclaration ||
+            member.declaration.type !== AST_NODE_TYPES.TSDeclareFunction
+          ) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
       const nodeKey = getFunctionDeclarationName(node);
 
       for (const member of getMembers(node.parent)) {

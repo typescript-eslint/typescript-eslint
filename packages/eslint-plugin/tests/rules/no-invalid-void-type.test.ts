@@ -239,6 +239,27 @@ class SomeClass {
   }
 }
     `,
+    `
+function f(): void;
+
+const a = 5;
+
+function f(x: string): string;
+function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
+    `
+export default function (): void;
+export default function (x: string): string;
+export default function (x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+    `,
   ],
   invalid: [
     {
