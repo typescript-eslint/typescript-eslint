@@ -270,6 +270,8 @@ export function f(x?: string): string | void {
 }
     `,
     `
+export {};
+
 export function f(): void;
 export function f(x: string): string;
 export function f(x?: string): string | void {
@@ -277,8 +279,6 @@ export function f(x?: string): string | void {
     return x;
   }
 }
-
-export {};
     `,
   ],
   invalid: [
