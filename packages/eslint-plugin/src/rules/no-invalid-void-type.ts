@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, getStaticMemberAccessValue } from '../util';
+import { createRule, getStaticMemberAccessValue, nullThrows } from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
@@ -224,7 +224,12 @@ export default createRule<[Options], MessageIds>({
         node.type === AST_NODE_TYPES.FunctionDeclaration ||
         node.type === AST_NODE_TYPES.TSDeclareFunction
       ) {
-        return node.id?.name;
+        const id = nullThrows(
+          node.id,
+          'This may be null if and only if the parent is an `ExportDefaultDeclaration`.',
+        );
+
+        return id.name;
       }
 
       return getStaticMemberAccessValue(node, context);
@@ -252,15 +257,24 @@ export default createRule<[Options], MessageIds>({
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
       ) {
+        const nodeId = nullThrows(
+          node.id,
+          'This may be null if and only if the parent is an `ExportDefaultDeclaration`.',
+        );
+
         for (const member of getMembers(node.parent.parent)) {
           if (
             member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
-            member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
-            // both declarations ids cannot be `null` as their parents are not default exports
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            member.declaration.id!.name === node.id!.name
+            member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction
           ) {
-            return true;
+            const memberId = nullThrows(
+              member.declaration.id,
+              'This may be null if and only if the parent is an `ExportDefaultDeclaration`.',
+            );
+
+            if (memberId.name === nodeId.name) {
+              return true;
+            }
           }
         }
 
