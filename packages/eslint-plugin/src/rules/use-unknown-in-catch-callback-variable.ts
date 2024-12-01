@@ -102,7 +102,7 @@ export default createRule<[], MessageIds>({
 
     function collectFlaggedNodes(
       node: Exclude<TSESTree.Node, TSESTree.SpreadElement>,
-    ): Exclude<TSESTree.Node, TSESTree.SpreadElement>[] {
+    ): (TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression)[] {
       switch (node.type) {
         case AST_NODE_TYPES.LogicalExpression:
           return [
@@ -145,18 +145,8 @@ export default createRule<[], MessageIds>({
      * rule _is reporting_, so it is not guaranteed to be sound to call otherwise.
      */
     function refineReportIfPossible(
-      argument: Exclude<TSESTree.Node, TSESTree.SpreadElement>,
+      argument: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): Partial<ReportDescriptor<MessageIds>> | undefined {
-      // Only know how to be helpful if a function literal has been provided.
-      if (
-        !(
-          argument.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          argument.type === AST_NODE_TYPES.FunctionExpression
-        )
-      ) {
-        return undefined;
-      }
-
       const catchVariableOuterWithIncorrectTypes = nullThrows(
         argument.params.at(0),
         'There should have been at least one parameter for the rule to have flagged.',
