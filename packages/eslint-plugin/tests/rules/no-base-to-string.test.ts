@@ -216,6 +216,32 @@ tuple.join('');
 let objects = [{}, {}];
 String(...objects);
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8585
+    `
+type Constructable<Entity> = abstract new (...args: any[]) => Entity;
+
+interface GuildChannel {
+  toString(): \`<#\${string}>\`;
+}
+
+declare const foo: Constructable<GuildChannel & { bar: 1 }>;
+class ExtendedGuildChannel extends foo {}
+declare const bb: ExtendedGuildChannel;
+bb.toString();
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8585 with intersection order reversed.
+    `
+type Constructable<Entity> = abstract new (...args: any[]) => Entity;
+
+interface GuildChannel {
+  toString(): \`<#\${string}>\`;
+}
+
+declare const foo: Constructable<{ bar: 1 } & GuildChannel>;
+class ExtendedGuildChannel extends foo {}
+declare const bb: ExtendedGuildChannel;
+bb.toString();
+    `,
   ],
   invalid: [
     {

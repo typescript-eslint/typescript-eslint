@@ -9,6 +9,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
+  isTypeAnyType,
   nullThrows,
 } from '../util';
 
@@ -175,11 +176,25 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
+      if (type.isIntersection()) {
+        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
+      }
+
+      if (type.isUnion()) {
+        return collectUnionTypeCertainty(type, collectToStringCertainty);
+      }
+
       const toString =
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
-      const declarations = toString?.getDeclarations();
-      if (!toString || !declarations || declarations.length === 0) {
+      if (!toString) {
+        // This is essentially just `any`s.
+        return Usefulness.Always;
+      }
+
+      const declarations = toString.getDeclarations();
+      if (!declarations || declarations.length === 0) {
+        // not clear how to reach this.
         return Usefulness.Always;
       }
 
@@ -195,23 +210,12 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (
-        declarations.every(
-          ({ parent }) =>
-            !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
-        )
-      ) {
-        return Usefulness.Always;
-      }
+      const canBeObjectToString = declarations.some(
+        ({ parent }) =>
+          ts.isInterfaceDeclaration(parent) && parent.name.text === 'Object',
+      );
 
-      if (type.isIntersection()) {
-        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
-      }
-
-      if (!type.isUnion()) {
-        return Usefulness.Never;
-      }
-      return collectUnionTypeCertainty(type, collectToStringCertainty);
+      return canBeObjectToString ? Usefulness.Never : Usefulness.Always;
     }
 
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
