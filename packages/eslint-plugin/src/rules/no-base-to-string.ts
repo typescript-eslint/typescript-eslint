@@ -10,6 +10,7 @@ import {
   getParserServices,
   getTypeName,
   isTypeAnyType,
+  isTypeUnknownType,
   nullThrows,
 } from '../util';
 
@@ -176,8 +177,25 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
+      if ((tsutils.isTypeParameter as (t: ts.Type) => boolean)(type)) {
+        const constraint = type.getConstraint();
+        if (constraint) {
+          return collectToStringCertainty(constraint);
+        }
+        // unconstrained generic means `unknown`
+        return Usefulness.Always;
+      }
+
       if (type.isIntersection()) {
         return collectIntersectionTypeCertainty(type, collectToStringCertainty);
+      }
+
+      // the Boolean type definition missing toString()
+      if (
+        type.flags & ts.TypeFlags.Boolean ||
+        type.flags & ts.TypeFlags.BooleanLiteral
+      ) {
+        return Usefulness.Always;
       }
 
       if (type.isUnion()) {
@@ -188,21 +206,18 @@ export default createRule<Options, MessageIds>({
         checker.getPropertyOfType(type, 'toString') ??
         checker.getPropertyOfType(type, 'toLocaleString');
       if (!toString) {
-        // This is essentially just `any`s.
+        // e.g. any/unknown
         return Usefulness.Always;
       }
 
       const declarations = toString.getDeclarations();
-      if (!declarations || declarations.length === 0) {
-        // not clear how to reach this.
-        return Usefulness.Always;
-      }
 
-      // Patch for old version TypeScript, the Boolean type definition missing toString()
-      if (
-        type.flags & ts.TypeFlags.Boolean ||
-        type.flags & ts.TypeFlags.BooleanLiteral
-      ) {
+      if (!(declarations?.length === 1)) {
+        // If there are multiple declarations, at least one of them must not be
+        // the default object toString.
+        //
+        // This may only matter for older versions of TS
+        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
         return Usefulness.Always;
       }
 
@@ -210,12 +225,11 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      const canBeObjectToString = declarations.some(
-        ({ parent }) =>
-          ts.isInterfaceDeclaration(parent) && parent.name.text === 'Object',
-      );
-
-      return canBeObjectToString ? Usefulness.Never : Usefulness.Always;
+      const declaration = declarations[0];
+      const isBaseToString =
+        ts.isInterfaceDeclaration(declaration.parent) &&
+        declaration.parent.name.text === 'Object';
+      return isBaseToString ? Usefulness.Never : Usefulness.Always;
     }
 
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {

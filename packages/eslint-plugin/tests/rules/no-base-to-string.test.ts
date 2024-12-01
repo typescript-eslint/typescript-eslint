@@ -242,6 +242,15 @@ class ExtendedGuildChannel extends foo {}
 declare const bb: ExtendedGuildChannel;
 bb.toString();
     `,
+    `
+function foo<T>(x: T) {
+  String(x);
+}
+    `,
+    `
+declare const u: unknown;
+String(u);
+    `,
   ],
   invalid: [
     {
@@ -694,10 +703,60 @@ declare const foo: Bar & Foo;
       errors: [
         {
           data: {
-            certainty: 'will',
+            certainty: 'may',
             name: 'array',
           },
           messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          array[0].toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array[0]',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(value: T) {
+          value.toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'value',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Bar = Record<string, string>;
+declare const foo: Bar | string;
+foo.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
         },
       ],
     },
