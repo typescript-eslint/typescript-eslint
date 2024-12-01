@@ -143,7 +143,10 @@ export default createRule<Options, MessageIds>({
           return Usefulness.Sometimes;
         }
       }
-      return usefulness ?? Usefulness.Sometimes;
+      return nullThrows(
+        usefulness,
+        'loop should have run at least once, since unions must have multiple constituents',
+      );
     }
 
     function collectIntersectionTypeCertainty(
