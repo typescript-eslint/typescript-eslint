@@ -165,7 +165,9 @@ String(['foo', 'bar']);
     `
 \`\${['foo', 'bar']}\`;
     `,
-
+    `
+['foo', 'bar'].toString();
+    `,
     `
 ([{}, 'bar'] as string[]).join('');
     `,
@@ -174,6 +176,9 @@ String([{}, 'bar'] as string[]);
     `,
     `
 \`\${[{}, 'bar'] as string[]}\`;
+    `,
+    `
+([{}, 'bar'] as string[]).toString();
     `,
     `
 function foo<T extends string>(array: T[]) {
@@ -188,6 +193,11 @@ function foo<T extends string>(array: T[]) {
     `
 function foo<T extends string>(array: T[]) {
   return \`\${array}\`;
+}
+    `,
+    `
+function foo<T extends string>(array: T[]) {
+  return array.toString();
 }
     `,
     `
@@ -564,6 +574,20 @@ declare const foo: Bar & Foo;
     },
     {
       code: `
+        [{}, {}].toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '[{}, {}]',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
         const array = [{}, {}];
         array.join('');
       `,
@@ -611,6 +635,36 @@ declare const foo: Bar & Foo;
       code: `
         class A {}
         String([new A(), 'str']);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: "[new A(), 'str']",
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {}
+        \`\${[new A(), 'str']}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: "[new A(), 'str']",
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {}
+        [new A(), 'str'].toString();
       `,
       errors: [
         {
