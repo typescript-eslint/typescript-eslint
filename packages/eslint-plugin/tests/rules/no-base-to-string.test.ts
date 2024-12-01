@@ -269,6 +269,10 @@ class Foo {}
 declare const tuple: [string] & [Foo];
 String(tuple);
     `,
+    `
+declare const array: string | string[];
+String(array);
+    `,
   ],
   invalid: [
     {
