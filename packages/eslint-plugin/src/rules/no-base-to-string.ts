@@ -210,7 +210,7 @@ export default createRule<Options, MessageIds>({
 
       const declarations = toString.getDeclarations();
 
-      if (!(declarations?.length === 1)) {
+      if (declarations == null || declarations.length !== 1) {
         // If there are multiple declarations, at least one of them must not be
         // the default object toString.
         //
