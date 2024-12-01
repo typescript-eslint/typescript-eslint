@@ -94,7 +94,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.Node,
       type: ts.Type,
     ): void {
-      const certainty = collectJoinCertainty(type);
+      const certainty = collectArrayToStringCertainty(type);
 
       if (certainty === Usefulness.Always) {
         return;
@@ -141,13 +141,16 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
-    function collectJoinCertainty(type: ts.Type): Usefulness {
+    function collectArrayToStringCertainty(type: ts.Type): Usefulness {
       if (tsutils.isUnionType(type)) {
-        return collectUnionTypeCertainty(type, collectJoinCertainty);
+        return collectUnionTypeCertainty(type, collectArrayToStringCertainty);
       }
 
       if (tsutils.isIntersectionType(type)) {
-        return collectIntersectionTypeCertainty(type, collectJoinCertainty);
+        return collectIntersectionTypeCertainty(
+          type,
+          collectArrayToStringCertainty,
+        );
       }
 
       if (checker.isTupleType(type)) {
@@ -184,6 +187,10 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
+      if (checker.isArrayType(type) || checker.isTupleType(type)) {
+        return collectArrayToStringCertainty(type);
+      }
+
       // Patch for old version TypeScript, the Boolean type definition missing toString()
       if (
         type.flags & ts.TypeFlags.Boolean ||
@@ -197,10 +204,12 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        declarations.every(
-          ({ parent }) =>
-            !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
-        )
+        declarations.every(({ parent }) => {
+          return (
+            !ts.isInterfaceDeclaration(parent) ||
+            (parent.name.text !== 'Object' && parent.name.text !== 'Array')
+          );
+        })
       ) {
         return Usefulness.Always;
       }
