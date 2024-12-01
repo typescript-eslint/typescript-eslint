@@ -141,6 +141,14 @@ Number(1);
       code: 'String(/regex/);',
       options: [{ ignoredTypeNames: ['RegExp'] }],
     },
+    {
+      code: `
+type Foo = { a: string } | { b: string };
+declare const foo: Foo;
+String(foo);
+      `,
+      options: [{ ignoredTypeNames: ['Foo'] }],
+    },
     `
 function String(value) {
   return value;

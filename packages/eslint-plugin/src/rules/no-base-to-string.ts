@@ -185,20 +185,24 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (type.isIntersection()) {
-        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
-      }
-
-      if (type.isUnion()) {
-        return collectUnionTypeCertainty(type, collectToStringCertainty);
-      }
-
       // the Boolean type definition missing toString()
       if (
         type.flags & ts.TypeFlags.Boolean ||
         type.flags & ts.TypeFlags.BooleanLiteral
       ) {
         return Usefulness.Always;
+      }
+
+      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
+        return Usefulness.Always;
+      }
+
+      if (type.isIntersection()) {
+        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
+      }
+
+      if (type.isUnion()) {
+        return collectUnionTypeCertainty(type, collectToStringCertainty);
       }
 
       const toString =
@@ -217,10 +221,6 @@ export default createRule<Options, MessageIds>({
         //
         // This may only matter for older versions of TS
         // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
-        return Usefulness.Always;
-      }
-
-      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
         return Usefulness.Always;
       }
 
