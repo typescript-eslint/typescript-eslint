@@ -145,8 +145,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const bannedType = bannedTypes.get(name);
 
-      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- unsure if this is safe to fix
-      if (bannedType === undefined || bannedType === false) {
+      if (bannedType == null || bannedType === false) {
         return;
       }
 
