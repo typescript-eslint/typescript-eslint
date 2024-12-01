@@ -9,8 +9,6 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
-  isTypeAnyType,
-  isTypeUnknownType,
   nullThrows,
 } from '../util';
 
