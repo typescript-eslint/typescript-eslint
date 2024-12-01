@@ -189,16 +189,16 @@ export default createRule<Options, MessageIds>({
         return collectIntersectionTypeCertainty(type, collectToStringCertainty);
       }
 
+      if (type.isUnion()) {
+        return collectUnionTypeCertainty(type, collectToStringCertainty);
+      }
+
       // the Boolean type definition missing toString()
       if (
         type.flags & ts.TypeFlags.Boolean ||
         type.flags & ts.TypeFlags.BooleanLiteral
       ) {
         return Usefulness.Always;
-      }
-
-      if (type.isUnion()) {
-        return collectUnionTypeCertainty(type, collectToStringCertainty);
       }
 
       const toString =
