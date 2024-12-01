@@ -135,10 +135,6 @@ tag\`\${{}}\`;
     "'' += new URL();",
     "'' += new URLSearchParams();",
     `
-let numbers = [1, 2, 3];
-String(...a);
-    `,
-    `
 Number(1);
     `,
     {
@@ -215,6 +211,11 @@ class Foo {}
 declare const tuple: [string] & [Foo];
 tuple.join('');
     `,
+    // don't bother trying to interpret spread args.
+    `
+let objects = [{}, {}];
+String(...objects);
+    `,
   ],
   invalid: [
     {
@@ -272,21 +273,6 @@ tuple.join('');
           data: {
             certainty: 'will',
             name: '{}',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-    },
-    {
-      code: `
-let objects = [{}, {}];
-String(...objects);
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'will',
-            name: '...objects',
           },
           messageId: 'baseToString',
         },

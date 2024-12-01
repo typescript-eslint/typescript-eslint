@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -218,10 +217,12 @@ export default createRule<Options, MessageIds>({
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
       if (
         node.callee.type === AST_NODE_TYPES.Identifier &&
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         node.callee.name === 'String' &&
         node.arguments[0]
       ) {
         const scope = context.sourceCode.getScope(node);
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         const variable = scope.set.get('String');
         return !variable?.defs.length;
       }
@@ -245,7 +246,10 @@ export default createRule<Options, MessageIds>({
         }
       },
       CallExpression(node: TSESTree.CallExpression): void {
-        if (isBuiltInStringCall(node)) {
+        if (
+          isBuiltInStringCall(node) &&
+          node.arguments[0].type !== AST_NODE_TYPES.SpreadElement
+        ) {
           checkExpression(node.arguments[0]);
         }
       },
