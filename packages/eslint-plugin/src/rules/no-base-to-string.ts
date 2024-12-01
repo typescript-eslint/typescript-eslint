@@ -68,7 +68,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
+    function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
       }
