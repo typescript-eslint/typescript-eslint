@@ -114,16 +114,36 @@ export default createRule<Options, MessageIds>({
       type: ts.UnionType,
       collectSubTypeCertainty: (type: ts.Type) => Usefulness,
     ): Usefulness {
-      const certainties = type.types.map(t => collectSubTypeCertainty(t));
-      if (certainties.every(certainty => certainty === Usefulness.Never)) {
-        return Usefulness.Never;
-      }
+      // This is a short-circuiting version of the following, to avoid
+      // descending as deeply into complex types.
 
-      if (certainties.every(certainty => certainty === Usefulness.Always)) {
-        return Usefulness.Always;
-      }
+      // const certainties = type.types.map(t => collectSubTypeCertainty(t));
+      // if (certainties.every(certainty => certainty === Usefulness.Never)) {
+      //   return Usefulness.Never;
+      // }
+      //
+      // if (certainties.every(certainty => certainty === Usefulness.Always)) {
+      //   return Usefulness.Always;
+      // }
+      //
+      //   return Usefulness.Sometimes;
+      // }
 
-      return Usefulness.Sometimes;
+      let usefulness: Usefulness | null = null;
+      for (const subType of type.types) {
+        const subtypeUsefulness = collectSubTypeCertainty(subType);
+
+        if (subtypeUsefulness === Usefulness.Sometimes) {
+          return Usefulness.Sometimes;
+        }
+
+        if (usefulness == null) {
+          usefulness = subtypeUsefulness;
+        } else if (usefulness !== subtypeUsefulness) {
+          return Usefulness.Sometimes;
+        }
+      }
+      return usefulness ?? Usefulness.Sometimes;
     }
 
     function collectIntersectionTypeCertainty(
