@@ -740,7 +740,7 @@ Promise.resolve('foo').then(() => {}, condition ? err => {} : err => {});
       errors: [
         {
           column: 51,
-          endColumn: 60,
+          endColumn: 54,
           endLine: 3,
           line: 3,
 
@@ -758,7 +758,7 @@ Promise.resolve('foo').then(() => {}, condition ? (err: unknown) => {} : err => 
         },
         {
           column: 63,
-          endColumn: 72,
+          endColumn: 66,
           endLine: 3,
           line: 3,
 
@@ -789,7 +789,7 @@ Promise.resolve('foo').catch(
       errors: [
         {
           column: 55,
-          endColumn: 64,
+          endColumn: 58,
           endLine: 6,
           line: 6,
 
@@ -800,7 +800,7 @@ Promise.resolve('foo').catch(
               messageId: 'addUnknownTypeAnnotationSuggestion',
               output: `
 declare const condition: boolean;
-declare const maybeNullishHandler: null | ((err: unknown) => void);
+declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
     ? (err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {})
@@ -812,7 +812,7 @@ Promise.resolve('foo').catch(
         },
         {
           column: 22,
-          endColumn: 31,
+          endColumn: 25,
           endLine: 7,
           line: 7,
 
@@ -823,10 +823,10 @@ Promise.resolve('foo').catch(
               messageId: 'addUnknownTypeAnnotationSuggestion',
               output: `
 declare const condition: boolean;
-declare const maybeNullishHandler: null | (err => void);
+declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? (err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {})
+    ? (err => {}, err => {}, maybeNullishHandler) ?? (err => {})
     : (condition && ((err: unknown) => {})) || (err => {}),
 );
       `,
@@ -835,7 +835,7 @@ Promise.resolve('foo').catch(
         },
         {
           column: 38,
-          endColumn: 47,
+          endColumn: 41,
           endLine: 7,
           line: 7,
 
@@ -846,10 +846,10 @@ Promise.resolve('foo').catch(
               messageId: 'addUnknownTypeAnnotationSuggestion',
               output: `
 declare const condition: boolean;
-declare const maybeNullishHandler: null | (err => void);
+declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? (err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {})
+    ? (err => {}, err => {}, maybeNullishHandler) ?? (err => {})
     : (condition && (err => {})) || ((err: unknown) => {}),
 );
       `,
