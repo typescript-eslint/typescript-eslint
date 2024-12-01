@@ -204,12 +204,11 @@ export default createRule<Options, MessageIds>({
       }
 
       if (
-        declarations.every(({ parent }) => {
-          return (
+        declarations.every(
+          ({ parent }) =>
             !ts.isInterfaceDeclaration(parent) ||
-            (parent.name.text !== 'Object' && parent.name.text !== 'Array')
-          );
-        })
+            (parent.name.text !== 'Object' && parent.name.text !== 'Array'),
+        )
       ) {
         return Usefulness.Always;
       }
