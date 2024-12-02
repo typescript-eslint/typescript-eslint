@@ -107,6 +107,7 @@ export default createRule<[], MessageId>({
         return context.sourceCode.commentsExistBetween(startToken, endToken);
       }
 
+      /* istanbul ignore next */
       return false;
     }
 
