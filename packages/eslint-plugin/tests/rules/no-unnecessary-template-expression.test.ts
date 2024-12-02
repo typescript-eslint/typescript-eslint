@@ -311,10 +311,6 @@ const invalidCases: readonly InvalidTestCase<
       `,
     errors: [
       {
-        line: 2,
-        messageId: 'noUnnecessaryTemplateExpression',
-      },
-      {
         column: 2,
         endColumn: 2,
         endLine: 8,
@@ -331,12 +327,18 @@ const invalidCases: readonly InvalidTestCase<
     ],
     output: [
       `
-\`use\${
-  \`less\`
-}\`;
+\`u\${
+  // hopefully this comment is not needed.
+  'se'
+
+}le\${  \`ss\`  }\`;
       `,
       `
-\`useless\`;
+\`u\${
+  // hopefully this comment is not needed.
+  'se'
+
+}less\`;
       `,
     ],
   },
@@ -1103,6 +1105,21 @@ this code has trailing whitespace: \${'    '}
     `
 \`trailing position interpolated empty string also makes whitespace clear    \${''}
 \`;
+    `,
+    `
+\`
+\${/* intentional comment before */ 'bar'}
+...\`;
+    `,
+    `
+\`
+\${'bar' /* intentional comment after */}
+...\`;
+    `,
+    `
+\`
+\${/* intentional comment before */ 'bar' /* intentional comment after */}
+...\`;
     `,
   ],
 

@@ -92,6 +92,26 @@ export default createRule<[], MessageId>({
       );
     }
 
+    function hasCommentsAfterOffset(offset: number): boolean {
+      const token = context.sourceCode.getTokenByRangeStart(offset);
+
+      if (token) {
+        return context.sourceCode.getCommentsAfter(token).length > 0;
+      }
+
+      return false;
+    }
+
+    function hasCommentsBeforeOffset(offset: number): boolean {
+      const token = context.sourceCode.getTokenByRangeStart(offset);
+
+      if (token) {
+        return context.sourceCode.getCommentsBefore(token).length > 0;
+      }
+
+      return false;
+    }
+
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
@@ -132,13 +152,21 @@ export default createRule<[], MessageId>({
             nextQuasi: node.quasis[index + 1],
             prevQuasi: node.quasis[index],
           }))
-          .filter(({ expression, nextQuasi }) => {
+          .filter(({ expression, nextQuasi, prevQuasi }) => {
             if (
               isUndefinedIdentifier(expression) ||
               isInfinityIdentifier(expression) ||
               isNaNIdentifier(expression)
             ) {
               return true;
+            }
+
+            // allow expressions that include comments
+            if (
+              hasCommentsAfterOffset(prevQuasi.range[0]) ||
+              hasCommentsBeforeOffset(nextQuasi.range[0])
+            ) {
+              return false;
             }
 
             if (isLiteral(expression)) {
