@@ -92,12 +92,16 @@ export default createRule<[], MessageId>({
       );
     }
 
-    function hasCommentsBetween(
-      startOffset: number,
-      endOffset: number,
+    function hasCommentsBetweenQuasi(
+      startQuasi: TSESTree.TemplateElement,
+      endQuasi: TSESTree.TemplateElement,
     ): boolean {
-      const startToken = context.sourceCode.getTokenByRangeStart(startOffset);
-      const endToken = context.sourceCode.getTokenByRangeStart(endOffset);
+      const startToken = context.sourceCode.getTokenByRangeStart(
+        startQuasi.range[0],
+      );
+      const endToken = context.sourceCode.getTokenByRangeStart(
+        endQuasi.range[0],
+      );
 
       if (startToken && endToken) {
         return context.sourceCode.commentsExistBetween(startToken, endToken);
@@ -120,9 +124,7 @@ export default createRule<[], MessageId>({
           isUnderlyingTypeString(node.expressions[0]);
 
         if (hasSingleStringVariable) {
-          if (
-            hasCommentsBetween(node.quasis[0].range[0], node.quasis[1].range[0])
-          ) {
+          if (hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])) {
             return;
           }
 
@@ -162,7 +164,7 @@ export default createRule<[], MessageId>({
             }
 
             // allow expressions that include comments
-            if (hasCommentsBetween(prevQuasi.range[0], nextQuasi.range[0])) {
+            if (hasCommentsBetweenQuasi(prevQuasi, nextQuasi)) {
               return false;
             }
 
