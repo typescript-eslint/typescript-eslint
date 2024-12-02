@@ -10,6 +10,8 @@ import {
   getParserServices,
   isTypeFlagSet,
   isUndefinedIdentifier,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 import { rangeToLoc } from '../util/rangeToLoc';
 
@@ -96,19 +98,16 @@ export default createRule<[], MessageId>({
       startQuasi: TSESTree.TemplateElement,
       endQuasi: TSESTree.TemplateElement,
     ): boolean {
-      const startToken = context.sourceCode.getTokenByRangeStart(
-        startQuasi.range[0],
+      const startToken = nullThrows(
+        context.sourceCode.getTokenByRangeStart(startQuasi.range[0]),
+        NullThrowsReasons.MissingToken('`${', 'opening template literal'),
       );
-      const endToken = context.sourceCode.getTokenByRangeStart(
-        endQuasi.range[0],
+      const endToken = nullThrows(
+        context.sourceCode.getTokenByRangeStart(endQuasi.range[0]),
+        NullThrowsReasons.MissingToken('}', 'closing template literal'),
       );
 
-      if (startToken && endToken) {
-        return context.sourceCode.commentsExistBetween(startToken, endToken);
-      }
-
-      /* istanbul ignore next */
-      return false;
+      return context.sourceCode.commentsExistBetween(startToken, endToken);
     }
 
     return {
