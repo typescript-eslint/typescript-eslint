@@ -92,21 +92,15 @@ export default createRule<[], MessageId>({
       );
     }
 
-    function hasCommentsAfterOffset(offset: number): boolean {
-      const token = context.sourceCode.getTokenByRangeStart(offset);
+    function hasCommentsBetween(
+      startOffset: number,
+      endOffset: number,
+    ): boolean {
+      const startToken = context.sourceCode.getTokenByRangeStart(startOffset);
+      const endToken = context.sourceCode.getTokenByRangeStart(endOffset);
 
-      if (token) {
-        return context.sourceCode.getCommentsAfter(token).length > 0;
-      }
-
-      return false;
-    }
-
-    function hasCommentsBeforeOffset(offset: number): boolean {
-      const token = context.sourceCode.getTokenByRangeStart(offset);
-
-      if (token) {
-        return context.sourceCode.getCommentsBefore(token).length > 0;
+      if (startToken && endToken) {
+        return context.sourceCode.commentsExistBetween(startToken, endToken);
       }
 
       return false;
@@ -126,6 +120,12 @@ export default createRule<[], MessageId>({
           isUnderlyingTypeString(node.expressions[0]);
 
         if (hasSingleStringVariable) {
+          if (
+            hasCommentsBetween(node.quasis[0].range[0], node.quasis[1].range[0])
+          ) {
+            return;
+          }
+
           context.report({
             loc: rangeToLoc(context.sourceCode, [
               node.expressions[0].range[0] - 2,
@@ -162,10 +162,7 @@ export default createRule<[], MessageId>({
             }
 
             // allow expressions that include comments
-            if (
-              hasCommentsAfterOffset(prevQuasi.range[0]) ||
-              hasCommentsBeforeOffset(nextQuasi.range[0])
-            ) {
+            if (hasCommentsBetween(prevQuasi.range[0], nextQuasi.range[0])) {
               return false;
             }
 
