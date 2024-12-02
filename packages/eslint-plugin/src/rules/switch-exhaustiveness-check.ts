@@ -121,6 +121,10 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
+    const commentRegExp =
+      defaultCaseCommentPattern != null
+        ? new RegExp(defaultCaseCommentPattern, 'u')
+        : DEFAULT_COMMENT_PATTERN;
 
     function getCommentDefaultCase(
       node: TSESTree.SwitchStatement,
@@ -130,10 +134,6 @@ export default createRule<Options, MessageIds>({
         ? context.sourceCode.getCommentsAfter(lastCase)
         : [];
       const defaultCaseComment = commentsAfterLastCase.at(-1);
-      const commentRegExp =
-        defaultCaseCommentPattern != null
-          ? new RegExp(defaultCaseCommentPattern, 'u')
-          : DEFAULT_COMMENT_PATTERN;
 
       if (commentRegExp.test(defaultCaseComment?.value.trim() || '')) {
         return defaultCaseComment;

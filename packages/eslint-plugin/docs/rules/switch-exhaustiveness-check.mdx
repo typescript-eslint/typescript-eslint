@@ -14,8 +14,6 @@ However, if the union type or the enum changes, it's easy to forget to modify th
 
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
-If you have enabled an option that requires you to enter a default case, or if you did not enter it but want it to act as if you had entered it, specify `// no default` below.
-
 ## Options
 
 ### `allowDefaultCaseForExhaustiveSwitch`
@@ -84,9 +82,9 @@ switch (literal) {
 
 {/* insert option description */}
 
-Basically, there is logic to treat annotations matching /^no default$/iu as default case.
-If you want to change this pattern, just enter the pattern in this option.
-ㄴ
+It can sometimes be preferable to omit the default case for only some switch statements.
+For those situations, this rule can be given a pattern for a comment that's allowed to take the place of a `default:`.
+
 Examples of additional **correct** code with `{ defaultCaseCommentPattern: "^skip\\sdefault" }`:
 
 ```ts option='{ "defaultCaseCommentPattern": "^skip\sdefault" }' showPlaygroundButton
@@ -269,37 +267,6 @@ switch (fruit) {
   default:
     console.log('a fruit');
     break;
-}
-```
-
-</TabItem>
-</Tabs>
-
-And you can mark the default case as a comment.
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "considerDefaultExhaustiveForUnions": true }
-declare const literal: 'a' | 'b' | 'c';
-
-switch (literal) {
-  case 'a':
-    break;
-  // no default
-}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts
-declare const value: 'a' | 'b';
-
-switch (value) {
-  case 'a':
-    break;
-  // no default
 }
 ```
 
