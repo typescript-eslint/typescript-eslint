@@ -91,3 +91,11 @@ const arg = ['foo', 'bar'];
 const msg1 = \`arg = \${arg}\`;
 "
 `;
+
+exports[`Validating rule docs restrict-template-expressions.mdx code examples ESLint output 11`] = `
+"
+
+const error = new Error();
+const msg1 = \`arg = \${error}\`;
+"
+`;

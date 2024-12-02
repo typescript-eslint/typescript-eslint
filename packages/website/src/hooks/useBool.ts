@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { useCallback, useState } from 'react';
 
 export function useBool(
-  initialState: (() => boolean) | boolean,
+  initialState: boolean | (() => boolean),
 ): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
   const [value, setValue] = useState(initialState);
 

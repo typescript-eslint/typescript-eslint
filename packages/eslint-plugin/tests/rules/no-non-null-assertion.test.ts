@@ -19,9 +19,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
       ],
@@ -30,9 +30,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!.y;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -46,9 +46,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x.y!;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
       ],
@@ -57,9 +57,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: '!x!.y;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 2,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -73,9 +73,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!.y?.z;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -89,9 +89,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x![y];',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -105,9 +105,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x![y]?.z;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -121,9 +121,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x.y.z!();',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -137,9 +137,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x.y?.z!();',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -154,24 +154,24 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!!!;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 5,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 4,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 3,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
       ],
@@ -180,10 +180,10 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!!.y;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 4,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -192,10 +192,10 @@ ruleTester.run('no-non-null-assertion', rule, {
           ],
         },
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 3,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
       ],
@@ -204,17 +204,17 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x.y!!;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 6,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 5,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
       ],
@@ -223,10 +223,10 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x.y.z!!();',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 8,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -235,10 +235,10 @@ ruleTester.run('no-non-null-assertion', rule, {
           ],
         },
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
           endColumn: 7,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: undefined,
         },
       ],
@@ -247,9 +247,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!?.[y].z;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -263,9 +263,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x!?.y.z;',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -279,9 +279,9 @@ ruleTester.run('no-non-null-assertion', rule, {
       code: 'x.y.z!?.();',
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 1,
           column: 1,
+          line: 1,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -298,9 +298,9 @@ x!
       `,
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -321,9 +321,9 @@ x!
       `,
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -346,9 +346,9 @@ x!
       `,
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',
@@ -371,9 +371,9 @@ x!
       `,
       errors: [
         {
-          messageId: 'noNonNull',
-          line: 2,
           column: 1,
+          line: 2,
+          messageId: 'noNonNull',
           suggestions: [
             {
               messageId: 'suggestOptionalChain',

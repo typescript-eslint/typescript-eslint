@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type -- Fancy mocks */
 import path from 'node:path';
-
 import * as ts from 'typescript';
 
 import type {
@@ -8,6 +6,7 @@ import type {
   TypeScriptProjectService,
 } from '../../src/create-program/createProjectService';
 import type { ParseSettings } from '../../src/parseSettings';
+
 import { useProgramFromProjectService } from '../../src/useProgramFromProjectService';
 
 const mockCreateNoProgram = jest.fn();
@@ -50,17 +49,17 @@ function createMockProjectService() {
   };
 
   return {
-    service: service as typeof service & TypeScriptProjectService,
     openClientFile,
     reloadProjects,
+    service: service as typeof service & TypeScriptProjectService,
   };
 }
 
 const mockFileName = 'camelCaseFile.ts';
 
 const mockParseSettings = {
-  filePath: `path/PascalCaseDirectory/${mockFileName}`,
   extraFileExtensions: [] as readonly string[],
+  filePath: `path/PascalCaseDirectory/${mockFileName}`,
   singleRun: false,
   tsconfigRootDir: currentDirectory,
 } as ParseSettings;
@@ -70,8 +69,8 @@ const createProjectServiceSettings = <
 >(
   settings: T,
 ) => ({
-  maximumDefaultProjectFileMatchCount: 8,
   lastReloadTimestamp: 0,
+  maximumDefaultProjectFileMatchCount: 8,
   ...settings,
 });
 
@@ -574,5 +573,57 @@ If you absolutely need more files included, set parserOptions.projectService.max
     expect(service.setHostConfiguration).toHaveBeenCalledWith({
       extraFileExtensions: [],
     });
+  });
+
+  it('throws an error when a nonstandard file extension is used', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [mockParseSettings.filePath],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config.`,
+    );
+  });
+
+  it('throws an error when a nonstandard file extension is used but not included in extraFileExtensions', () => {
+    const filePath = `path/PascalCaseDirectory/vue-component.vue`;
+
+    const { service } = createMockProjectService();
+    service.openClientFile.mockReturnValueOnce({}).mockReturnValueOnce({});
+
+    expect(() =>
+      useProgramFromProjectService(
+        createProjectServiceSettings({
+          allowDefaultProject: [],
+          service,
+        }),
+        {
+          ...mockParseSettings,
+          extraFileExtensions: ['.svelte'],
+          filePath,
+        },
+        true,
+        new Set(),
+      ),
+    ).toThrow(
+      `${filePath} was not found by the project service because the extension for the file (\`${path.extname(
+        filePath,
+      )}\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`.`,
+    );
   });
 });

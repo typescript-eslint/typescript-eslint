@@ -6,6 +6,7 @@ import type { TSInterfaceHeritage } from '../../special/TSInterfaceHeritage/spec
 import type { TSTypeParameterDeclaration } from '../../special/TSTypeParameterDeclaration/spec';
 
 export interface TSInterfaceDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.TSInterfaceDeclaration;
   /**
    * The body of the interface
    */
@@ -22,7 +23,6 @@ export interface TSInterfaceDeclaration extends BaseNode {
    * The name of this interface
    */
   id: Identifier;
-  type: AST_NODE_TYPES.TSInterfaceDeclaration;
   /**
    * The generic type parameters declared for the interface. Empty declaration
    * (`<>`) is different from no declaration.

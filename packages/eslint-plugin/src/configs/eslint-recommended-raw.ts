@@ -7,7 +7,7 @@
  * - disables rules from eslint:recommended which are already handled by TypeScript.
  * - enables rules that make sense due to TS's typechecking / transpilation.
  */
-export default (
+const config = (
   style: 'glob' | 'minimatch',
 ): {
   files: string[];
@@ -22,6 +22,7 @@ export default (
   rules: {
     'constructor-super': 'off', // ts(2335) & ts(2377)
     'getter-return': 'off', // ts(2378)
+    'no-class-assign': 'off', // ts(2629)
     'no-const-assign': 'off', // ts(2588)
     'no-dupe-args': 'off', // ts(2300)
     'no-dupe-class-members': 'off', // ts(2393) & ts(2300)
@@ -44,3 +45,5 @@ export default (
     'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply
   },
 });
+
+export = config;

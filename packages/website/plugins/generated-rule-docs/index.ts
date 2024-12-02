@@ -1,15 +1,16 @@
-import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { Plugin } from 'unified';
+
+import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
 import { nodeIsParent } from '../utils/nodes';
 import { isESLintPluginRuleModule, isVFileWithStem } from '../utils/rules';
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
 import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
-import { insertFormattingNotice } from './insertions/insertFormattingNotice';
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
 import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
+import { insertRuleOptions } from './insertions/insertRuleOptions';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 
@@ -28,7 +29,6 @@ export const generatedRuleDocs: Plugin = () => {
 
     removeSourceCodeNotice(page);
     insertRuleDescription(page);
-    insertFormattingNotice(page);
 
     const eslintrc = rule.meta.docs.extendsBaseRule
       ? insertBaseRuleReferences(page)
@@ -36,6 +36,7 @@ export const generatedRuleDocs: Plugin = () => {
 
     insertWhenNotToUseIt(page);
     insertResources(page);
+    insertRuleOptions(page);
     addESLintHashToCodeBlocksMeta(page, eslintrc);
   };
 };

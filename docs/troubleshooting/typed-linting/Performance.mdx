@@ -174,7 +174,7 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedRequiringTypeChecking,
+  tseslint.configs.recommendedRequiringTypeChecking,
   {
     languageOptions: {
       parserOptions: {

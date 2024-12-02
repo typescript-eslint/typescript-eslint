@@ -1,8 +1,11 @@
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type * as unist from 'unist';
 
+import { fromMarkdown } from 'mdast-util-from-markdown';
+
 import type { VFileWithStem } from '../utils/rules';
-import { findH2Index } from '../utils/rules';
+
+import { findHeadingIndex } from '../utils/rules';
 
 export interface RequiredHeadingIndices {
   howToUse: number;
@@ -27,6 +30,44 @@ export class RuleDocsPage {
   #headingIndices: RequiredHeadingIndices;
   #rule: Readonly<ESLintPluginRuleModule>;
 
+  constructor(
+    children: unist.Node[],
+    file: Readonly<VFileWithStem>,
+    rule: Readonly<ESLintPluginRuleModule>,
+  ) {
+    this.#children = children;
+    this.#file = file;
+    this.#headingIndices = this.#recreateHeadingIndices();
+    this.#rule = rule;
+  }
+
+  #recreateHeadingIndices(): RequiredHeadingIndices {
+    return {
+      howToUse: findHeadingIndex(this.#children, 2, requiredHeadingNames[0]),
+      options: findHeadingIndex(this.#children, 2, requiredHeadingNames[1]),
+      whenNotToUseIt: findHeadingIndex(
+        this.#children,
+        2,
+        requiredHeadingNames[2],
+      ),
+    };
+  }
+
+  spliceChildren(
+    start: number,
+    deleteCount: number,
+    ...items: (string | unist.Node)[]
+  ): void {
+    this.#children.splice(
+      start,
+      deleteCount,
+      ...items.map(item =>
+        typeof item === 'string' ? fromMarkdown(item) : item,
+      ),
+    );
+    this.#headingIndices = this.#recreateHeadingIndices();
+  }
+
   get children(): readonly unist.Node[] {
     return this.#children;
   }
@@ -41,33 +82,5 @@ export class RuleDocsPage {
 
   get rule(): Readonly<ESLintPluginRuleModule> {
     return this.#rule;
-  }
-
-  constructor(
-    children: unist.Node[],
-    file: Readonly<VFileWithStem>,
-    rule: Readonly<ESLintPluginRuleModule>,
-  ) {
-    this.#children = children;
-    this.#file = file;
-    this.#headingIndices = this.#recreateHeadingIndices();
-    this.#rule = rule;
-  }
-
-  spliceChildren(
-    start: number,
-    deleteCount: number,
-    ...items: unist.Node[]
-  ): void {
-    this.#children.splice(start, deleteCount, ...items);
-    this.#headingIndices = this.#recreateHeadingIndices();
-  }
-
-  #recreateHeadingIndices(): RequiredHeadingIndices {
-    return {
-      howToUse: findH2Index(this.#children, requiredHeadingNames[0]),
-      options: findH2Index(this.#children, requiredHeadingNames[1]),
-      whenNotToUseIt: findH2Index(this.#children, requiredHeadingNames[2]),
-    };
   }
 }

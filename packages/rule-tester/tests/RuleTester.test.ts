@@ -4,6 +4,7 @@ import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
+import type { InvalidTestCase, ValidTestCase } from '../src';
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 
 import { RuleTester } from '../src/RuleTester';
@@ -345,6 +346,21 @@ describe('RuleTester', () => {
     expect(mockedParserClearCaches).not.toHaveBeenCalled();
     callback();
     expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
+  });
+
+  it('provided linterOptions should be respected', () => {
+    const ruleTester = new RuleTester({
+      linterOptions: {
+        reportUnusedDisableDirectives: 0,
+      },
+    });
+
+    expect(() => {
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [],
+        valid: ['// eslint-disable-next-line'],
+      });
+    }).not.toThrow();
   });
 
   it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
@@ -1015,6 +1031,227 @@ describe('RuleTester', () => {
   });
 });
 
+describe('RuleTester - hooks', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  const noFooRule: RuleModule<'error'> = {
+    create(context) {
+      return {
+        'Identifier[name=foo]'(node): void {
+          context.report({
+            messageId: 'error',
+            node,
+          });
+        },
+      };
+    },
+    defaultOptions: [],
+    meta: {
+      messages: {
+        error: 'error',
+      },
+      schema: [],
+      type: 'problem',
+    },
+  };
+
+  const ruleTester = new RuleTester();
+
+  it.each(['before', 'after'])(
+    '%s should be called when assigned',
+    hookName => {
+      const hookForValid = jest.fn();
+      const hookForInvalid = jest.fn();
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            code: 'foo',
+            errors: [{ messageId: 'error' }],
+            [hookName]: hookForInvalid,
+          },
+        ],
+        valid: [
+          {
+            code: 'bar',
+            [hookName]: hookForValid,
+          },
+        ],
+      });
+      expect(hookForValid).toHaveBeenCalledTimes(1);
+      expect(hookForInvalid).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  it.each(['before', 'after'])(
+    '%s should cause test to fail when it throws error',
+    hookName => {
+      const hook = jest.fn(() => {
+        throw new Error('Something happened');
+      });
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              [hookName]: hook,
+            },
+          ],
+          valid: [],
+        }),
+      ).toThrow('Something happened');
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'bar',
+              [hookName]: hook,
+            },
+          ],
+        }),
+      ).toThrow('Something happened');
+    },
+  );
+
+  it.each(['before', 'after'])(
+    '%s should throw when not a function is assigned',
+    hookName => {
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [],
+          valid: [
+            {
+              code: 'bar',
+              [hookName]: 42,
+            },
+          ],
+        }),
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
+      expect(() =>
+        ruleTester.run('no-foo', noFooRule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'error' }],
+              [hookName]: 42,
+            },
+          ],
+          valid: [],
+        }),
+      ).toThrow(`Optional test case property '${hookName}' must be a function`);
+    },
+  );
+
+  it('should call both before() and after() hooks even when the case failed', () => {
+    const hookBefore = jest.fn();
+    const hookAfter = jest.fn();
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'foo',
+          },
+        ],
+      }),
+    ).toThrow();
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'bar',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow();
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
+
+  it('should call both before() and after() hooks regardless of syntax errors', () => {
+    const hookBefore = jest.fn();
+    const hookAfter = jest.fn();
+
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'invalid javascript code',
+          },
+        ],
+      }),
+    ).toThrow(/parsing error/);
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'invalid javascript code',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow(/parsing error/);
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
+
+  it('should call after() hook even when before() throws', () => {
+    const hookBefore = jest.fn(() => {
+      throw new Error('Something happened in before()');
+    });
+    const hookAfter = jest.fn();
+
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [],
+        valid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'bar',
+          },
+        ],
+      }),
+    ).toThrow('Something happened in before()');
+    expect(hookBefore).toHaveBeenCalledTimes(1);
+    expect(hookAfter).toHaveBeenCalledTimes(1);
+    expect(() =>
+      ruleTester.run('no-foo', noFooRule, {
+        invalid: [
+          {
+            after: hookAfter,
+            before: hookBefore,
+            code: 'foo',
+            errors: [{ messageId: 'error' }],
+          },
+        ],
+        valid: [],
+      }),
+    ).toThrow('Something happened in before()');
+    expect(hookBefore).toHaveBeenCalledTimes(2);
+    expect(hookAfter).toHaveBeenCalledTimes(2);
+  });
+});
+
 describe('RuleTester - multipass fixer', () => {
   beforeAll(() => {
     jest.restoreAllMocks();
@@ -1310,5 +1547,151 @@ describe('RuleTester - multipass fixer', () => {
         });
       }).toThrow('Outputs do not match.');
     });
+  });
+});
+
+describe('RuleTester - run types', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  const ruleTester = new RuleTester();
+  const ruleModule: RuleModule<
+    'customErrorBar' | 'customErrorFoo',
+    [{ flag: 'bar' | 'foo' }?]
+  > = {
+    create(context) {
+      const [{ flag } = {}] = context.options;
+      return {
+        Identifier(node) {
+          if (node.name === 'foo' && flag === 'foo') {
+            context.report({ messageId: 'customErrorFoo', node });
+          }
+          if (node.name === 'bar' && flag === 'bar') {
+            context.report({ messageId: 'customErrorBar', node });
+          }
+        },
+      };
+    },
+    defaultOptions: [],
+    meta: {
+      messages: {
+        customErrorBar: 'Error custom Bar',
+        customErrorFoo: 'Error custom Foo',
+      },
+      schema: [
+        {
+          additionalProperties: false,
+          properties: {
+            flag: { enum: ['foo', 'bar'], type: 'string' },
+          },
+          type: 'object',
+        },
+      ],
+      type: 'suggestion',
+    },
+  };
+
+  describe('infer from `rule` parameter', () => {
+    it('should correctly infer `options` or `messageIds` types from the `rule` paramter', () => {
+      expect(() =>
+        ruleTester.run('my-rule', ruleModule, {
+          invalid: [],
+          valid: [{ code: 'test', options: [{ flag: 'bar' }] }],
+        }),
+      ).not.toThrow();
+
+      expect(() =>
+        ruleTester.run('my-rule', ruleModule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'customErrorFoo' }],
+              options: [{ flag: 'foo' }],
+            },
+            {
+              code: 'bar',
+              errors: [{ messageId: 'customErrorBar' }],
+              options: [{ flag: 'bar' }],
+            },
+          ],
+          valid: [],
+        }),
+      ).not.toThrow();
+    });
+
+    it('should throw both runtime and type error when `options` or `messageId` are not assignable to rule inferred types', () => {
+      expect(() =>
+        ruleTester.run('my-rule', ruleModule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'customErrorFoo' }],
+              // @ts-expect-error - `flags` is specified inside options
+              options: [{ flags: 'foo' }],
+            },
+            {
+              code: 'bar',
+              options: [{ flag: 'bar' }],
+              // @ts-expect-error - `customErrorBaz` is not assignable to `customErrorFoo` | `customErrorBar`
+              errors: [{ messageId: 'customErrorBaz' }],
+            },
+          ],
+          valid: [
+            // @ts-expect-error - `bar2` is not assignable to `foo` | `bar`
+            { code: 'test', options: [{ flag: 'bar2' }] },
+          ],
+        }),
+      ).toThrow();
+    });
+  });
+
+  it('should not infer types from functions and if the signature is not compatible should report a type error', () => {
+    function generateValidTestCase(): ValidTestCase<[{ flag: 'foo' }]> {
+      return { code: 'valid' };
+    }
+    function generateIncompatibleValidTestCase(): ValidTestCase<unknown[]> {
+      return { code: 'validIncompatible' };
+    }
+
+    function generateInvalidTestCase(): InvalidTestCase<
+      'customErrorBar',
+      [{ flag: 'bar' }]
+    > {
+      return {
+        code: 'bar',
+        errors: [{ messageId: 'customErrorBar' }],
+        options: [{ flag: 'bar' }],
+      };
+    }
+    function generateIncompatibleInvalidTestCase(): InvalidTestCase<
+      'customErrorBar' | 'customErrorBaz',
+      unknown[]
+    > {
+      return {
+        code: 'let bar',
+        errors: [{ messageId: 'customErrorBar' }],
+        options: [{ flag: 'bar' }],
+      };
+    }
+
+    expect(() =>
+      ruleTester.run('my-rule', ruleModule, {
+        invalid: [
+          generateInvalidTestCase(),
+
+          // @ts-expect-error the InvalidTestCase returned by this function
+          // is not assignable to the one of the rule
+          generateIncompatibleInvalidTestCase(),
+        ],
+        valid: [
+          generateValidTestCase(),
+
+          // @ts-expect-error the ValidTestCase returned by this function
+          // is not assignable to the one of the rule
+          generateIncompatibleValidTestCase(),
+        ],
+      }),
+    ).not.toThrow();
   });
 });

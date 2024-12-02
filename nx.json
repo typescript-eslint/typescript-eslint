@@ -3,7 +3,6 @@
   "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "release": {
     "projects": [
-      "*",
       "!repo",
       "!website*",
       "!integration-tests",

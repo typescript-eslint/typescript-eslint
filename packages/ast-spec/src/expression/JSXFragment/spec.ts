@@ -5,8 +5,8 @@ import type { JSXOpeningFragment } from '../../jsx/JSXOpeningFragment/spec';
 import type { JSXChild } from '../../unions/JSXChild';
 
 export interface JSXFragment extends BaseNode {
+  type: AST_NODE_TYPES.JSXFragment;
   children: JSXChild[];
   closingFragment: JSXClosingFragment;
   openingFragment: JSXOpeningFragment;
-  type: AST_NODE_TYPES.JSXFragment;
 }

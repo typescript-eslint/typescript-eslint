@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import debug from 'debug';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
+import debug from 'debug';
+
 import type { ProjectServiceOptions } from '../parser-options';
+
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForFilesGlob';
 
@@ -42,9 +44,10 @@ export function createProjectService(
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
   tsconfigRootDir: string | undefined,
 ): ProjectServiceSettings {
+  const optionsRawObject = typeof optionsRaw === 'object' ? optionsRaw : {};
   const options = {
     defaultProject: 'tsconfig.json',
-    ...(typeof optionsRaw === 'object' && optionsRaw),
+    ...optionsRawObject,
   };
   validateDefaultProjectForFilesGlob(options.allowDefaultProject);
 
@@ -65,6 +68,18 @@ export function createProjectService(
     setTimeout,
     watchDirectory: createStubFileWatcher,
     watchFile: createStubFileWatcher,
+
+    // We stop loading any TypeScript plugins by default, to prevent them from attaching disk watchers
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/9905
+    ...(!options.loadTypeScriptPlugins && {
+      require: () => ({
+        error: {
+          message:
+            'TypeScript plugins are not required when using parserOptions.projectService.',
+        },
+        module: undefined,
+      }),
+    }),
   };
 
   const logger: ts.server.Logger = {
@@ -105,18 +120,18 @@ export function createProjectService(
   log('Creating project service with: %o', options);
 
   const service = new tsserver.server.ProjectService({
-    host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
-    useSingleInferredProject: false,
-    useInferredProjectPerProjectRoot: false,
-    logger,
     eventHandler: logTsserverEvent.enabled
       ? (e): void => {
           logTsserverEvent(e);
         }
       : undefined,
-    session: undefined,
+    host: system,
     jsDocParsingMode,
+    logger,
+    session: undefined,
+    useInferredProjectPerProjectRoot: false,
+    useSingleInferredProject: false,
   });
 
   service.setHostConfiguration({
@@ -126,7 +141,7 @@ export function createProjectService(
   });
 
   log('Enabling default project: %s', options.defaultProject);
-  let configFile: ts.ParsedCommandLine;
+  let configFile: ts.ParsedCommandLine | undefined;
 
   try {
     configFile = getParsedConfigFile(
@@ -135,18 +150,22 @@ export function createProjectService(
       tsconfigRootDir,
     );
   } catch (error) {
-    throw new Error(
-      `Could not read project service default project '${options.defaultProject}': ${(error as Error).message}`,
-    );
+    if (optionsRawObject.defaultProject) {
+      throw new Error(
+        `Could not read project service default project '${options.defaultProject}': ${(error as Error).message}`,
+      );
+    }
   }
 
-  service.setCompilerOptionsForInferredProjects(
-    // NOTE: The inferred projects API is not intended for source files when a tsconfig
-    // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
-    // it is meant for hard coded options passed in. Hard asserting as a work around.
-    // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
-    configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
-  );
+  if (configFile) {
+    service.setCompilerOptionsForInferredProjects(
+      // NOTE: The inferred projects API is not intended for source files when a tsconfig
+      // exists.  There is no API that generates an InferredProjectCompilerOptions suggesting
+      // it is meant for hard coded options passed in. Hard asserting as a work around.
+      // See https://github.com/microsoft/TypeScript/blob/27bcd4cb5a98bce46c9cdd749752703ead021a4b/src/server/protocol.ts#L1904
+      configFile.options as ts.server.protocol.InferredProjectCompilerOptions,
+    );
+  }
 
   return {
     allowDefaultProject: options.allowDefaultProject,

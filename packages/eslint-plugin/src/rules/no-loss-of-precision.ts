@@ -2,6 +2,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -14,14 +15,15 @@ export default createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
   meta: {
     type: 'problem',
+    // defaultOptions, -- base rule does not use defaultOptions
     deprecated: true,
     docs: {
       description: 'Disallow literal numbers that lose precision',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: [],
     messages: baseRule.meta.messages,
+    schema: [],
   },
   defaultOptions: [],
   create(context) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -51,8 +52,7 @@ function normalizeArray(parts, allowAboveRoot) {
 
 // Split a filename into [root, dir, basename, ext], unix version
 // 'root' is just a slash, or nothing.
-const splitPathRe =
-  /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^/]+?|)(\.[^./]*|))(?:[/]*)$/;
+const splitPathRe = /^(\/?)([\s\S]*?)((?:\.{1,2}|[^/]+?)?(\.[^./]*|))\/*$/;
 const splitPath = function (filename) {
   return splitPathRe.exec(filename).slice(1);
 };
@@ -208,16 +208,16 @@ export function extname(path) {
 }
 
 export default {
-  extname,
   basename,
-  dirname,
-  sep,
   delimiter,
-  relative,
-  join,
+  dirname,
+  extname,
   isAbsolute,
+  join,
   normalize,
+  relative,
   resolve,
+  sep,
 };
 
 function filter(xs, f) {

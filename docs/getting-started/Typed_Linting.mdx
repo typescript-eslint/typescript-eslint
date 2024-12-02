@@ -16,12 +16,15 @@ To tap into TypeScript's additional powers, there are two small changes you need
 2. Add `languageOptions.parserOptions` to tell our parser how to find the TSConfig for each source file.
 
 ```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
   // Added lines start
-  ...tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -84,7 +87,7 @@ In more detail:
 
 :::caution
 Your ESLint config file may start receiving a parsing error about type information.
-See [our TSConfig inclusion FAQ](../troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
+See [our TSConfig inclusion FAQ](../../troubleshooting/typed-linting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 :::
 
 With that done, run the same lint command you ran before.
@@ -101,12 +104,12 @@ If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#s
 export default tseslint.config(
   eslint.configs.recommended,
   // Removed lines start
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
+  tseslint.configs.strict,
+  tseslint.configs.stylistic,
   // Removed lines end
   // Added lines start
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   // Added lines end
   // ...
 );
@@ -202,20 +205,20 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.name,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   // Added lines start
   {
     files: ['**/*.js'],
-    ...tseslint.configs.disableTypeChecked,
+    extends: [tseslint.configs.disableTypeChecked],
   },
   // Added lines end
 );

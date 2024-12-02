@@ -74,7 +74,7 @@ const x = [new Map<string, string>()] as const;
 foo(new Set<string>(), ...x);
     `,
     `
-declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
     `,
     `
@@ -127,14 +127,32 @@ foo(1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 5,
-          endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 13,
+          line: 3,
+          messageId: 'unsafeArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg: number): void;
+foo(error);
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            receiver: '`number`',
+            sender: 'error typed',
+          },
+          endColumn: 10,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -145,14 +163,14 @@ foo(1, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 8,
-          endColumn: 16,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 16,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -163,14 +181,14 @@ foo(1, 2, 3, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 14,
-          endColumn: 22,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 22,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -181,24 +199,24 @@ foo(1 as any, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 5,
-          endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 13,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 15,
-          endColumn: 23,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 23,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -210,10 +228,10 @@ foo(...(x as any));
       `,
       errors: [
         {
-          messageId: 'unsafeSpread',
-          line: 4,
           column: 5,
           endColumn: 18,
+          line: 4,
+          messageId: 'unsafeSpread',
         },
       ],
     },
@@ -225,10 +243,29 @@ foo(...(x as any[]));
       `,
       errors: [
         {
-          messageId: 'unsafeArraySpread',
-          line: 4,
           column: 5,
+          data: { sender: '`any[]`' },
           endColumn: 20,
+          line: 4,
+          messageId: 'unsafeArraySpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+
+declare const errors: error[];
+
+foo(...errors);
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { sender: 'error' },
+          endColumn: 14,
+          line: 6,
+          messageId: 'unsafeArraySpread',
         },
       ],
     },
@@ -241,14 +278,34 @@ foo(...x);
       `,
       errors: [
         {
-          messageId: 'unsafeTupleSpread',
-          line: 5,
           column: 5,
-          endColumn: 9,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: 'of type `any`',
           },
+          endColumn: 9,
+          line: 5,
+          messageId: 'unsafeTupleSpread',
+        },
+      ],
+    },
+    {
+      code: `
+declare function foo(arg1: string, arg2: number): void;
+
+const x = ['a', error] as const;
+foo(...x);
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            receiver: '`number`',
+            sender: 'error typed',
+          },
+          endColumn: 9,
+          line: 5,
+          messageId: 'unsafeTupleSpread',
         },
       ],
     },
@@ -259,10 +316,14 @@ foo(...(['foo', 1, 2] as [string, any, number]));
       `,
       errors: [
         {
-          messageId: 'unsafeTupleSpread',
-          line: 3,
           column: 5,
+          data: {
+            receiver: '`number`',
+            sender: 'of type `any`',
+          },
           endColumn: 48,
+          line: 3,
+          messageId: 'unsafeTupleSpread',
         },
       ],
     },
@@ -275,14 +336,14 @@ foo('a', ...x, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 5,
           column: 16,
-          endColumn: 24,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 24,
+          line: 5,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -295,14 +356,14 @@ foo('a', ...x, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 5,
           column: 16,
-          endColumn: 24,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 24,
+          line: 5,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -315,24 +376,24 @@ foo(new Set<any>(), ...x);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 5,
           column: 5,
-          endColumn: 19,
           data: {
-            sender: 'Set<any>',
-            receiver: 'Set<string>',
+            receiver: '`Set<string>`',
+            sender: '`Set<any>`',
           },
+          endColumn: 19,
+          line: 5,
+          messageId: 'unsafeArgument',
         },
         {
-          messageId: 'unsafeTupleSpread',
-          line: 5,
           column: 21,
-          endColumn: 25,
           data: {
-            sender: 'Map<any, string>',
-            receiver: 'Map<string, string>',
+            receiver: '`Map<string, string>`',
+            sender: 'of type `Map<any, string>`',
           },
+          endColumn: 25,
+          line: 5,
+          messageId: 'unsafeTupleSpread',
         },
       ],
     },
@@ -343,24 +404,24 @@ foo(1 as any, 'a' as any, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 5,
-          endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 13,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 15,
-          endColumn: 25,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 25,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -371,24 +432,24 @@ foo('a', 1 as any, 'a' as any, 1 as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 10,
-          endColumn: 18,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 18,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
         {
-          messageId: 'unsafeArgument',
-          line: 3,
           column: 20,
-          endColumn: 30,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 30,
+          line: 3,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -401,14 +462,14 @@ foo(t as any);
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 5,
           column: 5,
-          endColumn: 13,
           data: {
-            sender: 'any',
-            receiver: 'T',
+            receiver: '`T`',
+            sender: '`any`',
           },
+          endColumn: 13,
+          line: 5,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -425,24 +486,24 @@ foo<number>\`\${arg}\${arg}\${arg}\`;
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 9,
           column: 15,
-          endColumn: 18,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 18,
+          line: 9,
+          messageId: 'unsafeArgument',
         },
         {
-          messageId: 'unsafeArgument',
-          line: 9,
           column: 27,
-          endColumn: 30,
           data: {
-            sender: 'any',
-            receiver: 'string',
+            receiver: '`string`',
+            sender: '`any`',
           },
+          endColumn: 30,
+          line: 9,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -454,14 +515,14 @@ foo\`\${arg}\`;
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 4,
           column: 7,
-          endColumn: 10,
           data: {
-            sender: 'any',
-            receiver: 'number',
+            receiver: '`number`',
+            sender: '`any`',
           },
+          endColumn: 10,
+          line: 4,
+          messageId: 'unsafeArgument',
         },
       ],
     },
@@ -474,14 +535,14 @@ foo\`\${arg}\`;
       `,
       errors: [
         {
-          messageId: 'unsafeArgument',
-          line: 5,
           column: 7,
-          endColumn: 10,
           data: {
-            sender: 'any',
-            receiver: 'T',
+            receiver: '`T`',
+            sender: '`any`',
           },
+          endColumn: 10,
+          line: 5,
+          messageId: 'unsafeArgument',
         },
       ],
     },

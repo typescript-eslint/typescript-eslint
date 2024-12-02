@@ -1,6 +1,7 @@
 import type { Definition } from '@typescript-eslint/scope-manager';
-import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
+
+import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
@@ -38,13 +39,13 @@ export default createRule({
         'Disallow non-null assertions in the left operand of a nullish coalescing operator',
       recommended: 'strict',
     },
+    hasSuggestions: true,
     messages: {
       noNonNullAssertedNullishCoalescing:
         'The nullish coalescing operator is designed to handle undefined and null - using a non-null assertion is not needed.',
       suggestRemovingNonNull: 'Remove the non-null assertion.',
     },
     schema: [],
-    hasSuggestions: true,
   },
   defaultOptions: [],
   create(context) {

@@ -44,6 +44,52 @@ function foo(x: { a?: () => void }) {
         x();
       }
     `,
+    `
+      // create a scope since it's illegal to declare a duplicate identifier
+      // 'Function' in the global script scope.
+      {
+        type Function = () => void;
+        const notGlobalFunctionType: Function = (() => {}) as Function;
+        notGlobalFunctionType();
+      }
+    `,
+    `
+interface SurprisinglySafe extends Function {
+  (): string;
+}
+declare const safe: SurprisinglySafe;
+safe();
+    `,
+    `
+interface CallGoodConstructBad extends Function {
+  (): void;
+}
+declare const safe: CallGoodConstructBad;
+safe();
+    `,
+    `
+interface ConstructSignatureMakesSafe extends Function {
+  new (): ConstructSignatureMakesSafe;
+}
+declare const safe: ConstructSignatureMakesSafe;
+new safe();
+    `,
+    `
+interface SafeWithNonVoidCallSignature extends Function {
+  (): void;
+  (x: string): string;
+}
+declare const safe: SafeWithNonVoidCallSignature;
+safe();
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      new Function('lol');
+    `,
+    // Function has type FunctionConstructor, so it's not within this rule's purview
+    `
+      Function('lol');
+    `,
   ],
   invalid: [
     {
@@ -54,13 +100,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 4,
           data: {
             type: '`any`',
           },
+          endColumn: 4,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -72,13 +118,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 4,
           data: {
             type: '`any`',
           },
+          endColumn: 4,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -90,13 +136,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 18,
           data: {
             type: '`any`',
           },
+          endColumn: 18,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -108,13 +154,13 @@ function foo(x: any) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 18,
           data: {
             type: '`any`',
           },
+          endColumn: 18,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -126,13 +172,13 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 6,
           data: {
             type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -144,13 +190,13 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 7,
           data: {
             type: '`any`',
           },
+          endColumn: 7,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -162,13 +208,13 @@ function foo(x: { a: any }) {
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 3,
-          endColumn: 6,
           data: {
             type: '`any`',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeCall',
         },
       ],
     },
@@ -221,16 +267,16 @@ const methods = {
       `,
       errors: [
         {
-          messageId: 'unsafeCallThis',
-          line: 4,
           column: 12,
           endColumn: 24,
+          line: 4,
+          messageId: 'unsafeCallThis',
         },
         {
-          messageId: 'unsafeCallThis',
-          line: 10,
           column: 12,
           endColumn: 16,
+          line: 10,
+          messageId: 'unsafeCallThis',
         },
       ],
     },
@@ -241,13 +287,144 @@ value();
       `,
       errors: [
         {
-          messageId: 'unsafeCall',
-          line: 3,
           column: 1,
-          endColumn: 6,
           data: {
             type: '`error` type',
           },
+          endColumn: 6,
+          line: 3,
+          messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+const t: Function = () => {};
+t();
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 3,
+          messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+const f: Function = () => {};
+f\`oo\`;
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 3,
+          messageId: 'unsafeTemplateTag',
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeFunction: unknown;
+if (typeof maybeFunction === 'function') {
+  maybeFunction('call', 'with', 'any', 'args');
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 4,
+          messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+unsafe();
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 4,
+          messageId: 'unsafeCall',
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+unsafe\`bad\`;
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 4,
+          messageId: 'unsafeTemplateTag',
+        },
+      ],
+    },
+    {
+      code: `
+interface Unsafe extends Function {}
+declare const unsafe: Unsafe;
+new unsafe();
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 4,
+          messageId: 'unsafeNew',
+        },
+      ],
+    },
+    {
+      code: `
+interface UnsafeToConstruct extends Function {
+  (): void;
+}
+declare const unsafe: UnsafeToConstruct;
+new unsafe();
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 6,
+          messageId: 'unsafeNew',
+        },
+      ],
+    },
+    {
+      code: `
+interface StillUnsafe extends Function {
+  property: string;
+}
+declare const unsafe: StillUnsafe;
+unsafe();
+      `,
+      errors: [
+        {
+          data: {
+            type: '`Function`',
+          },
+          line: 6,
+          messageId: 'unsafeCall',
         },
       ],
     },

@@ -21,7 +21,8 @@ function isIterable(key: string, value: unknown): boolean {
 function getRangeFromNode(value: object): [number, number] | null {
   if (isESNode(value)) {
     return value.range;
-  } else if (isTSNode(value)) {
+  }
+  if (isTSNode(value)) {
     return [value.pos, value.end];
   }
   return null;

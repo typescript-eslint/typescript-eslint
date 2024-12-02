@@ -1,6 +1,7 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+
 import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
-import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -46,7 +47,7 @@ const a = 1;
 */
 
 const prettierConfig = prettier.resolveConfig(__dirname) ?? {};
-const START_OF_LINE_WHITESPACE_MATCHER = /^([ ]*)/;
+const START_OF_LINE_WHITESPACE_MATCHER = /^( *)/;
 const BACKTICK_REGEX = /`/g;
 const TEMPLATE_EXPR_OPENER = /\$\{/g;
 
@@ -68,7 +69,7 @@ function doIndent(line: string, indent: number): string {
   return line;
 }
 
-function getQuote(code: string): '"' | "'" | null {
+function getQuote(code: string): "'" | '"' | null {
   const hasSingleQuote = code.includes("'");
   const hasDoubleQuote = code.includes('"');
   if (hasSingleQuote && hasDoubleQuote) {
@@ -104,10 +105,10 @@ type MessageIds =
   | 'templateStringMinimumIndent'
   | 'templateStringRequiresIndent';
 
-type FormattingError = Error & {
+type FormattingError = {
   codeFrame: string;
   loc?: unknown;
-};
+} & Error;
 
 export default createRule<Options, MessageIds>({
   name: 'plugin-test-formatting',
@@ -118,6 +119,25 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    messages: {
+      invalidFormatting:
+        'This snippet should be formatted correctly. Use the fixer to format the code.',
+      invalidFormattingErrorTest:
+        'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
+      noUnnecessaryNoFormat:
+        'noFormat is unnecessary here. Use the fixer to remove it.',
+      prettierException:
+        'Prettier was unable to format this snippet: {{message}}',
+      singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
+      templateLiteralEmptyEnds:
+        'Template literals must start and end with an empty line.',
+      templateLiteralLastLineIndent:
+        'The closing line of the template literal must be indented to align with its parent.',
+      templateStringMinimumIndent:
+        'Test code should be indented at least {{indent}} spaces.',
+      templateStringRequiresIndent:
+        'Test code should either have no indent, or be indented {{indent}} spaces.',
+    },
     schema: [
       {
         type: 'object',
@@ -129,25 +149,6 @@ export default createRule<Options, MessageIds>({
         },
       },
     ],
-    messages: {
-      invalidFormatting:
-        'This snippet should be formatted correctly. Use the fixer to format the code.',
-      invalidFormattingErrorTest:
-        'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
-      noUnnecessaryNoFormat:
-        'noFormat is unnecessary here. Use the fixer to remove it.',
-      singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
-      templateLiteralEmptyEnds:
-        'Template literals must start and end with an empty line.',
-      templateLiteralLastLineIndent:
-        'The closing line of the template literal must be indented to align with its parent.',
-      templateStringRequiresIndent:
-        'Test code should either have no indent, or be indented {{indent}} spaces.',
-      templateStringMinimumIndent:
-        'Test code should be indented at least {{indent}} spaces.',
-      prettierException:
-        'Prettier was unable to format this snippet: {{message}}',
-    },
   },
   defaultOptions: [
     {

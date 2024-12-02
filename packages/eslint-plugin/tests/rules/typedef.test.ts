@@ -7,8 +7,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -1060,8 +1060,8 @@ class ClassName {
       code: "const foo = 'foo';",
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'foo' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [
@@ -1075,8 +1075,8 @@ class ClassName {
       code: 'const foo = function (): void {};',
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'foo' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [
@@ -1090,8 +1090,8 @@ class ClassName {
       code: 'const foo = (): void => {};',
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'foo' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [
@@ -1110,12 +1110,12 @@ class Foo {
       `,
       errors: [
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'a' },
+          messageId: 'expectedTypedefNamed',
         },
         {
-          messageId: 'expectedTypedefNamed',
           data: { name: 'b' },
+          messageId: 'expectedTypedefNamed',
         },
       ],
       options: [

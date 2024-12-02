@@ -84,9 +84,9 @@ declare class LinterBase {
    * @returns The results as an array of messages or an empty array if no messages.
    */
   verify(
-    textOrSourceCode: SourceCode | string,
+    textOrSourceCode: string | SourceCode,
     config: Linter.ConfigType,
-    filenameOrOptions?: Linter.VerifyOptions | string,
+    filenameOrOptions?: string | Linter.VerifyOptions,
   ): Linter.LintMessage[];
 
   ////////////////////
@@ -140,13 +140,13 @@ namespace Linter {
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
 
-  /** @deprecated use Linter.ConfigType instead */
+  /** @deprecated use {@link Linter.ConfigType} instead */
   export type Config = ClassicConfig.Config;
   export type ConfigType =
     | ClassicConfig.Config
     | FlatConfig.Config
     | FlatConfig.ConfigArray;
-  /** @deprecated use ClassicConfig.ConfigOverride instead */
+  /** @deprecated use {@link ClassicConfig.ConfigOverride} instead */
   export type ConfigOverride = ClassicConfig.ConfigOverride;
 
   export interface VerifyOptions {
@@ -183,7 +183,7 @@ namespace Linter {
     /**
      * Adds reported errors for unused `eslint-disable` directives.
      */
-    reportUnusedDisableDirectives?: SeverityString | boolean;
+    reportUnusedDisableDirectives?: boolean | SeverityString;
   }
 
   export interface FixOptions extends VerifyOptions {
@@ -260,13 +260,13 @@ namespace Linter {
     output: string;
   }
 
-  /** @deprecated use Parser.ParserModule */
+  /** @deprecated use {@link Parser.ParserModule} */
   export type ParserModule = Parser.LooseParserModule;
 
-  /** @deprecated use Parser.ParseResult */
+  /** @deprecated use {@link Parser.ParseResult} */
   export type ESLintParseResult = Parser.ParseResult;
 
-  /** @deprecated use Processor.ProcessorModule */
+  /** @deprecated use {@link ProcessorType.ProcessorModule} */
   export type Processor = ProcessorType.ProcessorModule;
 
   export interface Environment {

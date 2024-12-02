@@ -1,11 +1,11 @@
-import * as path from 'node:path';
-
 import debug from 'debug';
+import * as path from 'node:path';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import { getParsedConfigFile } from './getParsedConfigFile';
 import type { ASTAndDefiniteProgram } from './shared';
+
+import { getParsedConfigFile } from './getParsedConfigFile';
 import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
@@ -66,4 +66,4 @@ function createProgramFromConfigFile(
   return ts.createProgram(parsed.fileNames, parsed.options, host);
 }
 
-export { useProvidedPrograms, createProgramFromConfigFile };
+export { createProgramFromConfigFile, useProvidedPrograms };

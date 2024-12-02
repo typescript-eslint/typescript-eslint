@@ -27,7 +27,11 @@ export interface RuleMetaDataDocs {
   url?: string;
 }
 
-export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
+export interface RuleMetaData<
+  MessageIds extends string,
+  PluginDocs = unknown,
+  Options extends readonly unknown[] = [],
+> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -65,12 +69,22 @@ export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
    * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
   type: 'layout' | 'problem' | 'suggestion';
+
+  /**
+   * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
+   * This merging will be applied directly to `context.options`.
+   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   *
+   * since ESLint 9.15.0
+   */
+  defaultOptions?: Options;
 }
 
 export interface RuleMetaDataWithDocs<
   MessageIds extends string,
   PluginDocs = unknown,
-> extends RuleMetaData<MessageIds, PluginDocs> {
+  Options extends readonly unknown[] = [],
+> extends RuleMetaData<MessageIds, PluginDocs, Options> {
   /**
    * Documentation for the rule
    */
@@ -181,8 +195,6 @@ export type ReportDescriptor<MessageIds extends string> = (
 export interface SharedConfigurationSettings {
   [name: string]: unknown;
 }
-
-/* eslint-disable perfectionist/sort-interfaces */
 
 export interface RuleContext<
   MessageIds extends string,
@@ -312,8 +324,6 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
-/* eslint-enable perfectionist/sort-interfaces */
-
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
@@ -401,12 +411,12 @@ export interface CodePathSegment {
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
 export type CodePathFunction =
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((
       fromSegment: CodePathSegment,
       toSegment: CodePathSegment,
       node: TSESTree.Node,
     ) => void)
-  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((segment: CodePathSegment, node: TSESTree.Node) => void);
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
@@ -423,7 +433,6 @@ interface RuleListenerBaseSelectors {
   AssignmentExpression?: RuleFunction<TSESTree.AssignmentExpression>;
   AssignmentPattern?: RuleFunction<TSESTree.AssignmentPattern>;
   AwaitExpression?: RuleFunction<TSESTree.AwaitExpression>;
-  BigIntLiteral?: RuleFunction<TSESTree.BigIntLiteral>;
   BinaryExpression?: RuleFunction<TSESTree.BinaryExpression>;
   BlockStatement?: RuleFunction<TSESTree.BlockStatement>;
   BreakStatement?: RuleFunction<TSESTree.BreakStatement>;
@@ -451,6 +460,7 @@ interface RuleListenerBaseSelectors {
   FunctionExpression?: RuleFunction<TSESTree.FunctionExpression>;
   Identifier?: RuleFunction<TSESTree.Identifier>;
   IfStatement?: RuleFunction<TSESTree.IfStatement>;
+  ImportAttribute?: RuleFunction<TSESTree.ImportAttribute>;
   ImportDeclaration?: RuleFunction<TSESTree.ImportDeclaration>;
   ImportDefaultSpecifier?: RuleFunction<TSESTree.ImportDefaultSpecifier>;
   ImportExpression?: RuleFunction<TSESTree.ImportExpression>;
@@ -465,6 +475,7 @@ interface RuleListenerBaseSelectors {
   JSXFragment?: RuleFunction<TSESTree.JSXFragment>;
   JSXIdentifier?: RuleFunction<TSESTree.JSXIdentifier>;
   JSXMemberExpression?: RuleFunction<TSESTree.JSXMemberExpression>;
+  JSXNamespacedName?: RuleFunction<TSESTree.JSXNamespacedName>;
   JSXOpeningElement?: RuleFunction<TSESTree.JSXOpeningElement>;
   JSXOpeningFragment?: RuleFunction<TSESTree.JSXOpeningFragment>;
   JSXSpreadAttribute?: RuleFunction<TSESTree.JSXSpreadAttribute>;
@@ -479,6 +490,7 @@ interface RuleListenerBaseSelectors {
   NewExpression?: RuleFunction<TSESTree.NewExpression>;
   ObjectExpression?: RuleFunction<TSESTree.ObjectExpression>;
   ObjectPattern?: RuleFunction<TSESTree.ObjectPattern>;
+  PrivateIdentifier?: RuleFunction<TSESTree.PrivateIdentifier>;
   Program?: RuleFunction<TSESTree.Program>;
   Property?: RuleFunction<TSESTree.Property>;
   PropertyDefinition?: RuleFunction<TSESTree.PropertyDefinition>;
@@ -486,6 +498,7 @@ interface RuleListenerBaseSelectors {
   ReturnStatement?: RuleFunction<TSESTree.ReturnStatement>;
   SequenceExpression?: RuleFunction<TSESTree.SequenceExpression>;
   SpreadElement?: RuleFunction<TSESTree.SpreadElement>;
+  StaticBlock?: RuleFunction<TSESTree.StaticBlock>;
   Super?: RuleFunction<TSESTree.Super>;
   SwitchCase?: RuleFunction<TSESTree.SwitchCase>;
   SwitchStatement?: RuleFunction<TSESTree.SwitchStatement>;
@@ -495,6 +508,7 @@ interface RuleListenerBaseSelectors {
   ThisExpression?: RuleFunction<TSESTree.ThisExpression>;
   ThrowStatement?: RuleFunction<TSESTree.ThrowStatement>;
   TryStatement?: RuleFunction<TSESTree.TryStatement>;
+  TSAbstractAccessorProperty?: RuleFunction<TSESTree.TSAbstractAccessorProperty>;
   TSAbstractKeyword?: RuleFunction<TSESTree.TSAbstractKeyword>;
   TSAbstractMethodDefinition?: RuleFunction<TSESTree.TSAbstractMethodDefinition>;
   TSAbstractPropertyDefinition?: RuleFunction<TSESTree.TSAbstractPropertyDefinition>;
@@ -512,6 +526,7 @@ interface RuleListenerBaseSelectors {
   TSDeclareFunction?: RuleFunction<TSESTree.TSDeclareFunction>;
   TSDeclareKeyword?: RuleFunction<TSESTree.TSDeclareKeyword>;
   TSEmptyBodyFunctionExpression?: RuleFunction<TSESTree.TSEmptyBodyFunctionExpression>;
+  TSEnumBody?: RuleFunction<TSESTree.TSEnumBody>;
   TSEnumDeclaration?: RuleFunction<TSESTree.TSEnumDeclaration>;
   TSEnumMember?: RuleFunction<TSESTree.TSEnumMember>;
   TSExportAssignment?: RuleFunction<TSESTree.TSExportAssignment>;
@@ -523,15 +538,18 @@ interface RuleListenerBaseSelectors {
   TSIndexedAccessType?: RuleFunction<TSESTree.TSIndexedAccessType>;
   TSIndexSignature?: RuleFunction<TSESTree.TSIndexSignature>;
   TSInferType?: RuleFunction<TSESTree.TSInferType>;
+  TSInstantiationExpression?: RuleFunction<TSESTree.TSInstantiationExpression>;
   TSInterfaceBody?: RuleFunction<TSESTree.TSInterfaceBody>;
   TSInterfaceDeclaration?: RuleFunction<TSESTree.TSInterfaceDeclaration>;
   TSInterfaceHeritage?: RuleFunction<TSESTree.TSInterfaceHeritage>;
   TSIntersectionType?: RuleFunction<TSESTree.TSIntersectionType>;
+  TSIntrinsicKeyword?: RuleFunction<TSESTree.TSIntrinsicKeyword>;
   TSLiteralType?: RuleFunction<TSESTree.TSLiteralType>;
   TSMappedType?: RuleFunction<TSESTree.TSMappedType>;
   TSMethodSignature?: RuleFunction<TSESTree.TSMethodSignature>;
   TSModuleBlock?: RuleFunction<TSESTree.TSModuleBlock>;
   TSModuleDeclaration?: RuleFunction<TSESTree.TSModuleDeclaration>;
+  TSNamedTupleMember?: RuleFunction<TSESTree.TSNamedTupleMember>;
   TSNamespaceExportDeclaration?: RuleFunction<TSESTree.TSNamespaceExportDeclaration>;
   TSNeverKeyword?: RuleFunction<TSESTree.TSNeverKeyword>;
   TSNonNullExpression?: RuleFunction<TSESTree.TSNonNullExpression>;
@@ -551,6 +569,7 @@ interface RuleListenerBaseSelectors {
   TSStaticKeyword?: RuleFunction<TSESTree.TSStaticKeyword>;
   TSStringKeyword?: RuleFunction<TSESTree.TSStringKeyword>;
   TSSymbolKeyword?: RuleFunction<TSESTree.TSSymbolKeyword>;
+  TSTemplateLiteralType?: RuleFunction<TSESTree.TSTemplateLiteralType>;
   TSThisType?: RuleFunction<TSESTree.TSThisType>;
   TSTupleType?: RuleFunction<TSESTree.TSTupleType>;
   TSTypeAliasDeclaration?: RuleFunction<TSESTree.TSTypeAliasDeclaration>;
@@ -650,7 +669,7 @@ export interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<MessageIds, Docs>;
+  meta: RuleMetaData<MessageIds, Docs, Options>;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
@@ -665,7 +684,7 @@ export interface RuleModuleWithMetaDocs<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaDataWithDocs<MessageIds, Docs>;
+  meta: RuleMetaDataWithDocs<MessageIds, Docs, Options>;
 }
 
 export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<

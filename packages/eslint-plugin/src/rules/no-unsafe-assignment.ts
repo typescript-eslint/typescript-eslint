@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -46,9 +47,9 @@ export default createRule({
         'Unsafe array destructuring of an {{sender}} array value.',
       unsafeArrayPatternFromTuple:
         'Unsafe array destructuring of a tuple element with an {{sender}} value.',
+      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
       unsafeAssignment:
         'Unsafe assignment of type {{sender}} to a variable of type {{receiver}}.',
-      unsafeArraySpread: 'Unsafe spread of an {{sender}} value in an array.',
     },
     schema: [],
   },
@@ -299,7 +300,7 @@ export default createRule({
         return false;
       }
 
-      const { sender, receiver } = result;
+      const { receiver, sender } = result;
       context.report({
         node: reportingNode,
         messageId: 'unsafeAssignment',
@@ -324,8 +325,8 @@ export default createRule({
     ): Readonly<Record<string, unknown>> | undefined {
       if (receiverType) {
         return {
-          sender: `\`${checker.typeToString(senderType)}\``,
           receiver: `\`${checker.typeToString(receiverType)}\``,
+          sender: `\`${checker.typeToString(senderType)}\``,
         };
       }
       return {
@@ -336,6 +337,34 @@ export default createRule({
     }
 
     return {
+      'AssignmentExpression[operator = "="], AssignmentPattern'(
+        node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
+      ): void {
+        let didReport = checkAssignment(
+          node.left,
+          node.right,
+          node,
+          // the variable already has some form of a type to compare against
+          ComparisonType.Basic,
+        );
+
+        if (!didReport) {
+          didReport = checkArrayDestructureHelper(node.left, node.right);
+        }
+        if (!didReport) {
+          checkObjectDestructureHelper(node.left, node.right);
+        }
+      },
+      'PropertyDefinition[value != null]'(
+        node: { value: NonNullable<unknown> } & TSESTree.PropertyDefinition,
+      ): void {
+        checkAssignment(
+          node.key,
+          node.value,
+          node,
+          getComparisonType(node.typeAnnotation),
+        );
+      },
       'VariableDeclarator[init != null]'(
         node: TSESTree.VariableDeclarator,
       ): void {
@@ -355,34 +384,6 @@ export default createRule({
         }
         if (!didReport) {
           checkObjectDestructureHelper(node.id, init);
-        }
-      },
-      'PropertyDefinition[value != null]'(
-        node: TSESTree.PropertyDefinition & { value: NonNullable<unknown> },
-      ): void {
-        checkAssignment(
-          node.key,
-          node.value,
-          node,
-          getComparisonType(node.typeAnnotation),
-        );
-      },
-      'AssignmentExpression[operator = "="], AssignmentPattern'(
-        node: TSESTree.AssignmentExpression | TSESTree.AssignmentPattern,
-      ): void {
-        let didReport = checkAssignment(
-          node.left,
-          node.right,
-          node,
-          // the variable already has some form of a type to compare against
-          ComparisonType.Basic,
-        );
-
-        if (!didReport) {
-          didReport = checkArrayDestructureHelper(node.left, node.right);
-        }
-        if (!didReport) {
-          checkObjectDestructureHelper(node.left, node.right);
         }
       },
       // object pattern props are checked via assignments

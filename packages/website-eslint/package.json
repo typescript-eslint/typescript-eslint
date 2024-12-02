@@ -28,7 +28,7 @@
     "@typescript-eslint/scope-manager": "workspace:*",
     "@typescript-eslint/typescript-estree": "workspace:*",
     "@typescript-eslint/visitor-keys": "workspace:*",
-    "esbuild": "~0.23.0",
+    "esbuild": "~0.24.0",
     "eslint": "*",
     "esquery": "*",
     "prettier": "^3.2.5",
