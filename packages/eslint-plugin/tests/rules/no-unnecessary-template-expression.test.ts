@@ -1122,7 +1122,13 @@ this code has trailing whitespace: \${'    '}
 ...\`;
     `,
     `
-\`\${'bar' /* intentional comment */}\`;
+\`\${/* intentional  before */ 'bar'}\`;
+    `,
+    `
+\`\${'bar' /* intentional comment after */}\`;
+    `,
+    `
+\`\${/* intentional comment before */ 'bar' /* intentional comment after */}\`;
     `,
   ],
 
