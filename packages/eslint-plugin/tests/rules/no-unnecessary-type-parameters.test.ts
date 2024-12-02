@@ -247,6 +247,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeTupleMulti<T>(): [T | null, T | null];',
     'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function fetchJson<T>(url: string): Promise<T>;',
+    'declare function fetchJsonTuple<T>(url: string): Promise<[T]>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
