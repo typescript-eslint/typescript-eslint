@@ -298,7 +298,12 @@ function countTypeParameterUsage(
       collectTypeParameterUsageCounts(checker, member, counts, true);
     }
   } else {
-    collectTypeParameterUsageCounts(checker, node, counts);
+    collectTypeParameterUsageCounts(
+      checker,
+      node,
+      counts,
+      ts.isClassElement(node),
+    );
   }
 
   return counts;
@@ -313,7 +318,7 @@ function collectTypeParameterUsageCounts(
   checker: ts.TypeChecker,
   node: ts.Node,
   foundIdentifierUsages: Map<ts.Identifier, number>,
-  isNodeClassLike = false,
+  fromClass: boolean, // We are talking about the type parameters of a class or one of its methods
 ): void {
   const visitedSymbolLists = new Set<ts.Symbol[]>();
   const type = checker.getTypeAtLocation(node);
@@ -402,20 +407,10 @@ function collectTypeParameterUsageCounts(
             (type.symbol as ts.Symbol | undefined)?.getName() ?? '',
           ) && !isReturnType;
 
-        const isNonFunctionalClassProperty =
-          isNodeClassLike &&
-          ts.isPropertyDeclaration(node) &&
-          (node.initializer
-            ? !ts.isArrowFunction(node.initializer)
-            : node.type
-              ? !ts.isFunctionTypeNode(node.type)
-              : true);
-
         // if it's a tuple or a singular type in a input position, we don't want to assume multiple uses
         // unless it's a class property that doesn't contain a function
         const thisAssumeMultipleUses =
-          (!isTuple && !isSingularInInputPosition) ||
-          isNonFunctionalClassProperty;
+          (!isTuple && !isSingularInInputPosition) || fromClass;
 
         visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
       }
