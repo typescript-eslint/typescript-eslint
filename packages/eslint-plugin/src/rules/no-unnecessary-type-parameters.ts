@@ -245,6 +245,17 @@ function isTypeParameterRepeatedInAST(
       const grandparent = skipConstituentsUpward(
         reference.identifier.parent.parent,
       );
+
+      // tuple types and array types don't count as multiple uses
+      // just as a single use overall
+      if (
+        grandparent.type === AST_NODE_TYPES.TSArrayType ||
+        grandparent.type === AST_NODE_TYPES.TSTupleType
+      ) {
+        // defer the check
+        continue;
+      }
+
       if (
         grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
         grandparent.params.includes(reference.identifier.parent) &&
