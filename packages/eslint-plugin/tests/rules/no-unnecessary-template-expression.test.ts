@@ -1130,6 +1130,18 @@ this code has trailing whitespace: \${'    '}
     `
 \`\${/* intentional comment before */ 'bar' /* intentional comment after */}\`;
     `,
+    `
+\`\${
+  // intentional comment before
+  'bar'
+}\`;
+    `,
+    `
+\`\${
+  'bar'
+  // intentional comment after
+}\`;
+    `,
   ],
 
   invalid: [
