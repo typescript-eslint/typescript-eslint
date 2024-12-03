@@ -246,6 +246,8 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeArray<T>(): T[];',
     'declare function makeArrayNullish<T>(): (T | null)[];',
     'declare function makeTupleMulti<T>(): [T | null, T | null];',
+    'declare function takeTupleMulti<T>(input: [T, T]): void;',
+    'declare function takeTupleMultiNullish<T>(input: [T | null, T | null]): void;',
     'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function fetchJson<T>(url: string): Promise<T>;',
     'declare function fetchJsonTuple<T>(url: string): Promise<[T]>;',
@@ -1359,7 +1361,7 @@ function foo(_: unknown): <T>(input: T) => T {
       ],
     },
     {
-      code: 'declare function takeTupleMulti<T>(input: [T, T]): void;',
+      code: 'declare function takeTupleMultiUnrelated<T>(input: [T, number]): void;',
       errors: [
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
@@ -1369,7 +1371,11 @@ function foo(_: unknown): <T>(input: T) => T {
       ],
     },
     {
-      code: 'declare function takeTupleMultiNullish<T>(input: [T | null, T | null]): void;',
+      code: `
+        declare function takeTupleMultiUnrelatedNullish<T>(
+          input: [T | null, null],
+        ): void;
+      `,
       errors: [
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
