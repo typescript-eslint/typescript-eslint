@@ -202,12 +202,6 @@ export default createRule({
   },
 });
 
-// Usually when we encounter a generic type like `Fn<T>`, we assume it uses T
-// in multiple places because it might be something like `{a: T, b: T}`. But for
-// a few special types like Arrays, we want Array<T> (or T[]) to only count as
-// a single use.
-const SINGULAR_TYPES = new Set(['Array', 'ReadonlyArray']);
-
 function isTypeParameterRepeatedInAST(
   node: TSESTree.TSTypeParameter,
   references: Reference[],
@@ -246,26 +240,13 @@ function isTypeParameterRepeatedInAST(
         reference.identifier.parent.parent,
       );
 
-      // tuple types and array types don't count as multiple uses
-      // just as a single use overall
+      // tuple types and array types must be handled carefully, so it's better to
+      // defer the check to the types aware phase
       if (
         grandparent.type === AST_NODE_TYPES.TSArrayType ||
         grandparent.type === AST_NODE_TYPES.TSTupleType
       ) {
-        // defer the check
         continue;
-      }
-
-      if (
-        grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
-        grandparent.params.includes(reference.identifier.parent) &&
-        !(
-          grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
-          grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
-          SINGULAR_TYPES.has(grandparent.parent.typeName.name)
-        )
-      ) {
-        return true;
       }
     }
 
@@ -411,19 +392,28 @@ function collectTypeParameterUsageCounts(
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        const isTuple = tsutils.isTupleType(type.target);
+        // at the moment, if we are in a "class context", everything is accepted
+        let thisAssumeMultipleUses = fromClass || assumeMultipleUses;
 
-        const isSingularInInputPosition =
-          SINGULAR_TYPES.has(
-            (type.symbol as ts.Symbol | undefined)?.getName() ?? '',
-          ) && !isReturnType;
+        if (!thisAssumeMultipleUses) {
+          const isTuple = tsutils.isTupleType(type.target);
+          const isMutableTuple =
+            isTuple && !(type.target as ts.TupleType).readonly;
+          const typeName =
+            (type.symbol as ts.Symbol | undefined)?.getName() ?? '';
+          const isMutableArray = typeName === 'Array';
+          const isReadonlyArray = typeName === 'ReadonlyArray';
+          const isArray = isMutableArray || isReadonlyArray;
 
-        // if it's a tuple or a singular type in a input position, we don't want to assume multiple uses
-        // unless it's a class property that doesn't contain a function
-        const thisAssumeMultipleUses =
-          (!isTuple && !isSingularInInputPosition) || fromClass;
+          if (isArray || isTuple) {
+            thisAssumeMultipleUses =
+              isReturnType && (isMutableTuple || isMutableArray);
+          } else {
+            thisAssumeMultipleUses = true;
+          }
+        }
 
-        visitType(typeArgument, assumeMultipleUses || thisAssumeMultipleUses);
+        visitType(typeArgument, thisAssumeMultipleUses);
       }
     }
 
