@@ -5956,7 +5956,7 @@ __metadata:
     markdownlint-cli: ^0.43.0
     ncp: ^2.0.0
     nx: 20.1.0
-    prettier: 3.3.2
+    prettier: 3.4.0
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
     semver: 7.6.2
@@ -16653,12 +16653,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.3.2":
-  version: 3.3.2
-  resolution: "prettier@npm:3.3.2"
+"prettier@npm:3.4.0":
+  version: 3.4.0
+  resolution: "prettier@npm:3.4.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 5557d8caed0b182f68123c2e1e370ef105251d1dd75800fadaece3d061daf96b1389141634febf776050f9d732c7ae8fd444ff0b4a61b20535e7610552f32c69
+  checksum: 600896ad0250afbcb4be97b41a2d72b878729d85308cbb6a6a8e668de8c3795559e2731b3fbb7f1d9bb5c76161a4110fd6f898d20af739853923336e55cb609a
   languageName: node
   linkType: hard
 
