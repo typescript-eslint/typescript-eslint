@@ -240,13 +240,18 @@ function isTypeParameterRepeatedInAST(
         reference.identifier.parent.parent,
       );
 
-      // tuple types and array types must be handled carefully, so it's better to
-      // defer the check to the types aware phase
       if (
-        grandparent.type === AST_NODE_TYPES.TSArrayType ||
-        grandparent.type === AST_NODE_TYPES.TSTupleType
+        grandparent.type === AST_NODE_TYPES.TSTypeParameterInstantiation &&
+        grandparent.params.includes(reference.identifier.parent) &&
+        // Array and ReadonlyArray must be handled carefully
+        // let's defer the check to the type-aware phase
+        !(
+          grandparent.parent.type === AST_NODE_TYPES.TSTypeReference &&
+          grandparent.parent.typeName.type === AST_NODE_TYPES.Identifier &&
+          ['Array', 'ReadonlyArray'].includes(grandparent.parent.typeName.name)
+        )
       ) {
-        continue;
+        return true;
       }
     }
 
