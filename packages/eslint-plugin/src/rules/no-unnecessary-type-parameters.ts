@@ -392,7 +392,7 @@ function collectTypeParameterUsageCounts(
     // Generic type references like `Map<K, V>`
     else if (tsutils.isTypeReference(type)) {
       for (const typeArgument of type.typeArguments ?? []) {
-        // at the moment, if we are in a "class context", everything is accepted
+        // currently, if we are in a "class context", everything is accepted
         let thisAssumeMultipleUses = fromClass || assumeMultipleUses;
 
         if (!thisAssumeMultipleUses) {
@@ -409,6 +409,7 @@ function collectTypeParameterUsageCounts(
             thisAssumeMultipleUses =
               isReturnType && (isMutableTuple || isMutableArray);
           } else {
+            // other kind of type references always count as multiple uses
             thisAssumeMultipleUses = true;
           }
         }
