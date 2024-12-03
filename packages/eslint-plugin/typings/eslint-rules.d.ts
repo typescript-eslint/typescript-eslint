@@ -113,7 +113,12 @@ declare module 'eslint/lib/rules/max-params' {
     unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
-      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionDeclaration(
+        node:
+          | TSESTree.FunctionDeclaration
+          | TSESTree.TSDeclareFunction
+          | TSESTree.TSFunctionType,
+      ): void;
       FunctionExpression(node: TSESTree.FunctionExpression): void;
     }
   >;
@@ -404,7 +409,7 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'noUselessConstructor',
+    'noUselessConstructor' | 'removeConstructor',
     [],
     unknown,
     {

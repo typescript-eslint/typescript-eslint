@@ -101,6 +101,23 @@ ruleTester.run('no-deprecated', rule, {
       a('b');
     `,
     `
+      function a(value: 'b' | undefined): void;
+      /** @deprecated */
+      function a(value: 'c' | undefined): void;
+      function a(value: string | undefined): void {
+        // ...
+      }
+
+      export default a('b');
+    `,
+    `
+      function notDeprecated(): object {
+        return {};
+      }
+
+      export default notDeprecated();
+    `,
+    `
       import { deprecatedFunctionWithOverloads } from './deprecated';
 
       const foo = deprecatedFunctionWithOverloads();
@@ -423,6 +440,22 @@ ruleTester.run('no-deprecated', rule, {
           column: 21,
           data: { name: 'a' },
           endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */ const a = 'foo';
+        import(\`./path/\${a}.js\`);
+      `,
+      errors: [
+        {
+          column: 26,
+          data: { name: 'a' },
+          endColumn: 27,
           endLine: 3,
           line: 3,
           messageId: 'deprecated',
@@ -2353,6 +2386,119 @@ ruleTester.run('no-deprecated', rule, {
           tsconfigRootDir: rootDir,
         },
       },
+    },
+    {
+      code: `
+        /** @deprecated */
+        interface Foo {}
+
+        class Bar implements Foo {}
+      `,
+      errors: [
+        {
+          column: 30,
+          data: { name: 'Foo' },
+          endColumn: 33,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        interface Foo {}
+
+        export class Bar implements Foo {}
+      `,
+      errors: [
+        {
+          column: 37,
+          data: { name: 'Foo' },
+          endColumn: 40,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        interface Foo {}
+
+        interface Baz {}
+
+        export class Bar implements Baz, Foo {}
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { name: 'Foo' },
+          endColumn: 45,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        class Foo {}
+
+        export class Bar extends Foo {}
+      `,
+      errors: [
+        {
+          column: 34,
+          data: { name: 'Foo' },
+          endColumn: 37,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        declare function decorator(constructor: Function);
+        
+        @decorator
+        export class Foo {}
+      `,
+      errors: [
+        {
+          column: 10,
+          data: { name: 'decorator' },
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        function a(): object {
+          return {};
+        }
+
+        export default a();
+      `,
+      errors: [
+        {
+          column: 24,
+          data: { name: 'a' },
+          endColumn: 25,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
     },
   ],
 });

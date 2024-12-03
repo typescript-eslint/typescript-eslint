@@ -1765,7 +1765,9 @@ export class Converter {
               right: this.convertChild(node.initializer),
               typeAnnotation: undefined,
             });
-          } else if (node.dotDotDotToken) {
+          }
+
+          if (node.dotDotDotToken) {
             return this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
               argument: arrayItem,
@@ -2435,13 +2437,21 @@ export class Converter {
               'Dynamic import requires exactly one or two arguments.',
             );
           }
-          return this.createNode<TSESTree.ImportExpression>(node, {
-            type: AST_NODE_TYPES.ImportExpression,
-            attributes: node.arguments[1]
-              ? this.convertChild(node.arguments[1])
-              : null,
-            source: this.convertChild(node.arguments[0]),
-          });
+          return this.createNode<TSESTree.ImportExpression>(
+            node,
+            this.#withDeprecatedAliasGetter(
+              {
+                type: AST_NODE_TYPES.ImportExpression,
+                options: node.arguments[1]
+                  ? this.convertChild(node.arguments[1])
+                  : null,
+                source: this.convertChild(node.arguments[0]),
+              },
+              'attributes',
+              'options',
+              true,
+            ),
+          );
         }
 
         const callee = this.convertChild(node.expression);

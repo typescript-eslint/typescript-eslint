@@ -49,7 +49,7 @@ This rule also inspects [`for await...of` statements](https://developer.mozilla.
 While `for await...of` can be used with synchronous iterables, and it will await each promise produced by the iterable, it is inadvisable to do so.
 There are some tiny nuances that you may want to consider.
 
-The biggest difference between using `for await...of` and using `for...of` (plus awaiting each result yourself) is error handling.
+The biggest difference between using `for await...of` and using `for...of` (apart from awaiting each result yourself) is error handling.
 When an error occurs within the loop body, `for await...of` does _not_ close the original sync iterable, while `for...of` does.
 For detailed examples of this, see the [MDN documentation on using `for await...of` with sync-iterables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of#iterating_over_sync_iterables_and_generators).
 
@@ -114,6 +114,62 @@ async function validUseOfForAwaitOnAsyncIterable() {
   for await (const promisedValue of yieldThingsAsynchronously()) {
     console.log(promisedValue);
   }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## Explicit Resource Management (`await using` Statements)
+
+This rule also inspects [`await using` statements](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#using-declarations-and-explicit-resource-management).
+If the disposable being used is not async-disposable, an `await using` statement is unnecessary.
+
+### Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function makeSyncDisposable(): Disposable {
+  return {
+    [Symbol.dispose](): void {
+      // Dispose of the resource
+    },
+  };
+}
+
+async function shouldNotAwait() {
+  await using resource = makeSyncDisposable();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function makeSyncDisposable(): Disposable {
+  return {
+    [Symbol.dispose](): void {
+      // Dispose of the resource
+    },
+  };
+}
+
+async function shouldNotAwait() {
+  using resource = makeSyncDisposable();
+}
+
+function makeAsyncDisposable(): AsyncDisposable {
+  return {
+    async [Symbol.asyncDispose](): Promise<void> {
+      // Dispose of the resource asynchronously
+    },
+  };
+}
+
+async function shouldAwait() {
+  await using resource = makeAsyncDisposable();
 }
 ```
 

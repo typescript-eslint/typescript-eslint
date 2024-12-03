@@ -136,3 +136,23 @@ const foo: string | undefined = 'bar';
 foo ?? 'a string';
 "
 `;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 9`] = `
+"Options: { "ignoreBooleanCoercion": true }
+
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a || b);
+"
+`;
+
+exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint output 10`] = `
+"Options: { "ignoreBooleanCoercion": false }
+
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ?? b);
+"
+`;
