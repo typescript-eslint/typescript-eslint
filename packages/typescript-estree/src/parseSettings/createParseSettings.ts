@@ -136,8 +136,8 @@ export function createParseSettings(
     tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun
         ? 'Infinity'
-        : tsestreeOptions.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+        : (tsestreeOptions.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     )),
     tsconfigRootDir,
   };
