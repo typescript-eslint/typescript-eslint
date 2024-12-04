@@ -33,7 +33,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "homepage": "https://typescript-eslint.io/packages/typescript-estree",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "keywords": [
     "ast",
     "estree",
