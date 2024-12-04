@@ -91,7 +91,7 @@ export default createRule({
 
         const valueType = services.getTypeAtLocation(property.value);
 
-        // bail if misses; this is a type-error
+        // bail if the property doesn't have a known type (that's a type error)
         if (tsutils.isIntrinsicErrorType(valueType)) {
           return;
         }
