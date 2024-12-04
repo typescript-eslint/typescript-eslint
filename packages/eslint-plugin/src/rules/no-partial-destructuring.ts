@@ -142,7 +142,7 @@ export default createRule({
         }
 
         if (
-          // bail in case of `[, ...]`
+        // bail in case of `[,]` empty slots
           property == null ||
           // bail on a rest element
           property.type === AST_NODE_TYPES.RestElement
