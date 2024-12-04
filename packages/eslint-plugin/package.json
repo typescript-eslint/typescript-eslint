@@ -98,12 +98,8 @@
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
-    "eslint": "^8.57.0 || ^9.0.0"
-  },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
+    "eslint": "^8.57.0 || ^9.0.0",
+    "typescript": ">=4.8.4 <5.8.0"
   },
   "funding": {
     "type": "opencollective",
