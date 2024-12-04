@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportNamedDeclaration enum AST Alignment - AST (Babel 8) 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExportNamedDeclaration {
+        type: 'ExportNamedDeclaration',
+-       attributes: Array [],
+        declaration: TSEnumDeclaration {
+          type: 'TSEnumDeclaration',
+-         body: TSEnumBody {
+-           type: 'TSEnumBody',
+-           members: Array [],
+-
+-           range: [16, 18],
+-           loc: {
+-             start: { column: 16, line: 1 },
+-             end: { column: 18, line: 1 },
+-           },
+-         },
+-         const: false,
+-         declare: false,
+          id: Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'Foo',
+-           optional: false,
+
+            range: [12, 15],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 15, line: 1 },
+            },
+          },
++         members: Array [],
+
+          range: [7, 18],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 18, line: 1 },
+          },
+        },
+        exportKind: 'value',
+        source: null,
+        specifiers: Array [],
+
+        range: [0, 18],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 19],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
+`;
