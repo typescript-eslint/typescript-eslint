@@ -419,7 +419,7 @@ function collectTypeParameterUsageCounts(
           }
         }
 
-        visitType(typeArgument, thisAssumeMultipleUses);
+        visitType(typeArgument, thisAssumeMultipleUses, isReturnType);
       }
     }
 
