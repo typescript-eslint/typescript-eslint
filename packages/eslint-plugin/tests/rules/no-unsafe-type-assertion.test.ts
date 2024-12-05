@@ -1041,3 +1041,37 @@ a as Bar;
     ],
   });
 });
+
+describe('generic assertions', () => {
+  ruleTester.run('no-unsafe-type-assertion', rule, {
+    valid: [
+      `
+type Obj = { foo: string };
+function func<T extends Obj>(a: T): T {
+  const b = { ...a } as T;
+  return b;
+}
+      `,
+    ],
+    invalid: [
+      {
+        code: `
+type Obj = { foo: string };
+function func<T extends Obj>() {
+  const b = { foo: 'hi' } as T;
+  return b;
+}
+        `,
+        errors: [
+          {
+            column: 13,
+            endColumn: 31,
+            endLine: 4,
+            line: 4,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+    ],
+  });
+});
