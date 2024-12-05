@@ -27,7 +27,7 @@ export default createRule({
       unsafeTypeAssertion:
         "Unsafe type assertion: type '{{type}}' is more narrow than the original type.",
       unsafeTypeAssertionAssignableToConstraint:
-        "Unsafe type assertion: the original type is assignable to the constraint of type '{{type}}', but {{type}} could be instantiated with a different subtype of the constraint.",
+        "Unsafe type assertion: the original type is assignable to the constraint of type '{{type}}', but '{{type}}' could be instantiated with a different subtype of its constraint.",
     },
     schema: [],
   },
