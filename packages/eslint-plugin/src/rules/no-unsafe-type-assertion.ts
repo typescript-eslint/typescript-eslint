@@ -5,7 +5,6 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
   getParserServices,
   isTypeAnyType,
   isTypeUnknownType,
@@ -49,14 +48,8 @@ export default createRule({
     function checkExpression(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
-      const expressionType = getConstrainedTypeAtLocation(
-        services,
-        node.expression,
-      );
-      const assertedType = getConstrainedTypeAtLocation(
-        services,
-        node.typeAnnotation,
-      );
+      const expressionType = services.getTypeAtLocation(node.expression);
+      const assertedType = services.getTypeAtLocation(node.typeAnnotation);
 
       if (expressionType === assertedType) {
         return;
@@ -115,12 +108,12 @@ export default createRule({
 
       // Use the widened type in case of an object literal so `isTypeAssignableTo()`
       // won't fail on excess property check.
-      const nodeWidenedType = isObjectLiteralType(expressionType)
+      const expressionWidenedType = isObjectLiteralType(expressionType)
         ? checker.getWidenedType(expressionType)
         : expressionType;
 
       const isAssertionSafe = checker.isTypeAssignableTo(
-        nodeWidenedType,
+        expressionWidenedType,
         assertedType,
       );
 
