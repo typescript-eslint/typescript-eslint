@@ -119,7 +119,7 @@ export default createRule({
         assertedType,
       );
 
-      // Check if the asserted type is a constrainted generic type to whose
+      // Check if the asserted type is a constrained generic type to whose
       // constraint the expression is assignable, in order to produce a more
       // specific error message
       const assertedTypeConstraint =
