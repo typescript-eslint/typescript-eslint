@@ -2877,6 +2877,28 @@ t.a?.a?.a?.value;
           messageId: 'neverOptionalChain',
         },
       ],
+      output: `
+interface T {
+  [name: Lowercase<string>]: {
+    [name: Lowercase<string>]: {
+      [name: Lowercase<string>]: {
+        vale: 'value';
+      };
+    };
+  };
+  [name: Uppercase<string>]: null | {
+    [name: Uppercase<string>]: null | {
+      [name: Uppercase<string>]: null | {
+        VALUE: 'VALUE';
+      };
+    };
+  };
+}
+
+declare const t: T;
+
+t.a.a.a.value;
+      `,
     },
   ],
 });
