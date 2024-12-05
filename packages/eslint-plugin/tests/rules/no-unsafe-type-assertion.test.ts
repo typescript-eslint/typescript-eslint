@@ -1047,9 +1047,8 @@ describe('generic assertions', () => {
     valid: [
       `
 type Obj = { foo: string };
-function func<T extends Obj>(a: T): T {
-  const b = { ...a } as T;
-  return b;
+function func<T extends Obj>(a: T) {
+  const b = a as T;
 }
       `,
     ],
@@ -1058,16 +1057,33 @@ function func<T extends Obj>(a: T): T {
         code: `
 type Obj = { foo: string };
 function func<T extends Obj>() {
-  const b = { foo: 'hi' } as T;
-  return b;
+  const myObj = { foo: 'hi' } as T;
 }
         `,
         errors: [
           {
-            column: 13,
-            endColumn: 31,
+            column: 17,
+            endColumn: 35,
             endLine: 4,
             line: 4,
+            messageId: 'unsafeTypeAssertion',
+          },
+        ],
+      },
+      {
+        code: `
+type Obj = { foo: string };
+function func<T extends Obj>() {
+  const o: Obj = { foo: 'hi' };
+  const myObj = o as T;
+}
+        `,
+        errors: [
+          {
+            column: 17,
+            endColumn: 23,
+            endLine: 5,
+            line: 5,
             messageId: 'unsafeTypeAssertion',
           },
         ],
