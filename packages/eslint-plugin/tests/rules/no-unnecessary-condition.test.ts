@@ -1020,7 +1020,12 @@ switch (b1) {
         { column: 18, line: 16, messageId: 'alwaysTruthy' },
         {
           column: 8,
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'true',
+            trueOrFalse: 'true',
+          },
           line: 18,
           messageId: 'literalBooleanExpression',
         },
@@ -1116,6 +1121,9 @@ function test(a: 'a') {
         {
           column: 10,
           data: {
+            left: '"a"',
+            operator: '===',
+            right: '"a"',
             trueOrFalse: 'true',
           },
           line: 3,
@@ -1132,6 +1140,9 @@ a > b;
       errors: [
         {
           data: {
+            left: '"34"',
+            operator: '>',
+            right: '"56"',
             trueOrFalse: 'false',
           },
           line: 4,
@@ -1147,7 +1158,12 @@ if (y === 0) {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '1',
+            operator: '===',
+            right: '0',
+            trueOrFalse: 'false',
+          },
           line: 3,
           messageId: 'literalBooleanExpression',
         },
@@ -1161,7 +1177,12 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '1',
+            operator: '==',
+            right: '"1"',
+            trueOrFalse: 'true',
+          },
           line: 3,
           messageId: 'literalBooleanExpression',
         },
@@ -1173,7 +1194,12 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '2.3',
+            operator: '>',
+            right: '2.3',
+            trueOrFalse: 'false',
+          },
           line: 2,
           messageId: 'literalBooleanExpression',
         },
@@ -1185,7 +1211,12 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '2.3',
+            operator: '>=',
+            right: '2.3',
+            trueOrFalse: 'true',
+          },
           line: 2,
           messageId: 'literalBooleanExpression',
         },
@@ -1197,7 +1228,12 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '2n',
+            operator: '<',
+            right: '2n',
+            trueOrFalse: 'false',
+          },
           line: 2,
           messageId: 'literalBooleanExpression',
         },
@@ -1209,7 +1245,12 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '2n',
+            operator: '<=',
+            right: '2n',
+            trueOrFalse: 'true',
+          },
           line: 2,
           messageId: 'literalBooleanExpression',
         },
@@ -1221,7 +1262,12 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '-2n',
+            operator: '!==',
+            right: '2n',
+            trueOrFalse: 'true',
+          },
           line: 2,
           messageId: 'literalBooleanExpression',
         },
@@ -1235,7 +1281,12 @@ if (1 == '2') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '1',
+            operator: '==',
+            right: '"2"',
+            trueOrFalse: 'false',
+          },
           line: 3,
           messageId: 'literalBooleanExpression',
         },
@@ -1249,7 +1300,12 @@ if (1 != '2') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '1',
+            operator: '!=',
+            right: '"2"',
+            trueOrFalse: 'true',
+          },
           line: 3,
           messageId: 'literalBooleanExpression',
         },
@@ -1270,6 +1326,9 @@ if (x === Foo.a) {
         {
           column: 5,
           data: {
+            left: 1,
+            operator: '===',
+            right: 1,
             trueOrFalse: 'true',
           },
           line: 8,
@@ -1289,7 +1348,12 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'null',
+            operator: '==',
+            right: 'undefined',
+            trueOrFalse: 'true',
+          },
           endColumn: 28,
           endLine: 4,
           line: 4,
@@ -1309,7 +1373,12 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: 'null',
+            operator: '===',
+            right: 'undefined',
+            trueOrFalse: 'false',
+          },
           endColumn: 29,
           endLine: 4,
           line: 4,
@@ -1329,7 +1398,12 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: 'null',
+            operator: '!=',
+            right: 'undefined',
+            trueOrFalse: 'false',
+          },
           endColumn: 28,
           endLine: 4,
           line: 4,
@@ -1349,7 +1423,12 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'null',
+            operator: '!==',
+            right: 'undefined',
+            trueOrFalse: 'true',
+          },
           endColumn: 29,
           endLine: 4,
           line: 4,
@@ -1363,7 +1442,12 @@ true === false;
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'false',
+            trueOrFalse: 'false',
+          },
           messageId: 'literalBooleanExpression',
         },
       ],
@@ -1374,7 +1458,12 @@ true === true;
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'true',
+            trueOrFalse: 'true',
+          },
           messageId: 'literalBooleanExpression',
         },
       ],
@@ -1385,7 +1474,12 @@ true === undefined;
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'undefined',
+            trueOrFalse: 'false',
+          },
           messageId: 'literalBooleanExpression',
         },
       ],
