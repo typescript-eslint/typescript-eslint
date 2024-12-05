@@ -987,6 +987,29 @@ type A = { [name in Lowercase<string>]?: A };
 declare const a: A;
 a.a?.a?.a;
     `,
+    `
+interface T {
+  [name: Lowercase<string>]: {
+    [name: Lowercase<string>]: {
+      [name: Lowercase<string>]: {
+        value: 'value';
+      };
+    };
+  };
+  [name: Uppercase<string>]: null | {
+    [name: Uppercase<string>]: null | {
+      [name: Uppercase<string>]: null | {
+        VALUE: 'VALUE';
+      };
+    };
+  };
+}
+
+declare const t: T;
+
+t.a.a.a.value;
+t.A?.A?.A?.VALUE;
+    `,
   ],
 
   invalid: [
@@ -2807,6 +2830,53 @@ declare const a: A;
 
 a.a?.a.a;
       `,
+    },
+    {
+      code: `
+interface T {
+  [name: Lowercase<string>]: {
+    [name: Lowercase<string>]: {
+      [name: Lowercase<string>]: {
+        vale: 'value';
+      };
+    };
+  };
+  [name: Uppercase<string>]: null | {
+    [name: Uppercase<string>]: null | {
+      [name: Uppercase<string>]: null | {
+        VALUE: 'VALUE';
+      };
+    };
+  };
+}
+
+declare const t: T;
+
+t.a?.a?.a?.value;
+      `,
+      errors: [
+        {
+          column: 4,
+          endColumn: 6,
+          endLine: 21,
+          line: 21,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 21,
+          line: 21,
+          messageId: 'neverOptionalChain',
+        },
+        {
+          column: 10,
+          endColumn: 12,
+          endLine: 21,
+          line: 21,
+          messageId: 'neverOptionalChain',
+        },
+      ],
     },
   ],
 });
