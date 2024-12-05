@@ -24,6 +24,8 @@ export default createRule({
         'Unsafe cast from {{type}} detected: consider using type guards or a safer cast.',
       unsafeToAnyTypeAssertion:
         'Unsafe cast to {{type}} detected: consider using a more specific type to ensure safety.',
+      unsafeToConstrainedTypeAssertion:
+        "Unsafe type assertion: the original type is assignable to the constraint of type '{{type}}', but {{type}} could be instantiated with a different subtype of the constraint.",
       unsafeTypeAssertion:
         "Unsafe type assertion: type '{{type}}' is more narrow than the original type.",
     },
@@ -117,14 +119,36 @@ export default createRule({
         assertedType,
       );
 
+      // Check if the asserted type is a constrainted generic type to whose
+      // constraint the expression is assignable, in order to produce a more
+      // specific error message
+      const assertedTypeConstraint =
+        checker.getBaseConstraintOfType(assertedType);
+      const isAssignableToConstraint =
+        !!assertedTypeConstraint &&
+        checker.isTypeAssignableTo(
+          expressionWidenedType,
+          assertedTypeConstraint,
+        );
+
       if (!isAssertionSafe) {
-        context.report({
-          node,
-          messageId: 'unsafeTypeAssertion',
-          data: {
-            type: checker.typeToString(assertedType),
-          },
-        });
+        if (isAssignableToConstraint) {
+          context.report({
+            node,
+            messageId: 'unsafeToConstrainedTypeAssertion',
+            data: {
+              type: checker.typeToString(assertedType),
+            },
+          });
+        } else {
+          context.report({
+            node,
+            messageId: 'unsafeTypeAssertion',
+            data: {
+              type: checker.typeToString(assertedType),
+            },
+          });
+        }
       }
     }
 

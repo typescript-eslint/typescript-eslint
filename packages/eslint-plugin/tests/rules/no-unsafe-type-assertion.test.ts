@@ -1066,7 +1066,7 @@ function func<T extends Obj>() {
             endColumn: 35,
             endLine: 4,
             line: 4,
-            messageId: 'unsafeTypeAssertion',
+            messageId: 'unsafeToConstrainedTypeAssertion',
           },
         ],
       },
@@ -1082,6 +1082,28 @@ function func<T extends Obj>() {
           {
             column: 17,
             endColumn: 23,
+            endLine: 5,
+            line: 5,
+            messageId: 'unsafeToConstrainedTypeAssertion',
+          },
+        ],
+      },
+      // https://github.com/typescript-eslint/typescript-eslint/issues/10453#issuecomment-2520964068
+      // the custom error message should only occur if the expression type is
+      // *actually* assignable to the constraint of the asserted type
+      {
+        code: `
+export function myfunc<CustomObjectT extends string>(
+  input: number,
+): CustomObjectT {
+  const newCustomObject = input as CustomObjectT;
+  return newCustomObject;
+}
+        `,
+        errors: [
+          {
+            column: 27,
+            endColumn: 49,
             endLine: 5,
             line: 5,
             messageId: 'unsafeTypeAssertion',
