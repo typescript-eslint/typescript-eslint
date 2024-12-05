@@ -24,10 +24,10 @@ export default createRule({
         'Unsafe cast from {{type}} detected: consider using type guards or a safer cast.',
       unsafeToAnyTypeAssertion:
         'Unsafe cast to {{type}} detected: consider using a more specific type to ensure safety.',
-      unsafeToConstrainedTypeAssertion:
-        "Unsafe type assertion: the original type is assignable to the constraint of type '{{type}}', but {{type}} could be instantiated with a different subtype of the constraint.",
       unsafeTypeAssertion:
         "Unsafe type assertion: type '{{type}}' is more narrow than the original type.",
+      unsafeTypeAssertionAssignableToConstraint:
+        "Unsafe type assertion: the original type is assignable to the constraint of type '{{type}}', but {{type}} could be instantiated with a different subtype of the constraint.",
     },
     schema: [],
   },
@@ -135,7 +135,7 @@ export default createRule({
         if (isAssignableToConstraint) {
           context.report({
             node,
-            messageId: 'unsafeToConstrainedTypeAssertion',
+            messageId: 'unsafeTypeAssertionAssignableToConstraint',
             data: {
               type: checker.typeToString(assertedType),
             },
