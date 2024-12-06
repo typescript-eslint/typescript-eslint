@@ -49,6 +49,16 @@ const test = (): string => {
 const test = (): string => 'one';
     `,
     `
+function test(a: boolean): number | string {
+  if (a) {
+    return test1(false);
+  }
+
+  return 10;
+}
+    `,
+
+    `
 class A {
   test(): string {
     return 'string';
