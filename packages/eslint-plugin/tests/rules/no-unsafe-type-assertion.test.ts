@@ -1052,7 +1052,15 @@ function func<T extends Obj>(a: T) {
 }
       `,
       `
-function parameterExtendsOtherParameter<T, V extends T>(x: T, y: V) {
+function parameterExtendsOtherParameter<T extends string | number, V extends T>(
+  x: T,
+  y: V,
+) {
+  y as T;
+}
+      `,
+      `
+function parameterExtendsUnconstrainedParameter<T, V extends T>(x: T, y: V) {
   y as T;
 }
       `,
@@ -1250,7 +1258,27 @@ function assertFromAny<T extends string | number>(x: T, y: any) {
       // 2. parameter -> parameter assertions
       {
         code: `
-function parameterExtendsOtherParameter<T, V extends T>(x: T, y: V) {
+function parameterExtendsOtherParameter<T extends string | number, V extends T>(
+  x: T,
+  y: V,
+) {
+  y as T; // allowed
+  x as V; // banned; assignable to constraint
+}
+        `,
+        errors: [
+          {
+            column: 3,
+            endColumn: 9,
+            endLine: 7,
+            line: 7,
+            messageId: 'unsafeTypeAssertionAssignableToConstraint',
+          },
+        ],
+      },
+      {
+        code: `
+function parameterExtendsUnconstrainedParameter<T, V extends T>(x: T, y: V) {
   y as T; // allowed (as above)
   x as V; // banned; unconstrained arbitrary type
 }
@@ -1261,7 +1289,7 @@ function parameterExtendsOtherParameter<T, V extends T>(x: T, y: V) {
             endColumn: 9,
             endLine: 4,
             line: 4,
-            messageId: 'unsafeTypeAssertionAssignableToConstraint',
+            messageId: 'unsafeToUnconstrainedTypeAssertion',
           },
         ],
       },
