@@ -40,6 +40,7 @@ import noEmptyObjectType from './no-empty-object-type';
 import noExplicitAny from './no-explicit-any';
 import noExtraNonNullAssertion from './no-extra-non-null-assertion';
 import noExtraneousClass from './no-extraneous-class';
+import noExtraneousReturnTypes from './no-extraneous-return-types';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
@@ -171,6 +172,7 @@ const rules = {
   'no-explicit-any': noExplicitAny,
   'no-extra-non-null-assertion': noExtraNonNullAssertion,
   'no-extraneous-class': noExtraneousClass,
+  'no-extraneous-return-types': noExtraneousReturnTypes,
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-implied-eval': noImpliedEval,
