@@ -1,0 +1,67 @@
+---
+description: 'Disallow extraneous union types in return type annotations.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extraneous-return-types** for documentation.
+
+Explicit return type annotations are optional in TypeScript. However, explicit return types do make it visually more clear what type is returned by a function.
+
+A function can include return type annotations that are never used. This can happen when refactoring code or by mistake. Unused return types also need to be handled by code that calls such a function.
+
+This rule reports cases where a function has an unused return type annotation.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function test1(): string | null {
+  return 'string';
+}
+
+function test2(): Promise<string | null> {
+  return Promise.resolve('string');
+}
+
+class A {
+  test(): string | null {
+    return 'string';
+  }
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function test1(): string {
+  return 'string';
+}
+
+function test2(): Promise<string> {
+  return Promise.resolve('string');
+}
+
+class A {
+  test(): string {
+    return 'string';
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+This rule can be completely redundant for projects without explicit return type annotations on functions. It works best when coupled with other rules that enforce explicit return type annotations such as [`explicit-function-return-type`](https://typescript-eslint.io/rules/explicit-function-return-type) or [`explicit-module-boundary-types`](https://typescript-eslint.io/rules/explicit-module-boundary-types).
+
+```
+
+```
