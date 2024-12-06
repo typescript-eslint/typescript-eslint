@@ -6,59 +6,6 @@ import * as tsutils from 'ts-api-utils';
 
 import { createRule, forEachReturnStatement, getParserServices } from '../util';
 
-function getTypeArgumentIfPromiseNode(
-  node: TSESTree.TypeNode,
-): TSESTree.TypeNode | null {
-  if (
-    // Check for Promise<...> type reference
-    node.type === AST_NODE_TYPES.TSTypeReference &&
-    node.typeName.type === AST_NODE_TYPES.Identifier &&
-    node.typeName.name === 'Promise' &&
-    node.typeArguments?.params.length === 1
-  ) {
-    return node.typeArguments.params[0];
-  }
-
-  return null;
-}
-
-function getTypeArgumentIfArrayNode(
-  node: TSESTree.TypeNode,
-): TSESTree.TypeNode | null {
-  if (
-    // Check for Array<...> type reference
-    node.type === AST_NODE_TYPES.TSTypeReference &&
-    node.typeName.type === AST_NODE_TYPES.Identifier &&
-    node.typeName.name === 'Array' &&
-    node.typeArguments?.params.length === 1
-  ) {
-    return node.typeArguments.params[0];
-  }
-
-  if (
-    // Check for (...)[]
-    node.type === AST_NODE_TYPES.TSArrayType
-  ) {
-    return node.elementType;
-  }
-
-  return null;
-}
-
-function getTypeArgumentIfTupleNode(
-  node: TSESTree.TypeNode,
-): TSESTree.TypeNode[] | null {
-  if (
-    // Check for [...]
-    node.type === AST_NODE_TYPES.TSTupleType &&
-    node.elementTypes.length > 0
-  ) {
-    return node.elementTypes;
-  }
-
-  return null;
-}
-
 export default createRule({
   name: 'no-extraneous-return-types',
   meta: {
@@ -276,3 +223,56 @@ export default createRule({
     };
   },
 });
+
+function getTypeArgumentIfPromiseNode(
+  node: TSESTree.TypeNode,
+): TSESTree.TypeNode | null {
+  if (
+    // Check for Promise<...> type reference
+    node.type === AST_NODE_TYPES.TSTypeReference &&
+    node.typeName.type === AST_NODE_TYPES.Identifier &&
+    node.typeName.name === 'Promise' &&
+    node.typeArguments?.params.length === 1
+  ) {
+    return node.typeArguments.params[0];
+  }
+
+  return null;
+}
+
+function getTypeArgumentIfArrayNode(
+  node: TSESTree.TypeNode,
+): TSESTree.TypeNode | null {
+  if (
+    // Check for Array<...> type reference
+    node.type === AST_NODE_TYPES.TSTypeReference &&
+    node.typeName.type === AST_NODE_TYPES.Identifier &&
+    node.typeName.name === 'Array' &&
+    node.typeArguments?.params.length === 1
+  ) {
+    return node.typeArguments.params[0];
+  }
+
+  if (
+    // Check for (...)[]
+    node.type === AST_NODE_TYPES.TSArrayType
+  ) {
+    return node.elementType;
+  }
+
+  return null;
+}
+
+function getTypeArgumentIfTupleNode(
+  node: TSESTree.TypeNode,
+): TSESTree.TypeNode[] | null {
+  if (
+    // Check for [...]
+    node.type === AST_NODE_TYPES.TSTupleType &&
+    node.elementTypes.length > 0
+  ) {
+    return node.elementTypes;
+  }
+
+  return null;
+}
