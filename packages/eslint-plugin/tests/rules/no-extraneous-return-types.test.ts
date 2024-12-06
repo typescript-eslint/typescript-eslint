@@ -21,6 +21,17 @@ ruleTester.run('no-extraneous-return-types', rule, {
     'function test(): void {}',
     'function test(): undefined {}',
     'function test(): any {}',
+    'function test(): unknown {}',
+    `
+function test(): unknown {
+  return 10;
+}
+    `,
+    `
+function test(): unknown {
+  return Promise.resolve(10);
+}
+    `,
     `
 function test(): string {
   return 'one';
@@ -107,6 +118,16 @@ type R = string | number;
 
 function test(a: boolean): R {
   return 1;
+}
+    `,
+    `
+function test<T>(): T | number {
+  return 10;
+}
+    `,
+    `
+function test<T extends string | number | boolean>(): T | number {
+  return 10;
 }
     `,
     `
@@ -501,6 +522,38 @@ class A {
             type: 'string',
           },
           line: 3,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends string>(): T | number {
+  return '';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends string | number | boolean>(): T | number {
+  return '';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'number',
+          },
+          line: 2,
           messageId: 'unusedReturnTypes',
         },
       ],

@@ -120,17 +120,29 @@ export default createRule({
 
       const declaredReturnType = services.getTypeAtLocation(node);
 
+      const constrainedReturnType = tsutils.isTypeParameter(declaredReturnType)
+        ? checker.getBaseConstraintOfType(declaredReturnType)
+        : declaredReturnType;
+
+      // treat unconstrained type parameters as `unknown` (matches everything)
+      if (!constrainedReturnType) {
+        return;
+      }
+
       if (
         allowUnusedVoidOrUndefinedValues &&
         // don't report on a potentially unused `void` or `undefined` return type
-        (tsutils.isIntrinsicVoidType(declaredReturnType) ||
-          tsutils.isIntrinsicUndefinedType(declaredReturnType))
+        (tsutils.isIntrinsicVoidType(constrainedReturnType) ||
+          tsutils.isIntrinsicUndefinedType(constrainedReturnType))
       ) {
         return;
       }
 
       const hasMatchingReturnStatement = returnTypes.some(actualReturnType => {
-        return checker.isTypeAssignableTo(actualReturnType, declaredReturnType);
+        return checker.isTypeAssignableTo(
+          actualReturnType,
+          constrainedReturnType,
+        );
       });
 
       if (!hasMatchingReturnStatement) {
@@ -138,7 +150,7 @@ export default createRule({
           node,
           messageId: 'unusedReturnTypes',
           data: {
-            type: checker.typeToString(declaredReturnType),
+            type: checker.typeToString(constrainedReturnType),
           },
         });
       }
