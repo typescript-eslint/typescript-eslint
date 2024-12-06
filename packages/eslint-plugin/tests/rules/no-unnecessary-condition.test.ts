@@ -2837,7 +2837,7 @@ interface T {
   [name: Lowercase<string>]: {
     [name: Lowercase<string>]: {
       [name: Lowercase<string>]: {
-        vale: 'value';
+        value: 'value';
       };
     };
   };
@@ -2882,7 +2882,7 @@ interface T {
   [name: Lowercase<string>]: {
     [name: Lowercase<string>]: {
       [name: Lowercase<string>]: {
-        vale: 'value';
+        value: 'value';
       };
     };
   };
