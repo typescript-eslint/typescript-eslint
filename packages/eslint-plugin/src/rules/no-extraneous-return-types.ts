@@ -64,9 +64,9 @@ export default createRule({
         if (relevantReturnTypes) {
           for (const [index, elementType] of tupleElementTypes.entries()) {
             const returnTypes = relevantReturnTypes
-              .map(x => checker.getTypeArguments(x as ts.TupleTypeReference))
-              .map(x => x[index])
-              .flatMap(x => tsutils.unionTypeParts(x));
+              .map(type => checker.getTypeArguments(type as ts.TypeReference))
+              .map(typeArguments => typeArguments[index])
+              .flatMap(type => tsutils.unionTypeParts(type));
 
             checkReturnType(elementType, returnTypes);
           }
@@ -82,9 +82,9 @@ export default createRule({
 
         if (relevantReturnTypes) {
           const returnTypes = relevantReturnTypes
-            .map(x => checker.getAwaitedType(x))
-            .filter(x => x != null)
-            .flatMap(x => tsutils.unionTypeParts(x));
+            .map(type => checker.getAwaitedType(type))
+            .filter(type => type != null)
+            .flatMap(type => tsutils.unionTypeParts(type));
 
           checkReturnType(promiseTypeArgument, returnTypes);
         }
@@ -98,8 +98,8 @@ export default createRule({
 
         if (relevantReturnTypes) {
           const returnTypes = relevantReturnTypes
-            .map(x => checker.getTypeArguments(x as ts.TupleTypeReference)[0])
-            .flatMap(x => tsutils.unionTypeParts(x));
+            .map(type => checker.getTypeArguments(type as ts.TypeReference)[0])
+            .flatMap(type => tsutils.unionTypeParts(type));
 
           checkReturnType(arrayTypeArgument, returnTypes);
         }
@@ -209,9 +209,9 @@ export default createRule({
           }
 
           const promiseReturnTypes = actualReturnTypes
-            .map(x => checker.getAwaitedType(x))
-            .filter(x => x != null)
-            .flatMap(x => tsutils.unionTypeParts(x));
+            .map(type => checker.getAwaitedType(type))
+            .filter(type => type != null)
+            .flatMap(type => tsutils.unionTypeParts(type));
 
           checkReturnType(
             promiseTypeArgument,
