@@ -27,6 +27,20 @@ function test(): string {
 }
     `,
     `
+function test(a: boolean): string | undefined {
+  if (a) {
+    return 'one';
+  }
+}
+    `,
+    `
+function test(a: boolean): string | void {
+  if (a) {
+    return 'one';
+  }
+}
+    `,
+    `
 const test = (): string => {
   return 'one';
 };
@@ -297,6 +311,20 @@ async function test(): Promise<string> {
     `
 async function test(): Promise<string> {
   return 'one';
+}
+    `,
+    `
+async function test(a: boolean): Promise<string | undefined> {
+  if (a) {
+    return 'one';
+  }
+}
+    `,
+    `
+async function test(a: boolean): Promise<string | void> {
+  if (a) {
+    return 'one';
+  }
 }
     `,
     `
