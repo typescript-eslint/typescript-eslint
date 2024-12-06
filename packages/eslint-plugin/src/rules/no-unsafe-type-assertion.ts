@@ -119,19 +119,19 @@ export default createRule({
         assertedType,
       );
 
-      // Check if the asserted type is a constrained generic type to whose
-      // constraint the expression is assignable, in order to produce a more
-      // specific error message
-      const assertedTypeConstraint =
-        checker.getBaseConstraintOfType(assertedType);
-      const isAssignableToConstraint =
-        !!assertedTypeConstraint &&
-        checker.isTypeAssignableTo(
-          expressionWidenedType,
-          assertedTypeConstraint,
-        );
-
       if (!isAssertionSafe) {
+        // Check if the asserted type is a constrained generic type to whose
+        // constraint the expression is assignable, in order to produce a more
+        // specific error message
+        const assertedTypeConstraint =
+          checker.getBaseConstraintOfType(assertedType);
+        const isAssignableToConstraint =
+          !!assertedTypeConstraint &&
+          checker.isTypeAssignableTo(
+            expressionWidenedType,
+            assertedTypeConstraint,
+          );
+
         if (isAssignableToConstraint) {
           context.report({
             node,
