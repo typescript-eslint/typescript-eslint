@@ -183,7 +183,7 @@ export type MessageId =
   | 'alwaysNullish'
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
-  | 'literalBooleanExpression'
+  | 'comparisonBetweenLiteralTypes'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -211,7 +211,7 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
+      comparisonBetweenLiteralTypes:
         'Unnecessary conditional, comparison is always {{trueOrFalse}}, since `{{left}} {{operator}} {{right}}` is {{trueOrFalse}}.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
@@ -489,7 +489,7 @@ export default createRule<Options, MessageId>({
 
         context.report({
           node,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
           data: {
             left: valueOfLiteralTypeToExpression(leftStaticValue.value),
             operator,
