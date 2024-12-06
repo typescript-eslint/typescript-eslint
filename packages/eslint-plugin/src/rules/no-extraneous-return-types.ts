@@ -54,6 +54,7 @@ export default createRule({
     function checkReturnType(
       node: TSESTree.TypeNode,
       returnTypes: ts.Type[],
+      allowUnusedVoidOrUndefinedValues = false,
     ): void {
       const tupleElementTypes = getTypeArgumentIfTupleNode(node);
 
@@ -107,7 +108,11 @@ export default createRule({
 
       if (node.type === AST_NODE_TYPES.TSUnionType) {
         for (const typeNode of node.types) {
-          checkReturnType(typeNode, returnTypes);
+          checkReturnType(
+            typeNode,
+            returnTypes,
+            allowUnusedVoidOrUndefinedValues,
+          );
         }
 
         return;
@@ -115,12 +120,11 @@ export default createRule({
 
       const declaredReturnType = services.getTypeAtLocation(node);
 
-      // don't report on a potentially unused `void`, `any` or `undefined`
-      // return type
       if (
-        tsutils.isIntrinsicVoidType(declaredReturnType) ||
-        tsutils.isIntrinsicUndefinedType(declaredReturnType) ||
-        tsutils.isIntrinsicAnyType(declaredReturnType)
+        allowUnusedVoidOrUndefinedValues &&
+        // don't report on a potentially unused `void` or `undefined` return type
+        (tsutils.isIntrinsicVoidType(declaredReturnType) ||
+          tsutils.isIntrinsicUndefinedType(declaredReturnType))
       ) {
         return;
       }
@@ -209,16 +213,24 @@ export default createRule({
             .filter(x => x != null)
             .flatMap(x => tsutils.unionTypeParts(x));
 
-          checkReturnType(promiseTypeArgument, [
-            // `async` functions may return promise and non-promise expressions
-            ...actualReturnTypes,
-            ...promiseReturnTypes,
-          ]);
+          checkReturnType(
+            promiseTypeArgument,
+            [
+              // `async` functions may return promise and non-promise expressions
+              ...actualReturnTypes,
+              ...promiseReturnTypes,
+            ],
+            true,
+          );
 
           return;
         }
 
-        checkReturnType(node.returnType.typeAnnotation, actualReturnTypes);
+        checkReturnType(
+          node.returnType.typeAnnotation,
+          actualReturnTypes,
+          true,
+        );
       },
     };
   },

@@ -838,6 +838,22 @@ function test(): R | boolean {
         },
       ],
     },
+    {
+      code: `
+function test(): (string | undefined)[] {
+  return ['one'];
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'undefined',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
 
     {
       code: `
@@ -1097,6 +1113,38 @@ function test(): [R | string, boolean] {
             type: 'string',
           },
           line: 4,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test(): [string | undefined] {
+  return ['one'];
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'undefined',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test(): [Promise<string | undefined>] {
+  return [Promise.resolve('one')];
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'undefined',
+          },
+          line: 2,
           messageId: 'unusedReturnTypes',
         },
       ],
