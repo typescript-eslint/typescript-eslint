@@ -128,22 +128,32 @@ export default createRule({
       param: TSESTree.ArrayPattern,
       typeAnnotation: TSESTree.TSTupleType,
     ): void {
-      for (const [index, member] of typeAnnotation.elementTypes.entries()) {
-        // bail on rest type `[...string[]]`
-        if (member.type === AST_NODE_TYPES.TSRestType) {
-          return;
-        }
+      let restTypesCount = 0;
 
-        const property = param.elements.at(index);
+      for (const [index, member] of typeAnnotation.elementTypes.entries()) {
+        const property = param.elements.at(index - restTypesCount);
+
+        // `[...string[], ...]`
+        if (member.type === AST_NODE_TYPES.TSRestType) {
+          restTypesCount++;
+        }
 
         if (property === undefined) {
           reportOnMember(member, { type: 'key', key: String(index) });
           continue;
         }
 
+        // `[,]` empty slots
+        if (property == null) {
+          if (param.elements.findLastIndex(x => x) > index - restTypesCount) {
+            continue;
+          }
+
+          reportOnMember(member, { type: 'key', key: String(index) });
+          continue;
+        }
+
         if (
-        // bail in case of `[,]` empty slots
-          property == null ||
           // bail on a rest element
           property.type === AST_NODE_TYPES.RestElement
         ) {

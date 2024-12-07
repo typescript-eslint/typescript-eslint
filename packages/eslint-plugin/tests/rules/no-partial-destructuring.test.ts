@@ -245,6 +245,7 @@ function test({ used1 = 'default', used2 }: { used1: string; used2: string }) {}
     `,
     // skipping a tuple item
     'function test([, used]: [boolean, number]) {}',
+    'function test([, used, , , ,]: [boolean, number]) {}',
     'function test({ used: [, a] }: { used: [boolean, number] }) {}',
     'function test([used1, , used2]: [boolean, number, string]) {}',
     // rest element
@@ -270,8 +271,11 @@ function test({
     'function test({ foo }: { foo(): void }) {}',
     'function test({ foo }: { (): void }) {}',
     'function test({}: { (): void }) {}',
-    'function test({ bar: [a] }: { bar: [...string[], number] }) {}',
-    'function test({ bar: [a, b, c] }: { bar: [...number[]] }) {}',
+    // tuple type spread
+    'function test([a]: [...string[], number]) {}',
+    'function test([a, b]: [boolean, ...string[], number]) {}',
+    'function test([a, b, c]: [...number[]]) {}',
+    'function test([...a]: [...number[]]) {}',
     // generic type constraints
     `
 function test<R extends string>({ a }: { [i: R]: string }) {}
@@ -1126,6 +1130,43 @@ class Test {
       ],
       output: "function test({ used = 'default' }: { used: string;  }) {}",
     },
+    // skipping a tuple item
+    {
+      code: 'function test([, a]: [string, number, boolean]) {}',
+      errors: [
+        {
+          column: 39,
+          data: { key: '2', type: 'key' },
+          line: 1,
+          messageId: 'partialDestructuring',
+        },
+      ],
+      output: 'function test([, a]: [string, number, ]) {}',
+    },
+    {
+      code: 'function test([a, , b]: [string, number, boolean, string]) {}',
+      errors: [
+        {
+          column: 51,
+          data: { key: '3', type: 'key' },
+          line: 1,
+          messageId: 'partialDestructuring',
+        },
+      ],
+      output: 'function test([a, , b]: [string, number, boolean, ]) {}',
+    },
+    {
+      code: 'function test([a, , b, , ,]: [string, number, boolean, string]) {}',
+      errors: [
+        {
+          column: 56,
+          data: { key: '3', type: 'key' },
+          line: 1,
+          messageId: 'partialDestructuring',
+        },
+      ],
+      output: 'function test([a, , b, , ,]: [string, number, boolean, ]) {}',
+    },
     // misc
     {
       code: 'function test({ foo }: { foo(): void; bar(): string }) {}',
@@ -1262,6 +1303,45 @@ function test<R extends 'used1' | 'used2'>(
     ${emptyline}
   },
 ) {}
+      `,
+    },
+    // tuple type spread
+    {
+      code: `
+function test([a]: [number, ...string[], boolean]) {}
+      `,
+      errors: [
+        {
+          column: 29,
+          data: { key: '1', type: 'key' },
+          line: 2,
+          messageId: 'partialDestructuring',
+        },
+        {
+          column: 42,
+          data: { key: '2', type: 'key' },
+          line: 2,
+          messageId: 'partialDestructuring',
+        },
+      ],
+      output: `
+function test([a]: [number,  ]) {}
+      `,
+    },
+    {
+      code: `
+function test([a, b]: [number, boolean, ...string[]]) {}
+      `,
+      errors: [
+        {
+          column: 41,
+          data: { key: '2', type: 'key' },
+          line: 2,
+          messageId: 'partialDestructuring',
+        },
+      ],
+      output: `
+function test([a, b]: [number, boolean, ]) {}
       `,
     },
   ],
