@@ -6,6 +6,8 @@ import {
   createRule,
   getParserServices,
   isErrorLike,
+  isTypeAnyType,
+  isTypeUnknownType,
   isFunction,
   isIdentifier,
   isPromiseConstructorLike,
@@ -19,6 +21,8 @@ export type MessageIds = 'rejectAnError';
 export type Options = [
   {
     allowEmptyReject?: boolean;
+    allowThrowingAny?: boolean;
+    allowThrowingUnknown?: boolean;
   },
 ];
 
@@ -45,6 +49,16 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether to allow calls to `Promise.reject()` with no arguments.',
           },
+          allowThrowingAny: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `any`.',
+          },
+          allowThrowingUnknown: {
+            type: 'boolean',
+            description:
+              'Whether to always allow throwing values typed as `unknown`.',
+          },
         },
       },
     ],
@@ -52,6 +66,8 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowEmptyReject: false,
+      allowThrowingAny: false,
+      allowThrowingUnknown: false,
     },
   ],
   create(context, [options]) {
@@ -61,6 +77,15 @@ export default createRule<Options, MessageIds>({
       const argument = callExpression.arguments.at(0);
       if (argument) {
         const type = services.getTypeAtLocation(argument);
+
+        if (options.allowThrowingAny && isTypeAnyType(type)) {
+          return;
+        }
+
+        if (options.allowThrowingUnknown && isTypeUnknownType(type)) {
+          return;
+        }
+
         if (
           isErrorLike(services.program, type) ||
           isReadonlyErrorLike(services.program, type)

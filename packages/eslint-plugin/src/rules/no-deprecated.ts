@@ -6,7 +6,10 @@ import * as ts from 'typescript';
 
 import { createRule, getParserServices, nullThrows } from '../util';
 
-type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
+type IdentifierLike =
+  | TSESTree.Identifier
+  | TSESTree.JSXIdentifier
+  | TSESTree.Super;
 
 export default createRule({
   name: 'no-deprecated',
@@ -127,7 +130,6 @@ export default createRule({
       while (true) {
         switch (current.type) {
           case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportDefaultDeclaration:
           case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
             return true;
@@ -272,12 +274,39 @@ export default createRule({
       );
     }
 
+    function getJSXAttributeDeprecation(
+      openingElement: TSESTree.JSXOpeningElement,
+      propertyName: string,
+    ): string | undefined {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
+
+      const contextualType = nullThrows(
+        checker.getContextualType(tsNode as ts.Expression),
+        'Expected JSX opening element name to have contextualType',
+      );
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
         return getCallLikeDeprecation(callLikeNode);
       }
-      if (node.parent.type === AST_NODE_TYPES.Property) {
+
+      if (
+        node.parent.type === AST_NODE_TYPES.JSXAttribute &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
+        return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.Property &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
         return getJsDocDeprecation(
           services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
         );
@@ -298,15 +327,17 @@ export default createRule({
         return;
       }
 
+      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+
       context.report({
         ...(reason
           ? {
               messageId: 'deprecatedWithReason',
-              data: { name: node.name, reason },
+              data: { name, reason },
             }
           : {
               messageId: 'deprecated',
-              data: { name: node.name },
+              data: { name },
             }),
         node,
       });
@@ -319,6 +350,7 @@ export default createRule({
           checkIdentifier(node);
         }
       },
+      Super: checkIdentifier,
     };
   },
 });

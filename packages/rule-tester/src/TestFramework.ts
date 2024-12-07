@@ -1,6 +1,5 @@
 /**
  * @param text a string describing the rule
- * @param callback the test callback
  */
 export type RuleTesterTestFrameworkFunctionBase = (
   text: string,

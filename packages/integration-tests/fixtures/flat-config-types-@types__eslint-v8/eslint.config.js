@@ -61,7 +61,5 @@ function _otherCases() {
     deprecationPlugin.configs.recommended,
     // this should error but doesn't because there are no types exported from the jest plugin
     jestPlugin.configs.recommended,
-    // this should error but doesn't because there are no types exported from the jest plugin
-    ...jestPlugin.configs['flat/recommended'],
   );
 }

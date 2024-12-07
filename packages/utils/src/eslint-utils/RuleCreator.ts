@@ -14,9 +14,10 @@ export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
 export type NamedCreateRuleMeta<
   MessageIds extends string,
   PluginDocs = unknown,
+  Options extends readonly unknown[] = [],
 > = {
   docs: PluginDocs & RuleMetaDataDocs;
-} & Omit<RuleMetaData<MessageIds, PluginDocs>, 'docs'>;
+} & Omit<RuleMetaData<MessageIds, PluginDocs, Options>, 'docs'>;
 
 export interface RuleCreateAndOptions<
   Options extends readonly unknown[],
@@ -34,7 +35,7 @@ export interface RuleWithMeta<
   MessageIds extends string,
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: RuleMetaData<MessageIds, Docs>;
+  meta: RuleMetaData<MessageIds, Docs, Options>;
 }
 
 export interface RuleWithMetaAndName<
@@ -42,7 +43,7 @@ export interface RuleWithMetaAndName<
   MessageIds extends string,
   Docs = unknown,
 > extends RuleCreateAndOptions<Options, MessageIds> {
-  meta: NamedCreateRuleMeta<MessageIds, Docs>;
+  meta: NamedCreateRuleMeta<MessageIds, Docs, Options>;
   name: string;
 }
 

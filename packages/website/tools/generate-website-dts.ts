@@ -32,7 +32,7 @@ async function getFileAndStoreLocally(
 
   const config = await prettier.resolveConfig(path);
 
-  let contents = (await response.text()) as string;
+  let contents = await response.text();
   contents = [...banner, '', editFunc(contents)].join('\n');
   contents = await prettier.format(contents, {
     parser: 'typescript',

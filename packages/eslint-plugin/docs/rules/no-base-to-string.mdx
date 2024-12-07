@@ -34,6 +34,9 @@ value + '';
 String({});
 ({}).toString();
 ({}).toLocaleString();
+
+// Stringifying objects or instances in an array with the `Array.prototype.join`.
+[{}, new MyClass()].join('');
 ```
 
 </TabItem>

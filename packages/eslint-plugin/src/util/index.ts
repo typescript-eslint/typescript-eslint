@@ -25,6 +25,7 @@ export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './needsPrecedingSemiColon';
 export * from './objectIterators';
+export * from './needsToBeAwaited';
 export * from './scopeUtils';
 export * from './types';
 export * from './walkStatements';

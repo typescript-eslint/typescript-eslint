@@ -6,8 +6,10 @@
 import type { ImplicitLibVariableOptions } from '../variable';
 
 import { TYPE } from './base-config';
+import { es2021_promise } from './es2021.promise';
 
 export const es2022_error = {
+  ...es2021_promise,
   AggregateErrorConstructor: TYPE,
   Error: TYPE,
   ErrorConstructor: TYPE,

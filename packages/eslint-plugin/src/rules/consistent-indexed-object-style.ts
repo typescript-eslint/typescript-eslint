@@ -176,6 +176,24 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          // If the mapped type is circular, we can't convert it to a Record.
+          const parentId = findParentDeclaration(node)?.id;
+          if (parentId) {
+            const scope = context.sourceCode.getScope(key);
+            const superVar = ASTUtils.findVariable(scope, parentId.name);
+            if (superVar) {
+              const isCircular = superVar.references.some(
+                item =>
+                  item.isTypeReference &&
+                  node.range[0] <= item.identifier.range[0] &&
+                  node.range[1] >= item.identifier.range[1],
+              );
+              if (isCircular) {
+                return;
+              }
+            }
+          }
+
           // There's no builtin Mutable<T> type, so we can't autofix it really.
           const canFix = node.readonly !== '-';
 
