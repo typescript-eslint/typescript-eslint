@@ -243,8 +243,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     'declare function makeSets<K>(): [Set<K>][];',
     'declare function makeMap<K, V>(): Map<K, V>;',
     'declare function makeMap<K, V>(): [Map<K, V>];',
+    'declare function makeArray<T>(): T[];',
+    'declare function makeArrayNullish<T>(): (T | null)[];',
+    'declare function makeTupleMulti<T>(): [T | null, T | null];',
+    'declare function takeTupleMulti<T>(input: [T, T]): void;',
+    'declare function takeTupleMultiNullish<T>(input: [T | null, T | null]): void;',
     'declare function arrayOfPairs<T>(): [T, T][];',
     'declare function fetchJson<T>(url: string): Promise<T>;',
+    'declare function fetchJsonTuple<T>(url: string): Promise<[T]>;',
     'declare function fn<T>(input: T): 0 extends 0 ? T : never;',
     'declare function useFocus<T extends HTMLOrSVGElement>(): [React.RefObject<T>];',
     `
@@ -444,6 +450,26 @@ const f = <T,>(
               output: 'const func = (param: unknown) => null;',
             },
           ],
+        },
+      ],
+    },
+    {
+      code: 'const func = <T,>(param: [T]) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'const func = <T,>(param: T[]) => null;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
         },
       ],
     },
@@ -1246,6 +1272,115 @@ function foo(_: unknown): <T>(input: T) => T {
                 'declare function get<T>(param: <T>(param: T) => unknown): T;',
             },
           ],
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyArray<T>(): readonly T[];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTuple<T>(): readonly [T];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTupleNullish<T>(): readonly [T | null];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function makeReadonlyTupleMulti<T>(): readonly [T, T];',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: `
+        declare function makeReadonlyTupleMultiNullish<T>(): readonly [
+          T | null,
+          T | null,
+        ];
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function takeArray<T>(input: T[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function takeArrayNullish<T>(input: (T | null)[]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function takeTuple<T>(input: [T]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: 'declare function takeTupleMultiUnrelated<T>(input: [T, number]): void;',
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
+        },
+      ],
+    },
+    {
+      code: `
+        declare function takeTupleMultiUnrelatedNullish<T>(
+          input: [T | null, null],
+        ): void;
+      `,
+      errors: [
+        {
+          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
+          messageId: 'sole',
+          // TODO: suggestions
         },
       ],
     },
