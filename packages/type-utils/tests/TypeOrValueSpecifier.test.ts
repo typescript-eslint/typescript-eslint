@@ -4,7 +4,7 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import Ajv from 'ajv';
 import path from 'node:path';
 
-import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
+import type { TypeOrValueSpecifier } from '../src';
 
 import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
@@ -365,6 +365,17 @@ describe('TypeOrValueSpecifier', () => {
           name: 'it',
           package: 'node:test',
         },
+      ],
+      [
+        `
+          import { Buffer } from 'node:buffer';
+          type Test = Buffer;
+        `,
+        { from: 'package', name: 'Buffer', package: 'node' },
+      ],
+      [
+        'type Test = Buffer;',
+        { from: 'package', name: 'Buffer', package: 'node' },
       ],
     ])('matches a matching package specifier: %s', runTestPositive);
 

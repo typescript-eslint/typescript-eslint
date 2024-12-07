@@ -1,3 +1,5 @@
+import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
+import path from 'node:path';
 import * as ts from 'typescript';
 
 function findParentModuleDeclaration(
@@ -30,15 +32,36 @@ function typeDeclaredInDeclarationFile(
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  // Handle scoped packages: if the name starts with @, remove it and replace / with __
-  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_expressions#escaping
+  const escapeAlternates = (alternates: string[]): string =>
+    alternates
+      .map(alternate => alternate.replaceAll(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      .join('|');
 
-  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
+  const packageNameRegExp = escapeAlternates([
+    packageName,
+    // Handle scoped packages: if the name starts with @, remove it and replace / with __
+    `@types/${packageName.replace(/^@([^/]+)\//, '$1__')}`,
+  ]);
+  const packageNameMatcher = new RegExp(packageNameRegExp);
+  const { typeRoots } = program.getCompilerOptions();
+  const fileNameMatcher = new RegExp(
+    `(?:${escapeAlternates(
+      typeRoots
+        ? typeRoots.map(typeRoot =>
+            getCanonicalFileName(
+              path.join(program.getCurrentDirectory(), typeRoot),
+            ),
+          )
+        : ['node_modules'],
+    )})/(?:${packageNameRegExp})/`,
+  );
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
-      packageIdName !== undefined &&
-      matcher.test(packageIdName) &&
+      (packageIdName == null
+        ? fileNameMatcher.test(getCanonicalFileName(declaration.fileName))
+        : packageNameMatcher.test(packageIdName)) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );
   });
