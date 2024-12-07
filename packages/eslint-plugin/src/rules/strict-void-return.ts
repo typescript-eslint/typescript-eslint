@@ -51,24 +51,24 @@ export default util.createRule<Options, MessageId>({
     hasSuggestions: true,
     messages: {
       asyncFuncInArg:
-        'Possibly unhandled promise-returning callback passed as an argument to `{{funcName}}`, which expects it to be a void callback.',
+        'Async callback passed as an argument to `{{funcName}}`, which expects a void callback.',
       asyncFuncInAttr:
-        'Possibly unhandled promise-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects it to be a void event handler.',
+        'Async event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void event handler.',
       asyncFuncInExtMember:
-        'Possibly unhandled promise-returning function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
+        'Async function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
       asyncFuncInImplMember:
-        'Possibly unhandled promise-returning function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
+        'Async function provided as `{{memberName}}` method of `{{className}}`, whose interface `{{baseName}}` declares it as a void method.',
       asyncFuncInOther:
-        'Possibly unhandled promise-returning function used in a context where a void function is expected.',
+        'Async function used in a context where a void function is expected.',
       asyncFuncInReturn:
-        'Possibly unhandled promise-returning callback returned from a function, which is expected to return a void callback.',
+        'Async callback returned from a function, which must return a void callback.',
       asyncFuncInVar:
-        'Possibly unhandled promise-returning function assigned to `{{varName}}`, which is expected to be a void function.',
+        'Async function assigned to `{{varName}}`, which is declared as a void function.',
 
       nonVoidFuncInArg:
-        'Value-returning callback passed as an argument to `{{funcName}}`, which expects it to be a void callback.',
+        'Value-returning callback passed as an argument to `{{funcName}}`, which expects a void callback.',
       nonVoidFuncInAttr:
-        'Value-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects it to be a void event handler.',
+        'Value-returning event handler `{{attrName}}` passed as a prop to `{{elemName}}`, which expects a void event handler.',
       nonVoidFuncInExtMember:
         'Value-returning function provided as `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
       nonVoidFuncInImplMember:
@@ -76,14 +76,14 @@ export default util.createRule<Options, MessageId>({
       nonVoidFuncInOther:
         'Value-returning function used in a context where a void function is expected.',
       nonVoidFuncInReturn:
-        'Value-returning callback returned from a function, which is expected to return a void callback.',
+        'Value-returning callback returned from a function, which must return a void callback.',
       nonVoidFuncInVar:
-        'Value-returning function assigned to `{{varName}}`, which is expected to be a void function.',
+        'Value-returning function assigned to `{{varName}}`, which is declared as a void function.',
 
       nonVoidReturnInArg:
-        'Value returned in a callback argument to `{{funcName}}`, which expects it to be a void callback.',
+        'Value returned in a callback argument to `{{funcName}}`, which expects a void callback.',
       nonVoidReturnInAttr:
-        'Value returned in `{{attrName}}` event handler prop of `{{elemName}}`, which expects it to be a void event handler.',
+        'Value returned in `{{attrName}}` event handler prop of `{{elemName}}`, which expects a void event handler.',
       nonVoidReturnInExtMember:
         'Value returned in `{{memberName}}` method of `{{className}}`, whose base class `{{baseName}}` declares it as a void method.',
       nonVoidReturnInImplMember:
@@ -91,9 +91,9 @@ export default util.createRule<Options, MessageId>({
       nonVoidReturnInOther:
         'Value returned in a context where a void return is expected.',
       nonVoidReturnInReturn:
-        'Value returned in a callback returned from a function, which is expected to return a void callback',
+        'Value returned in a callback returned from a function, which must return a void callback.',
       nonVoidReturnInVar:
-        'Value returned in `{{varName}}`, which is expected to be a void function.',
+        'Value returned in `{{varName}}`, which is declared as a void function.',
 
       suggestWrapInAsyncIIFE:
         'Wrap the function body in an immediately-invoked async function expression.',
