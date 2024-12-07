@@ -65,7 +65,7 @@ export default createRule({
           for (const [index, elementType] of tupleElementTypes.entries()) {
             const returnTypes = relevantReturnTypes
               .map(type => {
-                if (tsutils.isTypeReference(type)) {
+                if (checker.isTupleType(type)) {
                   return checker.getTypeArguments(type)[index];
                 }
                 return type;
@@ -103,7 +103,7 @@ export default createRule({
         if (relevantReturnTypes) {
           const returnTypes = relevantReturnTypes
             .map(type => {
-              if (tsutils.isTypeReference(type)) {
+              if (checker.isArrayType(type)) {
                 return checker.getTypeArguments(type)[0];
               }
               return type;
