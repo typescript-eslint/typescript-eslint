@@ -28,7 +28,7 @@ export default createRule({
     fixable: 'code',
     messages: {
       preferTypeParameter:
-        'Unnecessary cast: Array#reduce accepts a type parameter for the default value.',
+        'Unnecessary assertion: Array#reduce accepts a type parameter for the default value.',
     },
     schema: [],
   },

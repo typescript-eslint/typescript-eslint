@@ -22,9 +22,9 @@ export default createRule({
     },
     messages: {
       unsafeOfAnyTypeAssertion:
-        'Unsafe cast from {{type}} detected: consider using type guards or a safer cast.',
+        'Unsafe assertion from {{type}} detected: consider using type guards or a safer assertion.',
       unsafeToAnyTypeAssertion:
-        'Unsafe cast to {{type}} detected: consider using a more specific type to ensure safety.',
+        'Unsafe assertion to {{type}} detected: consider using a more specific type to ensure safety.',
       unsafeTypeAssertion:
         "Unsafe type assertion: type '{{type}}' is more narrow than the original type.",
     },
