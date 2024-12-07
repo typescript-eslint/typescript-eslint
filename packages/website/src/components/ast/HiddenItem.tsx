@@ -42,7 +42,7 @@ export default function HiddenItem({
         value.map(([key], index) => (
           <span key={`${level}_[${index}]`}>
             {index > 0 && ', '}
-            {String(key)}
+            {key}
           </span>
         ))
       )}

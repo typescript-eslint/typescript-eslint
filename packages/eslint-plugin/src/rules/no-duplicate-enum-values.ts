@@ -48,9 +48,9 @@ export default createRule({
 
           let value: number | string | undefined;
           if (isStringLiteral(member.initializer)) {
-            value = String(member.initializer.value);
+            value = member.initializer.value;
           } else if (isNumberLiteral(member.initializer)) {
-            value = Number(member.initializer.value);
+            value = member.initializer.value;
           }
 
           if (value === undefined) {
