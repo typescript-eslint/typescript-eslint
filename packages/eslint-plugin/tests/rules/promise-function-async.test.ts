@@ -182,6 +182,52 @@ async function asyncFunctionReturningUnion(p: boolean) {
   return p ? Promise.resolve(5) : 5;
 }
     `,
+    `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): number;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number> | number {
+  return Promise.resolve(5);
+}
+    `,
+    `
+function overloadingThatCanReturnPromise(a: boolean): number;
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number> | number {
+  return Promise.resolve(5);
+}
+    `,
+    `
+function a(): Promise<void>;
+function a(x: boolean): void;
+function a(x?: boolean) {
+  if (x == null) return Promise.reject(new Error());
+  throw new Error();
+}
+    `,
+    {
+      code: `
+function overloadingThatIncludeUnknown(): number;
+function overloadingThatIncludeUnknown(a: boolean): unknown;
+function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+function overloadingThatIncludeAny(): number;
+function overloadingThatIncludeAny(a: boolean): any;
+function overloadingThatIncludeAny(a?: boolean): any | number {
+  return Promise.resolve(5);
+}
+      `,
+      options: [{ allowAny: true }],
+    },
   ],
   invalid: [
     {
@@ -787,6 +833,61 @@ async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
   return p ? Promise.resolve(5) : 5;
 }
       `,
+    },
+    {
+      code: `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): Promise<string>;
+function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number | string> {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      output: `
+function overloadingThatCanReturnPromise(): Promise<number>;
+function overloadingThatCanReturnPromise(a: boolean): Promise<string>;
+async function overloadingThatCanReturnPromise(
+  a?: boolean,
+): Promise<number | string> {
+  return Promise.resolve(5);
+}
+      `,
+    },
+    {
+      code: `
+function overloadingThatIncludeAny(): number;
+function overloadingThatIncludeAny(a: boolean): any;
+function overloadingThatIncludeAny(a?: boolean): any | number {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      options: [{ allowAny: false }],
+    },
+    {
+      code: `
+function overloadingThatIncludeUnknown(): number;
+function overloadingThatIncludeUnknown(a: boolean): unknown;
+function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
+  return Promise.resolve(5);
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      options: [{ allowAny: false }],
     },
   ],
 });

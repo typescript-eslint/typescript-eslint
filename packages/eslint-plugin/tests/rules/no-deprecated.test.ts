@@ -205,21 +205,6 @@ ruleTester.run('no-deprecated', rule, {
         default as ts,
       } from 'typescript';
     `,
-
-    // TODO: Can anybody figure out how to get this to report on `b`?
-    // getContextualType retrieves the union type, but it has no symbol...
-    `
-      interface AProps {
-        /** @deprecated */
-        b: number | string;
-      }
-
-      function A(props: AProps) {
-        return <div />;
-      }
-
-      const a = <A b="" />;
-    `,
     `
       namespace A {
         /** @deprecated */
@@ -284,8 +269,75 @@ ruleTester.run('no-deprecated', rule, {
         }
       }
     `,
+    `
+      declare namespace JSX {}
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: any;
+        }
+      }
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: unknown;
+        }
+      }
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: {
+            bar: any;
+          };
+        }
+      }
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: {
+            bar: unknown;
+          };
+        }
+      }
+      <foo bar={1} />;
+    `,
   ],
   invalid: [
+    {
+      code: `
+        interface AProps {
+          /** @deprecated */
+          b: number | string;
+        }
+
+        function A(props: AProps) {
+          return <div />;
+        }
+
+        const a = <A b="" />;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: { name: 'b' },
+          endColumn: 23,
+          endLine: 11,
+          line: 11,
+          messageId: 'deprecated',
+        },
+      ],
+    },
     {
       code: `
         /** @deprecated */ var a = undefined;
@@ -2465,7 +2517,7 @@ ruleTester.run('no-deprecated', rule, {
       code: `
         /** @deprecated */
         declare function decorator(constructor: Function);
-        
+
         @decorator
         export class Foo {}
       `,
@@ -2496,6 +2548,128 @@ ruleTester.run('no-deprecated', rule, {
           endColumn: 25,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  /** @deprecated */
+  constructor() {}
+}
+
+class B extends A {
+  constructor() {
+    /** should report but does not */
+    super();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'super' },
+          endColumn: 10,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  /** @deprecated test reason*/
+  constructor() {}
+}
+
+class B extends A {
+  constructor() {
+    /** should report but does not */
+    super();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'super', reason: 'test reason' },
+          endColumn: 10,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: 'const a = <div aria-grabbed></div>;',
+      errors: [
+        {
+          column: 16,
+          data: { name: 'aria-grabbed', reason: 'in ARIA 1.1' },
+          endColumn: 28,
+          endLine: 1,
+          line: 1,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
+      code: `
+        declare namespace JSX {
+          interface IntrinsicElements {
+            'foo-bar:baz-bam': {
+              name: string;
+              /**
+               * @deprecated
+               */
+              deprecatedProp: string;
+            };
+          }
+        }
+
+        const componentDashed = <foo-bar:baz-bam name="e" deprecatedProp="oh no" />;
+      `,
+      errors: [
+        {
+          column: 59,
+          data: { name: 'deprecatedProp' },
+          endColumn: 73,
+          endLine: 14,
+          line: 14,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        import * as React from 'react';
+
+        interface Props {
+          /**
+           * @deprecated
+           */
+          deprecatedProp: string;
+        }
+
+        interface Tab {
+          List: React.FC<Props>;
+        }
+
+        const Tab: Tab = {
+          List: () => <div>Hi</div>,
+        };
+
+        const anotherExample = <Tab.List deprecatedProp="oh no" />;
+      `,
+      errors: [
+        {
+          column: 42,
+          data: { name: 'deprecatedProp' },
+          endColumn: 56,
+          endLine: 19,
+          line: 19,
           messageId: 'deprecated',
         },
       ],
