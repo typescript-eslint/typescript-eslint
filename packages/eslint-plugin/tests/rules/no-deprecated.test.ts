@@ -269,6 +269,49 @@ ruleTester.run('no-deprecated', rule, {
         }
       }
     `,
+    `
+      declare namespace JSX {}
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: any;
+        }
+      }
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: unknown;
+        }
+      }
+
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: {
+            bar: any;
+          };
+        }
+      }
+      <foo bar={1} />;
+    `,
+    `
+      declare namespace JSX {
+        interface IntrinsicElements {
+          foo: {
+            bar: unknown;
+          };
+        }
+      }
+      <foo bar={1} />;
+    `,
   ],
   invalid: [
     {
