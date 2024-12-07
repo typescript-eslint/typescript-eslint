@@ -62,7 +62,7 @@ export default createRule({
         return;
       }
 
-      // handle cases when casting unknown ==> any.
+      // handle cases when asserting unknown ==> any.
       if (isTypeAnyType(assertedType) && isTypeUnknownType(expressionType)) {
         context.report({
           node,

@@ -242,7 +242,7 @@ export let funcExpr: FuncType = function () {
 };
 
 export let asTyped = (() => '') as () => string;
-export let castTyped = <() => string>(() => '');
+export let assertTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -253,7 +253,7 @@ export let objectProp: ObjectType = {
 export let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-export let objectPropCast = <ObjectType>{
+export let objectPropAssertion = <ObjectType>{
   foo: () => 1,
 };
 

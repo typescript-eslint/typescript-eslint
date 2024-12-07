@@ -21,7 +21,7 @@ export default createRule({
     type: 'problem',
     docs: {
       description:
-        'Enforce using type parameter when calling `Array#reduce` instead of casting',
+        'Enforce using type parameter when calling `Array#reduce` instead of using a type assertion',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
