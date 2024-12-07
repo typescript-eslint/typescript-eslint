@@ -64,8 +64,12 @@ export default createRule({
         if (relevantReturnTypes) {
           for (const [index, elementType] of tupleElementTypes.entries()) {
             const returnTypes = relevantReturnTypes
-              .map(type => checker.getTypeArguments(type as ts.TypeReference))
-              .map(typeArguments => typeArguments[index])
+              .map(type => {
+                if (tsutils.isTypeReference(type)) {
+                  return checker.getTypeArguments(type)[index];
+                }
+                return type;
+              })
               .flatMap(type => tsutils.unionTypeParts(type));
 
             checkReturnType(elementType, returnTypes);
@@ -98,7 +102,12 @@ export default createRule({
 
         if (relevantReturnTypes) {
           const returnTypes = relevantReturnTypes
-            .map(type => checker.getTypeArguments(type as ts.TypeReference)[0])
+            .map(type => {
+              if (tsutils.isTypeReference(type)) {
+                return checker.getTypeArguments(type)[0];
+              }
+              return type;
+            })
             .flatMap(type => tsutils.unionTypeParts(type));
 
           checkReturnType(arrayTypeArgument, returnTypes);

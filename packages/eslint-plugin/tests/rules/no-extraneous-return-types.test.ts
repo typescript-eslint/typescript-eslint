@@ -28,6 +28,11 @@ function test(): unknown {
 }
     `,
     `
+function test(): number {
+  return 1 as any;
+}
+    `,
+    `
 function test(): unknown {
   return Promise.resolve(10);
 }
@@ -190,6 +195,16 @@ function test(): Array {
   return ['one'];
 }
     `,
+    `
+function test(): string[] {
+  return 1 as any;
+}
+    `,
+    `
+function test(): string[] {
+  return [1 as any];
+}
+    `,
 
     `
 function test(): [string] {
@@ -286,6 +301,17 @@ function test(a: boolean): R {
   return [1, 2];
 }
     `,
+    `
+function test(): [string, number] {
+  return ['one', 1 as any];
+}
+    `,
+    `
+function test(): [string, number] {
+  return 10 as any;
+}
+    `,
+
     `
 function test(): Promise<string> {
   return Promise.resolve('one');
@@ -457,6 +483,16 @@ async function test(a: boolean): Promise<string | undefined> {
     `
 function test(): Promise {
   return 'one';
+}
+    `,
+    `
+function test(): Promise<string> {
+  return 1 as any;
+}
+    `,
+    `
+function test(): Promise<string> {
+  return Promise.resolve(1 as any);
 }
     `,
   ],
