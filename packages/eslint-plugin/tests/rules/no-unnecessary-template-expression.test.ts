@@ -885,6 +885,75 @@ const invalidCases: readonly InvalidTestCase<
     errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
     output: '` \\ud83d\\udc68 `;',
   },
+  {
+    code: `
+\`
+this code does not have trailing whitespace: \${' '}\\n even though it might look it.\`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: `
+\`
+this code does not have trailing whitespace:  \\n even though it might look it.\`;
+    `,
+  },
+  {
+    code: `
+\`
+this code has trailing position template expression \${'but it isn\\'t whitespace'}
+    \`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: `
+\`
+this code has trailing position template expression but it isn\\'t whitespace
+    \`;
+    `,
+  },
+  {
+    code: noFormat`
+\`trailing whitespace followed by escaped windows newline: \${' '}\\r\\n\`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: `
+\`trailing whitespace followed by escaped windows newline:  \\r\\n\`;
+    `,
+  },
+  {
+    code: `
+\`template literal with interpolations followed by newline: \${\` \${'interpolation'} \`}
+\`;
+    `,
+    errors: [
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+      {
+        messageId: 'noUnnecessaryTemplateExpression',
+      },
+    ],
+    output: [
+      `
+\`template literal with interpolations followed by newline:  \${'interpolation'}${' '}
+\`;
+    `,
+      `
+\`template literal with interpolations followed by newline:  interpolation${' '}
+\`;
+    `,
+    ],
+  },
 ];
 
 describe('fixer should not change runtime value', () => {
@@ -1022,6 +1091,18 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
 
     `
 \`not a useless \${String.raw\`nested interpolation \${a}\`}\`;
+    `,
+    `
+\`
+this code has trailing whitespace: \${'    '}
+    \`;
+    `,
+    noFormat`
+\`this code has trailing whitespace with a windows \\\r new line: \${' '}\r\n\`;
+    `,
+    `
+\`trailing position interpolated empty string also makes whitespace clear    \${''}
+\`;
     `,
   ],
 

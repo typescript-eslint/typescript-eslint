@@ -15,7 +15,7 @@
     "James Henry <typescript-eslint@jameshenry.blog>"
   ],
   "type": "commonjs",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
@@ -111,7 +111,7 @@
     "knip": "^5.9.4",
     "lint-staged": "^15.2.2",
     "make-dir": "^4.0.0",
-    "markdownlint-cli": "^0.42.0",
+    "markdownlint-cli": "^0.43.0",
     "ncp": "^2.0.0",
     "nx": "20.1.0",
     "prettier": "3.3.2",

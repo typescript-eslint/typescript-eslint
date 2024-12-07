@@ -2510,6 +2510,56 @@ ruleTester.run('no-deprecated', rule, {
       ],
     },
     {
+      code: `
+class A {
+  /** @deprecated */
+  constructor() {}
+}
+
+class B extends A {
+  constructor() {
+    /** should report but does not */
+    super();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'super' },
+          endColumn: 10,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+class A {
+  /** @deprecated test reason*/
+  constructor() {}
+}
+
+class B extends A {
+  constructor() {
+    /** should report but does not */
+    super();
+  }
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: { name: 'super', reason: 'test reason' },
+          endColumn: 10,
+          endLine: 10,
+          line: 10,
+          messageId: 'deprecatedWithReason',
+        },
+      ],
+    },
+    {
       code: 'const a = <div aria-grabbed></div>;',
       errors: [
         {

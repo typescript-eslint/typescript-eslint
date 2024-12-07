@@ -115,26 +115,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      const signatures = services.getTypeAtLocation(node).getCallSignatures();
-      if (!signatures.length) {
-        return;
-      }
-      const returnType = checker.getReturnTypeOfSignature(signatures[0]);
-
-      if (
-        !containsAllTypesByName(
-          returnType,
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          allowAny!,
-          allAllowedPromiseNames,
-          // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
-          node.returnType == null,
-        )
-      ) {
-        // Return type is not a promise
-        return;
-      }
-
       if (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
         // Abstract method can't be async
         return;
@@ -149,7 +129,21 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isTypeFlagSet(returnType, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+      const signatures = services.getTypeAtLocation(node).getCallSignatures();
+      if (!signatures.length) {
+        return;
+      }
+
+      const returnTypes = signatures.map(signature =>
+        checker.getReturnTypeOfSignature(signature),
+      );
+
+      if (
+        !allowAny &&
+        returnTypes.some(type =>
+          isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown),
+        )
+      ) {
         // Report without auto fixer because the return type is unknown
         return context.report({
           loc: getFunctionHeadLoc(node, context.sourceCode),
@@ -158,67 +152,81 @@ export default createRule<Options, MessageIds>({
         });
       }
 
-      context.report({
-        loc: getFunctionHeadLoc(node, context.sourceCode),
-        node,
-        messageId: 'missingAsync',
-        fix: fixer => {
-          if (
-            node.parent.type === AST_NODE_TYPES.MethodDefinition ||
-            (node.parent.type === AST_NODE_TYPES.Property && node.parent.method)
-          ) {
-            // this function is a class method or object function property shorthand
-            const method = node.parent;
-
-            // the token to put `async` before
-            let keyToken = nullThrows(
-              context.sourceCode.getFirstToken(method),
-              NullThrowsReasons.MissingToken('key token', 'method'),
-            );
-
-            // if there are decorators then skip past them
+      if (
+        // require all potential return types to be promise/any/unknown
+        returnTypes.every(type =>
+          containsAllTypesByName(
+            type,
+            true,
+            allAllowedPromiseNames,
+            // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
+            node.returnType == null,
+          ),
+        )
+      ) {
+        context.report({
+          loc: getFunctionHeadLoc(node, context.sourceCode),
+          node,
+          messageId: 'missingAsync',
+          fix: fixer => {
             if (
-              method.type === AST_NODE_TYPES.MethodDefinition &&
-              method.decorators.length
+              node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+              (node.parent.type === AST_NODE_TYPES.Property &&
+                node.parent.method)
             ) {
-              const lastDecorator =
-                method.decorators[method.decorators.length - 1];
-              keyToken = nullThrows(
-                context.sourceCode.getTokenAfter(lastDecorator),
-                NullThrowsReasons.MissingToken('key token', 'last decorator'),
+              // this function is a class method or object function property shorthand
+              const method = node.parent;
+
+              // the token to put `async` before
+              let keyToken = nullThrows(
+                context.sourceCode.getFirstToken(method),
+                NullThrowsReasons.MissingToken('key token', 'method'),
               );
-            }
 
-            // if current token is a keyword like `static` or `public` then skip it
-            while (
-              keyToken.type === AST_TOKEN_TYPES.Keyword &&
-              keyToken.range[0] < method.key.range[0]
-            ) {
-              keyToken = nullThrows(
-                context.sourceCode.getTokenAfter(keyToken),
-                NullThrowsReasons.MissingToken('token', 'keyword'),
+              // if there are decorators then skip past them
+              if (
+                method.type === AST_NODE_TYPES.MethodDefinition &&
+                method.decorators.length
+              ) {
+                const lastDecorator =
+                  method.decorators[method.decorators.length - 1];
+                keyToken = nullThrows(
+                  context.sourceCode.getTokenAfter(lastDecorator),
+                  NullThrowsReasons.MissingToken('key token', 'last decorator'),
+                );
+              }
+
+              // if current token is a keyword like `static` or `public` then skip it
+              while (
+                keyToken.type === AST_TOKEN_TYPES.Keyword &&
+                keyToken.range[0] < method.key.range[0]
+              ) {
+                keyToken = nullThrows(
+                  context.sourceCode.getTokenAfter(keyToken),
+                  NullThrowsReasons.MissingToken('token', 'keyword'),
+                );
+              }
+
+              // check if there is a space between key and previous token
+              const insertSpace = !context.sourceCode.isSpaceBetween(
+                nullThrows(
+                  context.sourceCode.getTokenBefore(keyToken),
+                  NullThrowsReasons.MissingToken('token', 'keyword'),
+                ),
+                keyToken,
               );
+
+              let code = 'async ';
+              if (insertSpace) {
+                code = ` ${code}`;
+              }
+              return fixer.insertTextBefore(keyToken, code);
             }
 
-            // check if there is a space between key and previous token
-            const insertSpace = !context.sourceCode.isSpaceBetween(
-              nullThrows(
-                context.sourceCode.getTokenBefore(keyToken),
-                NullThrowsReasons.MissingToken('token', 'keyword'),
-              ),
-              keyToken,
-            );
-
-            let code = 'async ';
-            if (insertSpace) {
-              code = ` ${code}`;
-            }
-            return fixer.insertTextBefore(keyToken, code);
-          }
-
-          return fixer.insertTextBefore(node, 'async ');
-        },
-      });
+            return fixer.insertTextBefore(node, 'async ');
+          },
+        });
+      }
     }
 
     return {

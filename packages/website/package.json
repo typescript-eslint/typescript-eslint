@@ -1,6 +1,16 @@
 {
   "name": "website",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/website"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "homepage": "https://typescript-eslint.io",
+  "license": "MIT",
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear",

@@ -1,3 +1,9 @@
+## 8.17.0 (2024-12-02)
+
+This was a version bump only for ast-spec to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.16.0 (2024-11-25)
 
 This was a version bump only for ast-spec to align it with other projects, there were no code changes.

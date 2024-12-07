@@ -6,7 +6,10 @@ import * as ts from 'typescript';
 
 import { createRule, getParserServices, nullThrows } from '../util';
 
-type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
+type IdentifierLike =
+  | TSESTree.Identifier
+  | TSESTree.JSXIdentifier
+  | TSESTree.Super;
 
 export default createRule({
   name: 'no-deprecated',
@@ -293,11 +296,17 @@ export default createRule({
         return getCallLikeDeprecation(callLikeNode);
       }
 
-      if (node.parent.type === AST_NODE_TYPES.JSXAttribute) {
+      if (
+        node.parent.type === AST_NODE_TYPES.JSXAttribute &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
         return getJSXAttributeDeprecation(node.parent.parent, node.name);
       }
 
-      if (node.parent.type === AST_NODE_TYPES.Property) {
+      if (
+        node.parent.type === AST_NODE_TYPES.Property &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
         return getJsDocDeprecation(
           services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
         );
@@ -318,15 +327,17 @@ export default createRule({
         return;
       }
 
+      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+
       context.report({
         ...(reason
           ? {
               messageId: 'deprecatedWithReason',
-              data: { name: node.name, reason },
+              data: { name, reason },
             }
           : {
               messageId: 'deprecated',
-              data: { name: node.name },
+              data: { name },
             }),
         node,
       });
@@ -339,6 +350,7 @@ export default createRule({
           checkIdentifier(node);
         }
       },
+      Super: checkIdentifier,
     };
   },
 });
