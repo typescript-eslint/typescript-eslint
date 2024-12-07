@@ -274,11 +274,35 @@ export default createRule({
       );
     }
 
+    function getJSXAttributeDeprecation(
+      openingElement: TSESTree.JSXOpeningElement,
+      propertyName: string,
+    ): string | undefined {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
+
+      const contextualType = nullThrows(
+        checker.getContextualType(tsNode as ts.Expression),
+        'Expected JSX opening element name to have contextualType',
+      );
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
         return getCallLikeDeprecation(callLikeNode);
       }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.JSXAttribute &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
+        return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
       if (
         node.parent.type === AST_NODE_TYPES.Property &&
         node.type !== AST_NODE_TYPES.Super
