@@ -124,7 +124,7 @@ let objectProp: ObjectType = {
 let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-let objectPropAssertion = <ObjectType>{
+let objectPropAssert = <ObjectType>{
   foo: () => 1,
 };
 

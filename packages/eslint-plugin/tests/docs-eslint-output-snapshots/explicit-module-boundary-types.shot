@@ -188,7 +188,7 @@ export let objectProp: ObjectType = {
 export let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-export let objectPropAssertion = <ObjectType>{
+export let objectPropAssert = <ObjectType>{
   foo: () => 1,
 };
 
