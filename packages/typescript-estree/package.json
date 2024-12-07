@@ -33,7 +33,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "homepage": "https://typescript-eslint.io/packages/typescript-estree",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "keywords": [
     "ast",
     "estree",
@@ -72,10 +72,8 @@
     "tmp": "*",
     "typescript": "*"
   },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
+  "peerDependencies": {
+    "typescript": ">=4.8.4 <5.8.0"
   },
   "funding": {
     "type": "opencollective",
