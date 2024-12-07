@@ -834,6 +834,7 @@ switch (literal) {
       options: [
         {
           considerDefaultExhaustiveForUnions: true,
+          requireDefaultForNonUnion: true,
         },
       ],
     },
@@ -953,6 +954,54 @@ function foo(x: string[], y: string | undefined) {
           tsconfigRootDir: rootPath,
         },
       },
+    },
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    break;
+  case 1:
+    break;
+  // no default
+}
+      `,
+      options: [
+        {
+          requireDefaultForNonUnion: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  // no default
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const value: 'a' | 'b';
+switch (value) {
+  case 'a':
+    break;
+  // skip default
+}
+      `,
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: true,
+          defaultCaseCommentPattern: '^skip\\sdefault',
+        },
+      ],
     },
   ],
   invalid: [
@@ -2796,6 +2845,107 @@ function foo(x: string[]) {
           tsconfigRootDir: rootPath,
         },
       },
+    },
+    {
+      code: `
+declare const myValue: 'a' | 'b';
+switch (myValue) {
+  case 'a':
+    return 'a';
+  case 'b':
+    return 'b';
+  // no default
+}
+      `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+      options: [
+        {
+          allowDefaultCaseForExhaustiveSwitch: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  // no default
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  // no default
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  // skip default
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 4,
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+declare const literal: 'a' | 'b' | 'c';
+
+switch (literal) {
+  case 'a':
+    break;
+  case "b": { throw new Error('Not implemented yet: "b" case') }
+  case "c": { throw new Error('Not implemented yet: "c" case') }
+  // skip default
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          considerDefaultExhaustiveForUnions: false,
+          defaultCaseCommentPattern: '^skip\\sdefault',
+        },
+      ],
     },
   ],
 });
