@@ -279,7 +279,7 @@ export default createRule({
 
       const contextualType = nullThrows(
         checker.getContextualType(tsNode as ts.Expression),
-        'Expected jsx opening element name to have contextualType',
+        'Expected JSX opening element name to have contextualType',
       );
 
       const symbol = contextualType.getProperty(propertyName);
