@@ -3389,17 +3389,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:*, @eslint/js@npm:^9.15.0":
+"@eslint/js@npm:*, @eslint/js@npm:9.16.0, @eslint/js@npm:^9.15.0":
   version: 9.16.0
   resolution: "@eslint/js@npm:9.16.0"
   checksum: ba2d7f7266df827df72cec069df9284ad5e7edb4894a8c58c41db0d489136b22815dc76cd34cf565284979feb4d3a8197b511e08529c03f30c80b5235d25030b
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:9.15.0":
-  version: 9.15.0
-  resolution: "@eslint/js@npm:9.15.0"
-  checksum: 8b2aa35b62c1969c5e3aa5e33b4e072cc450b95ee9bc08b5a84aa5cbed10a01a9a8f0463b8bb3768ceeb5abfaa82abfb95650061338c3b467835757b62ffc4ba
   languageName: node
   linkType: hard
 
@@ -9904,15 +9897,15 @@ __metadata:
   linkType: hard
 
 "eslint@npm:*, eslint@npm:^9.15.0":
-  version: 9.15.0
-  resolution: "eslint@npm:9.15.0"
+  version: 9.16.0
+  resolution: "eslint@npm:9.16.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.2.0
     "@eslint-community/regexpp": ^4.12.1
     "@eslint/config-array": ^0.19.0
     "@eslint/core": ^0.9.0
     "@eslint/eslintrc": ^3.2.0
-    "@eslint/js": 9.15.0
+    "@eslint/js": 9.16.0
     "@eslint/plugin-kit": ^0.2.3
     "@humanfs/node": ^0.16.6
     "@humanwhocodes/module-importer": ^1.0.1
@@ -9948,7 +9941,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 50b7e1c4cb49662a54916877d47aeded2aac0cae428c8258ec9d181160ca893681a32c69df359404bfb81a9693480896adbcd8a18fa5acafd1c933dc1030f32e
+  checksum: d7b77caed2e319dba9bdf5fd3275c643332e4c79fcfe62cf19031fc430c27fe691daa718474d29a1050b83348085f8df50e04f260e081e5b1fbee1d2ca9c5c74
   languageName: node
   linkType: hard
 
