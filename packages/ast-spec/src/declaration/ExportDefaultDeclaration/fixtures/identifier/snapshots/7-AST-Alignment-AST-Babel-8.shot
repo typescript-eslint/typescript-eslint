@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportDefaultDeclaration identifier AST Alignment - AST (Babel 8) 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExportDefaultDeclaration {
+        type: 'ExportDefaultDeclaration',
+        declaration: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'x',
+-         optional: false,
+
+          range: [15, 16],
+          loc: {
+            start: { column: 15, line: 1 },
+            end: { column: 16, line: 1 },
+          },
+        },
+        exportKind: 'value',
+
+        range: [0, 17],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 17, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 18],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
+`;
