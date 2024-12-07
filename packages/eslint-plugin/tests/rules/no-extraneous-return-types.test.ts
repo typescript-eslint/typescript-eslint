@@ -495,6 +495,11 @@ function test(): Promise<string> {
   return Promise.resolve(1 as any);
 }
     `,
+    `
+function* test(): string | number {
+  return 1;
+}
+    `,
   ],
 
   invalid: [
