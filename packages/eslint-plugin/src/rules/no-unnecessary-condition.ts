@@ -646,22 +646,32 @@ export default createRule<Options, MessageId>({
           .getCallSignaturesOfType(
             getConstrainedTypeAtLocation(services, callback),
           )
-          .map(sig => sig.getReturnType());
+          .map(sig => sig.getReturnType())
+          .map(t => {
+            if (tsutils.isTypeParameter(t)) {
+              return checker.getBaseConstraintOfType(t);
+            }
+
+            return t;
+          });
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;
         }
         // Predicate is always necessary if it involves `any` or `unknown`
-        if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
+        if (
+          // https://github.com/typescript-eslint/typescript-eslint/issues/10438
+          returnTypes.some(t => !t || isTypeAnyType(t) || isTypeUnknownType(t))
+        ) {
           return;
         }
-        if (!returnTypes.some(isPossiblyFalsy)) {
+        if (!returnTypes.some(t => t && isPossiblyFalsy(t))) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(isPossiblyTruthy)) {
+        if (!returnTypes.some(t => t && isPossiblyTruthy(t))) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',

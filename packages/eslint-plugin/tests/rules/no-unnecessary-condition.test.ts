@@ -287,6 +287,16 @@ function count(
   return list.filter(predicate).length;
 }
     `,
+    `
+declare const test: <T>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+declare const test: <T extends boolean>() => T;
+
+[1, null].filter(test);
+    `,
     // Ignores non-array methods of the same name
     `
 const notArray = {
@@ -1597,6 +1607,14 @@ function nothing3(x: [string, string]) {
         { column: 25, line: 13, messageId: 'alwaysFalsy' },
         { column: 25, line: 17, messageId: 'alwaysFalsy' },
       ],
+    },
+    {
+      code: `
+declare const test: <T extends true>() => T;
+
+[1, null].filter(test);
+      `,
+      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
     },
     // Indexing cases
     {
