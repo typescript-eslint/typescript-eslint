@@ -1,14 +1,17 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { isThenableType } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
+  findVariable,
   getParserServices,
   isErrorLike,
+  isStaticMemberAccessOfValue,
   isTypeAnyType,
   isTypeUnknownType,
   typeMatchesSomeSpecifier,
@@ -22,6 +25,7 @@ type Options = [
     allow?: TypeOrValueSpecifier[];
     allowThrowingAny?: boolean;
     allowThrowingUnknown?: boolean;
+    allowRethrowing?: boolean;
   },
 ];
 
@@ -48,6 +52,10 @@ export default createRule<Options, MessageIds>({
             ...typeOrValueSpecifiersSchema,
             description: 'Type specifiers that can be thrown.',
           },
+          allowRethrowing: {
+            type: 'boolean',
+            description: 'Whether to allow rethrowing caught values',
+          },
           allowThrowingAny: {
             type: 'boolean',
             description:
@@ -65,6 +73,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allow: [],
+      allowRethrowing: true,
       allowThrowingAny: true,
       allowThrowingUnknown: true,
     },
@@ -72,11 +81,113 @@ export default createRule<Options, MessageIds>({
   create(context, [options]) {
     const services = getParserServices(context);
     const allow = options.allow;
+
+    function isRethrownError(node: TSESTree.Node): boolean {
+      if (node.type !== AST_NODE_TYPES.Identifier) {
+        return false;
+      }
+
+      const scope = context.sourceCode.getScope(node);
+      const functionScope = scope.variableScope;
+
+      const smVariable = findVariable(scope, node.name);
+
+      if (smVariable == null) {
+        return false;
+      }
+      const variableDefinitions = smVariable.defs.filter(
+        def => def.isVariableDefinition,
+      );
+      if (variableDefinitions.length !== 1) {
+        return false;
+      }
+      const def = smVariable.defs[0];
+
+      if (def.node.type === AST_NODE_TYPES.CatchClause) {
+        const isCatchClauseInSameFunctionScope =
+          context.sourceCode.getScope(def.node).variableScope === functionScope;
+        return isCatchClauseInSameFunctionScope;
+      }
+
+      if (
+        def.node.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+        def.node.params.length >= 1 &&
+        def.node.params[0] === def.name &&
+        def.node.parent.type === AST_NODE_TYPES.CallExpression
+      ) {
+        const callExpression = def.node.parent;
+
+        // TODO extract to common code.
+        // promise.catch(x => { throw x; })
+        if (callExpression.arguments.length >= 1) {
+          const firstArgument = callExpression.arguments[0];
+          if (
+            firstArgument.type !== AST_NODE_TYPES.SpreadElement &&
+            firstArgument === def.node
+          ) {
+            const callee = callExpression.callee;
+            if (
+              callee.type === AST_NODE_TYPES.MemberExpression &&
+              isStaticMemberAccessOfValue(callee, context, 'catch')
+            ) {
+              const tsObjectNode = services.esTreeNodeToTSNodeMap.get(
+                callee.object,
+              );
+              if (
+                isThenableType(
+                  services.program.getTypeChecker(),
+                  tsObjectNode as ts.Expression,
+                )
+              ) {
+                return true;
+              }
+            }
+          }
+        }
+
+        // TODO extract to common code.
+        // promise.then(onFulfilled, (x) => { throw x; })
+        if (callExpression.arguments.length >= 2) {
+          const firstTwoArgs = callExpression.arguments.slice(0, 2);
+          if (
+            firstTwoArgs.every(arg => arg.type !== AST_NODE_TYPES.SpreadElement)
+          ) {
+            const secondArg = firstTwoArgs[1];
+            if (secondArg === def.node) {
+              const callee = callExpression.callee;
+              if (
+                callee.type === AST_NODE_TYPES.MemberExpression &&
+                isStaticMemberAccessOfValue(callee, context, 'then')
+              ) {
+                const tsObjectNode = services.esTreeNodeToTSNodeMap.get(
+                  callee.object,
+                );
+                if (
+                  isThenableType(
+                    services.program.getTypeChecker(),
+                    tsObjectNode as ts.Expression,
+                  )
+                ) {
+                  return true;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      return false;
+    }
+
     function checkThrowArgument(node: TSESTree.Node): void {
       if (
         node.type === AST_NODE_TYPES.AwaitExpression ||
         node.type === AST_NODE_TYPES.YieldExpression
       ) {
+        return;
+      }
+
+      if (options.allowRethrowing && isRethrownError(node)) {
         return;
       }
 

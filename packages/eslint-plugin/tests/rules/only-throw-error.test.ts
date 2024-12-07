@@ -189,6 +189,46 @@ throw new Map();
         },
       ],
     },
+    {
+      code: `
+try {
+} catch (e) {
+  throw e;
+}
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+try {
+} catch (eOuter) {
+  try {
+    if (Math.random() > 0.5) {
+      throw eOuter;
+    }
+  } catch (eInner) {
+    if (Math.random() > 0.5) {
+      throw eOuter;
+    } else {
+      throw eInner;
+    }
+  }
+}
+      `,
+      options: [
+        {
+          allowRethrowing: true,
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -548,6 +588,30 @@ throw new UnknownError();
       options: [
         {
           allow: [{ from: 'file', name: 'CustomError' }],
+          allowThrowingAny: false,
+          allowThrowingUnknown: false,
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  try {
+  } catch (e) {
+    function inner() {
+      throw e;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'object',
+        },
+      ],
+      options: [
+        {
+          allowRethrowing: true,
           allowThrowingAny: false,
           allowThrowingUnknown: false,
         },
