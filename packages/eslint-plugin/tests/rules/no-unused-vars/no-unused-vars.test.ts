@@ -1116,6 +1116,58 @@ export const x = _Foo;
         },
       ],
     },
+    {
+      code: `
+const command = (): ParameterDecorator => {
+  return () => {};
+};
+
+export class Foo {
+  bar(@command() command: string) {}
+}
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'command',
+          },
+          line: 7,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
+    {
+      code: `
+declare const deco: () => ParameterDecorator;
+
+export class Foo {
+  bar(@deco() deco, @deco() param) {}
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'deco',
+          },
+          line: 5,
+          messageId: 'unusedVar',
+        },
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'param',
+          },
+          line: 5,
+          messageId: 'unusedVar',
+        },
+      ],
+    },
   ],
 
   valid: [
@@ -2274,5 +2326,16 @@ export enum Foo {
       `,
       options: [{ reportUsedIgnorePattern: true, varsIgnorePattern: '_' }],
     },
+    `
+const command = (): ParameterDecorator => {
+  return () => {};
+};
+
+export class Foo {
+  bar(@command() command: string) {
+    console.log(command);
+  }
+}
+    `,
   ],
 });
