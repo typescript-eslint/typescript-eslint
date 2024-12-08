@@ -136,7 +136,7 @@ function isTypeReadonlyObject(
     for (const property of properties) {
       if (options.treatMethodsAsReadonly) {
         if (
-          property.valueDeclaration !== undefined &&
+          property.valueDeclaration != null &&
           hasSymbol(property.valueDeclaration) &&
           tsutils.isSymbolFlagSet(
             property.valueDeclaration.symbol,
@@ -148,11 +148,11 @@ function isTypeReadonlyObject(
 
         const declarations = property.getDeclarations();
         const lastDeclaration =
-          declarations !== undefined && declarations.length > 0
+          declarations != null && declarations.length > 0
             ? declarations[declarations.length - 1]
             : undefined;
         if (
-          lastDeclaration !== undefined &&
+          lastDeclaration != null &&
           hasSymbol(lastDeclaration) &&
           tsutils.isSymbolFlagSet(lastDeclaration.symbol, ts.SymbolFlags.Method)
         ) {

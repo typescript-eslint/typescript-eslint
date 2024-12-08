@@ -42,7 +42,7 @@ export default createRule({
         const seenValues = new Set<number | string>();
 
         enumMembers.forEach(member => {
-          if (member.initializer === undefined) {
+          if (member.initializer == null) {
             return;
           }
 
@@ -53,7 +53,7 @@ export default createRule({
             value = Number(member.initializer.value);
           }
 
-          if (value === undefined) {
+          if (value == null) {
             return;
           }
 

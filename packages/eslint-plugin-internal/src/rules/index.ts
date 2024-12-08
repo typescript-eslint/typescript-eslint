@@ -1,5 +1,6 @@
 import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 
+import eqeqNullish from './eqeq-nullish';
 import noPoorlyTypedTsProps from './no-poorly-typed-ts-props';
 import noRelativePathsToInternalPackages from './no-relative-paths-to-internal-packages';
 import noTypescriptDefaultImport from './no-typescript-default-import';
@@ -8,6 +9,7 @@ import pluginTestFormatting from './plugin-test-formatting';
 import preferASTTypesEnum from './prefer-ast-types-enum';
 
 export default {
+  'eqeq-nullish': eqeqNullish,
   'no-poorly-typed-ts-props': noPoorlyTypedTsProps,
   'no-relative-paths-to-internal-packages': noRelativePathsToInternalPackages,
   'no-typescript-default-import': noTypescriptDefaultImport,

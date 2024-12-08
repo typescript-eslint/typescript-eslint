@@ -63,6 +63,7 @@ const serializer: NewPlugin = {
 
     for (const key of keys) {
       const value = node[key];
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- intentional strict equality
       if (value === undefined) {
         continue;
       }

@@ -138,7 +138,7 @@ export default createRule({
       // }
       for (const imported of imports) {
         const typeFromImported = getTypeFromImported(imported);
-        if (typeFromImported !== undefined) {
+        if (typeFromImported != null) {
           return typeFromImported;
         }
       }

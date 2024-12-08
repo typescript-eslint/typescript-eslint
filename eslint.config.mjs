@@ -188,6 +188,7 @@ export default tseslint.config(
       // Internal repo rules
       //
 
+      '@typescript-eslint/internal/eqeq-nullish': 'error',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
       '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
         'error',

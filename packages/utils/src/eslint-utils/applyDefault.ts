@@ -21,6 +21,7 @@ function applyDefault<User extends readonly unknown[], Default extends User>(
   // For avoiding the type error
   //   `This expression is not callable. Type 'unknown' has no call signatures.ts(2349)`
   (options as unknown[]).forEach((opt: unknown, i: number) => {
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];
 

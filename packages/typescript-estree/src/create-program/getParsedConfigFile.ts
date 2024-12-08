@@ -16,7 +16,7 @@ function getParsedConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.ParsedCommandLine {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/internal/eqeq-nullish
   if (tsserver.sys === undefined) {
     throw new Error(
       '`getParsedConfigFile` is only supported in a Node-like environment.',

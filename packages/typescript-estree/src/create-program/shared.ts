@@ -67,7 +67,7 @@ type CanonicalPath = { __brand: unknown } & string;
 
 // typescript doesn't provide a ts.sys implementation for browser environments
 const useCaseSensitiveFileNames =
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/internal/eqeq-nullish
   ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
 const correctPathCasing = useCaseSensitiveFileNames
   ? (filePath: string): string => filePath

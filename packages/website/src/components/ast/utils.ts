@@ -214,6 +214,7 @@ export function filterProperties(
   showTokens?: boolean,
 ): boolean {
   if (
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- I don't know whether this is safe to fix
     value === undefined ||
     typeof value === 'function' ||
     key.startsWith('_')

@@ -40,7 +40,7 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
         }
       : null,
     filter:
-      option.filter !== undefined
+      option.filter != null
         ? typeof option.filter === 'string'
           ? {
               match: true,
@@ -53,14 +53,14 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
         : null,
     format: option.format ? option.format.map(f => PredefinedFormats[f]) : null,
     leadingUnderscore:
-      option.leadingUnderscore !== undefined
+      option.leadingUnderscore != null
         ? UnderscoreOptions[option.leadingUnderscore]
         : null,
     modifiers: option.modifiers?.map(m => Modifiers[m]) ?? null,
     prefix: option.prefix && option.prefix.length > 0 ? option.prefix : null,
     suffix: option.suffix && option.suffix.length > 0 ? option.suffix : null,
     trailingUnderscore:
-      option.trailingUnderscore !== undefined
+      option.trailingUnderscore != null
         ? UnderscoreOptions[option.trailingUnderscore]
         : null,
     types: option.types?.map(m => TypeModifiers[m]) ?? null,

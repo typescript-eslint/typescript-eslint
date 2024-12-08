@@ -18,7 +18,7 @@ import { isNullLiteral } from './isNullLiteral';
 export function getStaticStringValue(node: TSESTree.Node): string | null {
   switch (node.type) {
     case AST_NODE_TYPES.Literal:
-      // eslint-disable-next-line eqeqeq -- intentional strict comparison for literal value
+      // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish -- intentional strict comparison for literal value
       if (node.value === null) {
         if (isNullLiteral(node)) {
           return String(node.value); // "null"
