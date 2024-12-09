@@ -336,7 +336,7 @@ class ClassScope {
 
     if (
       this.onlyInlineLambdas &&
-      node.initializer !== undefined &&
+      node.initializer != null &&
       !ts.isArrowFunction(node.initializer)
     ) {
       return;

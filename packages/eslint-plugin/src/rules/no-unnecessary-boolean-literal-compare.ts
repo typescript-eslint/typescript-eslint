@@ -197,7 +197,7 @@ export default createRule<Options, MessageIds>({
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
-        if (comparison === undefined) {
+        if (comparison == null) {
           return;
         }
 
