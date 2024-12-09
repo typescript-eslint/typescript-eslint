@@ -113,7 +113,7 @@ export default createRule<[], MessageIds>({
           return collectFlaggedNodes(
             nullThrows(
               node.expressions.at(-1),
-              'seuence expression must have multiple expressions',
+              'sequence expression must have multiple expressions',
             ),
           );
         case AST_NODE_TYPES.ConditionalExpression:
