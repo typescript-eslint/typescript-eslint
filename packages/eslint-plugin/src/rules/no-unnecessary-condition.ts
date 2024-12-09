@@ -183,7 +183,7 @@ export type MessageId =
   | 'alwaysNullish'
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
-  | 'literalBooleanExpression'
+  | 'comparisonBetweenLiteralTypes'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -211,8 +211,8 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
-        'Unnecessary conditional, comparison is always {{trueOrFalse}}. Both sides of the comparison always have a literal type.',
+      comparisonBetweenLiteralTypes:
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}, since `{{left}} {{operator}} {{right}}` is {{trueOrFalse}}.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
@@ -489,8 +489,11 @@ export default createRule<Options, MessageId>({
 
         context.report({
           node,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
           data: {
+            left: valueOfLiteralTypeToExpression(leftStaticValue.value),
+            operator,
+            right: valueOfLiteralTypeToExpression(rightStaticValue.value),
             trueOrFalse: conditionIsTrue ? 'true' : 'false',
           },
         });
@@ -892,3 +895,26 @@ export default createRule<Options, MessageId>({
     };
   },
 });
+
+/**
+ * Converts a value to its source code representation as a literal. It's
+ * assumed that the input is a primitive that has such a representation.
+ *
+ * @example
+ * null => 'null'
+ * undefined => 'undefined'
+ * true => 'true'
+ * 42n => '42n'
+ * 'foo' => '"foo"'
+ * 23 => '23'
+ */
+function valueOfLiteralTypeToExpression(value: unknown): string {
+  if (typeof value === 'bigint') {
+    return `${value}n`;
+  }
+  if (value === undefined) {
+    return 'undefined';
+  }
+  // covers null, boolean, number, string
+  return JSON.stringify(value);
+}
