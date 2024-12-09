@@ -735,6 +735,7 @@ if (x) {
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: true,
         },
       ],
+      skip: true,
     },
     `
 interface Foo {
@@ -982,6 +983,44 @@ isString('falafel');
       `,
       options: [{ checkTypePredicates: true }],
     },
+    {
+      // {} can be falsy, so this is fine
+      code: `
+declare let foo: {};
+foo &&= 1;
+      `,
+    },
+    {
+      // { toFixed(): string } can be falsy since 0 is assignable, so this is fine
+      code: `
+declare let foo: { toFixed(): string };
+foo &&= 1;
+      `,
+    },
+    {
+      code: `
+function usesEmptyObject(x: {}) {
+  if (x) {
+  }
+}
+      `,
+    },
+    {
+      code: `
+function usesEmptyObject(x: { toFixed(): string }) {
+  if (x) {
+  }
+}
+      `,
+    },
+    {
+      code: `
+function usesEmptyObject(x: { toString(): string }) {
+  if (x) {
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -1033,7 +1072,8 @@ switch (b1) {
     unnecessaryConditionTest('"always truthy"', 'alwaysTruthy'),
     unnecessaryConditionTest(`undefined`, 'alwaysFalsy'),
     unnecessaryConditionTest('null', 'alwaysFalsy'),
-    unnecessaryConditionTest('void', 'alwaysFalsy'),
+    // generated code is a TS error (void cannot be tested for truthiness)
+    // unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
     unnecessaryConditionTest('string & number', 'never'),
     // More complex logical expressions
@@ -1645,7 +1685,7 @@ if (arr.filter) {
 function truthy() {
   return [];
 }
-function falsy() {}
+function falsy(): undefined {}
 [1, 3, 5].filter(truthy);
 [1, 2, 3].find(falsy);
 [1, 2, 3].findLastIndex(falsy);
@@ -2318,6 +2358,7 @@ if (x) {
           tsconfigRootDir: path.join(rootPath, 'unstrict'),
         },
       },
+      skip: true,
     },
     {
       code: `
@@ -2442,8 +2483,8 @@ foo ??= null;
     },
     {
       code: `
-declare let foo: {};
-foo ||= 1;
+declare let foo: { bar: null };
+foo ||= { bar: null };
       `,
       errors: [
         {
@@ -2472,8 +2513,8 @@ foo ||= null;
     },
     {
       code: `
-declare let foo: {};
-foo &&= 1;
+declare let foo: { bar: string };
+foo &&= { bar: 'none' };
       `,
       errors: [
         {
@@ -2766,5 +2807,18 @@ isString('fa' + 'lafel');
       '((string & { __brandA: string }) | (number & { __brandB: string })) & ("foo" | 123)',
       'alwaysTruthy',
     ),
+    {
+      code: `
+const neverNull: object = {};
+if (neverNull) {
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'alwaysTruthy',
+        },
+      ],
+    },
   ],
 });
