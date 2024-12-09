@@ -4,6 +4,7 @@
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "docs",
     "eslint-recommended-raw.d.ts",
     "index.d.ts",
@@ -57,7 +58,7 @@
     "lint": "npx nx lint",
     "test": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --coverage --logHeapUsage",
     "test-single": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --no-coverage",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.10.0",

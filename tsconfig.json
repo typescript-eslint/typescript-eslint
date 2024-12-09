@@ -1,21 +1,23 @@
 {
-  "compilerOptions": {
-    "types": ["@types/node"],
-    "noEmit": true,
-    "allowJs": true,
-    "allowImportingTsExtensions": true
-  },
   "extends": "./tsconfig.base.json",
-  "include": [
-    "typings",
-    "tools/**/*.ts",
-    "tools/**/*.mts",
-    "eslint.config.js",
-    "eslint.config.mjs",
-    "jest.config.base.js",
-    "jest.config.js",
-    "jest.preset.js",
-    "knip.ts",
-    ".github/**/*.js"
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    { "path": "./packages/ast-spec" },
+    { "path": "./packages/eslint-plugin" },
+    { "path": "./packages/eslint-plugin-internal" },
+    { "path": "./packages/integration-tests" },
+    { "path": "./packages/parser" },
+    { "path": "./packages/rule-schema-to-typescript-types" },
+    { "path": "./packages/rule-tester" },
+    { "path": "./packages/scope-manager" },
+    { "path": "./packages/types" },
+    { "path": "./packages/typescript-eslint" },
+    { "path": "./packages/typescript-estree" },
+    { "path": "./packages/type-utils" },
+    { "path": "./packages/utils" },
+    { "path": "./packages/visitor-keys" },
+    { "path": "./packages/website" },
+    { "path": "./packages/website-eslint" }
   ]
 }

@@ -4,6 +4,7 @@
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "_ts4.3",
     "package.json",
     "README.md",
@@ -44,7 +45,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.17.0",

@@ -4,6 +4,7 @@
   "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "_ts4.2",
     "README.md",
     "LICENSE"
@@ -44,7 +45,7 @@
     "pretest-eslint-base": "tsc -b tsconfig.build.json",
     "test-eslint-base": "mocha --require source-map-support/register ./tests/eslint-base/eslint-base.test.js",
     "test": "npx jest --coverage",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
   "dependencies": {

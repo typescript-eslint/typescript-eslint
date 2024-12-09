@@ -1,8 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/scope-manager",
+    "outDir": "../../dist/out-tsc/packages/typescript-estree",
     "module": "NodeNext",
+    "resolveJsonModule": true,
     "types": ["jest", "node"]
   },
   "include": [
@@ -12,7 +13,7 @@
     "src/**/*.d.ts",
     "tests"
   ],
-  "exclude": ["**/fixtures/**", "tests/eslint-scope"],
+  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"

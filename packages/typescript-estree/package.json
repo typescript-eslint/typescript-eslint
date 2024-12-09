@@ -4,6 +4,7 @@
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "_ts4.3",
     "README.md",
     "LICENSE"
@@ -51,7 +52,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage --runInBand --verbose",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.17.0",

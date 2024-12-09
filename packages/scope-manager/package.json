@@ -4,6 +4,7 @@
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "package.json",
     "README.md",
     "LICENSE"
@@ -43,7 +44,7 @@
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "npx nx test --code-coverage",
-    "typecheck": "npx nx typecheck"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.17.0",

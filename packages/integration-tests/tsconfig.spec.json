@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc/packages/scope-manager",
+    "outDir": "../../dist/out-tsc/packages/integration-tests",
     "module": "NodeNext",
     "types": ["jest", "node"]
   },
@@ -10,12 +10,9 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
-    "tests"
+    "tests",
+    "tools",
+    "typings"
   ],
-  "exclude": ["**/fixtures/**", "tests/eslint-scope"],
-  "references": [
-    {
-      "path": "./tsconfig.build.json"
-    }
-  ]
+  "references": []
 }

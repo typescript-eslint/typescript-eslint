@@ -4,6 +4,7 @@
   "description": "Tooling which enables you to use TypeScript with ESLint",
   "files": [
     "dist",
+    "!*.tsbuildinfo",
     "_ts4.3",
     "README.md",
     "LICENSE"
@@ -49,7 +50,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage --passWithNoTests",
-    "typecheck": "tsc --noEmit"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "8.17.0",

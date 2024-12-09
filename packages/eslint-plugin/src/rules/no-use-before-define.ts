@@ -203,7 +203,7 @@ function isInInitializer(
   return false;
 }
 
-interface Config {
+export interface Config {
   allowNamedExports?: boolean;
   classes?: boolean;
   enums?: boolean;
