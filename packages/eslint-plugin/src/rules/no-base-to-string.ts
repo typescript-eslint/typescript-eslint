@@ -140,6 +140,28 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
+    function collectTupleCertainty(type: ts.TypeReference): Usefulness {
+      const typeArgs = checker.getTypeArguments(type);
+      const certainties = typeArgs.map(t => collectToStringCertainty(t));
+      if (certainties.some(certainty => certainty === Usefulness.Never)) {
+        return Usefulness.Never;
+      }
+
+      if (certainties.some(certainty => certainty === Usefulness.Sometimes)) {
+        return Usefulness.Sometimes;
+      }
+
+      return Usefulness.Always;
+    }
+
+    function collectArrayCertainty(type: ts.Type): Usefulness {
+      const elemType = nullThrows(
+        type.getNumberIndexType(),
+        'array should have number index type',
+      );
+      return collectToStringCertainty(elemType);
+    }
+
     function collectJoinCertainty(type: ts.Type): Usefulness {
       if (tsutils.isUnionType(type)) {
         return collectUnionTypeCertainty(type, collectJoinCertainty);
@@ -150,25 +172,11 @@ export default createRule<Options, MessageIds>({
       }
 
       if (checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
-        const certainties = typeArgs.map(t => collectToStringCertainty(t));
-        if (certainties.some(certainty => certainty === Usefulness.Never)) {
-          return Usefulness.Never;
-        }
-
-        if (certainties.some(certainty => certainty === Usefulness.Sometimes)) {
-          return Usefulness.Sometimes;
-        }
-
-        return Usefulness.Always;
+        return collectTupleCertainty(type);
       }
 
       if (checker.isArrayType(type)) {
-        const elemType = nullThrows(
-          type.getNumberIndexType(),
-          'array should have number index type',
-        );
-        return collectToStringCertainty(elemType);
+        return collectArrayCertainty(type);
       }
 
       return Usefulness.Always;
@@ -183,6 +191,14 @@ export default createRule<Options, MessageIds>({
         }
         // unconstrained generic means `unknown`
         return Usefulness.Always;
+      }
+
+      if (checker.isTupleType(type)) {
+        return collectTupleCertainty(type);
+      }
+
+      if (checker.isArrayType(type)) {
+        return collectArrayCertainty(type);
       }
 
       // the Boolean type definition missing toString()
@@ -227,7 +243,8 @@ export default createRule<Options, MessageIds>({
       const declaration = declarations[0];
       const isBaseToString =
         ts.isInterfaceDeclaration(declaration.parent) &&
-        declaration.parent.name.text === 'Object';
+        (declaration.parent.name.text === 'Object' ||
+          declaration.parent.name.text === 'Array');
       return isBaseToString ? Usefulness.Never : Usefulness.Always;
     }
 
