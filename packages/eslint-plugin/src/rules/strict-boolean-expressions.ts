@@ -12,7 +12,9 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
+  isArrayMethodCallWithPredicate,
   isTypeArrayTypeOrUnionOfArrayTypes,
+  nullThrows,
 } from '../util';
 import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
@@ -53,7 +55,10 @@ export type MessageId =
   | 'conditionFixDefaultEmptyString'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultZero'
-  | 'noStrictNullCheck';
+  | 'explicitBooleanReturnType'
+  | 'noStrictNullCheck'
+  | 'predicateCannotBeAsync'
+  | 'predicateReturnsNonBoolean';
 
 export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -122,8 +127,13 @@ export default createRule<Options, MessageId>({
         'Explicitly treat nullish value the same as false (`value ?? false`)',
       conditionFixDefaultZero:
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
+      explicitBooleanReturnType:
+        'Add an explicit boolean return type annotation.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      predicateCannotBeAsync:
+        "Predicate function should not be 'async'; expected a boolean return type.",
+      predicateReturnsNonBoolean: 'Predicate function should return a boolean.',
     },
     schema: [
       {
@@ -232,6 +242,88 @@ export default createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
+    function isBooleanType(expressionType: ts.Type): boolean {
+      return tsutils.isTypeFlagSet(
+        expressionType,
+        ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
+      );
+    }
+
+    function isTypeParameter(type: ts.Type): boolean {
+      // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
+      return (tsutils.isTypeParameter as (type: ts.Type) => boolean)(type);
+    }
+
+    function isParameterAssignableTo(
+      parameter: ts.Symbol,
+      expected: ts.Type,
+    ): boolean {
+      const parameterType = checker.getTypeOfSymbol(parameter);
+
+      const constrained = isTypeParameter(parameterType)
+        ? checker.getBaseConstraintOfType(parameterType)
+        : parameterType;
+
+      // treat a type parameter without constraint as `unknown`
+      if (!constrained) {
+        return true;
+      }
+
+      return checker.isTypeAssignableTo(expected, constrained);
+    }
+
+    /**
+     * Returns the call signatures that match the type of an array predicate function
+     * for an array of type `type`.
+     */
+    function getMatchingArrayPredicateSignatures(
+      type: ts.Type,
+      arrayNode: TSESTree.Expression,
+    ): ts.Signature[] {
+      const [arrayType] = checker.getTypeArguments(
+        getConstrainedTypeAtLocation(services, arrayNode) as ts.TypeReference,
+      );
+
+      const signatures: ts.Signature[] = [];
+
+      for (const signature of type.getCallSignatures()) {
+        const parameters = signature.getParameters();
+
+        const valueParameter = parameters.at(0);
+
+        // value parameter should match the array's type
+        if (
+          valueParameter &&
+          !isParameterAssignableTo(valueParameter, arrayType)
+        ) {
+          continue;
+        }
+
+        const indexParameter = parameters.at(1);
+
+        // index parameter should match the number type
+        if (
+          indexParameter &&
+          !isParameterAssignableTo(indexParameter, checker.getNumberType())
+        ) {
+          continue;
+        }
+
+        signatures.push(signature);
+      }
+
+      return signatures;
+    }
+
+    function isFunctionExpressionNode(
+      node: TSESTree.CallExpressionArgument,
+    ): node is TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression {
+      return (
+        node.type === AST_NODE_TYPES.FunctionExpression ||
+        node.type === AST_NODE_TYPES.ArrowFunctionExpression
+      );
+    }
+
     /**
      * Inspects condition of a test expression. (`if`, `while`, `for`, etc.)
      */
@@ -275,6 +367,105 @@ export default createRule<Options, MessageId>({
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
       }
+      if (isArrayMethodCallWithPredicate(context, services, node)) {
+        const predicate = node.arguments.at(0);
+        const arrayNode = (node.callee as TSESTree.MemberExpression).object;
+
+        if (predicate) {
+          checkArrayMethodCallPredicate(predicate, arrayNode);
+        }
+      }
+    }
+
+    /**
+     * Dedicated function to check array method predicate calls. Reports predicate
+     * arguments that don't return a boolean value.
+     *
+     * Ignores the `allow*` options and requires a boolean value.
+     */
+    function checkArrayMethodCallPredicate(
+      predicateNode: TSESTree.CallExpressionArgument,
+      arrayNode: TSESTree.Expression,
+    ): void {
+      const isFunctionExpression = isFunctionExpressionNode(predicateNode);
+
+      // custom message for accidental `async` function expressions
+      if (isFunctionExpression && predicateNode.async) {
+        return context.report({
+          node: predicateNode,
+          messageId: 'predicateCannotBeAsync',
+        });
+      }
+
+      const type = checker.getApparentType(
+        services.getTypeAtLocation(predicateNode),
+      );
+
+      const signatures = isFunctionExpression
+        ? type.getCallSignatures()
+        : getMatchingArrayPredicateSignatures(type, arrayNode);
+
+      if (
+        signatures.every(signature =>
+          tsutils
+            .unionTypeParts(signature.getReturnType())
+            .every(isBooleanType),
+        )
+      ) {
+        return;
+      }
+
+      const canFix = isFunctionExpression && !predicateNode.returnType;
+
+      return context.report({
+        node: predicateNode,
+        messageId: 'predicateReturnsNonBoolean',
+        suggest: canFix
+          ? [
+              {
+                messageId: 'explicitBooleanReturnType',
+                fix: fixer => {
+                  const lastParam = predicateNode.params.at(-1);
+
+                  // zero parameters
+                  if (!lastParam) {
+                    const closingBracket = nullThrows(
+                      context.sourceCode.getFirstToken(
+                        predicateNode,
+                        token => token.value === ')',
+                      ),
+                      'function expression with no arguments must have a closing parenthesis.',
+                    );
+
+                    return fixer.insertTextAfterRange(
+                      closingBracket.range,
+                      ': boolean',
+                    );
+                  }
+
+                  const closingBracket =
+                    context.sourceCode.getTokenAfter(lastParam);
+
+                  // one or more parameters wrapped with parens
+                  if (closingBracket?.value === ')') {
+                    return fixer.insertTextAfterRange(
+                      closingBracket.range,
+                      ': boolean',
+                    );
+                  }
+
+                  // one param not wrapped with parens
+                  const parameterText = context.sourceCode.getText(lastParam);
+
+                  return fixer.replaceText(
+                    lastParam,
+                    `(${parameterText}): boolean`,
+                  );
+                },
+              },
+            ]
+          : null,
+      });
     }
 
     /**
