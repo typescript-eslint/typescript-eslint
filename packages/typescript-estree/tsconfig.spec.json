@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc/packages/typescript-estree",
     "module": "NodeNext",
+    "resolveJsonModule": true,
     "types": ["jest", "node"]
   },
   "include": [
