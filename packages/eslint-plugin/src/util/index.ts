@@ -1,11 +1,16 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
 
+export * from './addBracesToArrowFix';
 export * from './astUtils';
 export * from './collectUnusedVariables';
 export * from './createRule';
+export * from './discardReturnValueFix';
+export * from './getBaseTypesOfClassMember';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
+export * from './getNameFromExpression';
 export * from './getOperatorPrecedence';
+export * from './getRangeWithParens';
 export * from './getStaticStringValue';
 export * from './getStringLength';
 export * from './getTextWithParentheses';
@@ -23,6 +28,7 @@ export * from './objectIterators';
 export * from './needsToBeAwaited';
 export * from './scopeUtils';
 export * from './types';
+export * from './walkStatements';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
