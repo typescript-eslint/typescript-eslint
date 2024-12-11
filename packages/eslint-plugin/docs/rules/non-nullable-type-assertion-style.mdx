@@ -1,5 +1,5 @@
 ---
-description: 'Enforce non-null assertions over explicit type casts.'
+description: 'Enforce non-null assertions over explicit type assertions.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -15,7 +15,7 @@ There are two common ways to assert to TypeScript that a value is its type witho
 - `as`: Traditional type assertion with a coincidentally equivalent type
 
 `!` non-null assertions are generally preferred for requiring less code and being harder to fall out of sync as types change.
-This rule reports when an `as` cast is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
+This rule reports when an `as` assertion is doing the same job as a `!` would, and suggests fixing the code to be an `!`.
 
 ## Examples
 
