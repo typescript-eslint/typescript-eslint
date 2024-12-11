@@ -5,7 +5,10 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule, isParenthesized, nullThrows } from '../util';
 
-type MessageIds = 'preferIndexSignature' | 'preferRecord';
+type MessageIds =
+  | 'preferIndexSignature'
+  | 'preferIndexSignatureSuggestion'
+  | 'preferRecord';
 type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
@@ -17,8 +20,11 @@ export default createRule<Options, MessageIds>({
       recommended: 'stylistic',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       preferIndexSignature: 'An index signature is preferred over a record.',
+      preferIndexSignatureSuggestion:
+        'Change into an index signature instead of a record.',
       preferRecord: 'A record is preferred over an index signature.',
     },
     schema: [
@@ -113,14 +119,37 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const indexParam = params[0];
+
+          const shouldAutoFix =
+            indexParam.type === AST_NODE_TYPES.TSStringKeyword ||
+            indexParam.type === AST_NODE_TYPES.TSNumberKeyword ||
+            indexParam.type === AST_NODE_TYPES.TSSymbolKeyword;
+
+          const fix: TSESLint.ReportFixFunction = fixer => {
+            const key = context.sourceCode.getText(params[0]);
+            const type = context.sourceCode.getText(params[1]);
+            return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
+          };
+
           context.report({
             node,
             messageId: 'preferIndexSignature',
-            fix(fixer) {
-              const key = context.sourceCode.getText(params[0]);
-              const type = context.sourceCode.getText(params[1]);
-              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
-            },
+            fix: shouldAutoFix
+              ? fixer => {
+                  const key = context.sourceCode.getText(params[0]);
+                  const type = context.sourceCode.getText(params[1]);
+                  return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
+                }
+              : null,
+            suggest: shouldAutoFix
+              ? null
+              : [
+                  {
+                    messageId: 'preferIndexSignatureSuggestion',
+                    fix,
+                  },
+                ],
           });
         },
       }),
