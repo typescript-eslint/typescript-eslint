@@ -161,8 +161,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-method AST Alignment - A
 -               range: [107, 115],
 +               range: [110, 115],
                 loc: {
--                 start: { column: 5, line: 5 },
-+                 start: { column: 8, line: 5 },
+                  start: { column: 5, line: 5 },
                   end: { column: 13, line: 5 },
                 },
               },

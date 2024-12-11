@@ -10,42 +10,33 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
     body: Array [
       TSModuleDeclaration {
         type: 'TSModuleDeclaration',
--       body: TSModuleBlock {
--         type: 'TSModuleBlock',
--         body: Array [],
--
--         range: [26, 28],
--         loc: {
--           start: { column: 26, line: 1 },
--           end: { column: 28, line: 1 },
--         },
--       },
--       declare: true,
--       global: false,
--       id: TSQualifiedName {
--         type: 'TSQualifiedName',
--         left: Identifier {
--           type: 'Identifier',
--           decorators: Array [],
--           name: 'abd',
--           optional: false,
-+       body: TSModuleDeclaration {
-+         type: 'TSModuleDeclaration',
-+         body: TSModuleBlock {
-+           type: 'TSModuleBlock',
-+           body: Array [],
+        body: TSModuleBlock {
+          type: 'TSModuleBlock',
+          body: Array [],
 
--           range: [18, 21],
-+           range: [26, 28],
+          range: [26, 28],
+          loc: {
+            start: { column: 26, line: 1 },
+            end: { column: 28, line: 1 },
+          },
+        },
+        declare: true,
+-       global: false,
+        id: TSQualifiedName {
+          type: 'TSQualifiedName',
+          left: Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'abd',
+-           optional: false,
+
+            range: [18, 21],
             loc: {
--             start: { column: 18, line: 1 },
--             end: { column: 21, line: 1 },
-+             start: { column: 26, line: 1 },
-+             end: { column: 28, line: 1 },
+              start: { column: 18, line: 1 },
+              end: { column: 21, line: 1 },
             },
           },
--         right: Identifier {
-+         id: Identifier {
+          right: Identifier {
             type: 'Identifier',
 -           decorators: Array [],
             name: 'def',
@@ -58,23 +49,10 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
             },
           },
 
--         range: [18, 25],
-+         range: [22, 28],
-+         loc: {
-+           start: { column: 22, line: 1 },
-+           end: { column: 28, line: 1 },
-+         },
-+       },
-+       declare: true,
-+       id: Identifier {
-+         type: 'Identifier',
-+         name: 'abd',
-+
-+         range: [18, 21],
+          range: [18, 25],
           loc: {
             start: { column: 18, line: 1 },
--           end: { column: 25, line: 1 },
-+           end: { column: 21, line: 1 },
+            end: { column: 25, line: 1 },
           },
         },
         kind: 'namespace',

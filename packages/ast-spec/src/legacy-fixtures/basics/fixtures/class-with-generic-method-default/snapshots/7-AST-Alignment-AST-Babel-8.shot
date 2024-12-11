@@ -112,8 +112,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method-default A
 -               range: [93, 107],
 +               range: [102, 107],
                 loc: {
--                 start: { column: 8, line: 4 },
-+                 start: { column: 17, line: 4 },
+                  start: { column: 8, line: 4 },
                   end: { column: 22, line: 4 },
                 },
               },

@@ -48,8 +48,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
             end: { column: 34, line: 3 },
           },
         },
--       superTypeArguments: TSTypeParameterInstantiation {
-+       superTypeParameters: TSTypeParameterInstantiation {
+        superTypeArguments: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {

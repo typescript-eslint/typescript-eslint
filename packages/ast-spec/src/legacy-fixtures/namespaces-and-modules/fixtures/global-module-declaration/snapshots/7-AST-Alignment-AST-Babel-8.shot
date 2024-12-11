@@ -90,7 +90,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-decla
           },
         },
         declare: true,
-        global: true,
+-       global: true,
         id: Identifier {
           type: 'Identifier',
 -         decorators: Array [],

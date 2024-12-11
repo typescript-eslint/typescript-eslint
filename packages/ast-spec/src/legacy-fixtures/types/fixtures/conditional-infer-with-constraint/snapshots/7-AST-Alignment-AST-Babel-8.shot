@@ -110,18 +110,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           },
           trueType: TSTypeReference {
             type: 'TSTypeReference',
--           typeArguments: TSTypeParameterInstantiation {
-+           typeName: Identifier {
-+             type: 'Identifier',
-+             name: 'MustBeNumber',
-+
-+             range: [123, 135],
-+             loc: {
-+               start: { column: 50, line: 3 },
-+               end: { column: 62, line: 3 },
-+             },
-+           },
-+           typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {
@@ -151,18 +140,18 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
               loc: {
                 start: { column: 62, line: 3 },
                 end: { column: 65, line: 3 },
--             },
--           },
--           typeName: Identifier {
--             type: 'Identifier',
+              },
+            },
+            typeName: Identifier {
+              type: 'Identifier',
 -             decorators: Array [],
--             name: 'MustBeNumber',
+              name: 'MustBeNumber',
 -             optional: false,
--
--             range: [123, 135],
--             loc: {
--               start: { column: 50, line: 3 },
--               end: { column: 62, line: 3 },
+
+              range: [123, 135],
+              loc: {
+                start: { column: 50, line: 3 },
+                end: { column: 62, line: 3 },
               },
             },
 
@@ -365,18 +354,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           },
           trueType: TSTypeReference {
             type: 'TSTypeReference',
--           typeArguments: TSTypeParameterInstantiation {
-+           typeName: Identifier {
-+             type: 'Identifier',
-+             name: 'MustBeNumber',
-+
-+             range: [224, 236],
-+             loc: {
-+               start: { column: 4, line: 5 },
-+               end: { column: 16, line: 5 },
-+             },
-+           },
-+           typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {
@@ -408,19 +386,19 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 end: { column: 19, line: 5 },
               },
             },
--           typeName: Identifier {
--             type: 'Identifier',
+            typeName: Identifier {
+              type: 'Identifier',
 -             decorators: Array [],
--             name: 'MustBeNumber',
+              name: 'MustBeNumber',
 -             optional: false,
 
--             range: [224, 236],
--             loc: {
--               start: { column: 4, line: 5 },
--               end: { column: 16, line: 5 },
--             },
--           },
--
+              range: [224, 236],
+              loc: {
+                start: { column: 4, line: 5 },
+                end: { column: 16, line: 5 },
+              },
+            },
+
             range: [224, 239],
             loc: {
               start: { column: 4, line: 5 },
@@ -611,18 +589,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           },
           trueType: TSTypeReference {
             type: 'TSTypeReference',
--           typeArguments: TSTypeParameterInstantiation {
-+           typeName: Identifier {
-+             type: 'Identifier',
-+             name: 'MustBeNumber',
-+
-+             range: [312, 324],
-+             loc: {
-+               start: { column: 4, line: 8 },
-+               end: { column: 16, line: 8 },
-+             },
-+           },
-+           typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {
@@ -652,18 +619,18 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
               loc: {
                 start: { column: 16, line: 8 },
                 end: { column: 19, line: 8 },
--             },
--           },
--           typeName: Identifier {
--             type: 'Identifier',
+              },
+            },
+            typeName: Identifier {
+              type: 'Identifier',
 -             decorators: Array [],
--             name: 'MustBeNumber',
+              name: 'MustBeNumber',
 -             optional: false,
--
--             range: [312, 324],
--             loc: {
--               start: { column: 4, line: 8 },
--               end: { column: 16, line: 8 },
+
+              range: [312, 324],
+              loc: {
+                start: { column: 4, line: 8 },
+                end: { column: 16, line: 8 },
               },
             },
 
@@ -857,18 +824,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           },
           trueType: TSTypeReference {
             type: 'TSTypeReference',
--           typeArguments: TSTypeParameterInstantiation {
-+           typeName: Identifier {
-+             type: 'Identifier',
-+             name: 'MustBeNumber',
-+
-+             range: [400, 412],
-+             loc: {
-+               start: { column: 4, line: 11 },
-+               end: { column: 16, line: 11 },
-+             },
-+           },
-+           typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {
@@ -898,18 +854,18 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
               loc: {
                 start: { column: 16, line: 11 },
                 end: { column: 19, line: 11 },
--             },
--           },
--           typeName: Identifier {
--             type: 'Identifier',
+              },
+            },
+            typeName: Identifier {
+              type: 'Identifier',
 -             decorators: Array [],
--             name: 'MustBeNumber',
+              name: 'MustBeNumber',
 -             optional: false,
--
--             range: [400, 412],
--             loc: {
--               start: { column: 4, line: 11 },
--               end: { column: 16, line: 11 },
+
+              range: [400, 412],
+              loc: {
+                start: { column: 4, line: 11 },
+                end: { column: 16, line: 11 },
               },
             },
 

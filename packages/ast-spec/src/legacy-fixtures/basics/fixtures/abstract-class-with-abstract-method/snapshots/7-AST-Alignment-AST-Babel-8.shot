@@ -55,18 +55,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
--                     typeArguments: TSTypeParameterInstantiation {
-+                     typeName: Identifier {
-+                       type: 'Identifier',
-+                       name: 'Promise',
-+
-+                       range: [139, 146],
-+                       loc: {
-+                         start: { column: 27, line: 4 },
-+                         end: { column: 34, line: 4 },
-+                       },
-+                     },
-+                     typeParameters: TSTypeParameterInstantiation {
+                      typeArguments: TSTypeParameterInstantiation {
                         type: 'TSTypeParameterInstantiation',
                         params: Array [
                           TSStringKeyword {
@@ -84,18 +73,18 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
                         loc: {
                           start: { column: 34, line: 4 },
                           end: { column: 42, line: 4 },
--                       },
--                     },
--                     typeName: Identifier {
--                       type: 'Identifier',
+                        },
+                      },
+                      typeName: Identifier {
+                        type: 'Identifier',
 -                       decorators: Array [],
--                       name: 'Promise',
+                        name: 'Promise',
 -                       optional: false,
--
--                       range: [139, 146],
--                       loc: {
--                         start: { column: 27, line: 4 },
--                         end: { column: 34, line: 4 },
+
+                        range: [139, 146],
+                        loc: {
+                          start: { column: 27, line: 4 },
+                          end: { column: 34, line: 4 },
                         },
                       },
 

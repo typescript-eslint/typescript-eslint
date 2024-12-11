@@ -48,8 +48,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
             end: { column: 44, line: 3 },
           },
         },
--       superTypeArguments: TSTypeParameterInstantiation {
-+       superTypeParameters: TSTypeParameterInstantiation {
+        superTypeArguments: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {
@@ -163,8 +162,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
             end: { column: 13, line: 6 },
           },
         },
--       superTypeArguments: TSTypeParameterInstantiation {
-+       superTypeParameters: TSTypeParameterInstantiation {
+        superTypeArguments: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {

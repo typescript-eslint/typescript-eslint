@@ -46,18 +46,7 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
--               typeArguments: TSTypeParameterInstantiation {
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 name: 'Map',
-+
-+                 range: [92, 95],
-+                 loc: {
-+                   start: { column: 19, line: 3 },
-+                   end: { column: 22, line: 3 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
+                typeArguments: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSSymbolKeyword {
@@ -84,18 +73,18 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
                   loc: {
                     start: { column: 22, line: 3 },
                     end: { column: 38, line: 3 },
--                 },
--               },
--               typeName: Identifier {
--                 type: 'Identifier',
+                  },
+                },
+                typeName: Identifier {
+                  type: 'Identifier',
 -                 decorators: Array [],
--                 name: 'Map',
+                  name: 'Map',
 -                 optional: false,
--
--                 range: [92, 95],
--                 loc: {
--                   start: { column: 19, line: 3 },
--                   end: { column: 22, line: 3 },
+
+                  range: [92, 95],
+                  loc: {
+                    start: { column: 19, line: 3 },
+                    end: { column: 22, line: 3 },
                   },
                 },
 

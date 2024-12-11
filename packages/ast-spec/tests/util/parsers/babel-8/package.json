@@ -5,8 +5,8 @@
   "//3": "has a peerDependency on @babel/core v8. We cannot install both",
   "//4": "versions of @babel/core at the same time in the same package.",
   "dependencies": {
-    "@babel/core": "^8.0.0-0",
-    "@babel/eslint-parser": "^8.0.0-0"
+    "@babel/core": "^8.0.0-alpha.14",
+    "@babel/eslint-parser": "^8.0.0-alpha.14"
   },
   "type": "commonjs"
 }

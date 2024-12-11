@@ -13,42 +13,33 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
 -       attributes: Array [],
         declaration: TSModuleDeclaration {
           type: 'TSModuleDeclaration',
--         body: TSModuleBlock {
--           type: 'TSModuleBlock',
--           body: Array [],
-+         body: TSModuleDeclaration {
-+           type: 'TSModuleDeclaration',
-+           body: TSModuleBlock {
-+             type: 'TSModuleBlock',
-+             body: Array [],
+          body: TSModuleBlock {
+            type: 'TSModuleBlock',
+            body: Array [],
 
--           range: [25, 27],
--           loc: {
--             start: { column: 25, line: 1 },
--             end: { column: 27, line: 1 },
--           },
--         },
+            range: [25, 27],
+            loc: {
+              start: { column: 25, line: 1 },
+              end: { column: 27, line: 1 },
+            },
+          },
 -         declare: false,
 -         global: false,
--         id: TSQualifiedName {
--           type: 'TSQualifiedName',
--           left: Identifier {
--             type: 'Identifier',
+          id: TSQualifiedName {
+            type: 'TSQualifiedName',
+            left: Identifier {
+              type: 'Identifier',
 -             decorators: Array [],
--             name: 'abd',
+              name: 'abd',
 -             optional: false,
--
--             range: [17, 20],
-+             range: [25, 27],
+
+              range: [17, 20],
               loc: {
--               start: { column: 17, line: 1 },
--               end: { column: 20, line: 1 },
-+               start: { column: 25, line: 1 },
-+               end: { column: 27, line: 1 },
+                start: { column: 17, line: 1 },
+                end: { column: 20, line: 1 },
               },
             },
--           right: Identifier {
-+           id: Identifier {
+            right: Identifier {
               type: 'Identifier',
 -             decorators: Array [],
               name: 'def',
@@ -61,22 +52,10 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
               },
             },
 
--           range: [17, 24],
-+           range: [21, 27],
-+           loc: {
-+             start: { column: 21, line: 1 },
-+             end: { column: 27, line: 1 },
-+           },
-+         },
-+         id: Identifier {
-+           type: 'Identifier',
-+           name: 'abd',
-+
-+           range: [17, 20],
+            range: [17, 24],
             loc: {
               start: { column: 17, line: 1 },
--             end: { column: 24, line: 1 },
-+             end: { column: 20, line: 1 },
+              end: { column: 24, line: 1 },
             },
           },
           kind: 'namespace',

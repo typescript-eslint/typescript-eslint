@@ -91,8 +91,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -               range: [18, 32],
 +               range: [27, 32],
                 loc: {
--                 start: { column: 8, line: 2 },
-+                 start: { column: 17, line: 2 },
+                  start: { column: 8, line: 2 },
                   end: { column: 22, line: 2 },
                 },
               },
@@ -201,8 +200,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -               range: [41, 65],
 +               range: [60, 65],
                 loc: {
--                 start: { column: 8, line: 3 },
-+                 start: { column: 27, line: 3 },
+                  start: { column: 8, line: 3 },
                   end: { column: 32, line: 3 },
                 },
               },
@@ -314,8 +312,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -               range: [74, 91],
 +               range: [86, 91],
                 loc: {
--                 start: { column: 8, line: 4 },
-+                 start: { column: 20, line: 4 },
+                  start: { column: 8, line: 4 },
                   end: { column: 25, line: 4 },
                 },
               },

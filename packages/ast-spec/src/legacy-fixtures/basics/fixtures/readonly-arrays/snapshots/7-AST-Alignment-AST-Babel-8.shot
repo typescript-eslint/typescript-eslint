@@ -169,18 +169,7 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
--               typeArguments: TSTypeParameterInstantiation {
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 name: 'ReadonlyArray',
-+
-+                 range: [91, 104],
-+                 loc: {
-+                   start: { column: 18, line: 3 },
-+                   end: { column: 31, line: 3 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
+                typeArguments: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSStringKeyword {
@@ -198,18 +187,18 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                   loc: {
                     start: { column: 31, line: 3 },
                     end: { column: 39, line: 3 },
--                 },
--               },
--               typeName: Identifier {
--                 type: 'Identifier',
+                  },
+                },
+                typeName: Identifier {
+                  type: 'Identifier',
 -                 decorators: Array [],
--                 name: 'ReadonlyArray',
+                  name: 'ReadonlyArray',
 -                 optional: false,
--
--                 range: [91, 104],
--                 loc: {
--                   start: { column: 18, line: 3 },
--                   end: { column: 31, line: 3 },
+
+                  range: [91, 104],
+                  loc: {
+                    start: { column: 18, line: 3 },
+                    end: { column: 31, line: 3 },
                   },
                 },
 

@@ -70,18 +70,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSTypeReference {
                     type: 'TSTypeReference',
--                   typeArguments: TSTypeParameterInstantiation {
-+                   typeName: Identifier {
-+                     type: 'Identifier',
-+                     name: 'Selection',
-+
-+                     range: [140, 149],
-+                     loc: {
-+                       start: { column: 44, line: 4 },
-+                       end: { column: 53, line: 4 },
-+                     },
-+                   },
-+                   typeParameters: TSTypeParameterInstantiation {
+                    typeArguments: TSTypeParameterInstantiation {
                       type: 'TSTypeParameterInstantiation',
                       params: Array [
                         TSAnyKeyword {
@@ -101,19 +90,19 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
                         end: { column: 58, line: 4 },
                       },
                     },
--                   typeName: Identifier {
--                     type: 'Identifier',
+                    typeName: Identifier {
+                      type: 'Identifier',
 -                     decorators: Array [],
--                     name: 'Selection',
+                      name: 'Selection',
 -                     optional: false,
 
--                     range: [140, 149],
--                     loc: {
--                       start: { column: 44, line: 4 },
--                       end: { column: 53, line: 4 },
--                     },
--                   },
--
+                      range: [140, 149],
+                      loc: {
+                        start: { column: 44, line: 4 },
+                        end: { column: 53, line: 4 },
+                      },
+                    },
+
                     range: [140, 154],
                     loc: {
                       start: { column: 44, line: 4 },

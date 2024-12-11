@@ -25,18 +25,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
         },
         typeAnnotation: TSTypeReference {
           type: 'TSTypeReference',
--         typeArguments: TSTypeParameterInstantiation {
-+         typeName: Identifier {
-+           type: 'Identifier',
-+           name: 'A',
-+
-+           range: [82, 83],
-+           loc: {
-+             start: { column: 9, line: 3 },
-+             end: { column: 10, line: 3 },
-+           },
-+         },
-+         typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSImportType {
@@ -112,18 +101,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
             loc: {
               start: { column: 10, line: 3 },
               end: { column: 29, line: 3 },
--           },
--         },
--         typeName: Identifier {
--           type: 'Identifier',
+            },
+          },
+          typeName: Identifier {
+            type: 'Identifier',
 -           decorators: Array [],
--           name: 'A',
+            name: 'A',
 -           optional: false,
--
--           range: [82, 83],
--           loc: {
--             start: { column: 9, line: 3 },
--             end: { column: 10, line: 3 },
+
+            range: [82, 83],
+            loc: {
+              start: { column: 9, line: 3 },
+              end: { column: 10, line: 3 },
             },
           },
 
