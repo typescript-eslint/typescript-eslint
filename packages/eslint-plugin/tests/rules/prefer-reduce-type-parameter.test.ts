@@ -101,6 +101,9 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
         );
       }
     `,
+    `
+      ['a', 'b'].reduce((accum, name) => \`\${accum} | hello \${name}!\`);
+    `,
   ],
   invalid: [
     {
