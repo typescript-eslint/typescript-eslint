@@ -5835,6 +5835,7 @@ __metadata:
     "@typescript-eslint/parser": 8.18.0
     "@typescript-eslint/typescript-estree": 8.18.0
     "@typescript-eslint/utils": 8.18.0
+    "@typescript/vfs": "*"
     ajv: ^6.12.6
     debug: ^4.3.4
     downlevel-dts: "*"
@@ -6017,6 +6018,17 @@ __metadata:
     tsx: "*"
   languageName: unknown
   linkType: soft
+
+"@typescript/vfs@npm:*":
+  version: 1.6.0
+  resolution: "@typescript/vfs@npm:1.6.0"
+  dependencies:
+    debug: ^4.1.1
+  peerDependencies:
+    typescript: "*"
+  checksum: bedc58a712689b8a130518720c8738d2c555053a5b5f0c4889eaaaaef331c650eb652a99875c62cc25c01dc228205ed0e84f5c8d3a3ff6f25f42aa509e33e38f
+  languageName: node
+  linkType: hard
 
 "@uiw/react-shields@npm:2.0.1":
   version: 2.0.1
