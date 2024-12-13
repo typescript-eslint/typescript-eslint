@@ -4,8 +4,8 @@ import {
   AST_NODE_TYPES,
   AST_TOKEN_TYPES,
   ASTUtils,
+  ESLintUtils,
 } from '@typescript-eslint/utils';
-import assert from 'node:assert';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -246,7 +246,10 @@ export default util.createRule<Options, MessageId>({
       data?: Record<string, string>,
     ): boolean {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      assert(ts.isExpression(tsNode));
+      ESLintUtils.assert(
+        ts.isExpression(tsNode),
+        'TS node must be an expression.',
+      );
       const expectedType = checker.getContextualType(tsNode);
 
       if (expectedType != null && isVoidReturningFunctionType(expectedType)) {
@@ -357,7 +360,10 @@ export default util.createRule<Options, MessageId>({
           return;
         }
         const objTsNode = propTsNode.parent;
-        assert(ts.isObjectLiteralExpression(objTsNode));
+        ESLintUtils.assert(
+          ts.isObjectLiteralExpression(objTsNode),
+          "Property node's parent must be an object.",
+        );
         const objType = checker.getContextualType(objTsNode);
         if (objType == null) {
           // Expected object type is unknown.
@@ -522,7 +528,7 @@ export default util.createRule<Options, MessageId>({
         // The provided function is a generator function.
         // Generator functions are not allowed.
 
-        assert(funcNode.type === AST_NODE_TYPES.FunctionExpression);
+        ESLintUtils.assertNode(funcNode, AST_NODE_TYPES.FunctionExpression);
         if (funcNode.body.body.length === 0) {
           // Function body is empty.
           // Fix it by removing the generator star.
@@ -565,7 +571,10 @@ export default util.createRule<Options, MessageId>({
           // This async function is an arrow function shorthand without braces.
           // It's not worth suggesting wrapping a single expression in a try-catch/IIFE.
           // Fix it by adding a void operator or braces.
-          assert(funcNode.type === AST_NODE_TYPES.ArrowFunctionExpression);
+          ESLintUtils.assertNode(
+            funcNode,
+            AST_NODE_TYPES.ArrowFunctionExpression,
+          );
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
             messageId: `asyncFuncIn${msgId}`,
@@ -627,7 +636,10 @@ export default util.createRule<Options, MessageId>({
 
       if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
         // The provided function is an arrow function shorthand without braces.
-        assert(funcNode.type === AST_NODE_TYPES.ArrowFunctionExpression);
+        ESLintUtils.assertNode(
+          funcNode,
+          AST_NODE_TYPES.ArrowFunctionExpression,
+        );
         // Fix it by removing the body or adding a void operator or braces.
         return context.report({
           node: funcNode.body,
@@ -808,14 +820,14 @@ export default util.createRule<Options, MessageId>({
     ): Generator<TSESLint.RuleFix> {
       // Replace return type with Promise<void>
       if (funcNode.returnType != null) {
-        assert(funcNode.async);
+        ESLintUtils.assert(funcNode.async, 'Expected function to be async.');
         yield fixer.replaceText(
           funcNode.returnType.typeAnnotation,
           'Promise<void>',
         );
       }
       // Wrap body in try-catch
-      assert(funcNode.body.type === AST_NODE_TYPES.BlockStatement);
+      ESLintUtils.assertNode(funcNode.body, AST_NODE_TYPES.BlockStatement);
       const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
       yield fixer.insertTextBeforeRange(bodyRange, '{ try ');
       yield fixer.insertTextAfterRange(bodyRange, ' catch {} }');

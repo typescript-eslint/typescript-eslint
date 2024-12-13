@@ -1,4 +1,4 @@
-import assert from 'node:assert';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 /**
@@ -13,7 +13,10 @@ export function* getBaseTypesOfClassMember(
   baseMemberType: ts.Type;
   heritageToken: ts.SyntaxKind.ExtendsKeyword | ts.SyntaxKind.ImplementsKeyword;
 }> {
-  assert(ts.isClassLike(memberTsNode.parent));
+  ESLintUtils.assert(
+    ts.isClassLike(memberTsNode.parent),
+    'Node passed to getBaseTypesOfClassMember must have a class-like parent.',
+  );
   const memberSymbol = checker.getSymbolAtLocation(memberTsNode.name);
   if (memberSymbol == null) {
     return;
