@@ -75,7 +75,7 @@ export default createRule({
             assertedType,
           );
 
-          // don't report an unnecessary assertion if the resulting fix will be a type error
+          // don't report this if the resulting fix will be a type error
           if (isAssertionNecessary) {
             return;
           }
