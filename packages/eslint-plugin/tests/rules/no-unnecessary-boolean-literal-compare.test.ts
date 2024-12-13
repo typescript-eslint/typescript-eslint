@@ -75,6 +75,20 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     },
     "'false' === true;",
     "'true' === false;",
+    `
+const unconstrained: <T>(someCondition: T) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+    `,
+    `
+const extendsUnknown: <T extends unknown>(
+  someCondition: T,
+) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+    `,
   ],
 
   invalid: [
@@ -479,6 +493,46 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         declare const varBoolean: boolean;
         if (!(varBoolean ?? true)) {
         }
+      `,
+    },
+    {
+      code: `
+const test1: (someCondition: boolean) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'direct',
+        },
+      ],
+      output: `
+const test1: (someCondition: boolean) => void = someCondition => {
+  if (someCondition) {
+  }
+};
+      `,
+    },
+    {
+      code: `
+const test2: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'direct',
+        },
+      ],
+      output: `
+const test2: <T extends boolean>(someCondition: T) => void = someCondition => {
+  if (someCondition) {
+  }
+};
       `,
     },
   ],
