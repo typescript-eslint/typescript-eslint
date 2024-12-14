@@ -491,9 +491,9 @@ export default createRule<Options, MessageId>({
           node,
           messageId: 'comparisonBetweenLiteralTypes',
           data: {
-            left: valueOfLiteralTypeToExpression(leftStaticValue.value),
+            left: checker.typeToString(leftType),
             operator,
-            right: valueOfLiteralTypeToExpression(rightStaticValue.value),
+            right: checker.typeToString(rightType),
             trueOrFalse: conditionIsTrue ? 'true' : 'false',
           },
         });
@@ -900,26 +900,3 @@ export default createRule<Options, MessageId>({
     };
   },
 });
-
-/**
- * Converts a value to its source code representation as a literal. It's
- * assumed that the input is a primitive that has such a representation.
- *
- * @example
- * null => 'null'
- * undefined => 'undefined'
- * true => 'true'
- * 42n => '42n'
- * 'foo' => '"foo"'
- * 23 => '23'
- */
-function valueOfLiteralTypeToExpression(value: unknown): string {
-  if (typeof value === 'bigint') {
-    return `${value}n`;
-  }
-  if (value === undefined) {
-    return 'undefined';
-  }
-  // covers null, boolean, number, string
-  return JSON.stringify(value);
-}

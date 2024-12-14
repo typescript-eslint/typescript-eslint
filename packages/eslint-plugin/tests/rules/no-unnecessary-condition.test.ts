@@ -1354,7 +1354,32 @@ if (x === Foo.a) {
         {
           column: 5,
           data: {
-            left: 1,
+            left: 'Foo.a',
+            operator: '===',
+            right: 'Foo.a',
+            trueOrFalse: 'true',
+          },
+          line: 8,
+          messageId: 'comparisonBetweenLiteralTypes',
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  a = 1,
+  b = 2,
+}
+
+const x = Foo.a;
+if (x === 1) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            left: 'Foo.a',
             operator: '===',
             right: 1,
             trueOrFalse: 'true',
