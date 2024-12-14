@@ -4,7 +4,7 @@ import type {
 } from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
 
-import * as tsApiUtils from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 
 /**
  * Resolves the given node's type. Will resolve to the type's generic constraint, if it has one.
@@ -29,26 +29,19 @@ export function getConstrainedTypeAtLocation(
   return constrained ?? nodeType;
 }
 
-export interface ConstraintTypeInfoBase {
-  constraintType: ts.Type | undefined;
-  isTypeParameter: boolean;
-  type: ts.Type;
-}
-
-export interface ConstraintTypeInfoUnconstrained
-  extends ConstraintTypeInfoBase {
+export interface ConstraintTypeInfoUnconstrained {
   constraintType: undefined;
   isTypeParameter: true;
   type: ts.TypeParameter;
 }
 
-export interface ConstraintTypeInfoConstrained extends ConstraintTypeInfoBase {
+export interface ConstraintTypeInfoConstrained {
   constraintType: ts.Type;
   isTypeParameter: true;
   type: ts.TypeParameter;
 }
 
-export interface ConstraintTypeInfoNonGeneric extends ConstraintTypeInfoBase {
+export interface ConstraintTypeInfoNonGeneric {
   constraintType: ts.Type;
   isTypeParameter: false;
   type: ts.Type;
@@ -62,14 +55,14 @@ export type ConstraintTypeInfo =
 /**
  * Resolves the given node's type, and returns info about whether it is a generic or ordinary type.
  *
- * Successor to getConstrainedTypeAtLocation due to https://github.com/typescript-eslint/typescript-eslint/issues/10438
+ * Successor to {@link getConstrainedTypeAtLocation} due to https://github.com/typescript-eslint/typescript-eslint/issues/10438
  */
 export function getConstraintTypeInfoAtLocation(
   services: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
 ): ConstraintTypeInfo {
   const type = services.getTypeAtLocation(node);
-  if (tsApiUtils.isTypeParameter(type)) {
+  if (tsutils.isTypeParameter(type)) {
     const checker = services.program.getTypeChecker();
     const constraintType = checker.getBaseConstraintOfType(type);
     return {
