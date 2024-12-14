@@ -87,7 +87,9 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     },
     {
       code: `
-        const test: <T>(someCondition: boolean | undefined) => void = someCondition => {
+        const test: <T extends boolean | undefined>(
+          someCondition: T,
+        ) => void = someCondition => {
           if (someCondition === true) {
           }
         };
@@ -96,7 +98,9 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     },
     {
       code: `
-        const test: <T>(someCondition: boolean | undefined) => void = someCondition => {
+        const test: <T extends boolean | undefined>(
+          someCondition: T,
+        ) => void = someCondition => {
           if (someCondition === false) {
           }
         };
