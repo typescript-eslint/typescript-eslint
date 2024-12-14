@@ -648,30 +648,41 @@ export default createRule<Options, MessageId>({
           )
           .map(sig => sig.getReturnType())
           .map(t => {
+            // TODO: use `getConstraintTypeInfoAtLocation` once it's merged
+            // https://github.com/typescript-eslint/typescript-eslint/pull/10496
             if (tsutils.isTypeParameter(t)) {
               return checker.getBaseConstraintOfType(t);
             }
 
             return t;
           });
-        /* istanbul ignore if */ if (returnTypes.length === 0) {
-          // Not a callable function
-          return;
+
+        let hasFalsyReturnTypes = false;
+        let hasTruthyReturnTypes = false;
+
+        for (const type of returnTypes) {
+          // Predicate is always necessary if it involves `any` or `unknown`
+          if (!type || isTypeAnyType(type) || isTypeUnknownType(type)) {
+            return;
+          }
+
+          if (isPossiblyFalsy(type)) {
+            hasFalsyReturnTypes = true;
+          }
+
+          if (isPossiblyTruthy(type)) {
+            hasTruthyReturnTypes = true;
+          }
         }
-        // Predicate is always necessary if it involves `any` or `unknown`
-        if (
-          // https://github.com/typescript-eslint/typescript-eslint/issues/10438
-          returnTypes.some(t => !t || isTypeAnyType(t) || isTypeUnknownType(t))
-        ) {
-          return;
-        }
-        if (!returnTypes.some(t => t && isPossiblyFalsy(t))) {
+
+        if (!hasFalsyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(t => t && isPossiblyTruthy(t))) {
+
+        if (!hasTruthyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
