@@ -15,7 +15,7 @@ import * as tsApiUtils from 'ts-api-utils';
  *
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/10438
  *
- * @deprecated Use getConstraintTypeInfoAtLocation instead.
+ * @deprecated Use {@link getConstraintTypeInfoAtLocation} instead.
  */
 export function getConstrainedTypeAtLocation(
   services: ParserServicesWithTypeInformation,
