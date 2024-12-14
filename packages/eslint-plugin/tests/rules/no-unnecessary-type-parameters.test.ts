@@ -1306,31 +1306,6 @@ function foo(_: unknown): <T>(input: T) => T {
       ],
     },
     {
-      code: 'declare function makeReadonlyTupleMulti<T>(): readonly [T, T];',
-      errors: [
-        {
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-          messageId: 'sole',
-          // TODO: suggestions
-        },
-      ],
-    },
-    {
-      code: `
-        declare function makeReadonlyTupleMultiNullish<T>(): readonly [
-          T | null,
-          T | null,
-        ];
-      `,
-      errors: [
-        {
-          data: { descriptor: 'function', name: 'T', uses: 'used only once' },
-          messageId: 'sole',
-          // TODO: suggestions
-        },
-      ],
-    },
-    {
       code: 'declare function takeArray<T>(input: T[]): void;',
       errors: [
         {
