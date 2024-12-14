@@ -75,6 +75,7 @@ function createSourceFileAndTypeChecker(
   };
 }
 
+/* eslint-disable @typescript-eslint/no-deprecated -- testing a deprecated function */
 describe('getConstrainedTypeAtLocation', () => {
   // See https://github.com/typescript-eslint/typescript-eslint/issues/10438
   // eslint-disable-next-line jest/no-disabled-tests -- known issue.
@@ -205,6 +206,7 @@ function foo<T extends string>() {
     expect(tsutils.isIntrinsicStringType(constraintAtLocation)).toBe(true);
   });
 });
+/* eslint-enable @typescript-eslint/no-deprecated*/
 
 describe('getConstraintTypeInfoAtLocation', () => {
   it('returns undefined for unconstrained generic', () => {

@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
@@ -288,14 +288,14 @@ export default createRule<Options, MessageId>({
     }
 
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
-      const nodeType = getConstrainedTypeAtLocation(services, node);
+      const nodeType = DEPRECATED_getConstrainedTypeAtLocation(services, node);
       return tsutils
         .unionTypeParts(nodeType)
         .some(part => checker.isArrayType(part));
     }
 
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
-      const nodeType = getConstrainedTypeAtLocation(services, node);
+      const nodeType = DEPRECATED_getConstrainedTypeAtLocation(services, node);
       return tsutils
         .unionTypeParts(nodeType)
         .some(part => checker.isTupleType(part));
@@ -379,7 +379,10 @@ export default createRule<Options, MessageId>({
         return checkNode(expression.right);
       }
 
-      const type = getConstrainedTypeAtLocation(services, expression);
+      const type = DEPRECATED_getConstrainedTypeAtLocation(
+        services,
+        expression,
+      );
 
       // Conditional is always necessary if it involves:
       //    `any` or `unknown` or a naked type variable
@@ -411,7 +414,7 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
-      const type = getConstrainedTypeAtLocation(services, node);
+      const type = DEPRECATED_getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
       if (
@@ -474,8 +477,11 @@ export default createRule<Options, MessageId>({
       right: TSESTree.Node,
       operator: BoolOperator,
     ): void {
-      const leftType = getConstrainedTypeAtLocation(services, left);
-      const rightType = getConstrainedTypeAtLocation(services, right);
+      const leftType = DEPRECATED_getConstrainedTypeAtLocation(services, left);
+      const rightType = DEPRECATED_getConstrainedTypeAtLocation(
+        services,
+        right,
+      );
 
       const leftStaticValue = toStaticValue(leftType);
       const rightStaticValue = toStaticValue(rightType);
@@ -570,7 +576,7 @@ export default createRule<Options, MessageId>({
       if (
         allowConstantLoopConditions &&
         tsutils.isTrueLiteralType(
-          getConstrainedTypeAtLocation(services, node.test),
+          DEPRECATED_getConstrainedTypeAtLocation(services, node.test),
         )
       ) {
         return;
@@ -594,7 +600,7 @@ export default createRule<Options, MessageId>({
           node,
         );
         if (typeGuardAssertedArgument != null) {
-          const typeOfArgument = getConstrainedTypeAtLocation(
+          const typeOfArgument = DEPRECATED_getConstrainedTypeAtLocation(
             services,
             typeGuardAssertedArgument.argument,
           );
@@ -644,7 +650,7 @@ export default createRule<Options, MessageId>({
         // Otherwise just do type analysis on the function as a whole.
         const returnTypes = tsutils
           .getCallSignaturesOfType(
-            getConstrainedTypeAtLocation(services, callback),
+            DEPRECATED_getConstrainedTypeAtLocation(services, callback),
           )
           .map(sig => sig.getReturnType());
         /* istanbul ignore if */ if (returnTypes.length === 0) {
@@ -731,12 +737,15 @@ export default createRule<Options, MessageId>({
     function isMemberExpressionNullableOriginFromObject(
       node: TSESTree.MemberExpression,
     ): boolean {
-      const prevType = getConstrainedTypeAtLocation(services, node.object);
+      const prevType = DEPRECATED_getConstrainedTypeAtLocation(
+        services,
+        node.object,
+      );
       const property = node.property;
       if (prevType.isUnion() && isIdentifier(property)) {
         const isOwnNullable = prevType.types.some(type => {
           if (node.computed) {
-            const propertyType = getConstrainedTypeAtLocation(
+            const propertyType = DEPRECATED_getConstrainedTypeAtLocation(
               services,
               node.property,
             );
@@ -767,7 +776,10 @@ export default createRule<Options, MessageId>({
     function isCallExpressionNullableOriginFromCallee(
       node: TSESTree.CallExpression,
     ): boolean {
-      const prevType = getConstrainedTypeAtLocation(services, node.callee);
+      const prevType = DEPRECATED_getConstrainedTypeAtLocation(
+        services,
+        node.callee,
+      );
 
       if (prevType.isUnion()) {
         const isOwnNullable = prevType.types.some(type => {
@@ -781,7 +793,7 @@ export default createRule<Options, MessageId>({
     }
 
     function isOptionableExpression(node: TSESTree.Expression): boolean {
-      const type = getConstrainedTypeAtLocation(services, node);
+      const type = DEPRECATED_getConstrainedTypeAtLocation(services, node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isMemberExpressionNullableOriginFromObject(node)

@@ -5,7 +5,7 @@ import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   isStaticMemberAccessOfValue,
   isTypeAssertion,
@@ -62,7 +62,7 @@ export default createRule({
         }
 
         // Get the symbol of the `reduce` method.
-        const calleeObjType = getConstrainedTypeAtLocation(
+        const calleeObjType = DEPRECATED_getConstrainedTypeAtLocation(
           services,
           callee.object,
         );

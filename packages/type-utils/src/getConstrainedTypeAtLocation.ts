@@ -55,7 +55,7 @@ export type ConstraintTypeInfo =
 /**
  * Resolves the given node's type, and returns info about whether it is a generic or ordinary type.
  *
- * Successor to {@link getConstrainedTypeAtLocation} due to https://github.com/typescript-eslint/typescript-eslint/issues/10438
+ * Successor to {@link getConstrainedTypeAtLocationDeprecated} due to https://github.com/typescript-eslint/typescript-eslint/issues/10438
  */
 export function getConstraintTypeInfoAtLocation(
   services: ParserServicesWithTypeInformation,

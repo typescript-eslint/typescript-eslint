@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
   isTypeAnyType,
@@ -130,7 +130,7 @@ export default createRule<Options, MessageIds>({
 
     function getTypeConstrained(node: TSESTree.Node): ts.Type {
       return typeChecker.getBaseTypeOfLiteralType(
-        getConstrainedTypeAtLocation(services, node),
+        DEPRECATED_getConstrainedTypeAtLocation(services, node),
       );
     }
 

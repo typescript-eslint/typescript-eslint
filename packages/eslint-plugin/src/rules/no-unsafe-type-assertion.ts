@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   isTypeAnyType,
   isTypeUnknownType,
@@ -49,11 +49,11 @@ export default createRule({
     function checkExpression(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
-      const expressionType = getConstrainedTypeAtLocation(
+      const expressionType = DEPRECATED_getConstrainedTypeAtLocation(
         services,
         node.expression,
       );
-      const assertedType = getConstrainedTypeAtLocation(
+      const assertedType = DEPRECATED_getConstrainedTypeAtLocation(
         services,
         node.typeAnnotation,
       );

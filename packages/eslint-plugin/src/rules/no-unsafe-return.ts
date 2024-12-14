@@ -7,7 +7,7 @@ import {
   AnyType,
   createRule,
   discriminateAnyType,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getContextualType,
   getParserServices,
   getThisExpression,
@@ -68,7 +68,10 @@ export default createRule({
       }
 
       // function has an explicit return type, so ensure it's a safe return
-      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
+      const returnNodeType = DEPRECATED_getConstrainedTypeAtLocation(
+        services,
+        returnNode,
+      );
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
       // function expressions will not have their return type modified based on receiver typing
@@ -159,7 +162,7 @@ export default createRule({
           if (
             thisExpression &&
             isTypeAnyType(
-              getConstrainedTypeAtLocation(services, thisExpression),
+              DEPRECATED_getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeReturnThis';

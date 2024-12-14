@@ -1,3 +1,10 @@
+import type {
+  ParserServicesWithTypeInformation,
+  TSESTree,
+} from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
+import { getConstrainedTypeAtLocation } from '@typescript-eslint/type-utils';
 import { ESLintUtils } from '@typescript-eslint/utils';
 
 export * from './astUtils';
@@ -26,6 +33,19 @@ export * from './types';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
+
+/**
+ * This is a version of {@link getConstrainedTypeAtLocation} not marked with the
+ * `@deprecated` JSDoc tag, in order to allow gradual migration away from it.
+ * This is a workaround for https://github.com/typescript-eslint/typescript-eslint/issues/9899
+ */
+const DEPRECATED_getConstrainedTypeAtLocation: (
+  services: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
+) => ts.Type =
+  // eslint-disable-next-line @typescript-eslint/no-deprecated
+  getConstrainedTypeAtLocation;
+
 const {
   applyDefault,
   deepMerge,
@@ -39,6 +59,7 @@ type InferMessageIdsTypeFromRule<T> =
 type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
 
 export {
+  DEPRECATED_getConstrainedTypeAtLocation,
   applyDefault,
   deepMerge,
   getParserServices,
