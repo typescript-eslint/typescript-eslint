@@ -58,7 +58,7 @@ export default createRule({
       const targetSymbol = checker.getAliasedSymbol(symbol);
       while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
         const reason = getJsDocDeprecation(symbol);
-        if (reason !== undefined) {
+        if (reason != null) {
           return reason;
         }
         const immediateAliasedSymbol: ts.Symbol | undefined =
@@ -219,8 +219,7 @@ export default createRule({
 
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
-        symbol !== undefined &&
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+        symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
           ? checker.getAliasedSymbol(symbol)
           : symbol;
       const symbolDeclarationKind = aliasedSymbol?.declarations?.[0].kind;
@@ -274,11 +273,35 @@ export default createRule({
       );
     }
 
+    function getJSXAttributeDeprecation(
+      openingElement: TSESTree.JSXOpeningElement,
+      propertyName: string,
+    ): string | undefined {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
+
+      const contextualType = nullThrows(
+        checker.getContextualType(tsNode as ts.Expression),
+        'Expected JSX opening element name to have contextualType',
+      );
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
         return getCallLikeDeprecation(callLikeNode);
       }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.JSXAttribute &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
+        return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
       if (
         node.parent.type === AST_NODE_TYPES.Property &&
         node.type !== AST_NODE_TYPES.Super
@@ -299,7 +322,7 @@ export default createRule({
       }
 
       const reason = getDeprecationReason(node);
-      if (reason === undefined) {
+      if (reason == null) {
         return;
       }
 

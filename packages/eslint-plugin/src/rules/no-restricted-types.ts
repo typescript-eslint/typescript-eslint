@@ -145,7 +145,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const bannedType = bannedTypes.get(name);
 
-      if (bannedType === undefined || bannedType === false) {
+      if (bannedType == null || bannedType === false) {
         return;
       }
 

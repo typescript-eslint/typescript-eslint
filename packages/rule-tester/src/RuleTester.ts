@@ -209,7 +209,7 @@ export class RuleTester extends TestFramework {
     // path. For any other path, which would just be a plain
     // file name (`foo.ts`), don't change the base path.
     if (
-      filename !== undefined &&
+      filename != null &&
       (filename.startsWith('/') || filename.startsWith('..'))
     ) {
       basePath = path.parse(
@@ -1011,7 +1011,7 @@ export class RuleTester extends TestFramework {
           // Just an error message.
           assertMessageMatches(message.message, error);
           assert.ok(
-            message.suggestions === undefined,
+            message.suggestions == null,
             `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
           );
         } else if (typeof error === 'object' && error != null) {
@@ -1146,7 +1146,7 @@ export class RuleTester extends TestFramework {
             const expectsSuggestions = Array.isArray(error.suggestions)
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
-            const hasSuggestions = message.suggestions !== undefined;
+            const hasSuggestions = message.suggestions != null;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const messageSuggestions = message.suggestions!;
 

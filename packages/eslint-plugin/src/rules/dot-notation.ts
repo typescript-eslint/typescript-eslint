@@ -125,15 +125,12 @@ export default createRule<Options, MessageIds>({
           ) {
             return;
           }
-          if (
-            propertySymbol === undefined &&
-            allowIndexSignaturePropertyAccess
-          ) {
+          if (propertySymbol == null && allowIndexSignaturePropertyAccess) {
             const objectType = services.getTypeAtLocation(node.object);
             const indexType = objectType
               .getNonNullableType()
               .getStringIndexType();
-            if (indexType !== undefined) {
+            if (indexType != null) {
               return;
             }
           }

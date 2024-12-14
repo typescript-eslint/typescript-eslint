@@ -17,6 +17,7 @@ export function generateObjectType(
   let indexSignature: AST | null = null;
   if (
     schema.additionalProperties === true ||
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     schema.additionalProperties === undefined
   ) {
     indexSignature = {

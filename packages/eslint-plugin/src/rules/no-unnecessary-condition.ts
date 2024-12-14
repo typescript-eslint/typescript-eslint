@@ -754,8 +754,13 @@ export default createRule<Options, MessageId>({
           if (propType) {
             return isNullableType(propType);
           }
+          const indexInfo = checker.getIndexInfosOfType(type);
 
-          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
+          return indexInfo.some(
+            info =>
+              getTypeName(checker, info.keyType) === 'string' &&
+              isNullableType(info.type),
+          );
         });
         return !isOwnNullable && isNullableType(prevType);
       }
