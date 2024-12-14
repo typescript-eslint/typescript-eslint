@@ -86,7 +86,7 @@ function foo<T>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
@@ -107,7 +107,7 @@ function foo<T extends unknown>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
@@ -127,7 +127,7 @@ function foo<T extends any>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
@@ -147,7 +147,7 @@ function foo<T extends string>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
@@ -167,8 +167,34 @@ function foo(x: string);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
+
+    const constraintAtLocation = getConstrainedTypeAtLocation(
+      mockServices(typeChecker, parameterNode),
+      mockEstreeNode(),
+    );
+
+    expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintAtLocation)).toBe(true);
+  });
+
+  it('handles type parameter whose constraint is a constrained type parameter', () => {
+    const sourceCode = `
+function foo<T extends string>() {
+  function bar<V extends T>(x: V) {
+  }
+}
+    `;
+
+    const { sourceFile, typeChecker } =
+      createSourceFileAndTypeChecker(sourceCode);
+
+    const outerFunctionNode = sourceFile
+      .statements[0] as ts.FunctionDeclaration;
+    const innerFunctionNode = outerFunctionNode.body!
+      .statements[0] as ts.FunctionDeclaration;
+    const parameterNode = innerFunctionNode.parameters[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
       mockServices(typeChecker, parameterNode),
@@ -189,7 +215,7 @@ function foo<T>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
     const parameterType = typeChecker.getTypeAtLocation(parameterNode);
 
@@ -199,11 +225,11 @@ function foo<T>(x: T);
         mockEstreeNode(),
       );
 
+    expect(type).toBe(parameterType);
+    expect(isTypeParameter).toBe(true);
     // ideally one day we'll be able to change this to assert that it be the intrinsic unknown type.
     // Requires https://github.com/microsoft/TypeScript/issues/60475
     expect(constraintType).toBeUndefined();
-    expect(isTypeParameter).toBe(true);
-    expect(type).toBe(parameterType);
   });
 
   it('returns unknown for extends unknown', () => {
@@ -214,7 +240,7 @@ function foo<T extends unknown>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
     const parameterType = typeChecker.getTypeAtLocation(parameterNode);
 
@@ -224,11 +250,11 @@ function foo<T extends unknown>(x: T);
         mockEstreeNode(),
       );
 
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(isTypeParameter).toBe(true);
     expect(type).toBe(parameterType);
+    expect(isTypeParameter).toBe(true);
+    expect(constraintType).toBeDefined();
+    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
+    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
   });
 
   it('returns unknown for extends any', () => {
@@ -239,7 +265,7 @@ function foo<T extends any>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
     const parameterType = typeChecker.getTypeAtLocation(parameterNode);
 
@@ -249,11 +275,11 @@ function foo<T extends any>(x: T);
         mockEstreeNode(),
       );
 
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(isTypeParameter).toBe(true);
     expect(type).toBe(parameterType);
+    expect(isTypeParameter).toBe(true);
+    expect(constraintType).toBeDefined();
+    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
+    expect(tsutils.isIntrinsicUnknownType(constraintType!)).toBe(true);
   });
 
   it('returns string for extends string', () => {
@@ -264,7 +290,7 @@ function foo<T extends string>(x: T);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
     const parameterType = typeChecker.getTypeAtLocation(parameterNode);
 
@@ -274,11 +300,11 @@ function foo<T extends string>(x: T);
         mockEstreeNode(),
       );
 
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(isTypeParameter).toBe(true);
     expect(type).toBe(parameterType);
+    expect(isTypeParameter).toBe(true);
+    expect(constraintType).toBeDefined();
+    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
   });
 
   it('returns string for non-generic string', () => {
@@ -289,7 +315,7 @@ function foo(x: string);
     const { sourceFile, typeChecker } =
       createSourceFileAndTypeChecker(sourceCode);
 
-    const functionNode = sourceFile.statements.at(-1) as ts.FunctionDeclaration;
+    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
     const parameterNode = functionNode.parameters[0];
     const parameterType = typeChecker.getTypeAtLocation(parameterNode);
 
@@ -299,11 +325,71 @@ function foo(x: string);
         mockEstreeNode(),
       );
 
-    expect(constraintType).toBeDefined();
-    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
-    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
-    expect(isTypeParameter).toBe(false);
     expect(type).toBe(parameterType);
+    expect(isTypeParameter).toBe(false);
+    expect(constraintType).toBeDefined();
+    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
     expect(type).toBe(constraintType);
+  });
+
+  it('handles type parameter whose constraint is a constrained type parameter', () => {
+    const sourceCode = `
+function foo<T extends string>() {
+  function bar<V extends T>(x: V) {
+  }
+}
+    `;
+
+    const { sourceFile, typeChecker } =
+      createSourceFileAndTypeChecker(sourceCode);
+
+    const outerFunctionNode = sourceFile
+      .statements[0] as ts.FunctionDeclaration;
+    const innerFunctionNode = outerFunctionNode.body!
+      .statements[0] as ts.FunctionDeclaration;
+    const parameterNode = innerFunctionNode.parameters[0];
+    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+
+    const { constraintType, isTypeParameter, type } =
+      getConstraintTypeInfoAtLocation(
+        mockServices(typeChecker, parameterNode),
+        mockEstreeNode(),
+      );
+
+    expect(type).toBe(parameterType);
+    expect(constraintType).toBeDefined();
+    expect(tsutils.isTypeParameter(constraintType!)).toBe(false);
+    expect(tsutils.isIntrinsicStringType(constraintType!)).toBe(true);
+    expect(isTypeParameter).toBe(true);
+  });
+
+  it('handles type parameter whose constraint is an unconstrained type parameter', () => {
+    const sourceCode = `
+function foo<T>() {
+  function bar<V extends T>(x: V) {
+  }
+}
+    `;
+
+    const { sourceFile, typeChecker } =
+      createSourceFileAndTypeChecker(sourceCode);
+
+    const outerFunctionNode = sourceFile
+      .statements[0] as ts.FunctionDeclaration;
+    const innerFunctionNode = outerFunctionNode.body!
+      .statements[0] as ts.FunctionDeclaration;
+    const parameterNode = innerFunctionNode.parameters[0];
+    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+
+    const { constraintType, isTypeParameter, type } =
+      getConstraintTypeInfoAtLocation(
+        mockServices(typeChecker, parameterNode),
+        mockEstreeNode(),
+      );
+
+    expect(type).toBe(parameterType);
+    expect(isTypeParameter).toBe(true);
+    expect(constraintType).toBeUndefined();
   });
 });
