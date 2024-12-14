@@ -56,6 +56,18 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       varTrueOrStringOrUndefined == true;
     `,
     `
+      const test: <T>(someCondition: T) => void = someCondition => {
+        if (someCondition === true) {
+        }
+      };
+    `,
+    `
+      const test: <T>(someCondition: boolean | string) => void = someCondition => {
+        if (someCondition === true) {
+        }
+      };
+    `,
+    `
       declare const varBooleanOrUndefined: boolean | undefined;
       varBooleanOrUndefined === true;
     `,
@@ -70,6 +82,28 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       code: `
         declare const varBooleanOrUndefined: boolean | undefined;
         varBooleanOrUndefined === false;
+      `,
+      options: [{ allowComparingNullableBooleansToTrue: false }],
+    },
+    {
+      code: `
+        const test: <T extends boolean | undefined>(
+          someCondition: T,
+        ) => void = someCondition => {
+          if (someCondition === true) {
+          }
+        };
+      `,
+      options: [{ allowComparingNullableBooleansToFalse: false }],
+    },
+    {
+      code: `
+        const test: <T extends boolean | undefined>(
+          someCondition: T,
+        ) => void = someCondition => {
+          if (someCondition === false) {
+          }
+        };
       `,
       options: [{ allowComparingNullableBooleansToTrue: false }],
     },
@@ -497,42 +531,59 @@ const extendsUnknown: <T extends unknown>(
     },
     {
       code: `
-const test1: (someCondition: boolean) => void = someCondition => {
-  if (someCondition === true) {
-  }
-};
+        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+          if (someCondition === true) {
+          }
+        };
       `,
       errors: [
         {
-          line: 3,
           messageId: 'direct',
         },
       ],
       output: `
-const test1: (someCondition: boolean) => void = someCondition => {
-  if (someCondition) {
-  }
-};
+        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+          if (someCondition) {
+          }
+        };
       `,
     },
     {
       code: `
-const test2: <T extends boolean>(someCondition: T) => void = someCondition => {
-  if (someCondition === true) {
-  }
-};
+        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+          if (!(someCondition !== false)) {
+          }
+        };
       `,
       errors: [
         {
-          line: 3,
-          messageId: 'direct',
+          messageId: 'negated',
         },
       ],
       output: `
-const test2: <T extends boolean>(someCondition: T) => void = someCondition => {
-  if (someCondition) {
-  }
-};
+        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+          if (!someCondition) {
+          }
+        };
+      `,
+    },
+    {
+      code: `
+        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+          if (!((someCondition ?? true) !== false)) {
+          }
+        };
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        const test: <T extends boolean>(someCondition: T) => void = someCondition => {
+          if (!(someCondition ?? true)) {
+          }
+        };
       `,
     },
   ],
