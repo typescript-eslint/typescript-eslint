@@ -59,7 +59,7 @@ interface AnalyzeOptions {
    */
   sourceType?: SourceType;
 
-  // TODO - remove this in v8
+  // TODO - remove this in v10
   /**
    * @deprecated This option never did what it was intended for and will be removed in a future major release.
    */

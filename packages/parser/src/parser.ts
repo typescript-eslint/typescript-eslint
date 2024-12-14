@@ -182,6 +182,7 @@ function parseForESLint(
     parserOptions.emitDecoratorMetadata === true;
   services.experimentalDecorators ??=
     parserOptions.experimentalDecorators === true;
+  services.isolatedDeclarations ??= parserOptions.isolatedDeclarations === true;
 
   return { ast, scopeManager, services, visitorKeys };
 }
