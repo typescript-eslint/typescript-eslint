@@ -292,24 +292,6 @@ export default createRule({
       return getJsDocDeprecation(symbol);
     }
 
-    function checkDeprecatedInObjectValue(
-      node: TSESTree.Identifier | TSESTree.JSXIdentifier,
-    ): string | undefined {
-      const symbol = services.getSymbolAtLocation(node);
-      if (symbol === undefined) {
-        return undefined;
-      }
-
-      const jsDocTags = symbol.getJsDocTags(checker);
-      const deprecatedTag = jsDocTags.find(tag => tag.name === 'deprecated');
-      if (deprecatedTag === undefined) {
-        return undefined;
-      }
-
-      const displayParts = deprecatedTag.text;
-      return displayParts ? ts.displayPartsToString(displayParts) : '';
-    }
-
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
@@ -330,9 +312,8 @@ export default createRule({
         const property = services
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
-        return (
-          getJsDocDeprecation(property) ?? checkDeprecatedInObjectValue(node)
-        );
+        const symbol = services.getSymbolAtLocation(node);
+        return getJsDocDeprecation(property) ?? getJsDocDeprecation(symbol);
       }
       return searchForDeprecationInAliasesChain(
         services.getSymbolAtLocation(node),
