@@ -206,7 +206,7 @@ function foo<T extends string>() {
     expect(tsutils.isIntrinsicStringType(constraintAtLocation)).toBe(true);
   });
 });
-/* eslint-enable @typescript-eslint/no-deprecated*/
+/* eslint-enable @typescript-eslint/no-deprecated */
 
 describe('getConstraintTypeInfoAtLocation', () => {
   it('returns undefined for unconstrained generic', () => {
