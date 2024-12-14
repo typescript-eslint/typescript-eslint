@@ -155,6 +155,19 @@ type A = Map<string, string>;
 type B<T = A> = T;
 type C2 = B<Map<string, number>>;
     `,
+    `
+interface Foo<T = number> {}
+declare var Foo: {
+  new <T>(type: string): any;
+};
+
+class Bar extends Foo<any> {}
+    `,
+    `
+interface Foo<T = number> {}
+class Foo<T> {}
+class Bar extends Foo<any> {}
+    `,
   ],
   invalid: [
     {
