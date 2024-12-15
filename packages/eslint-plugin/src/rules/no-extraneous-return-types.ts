@@ -26,7 +26,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function getRelevantReturnTypes(
+    function getRelevantReturnTypesOrReport(
       node: TSESTree.TypeNode,
       returnTypes: ts.Type[],
     ): ts.Type[] | null {
@@ -56,7 +56,10 @@ export default createRule({
       typeArguments: TSESTree.TypeNode[],
       returnTypes: ts.Type[],
     ): void {
-      const relevantReturnTypes = getRelevantReturnTypes(node, returnTypes);
+      const relevantReturnTypes = getRelevantReturnTypesOrReport(
+        node,
+        returnTypes,
+      );
 
       if (relevantReturnTypes) {
         for (const [index, typeParameter] of typeArguments.entries()) {
@@ -158,7 +161,7 @@ export default createRule({
       return;
     }
 
-    function getPotentialReturnTypes(
+    function getActualReturnTypes(
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
@@ -202,7 +205,7 @@ export default createRule({
           return;
         }
 
-        const actualReturnTypes = getPotentialReturnTypes(node);
+        const actualReturnTypes = getActualReturnTypes(node);
 
         if (actualReturnTypes.length === 0) {
           // this is a type error unless the return type includes `void`,
