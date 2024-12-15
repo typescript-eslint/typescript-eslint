@@ -16,32 +16,73 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-extraneous-return-types', rule, {
   valid: [
+    // no return type annotation
     'function test() {}',
     'async function test() {}',
+    'function* test() {}',
+
+    // return types with no return statements
     'function test(): void {}',
     'function test(): undefined {}',
     'function test(): any {}',
     'function test(): unknown {}',
+
+    // single return type
+    'const test = (): unknown => 10;',
+    'const test = (): any => 10;',
+    'const test = (): number => 10;',
+    "const test = (): string => 'one';",
+    'const test = (): 10 => 10;',
+    "const test = (): 'one' => 'one';",
+
+    // referenced return types
     `
-function test(): unknown {
+type N = number | string;
+const test = (): N => 10;
+    `,
+    `
+type N = number | string;
+const test = (): N => 'one';
+    `,
+    `
+type N = 10 | 20;
+const test = (): N => 10;
+    `,
+    `
+type N = 'one' | 'two';
+const test = (): N => 'one';
+    `,
+
+    // multiple return types
+    `
+function test(a: boolean): number | string {
+  if (a) {
+    return 'one';
+  }
+
   return 10;
 }
     `,
     `
-function test(): number {
-  return 1 as any;
+declare const a: number | string;
+
+function test(): number | string {
+  return a;
 }
     `,
     `
-function test(): unknown {
-  return Promise.resolve(10);
+declare const b: number | string;
+
+function test(a: boolean): number | string | boolean {
+  if (a) {
+    return true;
+  }
+
+  return b;
 }
     `,
-    `
-function test(): string {
-  return 'one';
-}
-    `,
+
+    // potentially returning void or undefined
     `
 function test(a: boolean): string | undefined {
   if (a) {
@@ -57,36 +98,6 @@ function test(a: boolean): string | void {
 }
     `,
     `
-const test = (): string => {
-  return 'one';
-};
-    `,
-    `
-const test = (): string => 'one';
-    `,
-    `
-function test(a: boolean): number | string {
-  if (a) {
-    return test1(false);
-  }
-
-  return 10;
-}
-    `,
-
-    `
-class A {
-  test(): string {
-    return 'string';
-  }
-}
-    `,
-    `
-function test(): string {
-  return 'one' as string;
-}
-    `,
-    `
 function test(a: boolean): string | undefined {
   if (a) {
     return;
@@ -96,35 +107,51 @@ function test(a: boolean): string | undefined {
 }
     `,
     `
+function test(a: boolean): undefined {
+  if (a) {
+    return;
+  }
+}
+    `,
+    `
+function test(a: boolean): string | undefined {
+  if (a) {
+    return undefined;
+  }
+
+  return 'one';
+}
+    `,
+
+    // recursive function
+    `
+function test(a: boolean): number | string {
+  if (a) {
+    return test(false);
+  }
+
+  return 10;
+}
+    `,
+
+    // type assertions
+    `
+function test(): string {
+  return 'one' as string;
+}
+    `,
+    `
 function test(): string | number {
   return 'one' as string | number;
 }
     `,
     `
-function test(a: boolean): string | number {
-  if (a) {
-    return 'one';
-  }
-
-  return 1;
+function test(): string | boolean {
+  return 'one' as 'hello' | true;
 }
     `,
-    `
-function test(a: boolean): string | number {
-  if (a) {
-    return 'one' as 'one' | 'two';
-  }
 
-  return 1;
-}
-    `,
-    `
-type R = string | number;
-
-function test(a: boolean): R {
-  return 1;
-}
-    `,
+    // type constraints
     `
 function test<T>(): T | number {
   return 10;
@@ -135,6 +162,11 @@ function test<T extends string | number | boolean>(): T | number {
   return 10;
 }
     `,
+    `
+function test<T>(): T | number {}
+    `,
+
+    // arrays
     `
 function test(): string[] {
   return ['one'];
@@ -165,7 +197,7 @@ function test(a: boolean): (string | number)[] {
 }
     `,
     `
-function test(a: boolean): (string | number)[] {
+function test(): (string | number)[] {
   return ['one', 1];
 }
     `,
@@ -206,6 +238,7 @@ function test(): string[] {
 }
     `,
 
+    // tuples
     `
 function test(): [string] {
   return ['one'];
@@ -242,18 +275,17 @@ function test(a: boolean): [string | number] {
     `
 type R = string | number;
 
-function test(a: boolean): [R] {
+function test(): [R] {
   return [1];
 }
     `,
     `
 type R = [string | number];
 
-function test(a: boolean): R {
+function test(): R {
   return [1];
 }
     `,
-
     `
 function test(): [string, number] {
   return ['one', 1];
@@ -312,6 +344,7 @@ function test(): [string, number] {
 }
     `,
 
+    // promises
     `
 function test(): Promise<string> {
   return Promise.resolve('one');
@@ -496,13 +529,427 @@ function test(): Promise<string> {
 }
     `,
     `
-function* test(): string | number {
+function test<T extends Promise<number | string>>(): T {
+  return Promise.resolve(1);
+}
+    `,
+
+    // maps
+    `
+function test(): Map<string, number> {
+  return new Map<string, number>();
+}
+    `,
+    `
+function test(): Map<string | number, number | boolean> {
+  return new Map();
+}
+    `,
+    `
+function test(a: boolean): Map<string | number, number | boolean> {
+  if (a) {
+    return new Map<number, boolean>();
+  }
+
+  return new Map<string, number>();
+}
+    `,
+    `
+function test(a: boolean): Map<string | number, number | boolean> {
+  return new Map<any, any>();
+}
+    `,
+
+    // sets
+    `
+function test(): Set<string> {
+  return new Set<string>();
+}
+    `,
+    `
+function test(): Set<string | number> {
+  return new Set();
+}
+    `,
+    `
+function test(a: boolean): Set<string | number> {
+  if (a) {
+    return new Set<number>();
+  }
+
+  return new Set<string>();
+}
+    `,
+    `
+function test(a: boolean): Set<string | number> {
+  if (a) {
+    return new Set([1]);
+  }
+
+  return new Set(['one']);
+}
+    `,
+    `
+function test(a: boolean): Set<string | number> {
+  return new Set([1, 'one']);
+}
+    `,
+    `
+function test(a: boolean): Set<string | number> {
+  return new Set<any>();
+}
+    `,
+
+    // general boxes
+    `
+class Box<T> {
+  constructor(public readonly value: T) {}
+}
+
+function test(): Box<string> {
+  return new Box('abc');
+}
+    `,
+    `
+class Box<T> {
+  constructor(public readonly value: T) {}
+}
+
+function test(): Box<string | number> {
+  return new Box();
+}
+    `,
+    `
+class Box<T> {
+  constructor(public readonly value: T) {}
+}
+
+function test(a: boolean): Box<string | number> {
+  if (a) {
+    return new Box(1);
+  }
+
+  return new Box('one');
+}
+    `,
+    `
+class Box<T> {
+  constructor(public readonly value: T) {}
+}
+
+function test(a: boolean): Box<string | number> {
+  return new Box(1 as any);
+}
+    `,
+    `
+class Box<T> {
+  constructor(public readonly value: T) {}
+}
+
+function test<T extends Box<number | string>>(): T {
+  return new Box(1);
+}
+    `,
+
+    // generators
+    `
+function* test() {}
+    `,
+    `
+function* test() {
   return 1;
+}
+    `,
+    `
+function* test() {
+  yield 1;
+}
+    `,
+    `
+function* test(): Generator {}
+    `,
+    `
+function* test(): Generator {
+  yield 1;
+}
+    `,
+    `
+function* test(): Generator {
+  return 1;
+}
+    `,
+    `
+function* test(): Generator<number> {
+  yield 1;
+}
+    `,
+    `
+function* test(): Generator<number> {
+  yield 1 as any;
+}
+    `,
+    `
+function* test(): Generator<unknown> {
+  yield 1;
+}
+    `,
+    `
+function* test(): Generator<unknown> {
+  yield 1;
+  yield 'one';
+}
+    `,
+    `
+function* test(): Generator<number | string> {
+  yield 1;
+  yield 'one';
+}
+    `,
+    `
+function* test(): Generator<number | string> {
+  yield 1;
+  yield 'one';
+
+  return 10;
+}
+    `,
+    `
+function* test(): Generator<unknown, number> {
+  return 10;
+}
+    `,
+    `
+function* test(): Generator<unknown, unknown> {
+  return 10;
+}
+    `,
+    `
+function* test(): Generator<unknown, any> {
+  return 10;
+}
+    `,
+    `
+function* test(): Generator<unknown, string | number> {
+  return 10 as string | number;
+}
+    `,
+    `
+function* test(a: boolean): Generator<unknown, string | number> {
+  if (a) {
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+function* test(a: boolean): Generator<boolean, string | number> {
+  yield true;
+
+  if (a) {
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+function* test(a: boolean): Generator<boolean | number, string | number> {
+  yield true;
+
+  if (a) {
+    yield 5;
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+declare const b: boolean | string;
+
+function* test(
+  a: boolean,
+): Generator<boolean | number | string, string | number> {
+  yield 1;
+
+  if (a) {
+    yield b;
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+
+    // async generators
+    `
+async function* test() {}
+    `,
+    `
+async function* test() {
+  return 1;
+}
+    `,
+    `
+async function* test() {
+  yield 1;
+}
+    `,
+    `
+async function* test(): AsyncGenerator {}
+    `,
+    `
+async function* test(): AsyncGenerator {
+  yield 1;
+}
+    `,
+    `
+async function* test(): AsyncGenerator {
+  return 1;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<number> {
+  yield 1;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<number> {
+  yield 1 as any;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<unknown> {
+  yield 1;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<unknown> {
+  yield 1;
+  yield 'one';
+}
+    `,
+    `
+async function* test(): AsyncGenerator<number | string> {
+  yield 1;
+  yield 'one';
+}
+    `,
+    `
+async function* test(): AsyncGenerator<number | string> {
+  yield 1;
+  yield 'one';
+
+  return 10;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<unknown, number> {
+  return 10;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<unknown, unknown> {
+  return 10;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<unknown, any> {
+  return 10;
+}
+    `,
+    `
+async function* test(): AsyncGenerator<unknown, string | number> {
+  return 10 as string | number;
+}
+    `,
+    `
+async function* test(a: boolean): AsyncGenerator<unknown, string | number> {
+  if (a) {
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+async function* test(a: boolean): AsyncGenerator<boolean, string | number> {
+  yield true;
+
+  if (a) {
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+async function* test(
+  a: boolean,
+): AsyncGenerator<boolean | number, string | number> {
+  yield true;
+
+  if (a) {
+    yield 5;
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+declare const b: boolean | string;
+
+async function* test(
+  a: boolean,
+): AsyncGenerator<boolean | number | string, string | number> {
+  yield 1;
+
+  if (a) {
+    yield b;
+    return 1;
+  }
+
+  return 'one';
+}
+    `,
+    `
+declare const b: boolean | string;
+
+async function* test(
+  a: boolean,
+): AsyncGenerator<boolean | number | string, string | number> {
+  yield 1;
+
+  if (a) {
+    yield b;
+    return Promise.resolve(1);
+  }
+
+  return 'one';
+}
+    `,
+    `
+declare const b: boolean | string;
+
+async function* test(
+  a: boolean,
+): AsyncGenerator<boolean | number | string, string | number> {
+  yield 1;
+
+  if (a) {
+    yield Promise.resolve(b);
+    return 1;
+  }
+
+  return 'one';
 }
     `,
   ],
 
   invalid: [
+    // simple unused return type annotations
     {
       code: `
 function test(): string | number {
@@ -519,6 +966,44 @@ function test(): string | number {
         },
       ],
     },
+    {
+      code: `
+function test(): string | number | boolean {
+  return 1 as string | number;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test(b: boolean): string | number | boolean | null {
+  if (b) {
+    return null;
+  }
+
+  return 1 as string | number;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+
+    // various different ways to define a function
     {
       code: `
 const test = (): string | number => {
@@ -567,6 +1052,8 @@ class A {
         },
       ],
     },
+
+    // unused type constraints
     {
       code: `
 function test<T extends string>(): T | number {
@@ -622,6 +1109,8 @@ function test(): string | number | boolean {
         },
       ],
     },
+
+    // potentially returning void or undefined
     {
       code: `
 function test(): string | number | undefined {
@@ -654,6 +1143,8 @@ function test(): string | number | void {
         },
       ],
     },
+
+    // any in return type annotation
     {
       code: `
 function test(): string | number | any {
@@ -670,62 +1161,8 @@ function test(): string | number | any {
         },
       ],
     },
-    {
-      code: `
-function test(a: boolean): string | number | null {
-  if (a) {
-    return 1;
-  }
 
-  return 'one';
-}
-      `,
-      errors: [
-        {
-          data: {
-            type: 'null',
-          },
-          line: 2,
-          messageId: 'unusedReturnTypes',
-        },
-      ],
-    },
-    {
-      code: `
-function test(): string | number | boolean {
-  return 1 as string | number;
-}
-      `,
-      errors: [
-        {
-          data: {
-            type: 'boolean',
-          },
-          line: 2,
-          messageId: 'unusedReturnTypes',
-        },
-      ],
-    },
-    {
-      code: `
-function test(b: boolean): string | number | boolean | null {
-  if (b) {
-    return null;
-  }
-
-  return 1 as string | number;
-}
-      `,
-      errors: [
-        {
-          data: {
-            type: 'boolean',
-          },
-          line: 2,
-          messageId: 'unusedReturnTypes',
-        },
-      ],
-    },
+    // referenced return types
     {
       code: `
 type R = number | string;
@@ -763,6 +1200,7 @@ function test(): R | string {
       ],
     },
 
+    // arrays
     {
       code: `
 function test(): (string | number)[] {
@@ -959,6 +1397,7 @@ function test(): (string | undefined)[] {
       ],
     },
 
+    // tuples
     {
       code: `
 function test(): [string | number] {
@@ -1237,23 +1676,8 @@ function test(): [string | undefined] {
         },
       ],
     },
-    {
-      code: `
-function test(): [Promise<string | undefined>] {
-  return [Promise.resolve('one')];
-}
-      `,
-      errors: [
-        {
-          data: {
-            type: 'undefined',
-          },
-          line: 2,
-          messageId: 'unusedReturnTypes',
-        },
-      ],
-    },
 
+    // promises
     {
       code: `
 function test(): Promise<string | number> {
@@ -1368,6 +1792,7 @@ function test(): R | boolean {
       ],
     },
 
+    // async functions
     {
       code: `
 async function test(): Promise<string | number> {
@@ -1599,6 +2024,354 @@ function test(): [Promise<boolean | number>][] {
 }
       `,
       errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+
+    // generators
+    {
+      code: `
+function* test(): Generator<number> {}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<string | number> {}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string | number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<string | number> {
+  yield 10;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<string | number | boolean> {
+  yield 10;
+  yield 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<string | number, number> {
+  yield 10;
+  return 10;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<string | number, string | boolean> {
+  yield 10;
+  return 'one' as 'one' | true;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<number, string | boolean> {
+  return 'one' as 'one' | true;
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unusedGeneratorYieldTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<unknown, string | boolean> {
+  return 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function* test(): Generator<number | null, string | boolean> {
+  yield 10;
+  return 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'null',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+
+    // async generators
+    {
+      code: `
+async function* test(): AsyncGenerator<number> {}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<string | number> {}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string | number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<string | number> {
+  yield 10;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<string | number | boolean> {
+  yield 10;
+  yield 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<string | number, number> {
+  yield 10;
+  return 10;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<string | number, string | boolean> {
+  yield 10;
+  return 'one' as 'one' | true;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<number, string | boolean> {
+  return 'one' as 'one' | true;
+}
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unusedGeneratorYieldTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<unknown, string | boolean> {
+  return 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<number | null, string | boolean> {
+  yield 10;
+  return 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'null',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<number | null, string | boolean> {
+  yield Promise.resolve(10);
+  return 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'null',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+        {
+          data: {
+            type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+async function* test(): AsyncGenerator<number | null, string | boolean> {
+  yield 10;
+  return Promise.resolve('one');
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'null',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
         {
           data: {
             type: 'boolean',
