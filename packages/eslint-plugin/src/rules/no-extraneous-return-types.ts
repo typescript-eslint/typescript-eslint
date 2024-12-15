@@ -51,67 +51,58 @@ export default createRule({
       return relevantReturnTypes;
     }
 
+    function checkTypeReferenceReturnTypes(
+      node: TSESTree.TypeNode,
+      typeArguments: TSESTree.TypeNode[],
+      returnTypes: ts.Type[],
+    ): void {
+      const relevantReturnTypes = getRelevantReturnTypes(node, returnTypes);
+
+      if (relevantReturnTypes) {
+        for (const [index, typeParameter] of typeArguments.entries()) {
+          const returnTypes = relevantReturnTypes
+            .map(type => {
+              if (tsutils.isTypeReference(type) && type.typeArguments) {
+                return type.typeArguments[index];
+              }
+
+              return type;
+            })
+            .flatMap(type => tsutils.unionTypeParts(type));
+
+          checkReturnType(typeParameter, returnTypes);
+        }
+      }
+    }
+
     function checkReturnType(
       node: TSESTree.TypeNode,
       returnTypes: ts.Type[],
       allowUnusedVoidOrUndefinedValues = false,
     ): void {
+      // catch-all for generics including promises, maps, sets, and user-defined ones
+      if (node.type === AST_NODE_TYPES.TSTypeReference && node.typeArguments) {
+        checkTypeReferenceReturnTypes(
+          node,
+          node.typeArguments.params,
+          returnTypes,
+        );
+        return;
+      }
+
+      // special-case for tuple structure `[A, B]`
       const tupleElementTypes = getTypeArgumentIfTupleNode(node);
 
       if (tupleElementTypes) {
-        const relevantReturnTypes = getRelevantReturnTypes(node, returnTypes);
-
-        if (relevantReturnTypes) {
-          for (const [index, elementType] of tupleElementTypes.entries()) {
-            const returnTypes = relevantReturnTypes
-              .map(type => {
-                if (checker.isTupleType(type)) {
-                  return checker.getTypeArguments(type)[index];
-                }
-                return type;
-              })
-              .flatMap(type => tsutils.unionTypeParts(type));
-
-            checkReturnType(elementType, returnTypes);
-          }
-        }
-
+        checkTypeReferenceReturnTypes(node, tupleElementTypes, returnTypes);
         return;
       }
 
-      const promiseTypeArgument = getTypeArgumentIfPromiseNode(node);
-
-      if (promiseTypeArgument) {
-        const relevantReturnTypes = getRelevantReturnTypes(node, returnTypes);
-
-        if (relevantReturnTypes) {
-          const returnTypes = relevantReturnTypes
-            .map(type => checker.getAwaitedType(type))
-            .filter(type => type != null)
-            .flatMap(type => tsutils.unionTypeParts(type));
-
-          checkReturnType(promiseTypeArgument, returnTypes);
-        }
-        return;
-      }
-
+      // special-case for non-generic array structure `A[]`
       const arrayTypeArgument = getTypeArgumentIfArrayNode(node);
 
       if (arrayTypeArgument) {
-        const relevantReturnTypes = getRelevantReturnTypes(node, returnTypes);
-
-        if (relevantReturnTypes) {
-          const returnTypes = relevantReturnTypes
-            .map(type => {
-              if (checker.isArrayType(type)) {
-                return checker.getTypeArguments(type)[0];
-              }
-              return type;
-            })
-            .flatMap(type => tsutils.unionTypeParts(type));
-
-          checkReturnType(arrayTypeArgument, returnTypes);
-        }
+        checkTypeReferenceReturnTypes(node, [arrayTypeArgument], returnTypes);
         return;
       }
 
@@ -276,16 +267,6 @@ function getTypeArgumentIfPromiseNode(
 function getTypeArgumentIfArrayNode(
   node: TSESTree.TypeNode,
 ): TSESTree.TypeNode | null {
-  if (
-    // Check for Array<...> type reference
-    node.type === AST_NODE_TYPES.TSTypeReference &&
-    node.typeName.type === AST_NODE_TYPES.Identifier &&
-    node.typeName.name === 'Array' &&
-    node.typeArguments?.params.length === 1
-  ) {
-    return node.typeArguments.params[0];
-  }
-
   if (
     // Check for (...)[]
     node.type === AST_NODE_TYPES.TSArrayType
