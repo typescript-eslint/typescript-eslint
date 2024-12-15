@@ -193,14 +193,6 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (checker.isTupleType(type)) {
-        return collectTupleCertainty(type);
-      }
-
-      if (checker.isArrayType(type)) {
-        return collectArrayCertainty(type);
-      }
-
       // the Boolean type definition missing toString()
       if (
         type.flags & ts.TypeFlags.Boolean ||
@@ -219,6 +211,14 @@ export default createRule<Options, MessageIds>({
 
       if (type.isUnion()) {
         return collectUnionTypeCertainty(type, collectToStringCertainty);
+      }
+
+      if (checker.isTupleType(type)) {
+        return collectTupleCertainty(type);
+      }
+
+      if (checker.isArrayType(type)) {
+        return collectArrayCertainty(type);
       }
 
       const toString =

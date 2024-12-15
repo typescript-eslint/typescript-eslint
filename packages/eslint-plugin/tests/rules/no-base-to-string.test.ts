@@ -178,6 +178,14 @@ String(['foo', 'bar']);
     `
 String([{}, 'bar'] as string[]);
     `,
+    {
+      code: `
+type Foo = { a: string }[];
+declare const foo: Foo;
+String(foo);
+      `,
+      options: [{ ignoredTypeNames: ['Foo'] }],
+    },
     `
 \`\${[{}, 'bar'] as string[]}\`;
     `,
