@@ -68,7 +68,7 @@ export default createRule<Options, MessageId>({
     messages: {
       conditionErrorAny:
         'Unexpected any value in conditional. ' +
-        'An explicit comparison or type cast is required.',
+        'An explicit comparison or type conversion is required.',
       conditionErrorNullableBoolean:
         'Unexpected nullable boolean value in conditional. ' +
         'Please handle the nullish case explicitly.',
@@ -100,7 +100,7 @@ export default createRule<Options, MessageId>({
         'Unexpected string value in conditional. ' +
         'An explicit empty string check is required.',
       conditionFixCastBoolean:
-        'Explicitly cast value to a boolean (`Boolean(value)`)',
+        'Explicitly convert value to a boolean (`Boolean(value)`)',
 
       conditionFixCompareEmptyString:
         'Change condition to check for empty string (`value !== ""`)',

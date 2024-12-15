@@ -3978,9 +3978,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/devkit@npm:20.0.0"
+"@nx/devkit@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/devkit@npm:20.2.2"
   dependencies:
     ejs: ^3.1.7
     enquirer: ~2.3.6
@@ -3992,37 +3992,37 @@ __metadata:
     yargs-parser: 21.1.1
   peerDependencies:
     nx: ">= 19 <= 21"
-  checksum: cefdae656627cb13bdc9a0f5bc191be50daf0fe2cfdaeabb7333229d5bcdce768a72445515ca288b2d322415c9eb87fca8a685707e9532990f42965f8fe10cb3
+  checksum: f0ed85cd9f196e57bf66330b7744a952eea21c15291597948decfe455835b3852f659c0e3da7dd9862dbd4f8224161789850210aa5caa84e31b4283107f6e9fe
   languageName: node
   linkType: hard
 
-"@nx/eslint@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/eslint@npm:20.0.0"
+"@nx/eslint@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/eslint@npm:20.2.2"
   dependencies:
-    "@nx/devkit": 20.0.0
-    "@nx/js": 20.0.0
+    "@nx/devkit": 20.2.2
+    "@nx/js": 20.2.2
     semver: ^7.5.3
     tslib: ^2.3.0
-    typescript: ~5.4.2
+    typescript: ~5.6.2
   peerDependencies:
     "@zkochan/js-yaml": 0.0.7
     eslint: ^8.0.0 || ^9.0.0
   peerDependenciesMeta:
     "@zkochan/js-yaml":
       optional: true
-  checksum: fededf58d5b76c7e9501bf3a21fe0912d890df63e855c32371f28db659dd43287350fc4aee452d9e17293085a9b3929996f07be3713c8400f353350e99da91e3
+  checksum: 8c6fa25d1e9f8cdd48c9eaaa6592c27cba52efe6eabdf9ae242ea046cba647aa41dd344974538474ae509b366ced63d63a4ee58c4733e8a127df688f6135630f
   languageName: node
   linkType: hard
 
-"@nx/jest@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/jest@npm:20.0.0"
+"@nx/jest@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/jest@npm:20.2.2"
   dependencies:
     "@jest/reporters": ^29.4.1
     "@jest/test-result": ^29.4.1
-    "@nx/devkit": 20.0.0
-    "@nx/js": 20.0.0
+    "@nx/devkit": 20.2.2
+    "@nx/js": 20.2.2
     "@phenomnomnominal/tsquery": ~5.0.1
     chalk: ^4.1.0
     identity-obj-proxy: 3.0.0
@@ -4034,13 +4034,13 @@ __metadata:
     semver: ^7.5.3
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: 7fd5c1ea1d62d78ec76183124bbe305a044a4ab631e344a6f398e6054dd0d122ae7b6f8f5d63c5ead58b497ab532d160cfb4eb83ca17007eba21aeb71b185830
+  checksum: b6db4e1c2101d333d47cd2ce86a61895dee5e5d31045a3f3dbb98ed42d795b8c786b80f53f85e57cb9cc8daff7d686d614ccb9841e1d95fa7e2bff21c0995337
   languageName: node
   linkType: hard
 
-"@nx/js@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/js@npm:20.0.0"
+"@nx/js@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/js@npm:20.2.2"
   dependencies:
     "@babel/core": ^7.23.2
     "@babel/plugin-proposal-decorators": ^7.22.7
@@ -4049,8 +4049,8 @@ __metadata:
     "@babel/preset-env": ^7.23.2
     "@babel/preset-typescript": ^7.22.5
     "@babel/runtime": ^7.22.6
-    "@nx/devkit": 20.0.0
-    "@nx/workspace": 20.0.0
+    "@nx/devkit": 20.2.2
+    "@nx/workspace": 20.2.2
     "@zkochan/js-yaml": 0.0.7
     babel-plugin-const-enum: ^1.0.1
     babel-plugin-macros: ^2.8.0
@@ -4059,7 +4059,6 @@ __metadata:
     columnify: ^1.6.0
     detect-port: ^1.5.1
     enquirer: ~2.3.6
-    fast-glob: 3.2.7
     ignore: ^5.0.4
     js-tokens: ^4.0.0
     jsonc-parser: 3.2.0
@@ -4069,6 +4068,7 @@ __metadata:
     ora: 5.3.0
     semver: ^7.5.3
     source-map-support: 0.5.19
+    tinyglobby: ^0.2.10
     ts-node: 10.9.1
     tsconfig-paths: ^4.1.2
     tslib: ^2.3.0
@@ -4077,161 +4077,91 @@ __metadata:
   peerDependenciesMeta:
     verdaccio:
       optional: true
-  checksum: 6a57a95641cfe49686eab8a4fdb999d86882cc239ff8701921239c75473541414dbe347b234f6c32fe1d8de823b8978952a5847a31e8cf36f1efc252fbb693d8
+  checksum: 18493b8c061195e2f990a14866c4c705b2379c50f630f2f5581d81c93185020a332f5864c8c23a79461c2c8c9510819696cbce48f056d5ddf5a2757cb4da28cd
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-darwin-arm64@npm:20.0.0"
+"@nx/nx-darwin-arm64@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-darwin-arm64@npm:20.2.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-darwin-arm64@npm:20.2.1"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@nx/nx-darwin-x64@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-darwin-x64@npm:20.0.0"
+"@nx/nx-darwin-x64@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-darwin-x64@npm:20.2.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-darwin-x64@npm:20.2.1"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@nx/nx-freebsd-x64@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-freebsd-x64@npm:20.0.0"
+"@nx/nx-freebsd-x64@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-freebsd-x64@npm:20.2.2"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-freebsd-x64@npm:20.2.1"
-  conditions: os=freebsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-arm-gnueabihf@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:20.0.0"
+"@nx/nx-linux-arm-gnueabihf@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:20.2.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:20.2.1"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-arm64-gnu@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-linux-arm64-gnu@npm:20.0.0"
+"@nx/nx-linux-arm64-gnu@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-linux-arm64-gnu@npm:20.2.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-linux-arm64-gnu@npm:20.2.1"
-  conditions: os=linux & cpu=arm64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-arm64-musl@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-linux-arm64-musl@npm:20.0.0"
+"@nx/nx-linux-arm64-musl@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-linux-arm64-musl@npm:20.2.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-linux-arm64-musl@npm:20.2.1"
-  conditions: os=linux & cpu=arm64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-x64-gnu@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-linux-x64-gnu@npm:20.0.0"
+"@nx/nx-linux-x64-gnu@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-linux-x64-gnu@npm:20.2.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-linux-x64-gnu@npm:20.2.1"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
-"@nx/nx-linux-x64-musl@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-linux-x64-musl@npm:20.0.0"
+"@nx/nx-linux-x64-musl@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-linux-x64-musl@npm:20.2.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-linux-x64-musl@npm:20.2.1"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nx/nx-win32-arm64-msvc@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-win32-arm64-msvc@npm:20.0.0"
+"@nx/nx-win32-arm64-msvc@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-win32-arm64-msvc@npm:20.2.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-win32-arm64-msvc@npm:20.2.1"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@nx/nx-win32-x64-msvc@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/nx-win32-x64-msvc@npm:20.0.0"
+"@nx/nx-win32-x64-msvc@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/nx-win32-x64-msvc@npm:20.2.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:20.2.1":
-  version: 20.2.1
-  resolution: "@nx/nx-win32-x64-msvc@npm:20.2.1"
-  conditions: os=win32 & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@nx/workspace@npm:20.0.0":
-  version: 20.0.0
-  resolution: "@nx/workspace@npm:20.0.0"
+"@nx/workspace@npm:20.2.2":
+  version: 20.2.2
+  resolution: "@nx/workspace@npm:20.2.2"
   dependencies:
-    "@nx/devkit": 20.0.0
+    "@nx/devkit": 20.2.2
     chalk: ^4.1.0
     enquirer: ~2.3.6
-    nx: 20.0.0
+    nx: 20.2.2
     tslib: ^2.3.0
     yargs-parser: 21.1.1
-  checksum: 27d731eb603623a8c155e392be9644fd5b933ed4dd8ed092b3778b57c1a74e0a9f9104946c24ae9a18614856de907e30811ce1b9bfe8285dd1051e030dd22817
+  checksum: d829de36dbda89f31e4a60454fe02595d577768423f2a70f04e04fdd57e9f9984f7602aa5ec22cd0778cc0e274614cd8639fdf9c3778a2d3bf4de3f70f74a203
   languageName: node
   linkType: hard
 
@@ -5877,10 +5807,10 @@ __metadata:
     "@eslint/eslintrc": ^3.2.0
     "@eslint/js": ^9.15.0
     "@jest/types": 29.6.3
-    "@nx/devkit": 20.0.0
-    "@nx/eslint": 20.0.0
-    "@nx/jest": 20.0.0
-    "@nx/workspace": 20.0.0
+    "@nx/devkit": 20.2.2
+    "@nx/eslint": 20.2.2
+    "@nx/jest": 20.2.2
+    "@nx/workspace": 20.2.2
     "@swc/core": ^1.4.12
     "@swc/jest": ^0.2.36
     "@types/babel__code-frame": ^7.0.6
@@ -5928,7 +5858,7 @@ __metadata:
     make-dir: ^4.0.0
     markdownlint-cli: ^0.43.0
     ncp: ^2.0.0
-    nx: 20.2.1
+    nx: 20.2.2
     prettier: 3.4.2
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
@@ -6207,16 +6137,6 @@ __metadata:
   version: 1.1.0
   resolution: "@yarnpkg/lockfile@npm:1.1.0"
   checksum: 05b881b4866a3546861fee756e6d3812776ea47fa6eb7098f983d6d0eefa02e12b66c3fff931574120f196286a7ad4879ce02743c8bb2be36c6a576c7852083a
-  languageName: node
-  linkType: hard
-
-"@yarnpkg/parsers@npm:3.0.0-rc.46":
-  version: 3.0.0-rc.46
-  resolution: "@yarnpkg/parsers@npm:3.0.0-rc.46"
-  dependencies:
-    js-yaml: ^3.10.0
-    tslib: ^2.4.0
-  checksum: 35dfd1b1ac7ed9babf231721eb90b58156e840e575f6792a8e5ab559beaed6e2d60833b857310e67d6282c9406357648df2f510e670ec37ef4bd41657f329a51
   languageName: node
   linkType: hard
 
@@ -10267,19 +10187,6 @@ __metadata:
   version: 5.0.1
   resolution: "fast-equals@npm:5.0.1"
   checksum: fbb3b6a74f3a0fa930afac151ff7d01639159b4fddd2678b5d50708e0ba38e9ec14602222d10dadb8398187342692c04fbef5a62b1cfcc7942fe03e754e064bc
-  languageName: node
-  linkType: hard
-
-"fast-glob@npm:3.2.7":
-  version: 3.2.7
-  resolution: "fast-glob@npm:3.2.7"
-  dependencies:
-    "@nodelib/fs.stat": ^2.0.2
-    "@nodelib/fs.walk": ^1.2.3
-    glob-parent: ^5.1.2
-    merge2: ^1.3.0
-    micromatch: ^4.0.4
-  checksum: 2f4708ff112d2b451888129fdd9a0938db88b105b0ddfd043c064e3c4d3e20eed8d7c7615f7565fee660db34ddcf08a2db1bf0ab3c00b87608e4719694642d78
   languageName: node
   linkType: hard
 
@@ -15349,103 +15256,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:20.0.0":
-  version: 20.0.0
-  resolution: "nx@npm:20.0.0"
+"nx@npm:20.2.2":
+  version: 20.2.2
+  resolution: "nx@npm:20.2.2"
   dependencies:
     "@napi-rs/wasm-runtime": 0.2.4
-    "@nx/nx-darwin-arm64": 20.0.0
-    "@nx/nx-darwin-x64": 20.0.0
-    "@nx/nx-freebsd-x64": 20.0.0
-    "@nx/nx-linux-arm-gnueabihf": 20.0.0
-    "@nx/nx-linux-arm64-gnu": 20.0.0
-    "@nx/nx-linux-arm64-musl": 20.0.0
-    "@nx/nx-linux-x64-gnu": 20.0.0
-    "@nx/nx-linux-x64-musl": 20.0.0
-    "@nx/nx-win32-arm64-msvc": 20.0.0
-    "@nx/nx-win32-x64-msvc": 20.0.0
-    "@yarnpkg/lockfile": ^1.1.0
-    "@yarnpkg/parsers": 3.0.0-rc.46
-    "@zkochan/js-yaml": 0.0.7
-    axios: ^1.7.4
-    chalk: ^4.1.0
-    cli-cursor: 3.1.0
-    cli-spinners: 2.6.1
-    cliui: ^8.0.1
-    dotenv: ~16.4.5
-    dotenv-expand: ~11.0.6
-    enquirer: ~2.3.6
-    figures: 3.2.0
-    flat: ^5.0.2
-    front-matter: ^4.0.2
-    ignore: ^5.0.4
-    jest-diff: ^29.4.1
-    jsonc-parser: 3.2.0
-    lines-and-columns: 2.0.3
-    minimatch: 9.0.3
-    node-machine-id: 1.1.12
-    npm-run-path: ^4.0.1
-    open: ^8.4.0
-    ora: 5.3.0
-    semver: ^7.5.3
-    string-width: ^4.2.3
-    tar-stream: ~2.2.0
-    tmp: ~0.2.1
-    tsconfig-paths: ^4.1.2
-    tslib: ^2.3.0
-    yargs: ^17.6.2
-    yargs-parser: 21.1.1
-  peerDependencies:
-    "@swc-node/register": ^1.8.0
-    "@swc/core": ^1.3.85
-  dependenciesMeta:
-    "@nx/nx-darwin-arm64":
-      optional: true
-    "@nx/nx-darwin-x64":
-      optional: true
-    "@nx/nx-freebsd-x64":
-      optional: true
-    "@nx/nx-linux-arm-gnueabihf":
-      optional: true
-    "@nx/nx-linux-arm64-gnu":
-      optional: true
-    "@nx/nx-linux-arm64-musl":
-      optional: true
-    "@nx/nx-linux-x64-gnu":
-      optional: true
-    "@nx/nx-linux-x64-musl":
-      optional: true
-    "@nx/nx-win32-arm64-msvc":
-      optional: true
-    "@nx/nx-win32-x64-msvc":
-      optional: true
-  peerDependenciesMeta:
-    "@swc-node/register":
-      optional: true
-    "@swc/core":
-      optional: true
-  bin:
-    nx: bin/nx.js
-    nx-cloud: bin/nx-cloud.js
-  checksum: c9e19f4196c59c583d76d0034db349b43471c14690757ed67c8a5b2616f00dcb6f6f4bc83a8209cd0691789807deb4dca6dcce27621852d693e28161a6747e4b
-  languageName: node
-  linkType: hard
-
-"nx@npm:20.2.1":
-  version: 20.2.1
-  resolution: "nx@npm:20.2.1"
-  dependencies:
-    "@napi-rs/wasm-runtime": 0.2.4
-    "@nx/nx-darwin-arm64": 20.2.1
-    "@nx/nx-darwin-x64": 20.2.1
-    "@nx/nx-freebsd-x64": 20.2.1
-    "@nx/nx-linux-arm-gnueabihf": 20.2.1
-    "@nx/nx-linux-arm64-gnu": 20.2.1
-    "@nx/nx-linux-arm64-musl": 20.2.1
-    "@nx/nx-linux-x64-gnu": 20.2.1
-    "@nx/nx-linux-x64-musl": 20.2.1
-    "@nx/nx-win32-arm64-msvc": 20.2.1
-    "@nx/nx-win32-x64-msvc": 20.2.1
+    "@nx/nx-darwin-arm64": 20.2.2
+    "@nx/nx-darwin-x64": 20.2.2
+    "@nx/nx-freebsd-x64": 20.2.2
+    "@nx/nx-linux-arm-gnueabihf": 20.2.2
+    "@nx/nx-linux-arm64-gnu": 20.2.2
+    "@nx/nx-linux-arm64-musl": 20.2.2
+    "@nx/nx-linux-x64-gnu": 20.2.2
+    "@nx/nx-linux-x64-musl": 20.2.2
+    "@nx/nx-win32-arm64-msvc": 20.2.2
+    "@nx/nx-win32-x64-msvc": 20.2.2
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.2
     "@zkochan/js-yaml": 0.0.7
@@ -15510,7 +15335,7 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: 28cbe614f6014059962e8982ef0e627e267fb0a06f38209485fa3ba427d6d097d6050947dccd5c00cffeb41d271021f8785d865e1a77289f4daeb79acfdddce6
+  checksum: 9b83bf5b8f2bc163d114366a5fd65d1951662d556d7a0842b1606f1a9009333cd2a0ef92d9cdfec807df07a4499ef389f367d38752be323c1d9b93066830b14f
   languageName: node
   linkType: hard
 
