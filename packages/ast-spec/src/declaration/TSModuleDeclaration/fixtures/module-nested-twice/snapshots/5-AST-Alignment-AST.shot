@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declare AST Alignment - AST 1`] = `
+exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice AST Alignment - AST 1`] = `
 "Snapshot Diff:
 - TSESTree
 + Babel
@@ -14,13 +14,13 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
 -         type: 'TSModuleBlock',
 -         body: Array [],
 -
--         range: [27, 29],
+-         range: [19, 21],
 -         loc: {
--           start: { column: 27, line: 1 },
--           end: { column: 29, line: 1 },
+-           start: { column: 19, line: 1 },
+-           end: { column: 21, line: 1 },
 -         },
 -       },
--       declare: true,
+-       declare: false,
 -       global: false,
 -       id: TSQualifiedName {
 -         type: 'TSQualifiedName',
@@ -39,13 +39,13 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
 +             type: 'TSModuleBlock',
 +             body: Array [],
 
--             range: [15, 18],
-+             range: [27, 29],
+-             range: [7, 10],
++             range: [19, 21],
               loc: {
--               start: { column: 15, line: 1 },
--               end: { column: 18, line: 1 },
-+               start: { column: 27, line: 1 },
-+               end: { column: 29, line: 1 },
+-               start: { column: 7, line: 1 },
+-               end: { column: 10, line: 1 },
++               start: { column: 19, line: 1 },
++               end: { column: 21, line: 1 },
               },
             },
 -           right: Identifier {
@@ -56,23 +56,23 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
 -             optional: false,
 +             name: 'ghi',
 
--             range: [19, 22],
-+             range: [23, 26],
+-             range: [11, 14],
++             range: [15, 18],
               loc: {
--               start: { column: 19, line: 1 },
--               end: { column: 22, line: 1 },
-+               start: { column: 23, line: 1 },
-+               end: { column: 26, line: 1 },
+-               start: { column: 11, line: 1 },
+-               end: { column: 14, line: 1 },
++               start: { column: 15, line: 1 },
++               end: { column: 18, line: 1 },
               },
             },
 
--           range: [15, 22],
-+           range: [23, 29],
+-           range: [7, 14],
++           range: [15, 21],
             loc: {
--             start: { column: 15, line: 1 },
--             end: { column: 22, line: 1 },
-+             start: { column: 23, line: 1 },
-+             end: { column: 29, line: 1 },
+-             start: { column: 7, line: 1 },
+-             end: { column: 14, line: 1 },
++             start: { column: 15, line: 1 },
++             end: { column: 21, line: 1 },
             },
           },
 -         right: Identifier {
@@ -83,47 +83,46 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-nested-twice-declar
 -           optional: false,
 +           name: 'def',
 
--           range: [23, 26],
-+           range: [19, 22],
+-           range: [15, 18],
++           range: [11, 14],
             loc: {
--             start: { column: 23, line: 1 },
--             end: { column: 26, line: 1 },
-+             start: { column: 19, line: 1 },
-+             end: { column: 22, line: 1 },
+-             start: { column: 15, line: 1 },
+-             end: { column: 18, line: 1 },
++             start: { column: 11, line: 1 },
++             end: { column: 14, line: 1 },
             },
           },
 
--         range: [15, 26],
-+         range: [19, 29],
+-         range: [7, 18],
++         range: [11, 21],
 +         loc: {
-+           start: { column: 19, line: 1 },
-+           end: { column: 29, line: 1 },
++           start: { column: 11, line: 1 },
++           end: { column: 21, line: 1 },
 +         },
 +       },
-+       declare: true,
 +       id: Identifier {
 +         type: 'Identifier',
 +         name: 'abc',
 +
-+         range: [15, 18],
++         range: [7, 10],
           loc: {
-            start: { column: 15, line: 1 },
--           end: { column: 26, line: 1 },
-+           end: { column: 18, line: 1 },
+            start: { column: 7, line: 1 },
+-           end: { column: 18, line: 1 },
++           end: { column: 10, line: 1 },
           },
         },
         kind: 'module',
 
-        range: [0, 29],
+        range: [0, 21],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 29, line: 1 },
+          end: { column: 21, line: 1 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [0, 30],
+    range: [0, 22],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
