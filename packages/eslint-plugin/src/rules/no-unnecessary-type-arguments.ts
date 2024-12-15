@@ -167,7 +167,10 @@ function getTypeParametersFromType(
     return undefined;
   }
 
-  const sortedDeclaraions = getSortedDeclarations(node, declarations);
+  const sortedDeclaraions = sortDeclarationsByTypeValueContext(
+    node,
+    declarations,
+  );
   return findFirstResult(sortedDeclaraions, decl => {
     if (
       ts.isTypeAliasDeclaration(decl) ||
@@ -228,7 +231,7 @@ function typeFirstCompare(declA: ts.Declaration, declB: ts.Declaration) {
   return Number(bIsType) - Number(aIsType);
 }
 
-function getSortedDeclarations(
+function sortDeclarationsByTypeValueContext(
   node: TSESTree.TSTypeParameterInstantiation,
   declarations: ts.Declaration[],
 ) {
