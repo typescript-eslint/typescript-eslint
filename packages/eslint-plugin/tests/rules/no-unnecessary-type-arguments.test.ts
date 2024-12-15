@@ -156,17 +156,28 @@ type B<T = A> = T;
 type C2 = B<Map<string, number>>;
     `,
     `
-interface Foo<T = number> {}
+interface Foo<T = string> {}
 declare var Foo: {
-  new <T>(type: string): any;
+  new <T>(type: T): any;
 };
-
-class Bar extends Foo<any> {}
+class Bar extends Foo<string> {}
     `,
     `
-interface Foo<T = number> {}
+interface Foo<T = string> {}
 class Foo<T> {}
-class Bar extends Foo<any> {}
+class Bar extends Foo<string> {}
+    `,
+    `
+class Foo<T = string> {}
+interface Foo<T> {}
+class Bar implements Foo<string> {}
+    `,
+    `
+class Foo<T> {}
+namespace Foo {
+  export class Bar {}
+}
+class Bar extends Foo<string> {}
     `,
   ],
   invalid: [
@@ -463,6 +474,90 @@ type C = Map<string, string>;
 type D = C;
 type E<T = B> = T;
 type F = E;
+      `,
+    },
+    {
+      code: `
+interface Foo {}
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+class Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+interface Foo {}
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+class Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+interface Foo {}
+class Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+declare var Foo: {
+  new <T = string>(type: T): any;
+};
+interface Foo {}
+class Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+class Foo<T> {}
+interface Foo<T = string> {}
+class Bar implements Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+class Foo<T> {}
+interface Foo<T = string> {}
+class Bar implements Foo {}
+      `,
+    },
+    {
+      code: `
+class Foo<T = string> {}
+namespace Foo {
+  export class Bar {}
+}
+class Bar extends Foo<string> {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      output: `
+class Foo<T = string> {}
+namespace Foo {
+  export class Bar {}
+}
+class Bar extends Foo {}
       `,
     },
   ],
