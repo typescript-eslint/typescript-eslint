@@ -21,9 +21,9 @@ export default createRule({
     },
     messages: {
       unsafeOfAnyTypeAssertion:
-        'Unsafe cast from {{type}} detected: consider using type guards or a safer cast.',
+        'Unsafe assertion from {{type}} detected: consider using type guards or a safer assertion.',
       unsafeToAnyTypeAssertion:
-        'Unsafe cast to {{type}} detected: consider using a more specific type to ensure safety.',
+        'Unsafe assertion to {{type}} detected: consider using a more specific type to ensure safety.',
       unsafeToUnconstrainedTypeAssertion:
         "Unsafe type assertion: '{{type}}' could be instantiated with an arbitrary type which could be unrelated to the original type.",
       unsafeTypeAssertion:
@@ -59,7 +59,7 @@ export default createRule({
         return;
       }
 
-      // handle cases when casting unknown ==> any.
+      // handle cases when asserting unknown ==> any.
       if (isTypeAnyType(assertedType) && isTypeUnknownType(expressionType)) {
         context.report({
           node,

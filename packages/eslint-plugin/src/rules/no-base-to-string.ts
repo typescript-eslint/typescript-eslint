@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -69,7 +68,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
+    function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
       }
@@ -176,15 +175,17 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      const toString =
-        checker.getPropertyOfType(type, 'toString') ??
-        checker.getPropertyOfType(type, 'toLocaleString');
-      const declarations = toString?.getDeclarations();
-      if (!toString || !declarations || declarations.length === 0) {
+      // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
+      if ((tsutils.isTypeParameter as (t: ts.Type) => boolean)(type)) {
+        const constraint = type.getConstraint();
+        if (constraint) {
+          return collectToStringCertainty(constraint);
+        }
+        // unconstrained generic means `unknown`
         return Usefulness.Always;
       }
 
-      // Patch for old version TypeScript, the Boolean type definition missing toString()
+      // the Boolean type definition missing toString()
       if (
         type.flags & ts.TypeFlags.Boolean ||
         type.flags & ts.TypeFlags.BooleanLiteral
@@ -196,32 +197,49 @@ export default createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (
-        declarations.every(
-          ({ parent }) =>
-            !ts.isInterfaceDeclaration(parent) || parent.name.text !== 'Object',
-        )
-      ) {
-        return Usefulness.Always;
-      }
-
       if (type.isIntersection()) {
         return collectIntersectionTypeCertainty(type, collectToStringCertainty);
       }
 
-      if (!type.isUnion()) {
-        return Usefulness.Never;
+      if (type.isUnion()) {
+        return collectUnionTypeCertainty(type, collectToStringCertainty);
       }
-      return collectUnionTypeCertainty(type, collectToStringCertainty);
+
+      const toString =
+        checker.getPropertyOfType(type, 'toString') ??
+        checker.getPropertyOfType(type, 'toLocaleString');
+      if (!toString) {
+        // e.g. any/unknown
+        return Usefulness.Always;
+      }
+
+      const declarations = toString.getDeclarations();
+
+      if (declarations == null || declarations.length !== 1) {
+        // If there are multiple declarations, at least one of them must not be
+        // the default object toString.
+        //
+        // This may only matter for older versions of TS
+        // see https://github.com/typescript-eslint/typescript-eslint/issues/8585
+        return Usefulness.Always;
+      }
+
+      const declaration = declarations[0];
+      const isBaseToString =
+        ts.isInterfaceDeclaration(declaration.parent) &&
+        declaration.parent.name.text === 'Object';
+      return isBaseToString ? Usefulness.Never : Usefulness.Always;
     }
 
     function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
       if (
         node.callee.type === AST_NODE_TYPES.Identifier &&
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         node.callee.name === 'String' &&
         node.arguments[0]
       ) {
         const scope = context.sourceCode.getScope(node);
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
         const variable = scope.set.get('String');
         return !variable?.defs.length;
       }
@@ -245,7 +263,10 @@ export default createRule<Options, MessageIds>({
         }
       },
       CallExpression(node: TSESTree.CallExpression): void {
-        if (isBuiltInStringCall(node)) {
+        if (
+          isBuiltInStringCall(node) &&
+          node.arguments[0].type !== AST_NODE_TYPES.SpreadElement
+        ) {
           checkExpression(node.arguments[0]);
         }
       },

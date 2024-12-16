@@ -51,6 +51,7 @@ function createSerializer<Constructor extends ConstructorSignature>(
       const childIndentation = indentation + config.indent;
       for (const key of keys) {
         let value = thing[key as string];
+        // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
         if (value === undefined) {
           continue;
         }

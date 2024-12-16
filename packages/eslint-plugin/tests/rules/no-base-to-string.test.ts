@@ -135,15 +135,19 @@ tag\`\${{}}\`;
     "'' += new URL();",
     "'' += new URLSearchParams();",
     `
-let numbers = [1, 2, 3];
-String(...a);
-    `,
-    `
 Number(1);
     `,
     {
       code: 'String(/regex/);',
       options: [{ ignoredTypeNames: ['RegExp'] }],
+    },
+    {
+      code: `
+type Foo = { a: string } | { b: string };
+declare const foo: Foo;
+String(foo);
+      `,
+      options: [{ ignoredTypeNames: ['Foo'] }],
     },
     `
 function String(value) {
@@ -215,6 +219,46 @@ class Foo {}
 declare const tuple: [string] & [Foo];
 tuple.join('');
     `,
+    // don't bother trying to interpret spread args.
+    `
+let objects = [{}, {}];
+String(...objects);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8585
+    `
+type Constructable<Entity> = abstract new (...args: any[]) => Entity;
+
+interface GuildChannel {
+  toString(): \`<#\${string}>\`;
+}
+
+declare const foo: Constructable<GuildChannel & { bar: 1 }>;
+class ExtendedGuildChannel extends foo {}
+declare const bb: ExtendedGuildChannel;
+bb.toString();
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8585 with intersection order reversed.
+    `
+type Constructable<Entity> = abstract new (...args: any[]) => Entity;
+
+interface GuildChannel {
+  toString(): \`<#\${string}>\`;
+}
+
+declare const foo: Constructable<{ bar: 1 } & GuildChannel>;
+class ExtendedGuildChannel extends foo {}
+declare const bb: ExtendedGuildChannel;
+bb.toString();
+    `,
+    `
+function foo<T>(x: T) {
+  String(x);
+}
+    `,
+    `
+declare const u: unknown;
+String(u);
+    `,
   ],
   invalid: [
     {
@@ -272,21 +316,6 @@ tuple.join('');
           data: {
             certainty: 'will',
             name: '{}',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-    },
-    {
-      code: `
-let objects = [{}, {}];
-String(...objects);
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'will',
-            name: '...objects',
           },
           messageId: 'baseToString',
         },
@@ -682,10 +711,60 @@ declare const foo: Bar & Foo;
       errors: [
         {
           data: {
-            certainty: 'will',
+            certainty: 'may',
             name: 'array',
           },
           messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          array[0].toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array[0]',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(value: T) {
+          value.toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'value',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Bar = Record<string, string>;
+declare const foo: Bar | string;
+foo.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
         },
       ],
     },
