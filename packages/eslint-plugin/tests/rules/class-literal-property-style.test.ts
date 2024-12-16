@@ -139,7 +139,7 @@ abstract class Mx {
     {
       code: `
 class Mx {
-  public declare readonly foo = 1;
+  declare public readonly foo = 1;
 }
       `,
       options: ['getters'],
