@@ -1,0 +1,39 @@
+---
+description: 'Disallow destructuring patterns that do not fully handle all elements of inline object and tuple types.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-partial-destructuring** for documentation.
+
+This rule disallows partial destructuring of inline object and tuple types, enforcing all properties and keys are destructured over.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function foo({ bar }: { bar: string; bazz: string }) {}
+
+const [hello]: [string, number] = arr;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function foo({ bar, bazz }: { bar: string; bazz: string }) {}
+
+const [hello, world]: [string, number] = arr;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your project uses destructuring where only partial values are relevant, this rule may not suit your needs. Consider turning it off.
