@@ -657,6 +657,11 @@ export default createRule<Options, MessageId>({
             return t;
           });
 
+        if (returnTypes.length === 0) {
+          // Not a callable function, e.g. `any`
+          return;
+        }
+
         let hasFalsyReturnTypes = false;
         let hasTruthyReturnTypes = false;
 

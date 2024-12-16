@@ -297,6 +297,12 @@ declare const test: <T extends boolean>() => T;
 
 [1, null].filter(test);
     `,
+    `
+[1, null].filter(1 as any);
+    `,
+    `
+[1, null].filter(1 as never);
+    `,
     // Ignores non-array methods of the same name
     `
 const notArray = {
