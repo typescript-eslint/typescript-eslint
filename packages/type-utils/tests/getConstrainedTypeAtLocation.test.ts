@@ -1,9 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import type { ParserServicesWithTypeInformation } from '@typescript-eslint/typescript-estree';
 
-import * as tsvfs from '@typescript/vfs';
+import { parseForESLint } from '@typescript-eslint/parser';
+import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
-import * as ts from 'typescript';
 
 import {
   getConstrainedTypeAtLocation,
@@ -11,68 +11,18 @@ import {
   isTypeUnknownType,
 } from '../src';
 
-/**
- * Creates a dummy value that the type system will treat as if it's a TSESTree.Node.
- */
-function mockEstreeNode(): TSESTree.Node {
-  // this should never actually be used.
-  return null!;
-}
+function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
+  services: ParserServicesWithTypeInformation;
+} {
+  const rootDir = path.join(__dirname, 'fixtures');
 
-/**
- * Creates a mock of the mock ParserServicesWithTypeInformation object.
- *
- * Should be provided with a real type checker. `getTypeAtLocation` will always
- * return the type of the provided node.
- */
-function mockServices(
-  checker: ts.TypeChecker,
-  tsNode: ts.Node,
-): ParserServicesWithTypeInformation {
-  return {
-    getTypeAtLocation: () => checker.getTypeAtLocation(tsNode),
-    // @ts-expect-error -- mocking
-    program: {
-      getTypeChecker: () => checker,
-    },
-  };
-}
-
-interface SourceFileAndTypeChecker {
-  sourceFile: ts.SourceFile;
-  typeChecker: ts.TypeChecker;
-}
-
-// copied with <3 from https://github.com/JoshuaKGoldberg/ts-api-utils/blob/8c747294f24d0adca8817f4028832b855d907b5b/src/test/utils.ts#L41
-function createSourceFileAndTypeChecker(
-  sourceText: string,
-  fileName = 'file.tsx',
-): SourceFileAndTypeChecker {
-  const compilerOptions: ts.CompilerOptions = {
-    lib: ['ES2018'],
-    target: ts.ScriptTarget.ES2018,
-  };
-
-  const fsMap = tsvfs.createDefaultMapFromNodeModules(compilerOptions, ts);
-  fsMap.set(fileName, sourceText);
-
-  const system = tsvfs.createSystem(fsMap);
-  const env = tsvfs.createVirtualTypeScriptEnvironment(
-    system,
-    [fileName],
-    ts,
-    compilerOptions,
-  );
-
-  const program = env.languageService.getProgram();
-  if (program == null) {
-    throw new Error('Failed to get program.');
-  }
-
-  return {
-    sourceFile: program.getSourceFile(fileName)!,
-    typeChecker: program.getTypeChecker(),
-  };
+  // @ts-expect-error -- services will have type information.
+  return parseForESLint(code, {
+    disallowAutomaticSingleRunInference: true,
+    filePath: path.join(rootDir, 'file.ts'),
+    project: './tsconfig.json',
+    tsconfigRootDir: rootDir,
+  });
 }
 
 /* eslint-disable @typescript-eslint/no-deprecated -- testing a deprecated function */
@@ -84,15 +34,14 @@ describe('getConstrainedTypeAtLocation', () => {
 function foo<T>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
-      mockServices(typeChecker, parameterNode),
-      mockEstreeNode(),
+      services,
+      parameterNode,
     );
 
     expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
@@ -105,15 +54,14 @@ function foo<T>(x: T);
 function foo<T extends unknown>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
-      mockServices(typeChecker, parameterNode),
-      mockEstreeNode(),
+      services,
+      parameterNode,
     );
 
     expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
@@ -125,15 +73,14 @@ function foo<T extends unknown>(x: T);
 function foo<T extends any>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
-      mockServices(typeChecker, parameterNode),
-      mockEstreeNode(),
+      services,
+      parameterNode,
     );
 
     expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
@@ -145,15 +92,14 @@ function foo<T extends any>(x: T);
 function foo<T extends string>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
-      mockServices(typeChecker, parameterNode),
-      mockEstreeNode(),
+      services,
+      parameterNode,
     );
 
     expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
@@ -165,15 +111,14 @@ function foo<T extends string>(x: T);
 function foo(x: string);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
-      mockServices(typeChecker, parameterNode),
-      mockEstreeNode(),
+      services,
+      parameterNode,
     );
 
     expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
@@ -188,18 +133,16 @@ function foo<T extends string>() {
 }
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const outerFunctionNode = sourceFile
-      .statements[0] as ts.FunctionDeclaration;
-    const innerFunctionNode = outerFunctionNode.body!
-      .statements[0] as ts.FunctionDeclaration;
-    const parameterNode = innerFunctionNode.parameters[0];
+    const outerFunctionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const innerFunctionNode = outerFunctionNode.body
+      .body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = innerFunctionNode.params[0];
 
     const constraintAtLocation = getConstrainedTypeAtLocation(
-      mockServices(typeChecker, parameterNode),
-      mockEstreeNode(),
+      services,
+      parameterNode,
     );
 
     expect(tsutils.isTypeParameter(constraintAtLocation)).toBe(false);
@@ -214,18 +157,14 @@ describe('getConstraintTypeInfoAtLocation', () => {
 function foo<T>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(isTypeParameter).toBe(true);
@@ -239,18 +178,14 @@ function foo<T>(x: T);
 function foo<T extends unknown>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(isTypeParameter).toBe(true);
@@ -264,18 +199,14 @@ function foo<T extends unknown>(x: T);
 function foo<T extends any>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(isTypeParameter).toBe(true);
@@ -289,18 +220,14 @@ function foo<T extends any>(x: T);
 function foo<T extends string>(x: T);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(isTypeParameter).toBe(true);
@@ -314,18 +241,14 @@ function foo<T extends string>(x: T);
 function foo(x: string);
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const functionNode = sourceFile.statements[0] as ts.FunctionDeclaration;
-    const parameterNode = functionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const functionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = functionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(isTypeParameter).toBe(false);
@@ -343,21 +266,16 @@ function foo<T extends string>() {
 }
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const outerFunctionNode = sourceFile
-      .statements[0] as ts.FunctionDeclaration;
-    const innerFunctionNode = outerFunctionNode.body!
-      .statements[0] as ts.FunctionDeclaration;
-    const parameterNode = innerFunctionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const outerFunctionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const innerFunctionNode = outerFunctionNode.body
+      .body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = innerFunctionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(constraintType).toBeDefined();
@@ -374,21 +292,16 @@ function foo<T>() {
 }
     `;
 
-    const { sourceFile, typeChecker } =
-      createSourceFileAndTypeChecker(sourceCode);
+    const { ast, services } = parseCodeForEslint(sourceCode);
 
-    const outerFunctionNode = sourceFile
-      .statements[0] as ts.FunctionDeclaration;
-    const innerFunctionNode = outerFunctionNode.body!
-      .statements[0] as ts.FunctionDeclaration;
-    const parameterNode = innerFunctionNode.parameters[0];
-    const parameterType = typeChecker.getTypeAtLocation(parameterNode);
+    const outerFunctionNode = ast.body[0] as TSESTree.FunctionDeclaration;
+    const innerFunctionNode = outerFunctionNode.body
+      .body[0] as TSESTree.FunctionDeclaration;
+    const parameterNode = innerFunctionNode.params[0];
+    const parameterType = services.getTypeAtLocation(parameterNode);
 
     const { constraintType, isTypeParameter, type } =
-      getConstraintTypeInfoAtLocation(
-        mockServices(typeChecker, parameterNode),
-        mockEstreeNode(),
-      );
+      getConstraintTypeInfoAtLocation(services, parameterNode);
 
     expect(type).toBe(parameterType);
     expect(isTypeParameter).toBe(true);

@@ -58,7 +58,6 @@
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@typescript-eslint/parser": "8.18.0",
-    "@typescript/vfs": "*",
     "ajv": "^6.12.6",
     "downlevel-dts": "*",
     "jest": "29.7.0",
