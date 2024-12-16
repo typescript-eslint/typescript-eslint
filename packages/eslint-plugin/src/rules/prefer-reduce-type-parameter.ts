@@ -57,7 +57,29 @@ export default createRule({
 
         const [, secondArg] = callee.parent.arguments;
 
-        if (callee.parent.arguments.length < 2 || !isTypeAssertion(secondArg)) {
+        if (callee.parent.arguments.length < 2) {
+          return;
+        }
+
+        if (isTypeAssertion(secondArg)) {
+          const initializerType = services.getTypeAtLocation(
+            secondArg.expression,
+          );
+
+          const assertedType = services.getTypeAtLocation(
+            secondArg.typeAnnotation,
+          );
+
+          const isAssertionNecessary = !checker.isTypeAssignableTo(
+            initializerType,
+            assertedType,
+          );
+
+          // don't report this if the resulting fix will be a type error
+          if (isAssertionNecessary) {
+            return;
+          }
+        } else {
           return;
         }
 
