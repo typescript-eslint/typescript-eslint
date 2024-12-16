@@ -673,6 +673,11 @@ export default createRule<Options, MessageId>({
           if (isPossiblyTruthy(type)) {
             hasTruthyReturnTypes = true;
           }
+
+          // bail early if both a possibly-truthy and a possibly-falsy have been detected
+          if (hasFalsyReturnTypes && hasTruthyReturnTypes) {
+            return;
+          }
         }
 
         if (!hasFalsyReturnTypes) {
