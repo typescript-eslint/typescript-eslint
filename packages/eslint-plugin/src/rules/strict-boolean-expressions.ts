@@ -3,7 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -242,15 +242,6 @@ export default createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function isFunctionExpressionNode(
-      node: TSESTree.CallExpressionArgument,
-    ): node is TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression {
-      return (
-        node.type === AST_NODE_TYPES.FunctionExpression ||
-        node.type === AST_NODE_TYPES.ArrowFunctionExpression
-      );
-    }
-
     /**
      * Inspects condition of a test expression. (`if`, `while`, `for`, etc.)
      */
@@ -312,7 +303,7 @@ export default createRule<Options, MessageId>({
     function checkArrayMethodCallPredicate(
       predicateNode: TSESTree.CallExpressionArgument,
     ): void {
-      const isFunctionExpression = isFunctionExpressionNode(predicateNode);
+      const isFunctionExpression = ASTUtils.isFunction(predicateNode);
 
       // custom message for accidental `async` function expressions
       if (isFunctionExpression && predicateNode.async) {
