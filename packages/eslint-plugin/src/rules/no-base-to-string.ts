@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
   nullThrows,
@@ -274,7 +274,10 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
-        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
+        const type = DEPRECATED_getConstrainedTypeAtLocation(
+          services,
+          memberExpr.object,
+        );
         checkExpressionForArrayJoin(memberExpr.object, type);
       },
       'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(

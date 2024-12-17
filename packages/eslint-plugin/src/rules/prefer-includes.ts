@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
   isStaticMemberAccessOfValue,
@@ -234,7 +234,10 @@ export default createRule({
 
         //check the argument type of test methods
         const argument = callNode.arguments[0];
-        const type = getConstrainedTypeAtLocation(services, argument);
+        const type = DEPRECATED_getConstrainedTypeAtLocation(
+          services,
+          argument,
+        );
 
         const includesMethodDecl = type
           .getProperty('includes')

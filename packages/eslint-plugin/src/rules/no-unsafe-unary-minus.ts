@@ -29,7 +29,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         const services = util.getParserServices(context);
-        const argType = util.getConstrainedTypeAtLocation(
+        const argType = util.DEPRECATED_getConstrainedTypeAtLocation(
           services,
           node.argument,
         );

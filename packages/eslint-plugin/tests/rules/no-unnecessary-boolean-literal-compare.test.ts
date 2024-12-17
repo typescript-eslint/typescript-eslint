@@ -109,6 +109,20 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
     },
     "'false' === true;",
     "'true' === false;",
+    `
+const unconstrained: <T>(someCondition: T) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+    `,
+    `
+const extendsUnknown: <T extends unknown>(
+  someCondition: T,
+) => void = someCondition => {
+  if (someCondition === true) {
+  }
+};
+    `,
   ],
 
   invalid: [

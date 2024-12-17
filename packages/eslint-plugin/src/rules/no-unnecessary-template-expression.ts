@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getMovedNodeCode,
   getParserServices,
   isTypeFlagSet,
@@ -51,7 +51,10 @@ export default createRule<[], MessageId>({
     function isUnderlyingTypeString(
       expression: TSESTree.Expression,
     ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
-      const type = getConstrainedTypeAtLocation(services, expression);
+      const type = DEPRECATED_getConstrainedTypeAtLocation(
+        services,
+        expression,
+      );
 
       const isString = (t: ts.Type): boolean => {
         return isTypeFlagSet(t, ts.TypeFlags.StringLike);

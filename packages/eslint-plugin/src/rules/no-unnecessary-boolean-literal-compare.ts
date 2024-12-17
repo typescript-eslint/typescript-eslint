@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintTypeInfoAtLocation,
   getParserServices,
   isStrongPrecedenceNode,
 } from '../util';
@@ -94,19 +94,21 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = getConstrainedTypeAtLocation(
-        services,
-        comparison.expression,
-      );
+      const { constraintType, isTypeParameter } =
+        getConstraintTypeInfoAtLocation(services, comparison.expression);
 
-      if (isBooleanType(expressionType)) {
+      if (isTypeParameter && constraintType == null) {
+        return undefined;
+      }
+
+      if (isBooleanType(constraintType)) {
         return {
           ...comparison,
           expressionIsNullableBoolean: false,
         };
       }
 
-      if (isNullableBoolean(expressionType)) {
+      if (isNullableBoolean(constraintType)) {
         return {
           ...comparison,
           expressionIsNullableBoolean: true,

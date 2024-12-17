@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 import {
   Awaitable,
   createRule,
+  getConstraintTypeInfoAtLocation,
   getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
@@ -302,8 +303,13 @@ export default createRule({
         child = expression;
       }
 
-      const type = checker.getTypeAtLocation(child);
-      const certainty = needsToBeAwaited(checker, expression, type);
+      const childEsNode = services.tsNodeToESTreeNodeMap.get(child);
+
+      const constraintInfo = getConstraintTypeInfoAtLocation(
+        services,
+        childEsNode,
+      );
+      const certainty = needsToBeAwaited(checker, expression, constraintInfo);
 
       // handle awaited _non_thenables
 

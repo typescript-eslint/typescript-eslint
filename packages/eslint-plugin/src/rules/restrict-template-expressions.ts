@@ -12,7 +12,7 @@ import type { TypeOrValueSpecifier } from '../util';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
   isTypeAnyType,
@@ -137,7 +137,7 @@ export default createRule<Options, MessageId>({
         }
 
         for (const expression of node.expressions) {
-          const expressionType = getConstrainedTypeAtLocation(
+          const expressionType = DEPRECATED_getConstrainedTypeAtLocation(
             services,
             expression,
           );

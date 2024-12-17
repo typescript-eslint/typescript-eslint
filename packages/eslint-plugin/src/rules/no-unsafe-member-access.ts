@@ -6,7 +6,7 @@ import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
   getThisExpression,
   isTypeAnyType,
@@ -87,7 +87,7 @@ export default createRule({
           if (
             thisExpression &&
             isTypeAnyType(
-              getConstrainedTypeAtLocation(services, thisExpression),
+              DEPRECATED_getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeThisMemberExpression';

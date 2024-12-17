@@ -5,7 +5,7 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  DEPRECATED_getConstrainedTypeAtLocation,
   getParserServices,
 } from '../util';
 
@@ -58,7 +58,10 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const type = getConstrainedTypeAtLocation(services, argument.object);
+        const type = DEPRECATED_getConstrainedTypeAtLocation(
+          services,
+          argument.object,
+        );
 
         if (!isUnderlyingTypeArray(type)) {
           return;
