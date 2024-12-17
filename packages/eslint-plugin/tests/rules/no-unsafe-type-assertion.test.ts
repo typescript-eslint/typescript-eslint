@@ -1262,7 +1262,6 @@ function parameterExtendsOtherParameter<T extends string | number, V extends T>(
   x: T,
   y: V,
 ) {
-  y as T; // allowed
   x as V; // banned; assignable to constraint
 }
         `,
@@ -1279,7 +1278,6 @@ function parameterExtendsOtherParameter<T extends string | number, V extends T>(
       {
         code: `
 function parameterExtendsUnconstrainedParameter<T, V extends T>(x: T, y: V) {
-  y as T; // allowed (as above)
   x as V; // banned; unconstrained arbitrary type
 }
         `,
