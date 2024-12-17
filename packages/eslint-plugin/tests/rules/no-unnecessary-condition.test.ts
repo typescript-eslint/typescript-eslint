@@ -27,6 +27,12 @@ const optionsWithExactOptionalPropertyTypes = {
   tsconfigRootDir: rootPath,
 };
 
+const optionsWithNoUncheckedIndexedAccess = {
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
+};
+
 const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
@@ -591,11 +597,7 @@ const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -649,11 +651,7 @@ function Foo(outer: Outer, key: Foo): number | undefined {
 }
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -666,11 +664,51 @@ declare const key: Key;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: Record<string, { key: string }>;
+};
+declare const foo: Foo;
+foo.key?.someKey?.key;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: {
+    [key: string]: () => void;
+  };
+};
+declare const foo: Foo;
+foo.key?.value?.();
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a?.a;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     `
