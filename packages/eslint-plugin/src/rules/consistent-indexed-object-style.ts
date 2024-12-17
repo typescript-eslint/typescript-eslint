@@ -3,7 +3,12 @@ import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule, isParenthesized, nullThrows } from '../util';
+import {
+  createRule,
+  getFixOrSuggest,
+  isParenthesized,
+  nullThrows,
+} from '../util';
 
 type MessageIds =
   | 'preferIndexSignature'
@@ -20,6 +25,7 @@ export default createRule<Options, MessageIds>({
       recommended: 'stylistic',
     },
     fixable: 'code',
+    // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
     hasSuggestions: true,
     messages: {
       preferIndexSignature: 'An index signature is preferred over a record.',
@@ -121,35 +127,25 @@ export default createRule<Options, MessageIds>({
 
           const indexParam = params[0];
 
-          const shouldAutoFix =
+          const shouldFix =
             indexParam.type === AST_NODE_TYPES.TSStringKeyword ||
             indexParam.type === AST_NODE_TYPES.TSNumberKeyword ||
             indexParam.type === AST_NODE_TYPES.TSSymbolKeyword;
 
-          const fix: TSESLint.ReportFixFunction = fixer => {
-            const key = context.sourceCode.getText(params[0]);
-            const type = context.sourceCode.getText(params[1]);
-            return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
-          };
-
           context.report({
             node,
             messageId: 'preferIndexSignature',
-            fix: shouldAutoFix
-              ? fixer => {
+            ...getFixOrSuggest({
+              fixOrSuggest: shouldFix ? 'fix' : 'suggest',
+              suggestion: {
+                messageId: 'preferIndexSignatureSuggestion',
+                fix: fixer => {
                   const key = context.sourceCode.getText(params[0]);
                   const type = context.sourceCode.getText(params[1]);
                   return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
-                }
-              : null,
-            suggest: shouldAutoFix
-              ? null
-              : [
-                  {
-                    messageId: 'preferIndexSignatureSuggestion',
-                    fix,
-                  },
-                ],
+                },
+              },
+            }),
           });
         },
       }),
