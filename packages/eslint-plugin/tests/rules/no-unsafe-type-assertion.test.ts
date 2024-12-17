@@ -1269,8 +1269,8 @@ function parameterExtendsOtherParameter<T extends string | number, V extends T>(
           {
             column: 3,
             endColumn: 9,
-            endLine: 7,
-            line: 7,
+            endLine: 6,
+            line: 6,
             messageId: 'unsafeTypeAssertionAssignableToConstraint',
           },
         ],
@@ -1285,8 +1285,8 @@ function parameterExtendsUnconstrainedParameter<T, V extends T>(x: T, y: V) {
           {
             column: 3,
             endColumn: 9,
-            endLine: 4,
-            line: 4,
+            endLine: 3,
+            line: 3,
             messageId: 'unsafeToUnconstrainedTypeAssertion',
           },
         ],
