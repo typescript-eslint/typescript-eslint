@@ -16,7 +16,7 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce non-null assertions over explicit type casts',
+      description: 'Enforce non-null assertions over explicit type assertions',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },

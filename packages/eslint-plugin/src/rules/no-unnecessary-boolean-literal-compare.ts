@@ -4,7 +4,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, isStrongPrecedenceNode } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  isStrongPrecedenceNode,
+} from '../util';
 
 type MessageIds =
   | 'comparingNullableToFalse'
@@ -89,7 +94,10 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = services.getTypeAtLocation(comparison.expression);
+      const expressionType = getConstrainedTypeAtLocation(
+        services,
+        comparison.expression,
+      );
 
       if (isBooleanType(expressionType)) {
         return {
@@ -197,7 +205,7 @@ export default createRule<Options, MessageIds>({
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
-        if (comparison === undefined) {
+        if (comparison == null) {
           return;
         }
 

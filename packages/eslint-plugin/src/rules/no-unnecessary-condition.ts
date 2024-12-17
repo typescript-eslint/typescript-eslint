@@ -183,7 +183,7 @@ export type MessageId =
   | 'alwaysNullish'
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
-  | 'literalBooleanExpression'
+  | 'comparisonBetweenLiteralTypes'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -211,8 +211,8 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
-        'Unnecessary conditional, comparison is always {{trueOrFalse}}. Both sides of the comparison always have a literal type.',
+      comparisonBetweenLiteralTypes:
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}, since `{{left}} {{operator}} {{right}}` is {{trueOrFalse}}.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
@@ -489,8 +489,11 @@ export default createRule<Options, MessageId>({
 
         context.report({
           node,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
           data: {
+            left: checker.typeToString(leftType),
+            operator,
+            right: checker.typeToString(rightType),
             trueOrFalse: conditionIsTrue ? 'true' : 'false',
           },
         });
@@ -751,8 +754,13 @@ export default createRule<Options, MessageId>({
           if (propType) {
             return isNullableType(propType);
           }
+          const indexInfo = checker.getIndexInfosOfType(type);
 
-          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
+          return indexInfo.some(
+            info =>
+              getTypeName(checker, info.keyType) === 'string' &&
+              isNullableType(info.type),
+          );
         });
         return !isOwnNullable && isNullableType(prevType);
       }
