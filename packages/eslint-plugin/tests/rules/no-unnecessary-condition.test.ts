@@ -27,6 +27,11 @@ const optionsWithExactOptionalPropertyTypes = {
   tsconfigRootDir: rootPath,
 };
 
+const optionsWithNoUncheckedIndexedAccess = {
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+  tsconfigRootDir: rootPath,
+};
+
 const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
@@ -1010,14 +1015,18 @@ declare const t: T;
 t.a.a.a.value;
 t.A?.A?.A?.VALUE;
     `,
-    `
+    {
+      code: `
 type Foo = {
-  key?: Record<string, string>;
+  key?: Record<string, { key: string }>;
 };
 declare const foo: Foo;
-foo.key?.value?.length;
-    `,
-    `
+foo.key?.someKey?.key;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
 type Foo = {
   key?: {
     [key: string]: () => void;
@@ -1025,7 +1034,25 @@ type Foo = {
 };
 declare const foo: Foo;
 foo.key?.value?.();
-    `,
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
+    {
+      code: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a?.a;
+      `,
+      languageOptions: { parserOptions: optionsWithNoUncheckedIndexedAccess },
+    },
   ],
 
   invalid: [
@@ -2929,6 +2956,43 @@ isString('fa' + 'lafel');
       '((string & { __brandA: string }) | (number & { __brandB: string })) & ("foo" | 123)',
       'alwaysTruthy',
     ),
+    {
+      code: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a?.a;
+      `,
+      errors: [
+        {
+          column: 7,
+          endColumn: 9,
+          endLine: 12,
+          line: 12,
+          messageId: 'neverOptionalChain',
+        },
+      ],
+      output: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a.a;
+      `,
+    },
     {
       code: `
 interface T {

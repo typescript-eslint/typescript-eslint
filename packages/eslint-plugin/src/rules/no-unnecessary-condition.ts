@@ -273,6 +273,10 @@ export default createRule<Options, MessageId>({
       compilerOptions,
       'strictNullChecks',
     );
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      compilerOptions,
+      'noUncheckedIndexedAccess',
+    );
 
     if (
       !isStrictNullChecks &&
@@ -756,9 +760,15 @@ export default createRule<Options, MessageId>({
           }
           const indexInfo = checker.getIndexInfosOfType(type);
 
-          return indexInfo.some(
-            info => getTypeName(checker, info.keyType) === 'string',
-          );
+          return indexInfo.some(info => {
+            const isStringTypeName =
+              getTypeName(checker, info.keyType) === 'string';
+
+            return (
+              isStringTypeName &&
+              (isNoUncheckedIndexedAccess || isNullableType(info.type))
+            );
+          });
         });
         return !isOwnNullable && isNullableType(prevType);
       }
