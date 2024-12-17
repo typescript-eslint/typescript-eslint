@@ -3,7 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -12,7 +12,9 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
+  isArrayMethodCallWithPredicate,
   isTypeArrayTypeOrUnionOfArrayTypes,
+  nullThrows,
 } from '../util';
 import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
@@ -53,7 +55,10 @@ export type MessageId =
   | 'conditionFixDefaultEmptyString'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultZero'
-  | 'noStrictNullCheck';
+  | 'explicitBooleanReturnType'
+  | 'noStrictNullCheck'
+  | 'predicateCannotBeAsync'
+  | 'predicateReturnsNonBoolean';
 
 export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -122,8 +127,13 @@ export default createRule<Options, MessageId>({
         'Explicitly treat nullish value the same as false (`value ?? false`)',
       conditionFixDefaultZero:
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
+      explicitBooleanReturnType:
+        'Add an explicit `boolean` return type annotation.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      predicateCannotBeAsync:
+        "Predicate function should not be 'async'; expected a boolean return type.",
+      predicateReturnsNonBoolean: 'Predicate function should return a boolean.',
     },
     schema: [
       {
@@ -275,6 +285,103 @@ export default createRule<Options, MessageId>({
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
       }
+      if (isArrayMethodCallWithPredicate(context, services, node)) {
+        const predicate = node.arguments.at(0);
+
+        if (predicate) {
+          checkArrayMethodCallPredicate(predicate);
+        }
+      }
+    }
+
+    /**
+     * Dedicated function to check array method predicate calls. Reports predicate
+     * arguments that don't return a boolean value.
+     *
+     * Ignores the `allow*` options and requires a boolean value.
+     */
+    function checkArrayMethodCallPredicate(
+      predicateNode: TSESTree.CallExpressionArgument,
+    ): void {
+      const isFunctionExpression = ASTUtils.isFunction(predicateNode);
+
+      // custom message for accidental `async` function expressions
+      if (isFunctionExpression && predicateNode.async) {
+        return context.report({
+          node: predicateNode,
+          messageId: 'predicateCannotBeAsync',
+        });
+      }
+
+      const type = checker.getApparentType(
+        services.getTypeAtLocation(predicateNode),
+      );
+
+      const signatures = type.getCallSignatures();
+
+      if (
+        signatures.every(signature =>
+          tsutils
+            .unionTypeParts(signature.getReturnType())
+            .every(isBooleanType),
+        )
+      ) {
+        return;
+      }
+
+      const canFix = isFunctionExpression && !predicateNode.returnType;
+
+      return context.report({
+        node: predicateNode,
+        messageId: 'predicateReturnsNonBoolean',
+        suggest: canFix
+          ? [
+              {
+                messageId: 'explicitBooleanReturnType',
+                fix: fixer => {
+                  const lastParam = predicateNode.params.at(-1);
+
+                  // zero parameters
+                  if (!lastParam) {
+                    const closingBracket = nullThrows(
+                      context.sourceCode.getFirstToken(
+                        predicateNode,
+                        token => token.value === ')',
+                      ),
+                      'function expression with no arguments must have a closing parenthesis.',
+                    );
+
+                    return fixer.insertTextAfterRange(
+                      closingBracket.range,
+                      ': boolean',
+                    );
+                  }
+
+                  const closingBracket = nullThrows(
+                    context.sourceCode.getTokenAfter(lastParam),
+                    'missing token following function parameters.',
+                  );
+
+                  // one or more parameters wrapped with parens
+                  if (closingBracket.value === ')') {
+                    return fixer.insertTextAfterRange(
+                      closingBracket.range,
+                      ': boolean',
+                    );
+                  }
+
+                  // one param not wrapped with parens
+                  const parameterText = context.sourceCode.getText(lastParam);
+
+                  return fixer.replaceText(
+                    lastParam,
+                    `(${parameterText}): boolean`,
+                  );
+                },
+              },
+            ]
+          : null,
+      });
     }
 
     /**
@@ -1007,11 +1114,13 @@ function isArrayLengthExpression(
 function isBrandedBoolean(type: ts.Type): boolean {
   return (
     type.isIntersection() &&
-    type.types.some(childType =>
-      tsutils.isTypeFlagSet(
-        childType,
-        ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
-      ),
-    )
+    type.types.some(childType => isBooleanType(childType))
+  );
+}
+
+function isBooleanType(expressionType: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(
+    expressionType,
+    ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
   );
 }
