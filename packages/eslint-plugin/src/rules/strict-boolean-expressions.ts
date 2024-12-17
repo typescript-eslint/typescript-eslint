@@ -357,11 +357,13 @@ export default createRule<Options, MessageId>({
                     );
                   }
 
-                  const closingBracket =
-                    context.sourceCode.getTokenAfter(lastParam);
+                  const closingBracket = nullThrows(
+                    context.sourceCode.getTokenAfter(lastParam),
+                    'missing token following function parameters.',
+                  );
 
                   // one or more parameters wrapped with parens
-                  if (closingBracket?.value === ')') {
+                  if (closingBracket.value === ')') {
                     return fixer.insertTextAfterRange(
                       closingBracket.range,
                       ': boolean',
