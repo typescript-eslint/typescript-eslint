@@ -242,79 +242,6 @@ export default createRule<Options, MessageId>({
       | TSESTree.IfStatement
       | TSESTree.WhileStatement;
 
-    function isBooleanType(expressionType: ts.Type): boolean {
-      return tsutils.isTypeFlagSet(
-        expressionType,
-        ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
-      );
-    }
-
-    function isTypeParameter(type: ts.Type): boolean {
-      // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
-      return (tsutils.isTypeParameter as (type: ts.Type) => boolean)(type);
-    }
-
-    function isParameterAssignableTo(
-      parameter: ts.Symbol,
-      expected: ts.Type,
-    ): boolean {
-      const parameterType = checker.getTypeOfSymbol(parameter);
-
-      const constrained = isTypeParameter(parameterType)
-        ? checker.getBaseConstraintOfType(parameterType)
-        : parameterType;
-
-      // treat a type parameter without constraint as `unknown`
-      if (!constrained) {
-        return true;
-      }
-
-      return checker.isTypeAssignableTo(expected, constrained);
-    }
-
-    /**
-     * Returns the call signatures that match the type of an array predicate function
-     * for an array of type `type`.
-     */
-    function getMatchingArrayPredicateSignatures(
-      type: ts.Type,
-      arrayNode: TSESTree.Expression,
-    ): ts.Signature[] {
-      const [arrayType] = checker.getTypeArguments(
-        getConstrainedTypeAtLocation(services, arrayNode) as ts.TypeReference,
-      );
-
-      const signatures: ts.Signature[] = [];
-
-      for (const signature of type.getCallSignatures()) {
-        const parameters = signature.getParameters();
-
-        const valueParameter = parameters.at(0);
-
-        // value parameter should match the array's type
-        if (
-          valueParameter &&
-          !isParameterAssignableTo(valueParameter, arrayType)
-        ) {
-          continue;
-        }
-
-        const indexParameter = parameters.at(1);
-
-        // index parameter should match the number type
-        if (
-          indexParameter &&
-          !isParameterAssignableTo(indexParameter, checker.getNumberType())
-        ) {
-          continue;
-        }
-
-        signatures.push(signature);
-      }
-
-      return signatures;
-    }
-
     function isFunctionExpressionNode(
       node: TSESTree.CallExpressionArgument,
     ): node is TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression {
@@ -369,10 +296,9 @@ export default createRule<Options, MessageId>({
       }
       if (isArrayMethodCallWithPredicate(context, services, node)) {
         const predicate = node.arguments.at(0);
-        const arrayNode = (node.callee as TSESTree.MemberExpression).object;
 
         if (predicate) {
-          checkArrayMethodCallPredicate(predicate, arrayNode);
+          checkArrayMethodCallPredicate(predicate);
         }
       }
     }
@@ -385,7 +311,6 @@ export default createRule<Options, MessageId>({
      */
     function checkArrayMethodCallPredicate(
       predicateNode: TSESTree.CallExpressionArgument,
-      arrayNode: TSESTree.Expression,
     ): void {
       const isFunctionExpression = isFunctionExpressionNode(predicateNode);
 
@@ -401,9 +326,7 @@ export default createRule<Options, MessageId>({
         services.getTypeAtLocation(predicateNode),
       );
 
-      const signatures = isFunctionExpression
-        ? type.getCallSignatures()
-        : getMatchingArrayPredicateSignatures(type, arrayNode);
+      const signatures = type.getCallSignatures();
 
       if (
         signatures.every(signature =>
@@ -1198,11 +1121,13 @@ function isArrayLengthExpression(
 function isBrandedBoolean(type: ts.Type): boolean {
   return (
     type.isIntersection() &&
-    type.types.some(childType =>
-      tsutils.isTypeFlagSet(
-        childType,
-        ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
-      ),
-    )
+    type.types.some(childType => isBooleanType(childType))
+  );
+}
+
+function isBooleanType(expressionType: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(
+    expressionType,
+    ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
   );
 }
