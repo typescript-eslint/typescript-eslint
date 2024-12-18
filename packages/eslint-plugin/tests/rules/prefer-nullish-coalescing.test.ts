@@ -125,6 +125,118 @@ x === null ? x : y;
 declare let x: string | null | unknown;
 x === null ? x : y;
       `,
+      `
+declare let x: string;
+x ? x : y;
+      `,
+      `
+declare let x: string;
+!x ? y : x;
+      `,
+      `
+declare let x: string | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: number;
+x ? x : y;
+      `,
+      `
+declare let x: number;
+!x ? y : x;
+      `,
+      `
+declare let x: number | null;
+x ? x : y;
+      `,
+      `
+declare let x: number | null;
+!x ? y : x;
+      `,
+      `
+declare let x: number | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: number | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: number | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean;
+x ? x : y;
+      `,
+      `
+declare let x: boolean;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | null;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | null;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any;
+x ? x : y;
+      `,
+      `
+declare let x: any;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown;
+x ? x : y;
+      `,
+      `
+declare let x: unknown;
+!x ? y : x;
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -786,6 +898,38 @@ x === null ? y : x;
       `
 declare let x: string | null;
 null === x ? y : x;
+      `,
+      `
+declare let x: object;
+x ? x : y;
+      `,
+      `
+declare let x: object;
+!x ? y : x;
+      `,
+      `
+declare let x: object | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | null | undefined;
+!x ? y : x;
       `,
     ].map(code => ({
       code,
