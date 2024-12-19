@@ -70,15 +70,38 @@ export default createRule({
 
       if (relevantReturnTypes) {
         for (const [index, typeParameter] of typeArguments.entries()) {
-          const returnTypes = relevantReturnTypes
-            .map(type => {
-              if (tsutils.isTypeReference(type) && type.typeArguments) {
-                return type.typeArguments[index];
+          const returnTypes: ts.Type[] = [];
+
+          for (const type of relevantReturnTypes) {
+            if (tsutils.isIntrinsicAnyType(type)) {
+              returnTypes.push(type);
+              continue;
+            }
+
+            if (tsutils.isTypeReference(type) && type.typeArguments) {
+              const returnTypePart = type.typeArguments[index];
+
+              // if these don't match, this type reference or return value
+              // may be unconventional
+              if (
+                !checker.isTypeAssignableTo(
+                  returnTypePart,
+                  services.getTypeAtLocation(typeParameter),
+                )
+              ) {
+                return;
               }
 
-              return type;
-            })
-            .flatMap(type => tsutils.unionTypeParts(type));
+              returnTypes.push(
+                ...tsutils.unionTypeParts(type.typeArguments[index]),
+              );
+              continue;
+            }
+
+            // don't try to unbox this return type if it isn't an `any` or a
+            // boxed value itself
+            return;
+          }
 
           checkReturnType(typeParameter, returnTypes);
         }
@@ -164,8 +187,6 @@ export default createRule({
           },
         });
       }
-
-      return;
     }
 
     function getActualReturnTypes(
