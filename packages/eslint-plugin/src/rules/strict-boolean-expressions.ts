@@ -313,19 +313,20 @@ export default createRule<Options, MessageId>({
         });
       }
 
-      const type = checker.getApparentType(
-        services.getTypeAtLocation(predicateNode),
-      );
+      const returnTypes = services
+        .getTypeAtLocation(predicateNode)
+        .getCallSignatures()
+        .map(signature => {
+          const type = signature.getReturnType();
 
-      const signatures = type.getCallSignatures();
+          if (tsutils.isTypeParameter(type)) {
+            return checker.getBaseConstraintOfType(type) ?? type;
+          }
 
-      if (
-        signatures.every(signature =>
-          tsutils
-            .unionTypeParts(signature.getReturnType())
-            .every(isBooleanType),
-        )
-      ) {
+          return type;
+        });
+
+      if (returnTypes.every(returnType => isBooleanType(returnType))) {
         return;
       }
 

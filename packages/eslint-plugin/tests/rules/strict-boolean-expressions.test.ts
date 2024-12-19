@@ -570,6 +570,14 @@ declare function notNullish<T>(x: T): x is NonNullable<T>;
 declare function isString(x: string | null): x is string;
 ['one', null].filter(isString);
     `,
+    `
+declare function isString<T extends boolean>(x: string | null): T;
+['one', null].filter(isString);
+    `,
+    `
+declare function makePredicate<T extends (x: string | null) => boolean>(): T;
+['one', null].filter(makePredicate());
+    `,
   ],
 
   invalid: [
@@ -3647,6 +3655,36 @@ declare function f(x: string | null, i: number | boolean): boolean;
     {
       code: `
 function foo(x: number) {}
+[1, null].every(foo);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T>(x: number): T {}
+[1, null].every(foo);
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+    },
+    {
+      code: `
+function foo<T extends number>(x: number): T {}
 [1, null].every(foo);
       `,
       errors: [
