@@ -13,7 +13,7 @@
     "tests",
     "typings"
   ],
-  "exclude": ["**/fixtures/**", "tests/RuleTester.test.ts"],
+  "exclude": ["**/fixtures/**"],
   "references": [
     {
       "path": "./tsconfig.build.json"
