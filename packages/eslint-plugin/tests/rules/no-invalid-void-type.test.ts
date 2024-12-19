@@ -580,6 +580,16 @@ export function f(x?: string): string | void {
       ],
     },
     {
+      code: 'type invalidVoidUnion = void | Map;',
+      errors: [
+        {
+          column: 25,
+          line: 1,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
       code: `
 class SomeClass {
   f(x?: string): string | void {
