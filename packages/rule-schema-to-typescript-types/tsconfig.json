@@ -1,9 +1,16 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "tests", "typings"],
-  "references": []
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "../utils" },
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "../typescript-estree" },
+    { "path": "../scope-manager" },
+    { "path": "../parser" },
+    { "path": "../type-utils" },
+    { "path": "./tsconfig.build.json" }
+  ]
 }

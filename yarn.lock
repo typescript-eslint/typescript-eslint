@@ -5592,6 +5592,7 @@ __metadata:
     "@babel/eslint-parser": "*"
     "@jest/types": 29.6.3
     "@microsoft/api-extractor": ^7.47.11
+    "@typescript-eslint/typescript-estree": 8.18.1
     glob: "*"
     jest: 29.7.0
     jest-diff: ^29.7.0
@@ -5703,7 +5704,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
-    "@jest/types": 29.6.3
     "@typescript-eslint/type-utils": 8.18.1
     "@typescript-eslint/utils": 8.18.1
     natural-compare: ^1.4.0
@@ -5783,7 +5783,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
-    "@jest/types": 29.6.3
     downlevel-dts: "*"
     prettier: ^3.2.5
     rimraf: "*"

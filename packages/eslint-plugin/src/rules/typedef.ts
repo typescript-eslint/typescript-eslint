@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-const enum OptionKeys {
+export const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
   ArrowParameter = 'arrowParameter',
   MemberVariableDeclaration = 'memberVariableDeclaration',
