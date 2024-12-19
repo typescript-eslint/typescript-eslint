@@ -344,6 +344,63 @@ export default createRule<Options, MessageIds>({
         }
 
         if (!operator) {
+          let identifier: TSESTree.Node | undefined;
+          let left: TSESTree.Node | undefined;
+          let right: TSESTree.Node | undefined;
+
+          if (
+            node.test.type === AST_NODE_TYPES.Identifier &&
+            isNodeEqual(node.test, node.consequent)
+          ) {
+            // Case x ? x : y()
+            identifier = node.test;
+            left = node.test;
+            right = node.alternate;
+          } else if (
+            node.test.type === AST_NODE_TYPES.UnaryExpression &&
+            node.test.operator === '!' &&
+            node.test.argument.type === AST_NODE_TYPES.Identifier &&
+            isNodeEqual(node.test.argument, node.alternate)
+          ) {
+            // Case !x ? y() : x
+            identifier = node.test.argument;
+            left = node.alternate;
+            right = node.consequent;
+          }
+
+          if (identifier && left && right) {
+            const tsNode = parserServices.esTreeNodeToTSNodeMap.get(identifier);
+            const type = checker.getTypeAtLocation(tsNode);
+
+            if (
+              isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined) ||
+              ((type.flags & ts.TypeFlags.Union) !== 0 &&
+                (type as ts.UnionType).types.some(t =>
+                  isTypeFlagSet(t, ts.TypeFlags.Null | ts.TypeFlags.Undefined),
+                ))
+            ) {
+              context.report({
+                node,
+                messageId: 'preferNullishOverTernary',
+                data: { equals: '' },
+                suggest: [
+                  {
+                    messageId: 'suggestNullish',
+                    data: { equals: '' },
+                    fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
+                      return fixer.replaceText(
+                        node,
+                        `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
+                          context.sourceCode,
+                          right,
+                        )}`,
+                      );
+                    },
+                  },
+                ],
+              });
+            }
+          }
           return;
         }
 

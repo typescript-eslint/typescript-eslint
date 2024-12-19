@@ -2329,5 +2329,125 @@ if (+(a ?? b)) {
         },
       ],
     },
+    {
+      code: `
+interface A {
+  value: string;
+}
+declare const x: A | undefined;
+declare function y(): A;
+
+x ? x : y();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface A {
+  value: string;
+}
+declare const x: A | undefined;
+declare function y(): A;
+
+x ?? y();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  value: string;
+}
+declare const x: A | null;
+declare function y(): A;
+
+x ? x : y();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface A {
+  value: string;
+}
+declare const x: A | null;
+declare function y(): A;
+
+x ?? y();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  value: string;
+}
+declare const x: A | undefined;
+declare function y(): A;
+
+!x ? y() : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+              interface A {
+                value: string;
+                }
+                declare const x: A | undefined;
+                declare function y(): A;
+
+                x ?? y();
+                `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface A {
+  value: string;
+}
+declare const x: A | null;
+declare function y(): A;
+
+!x ? y() : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface A {
+  value: string;
+}
+declare const x: A | null;
+declare function y(): A;
+
+x ?? y();
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
