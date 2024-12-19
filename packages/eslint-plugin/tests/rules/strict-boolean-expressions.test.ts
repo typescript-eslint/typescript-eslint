@@ -527,6 +527,16 @@ assert(nullableString);
 });
     `,
     `
+[true, false].some(function check(x) {
+  return x;
+});
+    `,
+    `
+[true, false].some(x => {
+  return x;
+});
+    `,
+    `
 [1, null].filter(function (x) {
   return x != null;
 });
@@ -541,7 +551,6 @@ assert(nullableString);
   return !!x;
 });
     `,
-    // implicit return statements should be warned by TS's `noImplicitReturns`
     `
 ['one', 'two', ''].filter(function (x): boolean {
   if (x) {
@@ -567,16 +576,18 @@ declare function notNullish<T>(x: T): x is NonNullable<T>;
 ['one', null].filter(notNullish);
     `,
     `
-declare function isString(x: string | null): x is string;
-['one', null].filter(isString);
+declare function predicate(x: string | null): x is string;
+['one', null].filter(predicate);
     `,
     `
-declare function isString<T extends boolean>(x: string | null): T;
-['one', null].filter(isString);
+declare function predicate<T extends boolean>(x: string | null): T;
+['one', null].filter(predicate);
     `,
     `
-declare function makePredicate<T extends (x: string | null) => boolean>(): T;
-['one', null].filter(makePredicate());
+declare function f(x: number): boolean;
+declare function f(x: string | null): boolean;
+
+[35].filter(f);
     `,
   ],
 
@@ -3134,42 +3145,6 @@ const predicate = async x => {
     },
     {
       code: `
-[1, null].every(async x => {
-  return true;
-});
-      `,
-      errors: [
-        {
-          column: 17,
-          data: {
-            type: 'Promise<boolean>',
-          },
-          endColumn: 2,
-          endLine: 4,
-          line: 2,
-          messageId: 'predicateCannotBeAsync',
-        },
-      ],
-    },
-    {
-      code: `
-[1, null].every(async x => {});
-      `,
-      errors: [
-        {
-          column: 17,
-          data: {
-            type: 'Promise<undefined>',
-          },
-          endColumn: 30,
-          endLine: 2,
-          line: 2,
-          messageId: 'predicateCannotBeAsync',
-        },
-      ],
-    },
-    {
-      code: `
 [1, null].every((x): boolean | number => {
   return x != null;
 });
@@ -3200,86 +3175,7 @@ const predicate = async x => {
         },
       ],
     },
-    {
-      code: `
-[1, null].every(x => {});
-      `,
-      errors: [
-        {
-          column: 17,
-          endColumn: 24,
-          endLine: 2,
-          line: 2,
-          messageId: 'predicateReturnsNonBoolean',
-          suggestions: [
-            {
-              messageId: 'explicitBooleanReturnType',
-              output: `
-[1, null].every((x): boolean => {});
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-[1, null].every((x): boolean | number => {});
-      `,
-      errors: [
-        {
-          column: 17,
-          endColumn: 44,
-          endLine: 2,
-          line: 2,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-[1, null].every((x: number) => {});
-      `,
-      errors: [
-        {
-          column: 17,
-          endColumn: 34,
-          endLine: 2,
-          line: 2,
-          messageId: 'predicateReturnsNonBoolean',
-          suggestions: [
-            {
-              messageId: 'explicitBooleanReturnType',
-              output: `
-[1, null].every((x: number): boolean => {});
-      `,
-            },
-          ],
-        },
-      ],
-    },
-    {
-      code: `
-[1, null].every(() => {});
-      `,
-      errors: [
-        {
-          column: 17,
-          endColumn: 25,
-          endLine: 2,
-          line: 2,
-          messageId: 'predicateReturnsNonBoolean',
-          suggestions: [
-            {
-              messageId: 'explicitBooleanReturnType',
-              output: `
-[1, null].every((): boolean => {});
-      `,
-            },
-          ],
-        },
-      ],
-    },
+    // various cases for the suggestion fix
     {
       code: `
 [1, null].every((x, i) => {});
@@ -3348,19 +3244,27 @@ const predicate = async x => {
     },
     {
       code: `
-declare const predicate: (string) => string;
-['one', 'two', ''].findIndex(predicate);
+[() => {}, null].every(() => {});
       `,
       errors: [
         {
-          column: 30,
-          endColumn: 39,
-          endLine: 3,
-          line: 3,
+          column: 24,
+          endColumn: 32,
+          endLine: 2,
+          line: 2,
           messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+[() => {}, null].every((): boolean => {});
+      `,
+            },
+          ],
         },
       ],
     },
+    // function overloading
     {
       code: `
 declare function f(x: number): string;
@@ -3396,277 +3300,7 @@ declare function f(x: string | null): boolean;
         },
       ],
     },
-    {
-      code: `
-declare function f<T>(x: T): string;
-declare function f(x: string | null): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f<T extends number>(x: T): string;
-declare function f(x: string | null): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f<T extends number | boolean>(x: T): string;
-declare function f(x: string | null): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number, i: number): string;
-declare function f(x: string | null): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number, i: number): string;
-declare function f(x: number | null, i: string): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number, i: number | boolean): string;
-declare function f(x: number | null, i: string): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f(x: number, i: string): boolean;
-
-[35].filter(f);
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 14,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f(x: string | null): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f(x: string | boolean | null): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f(x: string | boolean | null): boolean;
-declare function f(x: string | null): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 6,
-          line: 6,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f<T>(x: T): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f<T extends string | null>(x: T): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number, i: number): string;
-declare function f(x: string | null): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number, i: number): string;
-declare function f(x: string | null, i: number): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-declare function f(x: number): string;
-declare function f(x: string | null, i: number | boolean): boolean;
-
-['one', null].filter(f);
-      `,
-      errors: [
-        {
-          column: 22,
-          endColumn: 23,
-          endLine: 5,
-          line: 5,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
-    {
-      code: `
-function foo(x: number) {}
-[1, null].every(foo);
-      `,
-      errors: [
-        {
-          column: 17,
-          endColumn: 20,
-          endLine: 3,
-          line: 3,
-          messageId: 'predicateReturnsNonBoolean',
-        },
-      ],
-    },
+    // type constraints
     {
       code: `
 function foo<T>(x: number): T {}
