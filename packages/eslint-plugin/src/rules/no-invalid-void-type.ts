@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, getStaticMemberAccessValue, nullThrows } from '../util';
+import { createRule, getStaticMemberAccessValue } from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
@@ -175,7 +175,11 @@ export default createRule<[Options], MessageIds>({
     }
 
     function getMembers(
-      node: TSESTree.Node,
+      node:
+        | TSESTree.BlockStatement
+        | TSESTree.ClassBody
+        | TSESTree.Program
+        | TSESTree.TSModuleBlock,
     ):
       | TSESTree.ClassElement[]
       | TSESTree.ProgramStatement[]
@@ -187,9 +191,6 @@ export default createRule<[Options], MessageIds>({
         case AST_NODE_TYPES.BlockStatement:
           return node.body;
       }
-
-      /* istanbul ignore next */
-      return [];
     }
 
     function getParentFunctionDeclarationNode(
@@ -224,12 +225,11 @@ export default createRule<[Options], MessageIds>({
         node.type === AST_NODE_TYPES.FunctionDeclaration ||
         node.type === AST_NODE_TYPES.TSDeclareFunction
       ) {
-        const id = nullThrows(
-          node.id,
-          'This may be null if and only if the parent is an `ExportDefaultDeclaration`.',
-        );
-
-        return id.name;
+        // For a `FunctionDeclaration` or `TSDeclareFunction` this may be `null` if
+        // and only if the parent is an `ExportDefaultDeclaration`.
+        //
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return node.id!.name;
       }
 
       return getStaticMemberAccessValue(node, context);
@@ -253,28 +253,15 @@ export default createRule<[Options], MessageIds>({
       }
 
       // `export function f() {}`
-      if (
-        node.type === AST_NODE_TYPES.FunctionDeclaration &&
-        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
-      ) {
-        const nodeId = nullThrows(
-          node.id,
-          'This may be null if and only if the parent is an `ExportDefaultDeclaration`.',
-        );
-
+      if (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) {
         for (const member of getMembers(node.parent.parent)) {
           if (
             member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
-            member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction
+            member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
+            getFunctionDeclarationName(member.declaration) ===
+              getFunctionDeclarationName(node)
           ) {
-            const memberId = nullThrows(
-              member.declaration.id,
-              'This may be null if and only if the parent is an `ExportDefaultDeclaration`.',
-            );
-
-            if (memberId.name === nodeId.name) {
-              return true;
-            }
+            return true;
           }
         }
 
@@ -293,9 +280,7 @@ export default createRule<[Options], MessageIds>({
           continue;
         }
 
-        const memberKey = getFunctionDeclarationName(member);
-
-        if (memberKey === nodeKey) {
+        if (nodeKey === getFunctionDeclarationName(member)) {
           return true;
         }
       }
