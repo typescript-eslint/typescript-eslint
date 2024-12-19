@@ -6,7 +6,10 @@ import * as ts from 'typescript';
 
 import { createRule, getParserServices, nullThrows } from '../util';
 
-type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
+type IdentifierLike =
+  | TSESTree.Identifier
+  | TSESTree.JSXIdentifier
+  | TSESTree.Super;
 
 export default createRule({
   name: 'no-deprecated',
@@ -55,7 +58,7 @@ export default createRule({
       const targetSymbol = checker.getAliasedSymbol(symbol);
       while (tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
         const reason = getJsDocDeprecation(symbol);
-        if (reason !== undefined) {
+        if (reason != null) {
           return reason;
         }
         const immediateAliasedSymbol: ts.Symbol | undefined =
@@ -127,15 +130,13 @@ export default createRule({
       while (true) {
         switch (current.type) {
           case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportDefaultDeclaration:
           case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
-          case AST_NODE_TYPES.ImportExpression:
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
           case AST_NODE_TYPES.BlockStatement:
-          case AST_NODE_TYPES.ClassBody:
+          case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
@@ -218,8 +219,7 @@ export default createRule({
 
       const symbol = services.getSymbolAtLocation(node);
       const aliasedSymbol =
-        symbol !== undefined &&
-        tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+        symbol != null && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
           ? checker.getAliasedSymbol(symbol)
           : symbol;
       const symbolDeclarationKind = aliasedSymbol?.declarations?.[0].kind;
@@ -273,12 +273,39 @@ export default createRule({
       );
     }
 
+    function getJSXAttributeDeprecation(
+      openingElement: TSESTree.JSXOpeningElement,
+      propertyName: string,
+    ): string | undefined {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(openingElement.name);
+
+      const contextualType = nullThrows(
+        checker.getContextualType(tsNode as ts.Expression),
+        'Expected JSX opening element name to have contextualType',
+      );
+
+      const symbol = contextualType.getProperty(propertyName);
+
+      return getJsDocDeprecation(symbol);
+    }
+
     function getDeprecationReason(node: IdentifierLike): string | undefined {
       const callLikeNode = getCallLikeNode(node);
       if (callLikeNode) {
         return getCallLikeDeprecation(callLikeNode);
       }
-      if (node.parent.type === AST_NODE_TYPES.Property) {
+
+      if (
+        node.parent.type === AST_NODE_TYPES.JSXAttribute &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
+        return getJSXAttributeDeprecation(node.parent.parent, node.name);
+      }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.Property &&
+        node.type !== AST_NODE_TYPES.Super
+      ) {
         return getJsDocDeprecation(
           services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
         );
@@ -295,19 +322,21 @@ export default createRule({
       }
 
       const reason = getDeprecationReason(node);
-      if (reason === undefined) {
+      if (reason == null) {
         return;
       }
+
+      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
 
       context.report({
         ...(reason
           ? {
               messageId: 'deprecatedWithReason',
-              data: { name: node.name, reason },
+              data: { name, reason },
             }
           : {
               messageId: 'deprecated',
-              data: { name: node.name },
+              data: { name },
             }),
         node,
       });
@@ -320,6 +349,7 @@ export default createRule({
           checkIdentifier(node);
         }
       },
+      Super: checkIdentifier,
     };
   },
 });

@@ -120,10 +120,8 @@ export function createParseSettings(
         : undefined,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
-      (tsestreeOptions.sourceType === undefined &&
-        extension === ts.Extension.Mjs) ||
-      (tsestreeOptions.sourceType === undefined &&
-        extension === ts.Extension.Mts)
+      (tsestreeOptions.sourceType == null && extension === ts.Extension.Mjs) ||
+      (tsestreeOptions.sourceType == null && extension === ts.Extension.Mts)
         ? (file): void => {
             file.externalModuleIndicator = true;
           }

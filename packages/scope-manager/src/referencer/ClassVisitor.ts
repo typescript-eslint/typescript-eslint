@@ -115,6 +115,10 @@ class ClassVisitor extends Visitor {
       this.#referencer.scopeManager.nestFunctionExpressionNameScope(node);
     }
 
+    node.params.forEach(param => {
+      param.decorators.forEach(d => this.visit(d));
+    });
+
     // Consider this function is in the MethodDefinition.
     this.#referencer.scopeManager.nestFunctionScope(node, true);
 
@@ -205,7 +209,6 @@ class ClassVisitor extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitType(node.returnType);

@@ -266,7 +266,7 @@ function createWatchProgram(
       filePath === currentLintOperationState.filePath
         ? getCodeText(currentLintOperationState.code)
         : oldReadFile(filePath, encoding);
-    if (fileContent !== undefined) {
+    if (fileContent != null) {
       parsedFilesSeenHash.set(filePath, createHash(fileContent));
     }
     return fileContent;
@@ -352,7 +352,7 @@ function hasTSConfigChanged(tsconfigPath: CanonicalPath): boolean {
 
   tsconfigLastModifiedTimestampCache.set(tsconfigPath, lastModifiedAt);
 
-  if (cachedLastModifiedAt === undefined) {
+  if (cachedLastModifiedAt == null) {
     return false;
   }
 

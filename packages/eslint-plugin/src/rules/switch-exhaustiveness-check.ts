@@ -14,9 +14,11 @@ import {
   requiresQuoting,
 } from '../util';
 
+const DEFAULT_COMMENT_PATTERN = /^no default$/iu;
+
 interface SwitchMetadata {
   readonly containsNonLiteralType: boolean;
-  readonly defaultCase: TSESTree.SwitchCase | undefined;
+  readonly defaultCase: TSESTree.Comment | TSESTree.SwitchCase | undefined;
   readonly missingLiteralBranchTypes: ts.Type[];
   readonly symbolName: string | undefined;
 }
@@ -37,6 +39,11 @@ type Options = [
      * @default false
      */
     requireDefaultForNonUnion?: boolean;
+
+    /**
+     * Regular expression for a comment that can indicate an intentionally omitted default case.
+     */
+    defaultCaseCommentPattern?: string;
 
     /**
      * If `true`, the `default` clause is used to determine whether the switch statement is exhaustive for union types.
@@ -81,6 +88,10 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             description: `If 'true', the 'default' clause is used to determine whether the switch statement is exhaustive for union type`,
           },
+          defaultCaseCommentPattern: {
+            type: 'string',
+            description: `Regular expression for a comment that can indicate an intentionally omitted default case.`,
+          },
           requireDefaultForNonUnion: {
             type: 'boolean',
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
@@ -102,6 +113,7 @@ export default createRule<Options, MessageIds>({
       {
         allowDefaultCaseForExhaustiveSwitch,
         considerDefaultExhaustiveForUnions,
+        defaultCaseCommentPattern,
         requireDefaultForNonUnion,
       },
     ],
@@ -109,6 +121,26 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
+    const commentRegExp =
+      defaultCaseCommentPattern != null
+        ? new RegExp(defaultCaseCommentPattern, 'u')
+        : DEFAULT_COMMENT_PATTERN;
+
+    function getCommentDefaultCase(
+      node: TSESTree.SwitchStatement,
+    ): TSESTree.Comment | undefined {
+      const lastCase = node.cases.at(-1);
+      const commentsAfterLastCase = lastCase
+        ? context.sourceCode.getCommentsAfter(lastCase)
+        : [];
+      const defaultCaseComment = commentsAfterLastCase.at(-1);
+
+      if (commentRegExp.test(defaultCaseComment?.value.trim() || '')) {
+        return defaultCaseComment;
+      }
+
+      return;
+    }
 
     function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
@@ -155,13 +187,22 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
+          // "missing", "optional" and "undefined" types are different runtime objects,
+          // but all of them have TypeFlags.Undefined type flag
+          if (
+            [...caseTypes].some(tsutils.isIntrinsicUndefinedType) &&
+            tsutils.isIntrinsicUndefinedType(intersectionPart)
+          ) {
+            continue;
+          }
+
           missingLiteralBranchTypes.push(intersectionPart);
         }
       }
 
       return {
         containsNonLiteralType,
-        defaultCase,
+        defaultCase: defaultCase ?? getCommentDefaultCase(node),
         missingLiteralBranchTypes,
         symbolName,
       };
@@ -201,6 +242,7 @@ export default createRule<Options, MessageIds>({
                   fixer,
                   node,
                   missingLiteralBranchTypes,
+                  defaultCase,
                   symbolName?.toString(),
                 );
               },
@@ -214,11 +256,11 @@ export default createRule<Options, MessageIds>({
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
       missingBranchTypes: (ts.Type | null)[], // null means default branch
+      defaultCase: TSESTree.Comment | TSESTree.SwitchCase | undefined,
       symbolName?: string,
     ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
-      const defaultCase = node.cases.find(caseEl => caseEl.test == null);
 
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)
@@ -311,7 +353,7 @@ export default createRule<Options, MessageIds>({
 
       if (
         missingLiteralBranchTypes.length === 0 &&
-        defaultCase !== undefined &&
+        defaultCase != null &&
         !containsNonLiteralType
       ) {
         context.report({
@@ -331,7 +373,7 @@ export default createRule<Options, MessageIds>({
 
       const { containsNonLiteralType, defaultCase } = switchMetadata;
 
-      if (containsNonLiteralType && defaultCase === undefined) {
+      if (containsNonLiteralType && defaultCase == null) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
@@ -340,7 +382,7 @@ export default createRule<Options, MessageIds>({
             {
               messageId: 'addMissingCases',
               fix(fixer): TSESLint.RuleFix {
-                return fixSwitch(fixer, node, [null]);
+                return fixSwitch(fixer, node, [null], defaultCase);
               },
             },
           ],

@@ -27,7 +27,7 @@ function foo(bool?: boolean) {
 
 // \`any\`, unconstrained generics and unions of more than one primitive type are disallowed
 const foo = <T>(arg: T) => (arg ? 1 : 0);
-                            ~~~ Unexpected any value in conditional. An explicit comparison or type cast is required.
+                            ~~~ Unexpected any value in conditional. An explicit comparison or type conversion is required.
 
 // always-truthy and always-falsy types are disallowed
 let obj = {};
@@ -68,7 +68,7 @@ function foo(bool?: boolean) {
   }
 }
 
-// \`any\` types should be cast to boolean explicitly
+// \`any\` types should be converted to boolean explicitly
 const foo = (arg: any) => (Boolean(arg) ? 1 : 0);
 "
 `;

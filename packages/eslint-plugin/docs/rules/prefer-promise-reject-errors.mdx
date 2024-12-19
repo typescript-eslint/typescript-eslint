@@ -54,3 +54,26 @@ new Promise((resolve, reject) => {
 
 </TabItem>
 </Tabs>
+
+## Options
+
+This rule adds the following options:
+
+```ts
+interface Options {
+  /**
+   * Whether to always allow throwing values typed as `any`.
+   */
+  allowThrowingAny?: boolean;
+
+  /**
+   * Whether to always allow throwing values typed as `unknown`.
+   */
+  allowThrowingUnknown?: boolean;
+}
+
+const defaultOptions: Options = {
+  allowThrowingAny: false,
+  allowThrowingUnknown: false,
+};
+```

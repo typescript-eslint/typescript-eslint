@@ -198,7 +198,7 @@ export default createRule({
               messageId: 'removeAsync',
               fix: (fixer): RuleFix[] =>
                 changes.map(change =>
-                  change.replacement !== undefined
+                  change.replacement != null
                     ? fixer.replaceTextRange(change.range, change.replacement)
                     : fixer.removeRange(change.range),
                 ),
@@ -261,7 +261,7 @@ export default createRule({
           'asyncIterator',
           checker,
         );
-        if (asyncIterator !== undefined) {
+        if (asyncIterator != null) {
           scopeInfo.isAsyncYield = true;
           break;
         }

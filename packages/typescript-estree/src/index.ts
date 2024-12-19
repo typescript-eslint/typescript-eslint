@@ -19,8 +19,5 @@ export type {
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
 export { typescriptVersionIsAtLeast } from './version-check';
+export { version } from './version';
 export { withoutProjectParserOptions } from './withoutProjectParserOptions';
-
-// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-export const version: string = require('../package.json').version;

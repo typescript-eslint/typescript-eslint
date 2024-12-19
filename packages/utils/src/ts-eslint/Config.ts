@@ -150,7 +150,7 @@ export namespace FlatConfig {
   export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
-    [key: string]: Config;
+    [key: string]: Config | ConfigArray;
   }
   export interface Plugin {
     /**
@@ -258,6 +258,10 @@ export namespace FlatConfig {
      * If not specified, the configuration object applies to all files matched by files.
      */
     ignores?: string[];
+    /**
+     * Language specifier in the form `namespace/language-name` where `namespace` is a plugin name set in the `plugins` field.
+     */
+    language?: string;
     /**
      * An object containing settings related to how JavaScript is configured for linting.
      */

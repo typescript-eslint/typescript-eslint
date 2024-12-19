@@ -21,6 +21,7 @@ import {
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignoreBooleanCoercion?: boolean;
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?:
@@ -70,6 +71,11 @@ export default createRule<Options, MessageIds>({
             type: 'boolean',
             description:
               'Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.',
+          },
+          ignoreBooleanCoercion: {
+            type: 'boolean',
+            description:
+              'Whether to ignore arguments to the `Boolean` constructor',
           },
           ignoreConditionalTests: {
             type: 'boolean',
@@ -126,6 +132,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      ignoreBooleanCoercion: false,
       ignoreConditionalTests: true,
       ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
@@ -142,6 +149,7 @@ export default createRule<Options, MessageIds>({
     [
       {
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        ignoreBooleanCoercion,
         ignoreConditionalTests,
         ignoreMixedLogicalExpressions,
         ignorePrimitives,
@@ -431,6 +439,13 @@ export default createRule<Options, MessageIds>({
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
+        if (
+          ignoreBooleanCoercion === true &&
+          isBooleanConstructorContext(node, context)
+        ) {
+          return;
+        }
+
         checkAssignmentOrLogicalExpression(node, 'or', '');
       },
     };
@@ -438,39 +453,95 @@ export default createRule<Options, MessageIds>({
 });
 
 function isConditionalTest(node: TSESTree.Node): boolean {
-  const parents = new Set<TSESTree.Node | null>([node]);
-  let current = node.parent;
-  while (current) {
-    parents.add(current);
-
-    if (
-      (current.type === AST_NODE_TYPES.ConditionalExpression ||
-        current.type === AST_NODE_TYPES.DoWhileStatement ||
-        current.type === AST_NODE_TYPES.IfStatement ||
-        current.type === AST_NODE_TYPES.ForStatement ||
-        current.type === AST_NODE_TYPES.WhileStatement) &&
-      parents.has(current.test)
-    ) {
-      return true;
-    }
-
-    if (
-      [
-        AST_NODE_TYPES.ArrowFunctionExpression,
-        AST_NODE_TYPES.FunctionExpression,
-      ].includes(current.type)
-    ) {
-      /**
-       * This is a weird situation like:
-       * `if (() => a || b) {}`
-       * `if (function () { return a || b }) {}`
-       */
-      return false;
-    }
-
-    current = current.parent;
+  const parent = node.parent;
+  if (parent == null) {
+    return false;
   }
 
+  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
+    return isConditionalTest(parent);
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.ConditionalExpression &&
+    (parent.consequent === node || parent.alternate === node)
+  ) {
+    return isConditionalTest(parent);
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.SequenceExpression &&
+    parent.expressions.at(-1) === node
+  ) {
+    return isConditionalTest(parent);
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.UnaryExpression &&
+    parent.operator === '!'
+  ) {
+    return isConditionalTest(parent);
+  }
+
+  if (
+    (parent.type === AST_NODE_TYPES.ConditionalExpression ||
+      parent.type === AST_NODE_TYPES.DoWhileStatement ||
+      parent.type === AST_NODE_TYPES.IfStatement ||
+      parent.type === AST_NODE_TYPES.ForStatement ||
+      parent.type === AST_NODE_TYPES.WhileStatement) &&
+    parent.test === node
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function isBooleanConstructorContext(
+  node: TSESTree.Node,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): boolean {
+  const parent = node.parent;
+  if (parent == null) {
+    return false;
+  }
+
+  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
+    return isBooleanConstructorContext(parent, context);
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.ConditionalExpression &&
+    (parent.consequent === node || parent.alternate === node)
+  ) {
+    return isBooleanConstructorContext(parent, context);
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.SequenceExpression &&
+    parent.expressions.at(-1) === node
+  ) {
+    return isBooleanConstructorContext(parent, context);
+  }
+
+  return isBuiltInBooleanCall(parent, context);
+}
+
+function isBuiltInBooleanCall(
+  node: TSESTree.Node,
+  context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
+): boolean {
+  if (
+    node.type === AST_NODE_TYPES.CallExpression &&
+    node.callee.type === AST_NODE_TYPES.Identifier &&
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    node.callee.name === 'Boolean' &&
+    node.arguments[0]
+  ) {
+    const scope = context.sourceCode.getScope(node);
+    const variable = scope.set.get(AST_TOKEN_TYPES.Boolean);
+    return variable == null || variable.defs.length === 0;
+  }
   return false;
 }
 
@@ -488,7 +559,9 @@ function isMixedLogicalExpression(
     if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
-      } else if (['||', '||='].includes(current.operator)) {
+      }
+
+      if (['||', '||='].includes(current.operator)) {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }

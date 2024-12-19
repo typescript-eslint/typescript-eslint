@@ -6,9 +6,10 @@
 import type { ImplicitLibVariableOptions } from '../variable';
 
 import { TYPE } from './base-config';
+import { es2024_collection } from './es2024.collection';
 
 export const esnext_collection = {
-  MapConstructor: TYPE,
+  ...es2024_collection,
   ReadonlySet: TYPE,
   ReadonlySetLike: TYPE,
   Set: TYPE,

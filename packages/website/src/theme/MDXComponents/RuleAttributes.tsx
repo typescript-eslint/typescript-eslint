@@ -1,7 +1,14 @@
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type {
+  RuleRecommendation,
+  RuleRecommendationAcrossConfigs,
+} from '@typescript-eslint/utils/ts-eslint';
+
 import Link from '@docusaurus/Link';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
-import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import React from 'react';
+
+import type { FeatureProps } from './Feature';
 
 import {
   FIXABLE_EMOJI,
@@ -10,7 +17,6 @@ import {
   STYLISTIC_CONFIG_EMOJI,
   SUGGESTIONS_EMOJI,
 } from '../../components/constants';
-import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
@@ -32,11 +38,19 @@ const isRecommendedDocs = (
   docs: ESLintPluginDocs,
 ): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
 
+const resolveRecommendation = (
+  recommended: RuleRecommendationAcrossConfigs<unknown[]>,
+): RuleRecommendation => {
+  return recommended.recommended === true ? 'recommended' : 'strict';
+};
+
 const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
   const recommended = docs.recommended;
   const recommendation =
     recommendations[
-      typeof recommended === 'object' ? 'recommended' : recommended
+      typeof recommended === 'object'
+        ? resolveRecommendation(recommended)
+        : recommended
     ];
 
   return docs.requiresTypeChecking

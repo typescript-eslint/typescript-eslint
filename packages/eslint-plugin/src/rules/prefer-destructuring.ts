@@ -71,6 +71,7 @@ export default createRule<Options, MessageIds>({
   name: 'prefer-destructuring',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Require destructuring from arrays and/or objects',
       extendsBaseRule: true,
@@ -123,14 +124,14 @@ export default createRule<Options, MessageIds>({
     ): void {
       const rules =
         leftNode.type === AST_NODE_TYPES.Identifier &&
-        leftNode.typeAnnotation === undefined
+        leftNode.typeAnnotation == null
           ? baseRules
           : baseRulesWithoutFix();
       if (
         (leftNode.type === AST_NODE_TYPES.ArrayPattern ||
           leftNode.type === AST_NODE_TYPES.Identifier ||
           leftNode.type === AST_NODE_TYPES.ObjectPattern) &&
-        leftNode.typeAnnotation !== undefined &&
+        leftNode.typeAnnotation != null &&
         !enforceForDeclarationWithTypeAnnotation
       ) {
         return;
@@ -227,7 +228,7 @@ function isTypeAnyOrIterableType(
       'iterator',
       typeChecker,
     );
-    return iterator !== undefined;
+    return iterator != null;
   }
   return type.types.every(t => isTypeAnyOrIterableType(t, typeChecker));
 }
