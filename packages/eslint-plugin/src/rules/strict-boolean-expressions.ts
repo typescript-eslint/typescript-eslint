@@ -13,6 +13,7 @@ import {
   getParserServices,
   getWrappingFixer,
   isArrayMethodCallWithPredicate,
+  isParenlessFunctionExpression,
   isTypeArrayTypeOrUnionOfArrayTypes,
   nullThrows,
 } from '../util';
@@ -340,43 +341,44 @@ export default createRule<Options, MessageId>({
               {
                 messageId: 'explicitBooleanReturnType',
                 fix: fixer => {
-                  const lastParam = predicateNode.params.at(-1);
+                  if (
+                    isParenlessFunctionExpression(
+                      predicateNode,
+                      context.sourceCode,
+                    )
+                  ) {
+                    return [
+                      fixer.insertTextBefore(predicateNode.params[0], '('),
+                      fixer.insertTextAfter(
+                        predicateNode.params[0],
+                        '): boolean',
+                      ),
+                    ];
+                  }
 
-                  // zero parameters
-                  if (!lastParam) {
+                  if (predicateNode.params.length === 0) {
                     const closingBracket = nullThrows(
                       context.sourceCode.getFirstToken(
                         predicateNode,
                         token => token.value === ')',
                       ),
-                      'function expression with no arguments must have a closing parenthesis.',
+                      'function expression has to have a closing parenthesis.',
                     );
 
-                    return fixer.insertTextAfterRange(
-                      closingBracket.range,
-                      ': boolean',
-                    );
+                    return fixer.insertTextAfter(closingBracket, ': boolean');
                   }
 
-                  const closingBracket = nullThrows(
-                    context.sourceCode.getTokenAfter(lastParam),
-                    'missing token following function parameters.',
+                  const lastClosingParenthesis = nullThrows(
+                    context.sourceCode.getTokenAfter(
+                      predicateNode.params[predicateNode.params.length - 1],
+                      token => token.value === ')',
+                    ),
+                    'function expression has to have a closing parenthesis.',
                   );
 
-                  // one or more parameters wrapped with parens
-                  if (closingBracket.value === ')') {
-                    return fixer.insertTextAfterRange(
-                      closingBracket.range,
-                      ': boolean',
-                    );
-                  }
-
-                  // one param not wrapped with parens
-                  const parameterText = context.sourceCode.getText(lastParam);
-
-                  return fixer.replaceText(
-                    lastParam,
-                    `(${parameterText}): boolean`,
+                  return fixer.insertTextAfter(
+                    lastClosingParenthesis,
+                    ': boolean',
                   );
                 },
               },
