@@ -434,6 +434,32 @@ function bazFunction(baz: Arr<ArrayClass<String>>) {
       output: 'let a: (string | number)[] = [];',
     },
     {
+      code: 'let a: Array<T extends string ? number : string> = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'let a: (T extends string ? number : string)[] = [];',
+    },
+    {
+      code: 'let a: (T extends string ? number : string)[] = [];',
+      errors: [
+        {
+          column: 8,
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          line: 1,
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output: 'let a: Array<T extends string ? number : string> = [];',
+    },
+    {
       code: 'let a: ReadonlyArray<number> = [];',
       errors: [
         {
