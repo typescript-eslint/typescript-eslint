@@ -74,19 +74,17 @@ export default createRule({
 
       for (const [index, typeParameter] of typeArguments.entries()) {
         const returnTypes: ts.Type[] = [];
+        const typeParameterType = services.getTypeAtLocation(typeParameter);
 
         for (const returnType of relevantReturnTypes) {
           if (tsutils.isTypeReference(returnType) && returnType.typeArguments) {
             const returnTypePart = returnType.typeArguments[index];
 
-            // if these don't match, this type reference or return value
-            // may be unconventional
             if (
-              !checker.isTypeAssignableTo(
-                returnTypePart,
-                services.getTypeAtLocation(typeParameter),
-              )
+              !checker.isTypeAssignableTo(returnTypePart, typeParameterType)
             ) {
+              // assume this return type is used, as we won't know how to compare
+              // the two types
               return;
             }
 
@@ -96,8 +94,8 @@ export default createRule({
             continue;
           }
 
-          // don't try to unbox this return type if it isn't an `any` or a
-          // boxed value itself
+          // assume the return type is used, as the return type that matches it
+          // isn't a type reference itself
           return;
         }
 
@@ -266,8 +264,10 @@ export default createRule({
       returnTypeAnnotation: TSESTree.TypeNode,
       actualReturnTypes: ts.Type[],
     ): void {
-      const generatorTypeArguments =
-        getTypeArgumentsIfGeneratorNode(returnTypeAnnotation);
+      const generatorTypeArguments = getTypeArgumentsForTypeName(
+        'Generator',
+        returnTypeAnnotation,
+      );
 
       if (!generatorTypeArguments) {
         // no unused return types
@@ -336,8 +336,10 @@ export default createRule({
       returnTypeAnnotation: TSESTree.TypeNode,
       actualReturnTypes: ts.Type[],
     ): void {
-      const generatorTypeArguments =
-        getTypeArgumentsIfAsyncGeneratorNode(returnTypeAnnotation);
+      const generatorTypeArguments = getTypeArgumentsForTypeName(
+        'AsyncGenerator',
+        returnTypeAnnotation,
+      );
 
       if (!generatorTypeArguments) {
         // no unused return types
@@ -371,8 +373,10 @@ export default createRule({
       returnTypeAnnotation: TSESTree.TypeNode,
       actualReturnTypes: ts.Type[],
     ): void {
-      const promiseTypeArgument =
-        getTypeArgumentIfPromiseNode(returnTypeAnnotation);
+      const promiseTypeArgument = getTypeArgumentsForTypeName(
+        'Promise',
+        returnTypeAnnotation,
+      );
 
       if (!promiseTypeArgument) {
         // this is a type error
@@ -380,7 +384,7 @@ export default createRule({
       }
 
       checkReturnType(
-        promiseTypeArgument,
+        promiseTypeArgument[0],
         // `async` functions may return promise and non-promise expressions
         expandPromiseTypes(actualReturnTypes),
         true,
@@ -448,47 +452,15 @@ export default createRule({
   },
 });
 
-function getTypeArgumentIfPromiseNode(
-  node: TSESTree.TypeNode,
-): TSESTree.TypeNode | null {
-  if (
-    // Check for Promise<...> type reference
-    node.type === AST_NODE_TYPES.TSTypeReference &&
-    node.typeName.type === AST_NODE_TYPES.Identifier &&
-    node.typeName.name === 'Promise' &&
-    node.typeArguments?.params.length === 1
-  ) {
-    return node.typeArguments.params[0];
-  }
-
-  return null;
-}
-
-function getTypeArgumentsIfGeneratorNode(
-  node: TSESTree.TypeNode,
-): TSESTree.TypeNode[] | null {
-  if (
-    // Check for Generator<...> type reference
-    node.type === AST_NODE_TYPES.TSTypeReference &&
-    node.typeName.type === AST_NODE_TYPES.Identifier &&
-    node.typeName.name === 'Generator' &&
-    node.typeArguments &&
-    node.typeArguments.params.length > 0
-  ) {
-    return node.typeArguments.params;
-  }
-
-  return null;
-}
-
-function getTypeArgumentsIfAsyncGeneratorNode(
+function getTypeArgumentsForTypeName(
+  typeName: string,
   node: TSESTree.TypeNode,
 ): TSESTree.TypeNode[] | null {
   if (
     // Check for AsyncGenerator<...> type reference
     node.type === AST_NODE_TYPES.TSTypeReference &&
     node.typeName.type === AST_NODE_TYPES.Identifier &&
-    node.typeName.name === 'AsyncGenerator' &&
+    node.typeName.name === typeName &&
     node.typeArguments &&
     node.typeArguments.params.length > 0
   ) {
