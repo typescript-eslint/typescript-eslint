@@ -946,6 +946,21 @@ async function* test(
   return 'one';
 }
     `,
+    // nested boxes
+    `
+function test(): Array<Promise<number | string>> {
+  return [Promise.resolve(1), Promise.resolve('one')];
+}
+    `,
+    `
+function test(a: boolean): Map<string | number, boolean | string> {
+  if (a) {
+    return new Map<string, boolean>();
+  }
+
+  return new Map<number, string>();
+}
+    `,
   ],
 
   invalid: [
@@ -2375,6 +2390,46 @@ async function* test(): AsyncGenerator<number | null, string | boolean> {
         {
           data: {
             type: 'boolean',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    // nested boxes
+    {
+      code: `
+async function test(): Promise<Array<string | number>> {
+  return Promise.resolve([1]);
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test(): [[string | number], [number | boolean]] {
+  return [[1], [true]];
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'string',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+        {
+          data: {
+            type: 'number',
           },
           line: 2,
           messageId: 'unusedReturnTypes',
