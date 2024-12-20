@@ -68,38 +68,40 @@ export default createRule({
         returnTypes,
       );
 
-      if (relevantReturnTypes) {
-        for (const [index, typeParameter] of typeArguments.entries()) {
-          const returnTypes: ts.Type[] = [];
+      if (!relevantReturnTypes) {
+        return;
+      }
 
-          for (const type of relevantReturnTypes) {
-            if (tsutils.isTypeReference(type) && type.typeArguments) {
-              const returnTypePart = type.typeArguments[index];
+      for (const [index, typeParameter] of typeArguments.entries()) {
+        const returnTypes: ts.Type[] = [];
 
-              // if these don't match, this type reference or return value
-              // may be unconventional
-              if (
-                !checker.isTypeAssignableTo(
-                  returnTypePart,
-                  services.getTypeAtLocation(typeParameter),
-                )
-              ) {
-                return;
-              }
+        for (const returnType of relevantReturnTypes) {
+          if (tsutils.isTypeReference(returnType) && returnType.typeArguments) {
+            const returnTypePart = returnType.typeArguments[index];
 
-              returnTypes.push(
-                ...tsutils.unionTypeParts(type.typeArguments[index]),
-              );
-              continue;
+            // if these don't match, this type reference or return value
+            // may be unconventional
+            if (
+              !checker.isTypeAssignableTo(
+                returnTypePart,
+                services.getTypeAtLocation(typeParameter),
+              )
+            ) {
+              return;
             }
 
-            // don't try to unbox this return type if it isn't an `any` or a
-            // boxed value itself
-            return;
+            returnTypes.push(
+              ...tsutils.unionTypeParts(returnType.typeArguments[index]),
+            );
+            continue;
           }
 
-          checkReturnType(typeParameter, returnTypes);
+          // don't try to unbox this return type if it isn't an `any` or a
+          // boxed value itself
+          return;
         }
+
+        checkReturnType(typeParameter, returnTypes);
       }
     }
 
