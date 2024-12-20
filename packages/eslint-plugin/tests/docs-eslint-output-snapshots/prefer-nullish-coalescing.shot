@@ -24,8 +24,8 @@ foo === null ? 'a string' : foo;
 const foo: object | null = { value: 'bar' };
 foo !== null ? foo : { value: 'a string' };
 foo === null ? { value: 'a string' } : foo;
-foo ? foo : { value: 'a string' }
-!foo ? { value: 'a string' } : foo
+foo ? foo : { value: 'a string' };
+!foo ? { value: 'a string' } : foo;
 "
 `;
 
