@@ -73,11 +73,6 @@ export default createRule({
           const returnTypes: ts.Type[] = [];
 
           for (const type of relevantReturnTypes) {
-            if (tsutils.isIntrinsicAnyType(type)) {
-              returnTypes.push(type);
-              continue;
-            }
-
             if (tsutils.isTypeReference(type) && type.typeArguments) {
               const returnTypePart = type.typeArguments[index];
 

@@ -961,8 +961,48 @@ function test(a: boolean): Map<string | number, boolean | string> {
   return new Map<number, string>();
 }
     `,
-  ],
+    `
+function test(): [[string | number], [number | boolean]] {
+  return 1 as any;
+}
+    `,
+    `
+function test(): [[string | number], [number | boolean]] {
+  return [1 as any, 2 as any];
+}
+    `,
+    // hard to tell boxed values
+    `
+class BoxClass<T> {
+  constructor(public readonly value: T) {}
+}
 
+function test(): BoxClass<number | string> {
+  return { value: 'abc' };
+}
+    `,
+    `
+interface BoxType<T> {
+  value: T;
+}
+
+function test(): BoxType<number | string> {
+  return { value: 'abc' };
+}
+    `,
+    `
+type NestedBox<T> = Array<Array<T>>;
+
+function test(): NestedBox<number | string> {
+  return [[10]];
+}
+    `,
+    `
+function test(): ReturnType<(() => number) | (() => string)> {
+  return 10;
+}
+    `,
+  ],
   invalid: [
     // simple unused return type annotations
     {
@@ -2427,6 +2467,22 @@ function test(): [[string | number], [number | boolean]] {
           line: 2,
           messageId: 'unusedReturnTypes',
         },
+        {
+          data: {
+            type: 'number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test(): [[string | number], [number | boolean]] {
+  return [1 as any, [true]];
+}
+      `,
+      errors: [
         {
           data: {
             type: 'number',
