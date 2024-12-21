@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
+import type { Variable } from '../../src/variable';
+
 import { DefinitionType } from '../../src/definition';
 import {
   expectToBeGlobalScope,
@@ -25,7 +27,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual([]);
   });
 
@@ -47,7 +51,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual(['x']);
   });
 
@@ -71,7 +77,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual(['x']);
   });
 
@@ -92,7 +100,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual(['x']);
   });
 
@@ -116,7 +126,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual([]);
   });
 
@@ -137,7 +149,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual(['x']);
   });
 
@@ -161,7 +175,9 @@ describe('implicit global reference', () => {
 
     expectToBeGlobalScope(scopes[0]);
     expect(
-      scopes[0]['implicit'].variables.map(variable => variable.name),
+      scopes[0]['implicit'].variables.map(
+        (variable: Variable) => variable.name,
+      ),
     ).toEqual([]);
   });
 });

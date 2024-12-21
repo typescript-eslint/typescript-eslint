@@ -9,7 +9,7 @@ type DirectiveConfig =
   | 'allow-with-description'
   | { descriptionFormat: string };
 
-interface Options {
+export interface Options {
   minimumDescriptionLength?: number;
   'ts-check'?: DirectiveConfig;
   'ts-expect-error'?: DirectiveConfig;
