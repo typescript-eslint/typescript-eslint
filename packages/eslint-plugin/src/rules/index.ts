@@ -124,6 +124,7 @@ import returnAwait from './return-await';
 import sortTypeConstituents from './sort-type-constituents';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
+import thenableInPromiseAggregators from './thenable-in-promise-aggregators';
 import tripleSlashReference from './triple-slash-reference';
 import typedef from './typedef';
 import unboundMethod from './unbound-method';
@@ -256,6 +257,7 @@ const rules = {
   'sort-type-constituents': sortTypeConstituents,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
+  'thenable-in-promise-aggregators': thenableInPromiseAggregators,
   'triple-slash-reference': tripleSlashReference,
   typedef,
   'unbound-method': unboundMethod,
