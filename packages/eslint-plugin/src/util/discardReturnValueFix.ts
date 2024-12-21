@@ -1,73 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import {
-  AST_NODE_TYPES,
-  ASTUtils,
-  ESLintUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 
 import { nullThrows } from '.';
 import { getRangeWithParens } from './getRangeWithParens';
-import { getWrappingFixer } from './getWrappingFixer';
 
 const ASI_PREVENTING_TOKENS = new Set(['-', '+', '`', '<', '(', '[']);
-
-/**
- * Rewrites a return statement with a value so that the value is discarded.
- *
- * Must be called only on return statements with a value!
- *
- * Does one of these things:
- * - Removes whole return statement if possible.
- * - {@link removeValueLeaveReturnFix}
- * - {@link removeReturnLeaveValueFix}
- * - {@link getWrappingFixer} with void operator if {@link useVoidOperator} is true
- * - {@link moveValueBeforeReturnFix} if {@link useVoidOperator} is false
- */
-export function discardReturnValueFix(
-  fixer: TSESLint.RuleFixer,
-  sourceCode: Readonly<TSESLint.SourceCode>,
-  returnNode: TSESTree.ReturnStatement,
-  useVoidOperator?: boolean,
-): TSESLint.RuleFix {
-  const argumentNode = nullThrows(
-    returnNode.argument,
-    'missing return argument',
-  );
-
-  if (!ASTUtils.hasSideEffect(argumentNode, sourceCode)) {
-    // Return value is not needed.
-
-    if (isFinalReturn(returnNode)) {
-      // Return statement is not needed.
-      // We can remove everything.
-      return fixer.remove(returnNode);
-    }
-
-    // Return statement must stay.
-    return removeValueLeaveReturnFix(fixer, sourceCode, returnNode);
-  }
-
-  // Return value must stay.
-
-  if (isFinalReturn(returnNode)) {
-    // Return statement is not needed.
-    return removeReturnLeaveValueFix(fixer, sourceCode, returnNode);
-  }
-
-  // Both the statement and the value must stay.
-
-  if (useVoidOperator) {
-    // Use void operator to discard the return value.
-    return getWrappingFixer({
-      node: argumentNode,
-      sourceCode,
-      wrap: code => `void ${code}`,
-    })(fixer);
-  }
-
-  return moveValueBeforeReturnFix(fixer, sourceCode, returnNode);
-}
 
 /**
  * Checks whether the return statement is the last statement in a function body.

@@ -912,10 +912,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo(cb: () => void): void;
-        foo(() => {});
-      `,
     },
     {
       code: noFormat`
@@ -930,10 +926,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo(cb: () => void): void;
-        foo(() => {});
-      `,
     },
     {
       code: noFormat`
@@ -952,14 +944,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo(cb: () => void): void;
-        foo(() => {
-          if (maybe) {
-            return;
-          }
-        });
-      `,
     },
     {
       code: `
@@ -974,10 +958,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo(arg: number, cb: () => void): void;
-        foo(0, () => {});
-      `,
     },
     {
       code: `
@@ -992,10 +972,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo(cb?: { (): void }): void;
-        foo(() => {});
-      `,
     },
     {
       code: `
@@ -1010,10 +986,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare const obj: { foo(cb: () => void) } | null;
-        obj?.foo(() => void JSON.parse('{}'));
-      `,
     },
     {
       code: `
@@ -1027,9 +999,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        ((cb: () => void) => cb())!(() => {});
-      `,
     },
     {
       code: `
@@ -1045,7 +1014,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1062,12 +1030,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInArg',
         },
       ],
-      output: `
-        type AnyFunc = (...args: unknown[]) => unknown;
-        declare function foo<F extends AnyFunc>(cb: F): void;
-        foo(async () => ({}));
-        foo<() => void>(() => {});
-      `,
     },
     {
       code: `
@@ -1086,13 +1048,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: `
-        function foo<T extends {}>(arg: T, cb: () => T);
-        function foo(arg: null, cb: () => void);
-        function foo(arg: any, cb: () => any) {}
-
-        foo(null, () => { Math.random(); });
-      `,
     },
     {
       code: `
@@ -1109,12 +1064,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInArg',
         },
       ],
-      output: `
-        declare function foo<T extends {}>(arg: T, cb: () => T): void;
-        declare function foo(arg: any, cb: () => void): void;
-
-        foo(null, () => {});
-      `,
     },
     {
       code: `
@@ -1130,31 +1079,8 @@ ruleTester.run('strict-void-return', rule, {
           data: { funcName: 'foo' },
           line: 4,
           messageId: 'asyncFuncInArg',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        declare function foo(cb: () => void): void;
-        declare function foo(cb: () => any): void;
-        foo(async () => { try {
-          return Math.random();
-        } catch {} });
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        declare function foo(cb: () => void): void;
-        declare function foo(cb: () => any): void;
-        foo(() => void (async () => {
-          return Math.random();
-        })());
-      `,
-            },
-          ],
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1170,7 +1096,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1188,14 +1113,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo<Cb extends (...args: any[]) => void>(cb: Cb): void;
-        foo(() => {
-          console.log('a');
-          \
-
-        });
-      `,
     },
     {
       code: `
@@ -1212,7 +1129,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1228,7 +1144,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1245,12 +1160,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare const foo: {
-          (arg: boolean, cb: () => void): void;
-        };
-        foo(false, () => void Promise.resolve(undefined));
-      `,
     },
     {
       code: `
@@ -1270,15 +1179,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare const foo: {
-          bar(cb1: () => any, cb2: () => void): void;
-        };
-        foo.bar(
-          () => Promise.resolve(1),
-          () => void Promise.resolve(1),
-        );
-      `,
     },
     {
       code: `
@@ -1295,12 +1195,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInArg',
         },
       ],
-      output: `
-        declare const Foo: {
-          new (cb: () => void): void;
-        };
-        new Foo(() => {});
-      `,
     },
     {
       code: `
@@ -1330,18 +1224,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnNull: false }],
-      output: `
-        declare function foo(cb: () => void): void;
-        foo(() => {
-          label: while (maybe) {
-            for (const i of [1, 2, 3]) {
-              if (maybe) return;
-              else return;
-            }
-          }
-          return void 0;
-        });
-      `,
     },
     {
       code: `
@@ -1367,20 +1249,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnNull: false }],
-      output: `
-        declare function foo(cb: () => void): void;
-        foo(() => {
-          do {
-            try {
-              throw 1;
-            } catch (e) {
-              return;
-            } finally {
-              console.log('finally');
-            }
-          } while (maybe);
-        });
-      `,
     },
     {
       code: `
@@ -1399,25 +1267,9 @@ ruleTester.run('strict-void-return', rule, {
           data: { funcName: 'foo' },
           line: 3,
           messageId: 'asyncFuncInArg',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        declare function foo(cb: () => void): void;
-        foo(() => void (async () => {
-          try {
-            await Promise.resolve();
-          } catch {
-            console.error('fail');
-          }
-        })());
-      `,
-            },
-          ],
         },
       ],
       options: [{ allowReturnPromiseIfTryCatch: false }],
-      output: null,
     },
     {
       code: `
@@ -1435,13 +1287,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare const Foo: {
-          new (cb: () => void): void;
-          (cb: () => unknown): void;
-        };
-        new Foo(() => {});
-      `,
     },
     {
       code: `
@@ -1459,13 +1304,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare const Foo: {
-          new (cb: () => any): void;
-          (cb: () => void): void;
-        };
-        Foo(() => {});
-      `,
     },
     {
       code: `
@@ -1487,7 +1325,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1507,7 +1344,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1523,7 +1359,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInArg',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1555,15 +1390,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        declare function foo(...cbs: Array<() => void>): void;
-        foo(
-          () => {},
-          () => {},
-          () => {},
-          () => {},
-        );
-      `,
     },
     {
       code: `
@@ -1589,14 +1415,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: `
-        declare function foo(...cbs: [() => void, () => void, (() => void)?]): void;
-        foo(
-          () => {},
-          () => { Math.random(); },
-          () => { (1).toString(); },
-        );
-      `,
     },
     {
       code: `
@@ -1636,29 +1454,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInArg',
         },
       ],
-      output: `
-        interface Ev {}
-        interface EvMap {
-          DOMContentLoaded: Ev;
-        }
-        type EvListOrEvListObj = EvList | EvListObj;
-        interface EvList {
-          (evt: Event): void;
-        }
-        interface EvListObj {
-          handleEvent(object: Ev): void;
-        }
-        interface Win {
-          addEventListener<K extends keyof EvMap>(
-            type: K,
-            listener: (ev: EvMap[K]) => any,
-          ): void;
-          addEventListener(type: string, listener: EvListOrEvListObj): void;
-        }
-        declare const win: Win;
-        win.addEventListener('DOMContentLoaded', ev => {});
-        win.addEventListener('custom', ev => {});
-      `,
     },
     {
       code: `
@@ -1674,11 +1469,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInArg',
         },
       ],
-      output: `
-        declare function foo(x: null, cb: () => void): void;
-        declare function foo(x: unknown, cb: () => any): void;
-        foo({}, () => {});
-      `,
     },
     {
       code: `
@@ -1693,29 +1483,8 @@ ruleTester.run('strict-void-return', rule, {
           data: { funcName: 'arr.forEach' },
           line: 3,
           messageId: 'asyncFuncInArg',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        const arr = [1, 2];
-        arr.forEach(async x => { try {
-          console.log(x);
-        } catch {} });
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        const arr = [1, 2];
-        arr.forEach(x => void (async () => {
-          console.log(x);
-        })());
-      `,
-            },
-          ],
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1729,9 +1498,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInArg',
         },
       ],
-      output: `
-        [1, 2].forEach(x => void console.log(x));
-      `,
     },
     {
       code: `
@@ -1745,9 +1511,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        const foo: () => void = () => {};
-      `,
     },
     {
       code: `
@@ -1756,12 +1519,6 @@ ruleTester.run('strict-void-return', rule, {
         };
       `,
       errors: [{ column: 11, line: 3, messageId: 'nonVoidReturnInOther' }],
-      output: `
-        const { name }: () => void = function foo() {
-          \
-
-        };
-      `,
     },
     {
       code: `
@@ -1769,10 +1526,6 @@ ruleTester.run('strict-void-return', rule, {
         foo['a' + 'b'] = () => true;
       `,
       errors: [{ column: 32, line: 3, messageId: 'nonVoidReturnInOther' }],
-      output: `
-        declare const foo: Record<string, () => void>;
-        foo['a' + 'b'] = () => {};
-      `,
     },
     {
       code: `
@@ -1787,9 +1540,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: `
-        const foo: () => void = () => { Promise.resolve(true); };
-      `,
     },
     {
       code: 'const cb: () => void = (): Array<number> => [];',
@@ -1801,7 +1551,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: 'const cb: () => void = (): void => {};',
     },
     {
       code: `
@@ -1817,11 +1566,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: `
-        const cb: () => void = (): void => {
-          return [];
-        };
-      `,
     },
     {
       code: noFormat`const cb: () => void = function*foo() {}`,
@@ -1833,7 +1577,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: `const cb: () => void = function foo() {}`,
     },
     {
       code: 'const cb: () => void = (): Promise<number> => Promise.resolve(1);',
@@ -1846,7 +1589,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: 'const cb: () => void = (): void => { Promise.resolve(1); };',
     },
     {
       code: `
@@ -1865,22 +1607,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: [
-        `
-        const cb: () => void = async (): Promise<void> => {
-          try {
-            return Promise.resolve(1);
-          } catch {}
-        };
-      `,
-        `
-        const cb: () => void = async (): Promise<void> => {
-          try {
-            Promise.resolve(1); return;
-          } catch {}
-        };
-      `,
-      ],
     },
     {
       code: 'const cb: () => void = async (): Promise<number> => Promise.resolve(1);',
@@ -1892,7 +1618,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInVar',
         },
       ],
-      output: 'const cb: () => void = (): void => void Promise.resolve(1);',
     },
     {
       code: `
@@ -1910,13 +1635,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        const foo: () => void = async () => {
-          try {
-            return;
-          } catch {}
-        };
-      `,
     },
     {
       code: `
@@ -1933,33 +1651,8 @@ ruleTester.run('strict-void-return', rule, {
           data: { varName: 'foo' },
           line: 2,
           messageId: 'asyncFuncInVar',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        const foo: () => void = async (): Promise<void> => { try {
-          try {
-            await Promise.resolve();
-          } finally {
-          }
-        } catch {} };
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        const foo: () => void = (): void => void (async () => {
-          try {
-            await Promise.resolve();
-          } finally {
-          }
-        })();
-      `,
-            },
-          ],
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -1978,38 +1671,9 @@ ruleTester.run('strict-void-return', rule, {
           data: { varName: 'foo' },
           line: 2,
           messageId: 'asyncFuncInVar',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        const foo: () => void = async () => { try {
-          try {
-            await Promise.resolve();
-          } catch (err) {
-            console.error(err);
-          }
-          console.log('ok');
-        } catch {} };
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        const foo: () => void = () => { (async () => {
-          try {
-            await Promise.resolve();
-          } catch (err) {
-            console.error(err);
-          }
-          console.log('ok');
-        })(); };
-      `,
-            },
-          ],
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: null,
     },
     // TODO: Check every union type separately
     // {
@@ -2018,10 +1682,6 @@ ruleTester.run('strict-void-return', rule, {
     //     foo = () => 1;
     //   `,
     //   errors: [{ messageId: 'nonVoidReturnInVar', data: {varName: throw}, line: 3, column: 21 }],
-    //   output: `
-    //     declare let foo: (() => void) | (() => boolean);
-    //     foo = () => {};
-    //   `,
     // },
     {
       code: 'const foo: () => void = (): number => {};',
@@ -2033,7 +1693,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: 'const foo: () => void = (): void => {};',
     },
     {
       code: `
@@ -2048,7 +1707,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2075,15 +1733,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnNull: false, allowReturnUndefined: false }],
-      output: `
-        const foo: () => void = function () {
-          if (maybe) {
-            return;
-          } else {
-            return;
-          }
-        };
-      `,
     },
     {
       code: `
@@ -2103,14 +1752,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: `
-        const foo: () => void = function () {
-          if (maybe) {
-            console.log('elo');
-            ;({ [1]: Math.random() }); return;
-          }
-        };
-      `,
     },
     {
       code: `
@@ -2138,17 +1779,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        const foo: { (arg: number): void; (arg: string): void } = arg => {
-          console.log('foo');
-          switch (typeof arg) {
-            case 'number':
-              return;
-            case 'string':
-              return;
-          }
-        };
-      `,
     },
     {
       code: `
@@ -2162,28 +1792,9 @@ ruleTester.run('strict-void-return', rule, {
           data: { varName: 'foo' },
           line: 2,
           messageId: 'asyncFuncInVar',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        const foo: ((arg: number) => void) | ((arg: string) => void) = async () => { try {
-          return 1;
-        } catch {} };
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        const foo: ((arg: number) => void) | ((arg: string) => void) = () => { (async () => {
-          return 1;
-        })(); };
-      `,
-            },
-          ],
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: null,
     },
     {
       code: `
@@ -2201,7 +1812,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2221,7 +1831,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2237,7 +1846,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2255,13 +1863,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        declare let foo: { arg?: string; cb?: () => void };
-        foo.cb = () => {
-          return;
-          console.log('siema');
-        };
-      `,
     },
     {
       code: `
@@ -2277,7 +1878,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2293,7 +1893,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2309,7 +1908,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2325,10 +1923,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      output: `
-        declare function Foo(props: { cb: () => void }): unknown;
-        return <Foo cb={() => {}} />;
-      `,
     },
     {
       code: `
@@ -2359,18 +1953,6 @@ ruleTester.run('strict-void-return', rule, {
       ],
       filename: 'react.tsx',
       options: [{ allowReturnNull: false, allowReturnUndefined: false }],
-      output: `
-        declare function Foo(props: { cb: () => void }): unknown;
-        declare function getNull(): null;
-        return (
-          <Foo
-            cb={() => {
-              if (maybe) { Math.random(); return; }
-              else { getNull(); return; }
-            }}
-          />
-        );
-      `,
     },
     {
       code: `
@@ -2387,11 +1969,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      output: `
-        type Cb = () => void;
-        declare function Foo(props: { cb: Cb; s: string }): unknown;
-        return <Foo cb={function () {}} s="!@#jp2gmd" />;
-      `,
     },
     {
       code: `
@@ -2408,11 +1985,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      output: `
-        type Cb = () => void;
-        declare function Foo(props: { n: number; cb?: Cb }): unknown;
-        return <Foo n={2137} cb={function () {}} />;
-      `,
     },
     {
       code: `
@@ -2436,7 +2008,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      output: null,
     },
     {
       code: `
@@ -2455,13 +2026,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      output: `
-        interface Props {
-          cb: ((arg: unknown) => void) | boolean;
-        }
-        declare function Foo(props: Props): unknown;
-        return <Foo cb={x => {}} />;
-      `,
     },
     {
       code: `
@@ -2483,16 +2047,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       filename: 'react.tsx',
-      output: `
-        type EventHandler<E> = { bivarianceHack(event: E): void }['bivarianceHack'];
-        interface ButtonProps {
-          onClick?: EventHandler<unknown> | undefined;
-        }
-        declare function Button(props: ButtonProps): unknown;
-        function App() {
-          return <Button onClick={x => {}} />;
-        }
-      `,
     },
     {
       code: `
@@ -2507,10 +2061,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        declare function foo(cbs: { arg: number; cb: () => void }): void;
-        foo({ arg: 1, cb: () => {} });
-      `,
     },
     {
       code: `
@@ -2530,16 +2080,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        declare let foo: { arg?: string; cb: () => void };
-        foo = {
-          cb: () => {
-            let x = 'siema';
-            \
-
-          },
-        };
-      `,
     },
     {
       code: `
@@ -2558,15 +2098,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        declare let foo: { cb: (n: number) => void };
-        foo = {
-          cb(n) {
-            \
-
-          },
-        };
-      `,
     },
     {
       code: `
@@ -2585,15 +2116,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        declare let foo: { 1234: (n: number) => void };
-        foo = {
-          1234(n) {
-            \
-
-          },
-        };
-      `,
     },
     {
       code: `
@@ -2610,12 +2132,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        declare let foo: { '1e+21': () => void };
-        foo = {
-          1_000_000_000_000_000_000_000: () => {},
-        };
-      `,
     },
     {
       code: `
@@ -2634,37 +2150,8 @@ ruleTester.run('strict-void-return', rule, {
           data: { varName: 'cb' },
           line: 4,
           messageId: 'asyncFuncInVar',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        declare let foo: { cb: (() => void) | number };
-        foo = {
-          cb: async () => { try {
-            if (maybe) {
-              return 'asd';
-            }
-          } catch {} },
-        };
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        declare let foo: { cb: (() => void) | number };
-        foo = {
-          cb: () => void (async () => {
-            if (maybe) {
-              return 'asd';
-            }
-          })(),
-        };
-      `,
-            },
-          ],
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2688,7 +2175,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2699,10 +2185,6 @@ ruleTester.run('strict-void-return', rule, {
         { column: 58, line: 3, messageId: 'nonVoidFuncInOther' },
         { column: 68, line: 3, messageId: 'nonVoidReturnInOther' },
       ],
-      output: `
-        declare function cb(): number;
-        const foo: Array<(() => void) | false> = [false, cb, () => void cb()];
-      `,
     },
     {
       code: `
@@ -2710,7 +2192,6 @@ ruleTester.run('strict-void-return', rule, {
         const foo: [string, () => void, (() => void)?] = ['asd', cb];
       `,
       errors: [{ column: 66, line: 3, messageId: 'nonVoidFuncInOther' }],
-      output: null,
     },
     {
       code: `
@@ -2732,43 +2213,8 @@ ruleTester.run('strict-void-return', rule, {
           column: 22,
           line: 7,
           messageId: 'asyncFuncInOther',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        const foo: { cbs: Array<() => void> | null } = {
-          cbs: [
-            function* () {
-              yield 1;
-            },
-            async () => { try {
-              await 1;
-            } catch {} },
-            null,
-          ],
-        };
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        const foo: { cbs: Array<() => void> | null } = {
-          cbs: [
-            function* () {
-              yield 1;
-            },
-            () => void (async () => {
-              await 1;
-            })(),
-            null,
-          ],
-        };
-      `,
-            },
-          ],
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2784,11 +2230,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        const foo: { cb: () => void } = class {
-          static cb = () => {};
-        };
-      `,
     },
     {
       code: `
@@ -2804,11 +2245,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInVar',
         },
       ],
-      output: `
-        class Foo {
-          foo: () => void = () => {};
-        }
-      `,
     },
     {
       code: `
@@ -2824,7 +2260,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInVar',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2843,7 +2278,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInExtMember',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2863,7 +2297,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInExtMember',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -2887,20 +2320,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInExtMember',
         },
       ],
-      output: `
-        class Foo {
-          cb() {
-            console.log('siema');
-          }
-        }
-        const method = 'cb' as const;
-        class Bar extends Foo {
-          [method]() {
-            \
-
-          }
-        }
-      `,
     },
     {
       code: `
@@ -2921,16 +2340,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInExtMember',
         },
       ],
-      output: `
-        class Foo {
-          cb() {}
-        }
-        void class extends Foo {
-          cb() {
-            Math.random();
-          }
-        };
-      `,
     },
     {
       code: `
@@ -2961,20 +2370,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInExtMember',
         },
       ],
-      output: `
-        class Foo {
-          cb1 = () => {};
-        }
-        class Bar extends Foo {
-          cb2() {}
-        }
-        class Baz extends Bar {
-          cb1 = () => void Math.random();
-          cb2() {
-            Math.random();
-          }
-        }
-      `,
     },
     {
       code: `
@@ -2997,7 +2392,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInExtMember',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -3032,23 +2426,6 @@ ruleTester.run('strict-void-return', rule, {
         },
       ],
       options: [{ allowReturnUndefined: false }],
-      output: `
-        class Foo {
-          fn() {
-            return 'a';
-          }
-          cb() {}
-        }
-        class Bar extends Foo {
-          cb() {
-            if (maybe) {
-              Promise.resolve('siema'); return;
-            } else {
-              Promise.resolve('nara'); return;
-            }
-          }
-        }
-      `,
     },
     {
       code: `
@@ -3067,14 +2444,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'asyncFuncInExtMember',
         },
       ],
-      output: `
-        abstract class Foo {
-          abstract cb(): void;
-        }
-        class Bar extends Foo {
-          cb() {}
-        }
-      `,
     },
     {
       code: `
@@ -3096,17 +2465,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInExtMember',
         },
       ],
-      output: `
-        class Foo {
-          fn() {
-            return 'a';
-          }
-          cb() {}
-        }
-        class Bar extends Foo {
-          cb() {}
-        }
-      `,
     },
     {
       code: `
@@ -3125,7 +2483,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInImplMember',
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -3143,7 +2500,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInImplMember',
         },
       ],
-      output: null,
     },
     // TODO: Check getters
     // {
@@ -3176,24 +2532,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInExtMember',
         },
       ],
-      output: [
-        `
-        class Foo {
-          cb() {}
-        }
-        class Bar extends Foo {
-          async cb() {}
-        }
-      `,
-        `
-        class Foo {
-          cb() {}
-        }
-        class Bar extends Foo {
-          cb() {}
-        }
-      `,
-      ],
     },
     {
       code: `
@@ -3212,37 +2550,8 @@ ruleTester.run('strict-void-return', rule, {
           data: { baseName: 'Foo', className: 'Bar', memberName: 'cb' },
           line: 6,
           messageId: 'asyncFuncInImplMember',
-          suggestions: [
-            {
-              messageId: 'suggestWrapInTryCatch',
-              output: `
-        interface Foo {
-          cb(): void;
-        }
-        class Bar implements Foo {
-          async cb(): Promise<void> { try {
-            return Promise.resolve('siema');
-          } catch {} }
-        }
-      `,
-            },
-            {
-              messageId: 'suggestWrapInAsyncIIFE',
-              output: `
-        interface Foo {
-          cb(): void;
-        }
-        class Bar implements Foo {
-          cb(): void { (async () => {
-            return Promise.resolve('siema');
-          })(); }
-        }
-      `,
-            },
-          ],
         },
       ],
-      output: null,
     },
     {
       code: `
@@ -3267,20 +2576,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInImplMember',
         },
       ],
-      output: `
-        interface Foo {
-          cb(): void;
-        }
-        class Bar implements Foo {
-          async cb() {
-            try {
-              return;
-            } catch {
-              console.error('error');
-            }
-          }
-        }
-      `,
     },
     {
       code: `
@@ -3305,20 +2600,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidReturnInImplMember',
         },
       ],
-      output: `
-        interface Foo {
-          cb(): void;
-        }
-        class Bar implements Foo {
-          cb() {
-            if (maybe) {
-              return void Promise.resolve(1);
-            } else {
-              return;
-            }
-          }
-        }
-      `,
     },
     {
       code: `
@@ -3346,32 +2627,6 @@ ruleTester.run('strict-void-return', rule, {
           line: 10,
           messageId: 'nonVoidFuncInImplMember',
         },
-      ],
-      output: [
-        `
-        interface Foo1 {
-          cb1(): void;
-        }
-        interface Foo2 {
-          cb2: () => void;
-        }
-        class Bar implements Foo1, Foo2 {
-          cb1() {}
-          async cb2() {}
-        }
-      `,
-        `
-        interface Foo1 {
-          cb1(): void;
-        }
-        interface Foo2 {
-          cb2: () => void;
-        }
-        class Bar implements Foo1, Foo2 {
-          cb1() {}
-          cb2() {}
-        }
-      `,
       ],
     },
     {
@@ -3401,32 +2656,6 @@ ruleTester.run('strict-void-return', rule, {
           messageId: 'nonVoidFuncInImplMember',
         },
       ],
-      output: [
-        `
-        interface Foo1 {
-          cb1(): void;
-        }
-        interface Foo2 extends Foo1 {
-          cb2: () => void;
-        }
-        class Bar implements Foo2 {
-          cb1() {}
-          async cb2() {}
-        }
-      `,
-        `
-        interface Foo1 {
-          cb1(): void;
-        }
-        interface Foo2 extends Foo1 {
-          cb2: () => void;
-        }
-        class Bar implements Foo2 {
-          cb1() {}
-          cb2() {}
-        }
-      `,
-      ],
     },
     {
       code: `
@@ -3434,10 +2663,6 @@ ruleTester.run('strict-void-return', rule, {
         foo = () => () => 1 + 1;
       `,
       errors: [{ column: 27, line: 3, messageId: 'nonVoidReturnInReturn' }],
-      output: `
-        declare let foo: () => () => void;
-        foo = () => () => {};
-      `,
     },
     {
       code: `
@@ -3446,10 +2671,6 @@ ruleTester.run('strict-void-return', rule, {
       `,
       errors: [{ column: 27, line: 3, messageId: 'nonVoidReturnInReturn' }],
       options: [{ allowReturnUndefined: false }],
-      output: `
-        declare let foo: () => () => void;
-        foo = () => () => { Math.random(); };
-      `,
     },
     {
       code: `
@@ -3458,7 +2679,6 @@ ruleTester.run('strict-void-return', rule, {
         foo = () => cb;
       `,
       errors: [{ column: 21, line: 4, messageId: 'nonVoidFuncInReturn' }],
-      output: null,
     },
     {
       code: `
@@ -3471,15 +2691,6 @@ ruleTester.run('strict-void-return', rule, {
         function cb() {}
       `,
       errors: [{ column: 26, line: 5, messageId: 'nonVoidReturnInReturn' }],
-      output: `
-        declare let foo: { f(): () => void };
-        foo = {
-          f() {
-            return () => {};
-          },
-        };
-        function cb() {}
-      `,
     },
     {
       code: `
@@ -3492,15 +2703,6 @@ ruleTester.run('strict-void-return', rule, {
       `,
       errors: [{ column: 13, line: 5, messageId: 'nonVoidReturnInReturn' }],
       options: [{ allowReturnNull: false }],
-      output: `
-        declare let foo: { f(): () => void };
-        foo.f = function () {
-          return () => {
-            \
-
-          };
-        };
-      `,
     },
     {
       code: `
@@ -3510,13 +2712,6 @@ ruleTester.run('strict-void-return', rule, {
         };
       `,
       errors: [{ column: 11, line: 4, messageId: 'nonVoidReturnInReturn' }],
-      output: `
-        declare let foo: () => (() => void) | string;
-        foo = () => () => {
-          \
-
-        };
-      `,
     },
     {
       code: `
@@ -3526,12 +2721,6 @@ ruleTester.run('strict-void-return', rule, {
         });
       `,
       errors: [{ column: 27, line: 4, messageId: 'asyncFuncInReturn' }],
-      output: `
-        declare function foo(cb: () => () => void): void;
-        foo(function () {
-          return () => {};
-        });
-      `,
     },
     {
       code: noFormat`
@@ -3560,24 +2749,6 @@ ruleTester.run('strict-void-return', rule, {
       ],
       filename: 'react.tsx',
       options: [{ allowReturnUndefined: false }],
-      output: `
-        declare function foo(cb: () => () => void): void;
-        foo(() => () => {
-          if (n == 1) {
-            console.log('asd')
-            ;[1].map(x => x); return;
-          }
-          if (n == 2) {
-            console.log('asd')
-            ;-Math.random(); return;
-          }
-          if (n == 3) {
-            console.log('asd')
-            ;\`x\`.toUpperCase(); return;
-          }
-          ;<i>{Math.random()}</i>;
-        });
-      `,
     },
     {
       code: `
@@ -3591,7 +2762,6 @@ ruleTester.run('strict-void-return', rule, {
         }
       `,
       errors: [{ column: 18, line: 5, messageId: 'nonVoidFuncInReturn' }],
-      output: null,
     },
   ],
 });

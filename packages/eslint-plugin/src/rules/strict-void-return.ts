@@ -1,11 +1,6 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  ASTUtils,
-  ESLintUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -29,14 +24,10 @@ type ErrorPlaceId =
   | 'Return'
   | 'Var';
 
-type ErrorMessageId =
+type MessageId =
   | `asyncFuncIn${ErrorPlaceId}`
   | `nonVoidFuncIn${ErrorPlaceId}`
   | `nonVoidReturnIn${ErrorPlaceId}`;
-
-type SuggestionMessageId = 'suggestWrapInAsyncIIFE' | 'suggestWrapInTryCatch';
-
-type MessageId = ErrorMessageId | SuggestionMessageId;
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-void-return',
@@ -48,7 +39,7 @@ export default util.createRule<Options, MessageId>({
       requiresTypeChecking: true,
     },
     fixable: 'code',
-    hasSuggestions: true,
+    hasSuggestions: false,
     messages: {
       asyncFuncInArg:
         'Async callback passed as an argument to `{{funcName}}`, which expects a void callback.',
@@ -94,10 +85,6 @@ export default util.createRule<Options, MessageId>({
         'Value returned in a callback returned from a function, which must return a void callback.',
       nonVoidReturnInVar:
         'Value returned in `{{varName}}`, which is declared as a void function.',
-
-      suggestWrapInAsyncIIFE:
-        'Wrap the function body in an immediately-invoked async function expression.',
-      suggestWrapInTryCatch: 'Wrap the function body in a try-catch block.',
     },
     schema: [
       {
@@ -527,21 +514,6 @@ export default util.createRule<Options, MessageId>({
       if (funcNode.generator) {
         // The provided function is a generator function.
         // Generator functions are not allowed.
-
-        ESLintUtils.assertNode(funcNode, AST_NODE_TYPES.FunctionExpression);
-        if (funcNode.body.body.length === 0) {
-          // Function body is empty.
-          // Fix it by removing the generator star.
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `nonVoidFuncIn${msgId}`,
-            data,
-            fix: fixer => removeGeneratorStarFix(fixer, funcNode),
-          });
-        }
-
-        // Function body is not empty.
-        // Report an error.
         return context.report({
           loc: util.getFunctionHeadLoc(funcNode, sourceCode),
           messageId: `nonVoidFuncIn${msgId}`,
@@ -552,81 +524,30 @@ export default util.createRule<Options, MessageId>({
       if (funcNode.async) {
         // The provided function is an async function.
 
-        if (
-          funcNode.body.type === AST_NODE_TYPES.BlockStatement
-            ? funcNode.body.body.length === 0
-            : !ASTUtils.hasSideEffect(funcNode.body, sourceCode)
-        ) {
-          // This async function is empty or has no side effects.
-          // Fix it by removing the body and the async keyword.
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFuncIn${msgId}`,
-            data,
-            fix: fixer => removeFuncBodyFix(fixer, funcNode),
-          });
-        }
-
-        if (funcNode.body.type !== AST_NODE_TYPES.BlockStatement) {
-          // This async function is an arrow function shorthand without braces.
-          // It's not worth suggesting wrapping a single expression in a try-catch/IIFE.
-          // Fix it by adding a void operator or braces.
-          ESLintUtils.assertNode(
-            funcNode,
-            AST_NODE_TYPES.ArrowFunctionExpression,
-          );
-          return context.report({
-            loc: util.getFunctionHeadLoc(funcNode, sourceCode),
-            messageId: `asyncFuncIn${msgId}`,
-            data,
-            fix: fixer =>
-              options.allowReturnUndefined
-                ? addVoidToArrowFix(fixer, funcNode)
-                : addBracesToArrowFix(fixer, funcNode),
-          });
-        }
-
-        // This async function has a block body.
-
         if (!options.allowReturnPromiseIfTryCatch) {
           // Async functions aren't allowed.
-          // Suggest wrapping its body in an async IIFE.
+          // TODO: Suggest wrapping its body in an async IIFE.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
             messageId: `asyncFuncIn${msgId}`,
             data,
-            suggest: [
-              {
-                messageId: 'suggestWrapInAsyncIIFE',
-                fix: fixer => wrapFuncInAsyncIIFEFix(fixer, funcNode),
-              },
-            ],
           });
         }
 
         // Async functions are allowed if they are wrapped in a try-catch block.
 
         if (
-          funcNode.body.body.length > 1 ||
+          funcNode.body.type !== AST_NODE_TYPES.BlockStatement ||
+          funcNode.body.body.length !== 1 ||
           funcNode.body.body[0].type !== AST_NODE_TYPES.TryStatement ||
           funcNode.body.body[0].handler == null
         ) {
           // Function is not wrapped in a try-catch block.
-          // Suggest wrapping it in a try-catch block in addition to async IIFE.
+          // TODO: Suggest wrapping it in a try-catch block in addition to async IIFE.
           return context.report({
             loc: util.getFunctionHeadLoc(funcNode, sourceCode),
             messageId: `asyncFuncIn${msgId}`,
             data,
-            suggest: [
-              {
-                messageId: 'suggestWrapInTryCatch',
-                fix: fixer => wrapFuncInTryCatchFix(fixer, funcNode),
-              },
-              {
-                messageId: 'suggestWrapInAsyncIIFE',
-                fix: fixer => wrapFuncInAsyncIIFEFix(fixer, funcNode),
-              },
-            ],
           });
         }
       }
@@ -640,17 +561,11 @@ export default util.createRule<Options, MessageId>({
           funcNode,
           AST_NODE_TYPES.ArrowFunctionExpression,
         );
-        // Fix it by removing the body or adding a void operator or braces.
+        // TODO: Fix it by removing the body or adding a void operator or braces.
         return context.report({
           node: funcNode.body,
           messageId: `nonVoidReturnIn${msgId}`,
           data,
-          fix: fixer =>
-            !ASTUtils.hasSideEffect(funcNode.body, sourceCode)
-              ? removeFuncBodyFix(fixer, funcNode)
-              : options.allowReturnUndefined
-                ? addVoidToArrowFix(fixer, funcNode)
-                : addBracesToArrowFix(fixer, funcNode),
         });
       }
 
@@ -673,16 +588,11 @@ export default util.createRule<Options, MessageId>({
           )
         ) {
           // The explicit return type is not `void` or `Promise<void>`.
-          // Fix it by changing the return type to `void` or `Promise<void>`.
+          // TODO: Fix it by changing the return type to `void` or `Promise<void>`.
           return context.report({
             node: typeAnnotationNode,
             messageId: `nonVoidFuncIn${msgId}`,
             data,
-            fix: fixer =>
-              fixer.replaceText(
-                typeAnnotationNode,
-                funcNode.async ? 'Promise<void>' : 'void',
-              ),
           });
         }
       }
@@ -706,7 +616,7 @@ export default util.createRule<Options, MessageId>({
         }
 
         // This return statement causes the non-void return type.
-        // Fix it by discarding the return value.
+        // TODO: Fix it by discarding the return value.
         const returnKeyword = util.nullThrows(
           sourceCode.getFirstToken(statement, {
             filter: token => token.value === 'return',
@@ -717,180 +627,10 @@ export default util.createRule<Options, MessageId>({
           node: returnKeyword,
           messageId: `nonVoidReturnIn${msgId}`,
           data,
-          fix: fixer =>
-            util.discardReturnValueFix(
-              fixer,
-              sourceCode,
-              statement,
-              options.allowReturnUndefined,
-            ),
         });
       }
 
       // No invalid returns found. The function is allowed.
-    }
-
-    function removeGeneratorStarFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.FunctionExpression,
-    ): TSESLint.RuleFix {
-      const funcHeadNode =
-        funcNode.parent.type === AST_NODE_TYPES.Property ||
-        funcNode.parent.type === AST_NODE_TYPES.MethodDefinition
-          ? funcNode.parent
-          : funcNode;
-      const starToken = util.nullThrows(
-        sourceCode.getFirstToken(funcHeadNode, {
-          filter: token => token.value === '*',
-        }),
-        util.NullThrowsReasons.MissingToken('generator star', funcNode.type),
-      );
-      const beforeStarToken = util.nullThrows(
-        sourceCode.getTokenBefore(starToken),
-        util.NullThrowsReasons.MissingToken(
-          'token before generator star',
-          funcNode.type,
-        ),
-      );
-      const afterStarToken = util.nullThrows(
-        sourceCode.getTokenAfter(starToken),
-        util.NullThrowsReasons.MissingToken(
-          'token after generator star',
-          funcNode.type,
-        ),
-      );
-      if (
-        sourceCode.isSpaceBetween(beforeStarToken, starToken) ||
-        sourceCode.isSpaceBetween(starToken, afterStarToken) ||
-        afterStarToken.type === AST_TOKEN_TYPES.Punctuator
-      ) {
-        // There is space between tokens or other token is a punctuator.
-        // No space necessary after removing the star.
-        return fixer.remove(starToken);
-      }
-      // Replace with space.
-      return fixer.replaceText(starToken, ' ');
-    }
-
-    function removeAsyncKeywordFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ): TSESLint.RuleFix {
-      const funcHeadNode =
-        funcNode.parent.type === AST_NODE_TYPES.Property ||
-        funcNode.parent.type === AST_NODE_TYPES.MethodDefinition
-          ? funcNode.parent
-          : funcNode;
-      const asyncToken = util.nullThrows(
-        sourceCode.getFirstToken(funcHeadNode, {
-          filter: token => token.value === 'async',
-        }),
-        util.NullThrowsReasons.MissingToken('async keyword', funcNode.type),
-      );
-      const afterAsyncToken = util.nullThrows(
-        sourceCode.getTokenAfter(asyncToken),
-        util.NullThrowsReasons.MissingToken(
-          'token after async keyword',
-          funcNode.type,
-        ),
-      );
-      return fixer.removeRange([asyncToken.range[0], afterAsyncToken.range[0]]);
-    }
-
-    function* removeFuncBodyFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ): Generator<TSESLint.RuleFix> {
-      // Remove async keyword
-      if (funcNode.async) {
-        yield removeAsyncKeywordFix(fixer, funcNode);
-      }
-      // Replace return type with void
-      if (funcNode.returnType != null) {
-        yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
-      }
-      // Replace body with empty block
-      const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
-      yield fixer.replaceTextRange(bodyRange, '{}');
-    }
-
-    function* wrapFuncInTryCatchFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ): Generator<TSESLint.RuleFix> {
-      // Replace return type with Promise<void>
-      if (funcNode.returnType != null) {
-        ESLintUtils.assert(funcNode.async, 'Expected function to be async.');
-        yield fixer.replaceText(
-          funcNode.returnType.typeAnnotation,
-          'Promise<void>',
-        );
-      }
-      // Wrap body in try-catch
-      ESLintUtils.assertNode(funcNode.body, AST_NODE_TYPES.BlockStatement);
-      const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
-      yield fixer.insertTextBeforeRange(bodyRange, '{ try ');
-      yield fixer.insertTextAfterRange(bodyRange, ' catch {} }');
-    }
-
-    function* wrapFuncInAsyncIIFEFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
-    ): Generator<TSESLint.RuleFix> {
-      // Remove async keyword
-      yield removeAsyncKeywordFix(fixer, funcNode);
-      // Replace return type with void
-      if (funcNode.returnType != null) {
-        yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
-      }
-      // Wrap body in async IIFE
-      const bodyRange = util.getRangeWithParens(funcNode.body, sourceCode);
-      if (
-        funcNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-        options.allowReturnUndefined
-      ) {
-        yield fixer.insertTextBeforeRange(bodyRange, 'void (async () => ');
-        yield fixer.insertTextAfterRange(bodyRange, ')()');
-      } else {
-        yield fixer.insertTextBeforeRange(bodyRange, '{ (async () => ');
-        yield fixer.insertTextAfterRange(bodyRange, ')(); }');
-      }
-    }
-
-    function* addVoidToArrowFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression,
-    ): Generator<TSESLint.RuleFix> {
-      // Remove async keyword
-      if (funcNode.async) {
-        yield removeAsyncKeywordFix(fixer, funcNode);
-      }
-      // Replace return type with void
-      if (funcNode.returnType != null) {
-        yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
-      }
-      // Add void operator
-      yield util.getWrappingFixer({
-        node: funcNode.body,
-        sourceCode,
-        wrap: code => `void ${code}`,
-      })(fixer);
-    }
-
-    function* addBracesToArrowFix(
-      fixer: TSESLint.RuleFixer,
-      funcNode: TSESTree.ArrowFunctionExpression,
-    ): Generator<TSESLint.RuleFix> {
-      // Remove async keyword
-      if (funcNode.async) {
-        yield removeAsyncKeywordFix(fixer, funcNode);
-      }
-      // Replace return type with void
-      if (funcNode.returnType != null) {
-        yield fixer.replaceText(funcNode.returnType.typeAnnotation, 'void');
-      }
-      // Add braces
-      yield util.addBracesToArrowFix(fixer, sourceCode, funcNode);
     }
   },
 });
