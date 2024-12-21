@@ -1,10 +1,10 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
@@ -45,3 +45,20 @@ export default createRule({
     };
   },
 });
+
+function isTypeArrayTypeOrUnionOfArrayTypes(
+  type: ts.Type,
+  checker: ts.TypeChecker,
+): boolean {
+  for (const t of tsutils.unionTypeParts(type)) {
+    if (tsutils.isTypeFlagSet(t, ts.TypeFlags.Undefined | ts.TypeFlags.Null)) {
+      continue;
+    }
+
+    if (!checker.isArrayType(t)) {
+      return false;
+    }
+  }
+
+  return true;
+}
