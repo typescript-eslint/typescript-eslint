@@ -22,6 +22,12 @@ export function isNodeEqual(a: TSESTree.Node, b: TSESTree.Node): boolean {
     return a.name === b.name;
   }
   if (
+    a.type === AST_NODE_TYPES.TSTypeReference &&
+    b.type === AST_NODE_TYPES.TSTypeReference
+  ) {
+    return isNodeEqual(a.typeName, b.typeName);
+  }
+  if (
     a.type === AST_NODE_TYPES.MemberExpression &&
     b.type === AST_NODE_TYPES.MemberExpression
   ) {
