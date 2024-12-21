@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-extraneous-return-types.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+function test1(): string | null {
+                           ~~~~ Unused or redundant union type 'null' in return type.
+  return 'string';
+}
+
+function test2(): Promise<string | null> {
+                                   ~~~~ Unused or redundant union type 'null' in return type.
+  return Promise.resolve('string');
+}
+
+class A {
+  test(): string | null {
+                   ~~~~ Unused or redundant union type 'null' in return type.
+    return 'string';
+  }
+}
+"
+`;
+
+exports[`Validating rule docs no-extraneous-return-types.mdx code examples ESLint output 2`] = `
+"Correct
+
+function test1(): string {
+  return 'string';
+}
+
+function test2(): Promise<string> {
+  return Promise.resolve('string');
+}
+
+class A {
+  test(): string {
+    return 'string';
+  }
+}
+"
+`;
