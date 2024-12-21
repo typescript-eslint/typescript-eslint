@@ -6,9 +6,9 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  getFixOrSuggest,
   isNodeEqual,
   isParenthesized,
-  getFixOrSuggest,
   nullThrows,
 } from '../util';
 
