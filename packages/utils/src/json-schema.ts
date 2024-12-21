@@ -32,8 +32,6 @@ export type JSONSchema4TypeExtended =
   | JSONSchema4Object
   | JSONSchema4Type;
 
-// Workaround for infinite type recursion
-// Also, https://github.com/typescript-eslint/typescript-eslint/issues/7863
 export interface JSONSchema4Object {
   [key: string]: JSONSchema4TypeExtended;
 }
