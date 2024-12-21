@@ -46,14 +46,13 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['record'],
   create(context, [mode]) {
     function checkMembers(
+      members: TSESTree.TypeElement[],
       node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
       parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,
       safeFix = true,
     ): void {
-      const members = getMembers(node);
-
       if (members.length !== 1) {
         return;
       }
@@ -159,6 +158,7 @@ export default createRule<Options, MessageIds>({
           }
 
           checkMembers(
+            node.body.body,
             node,
             node.id,
             `type ${node.id.name}${genericTypes} = `,
@@ -249,7 +249,7 @@ export default createRule<Options, MessageIds>({
         },
         TSTypeLiteral(node): void {
           const parent = findParentDeclaration(node);
-          checkMembers(node, parent?.id, '', '');
+          checkMembers(node.members, node, parent?.id, '', '');
         },
       }),
     };
@@ -266,16 +266,6 @@ function findParentDeclaration(
     return findParentDeclaration(node.parent);
   }
   return undefined;
-}
-
-function getMembers(
-  node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
-): TSESTree.TypeElement[] {
-  if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
-    return node.body.body;
-  }
-
-  return node.members;
 }
 
 function isDeeplyReferencingType(
