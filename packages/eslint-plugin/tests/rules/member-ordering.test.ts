@@ -2148,6 +2148,23 @@ interface Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  public bar(): void;
+  @Decorator() public bar() {}
+}
+      `,
+      options: [
+        {
+          default: [
+            'public-decorated-method',
+            'public-instance-method',
+            'public-method',
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -5265,6 +5282,29 @@ interface Foo {
         {
           default: ['method', 'get'],
         },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static foo() {}
+  foo(): void;
+  foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'foo',
+            rank: 'public static method',
+          },
+          line: 4,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: ['public-instance-method', 'public-static-method'] },
       ],
     },
   ],
