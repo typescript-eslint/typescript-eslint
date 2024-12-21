@@ -94,10 +94,13 @@ export default createRule({
         case AST_NODE_TYPES.Property:
           // foo in "const { foo } = bar" will be processed twice, as parent.key
           // and parent.value. The second is treated as a declaration.
-          return (
-            (parent.shorthand && parent.value === node) ||
-            parent.parent.type === AST_NODE_TYPES.ObjectExpression
-          );
+          if (parent.shorthand && parent.value === node) {
+            return parent.parent.type === AST_NODE_TYPES.ObjectPattern;
+          }
+          if (parent.value === node) {
+            return false;
+          }
+          return parent.parent.type === AST_NODE_TYPES.ObjectExpression;
 
         case AST_NODE_TYPES.AssignmentPattern:
           // foo in "const { foo = "" } = bar" will be processed twice, as parent.parent.key
@@ -306,9 +309,11 @@ export default createRule({
         node.parent.type === AST_NODE_TYPES.Property &&
         node.type !== AST_NODE_TYPES.Super
       ) {
-        return getJsDocDeprecation(
-          services.getTypeAtLocation(node.parent.parent).getProperty(node.name),
-        );
+        const property = services
+          .getTypeAtLocation(node.parent.parent)
+          .getProperty(node.name);
+        const symbol = services.getSymbolAtLocation(node);
+        return getJsDocDeprecation(property) ?? getJsDocDeprecation(symbol);
       }
       return searchForDeprecationInAliasesChain(
         services.getSymbolAtLocation(node),
