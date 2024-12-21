@@ -186,7 +186,8 @@ export default createRule<Options, MessageIds>({
       const name = getStaticMemberAccessValue(node, context);
 
       return (
-        typeof name !== 'string' || !exceptMethods.has(hashIfNeeded + name)
+        (typeof name !== 'string' && typeof name !== 'number') ||
+        !exceptMethods.has(hashIfNeeded + String(name))
       );
     }
 
