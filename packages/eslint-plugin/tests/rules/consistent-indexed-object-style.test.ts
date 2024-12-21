@@ -865,5 +865,34 @@ function f(): Record<keyof ParseResult, unknown> {
 }
       `,
     },
+
+    // missing index signature type annotation while checking for a recursive type
+    {
+      code: `
+interface Foo {
+  [key: string]: Bar;
+}
+
+interface Bar {
+  [key: string];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo = Record<string, Bar>;
+
+interface Bar {
+  [key: string];
+}
+      `,
+    },
   ],
 });
