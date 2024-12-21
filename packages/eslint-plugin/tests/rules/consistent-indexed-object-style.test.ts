@@ -165,6 +165,15 @@ interface Foo3 {
   [key: string]: Foo1;
 }
     `,
+    `
+type ExampleUnion = boolean | number;
+
+type ExampleRoot = ExampleUnion | ExampleObject;
+
+interface ExampleObject {
+  [key: string]: ExampleRoot;
+}
+    `,
 
     // Type literal
     'type Foo = {};',
@@ -211,6 +220,7 @@ interface Foo {
   [];
 }
     `,
+
     // 'index-signature'
     // Unhandled type
     {
