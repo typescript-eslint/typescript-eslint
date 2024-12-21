@@ -2192,6 +2192,22 @@ type BrokenArray = {
       'type T = ReadonlyArray<ReadonlyArray<string>>',
       'generic',
     );
+    // conditional types
+    testOutput(
+      'array',
+      'type Conditional<T> = Array<T extends string ? string : number>',
+      'type Conditional<T> = (T extends string ? string : number)[]',
+    );
+    testOutput(
+      'array-simple',
+      'type Conditional<T> = (T extends string ? string : number)[]',
+      'type Conditional<T> = Array<T extends string ? string : number>',
+    );
+    testOutput(
+      'generic',
+      'type Conditional<T> = (T extends string ? string : number)[]',
+      'type Conditional<T> = Array<T extends string ? string : number>',
+    );
   });
 });
 
