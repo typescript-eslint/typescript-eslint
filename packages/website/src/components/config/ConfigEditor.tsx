@@ -35,7 +35,7 @@ function filterConfig(
   return options
     .map(group => ({
       fields: group.fields.filter(item =>
-        String(item.key.toLowerCase()).includes(filter.toLowerCase()),
+        item.key.toLowerCase().includes(filter.toLowerCase()),
       ),
       heading: group.heading,
     }))
