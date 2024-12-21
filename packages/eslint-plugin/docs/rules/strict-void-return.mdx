@@ -281,12 +281,16 @@ This rule enforces class methods which override a void method to also be void.
 <TabItem value="❌ Incorrect">
 
 ```ts
-/// <reference lib="dom" />
+class Foo {
+  cb() {
+    console.log('foo');
+  }
+}
 
-class MyElement extends HTMLElement {
-  click() {
-    super.click();
-    return 'Clicked';
+class Bar extends Foo {
+  cb() {
+    super.cb();
+    return 'bar';
   }
 }
 ```
@@ -295,12 +299,16 @@ class MyElement extends HTMLElement {
 <TabItem value="✅ Correct">
 
 ```ts
-/// <reference lib="dom" />
+class Foo {
+  cb() {
+    console.log('foo');
+  }
+}
 
-class MyElement extends HTMLElement {
-  click() {
-    super.click();
-    console.log('Clicked');
+class Bar extends Foo {
+  cb() {
+    super.cb();
+    console.log('bar');
   }
 }
 ```
@@ -316,11 +324,13 @@ This rule enforces class methods which implement a void method to also be void.
 <TabItem value="❌ Incorrect">
 
 ```ts
-/// <reference lib="dom" />
+interface Foo {
+  cb(): void;
+}
 
-class FooListener implements EventListenerObject {
-  handleEvent() {
-    return 'Handled';
+class Bar implements Foo {
+  cb() {
+    return 'cb';
   }
 }
 ```
@@ -329,11 +339,13 @@ class FooListener implements EventListenerObject {
 <TabItem value="✅ Correct">
 
 ```ts
-/// <reference lib="dom" />
+interface Foo {
+  cb(): void;
+}
 
-class FooListener implements EventListenerObject {
-  handleEvent() {
-    console.log('Handled');
+class Bar implements Foo {
+  cb() {
+    console.log('cb');
   }
 }
 ```
