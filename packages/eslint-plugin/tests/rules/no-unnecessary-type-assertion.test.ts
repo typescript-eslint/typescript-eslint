@@ -358,6 +358,16 @@ if (Math.random()) {
 x!;
       `,
     },
+    "let a = (Date.now() % 2 ? 'a' : 'b') as 'a' | 'b';",
+    noFormat`
+      const state: "expired" | "pending" = "pending";
+
+      function main() {
+        return {
+          type: \`\${state}Request\` as \`\${typeof state}Request\`
+        };
+      }
+    `,
   ],
 
   invalid: [
@@ -1150,6 +1160,17 @@ const b: string | undefined = (a ? undefined : a)!;
 const a = '';
 const b: string | undefined = (a ? undefined : a);
       `,
+    },
+    {
+      code: "const a = (Date.now() % 2 ? 'a' : 'b') as 'a' | 'b';",
+      errors: [
+        {
+          column: 11,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `const a = (Date.now() % 2 ? 'a' : 'b');`,
     },
   ],
 });
