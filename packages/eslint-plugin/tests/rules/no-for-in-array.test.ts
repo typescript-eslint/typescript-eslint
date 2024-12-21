@@ -177,5 +177,59 @@ for (const x
         },
       ],
     },
+    {
+      code: `
+declare const arr: string[] | null;
+
+for (const x in arr) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[] | undefined;
+
+for (const x in arr) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: boolean[] | undefined | null;
+
+for (const x in arr) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
   ],
 });
