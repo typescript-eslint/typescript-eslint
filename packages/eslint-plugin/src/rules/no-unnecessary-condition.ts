@@ -183,7 +183,7 @@ export type MessageId =
   | 'alwaysNullish'
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
-  | 'literalBooleanExpression'
+  | 'comparisonBetweenLiteralTypes'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -211,8 +211,8 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
-        'Unnecessary conditional, comparison is always {{trueOrFalse}}. Both sides of the comparison always have a literal type.',
+      comparisonBetweenLiteralTypes:
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}, since `{{left}} {{operator}} {{right}}` is {{trueOrFalse}}.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
@@ -489,8 +489,11 @@ export default createRule<Options, MessageId>({
 
         context.report({
           node,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
           data: {
+            left: checker.typeToString(leftType),
+            operator,
+            right: checker.typeToString(rightType),
             trueOrFalse: conditionIsTrue ? 'true' : 'false',
           },
         });
@@ -646,22 +649,53 @@ export default createRule<Options, MessageId>({
           .getCallSignaturesOfType(
             getConstrainedTypeAtLocation(services, callback),
           )
-          .map(sig => sig.getReturnType());
-        /* istanbul ignore if */ if (returnTypes.length === 0) {
-          // Not a callable function
+          .map(sig => sig.getReturnType())
+          .map(t => {
+            // TODO: use `getConstraintTypeInfoAtLocation` once it's merged
+            // https://github.com/typescript-eslint/typescript-eslint/pull/10496
+            if (tsutils.isTypeParameter(t)) {
+              return checker.getBaseConstraintOfType(t);
+            }
+
+            return t;
+          });
+
+        if (returnTypes.length === 0) {
+          // Not a callable function, e.g. `any`
           return;
         }
-        // Predicate is always necessary if it involves `any` or `unknown`
-        if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
-          return;
+
+        let hasFalsyReturnTypes = false;
+        let hasTruthyReturnTypes = false;
+
+        for (const type of returnTypes) {
+          // Predicate is always necessary if it involves `any` or `unknown`
+          if (!type || isTypeAnyType(type) || isTypeUnknownType(type)) {
+            return;
+          }
+
+          if (isPossiblyFalsy(type)) {
+            hasFalsyReturnTypes = true;
+          }
+
+          if (isPossiblyTruthy(type)) {
+            hasTruthyReturnTypes = true;
+          }
+
+          // bail early if both a possibly-truthy and a possibly-falsy have been detected
+          if (hasFalsyReturnTypes && hasTruthyReturnTypes) {
+            return;
+          }
         }
-        if (!returnTypes.some(isPossiblyFalsy)) {
+
+        if (!hasFalsyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(isPossiblyTruthy)) {
+
+        if (!hasTruthyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
@@ -751,8 +785,13 @@ export default createRule<Options, MessageId>({
           if (propType) {
             return isNullableType(propType);
           }
+          const indexInfo = checker.getIndexInfosOfType(type);
 
-          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
+          return indexInfo.some(
+            info =>
+              getTypeName(checker, info.keyType) === 'string' &&
+              isNullableType(info.type),
+          );
         });
         return !isOwnNullable && isNullableType(prevType);
       }

@@ -401,6 +401,57 @@ interface Foo {
       output: 'type Foo = Generic<{ [key: string]: any }>;',
     },
 
+    // Record with an index node that may potentially break index-signature style
+    {
+      code: 'type Foo = Record<string | number, any>;',
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output: 'type Foo = { [key: string | number]: any };',
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
+    },
+    {
+      code: "type Foo = Record<Exclude<'a' | 'b' | 'c', 'a'>, any>;",
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output:
+                "type Foo = { [key: Exclude<'a' | 'b' | 'c', 'a'>]: any };",
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
+    },
+
+    // Record with valid index node should use an auto-fix
+    {
+      code: 'type Foo = Record<number, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      options: ['index-signature'],
+      output: 'type Foo = { [key: number]: any };',
+    },
+    {
+      code: 'type Foo = Record<symbol, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      options: ['index-signature'],
+      output: 'type Foo = { [key: symbol]: any };',
+    },
+
     // Function types
     {
       code: 'function foo(arg: Record<string, any>) {}',
