@@ -18669,8 +18669,8 @@ __metadata:
   linkType: hard
 
 "stylelint@npm:^16.3.1":
-  version: 16.11.0
-  resolution: "stylelint@npm:16.11.0"
+  version: 16.12.0
+  resolution: "stylelint@npm:16.12.0"
   dependencies:
     "@csstools/css-parser-algorithms": ^3.0.4
     "@csstools/css-tokenizer": ^3.0.3
@@ -18708,11 +18708,11 @@ __metadata:
     string-width: ^4.2.3
     supports-hyperlinks: ^3.1.0
     svg-tags: ^1.0.0
-    table: ^6.8.2
+    table: ^6.9.0
     write-file-atomic: ^5.0.1
   bin:
     stylelint: bin/stylelint.mjs
-  checksum: e10d9348f84c05a13f710cbe21947977cb800115f5ebffa8f48a65fe361eb691d27d888c9e9f5f2806ccfede31d2055cdc065aab6e0b201be9bfa971db8053b2
+  checksum: aa3ea5d90f96e2a32a6f3f185b72d82f250892d4688b3dbc0026ee387b2e042077579206210499cce9b34add30e74ca915d9565408168482ed879112c65a59ae
   languageName: node
   linkType: hard
 
@@ -18799,16 +18799,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"table@npm:^6.8.2":
-  version: 6.8.2
-  resolution: "table@npm:6.8.2"
+"table@npm:^6.9.0":
+  version: 6.9.0
+  resolution: "table@npm:6.9.0"
   dependencies:
     ajv: ^8.0.1
     lodash.truncate: ^4.4.2
     slice-ansi: ^4.0.0
     string-width: ^4.2.3
     strip-ansi: ^6.0.1
-  checksum: 61188652f53a980d1759ca460ca8dea5c5322aece3210457e7084882f053c2b6a870041295e08a82cb1d676e31b056406845d94b0abf3c79a4b104777bec413b
+  checksum: f54a7d1c11cda8c676e1e9aff5e723646905ed4579cca14b3ce12d2b12eac3e18f5dbe2549fe0b79697164858e18961145db4dd0660bbeb0fb4032af0aaf32b4
   languageName: node
   linkType: hard
 
