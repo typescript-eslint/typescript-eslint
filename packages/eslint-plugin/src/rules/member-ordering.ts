@@ -548,6 +548,13 @@ function getRank(
 ): number {
   const type = getNodeType(node);
 
+  if (
+    node.type === AST_NODE_TYPES.MethodDefinition &&
+    node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+  ) {
+    return -1;
+  }
+
   if (type == null) {
     // shouldn't happen but just in case, put it on the end
     return orderConfig.length - 1;
@@ -826,9 +833,7 @@ export default createRule<Options, MessageIds>({
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      for (let index = 0; index < members.length; index++) {
-        const member = members[index];
-        const prevMember = members.at(index - 1);
+      for (const member of members) {
         const rank = getRank(member, groupOrder, supportsModifiers);
         const name = getMemberName(member, context.sourceCode);
         const rankLastMember = previousRanks[previousRanks.length - 1];
@@ -838,10 +843,7 @@ export default createRule<Options, MessageIds>({
         }
 
         // Works for 1st item because x < undefined === false for any x (typeof string)
-        if (
-          rank < rankLastMember &&
-          !(prevMember && isMethodOverloaing(prevMember, member))
-        ) {
+        if (rank < rankLastMember) {
           context.report({
             node: member,
             messageId: 'incorrectGroupOrder',
@@ -1116,19 +1118,3 @@ export default createRule<Options, MessageIds>({
     /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
 });
-
-function isMethodOverloaing(prev: Member, next: Member): boolean {
-  if (
-    prev.type === AST_NODE_TYPES.MethodDefinition &&
-    next.type === AST_NODE_TYPES.MethodDefinition &&
-    prev.key.type === AST_NODE_TYPES.Identifier &&
-    next.key.type === AST_NODE_TYPES.Identifier
-  ) {
-    return (
-      prev.static === next.static &&
-      prev.key.name === next.key.name &&
-      prev.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
-    );
-  }
-  return false;
-}
