@@ -508,7 +508,7 @@ function someFunction(methodParam?: boolean): boolean | number {
 type T = 1;
 
 function someFunction(): number;
-function someFunction<T>(methodParam: boolean): T extends true ? 1 : 2;
+function someFunction<T>(methodParam: boolean): T;
 function someFunction(methodParam?: boolean): boolean | number {
   return 10;
 }
