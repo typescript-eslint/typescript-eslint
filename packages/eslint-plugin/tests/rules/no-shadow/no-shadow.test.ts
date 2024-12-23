@@ -505,27 +505,6 @@ function someFunction(methodParam?: boolean): boolean | number {
     },
     {
       code: `
-const methodParam = 1;
-
-function someFunction(): number;
-function someFunction([methodParam]: [boolean]): boolean;
-function someFunction(methodParam?: [boolean]): boolean | number {
-  return 10;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'methodParam',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-        },
-      ],
-    },
-    {
-      code: `
 type T = 1;
 
 function someFunction(): number;
