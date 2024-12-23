@@ -5213,13 +5213,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/is-glob@npm:^4.0.4":
-  version: 4.0.4
-  resolution: "@types/is-glob@npm:4.0.4"
-  checksum: c790125e2d133d15c9783f6468995841cb06b5634b5c7b30aa32d23129f19d7dc271ec1a904bea4ca1e6a5ba19218a6602753d558f343b4fb8402fed25d17219
-  languageName: node
-  linkType: hard
-
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.4
   resolution: "@types/istanbul-lib-coverage@npm:2.0.4"
@@ -5816,7 +5809,6 @@ __metadata:
     "@types/babel__code-frame": ^7.0.6
     "@types/babel__core": ^7.20.5
     "@types/debug": ^4.1.12
-    "@types/is-glob": ^4.0.4
     "@types/jest": 29.5.13
     "@types/jest-specific-snapshot": ^0.5.9
     "@types/natural-compare": ^1.4.3
@@ -5880,7 +5872,6 @@ __metadata:
     "@typescript-eslint/visitor-keys": 8.18.1
     debug: ^4.3.4
     glob: "*"
-    is-glob: ^4.0.3
     jest: 29.7.0
     minimatch: ^9.0.4
     prettier: ^3.2.5
