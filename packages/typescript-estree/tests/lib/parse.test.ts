@@ -2,8 +2,8 @@ import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import type * as typescriptModule from 'typescript';
 
 import debug from 'debug';
-import * as fastGlobModule from 'fast-glob';
 import { join, resolve } from 'node:path';
+import * as tinyglobby from 'tinyglobby';
 
 import type { TSESTreeOptions } from '../../src/parser-options';
 
@@ -40,11 +40,11 @@ jest.mock('typescript', () => {
   };
 });
 
-jest.mock('fast-glob', () => {
-  const fastGlob = jest.requireActual<typeof fastGlobModule>('fast-glob');
+jest.mock('tinyglobby', () => {
+  const tg = jest.requireActual<typeof tinyglobby>('tinyglobby');
   return {
-    ...fastGlob,
-    sync: jest.fn(fastGlob.sync),
+    ...tg,
+    globSync: jest.fn(tinyglobby.globSync),
   };
 });
 
@@ -53,7 +53,7 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const fastGlobSyncMock = jest.mocked(fastGlobModule.sync);
+const globSyncMock = jest.mocked(tinyglobby.globSync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
@@ -815,11 +815,11 @@ describe('parseAndGenerateServices', () => {
     describe('cacheLifetime', () => {
       describe('glob', () => {
         const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
-        // fast-glob returns arbitrary order of results to improve performance.
-        // `resolveProjectList()` calls fast-glob for each pattern to ensure the
+        // tinyglobby returns arbitrary order of results to improve performance.
+        // `resolveProjectList()` calls tinyglobby for each pattern to ensure the
         // order is correct.
         // Thus the expected call time of spy is the number of patterns.
-        const expectFastGlobCalls = project.length;
+        const expectTinyglobbyCalls = project.length;
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
@@ -834,50 +834,46 @@ describe('parseAndGenerateServices', () => {
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls);
           doParse(30);
-          // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          // shouldn't call tinyglobby again due to the caching
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls);
           doParse(0);
-          // should call fast-glob again because we specified immediate cache expiry
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          // should call tinyglobby again because we specified immediate cache expiry
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls * 2);
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
-          // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
-            expectFastGlobCalls * 2,
-          );
+          // shouldn't call tinyglobby again due to the caching
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls * 2);
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
-          // shouldn't call fast-glob again due to the caching
-          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
+          // shouldn't call tinyglobby again due to the caching
+          expect(globSyncMock).toHaveBeenCalledTimes(expectTinyglobbyCalls);
         });
       });
     });
