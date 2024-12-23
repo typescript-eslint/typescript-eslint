@@ -44,7 +44,7 @@ jest.mock('tinyglobby', () => {
   const tg = jest.requireActual<typeof tinyglobby>('tinyglobby');
   return {
     ...tg,
-    globSync: jest.fn(tinyglobby.globSync),
+    globSync: jest.fn(tg.globSync),
   };
 });
 
