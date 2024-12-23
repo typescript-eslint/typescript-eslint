@@ -84,8 +84,12 @@ export function resolveProjectList(
   }
 
   // Transform glob patterns into paths
-  const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
-  const globProjects = sanitizedProjects.filter(project => isGlob(project));
+  const nonGlobProjects = sanitizedProjects.filter(
+    project => !isDynamicPattern(project),
+  );
+  const globProjects = sanitizedProjects.filter(project =>
+    isDynamicPattern(project),
+  );
 
   let globProjectPaths: string[] = [];
 
