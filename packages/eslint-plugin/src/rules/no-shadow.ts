@@ -274,6 +274,16 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isParameterOfFunctionDeclaration(
+      variable: TSESLint.Scope.Variable,
+    ): boolean {
+      return (
+        variable.scope.block.type === AST_NODE_TYPES.TSDeclareFunction ||
+        variable.scope.block.type ===
+          AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+      );
+    }
+
     /**
      * Check if variable name is allowed.
      * @param variable The variable to check.
@@ -561,6 +571,11 @@ export default createRule<Options, MessageIds>({
 
         // this params are pseudo-params that cannot be shadowed
         if (isThisParam(variable)) {
+          continue;
+        }
+
+        // ignore variables of function declarations or function/method overloads
+        if (isParameterOfFunctionDeclaration(variable)) {
           continue;
         }
 
