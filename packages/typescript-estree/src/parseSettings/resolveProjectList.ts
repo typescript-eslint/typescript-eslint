@@ -1,6 +1,5 @@
 import debug from 'debug';
-import isGlob from 'is-glob';
-import { globSync } from 'tinyglobby';
+import { globSync, isDynamicPattern } from 'tinyglobby';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
