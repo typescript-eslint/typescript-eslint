@@ -274,13 +274,14 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isParameterOfFunctionDeclaration(
+    function isParameterOfTypeOnlyFunctionDeclaration(
       variable: TSESLint.Scope.Variable,
     ): boolean {
       return (
-        variable.scope.block.type === AST_NODE_TYPES.TSDeclareFunction ||
-        variable.scope.block.type ===
-          AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+        (variable.scope.block.type === AST_NODE_TYPES.TSDeclareFunction ||
+          variable.scope.block.type ===
+            AST_NODE_TYPES.TSEmptyBodyFunctionExpression) &&
+        variable.defs[0].type === DefinitionType.Parameter
       );
     }
 
@@ -575,7 +576,7 @@ export default createRule<Options, MessageIds>({
         }
 
         // ignore variables of function declarations or function/method overloads
-        if (isParameterOfFunctionDeclaration(variable)) {
+        if (isParameterOfTypeOnlyFunctionDeclaration(variable)) {
           continue;
         }
 
