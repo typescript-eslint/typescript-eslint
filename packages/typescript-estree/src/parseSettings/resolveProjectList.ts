@@ -59,8 +59,7 @@ export function resolveProjectList(
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
   )
     .filter(folder => typeof folder === 'string')
-    // prefix with a ! for not match glob
-    .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
+    .map(folder => (folder.startsWith('!') ? folder.slice(1) : folder));
 
   const cacheKey = getHash({
     project: sanitizedProjects,
