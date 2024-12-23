@@ -1,3 +1,28 @@
+## 8.18.2 (2024-12-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] not reporting usages of deprecated declared constants as object value ([#10498](https://github.com/typescript-eslint/typescript-eslint/pull/10498))
+- **eslint-plugin:** [prefer-reduce-type-parameter] don't report cases in which the fix results in a type error ([#10494](https://github.com/typescript-eslint/typescript-eslint/pull/10494))
+- **eslint-plugin:** [no-unnecessary-condition] don't flag values of an unconstrained or valid type parameter ([#10473](https://github.com/typescript-eslint/typescript-eslint/pull/10473))
+- **eslint-plugin:** [consistent-indexed-object-style] use a suggestion over an auto-fix if can't reliably determine that produced index signature is valid ([#10490](https://github.com/typescript-eslint/typescript-eslint/pull/10490))
+- **eslint-plugin:** [no-unsafe-type-assertion] fix for unsafe assertion to a constrained type parameter ([#10461](https://github.com/typescript-eslint/typescript-eslint/pull/10461))
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle type/value context ([#10503](https://github.com/typescript-eslint/typescript-eslint/pull/10503))
+- **eslint-plugin:** [consistent-type-assertions] allow default assertionStyle option ([#10512](https://github.com/typescript-eslint/typescript-eslint/pull/10512))
+- **eslint-plugin:** [no-unnecessary-condition] handle noUncheckedIndexedAccess true ([#10514](https://github.com/typescript-eslint/typescript-eslint/pull/10514))
+- **typescript-eslint:** export types so that declarations can be named for dts files ([#10513](https://github.com/typescript-eslint/typescript-eslint/pull/10513))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Luke Deen Taylor @controversial
+- Ronen Amiel
+- Scott O'Hara
+- YeonJuan @yeonjuan
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.18.1 (2024-12-16)
 
 ### 🩹 Fixes
