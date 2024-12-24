@@ -203,6 +203,82 @@ interface Test {
     },
     {
       code: `
+const arg = 0;
+
+declare function test(arg: string): typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const test: (arg: string) => typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare class Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare namespace Lib {
+  function test(arg: string): typeof arg;
+}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
 import type { foo } from './foo';
 function doThing(foo: number) {}
       `,
@@ -459,71 +535,6 @@ function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
         },
       ],
     },
-    {
-      code: `
-const methodParam = 1;
-
-class SomeClass {
-  someMethod(): number;
-  someMethod(methodParam: boolean): boolean;
-  someMethod(methodParam?: boolean): boolean | number {
-    return 10;
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'methodParam',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-        },
-      ],
-    },
-    {
-      code: `
-const methodParam = 1;
-
-function someFunction(): number;
-function someFunction(methodParam: boolean): boolean;
-function someFunction(methodParam?: boolean): boolean | number {
-  return 10;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'methodParam',
-            shadowedColumn: 7,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-        },
-      ],
-    },
-    {
-      code: `
-type T = 1;
-
-function someFunction(): number;
-function someFunction<T>(methodParam: boolean): T;
-function someFunction(methodParam?: boolean): boolean | number {
-  return 10;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'T',
-            shadowedColumn: 6,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-        },
-      ],
-    },
   ],
   valid: [
     'function foo<T = (arg: any) => any>(arg: T) {}',
@@ -682,6 +693,42 @@ const arg = 0;
 
 interface Test {
   p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare function test(arg: string): typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const test: (arg: string) => typeof arg;
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare class Test {
+  p1(arg: string): typeof arg;
+}
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare namespace Lib {
+  function test(arg: string): typeof arg;
 }
       `,
       options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
@@ -924,29 +971,5 @@ const person = {
       options: [{ ignoreOnInitialization: true }],
     },
     { code: 'const [x = y => y] = [].map(y => y);' },
-    {
-      code: `
-const functionParam = 1;
-declare function someFunction(functionParam: any): void;
-      `,
-    },
-    {
-      code: `
-const constructorParam = 1;
-
-declare class SomeClass {
-  constructor(constructorParam: number);
-}
-      `,
-    },
-    {
-      code: `
-const functionParam = 1;
-
-declare namespace myLib {
-  function someFunction(functionParam: string): string;
-}
-      `,
-    },
   ],
 });

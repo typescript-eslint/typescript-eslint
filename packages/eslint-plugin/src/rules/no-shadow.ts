@@ -22,6 +22,8 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSCallSignatureDeclaration,
   AST_NODE_TYPES.TSFunctionType,
   AST_NODE_TYPES.TSMethodSignature,
+  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  AST_NODE_TYPES.TSDeclareFunction,
 ]);
 
 export default createRule<Options, MessageIds>({
@@ -271,17 +273,6 @@ export default createRule<Options, MessageIds>({
         secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
         secondDefinition.node.parent.type ===
           AST_NODE_TYPES.ExportNamedDeclaration
-      );
-    }
-
-    function isParameterOfTypeOnlyFunctionDeclaration(
-      variable: TSESLint.Scope.Variable,
-    ): boolean {
-      return (
-        (variable.scope.block.type === AST_NODE_TYPES.TSDeclareFunction ||
-          variable.scope.block.type ===
-            AST_NODE_TYPES.TSEmptyBodyFunctionExpression) &&
-        variable.defs[0].type === DefinitionType.Parameter
       );
     }
 
@@ -572,11 +563,6 @@ export default createRule<Options, MessageIds>({
 
         // this params are pseudo-params that cannot be shadowed
         if (isThisParam(variable)) {
-          continue;
-        }
-
-        // ignore variables of function declarations or function/method overloads
-        if (isParameterOfTypeOnlyFunctionDeclaration(variable)) {
           continue;
         }
 
