@@ -58,7 +58,7 @@ export default createRule({
       return relevantReturnTypes;
     }
 
-    function checkTypeReferenceReturnTypes(
+    function checkTypeReferenceReturnType(
       node: TSESTree.TypeNode,
       typeArguments: TSESTree.TypeNode[],
       returnTypes: ts.Type[],
@@ -74,29 +74,30 @@ export default createRule({
 
       for (const [index, typeParameter] of typeArguments.entries()) {
         const returnTypes: ts.Type[] = [];
+
         const typeParameterType = services.getTypeAtLocation(typeParameter);
 
         for (const returnType of relevantReturnTypes) {
-          if (tsutils.isTypeReference(returnType) && returnType.typeArguments) {
-            const returnTypePart = returnType.typeArguments[index];
-
-            if (
-              !checker.isTypeAssignableTo(returnTypePart, typeParameterType)
-            ) {
-              // assume this return type is used, as we won't know how to compare
-              // the two types
-              return;
-            }
-
-            returnTypes.push(
-              ...tsutils.unionTypeParts(returnType.typeArguments[index]),
-            );
-            continue;
+          if (
+            !tsutils.isTypeReference(returnType) ||
+            !returnType.typeArguments
+          ) {
+            // assume the whole type reference return type as used, as we can't
+            // safely compare its boxed value
+            return;
           }
 
-          // assume the return type is used, as the return type that matches it
-          // isn't a type reference itself
-          return;
+          const returnTypePart = returnType.typeArguments[index];
+
+          if (!checker.isTypeAssignableTo(returnTypePart, typeParameterType)) {
+            // assume the whole type reference return type as used, as we don't
+            // know how to compare the two types
+            return;
+          }
+
+          returnTypes.push(
+            ...tsutils.unionTypeParts(returnType.typeArguments[index]),
+          );
         }
 
         checkReturnType(typeParameter, returnTypes);
@@ -110,7 +111,7 @@ export default createRule({
     ): void {
       // catch-all for generics including promises, maps, sets, and user-defined ones
       if (node.type === AST_NODE_TYPES.TSTypeReference && node.typeArguments) {
-        checkTypeReferenceReturnTypes(
+        checkTypeReferenceReturnType(
           node,
           node.typeArguments.params,
           returnTypes,
@@ -122,7 +123,7 @@ export default createRule({
       const tupleElementTypes = getTypeArgumentIfTupleNode(node);
 
       if (tupleElementTypes) {
-        checkTypeReferenceReturnTypes(node, tupleElementTypes, returnTypes);
+        checkTypeReferenceReturnType(node, tupleElementTypes, returnTypes);
         return;
       }
 
@@ -130,7 +131,7 @@ export default createRule({
       const arrayTypeArgument = getTypeArgumentIfArrayNode(node);
 
       if (arrayTypeArgument) {
-        checkTypeReferenceReturnTypes(node, [arrayTypeArgument], returnTypes);
+        checkTypeReferenceReturnType(node, [arrayTypeArgument], returnTypes);
         return;
       }
 
@@ -184,6 +185,34 @@ export default createRule({
       }
     }
 
+    function collectTypeParts(
+      body: TSESTree.BlockStatement,
+      forEachIterator: <T>(
+        body: ts.Block,
+        visitor: (stmt: ts.ReturnStatement | ts.YieldExpression) => T,
+      ) => T | undefined,
+    ): ts.Type[] {
+      const typeParts: ts.Type[] = [];
+
+      const bodyTs = services.esTreeNodeToTSNodeMap.get(body);
+
+      forEachIterator(bodyTs, statement => {
+        const expression = statement.expression;
+
+        // no value: `return;` or `yield;`
+        if (!expression) {
+          typeParts.push(checker.getUndefinedType());
+          return;
+        }
+
+        typeParts.push(
+          ...tsutils.typeParts(checker.getTypeAtLocation(expression)),
+        );
+      });
+
+      return typeParts;
+    }
+
     function getActualReturnTypes(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -194,30 +223,7 @@ export default createRule({
         return tsutils.typeParts(services.getTypeAtLocation(node.body));
       }
 
-      const returnTypes: ts.Type[] = [];
-
-      const nodeTs = services.esTreeNodeToTSNodeMap.get(node);
-
-      forEachReturnStatement(
-        nodeTs.body as ts.Block,
-        (statement: ts.ReturnStatement | ts.YieldExpression) => {
-          const expression = statement.expression;
-
-          // `return;`
-          if (!expression) {
-            returnTypes.push(checker.getUndefinedType());
-            return;
-          }
-
-          const typeParts = tsutils.typeParts(
-            checker.getTypeAtLocation(expression),
-          );
-
-          returnTypes.push(...typeParts);
-        },
-      );
-
-      return returnTypes;
+      return collectTypeParts(node.body, forEachReturnStatement);
     }
 
     function getActualYieldTypes(
@@ -227,42 +233,16 @@ export default createRule({
         | TSESTree.FunctionExpression,
     ): ts.Type[] {
       if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
-        return tsutils.typeParts(services.getTypeAtLocation(node.body));
+        return [];
       }
 
-      const returnTypes: ts.Type[] = [];
-
-      const nodeTs = services.esTreeNodeToTSNodeMap.get(node);
-
-      forEachYieldExpression(
-        nodeTs.body as ts.Block,
-        (statement: ts.ReturnStatement | ts.YieldExpression) => {
-          const expression = statement.expression;
-
-          // `yield;`
-          if (!expression) {
-            returnTypes.push(checker.getUndefinedType());
-            return;
-          }
-
-          const typeParts = tsutils.typeParts(
-            checker.getTypeAtLocation(expression),
-          );
-
-          returnTypes.push(...typeParts);
-        },
-      );
-
-      return returnTypes;
+      return collectTypeParts(node.body, forEachYieldExpression);
     }
 
     function checkGeneratorFunction(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
       returnTypeAnnotation: TSESTree.TypeNode,
       actualReturnTypes: ts.Type[],
+      actualYieldTypes: ts.Type[],
     ): void {
       const generatorTypeArguments = getTypeArgumentsForTypeName(
         'Generator',
@@ -273,8 +253,6 @@ export default createRule({
         // no unused return types
         return;
       }
-
-      const actualYieldTypes = getActualYieldTypes(node);
 
       // `Generator<YieldType, ReturnType, NexType>`
       const yieldTypeArgument = generatorTypeArguments.at(0);
@@ -290,6 +268,42 @@ export default createRule({
 
       if (returnTypeArgument && actualReturnTypes.length > 0) {
         checkReturnType(returnTypeArgument, actualReturnTypes);
+      }
+    }
+
+    function checkAsyncGeneratorFunction(
+      returnTypeAnnotation: TSESTree.TypeNode,
+      actualReturnTypes: ts.Type[],
+      actualYieldTypes: ts.Type[],
+    ): void {
+      const generatorTypeArguments = getTypeArgumentsForTypeName(
+        'AsyncGenerator',
+        returnTypeAnnotation,
+      );
+
+      if (!generatorTypeArguments) {
+        // no unused return types
+        return;
+      }
+
+      // `AsyncGenerator<YieldType, ReturnType, NexType>`
+      const yieldTypeArgument = generatorTypeArguments.at(0);
+      const returnTypeArgument = generatorTypeArguments.at(1);
+
+      if (yieldTypeArgument) {
+        checkYieldTypeArgument(
+          expandPromiseTypes(actualYieldTypes),
+          yieldTypeArgument,
+          returnTypeArgument,
+        );
+      }
+
+      if (returnTypeArgument && actualReturnTypes.length > 0) {
+        checkReturnType(
+          returnTypeArgument,
+          // `async` functions may return promise and non-promise expressions
+          expandPromiseTypes(actualReturnTypes),
+        );
       }
     }
 
@@ -325,47 +339,6 @@ export default createRule({
           messageId: 'unusedGeneratorYieldTypes',
         });
         return;
-      }
-    }
-
-    function checkAsyncGeneratorFunction(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
-      returnTypeAnnotation: TSESTree.TypeNode,
-      actualReturnTypes: ts.Type[],
-    ): void {
-      const generatorTypeArguments = getTypeArgumentsForTypeName(
-        'AsyncGenerator',
-        returnTypeAnnotation,
-      );
-
-      if (!generatorTypeArguments) {
-        // no unused return types
-        return;
-      }
-
-      const actualYieldTypes = getActualYieldTypes(node);
-
-      // `AsyncGenerator<YieldType, ReturnType, NexType>`
-      const yieldTypeArgument = generatorTypeArguments.at(0);
-      const returnTypeArgument = generatorTypeArguments.at(1);
-
-      if (yieldTypeArgument) {
-        checkYieldTypeArgument(
-          expandPromiseTypes(actualYieldTypes),
-          yieldTypeArgument,
-          returnTypeArgument,
-        );
-      }
-
-      if (returnTypeArgument && actualReturnTypes.length > 0) {
-        checkReturnType(
-          returnTypeArgument,
-          // `async` functions may return promise and non-promise expressions
-          expandPromiseTypes(actualReturnTypes),
-        );
       }
     }
 
@@ -414,19 +387,21 @@ export default createRule({
         const actualReturnTypes = getActualReturnTypes(node);
 
         if (node.generator) {
+          const actualYieldTypes = getActualYieldTypes(node);
+
           if (node.async) {
             checkAsyncGeneratorFunction(
-              node,
               node.returnType.typeAnnotation,
               actualReturnTypes,
+              actualYieldTypes,
             );
             return;
           }
 
           checkGeneratorFunction(
-            node,
             node.returnType.typeAnnotation,
             actualReturnTypes,
+            actualYieldTypes,
           );
           return;
         }
