@@ -549,6 +549,78 @@ let y;
     },
     {
       code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
 function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
       `,
       errors: [
