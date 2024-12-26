@@ -9,17 +9,23 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
 
-The [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a JavaScript
-feature that can be misused in ways not always reported by TypeScript. This rule disallows using the spread operator on types where
-spreading can lead to unexpected behavior.
+[Spread syntax](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax) (`...`) is a JavaScript feature for creating an object with the joined properties of one or more other objects.
+TypeScript allows spreading objects whose properties are not typically meant to be enumerated, such as arrays and class instances.
 
-This rule disallows the spread operator in the following cases:
+This rule disallows using the spread syntax on values whose types indicate doing so may cause unexpected behavior.
+That includes the following cases:
 
-- Spreading a string into an array
-- Spreading a `Promise` into an object
-- Spreading a function without properties into an object
-- Spreading a class instance or declaration into an object
-- Spreading an iterable (`Map`, `Array`, etc.) into an object
+- Spreading a string into an array.
+- Spreading a `Promise` into an object.
+  You probably meant to `await` it.
+- Spreading a function without properties into an object.
+  You probably meant to call it.
+- Spreading a class instance into an object.
+  This does not faithfully copy the instance because only its own properties are copied, but the inheritance chain is lost, including all its methods.
+- Spreading a class (defined with a `class` declaration or `class` expression) into an object.
+  This copies all static own properties of the class, but none of the inheritance chain.
+- Spreading an iterable (`Map`, `Array`, etc.) into an object.
+  Iterable objects usually do not have meaningful enumerable properties and you probably meant to spread it into an array instead.
 
 ## Examples
 
@@ -69,6 +75,8 @@ const getObjSpread = { ...getObj() };
 ## Options
 
 ### `allow`
+
+{/* insert option description */}
 
 This option allows marking specific types as "safe" to be spread. It takes an
 array of type specifiers to consider safe.
@@ -139,3 +147,7 @@ as keys.
 If your use cases for unusual spreads only involve a few types, you might consider using
 [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1)
 and/or the [`allow` option](#allow) instead of completely disabling this rule.
+
+## Further Reading
+
+- [Strings Shouldn't Be Iterable By Default](https://www.xanthir.com/b4wJ1)
