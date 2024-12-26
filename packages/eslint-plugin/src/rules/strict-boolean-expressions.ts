@@ -43,6 +43,8 @@ export type MessageId =
   | 'conditionErrorOther'
   | 'conditionErrorString'
   | 'conditionFixCastBoolean'
+  | 'conditionFixCompareArrayLengthNonzero'
+  | 'conditionFixCompareArrayLengthZero'
   | 'conditionFixCompareEmptyString'
   | 'conditionFixCompareFalse'
   | 'conditionFixCompareNaN'
@@ -63,7 +65,6 @@ export default createRule<Options, MessageId>({
       description: 'Disallow certain types in boolean expressions',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       conditionErrorAny:
@@ -102,6 +103,10 @@ export default createRule<Options, MessageId>({
       conditionFixCastBoolean:
         'Explicitly convert value to a boolean (`Boolean(value)`)',
 
+      conditionFixCompareArrayLengthNonzero:
+        "Change condition to check array's length (`value.length > 0`)",
+      conditionFixCompareArrayLengthZero:
+        "Change condition to check array's length (`value.length === 0`)",
       conditionFixCompareEmptyString:
         'Change condition to check for empty string (`value !== ""`)',
       conditionFixCompareFalse:
@@ -571,23 +576,33 @@ export default createRule<Options, MessageId>({
               context.report({
                 node,
                 messageId: 'conditionErrorNumber',
-                fix: getWrappingFixer({
-                  node: node.parent,
-                  innerNode: node,
-                  sourceCode: context.sourceCode,
-                  wrap: code => `${code} === 0`,
-                }),
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareArrayLengthZero',
+                    fix: getWrappingFixer({
+                      node: node.parent,
+                      innerNode: node,
+                      sourceCode: context.sourceCode,
+                      wrap: code => `${code} === 0`,
+                    }),
+                  },
+                ],
               });
             } else {
               // if (array.length)
               context.report({
                 node,
                 messageId: 'conditionErrorNumber',
-                fix: getWrappingFixer({
-                  node,
-                  sourceCode: context.sourceCode,
-                  wrap: code => `${code} > 0`,
-                }),
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareArrayLengthNonzero',
+                    fix: getWrappingFixer({
+                      node,
+                      sourceCode: context.sourceCode,
+                      wrap: code => `${code} > 0`,
+                    }),
+                  },
+                ],
               });
             }
           } else if (isLogicalNegationExpression(node.parent)) {
@@ -803,22 +818,32 @@ export default createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} == null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: getWrappingFixer({
+                    node: node.parent,
+                    innerNode: node,
+                    sourceCode: context.sourceCode,
+                    wrap: code => `${code} == null`,
+                  }),
+                },
+              ],
             });
           } else {
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} != null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: getWrappingFixer({
+                    node,
+                    sourceCode: context.sourceCode,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+              ],
             });
           }
         }
