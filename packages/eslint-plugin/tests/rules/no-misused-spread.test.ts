@@ -23,6 +23,10 @@ ruleTester.run('no-misused-spread', rule, {
       const a = [...data];
     `,
     `
+      declare const data: unknown;
+      const a = [...data];
+    `,
+    `
       const a = [1, 2, 3];
       const b = [...a];
     `,
