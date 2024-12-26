@@ -1,8 +1,9 @@
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import {
   ImplicitLibVariable,
   ScopeType,
 } from '@typescript-eslint/scope-manager';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, findVariable } from '../util';
@@ -30,29 +31,14 @@ export default createRule<[], MessageIds>({
 
     function collectImportedTypes(
       node:
-        | TSESTree.ImportSpecifier
+        | TSESTree.ImportDefaultSpecifier
         | TSESTree.ImportNamespaceSpecifier
-        | TSESTree.ImportDefaultSpecifier,
+        | TSESTree.ImportSpecifier,
     ): void {
       externalizedTypes.add(node.local.name);
     }
 
     function collectExportedTypes(node: TSESTree.Program): void {
-      const isCollectableType = (
-        node: TSESTree.Node,
-      ): node is
-        | TSESTree.TSTypeAliasDeclaration
-        | TSESTree.TSInterfaceDeclaration
-        | TSESTree.TSEnumDeclaration
-        | TSESTree.TSModuleDeclaration => {
-        return [
-          AST_NODE_TYPES.TSTypeAliasDeclaration,
-          AST_NODE_TYPES.TSInterfaceDeclaration,
-          AST_NODE_TYPES.TSEnumDeclaration,
-          AST_NODE_TYPES.TSModuleDeclaration,
-        ].includes(node.type);
-      };
-
       node.body.forEach(statement => {
         if (
           statement.type === AST_NODE_TYPES.ExportNamedDeclaration &&
@@ -67,9 +53,9 @@ export default createRule<[], MessageIds>({
 
     function visitExportedFunctionDeclaration(
       node: (
-        | TSESTree.ExportNamedDeclaration
-        | TSESTree.DefaultExportDeclarations
         | TSESTree.ArrowFunctionExpression
+        | TSESTree.DefaultExportDeclarations
+        | TSESTree.ExportNamedDeclaration
       ) & {
         declaration: TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction;
       },
@@ -90,8 +76,8 @@ export default createRule<[], MessageIds>({
     function visitExportedTypeDeclaration(
       node: TSESTree.ExportNamedDeclaration & {
         declaration:
-          | TSESTree.TSTypeAliasDeclaration
-          | TSESTree.TSInterfaceDeclaration;
+          | TSESTree.TSInterfaceDeclaration
+          | TSESTree.TSTypeAliasDeclaration;
       },
     ): void {
       checkNodeTypes(node.declaration);
@@ -104,7 +90,7 @@ export default createRule<[], MessageIds>({
     }
 
     function checkNodeTypes(node: TSESTree.Node): void {
-      const { typeReferences, typeQueries } = getVisibleTypesRecursively(
+      const { typeQueries, typeReferences } = getVisibleTypesRecursively(
         node,
         context.sourceCode,
       );
@@ -116,10 +102,7 @@ export default createRule<[], MessageIds>({
     function checkTypeReference(node: TSESTree.TSTypeReference): void {
       const name = getTypeName(node.typeName);
 
-      const isExternalized = externalizedTypes.has(name);
-      const isReported = reportedTypes.has(name);
-
-      if (isExternalized || isReported) {
+      if (externalizedTypes.has(name) || reportedTypes.has(name)) {
         return;
       }
 
@@ -141,6 +124,7 @@ export default createRule<[], MessageIds>({
       if (isReported) {
         return;
       }
+
       context.report({
         node,
         messageId: 'requireTypeExport',
@@ -153,40 +137,29 @@ export default createRule<[], MessageIds>({
     }
 
     return {
-      'ImportDeclaration ImportSpecifier': collectImportedTypes,
-      'ImportDeclaration ImportNamespaceSpecifier': collectImportedTypes,
-      'ImportDeclaration ImportDefaultSpecifier': collectImportedTypes,
-
-      Program: collectExportedTypes,
-
-      'ExportNamedDeclaration[declaration.type="FunctionDeclaration"]':
-        visitExportedFunctionDeclaration,
-
-      'ExportNamedDeclaration[declaration.type="TSDeclareFunction"]':
-        visitExportedFunctionDeclaration,
-
-      'ExportDefaultDeclaration[declaration.type="FunctionDeclaration"]':
-        visitExportedFunctionDeclaration,
-
+      ExportDefaultDeclaration: visitExportDefaultDeclaration,
       'ExportDefaultDeclaration[declaration.type="ArrowFunctionExpression"]':
         visitExportedFunctionDeclaration,
-
-      'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
-        visitExportedVariableDeclaration,
-
-      'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"]':
-        visitExportedTypeDeclaration,
-
-      'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
-        visitExportedTypeDeclaration,
-
+      'ExportDefaultDeclaration[declaration.type="FunctionDeclaration"]':
+        visitExportedFunctionDeclaration,
+      'ExportNamedDeclaration[declaration.type="FunctionDeclaration"]':
+        visitExportedFunctionDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSDeclareFunction"]':
+        visitExportedFunctionDeclaration,
       'ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
         visitExportedTypeDeclaration,
-
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
         visitExportedTypeDeclaration,
-
-      ExportDefaultDeclaration: visitExportDefaultDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"]':
+        visitExportedTypeDeclaration,
+      'ExportNamedDeclaration[declaration.type="TSTypeAliasDeclaration"] > ExportNamedDeclaration[declaration.type="TSInterfaceDeclaration"]':
+        visitExportedTypeDeclaration,
+      'ExportNamedDeclaration[declaration.type="VariableDeclaration"]':
+        visitExportedVariableDeclaration,
+      'ImportDeclaration ImportDefaultSpecifier': collectImportedTypes,
+      'ImportDeclaration ImportNamespaceSpecifier': collectImportedTypes,
+      'ImportDeclaration ImportSpecifier': collectImportedTypes,
+      Program: collectExportedTypes,
     };
   },
 });
@@ -407,24 +380,41 @@ function getVisibleTypesRecursively(
   }
 
   return {
-    typeReferences,
     typeQueries,
+    typeReferences,
   };
 }
 
-function isInsideFunctionDeclaration(node: TSESTree.Node): boolean {
-  const functionNodes = new Set([
-    AST_NODE_TYPES.ArrowFunctionExpression,
-    AST_NODE_TYPES.FunctionDeclaration,
-    AST_NODE_TYPES.FunctionExpression,
-    AST_NODE_TYPES.TSDeclareFunction,
-  ]);
+const collectibleNodeTypes = new Set([
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSEnumDeclaration,
+  AST_NODE_TYPES.TSModuleDeclaration,
+]);
 
+function isCollectableType(
+  node: TSESTree.Node,
+): node is
+  | TSESTree.TSEnumDeclaration
+  | TSESTree.TSInterfaceDeclaration
+  | TSESTree.TSModuleDeclaration
+  | TSESTree.TSTypeAliasDeclaration {
+  return collectibleNodeTypes.has(node.type);
+}
+
+const functionNodeTypes = new Set([
+  AST_NODE_TYPES.ArrowFunctionExpression,
+  AST_NODE_TYPES.FunctionDeclaration,
+  AST_NODE_TYPES.FunctionExpression,
+  AST_NODE_TYPES.TSDeclareFunction,
+]);
+
+function isInsideFunctionDeclaration(node: TSESTree.Node): boolean {
   if (!node.parent) {
     return false;
   }
 
-  if (functionNodes.has(node.parent.type)) {
+  if (functionNodeTypes.has(node.parent.type)) {
     return true;
   }
 
