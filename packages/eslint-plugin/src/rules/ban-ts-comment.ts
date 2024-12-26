@@ -19,7 +19,7 @@ interface Options {
 
 const defaultMinimumDescriptionLength = 3;
 
-type MessageIds =
+export type MessageIds =
   | 'replaceTsIgnoreWithTsExpectError'
   | 'tsDirectiveComment'
   | 'tsDirectiveCommentDescriptionNotMatchPattern'
