@@ -22,6 +22,7 @@ The following nodes are considered boolean expressions and their type is checked
   - Right-hand side operand is ignored when it's not a descendant of another boolean expression.
     This is to allow usage of boolean operators for their short-circuiting behavior.
 - Asserted argument of an assertion function (`assert(arg)`).
+- Return type of array predicate functions such as `filter()`, `some()`, etc.
 
 ## Examples
 
@@ -61,6 +62,9 @@ while (obj) {
 declare function assert(value: unknown): asserts value;
 let maybeString = Math.random() > 0.5 ? '' : undefined;
 assert(maybeString);
+
+// array predicates' return types are boolean contexts.
+['one', null].filter(x => x);
 ```
 
 </TabItem>
