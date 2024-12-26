@@ -7,10 +7,15 @@ type Arg = string;
 type Result = number;
 
 export function strLength(arg: Arg): Result {
-                               ~~~ Expected type "Arg" to be exported
-                                     ~~~~~~ Expected type "Result" to be exported
+                               ~~~ "Arg" is used in other exports from this file, so it should also be exported.
+                                     ~~~~~~ "Result" is used in other exports from this file, so it should also be exported.
   return arg.length;
 }
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 2`] = `
+"Incorrect
 
 interface Fruit {
   name: string;
@@ -18,7 +23,12 @@ interface Fruit {
 }
 
 export const getFruitName = (fruit: Fruit) => fruit.name;
-                                    ~~~~~ Expected type "Fruit" to be exported
+                                    ~~~~~ "Fruit" is used in other exports from this file, so it should also be exported.
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 3`] = `
+"Incorrect
 
 enum Color {
   Red = 'red',
@@ -27,11 +37,11 @@ enum Color {
 }
 
 export declare function getRandomColor(): Color;
-                                          ~~~~~ Expected type "Color" to be exported
+                                          ~~~~~ "Color" is used in other exports from this file, so it should also be exported.
 "
 `;
 
-exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 2`] = `
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 4`] = `
 "Correct
 
 export type Arg = string;
@@ -40,6 +50,11 @@ export type Result = number;
 export function strLength(arg: Arg): Result {
   return arg.length;
 }
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 5`] = `
+"Correct
 
 export interface Fruit {
   name: string;
@@ -47,6 +62,11 @@ export interface Fruit {
 }
 
 export const getFruitName = (fruit: Fruit) => fruit.name;
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 6`] = `
+"Correct
 
 export enum Color {
   Red = 'red',
