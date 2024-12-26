@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig-with-dom.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig-with-dom.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -488,13 +489,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Arg',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -507,13 +508,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Arg',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -526,13 +527,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 37,
-          endColumn: 40,
           data: {
             name: 'Arg',
           },
+          endColumn: 40,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -545,13 +546,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 28,
-          endColumn: 31,
           data: {
             name: 'Arg',
           },
+          endColumn: 31,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -564,13 +565,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Arg',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -583,13 +584,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Arg',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -603,22 +604,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 39,
-          endColumn: 43,
           data: {
             name: 'Arg2',
           },
+          endColumn: 43,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -632,22 +633,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 39,
-          endColumn: 43,
           data: {
             name: 'Arg2',
           },
+          endColumn: 43,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -664,22 +665,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 39,
-          endColumn: 43,
           data: {
             name: 'Arg2',
           },
+          endColumn: 43,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -696,22 +697,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 39,
-          endColumn: 43,
           data: {
             name: 'Arg2',
           },
+          endColumn: 43,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -725,22 +726,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -754,22 +755,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -783,22 +784,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -812,22 +813,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Arg1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -841,22 +842,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 36,
-          endColumn: 40,
           data: {
             name: 'Arg1',
           },
+          endColumn: 40,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 42,
-          endColumn: 46,
           data: {
             name: 'Arg2',
           },
+          endColumn: 46,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -871,31 +872,31 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 36,
-          endColumn: 40,
           data: {
             name: 'Arg1',
           },
+          endColumn: 40,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 42,
-          endColumn: 46,
           data: {
             name: 'Arg2',
           },
+          endColumn: 46,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 60,
-          endColumn: 64,
           data: {
             name: 'Arg3',
           },
+          endColumn: 64,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -909,22 +910,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 36,
-          endColumn: 40,
           data: {
             name: 'Arg1',
           },
+          endColumn: 40,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 42,
-          endColumn: 46,
           data: {
             name: 'Arg2',
           },
+          endColumn: 46,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -938,22 +939,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 42,
-          endColumn: 46,
           data: {
             name: 'Arg1',
           },
+          endColumn: 46,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 51,
-          endColumn: 55,
           data: {
             name: 'Arg2',
           },
+          endColumn: 55,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -967,22 +968,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 42,
-          endColumn: 46,
           data: {
             name: 'Arg1',
           },
+          endColumn: 46,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 51,
-          endColumn: 55,
           data: {
             name: 'Arg2',
           },
+          endColumn: 55,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -995,13 +996,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 36,
-          endColumn: 39,
           data: {
             name: 'Arg',
           },
+          endColumn: 39,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1014,13 +1015,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 36,
-          endColumn: 39,
           data: {
             name: 'Arg',
           },
+          endColumn: 39,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1033,13 +1034,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Arg',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1052,13 +1053,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Arg',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1075,13 +1076,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 30,
-          endColumn: 35,
           data: {
             name: 'Fruit',
           },
+          endColumn: 35,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1098,13 +1099,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 30,
-          endColumn: 35,
           data: {
             name: 'Fruit',
           },
+          endColumn: 35,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1117,13 +1118,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 37,
-          endColumn: 40,
           data: {
             name: 'Arg',
           },
+          endColumn: 40,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1137,22 +1138,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Arg2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1166,22 +1167,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Arg2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1195,22 +1196,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Arg2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1224,22 +1225,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Arg1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Arg2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1252,13 +1253,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 38,
-          endColumn: 41,
           data: {
             name: 'Arg',
           },
+          endColumn: 41,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1271,13 +1272,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 42,
-          endColumn: 45,
           data: {
             name: 'Arg',
           },
+          endColumn: 45,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1290,13 +1291,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Ret',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1309,13 +1310,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 30,
-          endColumn: 33,
           data: {
             name: 'Ret',
           },
+          endColumn: 33,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1329,22 +1330,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Ret1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1358,22 +1359,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Ret1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1387,22 +1388,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Ret1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1416,22 +1417,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 30,
-          endColumn: 34,
           data: {
             name: 'Ret1',
           },
+          endColumn: 34,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1445,22 +1446,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 31,
-          endColumn: 35,
           data: {
             name: 'Ret1',
           },
+          endColumn: 35,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1474,22 +1475,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 31,
-          endColumn: 35,
           data: {
             name: 'Ret1',
           },
+          endColumn: 35,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret2',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1503,22 +1504,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 35,
-          endColumn: 39,
           data: {
             name: 'Ret1',
           },
+          endColumn: 39,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Ret2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1532,22 +1533,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 35,
-          endColumn: 39,
           data: {
             name: 'Ret1',
           },
+          endColumn: 39,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Ret2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1560,13 +1561,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 37,
-          endColumn: 40,
           data: {
             name: 'Ret',
           },
+          endColumn: 40,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1580,22 +1581,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Ret2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1609,22 +1610,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Ret2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1638,22 +1639,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Ret2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1667,22 +1668,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 41,
           data: {
             name: 'Ret1',
           },
+          endColumn: 41,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 44,
-          endColumn: 48,
           data: {
             name: 'Ret2',
           },
+          endColumn: 48,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1695,13 +1696,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 38,
-          endColumn: 41,
           data: {
             name: 'Ret',
           },
+          endColumn: 41,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1716,13 +1717,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 23,
-          endColumn: 26,
           data: {
             name: 'Arg',
           },
+          endColumn: 26,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1737,13 +1738,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 32,
-          endColumn: 35,
           data: {
             name: 'Arg',
           },
+          endColumn: 35,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1756,13 +1757,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 38,
-          endColumn: 41,
           data: {
             name: 'Arg',
           },
+          endColumn: 41,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1775,13 +1776,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 38,
-          endColumn: 41,
           data: {
             name: 'Arg',
           },
+          endColumn: 41,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1800,13 +1801,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 31,
-          endColumn: 32,
           data: {
             name: 'R',
           },
+          endColumn: 32,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1824,31 +1825,31 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 45,
-          endColumn: 49,
           data: {
             name: 'Arg2',
           },
+          endColumn: 49,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 24,
-          endColumn: 28,
           data: {
             name: 'Arg1',
           },
+          endColumn: 28,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 9,
           column: 26,
-          endColumn: 29,
           data: {
             name: 'Ret',
           },
+          endColumn: 29,
+          line: 9,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1864,22 +1865,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 38,
-          endColumn: 42,
           data: {
             name: 'Arg1',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 38,
-          endColumn: 42,
           data: {
             name: 'Arg2',
           },
+          endColumn: 42,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1894,22 +1895,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 31,
-          endColumn: 35,
           data: {
             name: 'Arg1',
           },
+          endColumn: 35,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 20,
-          endColumn: 24,
           data: {
             name: 'Arg2',
           },
+          endColumn: 24,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1928,13 +1929,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 32,
-          endColumn: 37,
           data: {
             name: 'A',
           },
+          endColumn: 37,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1953,13 +1954,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 32,
-          endColumn: 33,
           data: {
             name: 'B',
           },
+          endColumn: 33,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -1980,13 +1981,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 32,
-          endColumn: 33,
           data: {
             name: 'B',
           },
+          endColumn: 33,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2008,13 +2009,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 11,
           column: 32,
-          endColumn: 33,
           data: {
             name: 'B',
           },
+          endColumn: 33,
+          line: 11,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2035,13 +2036,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 32,
-          endColumn: 33,
           data: {
             name: 'B',
           },
+          endColumn: 33,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2066,22 +2067,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 44,
-          endColumn: 46,
           data: {
             name: 'T1',
           },
+          endColumn: 46,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 64,
-          endColumn: 66,
           data: {
             name: 'T2',
           },
+          endColumn: 66,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2108,22 +2109,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 37,
-          endColumn: 39,
           data: {
             name: 'T1',
           },
+          endColumn: 39,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 57,
-          endColumn: 59,
           data: {
             name: 'T2',
           },
+          endColumn: 59,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2156,31 +2157,31 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 12,
           column: 18,
-          endColumn: 20,
           data: {
             name: 'T1',
           },
+          endColumn: 20,
+          line: 12,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 14,
           column: 20,
-          endColumn: 22,
           data: {
             name: 'T2',
           },
+          endColumn: 22,
+          line: 14,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 17,
           column: 13,
-          endColumn: 15,
           data: {
             name: 'T3',
           },
+          endColumn: 15,
+          line: 17,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2206,22 +2207,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 22,
-          endColumn: 23,
           data: {
             name: 'A',
           },
+          endColumn: 23,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 23,
-          endColumn: 24,
           data: {
             name: 'B',
           },
+          endColumn: 24,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2249,22 +2250,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 22,
-          endColumn: 23,
           data: {
             name: 'A',
           },
+          endColumn: 23,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 23,
-          endColumn: 24,
           data: {
             name: 'B',
           },
+          endColumn: 24,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2286,22 +2287,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 22,
-          endColumn: 23,
           data: {
             name: 'A',
           },
+          endColumn: 23,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 23,
-          endColumn: 24,
           data: {
             name: 'B',
           },
+          endColumn: 24,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2321,13 +2322,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 22,
-          endColumn: 27,
           data: {
             name: 'Fruit',
           },
+          endColumn: 27,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2347,13 +2348,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 22,
-          endColumn: 27,
           data: {
             name: 'Fruit',
           },
+          endColumn: 27,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2373,13 +2374,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 22,
-          endColumn: 27,
           data: {
             name: 'Fruit',
           },
+          endColumn: 27,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2399,13 +2400,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 9,
           column: 37,
-          endColumn: 42,
           data: {
             name: 'Fruit',
           },
+          endColumn: 42,
+          line: 9,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2425,13 +2426,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 9,
           column: 36,
-          endColumn: 41,
           data: {
             name: 'Fruit',
           },
+          endColumn: 41,
+          line: 9,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2449,40 +2450,40 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 27,
-          endColumn: 28,
           data: {
             name: 'A',
           },
+          endColumn: 28,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 30,
-          endColumn: 31,
           data: {
             name: 'B',
           },
+          endColumn: 31,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 43,
-          endColumn: 44,
           data: {
             name: 'C',
           },
+          endColumn: 44,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 51,
-          endColumn: 52,
           data: {
             name: 'D',
           },
+          endColumn: 52,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2498,22 +2499,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 23,
-          endColumn: 24,
           data: {
             name: 'A',
           },
+          endColumn: 24,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 27,
-          endColumn: 28,
           data: {
             name: 'B',
           },
+          endColumn: 28,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2531,22 +2532,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 32,
-          endColumn: 33,
           data: {
             name: 'A',
           },
+          endColumn: 33,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 36,
-          endColumn: 37,
           data: {
             name: 'B',
           },
+          endColumn: 37,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2564,22 +2565,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 28,
-          endColumn: 29,
           data: {
             name: 'A',
           },
+          endColumn: 29,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 32,
-          endColumn: 33,
           data: {
             name: 'B',
           },
+          endColumn: 33,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2599,22 +2600,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 38,
           data: {
             name: 'A',
           },
+          endColumn: 38,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'B',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2631,13 +2632,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 33,
-          endColumn: 34,
           data: {
             name: 'A',
           },
+          endColumn: 34,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2656,13 +2657,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 42,
-          endColumn: 43,
           data: {
             name: 'A',
           },
+          endColumn: 43,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2677,13 +2678,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 28,
-          endColumn: 29,
           data: {
             name: 'A',
           },
+          endColumn: 29,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2700,13 +2701,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 37,
-          endColumn: 38,
           data: {
             name: 'A',
           },
+          endColumn: 38,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2723,13 +2724,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2750,13 +2751,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 41,
-          endColumn: 46,
           data: {
             name: 'Fruit',
           },
+          endColumn: 46,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2777,13 +2778,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 26,
-          endColumn: 37,
           data: {
             name: 'Fruit',
           },
+          endColumn: 37,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2804,13 +2805,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 26,
-          endColumn: 37,
           data: {
             name: 'Fruit',
           },
+          endColumn: 37,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2833,13 +2834,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 8,
           column: 26,
-          endColumn: 37,
           data: {
             name: 'Fruit',
           },
+          endColumn: 37,
+          line: 8,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2863,22 +2864,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 9,
           column: 21,
-          endColumn: 25,
           data: {
             name: 'Item',
           },
+          endColumn: 25,
+          line: 9,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 11,
           column: 29,
-          endColumn: 36,
           data: {
             name: 'ItemKey',
           },
+          endColumn: 36,
+          line: 11,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2895,13 +2896,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 21,
-          endColumn: 22,
           data: {
             name: 'A',
           },
+          endColumn: 22,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2918,13 +2919,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 21,
-          endColumn: 22,
           data: {
             name: 'A',
           },
+          endColumn: 22,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2941,13 +2942,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 28,
-          endColumn: 29,
           data: {
             name: 'A',
           },
+          endColumn: 29,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2964,13 +2965,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 21,
-          endColumn: 22,
           data: {
             name: 'A',
           },
+          endColumn: 22,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -2987,13 +2988,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 7,
           column: 21,
-          endColumn: 22,
           data: {
             name: 'A',
           },
+          endColumn: 22,
+          line: 7,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3010,13 +3011,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3036,13 +3037,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3060,22 +3061,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 9,
           column: 37,
-          endColumn: 38,
           data: {
             name: 'B',
           },
+          endColumn: 38,
+          line: 9,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3099,31 +3100,31 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 14,
           column: 37,
-          endColumn: 38,
           data: {
             name: 'B',
           },
+          endColumn: 38,
+          line: 14,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 15,
           column: 37,
-          endColumn: 38,
           data: {
             name: 'C',
           },
+          endColumn: 38,
+          line: 15,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3145,13 +3146,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3167,22 +3168,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 25,
-          endColumn: 26,
           data: {
             name: 'B',
           },
+          endColumn: 26,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3202,13 +3203,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 41,
-          endColumn: 42,
           data: {
             name: 'A',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3224,22 +3225,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 39,
-          endColumn: 42,
           data: {
             name: 'Key',
           },
+          endColumn: 42,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 53,
-          endColumn: 61,
           data: {
             name: 'ItemsMap',
           },
+          endColumn: 61,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3256,13 +3257,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 22,
-          endColumn: 23,
           data: {
             name: 'A',
           },
+          endColumn: 23,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3281,22 +3282,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 23,
-          endColumn: 24,
           data: {
             name: 'A',
           },
+          endColumn: 24,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 23,
-          endColumn: 24,
           data: {
             name: 'B',
           },
+          endColumn: 24,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3311,13 +3312,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 6,
           column: 29,
-          endColumn: 30,
           data: {
             name: 'A',
           },
+          endColumn: 30,
+          line: 6,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3331,22 +3332,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 31,
-          endColumn: 36,
           data: {
             name: 'Apple',
           },
+          endColumn: 36,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 39,
-          endColumn: 45,
           data: {
             name: 'Banana',
           },
+          endColumn: 45,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3361,13 +3362,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 14,
-          endColumn: 15,
           data: {
             name: 'A',
           },
+          endColumn: 15,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3387,22 +3388,22 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 9,
           column: 27,
-          endColumn: 28,
           data: {
             name: 'A',
           },
+          endColumn: 28,
+          line: 9,
+          messageId: 'requireTypeExport',
         },
         {
-          messageId: 'requireTypeExport',
-          line: 10,
           column: 27,
-          endColumn: 28,
           data: {
             name: 'B',
           },
+          endColumn: 28,
+          line: 10,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3414,13 +3415,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 3,
           column: 33,
-          endColumn: 34,
           data: {
             name: 'A',
           },
+          endColumn: 34,
+          line: 3,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3437,13 +3438,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 52,
-          endColumn: 65,
           data: {
             name: 'typeof fruits',
           },
+          endColumn: 65,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3458,13 +3459,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 4,
           column: 56,
-          endColumn: 75,
           data: {
             name: 'typeof fruits.apple',
           },
+          endColumn: 75,
+          line: 4,
+          messageId: 'requireTypeExport',
         },
       ],
     },
@@ -3479,13 +3480,13 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          messageId: 'requireTypeExport',
-          line: 5,
           column: 34,
-          endColumn: 47,
           data: {
             name: 'typeof fruits',
           },
+          endColumn: 47,
+          line: 5,
+          messageId: 'requireTypeExport',
         },
       ],
     },
