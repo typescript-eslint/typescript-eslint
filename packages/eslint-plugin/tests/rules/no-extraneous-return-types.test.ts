@@ -1020,6 +1020,11 @@ function test(): string | number {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string  {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -1036,6 +1041,11 @@ function test(): string | number | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string | number  {
+  return 1 as string | number;
+}
+      `,
     },
     {
       code: `
@@ -1056,6 +1066,15 @@ function test(b: boolean): string | number | boolean | null {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(b: boolean): string | number  | null {
+  if (b) {
+    return null;
+  }
+
+  return 1 as string | number;
+}
+      `,
     },
 
     // various different ways to define a function
@@ -1074,6 +1093,11 @@ const test = (): string | number => {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+const test = (): string  => {
+  return 'one';
+};
+      `,
     },
     {
       code: `
@@ -1088,6 +1112,9 @@ const test = (): string | number => 'one';
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+const test = (): string  => 'one';
+      `,
     },
     {
       code: `
@@ -1106,6 +1133,13 @@ class A {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+class A {
+  test():  number {
+    return 1;
+  }
+}
+      `,
     },
 
     // unused type constraints
@@ -1124,6 +1158,11 @@ function test<T extends string>(): T | number {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test<T extends string>(): T  {
+  return '';
+}
+      `,
     },
     {
       code: `
@@ -1140,6 +1179,11 @@ function test<T extends string | number | boolean>(): T | number {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test<T extends string | number | boolean>(): T  {
+  return '';
+}
+      `,
     },
     {
       code: `
@@ -1163,6 +1207,11 @@ function test(): string | number | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string   {
+  return 'one';
+}
+      `,
     },
 
     // potentially returning void or undefined
@@ -1181,6 +1230,11 @@ function test(): string | number | undefined {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string  | undefined {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -1197,6 +1251,11 @@ function test(): string | number | void {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string  | void {
+  return 'one';
+}
+      `,
     },
 
     // any in return type annotation
@@ -1215,6 +1274,11 @@ function test(): string | number | any {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string  | any {
+  return 'one';
+}
+      `,
     },
 
     // referenced return types
@@ -1235,6 +1299,13 @@ function test(): R | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = number | string;
+
+function test(): R  {
+  return 1;
+}
+      `,
     },
     {
       code: `
@@ -1253,6 +1324,13 @@ function test(): R | string {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = number | string;
+
+function test(): R  {
+  return 1;
+}
+      `,
     },
 
     // arrays
@@ -1271,6 +1349,11 @@ function test(): (string | number)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): (string )[] {
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1287,6 +1370,11 @@ function test(): string[] | number {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string[]  {
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1303,6 +1391,11 @@ function test(): string[] | number {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test():  number {
+  return 1;
+}
+      `,
     },
     {
       code: `
@@ -1319,6 +1412,11 @@ function test(): (string | number | boolean)[] | string {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): (string | number | boolean)[]  {
+  return [];
+}
+      `,
     },
     {
       code: `
@@ -1342,6 +1440,11 @@ function test(): (string | number | boolean)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): (string  )[] {
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1362,6 +1465,15 @@ function test(a: boolean): (string | number | null)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(a: boolean): (string | number )[] {
+  if (a) {
+    return [1];
+  }
+
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1378,6 +1490,11 @@ function test(): (string | number | boolean)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): (string | number )[] {
+  return [1 as string | number];
+}
+      `,
     },
     {
       code: `
@@ -1398,6 +1515,15 @@ function test(b: boolean): (string | number | boolean | null)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(b: boolean): (string | number  | null)[] {
+  if (b) {
+    return [null];
+  }
+
+  return [1 as string | number];
+}
+      `,
     },
     {
       code: `
@@ -1416,6 +1542,13 @@ function test(): (R | boolean)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = number | string;
+
+function test(): (R )[] {
+  return [1];
+}
+      `,
     },
     {
       code: `
@@ -1434,6 +1567,13 @@ function test(): R | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = (number | string)[];
+
+function test(): R  {
+  return [1];
+}
+      `,
     },
     {
       code: `
@@ -1450,6 +1590,11 @@ function test(): (string | undefined)[] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): (string )[] {
+  return ['one'];
+}
+      `,
     },
 
     // tuples
@@ -1468,6 +1613,11 @@ function test(): [string | number] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string ] {
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1491,6 +1641,11 @@ function test(): [string | number | boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string  ] {
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1511,6 +1666,15 @@ function test(a: boolean): [string | number | null] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(a: boolean): [string | number ] {
+  if (a) {
+    return [1];
+  }
+
+  return ['one'];
+}
+      `,
     },
     {
       code: `
@@ -1527,6 +1691,11 @@ function test(): [string | number | boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string | number ] {
+  return [1 as string | number];
+}
+      `,
     },
     {
       code: `
@@ -1547,6 +1716,15 @@ function test(b: boolean): [string | number | boolean | null] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(b: boolean): [string | number  | null] {
+  if (b) {
+    return [null];
+  }
+
+  return [1 as string | number];
+}
+      `,
     },
     {
       code: `
@@ -1565,6 +1743,13 @@ function test(): R | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = [number | string];
+
+function test(): R  {
+  return [1];
+}
+      `,
     },
     {
       code: `
@@ -1583,6 +1768,13 @@ function test(): [R | string] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = number | string;
+
+function test(): [R ] {
+  return [1];
+}
+      `,
     },
     {
       code: `
@@ -1599,6 +1791,11 @@ function test(): [string | number, boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string , boolean] {
+  return ['one', true];
+}
+      `,
     },
     {
       code: `
@@ -1622,6 +1819,11 @@ function test(): [string | number | boolean, boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string  , boolean] {
+  return ['one', true];
+}
+      `,
     },
     {
       code: `
@@ -1642,6 +1844,15 @@ function test(a: boolean): [string | number | null, boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(a: boolean): [string | number , boolean] {
+  if (a) {
+    return [1, false];
+  }
+
+  return ['one', true];
+}
+      `,
     },
     {
       code: `
@@ -1658,6 +1869,11 @@ function test(): [string | number | boolean, boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string | number , boolean] {
+  return [1 as string | number, false];
+}
+      `,
     },
     {
       code: `
@@ -1678,6 +1894,15 @@ function test(b: boolean): [string | number | boolean | null, boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(b: boolean): [string | number  | null, boolean] {
+  if (b) {
+    return [null, true];
+  }
+
+  return [1 as string | number, false];
+}
+      `,
     },
     {
       code: `
@@ -1696,6 +1921,13 @@ function test(): R | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = [number | string, boolean];
+
+function test(): R  {
+  return [1, true];
+}
+      `,
     },
     {
       code: `
@@ -1714,6 +1946,13 @@ function test(): [R | string, boolean] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = number | string;
+
+function test(): [R , boolean] {
+  return [1, false];
+}
+      `,
     },
     {
       code: `
@@ -1730,6 +1969,11 @@ function test(): [string | undefined] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [string ] {
+  return ['one'];
+}
+      `,
     },
 
     // promises
@@ -1748,6 +1992,11 @@ function test(): Promise<string | number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): Promise<string > {
+  return Promise.resolve('one');
+}
+      `,
     },
     {
       code: `
@@ -1771,6 +2020,11 @@ function test(): Promise<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): Promise<string  > {
+  return Promise.resolve('one');
+}
+      `,
     },
     {
       code: `
@@ -1791,6 +2045,15 @@ function test(a: boolean): Promise<string | number | null> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(a: boolean): Promise<string | number > {
+  if (a) {
+    return Promise.resolve(1);
+  }
+
+  return Promise.resolve('one');
+}
+      `,
     },
     {
       code: `
@@ -1807,6 +2070,11 @@ function test(): Promise<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): Promise<string | number > {
+  return Promise.resolve(1 as string | number);
+}
+      `,
     },
     {
       code: `
@@ -1827,6 +2095,15 @@ function test(b: boolean): Promise<string | number | boolean | null> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(b: boolean): Promise<string | number  | null> {
+  if (b) {
+    return Promise.resolve(null);
+  }
+
+  return Promise.resolve(1 as string | number);
+}
+      `,
     },
     {
       code: `
@@ -1845,6 +2122,13 @@ function test(): R | boolean {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+type R = Promise<number | string>;
+
+function test(): R  {
+  return Promise.resolve(1);
+}
+      `,
     },
 
     // async functions
@@ -1863,6 +2147,11 @@ async function test(): Promise<string | number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<string > {
+  return Promise.resolve('one');
+}
+      `,
     },
     {
       code: `
@@ -1886,6 +2175,11 @@ async function test(): Promise<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<string  > {
+  return Promise.resolve('one');
+}
+      `,
     },
     {
       code: `
@@ -1906,6 +2200,15 @@ async function test(a: boolean): Promise<string | number | null> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(a: boolean): Promise<string | number > {
+  if (a) {
+    return Promise.resolve(1);
+  }
+
+  return Promise.resolve('one');
+}
+      `,
     },
     {
       code: `
@@ -1922,6 +2225,11 @@ async function test(): Promise<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<string | number > {
+  return Promise.resolve(1 as string | number);
+}
+      `,
     },
     {
       code: `
@@ -1942,8 +2250,16 @@ async function test(b: boolean): Promise<string | number | boolean | null> {
           messageId: 'unusedReturnTypes',
         },
       ],
-    },
+      output: `
+async function test(b: boolean): Promise<string | number  | null> {
+  if (b) {
+    return Promise.resolve(null);
+  }
 
+  return Promise.resolve(1 as string | number);
+}
+      `,
+    },
     {
       code: `
 async function test(): Promise<string | number> {
@@ -1959,6 +2275,11 @@ async function test(): Promise<string | number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<string > {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -1982,6 +2303,11 @@ async function test(): Promise<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<string  > {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2002,6 +2328,15 @@ async function test(a: boolean): Promise<string | number | null> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(a: boolean): Promise<string | number > {
+  if (a) {
+    return 1;
+  }
+
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2018,6 +2353,11 @@ async function test(): Promise<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<string | number > {
+  return 1 as string | number;
+}
+      `,
     },
     {
       code: `
@@ -2038,8 +2378,16 @@ async function test(b: boolean): Promise<string | number | boolean | null> {
           messageId: 'unusedReturnTypes',
         },
       ],
-    },
+      output: `
+async function test(b: boolean): Promise<string | number  | null> {
+  if (b) {
+    return null;
+  }
 
+  return 1 as string | number;
+}
+      `,
+    },
     {
       code: `
 function test(): string | Promise<number> {
@@ -2055,6 +2403,11 @@ function test(): string | Promise<number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string  {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2071,6 +2424,11 @@ function test(): string[] | Promise<number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): string[]  {
+  return [];
+}
+      `,
     },
     {
       code: `
@@ -2087,6 +2445,11 @@ function test(): [Promise<boolean | number>][] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [Promise< number>][] {
+  return [[Promise.resolve(1)]];
+}
+      `,
     },
 
     // generators
@@ -2133,6 +2496,11 @@ function* test(): Generator<string | number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator< number> {
+  yield 10;
+}
+      `,
     },
     {
       code: `
@@ -2150,6 +2518,12 @@ function* test(): Generator<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator<string | number > {
+  yield 10;
+  yield 'one';
+}
+      `,
     },
     {
       code: `
@@ -2167,6 +2541,12 @@ function* test(): Generator<string | number, number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator< number, number> {
+  yield 10;
+  return 10;
+}
+      `,
     },
     {
       code: `
@@ -2184,6 +2564,12 @@ function* test(): Generator<string | number, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator< number, string | boolean> {
+  yield 10;
+  return 'one' as 'one' | true;
+}
+      `,
     },
     {
       code: `
@@ -2213,6 +2599,11 @@ function* test(): Generator<unknown, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator<unknown, string > {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2237,6 +2628,12 @@ function* test(): Generator<number | null, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator<number , string > {
+  yield 10;
+  return 'one';
+}
+      `,
     },
 
     // async generators
@@ -2283,6 +2680,11 @@ async function* test(): AsyncGenerator<string | number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator< number> {
+  yield 10;
+}
+      `,
     },
     {
       code: `
@@ -2300,6 +2702,12 @@ async function* test(): AsyncGenerator<string | number | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator<string | number > {
+  yield 10;
+  yield 'one';
+}
+      `,
     },
     {
       code: `
@@ -2317,6 +2725,12 @@ async function* test(): AsyncGenerator<string | number, number> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator< number, number> {
+  yield 10;
+  return 10;
+}
+      `,
     },
     {
       code: `
@@ -2334,6 +2748,12 @@ async function* test(): AsyncGenerator<string | number, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator< number, string | boolean> {
+  yield 10;
+  return 'one' as 'one' | true;
+}
+      `,
     },
     {
       code: `
@@ -2363,6 +2783,11 @@ async function* test(): AsyncGenerator<unknown, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator<unknown, string > {
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2387,6 +2812,12 @@ async function* test(): AsyncGenerator<number | null, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator<number , string > {
+  yield 10;
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2411,6 +2842,12 @@ async function* test(): AsyncGenerator<number | null, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator<number , string > {
+  yield Promise.resolve(10);
+  return 'one';
+}
+      `,
     },
     {
       code: `
@@ -2435,6 +2872,12 @@ async function* test(): AsyncGenerator<number | null, string | boolean> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator<number , string > {
+  yield 10;
+  return Promise.resolve('one');
+}
+      `,
     },
     // nested boxes
     {
@@ -2452,6 +2895,11 @@ async function test(): Promise<Array<string | number>> {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function test(): Promise<Array< number>> {
+  return Promise.resolve([1]);
+}
+      `,
     },
     {
       code: `
@@ -2475,6 +2923,11 @@ function test(): [[string | number], [number | boolean]] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [[ number], [ boolean]] {
+  return [[1], [true]];
+}
+      `,
     },
     {
       code: `
@@ -2491,6 +2944,11 @@ function test(): [[string | number], [number | boolean]] {
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function test(): [[string | number], [ boolean]] {
+  return [1 as any, [true]];
+}
+      `,
     },
   ],
 });

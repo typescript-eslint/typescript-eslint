@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -33,6 +33,31 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    function removeTypeAnnotation(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.Node,
+    ) {
+      const beforeToken = context.sourceCode.getTokenBefore(node, {
+        filter: token =>
+          token.value === '|' || token.value === '[' || token.value === '<',
+      });
+
+      if (beforeToken?.value === '|') {
+        return fixer.removeRange([beforeToken.range[0], node.range[1]]);
+      }
+
+      const afterToken = context.sourceCode.getTokenAfter(node, {
+        filter: token =>
+          token.value === '|' || token.value === '[' || token.value === '<',
+      });
+
+      if (afterToken?.value === '|') {
+        return fixer.removeRange([node.range[0], afterToken.range[1]]);
+      }
+
+      return fixer.remove(node);
+    }
+
     function getRelevantReturnTypesOrReport(
       node: TSESTree.TypeNode,
       returnTypes: ts.Type[],
@@ -50,6 +75,7 @@ export default createRule({
           data: {
             type: checker.typeToString(type),
           },
+          fix: fixer => removeTypeAnnotation(fixer, node),
         });
 
         return null;
@@ -181,6 +207,7 @@ export default createRule({
           data: {
             type: checker.typeToString(constrainedReturnType),
           },
+          fix: fixer => removeTypeAnnotation(fixer, node),
         });
       }
     }
