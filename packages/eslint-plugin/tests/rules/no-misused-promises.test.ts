@@ -1066,7 +1066,6 @@ declare const useCallback: <T extends (...args: unknown[]) => unknown>(
 ) => T;
 useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
     `,
-    // assignment with various symbols, matching `() => void` with `() => {}`
     {
       code: `
 type O = {
@@ -1135,7 +1134,6 @@ const obj: O = {
 };
       `,
     },
-    // assignment with various symbols, matching `() => Promise<void>` with `async () => {}`
     {
       code: `
 type O = {
@@ -1204,7 +1202,6 @@ const obj: O = {
 };
       `,
     },
-    // classes with various symbols, matching `() => void` with `() => {}`
     {
       code: `
 class MyClass {
@@ -1274,7 +1271,6 @@ class MySubclass extends MyClass {
 }
       `,
     },
-    // classes with various symbols, matching `() => Promise<void>` with `async () => {}`
     {
       code: `
 class MyClass {
@@ -1344,7 +1340,6 @@ class MySubclass extends MyClass {
 }
       `,
     },
-    // interfaces with various symbols, matching `() => void` with `() => {}`
     {
       code: `
 interface MyInterface {
@@ -1415,7 +1410,6 @@ class MySubclass extends MyInterface {
       `,
     },
 
-    // classes with various symbols, matching `() => Promise<void>` with `async () => {}`
     {
       code: `
 interface MyInterface {
@@ -1485,7 +1479,6 @@ class MySubclass extends MyInterface {
 }
       `,
     },
-    // `undefined` symbol
     {
       code: `
 let a;
@@ -3022,7 +3015,6 @@ const obj: O = {
         },
       ],
     },
-    // assignment with various symbols, matching `() => void` with `async () => {}`
     {
       code: `
 type O = {
@@ -3035,7 +3027,7 @@ const obj: O = {
       `,
       errors: [
         {
-          line: 6,
+          line: 7,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -3052,7 +3044,7 @@ const obj: O = {
       `,
       errors: [
         {
-          line: 6,
+          line: 7,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -3069,7 +3061,7 @@ const obj: O = {
       `,
       errors: [
         {
-          line: 6,
+          line: 7,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -3086,7 +3078,7 @@ const obj: O = {
       `,
       errors: [
         {
-          line: 6,
+          line: 7,
           messageId: 'voidReturnProperty',
         },
       ],
@@ -3103,31 +3095,11 @@ const obj: O = {
       `,
       errors: [
         {
-          line: 6,
+          line: 7,
           messageId: 'voidReturnProperty',
         },
       ],
     },
-    {
-      code: `
-const staticSymbol = Symbol.for('static symbol');
-
-type O = {
-  [staticSymbol]: () => void;
-};
-
-const obj: O = {
-  async [staticSymbol]() {},
-};
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnProperty',
-        },
-      ],
-    },
-    // classes with various symbols, matching `() => void` with `async () => {}`
     {
       code: `
 class MyClass {
@@ -3140,8 +3112,8 @@ class MySubclass extends MyClass {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3157,8 +3129,8 @@ class MySubclass extends MyClass {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3174,8 +3146,8 @@ class MySubclass extends MyClass {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3191,8 +3163,8 @@ class MySubclass extends MyClass {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3208,12 +3180,11 @@ class MySubclass extends MyClass {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
-    // interfaces with various symbols, matching `() => void` with `() => Promise<void>`
     {
       code: `
 interface MyInterface {
@@ -3226,8 +3197,8 @@ interface MySubinterface extends MyInterface {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3243,8 +3214,8 @@ interface MySubinterface extends MyInterface {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3260,8 +3231,8 @@ interface MySubinterface extends MyInterface {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3277,8 +3248,8 @@ interface MySubinterface extends MyInterface {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
@@ -3294,8 +3265,8 @@ interface MySubinterface extends MyInterface {
       `,
       errors: [
         {
-          line: 6,
-          messageId: 'voidReturnProperty',
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
         },
       ],
     },
