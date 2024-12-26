@@ -9,7 +9,7 @@ import {
   createRule,
   getParserServices,
   getStaticMemberAccessValue,
-  isParenlessFunctionExpression,
+  isParenlessArrowFunction,
   isRestParameterDeclaration,
   nullThrows,
 } from '../util';
@@ -176,10 +176,7 @@ export default createRule<[], MessageIds>({
                     if (
                       argument.type ===
                         AST_NODE_TYPES.ArrowFunctionExpression &&
-                      isParenlessFunctionExpression(
-                        argument,
-                        context.sourceCode,
-                      )
+                      isParenlessArrowFunction(argument, context.sourceCode)
                     ) {
                       return [
                         fixer.insertTextBefore(catchVariableInner, '('),
