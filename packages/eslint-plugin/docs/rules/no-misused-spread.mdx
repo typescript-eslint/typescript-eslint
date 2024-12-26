@@ -22,7 +22,7 @@ That includes the following cases:
   You probably meant to call it.
 - Spreading a class instance into an object.
   This does not faithfully copy the instance because only its own properties are copied, but the inheritance chain is lost, including all its methods.
-- Spreading a class (defined with a `class` declaration or `class` expression) into an object.
+- Spreading a `class` into an object.
   This copies all static own properties of the class, but none of the inheritance chain.
 - Spreading an iterable (`Map`, `Array`, etc.) into an object.
   Iterable objects usually do not have meaningful enumerable properties and you probably meant to spread it into an array instead.
