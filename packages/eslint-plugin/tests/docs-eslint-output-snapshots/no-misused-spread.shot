@@ -13,7 +13,7 @@ const getObjectSpread = { ...getObject };
 
 declare const map: Map<string, number>;
 const mapSpread = { ...map };
-                    ~~~~~~ Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use \`Object.fromEntries(map)\` instead?
+                    ~~~~~~ Using the spread operator on a Map in an object will result in an empty object. Did you mean to use \`Object.fromEntries(map)\` instead?
 
 declare const userName: string;
 const characters = [...userName];
