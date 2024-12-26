@@ -1,8 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getConstrainedTypeAtLocation,
@@ -21,14 +23,14 @@ type Options = [
 ];
 
 type MessageIds =
-  | 'noStringSpreadInArray'
-  | 'noPromiseSpreadInObject'
-  | 'noIterableSpreadInObject'
-  | 'noFunctionSpreadInObject'
-  | 'noMapSpreadInObject'
   | 'noArraySpreadInObject'
+  | 'noClassDeclarationSpreadInObject'
   | 'noClassInstanceSpreadInObject'
-  | 'noClassDeclarationSpreadInObject';
+  | 'noFunctionSpreadInObject'
+  | 'noIterableSpreadInObject'
+  | 'noMapSpreadInObject'
+  | 'noPromiseSpreadInObject'
+  | 'noStringSpreadInArray';
 
 export default createRule<Options, MessageIds>({
   name: 'no-misused-spread',
@@ -41,33 +43,27 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      noStringSpreadInArray:
-        "Using the spread operator on a string can cause unexpected behavior. Prefer `String.split('')` instead.",
-
-      noPromiseSpreadInObject:
-        'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
-
-      noIterableSpreadInObject:
-        'Using the spread operator on an Iterable in an object can cause unexpected behavior.',
-
-      noFunctionSpreadInObject:
-        'Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?',
-
-      noMapSpreadInObject:
-        'Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use `Object.fromEntries(map)` instead?',
-
       noArraySpreadInObject:
         'Using the spread operator on an array in an object will result in a list of indices.',
-
-      noClassInstanceSpreadInObject:
-        'Using the spread operator on class instances will lose their class prototype.',
-
       noClassDeclarationSpreadInObject:
         'Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.',
+      noClassInstanceSpreadInObject:
+        'Using the spread operator on class instances will lose their class prototype.',
+      noFunctionSpreadInObject:
+        'Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?',
+      noIterableSpreadInObject:
+        'Using the spread operator on an Iterable in an object can cause unexpected behavior.',
+      noMapSpreadInObject:
+        'Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use `Object.fromEntries(map)` instead?',
+      noPromiseSpreadInObject:
+        'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
+      noStringSpreadInArray:
+        "Using the spread operator on a string can cause unexpected behavior. Prefer `String.split('')` instead.",
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allow: {
             ...readonlynessOptionsSchema.properties.allow,
@@ -75,7 +71,6 @@ export default createRule<Options, MessageIds>({
               'An array of type specifiers that are known to be safe to spread.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },

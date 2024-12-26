@@ -8,8 +8,8 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootPath,
       project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
     },
   },
 });
@@ -164,11 +164,11 @@ ruleTester.run('no-misused-spread', rule, {
     `,
 
     {
-      options: [{ allow: ['Promise'] }],
       code: `
         const promise = new Promise(() => {});
         const o = { ...promise };
       `,
+      options: [{ allow: ['Promise'] }],
     },
 
     `
@@ -187,37 +187,36 @@ ruleTester.run('no-misused-spread', rule, {
     `,
 
     {
-      options: [{ allow: ['string'] }],
       code: `
         const str: string = 'test';
         const a = [...str];
       `,
+      options: [{ allow: ['string'] }],
     },
 
     {
-      options: [{ allow: ['f'] }],
       code: `
         function f() {}
 
         const a = { ...f };
       `,
+      options: [{ allow: ['f'] }],
     },
 
     {
-      options: [
-        {
-          allow: [{ from: 'lib', name: 'Iterable' }],
-        },
-      ],
       code: `
         declare const iterator: Iterable<string>;
 
         const a = { ...iterator };
       `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Iterable' }],
+        },
+      ],
     },
 
     {
-      options: [{ allow: ['CustomIterable'] }],
       code: `
         type CustomIterable = {
           [Symbol.iterator]: () => Generator<string>;
@@ -227,14 +226,10 @@ ruleTester.run('no-misused-spread', rule, {
 
         const a = { ...iterator };
       `,
+      options: [{ allow: ['CustomIterable'] }],
     },
 
     {
-      options: [
-        {
-          allow: [{ from: 'file', name: 'CustomIterable' }],
-        },
-      ],
       code: `
         type CustomIterable = {
           [Symbol.iterator]: () => string;
@@ -244,16 +239,14 @@ ruleTester.run('no-misused-spread', rule, {
 
         const a = { ...iterator };
       `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'CustomIterable' }],
+        },
+      ],
     },
 
     {
-      options: [
-        {
-          allow: [
-            { from: 'package', package: 'module', name: 'CustomIterable' },
-          ],
-        },
-      ],
       code: `
         declare module 'module' {
           export type CustomIterable = {
@@ -267,10 +260,16 @@ ruleTester.run('no-misused-spread', rule, {
 
         const a = { ...iterator };
       `,
+      options: [
+        {
+          allow: [
+            { from: 'package', name: 'CustomIterable', package: 'module' },
+          ],
+        },
+      ],
     },
 
     {
-      options: [{ allow: ['A'] }],
       code: `
         class A {
           a = 1;
@@ -280,10 +279,10 @@ ruleTester.run('no-misused-spread', rule, {
 
         const o = { ...a };
       `,
+      options: [{ allow: ['A'] }],
     },
 
     {
-      options: [{ allow: ['A'] }],
       code: `
         const a = {
           ...class A {
@@ -291,6 +290,7 @@ ruleTester.run('no-misused-spread', rule, {
           },
         };
       `,
+      options: [{ allow: ['A'] }],
     },
 
     // WeakSet is not iterable
@@ -305,10 +305,10 @@ ruleTester.run('no-misused-spread', rule, {
       code: "const a = [...'test'];",
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 1,
           column: 12,
           endColumn: 21,
+          line: 1,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -320,10 +320,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 27,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -335,10 +335,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 27,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -350,10 +350,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 27,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -365,10 +365,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 27,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -380,10 +380,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 27,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -395,10 +395,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 27,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -410,10 +410,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 34,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -425,10 +425,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 34,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -440,10 +440,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noStringSpreadInArray',
-          line: 3,
           column: 20,
           endColumn: 34,
+          line: 3,
+          messageId: 'noStringSpreadInArray',
         },
       ],
     },
@@ -452,10 +452,10 @@ ruleTester.run('no-misused-spread', rule, {
       code: 'const o = { ...[1, 2, 3] };',
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 1,
           column: 13,
           endColumn: 25,
+          line: 1,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -467,10 +467,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -482,10 +482,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -497,10 +497,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -512,10 +512,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -527,10 +527,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -542,10 +542,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -557,10 +557,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 34,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -572,10 +572,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noArraySpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 34,
+          line: 3,
+          messageId: 'noArraySpreadInObject',
         },
       ],
     },
@@ -584,10 +584,10 @@ ruleTester.run('no-misused-spread', rule, {
       code: 'const o = { ...new Set([1, 2, 3]) };',
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 1,
           column: 13,
           endColumn: 34,
+          line: 1,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -599,10 +599,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -614,10 +614,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -629,10 +629,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -644,10 +644,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -659,10 +659,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 32,
+          line: 3,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -678,11 +678,11 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 11,
-          endLine: 6,
           endColumn: 13,
+          endLine: 6,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -698,10 +698,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 7,
           column: 21,
           endColumn: 27,
+          line: 7,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -713,10 +713,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -728,10 +728,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -743,10 +743,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -758,10 +758,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -773,10 +773,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 32,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -788,10 +788,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noMapSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 25,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
         },
       ],
     },
@@ -803,10 +803,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 27,
+          line: 3,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -818,10 +818,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noPromiseSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 31,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
         },
       ],
     },
@@ -833,10 +833,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noPromiseSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 36,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
         },
       ],
     },
@@ -848,10 +848,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noPromiseSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 31,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
         },
       ],
     },
@@ -863,10 +863,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noPromiseSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 36,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
         },
       ],
     },
@@ -878,10 +878,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noPromiseSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 36,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
         },
       ],
     },
@@ -894,10 +894,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -910,10 +910,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -926,10 +926,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -942,10 +942,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 37,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -958,10 +958,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -974,10 +974,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -990,10 +990,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noFunctionSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 33,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
         },
       ],
     },
@@ -1010,10 +1010,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 32,
+          line: 8,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -1032,15 +1032,15 @@ ruleTester.run('no-misused-spread', rule, {
 
         const a = { ...iterator };
       `,
-      options: [{ allow: ['AnotherIterable'] }],
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 12,
           column: 21,
           endColumn: 32,
+          line: 12,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
+      options: [{ allow: ['AnotherIterable'] }],
     },
     {
       code: `
@@ -1056,17 +1056,17 @@ ruleTester.run('no-misused-spread', rule, {
 
         const a = { ...iterator };
       `,
-      options: [
-        {
-          allow: [{ from: 'package', package: 'module', name: 'Nothing' }],
-        },
-      ],
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 12,
           column: 21,
           endColumn: 32,
+          line: 12,
+          messageId: 'noIterableSpreadInObject',
+        },
+      ],
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Nothing', package: 'module' }],
         },
       ],
     },
@@ -1079,10 +1079,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 32,
+          line: 4,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -1095,10 +1095,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 32,
+          line: 4,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -1111,10 +1111,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 37,
+          line: 4,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -1135,10 +1135,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noIterableSpreadInObject',
-          line: 12,
           column: 21,
           endColumn: 31,
+          line: 12,
+          messageId: 'noIterableSpreadInObject',
         },
       ],
     },
@@ -1149,10 +1149,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 2,
           column: 21,
           endColumn: 34,
+          line: 2,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1164,10 +1164,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 31,
+          line: 3,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1179,10 +1179,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 3,
           column: 21,
           endColumn: 29,
+          line: 3,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1201,10 +1201,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 10,
           column: 21,
           endColumn: 31,
+          line: 10,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1221,10 +1221,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 25,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1241,10 +1241,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 25,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1261,10 +1261,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 30,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1281,10 +1281,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 30,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1301,10 +1301,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 31,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1321,10 +1321,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 25,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1341,10 +1341,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 8,
           column: 21,
           endColumn: 25,
+          line: 8,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
@@ -1357,10 +1357,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassDeclarationSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noClassDeclarationSpreadInObject',
         },
       ],
     },
@@ -1373,10 +1373,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassDeclarationSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noClassDeclarationSpreadInObject',
         },
       ],
     },
@@ -1389,10 +1389,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassDeclarationSpreadInObject',
-          line: 4,
           column: 21,
           endColumn: 25,
+          line: 4,
+          messageId: 'noClassDeclarationSpreadInObject',
         },
       ],
     },
@@ -1408,11 +1408,11 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassDeclarationSpreadInObject',
-          line: 3,
           column: 11,
-          endLine: 6,
           endColumn: 12,
+          endLine: 6,
+          line: 3,
+          messageId: 'noClassDeclarationSpreadInObject',
         },
       ],
     },
@@ -1423,10 +1423,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassDeclarationSpreadInObject',
-          line: 2,
           column: 21,
           endColumn: 54,
+          line: 2,
+          messageId: 'noClassDeclarationSpreadInObject',
         },
       ],
     },
@@ -1437,10 +1437,10 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       errors: [
         {
-          messageId: 'noClassInstanceSpreadInObject',
-          line: 2,
           column: 21,
           endColumn: 61,
+          line: 2,
+          messageId: 'noClassInstanceSpreadInObject',
         },
       ],
     },
