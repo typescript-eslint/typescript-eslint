@@ -8,7 +8,7 @@ const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      project: './tsconfig.json',
+      project: './tsconfig-with-dom.json',
       tsconfigRootDir: rootPath,
     },
   },
