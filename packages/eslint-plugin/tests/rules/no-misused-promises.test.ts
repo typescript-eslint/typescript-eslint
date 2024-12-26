@@ -1505,6 +1505,19 @@ class MySubinterfaceExtendsMyInterface implements MyInterface {
 }
       `,
     },
+    {
+      code: `
+const staticSymbol = Symbol();
+
+interface MyInterface {
+  [staticSymbol](): Promise<void>;
+}
+
+class MySubclass extends MyInterface {
+  async [staticSymbol](): void {}
+}
+      `,
+    },
   ],
 
   invalid: [

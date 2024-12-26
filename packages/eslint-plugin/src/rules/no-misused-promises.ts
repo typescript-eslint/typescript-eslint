@@ -989,9 +989,11 @@ function getHeritageTypes(
 }
 
 function getWellKnownStringOfSymbol(symbol: symbol): string | null {
-  const description = symbol.description;
+  // symbol with no description is returned as `undefined` by `getStaticMemberAccessValue`
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const description = symbol.description!;
 
-  if (description?.startsWith('Symbol.')) {
+  if (description.startsWith('Symbol.')) {
     return description.replace(/^Symbol./, '');
   }
 
