@@ -1,20 +1,11 @@
+import type * as ts from 'typescript';
+
 import path from 'node:path';
 
-import * as ts from 'typescript';
-
 import type { ParseSettings } from '../parseSettings';
-import { describeFilePath } from './describeFilePath';
 
-const DEFAULT_EXTRA_FILE_EXTENSIONS = new Set<string>([
-  ts.Extension.Ts,
-  ts.Extension.Tsx,
-  ts.Extension.Js,
-  ts.Extension.Jsx,
-  ts.Extension.Mjs,
-  ts.Extension.Mts,
-  ts.Extension.Cjs,
-  ts.Extension.Cts,
-]);
+import { describeFilePath } from './describeFilePath';
+import { DEFAULT_EXTRA_FILE_EXTENSIONS } from './shared';
 
 export function createProjectProgramError(
   parseSettings: ParseSettings,

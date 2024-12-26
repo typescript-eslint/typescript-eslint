@@ -1,8 +1,17 @@
+/* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, getTypeName } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
+  nullThrows,
+} from '../util';
 
 enum Usefulness {
   Always = 'always',
@@ -15,38 +24,40 @@ type Options = [
     ignoredTypeNames?: string[];
   },
 ];
-type MessageIds = 'baseToString';
+type MessageIds = 'baseArrayJoin' | 'baseToString';
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
-        'Require `.toString()` to only be called on objects which provide useful information when stringified',
+        'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
+      baseArrayJoin:
+        "Using `join()` for {{name}} {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
       baseToString:
         "'{{name}}' {{certainty}} use Object's default stringification format ('[object Object]') when stringified.",
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoredTypeNames: {
+            type: 'array',
             description:
               'Stringified regular expressions of type names to ignore.',
-            type: 'array',
             items: {
               type: 'string',
             },
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [
     {
@@ -58,11 +69,10 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
-    function checkExpression(node: TSESTree.Expression, type?: ts.Type): void {
+    function checkExpression(node: TSESTree.Node, type?: ts.Type): void {
       if (node.type === AST_NODE_TYPES.Literal) {
         return;
       }
-
       const certainty = collectToStringCertainty(
         type ?? services.getTypeAtLocation(node),
       );
@@ -71,17 +81,104 @@ export default createRule<Options, MessageIds>({
       }
 
       context.report({
-        data: {
-          certainty,
-          name: context.sourceCode.getText(node),
-        },
-        messageId: 'baseToString',
         node,
+        messageId: 'baseToString',
+        data: {
+          name: context.sourceCode.getText(node),
+          certainty,
+        },
       });
     }
 
+    function checkExpressionForArrayJoin(
+      node: TSESTree.Node,
+      type: ts.Type,
+    ): void {
+      const certainty = collectJoinCertainty(type);
+
+      if (certainty === Usefulness.Always) {
+        return;
+      }
+
+      context.report({
+        node,
+        messageId: 'baseArrayJoin',
+        data: {
+          name: context.sourceCode.getText(node),
+          certainty,
+        },
+      });
+    }
+
+    function collectUnionTypeCertainty(
+      type: ts.UnionType,
+      collectSubTypeCertainty: (type: ts.Type) => Usefulness,
+    ): Usefulness {
+      const certainties = type.types.map(t => collectSubTypeCertainty(t));
+      if (certainties.every(certainty => certainty === Usefulness.Never)) {
+        return Usefulness.Never;
+      }
+
+      if (certainties.every(certainty => certainty === Usefulness.Always)) {
+        return Usefulness.Always;
+      }
+
+      return Usefulness.Sometimes;
+    }
+
+    function collectIntersectionTypeCertainty(
+      type: ts.IntersectionType,
+      collectSubTypeCertainty: (type: ts.Type) => Usefulness,
+    ): Usefulness {
+      for (const subType of type.types) {
+        const subtypeUsefulness = collectSubTypeCertainty(subType);
+
+        if (subtypeUsefulness === Usefulness.Always) {
+          return Usefulness.Always;
+        }
+      }
+
+      return Usefulness.Never;
+    }
+
+    function collectJoinCertainty(type: ts.Type): Usefulness {
+      if (tsutils.isUnionType(type)) {
+        return collectUnionTypeCertainty(type, collectJoinCertainty);
+      }
+
+      if (tsutils.isIntersectionType(type)) {
+        return collectIntersectionTypeCertainty(type, collectJoinCertainty);
+      }
+
+      if (checker.isTupleType(type)) {
+        const typeArgs = checker.getTypeArguments(type);
+        const certainties = typeArgs.map(t => collectToStringCertainty(t));
+        if (certainties.some(certainty => certainty === Usefulness.Never)) {
+          return Usefulness.Never;
+        }
+
+        if (certainties.some(certainty => certainty === Usefulness.Sometimes)) {
+          return Usefulness.Sometimes;
+        }
+
+        return Usefulness.Always;
+      }
+
+      if (checker.isArrayType(type)) {
+        const elemType = nullThrows(
+          type.getNumberIndexType(),
+          'array should have number index type',
+        );
+        return collectToStringCertainty(elemType);
+      }
+
+      return Usefulness.Always;
+    }
+
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      const toString = checker.getPropertyOfType(type, 'toString');
+      const toString =
+        checker.getPropertyOfType(type, 'toString') ??
+        checker.getPropertyOfType(type, 'toLocaleString');
       const declarations = toString?.getDeclarations();
       if (!toString || !declarations || declarations.length === 0) {
         return Usefulness.Always;
@@ -109,45 +206,26 @@ export default createRule<Options, MessageIds>({
       }
 
       if (type.isIntersection()) {
-        for (const subType of type.types) {
-          const subtypeUsefulness = collectToStringCertainty(subType);
-
-          if (subtypeUsefulness === Usefulness.Always) {
-            return Usefulness.Always;
-          }
-        }
-
-        return Usefulness.Never;
+        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
       }
 
       if (!type.isUnion()) {
         return Usefulness.Never;
       }
+      return collectUnionTypeCertainty(type, collectToStringCertainty);
+    }
 
-      let allSubtypesUseful = true;
-      let someSubtypeUseful = false;
-
-      for (const subType of type.types) {
-        const subtypeUsefulness = collectToStringCertainty(subType);
-
-        if (subtypeUsefulness !== Usefulness.Always && allSubtypesUseful) {
-          allSubtypesUseful = false;
-        }
-
-        if (subtypeUsefulness !== Usefulness.Never && !someSubtypeUseful) {
-          someSubtypeUseful = true;
-        }
+    function isBuiltInStringCall(node: TSESTree.CallExpression): boolean {
+      if (
+        node.callee.type === AST_NODE_TYPES.Identifier &&
+        node.callee.name === 'String' &&
+        node.arguments[0]
+      ) {
+        const scope = context.sourceCode.getScope(node);
+        const variable = scope.set.get('String');
+        return !variable?.defs.length;
       }
-
-      if (allSubtypesUseful && someSubtypeUseful) {
-        return Usefulness.Always;
-      }
-
-      if (someSubtypeUseful) {
-        return Usefulness.Sometimes;
-      }
-
-      return Usefulness.Never;
+      return false;
     }
 
     return {
@@ -166,12 +244,25 @@ export default createRule<Options, MessageIds>({
           checkExpression(node.left, leftType);
         }
       },
-      'CallExpression > MemberExpression.callee > Identifier[name = "toString"].property'(
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (isBuiltInStringCall(node)) {
+          checkExpression(node.arguments[0]);
+        }
+      },
+      'CallExpression > MemberExpression.callee > Identifier[name = "join"].property'(
+        node: TSESTree.Expression,
+      ): void {
+        const memberExpr = node.parent as TSESTree.MemberExpression;
+        const type = getConstrainedTypeAtLocation(services, memberExpr.object);
+        checkExpressionForArrayJoin(memberExpr.object, type);
+      },
+      'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         checkExpression(memberExpr.object);
       },
+
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;

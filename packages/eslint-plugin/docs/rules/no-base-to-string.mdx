@@ -1,5 +1,5 @@
 ---
-description: 'Require `.toString()` to only be called on objects which provide useful information when stringified.'
+description: 'Require `.toString()` and `.toLocaleString()` to only be called on objects which provide useful information when stringified.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,11 +9,11 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-base-to-string** for documentation.
 
-JavaScript will call `toString()` on an object when it is converted to a string, such as when `+` adding to a string or in `${}` template literals.
-The default Object `.toString()` uses the format `"[object Object]"`, which is often not what was intended.
-This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` method.
+JavaScript will call `toString()` on an object when it is converted to a string, such as when concatenated with a string (`expr + ''`), when interpolated into template literals (`${expr}`), or when passed as an argument to the String constructor (`String(expr)`).
+The default Object `.toString()` and `toLocaleString()` use the format `"[object Object]"`, which is often not what was intended.
+This rule reports on stringified values that aren't primitives and don't define a more useful `.toString()` or `toLocaleString()` method.
 
-> Note that `Function` provides its own `.toString()` that returns the function's code.
+> Note that `Function` provides its own `.toString()` and `toLocaleString()` that return the function's code.
 > Functions are not flagged by this rule.
 
 ## Examples
@@ -29,20 +29,27 @@ class MyClass {}
 const value = new MyClass();
 value + '';
 
-// Interpolation and manual .toString() calls too:
+// Interpolation and manual .toString() and `toLocaleString()` calls too:
 `Value: ${value}`;
+String({});
 ({}).toString();
+({}).toLocaleString();
+
+// Stringifying objects or instances in an array with the `Array.prototype.join`.
+[{}, new MyClass()].join('');
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-// These types all have useful .toString()s
+// These types all have useful .toString() and `toLocaleString()` methods
 'Text' + true;
 `Value: ${123}`;
 `Arrays too: ${[1, 2, 3]}`;
 (() => {}).toString();
+String(42);
+(() => {}).toLocaleString();
 
 // Defining a custom .toString class is considered acceptable
 class CustomToString {
@@ -62,13 +69,23 @@ const literalWithToString = {
 </TabItem>
 </Tabs>
 
+## Alternatives
+
+Consider using `JSON.stringify` when you want to convert non-primitive things to string for logging, debugging, etc.
+
+```typescript
+declare const o: object;
+const errorMessage = 'Found unexpected value: ' + JSON.stringify(o);
+```
+
 ## Options
 
 ### `ignoredTypeNames`
 
-Stringified regular expressions of type names to ignore.
-This is useful for types missing `toString()` (but actually has `toString()`).
-There are some types missing `toString()` in old version TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
+{/* insert option description */}
+
+This is useful for types missing `toString()` or `toLocaleString()` (but actually has `toString()` or `toLocaleString()`).
+There are some types missing `toString()` or `toLocaleString()` in old versions of TypeScript, like `RegExp`, `URL`, `URLSearchParams` etc.
 
 The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
@@ -79,6 +96,7 @@ The following patterns are considered correct with the default options `{ ignore
 let value = /regex/;
 value.toString();
 let text = `${value}`;
+String(/regex/);
 ```
 
 ## When Not To Use It
@@ -93,3 +111,5 @@ If you don't mind a risk of `"[object Object]"` or incorrect type coercions in y
 ## Further Reading
 
 - [`Object.prototype.toString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString)
+- [`Object.prototype.toLocaleString()` MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString)
+- [Microsoft/TypeScript Add missing toString declarations for base types that have them](https://github.com/microsoft/TypeScript/issues/38347)

@@ -3,6 +3,6 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { TypeNode } from '../../unions/TypeNode';
 
 export interface TSArrayType extends BaseNode {
-  elementType: TypeNode;
   type: AST_NODE_TYPES.TSArrayType;
+  elementType: TypeNode;
 }

@@ -4,6 +4,6 @@ import type { Expression } from '../../unions/Expression';
 import type { JSXEmptyExpression } from '../JSXEmptyExpression/spec';
 
 export interface JSXExpressionContainer extends BaseNode {
-  expression: Expression | JSXEmptyExpression;
   type: AST_NODE_TYPES.JSXExpressionContainer;
+  expression: Expression | JSXEmptyExpression;
 }

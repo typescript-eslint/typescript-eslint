@@ -1,17 +1,19 @@
 import debug from 'debug';
+import path from 'node:path';
 import * as ts from 'typescript';
 
 import type { ProjectServiceSettings } from '../create-program/createProjectService';
+import type { TSESTreeOptions } from '../parser-options';
+import type { MutableParseSettings } from './index';
+
 import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
 import { isSourceFile } from '../source-files';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
 } from './ExpiringCache';
 import { getProjectConfigFiles } from './getProjectConfigFiles';
-import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
@@ -29,14 +31,14 @@ let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 const JSDocParsingMode = {
   ParseAll: ts.JSDocParsingMode?.ParseAll,
-  ParseNone: ts.JSDocParsingMode?.ParseNone,
   ParseForTypeErrors: ts.JSDocParsingMode?.ParseForTypeErrors,
   ParseForTypeInfo: ts.JSDocParsingMode?.ParseForTypeInfo,
+  ParseNone: ts.JSDocParsingMode?.ParseNone,
 } as const;
 /* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
 export function createParseSettings(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   tsestreeOptions: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
@@ -46,6 +48,14 @@ export function createParseSettings(
       ? tsestreeOptions.tsconfigRootDir
       : process.cwd();
   const passedLoggerFn = typeof tsestreeOptions.loggerFn === 'function';
+  const filePath = ensureAbsolutePath(
+    typeof tsestreeOptions.filePath === 'string' &&
+      tsestreeOptions.filePath !== '<input>'
+      ? tsestreeOptions.filePath
+      : getFileName(tsestreeOptions.jsx),
+    tsconfigRootDir,
+  );
+  const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   const jsDocParsingMode = ((): ts.JSDocParsingMode => {
     switch (tsestreeOptions.jsDocParsingMode) {
       case 'all':
@@ -63,6 +73,8 @@ export function createParseSettings(
   })();
 
   const parseSettings: MutableParseSettings = {
+    loc: tsestreeOptions.loc === true,
+    range: tsestreeOptions.range === true,
     allowInvalidAST: tsestreeOptions.allowInvalidAST === true,
     code,
     codeFullText,
@@ -81,16 +93,9 @@ export function createParseSettings(
       tsestreeOptions.extraFileExtensions.every(ext => typeof ext === 'string')
         ? tsestreeOptions.extraFileExtensions
         : [],
-    filePath: ensureAbsolutePath(
-      typeof tsestreeOptions.filePath === 'string' &&
-        tsestreeOptions.filePath !== '<input>'
-        ? tsestreeOptions.filePath
-        : getFileName(tsestreeOptions.jsx),
-      tsconfigRootDir,
-    ),
+    filePath,
     jsDocParsingMode,
     jsx: tsestreeOptions.jsx === true,
-    loc: tsestreeOptions.loc === true,
     log:
       typeof tsestreeOptions.loggerFn === 'function'
         ? tsestreeOptions.loggerFn
@@ -113,7 +118,16 @@ export function createParseSettings(
             tsconfigRootDir,
           ))
         : undefined,
-    range: tsestreeOptions.range === true,
+    setExternalModuleIndicator:
+      tsestreeOptions.sourceType === 'module' ||
+      (tsestreeOptions.sourceType === undefined &&
+        extension === ts.Extension.Mjs) ||
+      (tsestreeOptions.sourceType === undefined &&
+        extension === ts.Extension.Mts)
+        ? (file): void => {
+            file.externalModuleIndicator = true;
+          }
+        : undefined,
     singleRun,
     suppressDeprecatedPropertyWarnings:
       tsestreeOptions.suppressDeprecatedPropertyWarnings ??

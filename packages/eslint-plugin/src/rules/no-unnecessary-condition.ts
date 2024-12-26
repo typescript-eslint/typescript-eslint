@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -18,13 +19,38 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import {
+  findTruthinessAssertedArgument,
+  findTypeGuardAssertedArgument,
+} from '../util/assertionFunctionUtils';
 
 // Truthiness utilities
 // #region
+const valueIsPseudoBigInt = (
+  value: number | string | ts.PseudoBigInt,
+): value is ts.PseudoBigInt => {
+  return typeof value === 'object';
+};
+
+const getValueOfLiteralType = (
+  type: ts.LiteralType,
+): bigint | number | string => {
+  if (valueIsPseudoBigInt(type.value)) {
+    return pseudoBigIntToBigInt(type.value);
+  }
+  return type.value;
+};
+
+const isFalsyBigInt = (type: ts.Type): boolean => {
+  return (
+    tsutils.isLiteralType(type) &&
+    valueIsPseudoBigInt(type.value) &&
+    !getValueOfLiteralType(type)
+  );
+};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
-  //  || type.
-  (type.isLiteral() && !!type.value);
+  (type.isLiteral() && !!getValueOfLiteralType(type));
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
@@ -44,7 +70,13 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+      intersectionParts.every(
+        type =>
+          !tsutils.isFalsyType(type) &&
+          // below is a workaround for ts-api-utils bug
+          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
+          !isFalsyBigInt(type),
+      ),
     );
 
 // Nullish utilities
@@ -58,19 +90,90 @@ const isPossiblyNullish = (type: ts.Type): boolean =>
 const isAlwaysNullish = (type: ts.Type): boolean =>
   tsutils.unionTypeParts(type).every(isNullishType);
 
-// isLiteralType only covers numbers and strings, this is a more exhaustive check.
-const isLiteral = (type: ts.Type): boolean =>
-  tsutils.isBooleanLiteralType(type) ||
-  type.flags === ts.TypeFlags.Undefined ||
-  type.flags === ts.TypeFlags.Null ||
-  type.flags === ts.TypeFlags.Void ||
-  type.isLiteral();
+function toStaticValue(
+  type: ts.Type,
+):
+  | { value: bigint | boolean | number | string | null | undefined }
+  | undefined {
+  // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
+  if (tsutils.isBooleanLiteralType(type)) {
+    // Using `type.intrinsicName` instead of `type.value` because `type.value`
+    // is `undefined`, contrary to what the type guard tells us.
+    // See https://github.com/JoshuaKGoldberg/ts-api-utils/issues/528
+    return { value: type.intrinsicName === 'true' };
+  }
+  if (type.flags === ts.TypeFlags.Undefined) {
+    return { value: undefined };
+  }
+  if (type.flags === ts.TypeFlags.Null) {
+    return { value: null };
+  }
+  if (type.isLiteral()) {
+    return { value: getValueOfLiteralType(type) };
+  }
+
+  return undefined;
+}
+
+function pseudoBigIntToBigInt(value: ts.PseudoBigInt): bigint {
+  return BigInt((value.negative ? '-' : '') + value.base10Value);
+}
+
+const BOOL_OPERATORS = new Set([
+  '<',
+  '>',
+  '<=',
+  '>=',
+  '==',
+  '===',
+  '!=',
+  '!==',
+] as const);
+
+type BoolOperator = typeof BOOL_OPERATORS extends Set<infer T> ? T : never;
+
+function isBoolOperator(operator: string): operator is BoolOperator {
+  return (BOOL_OPERATORS as Set<string>).has(operator);
+}
+
+function booleanComparison(
+  left: unknown,
+  operator: BoolOperator,
+  right: unknown,
+): boolean {
+  switch (operator) {
+    case '!=':
+      // eslint-disable-next-line eqeqeq -- intentionally comparing with loose equality
+      return left != right;
+    case '!==':
+      return left !== right;
+    case '<':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left < right;
+    case '<=':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left <= right;
+    case '==':
+      // eslint-disable-next-line eqeqeq -- intentionally comparing with loose equality
+      return left == right;
+    case '===':
+      return left === right;
+    case '>':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left > right;
+    case '>=':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left >= right;
+  }
+}
+
 // #endregion
 
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    checkTypePredicates?: boolean;
   },
 ];
 
@@ -85,7 +188,8 @@ export type MessageId =
   | 'neverNullish'
   | 'neverOptionalChain'
   | 'noOverlapBooleanExpression'
-  | 'noStrictNullCheck';
+  | 'noStrictNullCheck'
+  | 'typeGuardAlreadyIsType';
 
 export default createRule<Options, MessageId>({
   name: 'no-unnecessary-condition',
@@ -97,50 +201,58 @@ export default createRule<Options, MessageId>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
+    messages: {
+      alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
+      alwaysFalsyFunc:
+        'This callback should return a conditional, but return is always falsy.',
+      alwaysNullish:
+        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
+      alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
+      alwaysTruthyFunc:
+        'This callback should return a conditional, but return is always truthy.',
+      literalBooleanExpression:
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}. Both sides of the comparison always have a literal type.',
+      never: 'Unnecessary conditional, value is `never`.',
+      neverNullish:
+        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
+      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
+      noOverlapBooleanExpression:
+        'Unnecessary conditional, the types have no overlap.',
+      noStrictNullCheck:
+        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      typeGuardAlreadyIsType:
+        'Unnecessary conditional, expression already has the type being checked by the {{typeGuardOrAssertionFunction}}.',
+    },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowConstantLoopConditions: {
+            type: 'boolean',
             description:
               'Whether to ignore constant loop conditions, such as `while (true)`.',
-            type: 'boolean',
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+            type: 'boolean',
             description:
               'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
+          },
+          checkTypePredicates: {
             type: 'boolean',
+            description:
+              'Whether to check the asserted argument of a type predicate function for unnecessary conditions',
           },
         },
-        additionalProperties: false,
       },
     ],
-    fixable: 'code',
-    messages: {
-      alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
-      alwaysFalsy: 'Unnecessary conditional, value is always falsy.',
-      alwaysTruthyFunc:
-        'This callback should return a conditional, but return is always truthy.',
-      alwaysFalsyFunc:
-        'This callback should return a conditional, but return is always falsy.',
-      neverNullish:
-        'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
-      alwaysNullish:
-        'Unnecessary conditional, left-hand side of `??` operator is always `null` or `undefined`.',
-      literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values.',
-      noOverlapBooleanExpression:
-        'Unnecessary conditional, the types have no overlap.',
-      never: 'Unnecessary conditional, value is `never`.',
-      neverOptionalChain: 'Unnecessary optional chain on a non-nullish value.',
-      noStrictNullCheck:
-        'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
-    },
   },
   defaultOptions: [
     {
       allowConstantLoopConditions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      checkTypePredicates: false,
     },
   ],
   create(
@@ -149,6 +261,7 @@ export default createRule<Options, MessageId>({
       {
         allowConstantLoopConditions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        checkTypePredicates,
       },
     ],
   ) {
@@ -167,8 +280,8 @@ export default createRule<Options, MessageId>({
     ) {
       context.report({
         loc: {
-          start: { line: 0, column: 0 },
-          end: { line: 0, column: 0 },
+          start: { column: 0, line: 0 },
+          end: { column: 0, line: 0 },
         },
         messageId: 'noStrictNullCheck',
       });
@@ -355,19 +468,6 @@ export default createRule<Options, MessageId>({
      *      - https://github.com/microsoft/TypeScript/issues/32627
      *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
-    const BOOL_OPERATORS = new Set([
-      '<',
-      '>',
-      '<=',
-      '>=',
-      '==',
-      '===',
-      '!=',
-      '!==',
-    ] as const);
-    type BoolOperator = Parameters<typeof BOOL_OPERATORS.has>[0];
-    const isBoolOperator = (operator: string): operator is BoolOperator =>
-      (BOOL_OPERATORS as Set<string>).has(operator);
     function checkIfBoolExpressionIsNecessaryConditional(
       node: TSESTree.Node,
       left: TSESTree.Node,
@@ -376,10 +476,27 @@ export default createRule<Options, MessageId>({
     ): void {
       const leftType = getConstrainedTypeAtLocation(services, left);
       const rightType = getConstrainedTypeAtLocation(services, right);
-      if (isLiteral(leftType) && isLiteral(rightType)) {
-        context.report({ node, messageId: 'literalBooleanExpression' });
+
+      const leftStaticValue = toStaticValue(leftType);
+      const rightStaticValue = toStaticValue(rightType);
+
+      if (leftStaticValue != null && rightStaticValue != null) {
+        const conditionIsTrue = booleanComparison(
+          leftStaticValue.value,
+          operator,
+          rightStaticValue.value,
+        );
+
+        context.report({
+          node,
+          messageId: 'literalBooleanExpression',
+          data: {
+            trueOrFalse: conditionIsTrue ? 'true' : 'false',
+          },
+        });
         return;
       }
+
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
@@ -463,6 +580,38 @@ export default createRule<Options, MessageId>({
     }
 
     function checkCallExpression(node: TSESTree.CallExpression): void {
+      if (checkTypePredicates) {
+        const truthinessAssertedArgument = findTruthinessAssertedArgument(
+          services,
+          node,
+        );
+        if (truthinessAssertedArgument != null) {
+          checkNode(truthinessAssertedArgument);
+        }
+
+        const typeGuardAssertedArgument = findTypeGuardAssertedArgument(
+          services,
+          node,
+        );
+        if (typeGuardAssertedArgument != null) {
+          const typeOfArgument = getConstrainedTypeAtLocation(
+            services,
+            typeGuardAssertedArgument.argument,
+          );
+          if (typeOfArgument === typeGuardAssertedArgument.type) {
+            context.report({
+              node: typeGuardAssertedArgument.argument,
+              messageId: 'typeGuardAlreadyIsType',
+              data: {
+                typeGuardOrAssertionFunction: typeGuardAssertedArgument.asserts
+                  ? 'assertion function'
+                  : 'type guard',
+              },
+            });
+          }
+        }
+      }
+
       // If this is something like arr.filter(x => /*condition*/), check `condition`
       if (
         isArrayMethodCallWithPredicate(context, services, node) &&
@@ -644,7 +793,7 @@ export default createRule<Options, MessageId>({
     function checkOptionalChain(
       node: TSESTree.CallExpression | TSESTree.MemberExpression,
       beforeOperator: TSESTree.Node,
-      fix: '.' | '',
+      fix: '' | '.',
     ): void {
       // We only care if this step in the chain is optional. If just descend
       // from an optional chain, then that's fine.
@@ -676,8 +825,8 @@ export default createRule<Options, MessageId>({
       );
 
       context.report({
-        node,
         loc: questionDotOperator.loc,
+        node,
         messageId: 'neverOptionalChain',
         fix(fixer) {
           return fixer.replaceText(questionDotOperator, fix);
@@ -700,7 +849,7 @@ export default createRule<Options, MessageId>({
     ): void {
       // Similar to checkLogicalExpressionForUnnecessaryConditionals, since
       // a ||= b is equivalent to a || (a = b)
-      if (['||=', '&&='].includes(node.operator)) {
+      if (['&&=', '||='].includes(node.operator)) {
         checkNode(node.left);
       } else if (node.operator === '??=') {
         checkNodeForNullish(node.left);
@@ -721,12 +870,14 @@ export default createRule<Options, MessageId>({
         }
       },
       CallExpression: checkCallExpression,
+      'CallExpression[optional = true]': checkOptionalCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
       IfStatement: (node): void => checkNode(node.test),
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
-      SwitchCase({ test, parent }): void {
+      'MemberExpression[optional = true]': checkOptionalMemberExpression,
+      SwitchCase({ parent, test }): void {
         // only check `case ...:`, not `default:`
         if (test) {
           checkIfBoolExpressionIsNecessaryConditional(
@@ -738,8 +889,6 @@ export default createRule<Options, MessageId>({
         }
       },
       WhileStatement: checkIfLoopIsNecessaryConditional,
-      'MemberExpression[optional = true]': checkOptionalMemberExpression,
-      'CallExpression[optional = true]': checkOptionalCallExpression,
     };
   },
 });

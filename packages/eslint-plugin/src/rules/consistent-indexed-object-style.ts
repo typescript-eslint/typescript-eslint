@@ -1,7 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, isParenthesized, nullThrows } from '../util';
 
 type MessageIds = 'preferIndexSignature' | 'preferRecord';
 type Options = ['index-signature' | 'record'];
@@ -14,14 +16,15 @@ export default createRule<Options, MessageIds>({
       description: 'Require or disallow the `Record` type',
       recommended: 'stylistic',
     },
-    messages: {
-      preferRecord: 'A record is preferred over an index signature.',
-      preferIndexSignature: 'An index signature is preferred over a record.',
-    },
     fixable: 'code',
+    messages: {
+      preferIndexSignature: 'An index signature is preferred over a record.',
+      preferRecord: 'A record is preferred over an index signature.',
+    },
     schema: [
       {
         type: 'string',
+        description: 'Which indexed object syntax to prefer.',
         enum: ['record', 'index-signature'],
       },
     ],
@@ -122,10 +125,6 @@ export default createRule<Options, MessageIds>({
         },
       }),
       ...(mode === 'record' && {
-        TSTypeLiteral(node): void {
-          const parent = findParentDeclaration(node);
-          checkMembers(node.members, node, parent?.id, '', '');
-        },
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
@@ -143,6 +142,91 @@ export default createRule<Options, MessageIds>({
             ';',
             !node.extends.length,
           );
+        },
+        TSMappedType(node): void {
+          const key = node.key;
+          const scope = context.sourceCode.getScope(key);
+
+          const scopeManagerKey = nullThrows(
+            scope.variables.find(
+              value => value.name === key.name && value.isTypeVariable,
+            ),
+            'key type parameter must be a defined type variable in its scope',
+          );
+
+          // If the key is used to compute the value, we can't convert to a Record.
+          if (
+            scopeManagerKey.references.some(
+              reference => reference.isTypeReference,
+            )
+          ) {
+            return;
+          }
+
+          const constraint = node.constraint;
+
+          if (
+            constraint.type === AST_NODE_TYPES.TSTypeOperator &&
+            constraint.operator === 'keyof' &&
+            !isParenthesized(constraint, context.sourceCode)
+          ) {
+            // This is a weird special case, since modifiers are preserved by
+            // the mapped type, but not by the Record type. So this type is not,
+            // in general, equivalent to a Record type.
+            return;
+          }
+
+          // If the mapped type is circular, we can't convert it to a Record.
+          const parentId = findParentDeclaration(node)?.id;
+          if (parentId) {
+            const scope = context.sourceCode.getScope(key);
+            const superVar = ASTUtils.findVariable(scope, parentId.name);
+            if (superVar) {
+              const isCircular = superVar.references.some(
+                item =>
+                  item.isTypeReference &&
+                  node.range[0] <= item.identifier.range[0] &&
+                  node.range[1] >= item.identifier.range[1],
+              );
+              if (isCircular) {
+                return;
+              }
+            }
+          }
+
+          // There's no builtin Mutable<T> type, so we can't autofix it really.
+          const canFix = node.readonly !== '-';
+
+          context.report({
+            node,
+            messageId: 'preferRecord',
+            ...(canFix && {
+              fix: (fixer): ReturnType<ReportFixFunction> => {
+                const keyType = context.sourceCode.getText(constraint);
+                const valueType = context.sourceCode.getText(
+                  node.typeAnnotation,
+                );
+
+                let recordText = `Record<${keyType}, ${valueType}>`;
+
+                if (node.optional === '+' || node.optional === true) {
+                  recordText = `Partial<${recordText}>`;
+                } else if (node.optional === '-') {
+                  recordText = `Required<${recordText}>`;
+                }
+
+                if (node.readonly === '+' || node.readonly === true) {
+                  recordText = `Readonly<${recordText}>`;
+                }
+
+                return fixer.replaceText(node, recordText);
+              },
+            }),
+          });
+        },
+        TSTypeLiteral(node): void {
+          const parent = findParentDeclaration(node);
+          checkMembers(node.members, node, parent?.id, '', '');
         },
       }),
     };

@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -57,13 +58,13 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 export default createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
-    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       mismatchedCase:
         'The case statement does not have a shared enum type with the switch predicate.',
@@ -141,8 +142,8 @@ export default createRule({
 
         if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatchedCondition',
             node,
+            messageId: 'mismatchedCondition',
             suggest: [
               {
                 messageId: 'replaceValueWithEnum',
@@ -197,8 +198,8 @@ export default createRule({
 
         if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatchedCase',
             node,
+            messageId: 'mismatchedCase',
           });
         }
       },

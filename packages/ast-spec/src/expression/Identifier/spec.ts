@@ -4,9 +4,9 @@ import type { Decorator } from '../../special/Decorator/spec';
 import type { TSTypeAnnotation } from '../../special/TSTypeAnnotation/spec';
 
 export interface Identifier extends BaseNode {
+  type: AST_NODE_TYPES.Identifier;
   decorators: Decorator[];
   name: string;
   optional: boolean;
-  type: AST_NODE_TYPES.Identifier;
   typeAnnotation: TSTypeAnnotation | undefined;
 }

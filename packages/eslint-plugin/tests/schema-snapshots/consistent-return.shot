@@ -9,7 +9,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "treatUndefinedAsUnspecified": {
-        "default": false,
         "type": "boolean"
       }
     },

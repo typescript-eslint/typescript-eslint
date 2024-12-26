@@ -27,6 +27,7 @@ Program {
           end: { column: 18, line: 3 },
         },
       },
+      kind: "module",
 
       range: [73, 94],
       loc: {

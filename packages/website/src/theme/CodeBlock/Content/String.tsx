@@ -1,5 +1,7 @@
 // Change: added `copiedCode` which filters out the removed lines
 
+import type { Props } from '@theme/CodeBlock/Content/String';
+
 import { usePrismTheme, useThemeConfig } from '@docusaurus/theme-common';
 import {
   containsLineNumbers,
@@ -9,7 +11,6 @@ import {
   useCodeWordWrap,
 } from '@docusaurus/theme-common/internal';
 import Container from '@theme/CodeBlock/Container';
-import type { Props } from '@theme/CodeBlock/Content/String';
 import CopyButton from '@theme/CodeBlock/CopyButton';
 import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
@@ -24,10 +25,10 @@ import styles from './styles.module.css';
 export default function CodeBlockString({
   children,
   className: blockClassName = '',
-  metastring,
-  title: titleProp,
-  showLineNumbers: showLineNumbersProp,
   language: languageProp,
+  metastring,
+  showLineNumbers: showLineNumbersProp,
+  title: titleProp,
 }: Props): React.JSX.Element {
   const {
     prism: { defaultLanguage, magicComments },
@@ -42,23 +43,25 @@ export default function CodeBlockString({
   // "title=\"xyz\"" => title: "\"xyz\""
   const title = parseCodeBlockTitle(metastring) || titleProp;
 
-  const { lineClassNames, code } = parseLines(children, {
-    metastring,
+  const { code, lineClassNames } = parseLines(children, {
     language,
     magicComments,
+    metastring,
   });
   const showLineNumbers =
     showLineNumbersProp ?? containsLineNumbers(metastring);
 
-  const copiedCode = code
+  const codeLines = code
     .split('\n')
     .filter(
       (c, i) =>
         !(lineClassNames[i] as string[] | undefined)?.includes(
           'code-block-removed-line',
         ),
-    )
-    .join('\n');
+    );
+  const copiedCode = codeLines.join('\n');
+  const lastLineOfCodeLength = codeLines.at(-1)?.length ?? 0;
+  const needsMorePadding = lastLineOfCodeLength > 50;
 
   const eslintrcHash = parseEslintrc(metastring);
 
@@ -74,32 +77,35 @@ export default function CodeBlockString({
     >
       {title && <div className={styles.codeBlockTitle}>{title}</div>}
       <div className={styles.codeBlockContent}>
-        <Highlight theme={prismTheme} code={code} language={language ?? 'text'}>
+        <Highlight code={code} language={language ?? 'text'} theme={prismTheme}>
           {({
             className,
-            tokens,
             getLineProps,
             getTokenProps,
+            tokens,
           }): React.JSX.Element => (
             <pre
+              className={clsx(className, styles.codeBlock, 'thin-scrollbar')}
+              ref={wordWrap.codeBlockRef}
               // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
               tabIndex={0}
-              ref={wordWrap.codeBlockRef}
-              className={clsx(className, styles.codeBlock, 'thin-scrollbar')}
             >
               <code
                 className={clsx(
                   styles.codeBlockLines,
+                  eslintrcHash &&
+                    needsMorePadding &&
+                    styles.codeBlockLinesMorePadding,
                   showLineNumbers && styles.codeBlockLinesWithNumbering,
                 )}
               >
                 {tokens.map((line, i) => (
                   <Line
-                    key={i}
-                    line={line}
+                    classNames={lineClassNames[i]}
                     getLineProps={getLineProps}
                     getTokenProps={getTokenProps}
-                    classNames={lineClassNames[i]}
+                    key={i}
+                    line={line}
                     showLineNumbers={showLineNumbers}
                   />
                 ))}
@@ -124,8 +130,8 @@ export default function CodeBlockString({
           {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
             <WordWrapButton
               className={styles.codeButton}
-              onClick={(): void => wordWrap.toggle()}
               isEnabled={wordWrap.isEnabled}
+              onClick={(): void => wordWrap.toggle()}
             />
           )}
           <CopyButton className={styles.codeButton} code={copiedCode} />

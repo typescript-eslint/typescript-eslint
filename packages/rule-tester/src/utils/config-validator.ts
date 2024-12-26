@@ -197,7 +197,7 @@ function validateConfigSchema(
   config: TesterConfigWithDefaults,
   source: string,
 ): void {
-  validateSchema ||= ajv.compile(flatConfigSchema);
+  validateSchema ??= ajv.compile(flatConfigSchema);
 
   if (!validateSchema(config)) {
     throw new Error(

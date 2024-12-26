@@ -8,8 +8,8 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      tsconfigRootDir: rootDir,
       project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
     },
   },
 });
@@ -1051,6 +1051,21 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
 const array: number[] = [1, 2, 3];
 array.filter(a => a > 1);
     `,
+    `
+type ReturnsPromiseVoid = () => Promise<void>;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+useCallback<ReturnsPromiseVoid>(async () => {});
+    `,
+    `
+type ReturnsVoid = () => void;
+type ReturnsPromiseVoid = () => Promise<void>;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+useCallback<ReturnsVoid | ReturnsPromiseVoid>(async () => {});
+    `,
   ],
 
   invalid: [
@@ -1390,6 +1405,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1404,6 +1422,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 12,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1436,6 +1457,9 @@ const obj: O = {
       `,
       errors: [
         {
+          column: 3,
+          endColumn: 10,
+          endLine: 4,
           line: 4,
           messageId: 'voidReturnProperty',
         },
@@ -1457,14 +1481,23 @@ function f(): O {
       `,
       errors: [
         {
+          column: 5,
+          endColumn: 12,
+          endLine: 6,
           line: 6,
           messageId: 'voidReturnProperty',
         },
         {
+          column: 5,
+          endColumn: 14,
+          endLine: 9,
           line: 9,
           messageId: 'voidReturnProperty',
         },
         {
+          column: 5,
+          endColumn: 6,
+          endLine: 10,
           line: 10,
           messageId: 'voidReturnProperty',
         },
@@ -1505,6 +1538,12 @@ type O = {
 const Component = (obj: O) => null;
 <Component func={async () => 0} />;
       `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
       languageOptions: {
         parserOptions: {
           ecmaFeatures: {
@@ -1512,12 +1551,6 @@ const Component = (obj: O) => null;
           },
         },
       },
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnAttribute',
-        },
-      ],
     },
     {
       code: `
@@ -1527,6 +1560,12 @@ type O = {
 const Component = (obj: O) => null;
 <Component func={async () => 0} />;
       `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
       languageOptions: {
         parserOptions: {
           ecmaFeatures: {
@@ -1534,12 +1573,6 @@ const Component = (obj: O) => null;
           },
         },
       },
-      errors: [
-        {
-          line: 6,
-          messageId: 'voidReturnAttribute',
-        },
-      ],
       options: [{ checksVoidReturn: { attributes: true } }],
     },
     {
@@ -1551,6 +1584,12 @@ const g = async () => 'foo';
 const Component = (obj: O) => null;
 <Component func={g} />;
       `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnAttribute',
+        },
+      ],
       languageOptions: {
         parserOptions: {
           ecmaFeatures: {
@@ -1558,12 +1597,6 @@ const Component = (obj: O) => null;
           },
         },
       },
-      errors: [
-        {
-          line: 7,
-          messageId: 'voidReturnAttribute',
-        },
-      ],
     },
     {
       code: `
@@ -1768,7 +1801,15 @@ const test: ReturnsRecord = () => {
   return { asynchronous: async () => {} };
 };
       `,
-      errors: [{ line: 5, messageId: 'voidReturnProperty' }],
+      errors: [
+        {
+          column: 12,
+          endColumn: 32,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
     },
     {
       code: `
@@ -1848,9 +1889,9 @@ class MySubclassExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyClass' },
           line: 9,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
         },
       ],
     },
@@ -1868,9 +1909,9 @@ abstract class MyAbstractClassExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyClass' },
           line: 9,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
         },
       ],
     },
@@ -1888,9 +1929,9 @@ interface MyInterfaceExtendsMyClass extends MyClass {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyClass' },
           line: 9,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
         },
       ],
     },
@@ -1908,9 +1949,9 @@ class MySubclassExtendsMyAbstractClass extends MyAbstractClass {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyAbstractClass' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
     },
@@ -1926,9 +1967,9 @@ abstract class MyAbstractSubclassExtendsMyAbstractClass extends MyAbstractClass 
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyAbstractClass' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
     },
@@ -1944,9 +1985,9 @@ interface MyInterfaceExtendsMyAbstractClass extends MyAbstractClass {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyAbstractClass' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyAbstractClass' },
         },
       ],
     },
@@ -1964,9 +2005,9 @@ class MyInterfaceSubclass implements MyInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyInterface' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -1982,9 +2023,9 @@ abstract class MyAbstractClassImplementsMyInterface implements MyInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyInterface' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -2000,9 +2041,9 @@ interface MySubInterface extends MyInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyInterface' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -2019,9 +2060,9 @@ class MyClassImplementsMyTypeIntersection implements MyTypeIntersection {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyTypeIntersection' },
           line: 6,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyTypeIntersection' },
         },
       ],
     },
@@ -2037,9 +2078,9 @@ interface MyAsyncInterface extends MyGenericType<false> {
       `,
       errors: [
         {
+          data: { heritageTypeName: '{ setThing(): void; }' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: '{ setThing(): void; }' },
         },
       ],
     },
@@ -2059,14 +2100,14 @@ interface MyThirdInterface extends MyInterface, MyOtherInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyInterface' },
           line: 11,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
         },
         {
+          data: { heritageTypeName: 'MyOtherInterface' },
           line: 11,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyOtherInterface' },
         },
       ],
     },
@@ -2090,14 +2131,14 @@ interface MyInterface extends MyClass, MyOtherClass {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyClass' },
           line: 15,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
         },
         {
+          data: { heritageTypeName: 'MyOtherClass' },
           line: 15,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyOtherClass' },
         },
       ],
     },
@@ -2125,14 +2166,14 @@ class MySubclass extends MyClass implements MyAsyncInterface, MySyncInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyClass' },
           line: 17,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClass' },
         },
         {
+          data: { heritageTypeName: 'MySyncInterface' },
           line: 17,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
     },
@@ -2150,9 +2191,9 @@ const MyClassExpressionExtendsMyClass = class implements MyInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyInterface' },
           line: 7,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyInterface' },
         },
       ],
     },
@@ -2172,9 +2213,9 @@ class MyClassExtendsMyClassExpression extends MyClassExpression {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyClassExpression' },
           line: 9,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyClassExpression' },
         },
       ],
     },
@@ -2193,9 +2234,9 @@ interface MyInterfaceExtendsMyClassExpression extends MyClassExpressionType {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'typeof MyClassExpression' },
           line: 10,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'typeof MyClassExpression' },
         },
       ],
     },
@@ -2220,9 +2261,9 @@ interface MyAsyncInterface extends MySyncInterface {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MySyncInterface' },
           line: 16,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MySyncInterface' },
         },
       ],
     },
@@ -2262,14 +2303,14 @@ interface MyInterface extends MyCall, MyIndex, MyConstruct, MyMethods {
       `,
       errors: [
         {
+          data: { heritageTypeName: 'MyMethods' },
           line: 29,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyMethods' },
         },
         {
+          data: { heritageTypeName: 'MyMethods' },
           line: 31,
           messageId: 'voidReturnInheritedMethod',
-          data: { heritageTypeName: 'MyMethods' },
         },
       ],
     },
@@ -2314,11 +2355,224 @@ array.every(() => Promise.resolve(true));
 const tuple: [number, number, number] = [1, 2, 3];
 tuple.find(() => Promise.resolve(false));
       `,
-      options: [{ checksConditionals: true }],
       errors: [
         {
           line: 3,
           messageId: 'predicate',
+        },
+      ],
+      options: [{ checksConditionals: true }],
+    },
+    {
+      code: `
+type ReturnsVoid = () => void;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+declare const useCallbackReturningVoid: typeof useCallback<ReturnsVoid>;
+useCallbackReturningVoid(async () => {});
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+type ReturnsVoid = () => void;
+declare const useCallback: <T extends (...args: unknown[]) => unknown>(
+  fn: T,
+) => T;
+useCallback<ReturnsVoid>(async () => {});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo<T> {
+  (callback: () => T): void;
+  (callback: () => number): void;
+}
+declare const foo: Foo<void>;
+
+foo(async () => {});
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function tupleFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: [T, string, T]
+): void;
+tupleFn<() => void>(
+  async () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+declare function arrayFn<T extends (...args: unknown[]) => unknown>(
+  ...fns: (T | string)[]
+): void;
+arrayFn<() => void>(
+  async () => {},
+  'foo',
+  async () => {},
+);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'voidReturnArgument',
+        },
+        {
+          line: 8,
+          messageId: 'voidReturnArgument',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+
+const o: HasVoidMethod = {
+  async f() {
+    return 3;
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 10,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+
+const o: HasVoidMethod = {
+  async f(): Promise<number> {
+    return 3;
+  },
+};
+      `,
+      errors: [
+        {
+          column: 14,
+          endColumn: 29,
+          endLine: 7,
+          line: 7,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+const obj: HasVoidMethod = {
+  f() {
+    return Promise.resolve('foo');
+  },
+};
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 4,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type HasVoidMethod = {
+  f(): void;
+};
+const obj: HasVoidMethod = {
+  f(): Promise<void> {
+    throw new Error();
+  },
+};
+      `,
+      errors: [
+        {
+          column: 8,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const asyncFunction = async () => 'foo';
+const obj: O = {
+  f: asyncFunction,
+};
+      `,
+      errors: [
+        {
+          column: 6,
+          endColumn: 19,
+          endLine: 5,
+          line: 5,
+          messageId: 'voidReturnProperty',
+        },
+      ],
+    },
+    {
+      code: `
+type O = { f: () => void };
+const obj: O = {
+  f: async (): Promise<string> => 'foo',
+};
+      `,
+      errors: [
+        {
+          column: 16,
+          endColumn: 31,
+          endLine: 4,
+          line: 4,
+          messageId: 'voidReturnProperty',
         },
       ],
     },

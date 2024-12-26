@@ -77,7 +77,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-decl
 +           end: { column: 21, line: 1 },
           },
         },
--       kind: 'namespace',
+        kind: 'namespace',
 
         range: [0, 28],
         loc: {

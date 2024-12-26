@@ -1,9 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type { TypeOrValueSpecifier } from '../util';
+
 import {
   createRule,
   getOperatorPrecedence,
@@ -18,8 +20,8 @@ import {
 
 type Options = [
   {
-    allowForKnownSafePromises?: TypeOrValueSpecifier[];
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
+    allowForKnownSafePromises?: TypeOrValueSpecifier[];
     checkThenables?: boolean;
     ignoreIIFE?: boolean;
     ignoreVoid?: boolean;
@@ -28,13 +30,13 @@ type Options = [
 
 type MessageId =
   | 'floating'
-  | 'floatingVoid'
-  | 'floatingUselessRejectionHandler'
-  | 'floatingUselessRejectionHandlerVoid'
   | 'floatingFixAwait'
   | 'floatingFixVoid'
   | 'floatingPromiseArray'
-  | 'floatingPromiseArrayVoid';
+  | 'floatingPromiseArrayVoid'
+  | 'floatingUselessRejectionHandler'
+  | 'floatingUselessRejectionHandlerVoid'
+  | 'floatingVoid';
 
 const messageBase =
   'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.';
@@ -56,6 +58,7 @@ const messagePromiseArrayVoid =
 export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require Promise-like statements to be handled appropriately',
@@ -66,45 +69,44 @@ export default createRule<Options, MessageId>({
     messages: {
       floating: messageBase,
       floatingFixAwait: 'Add await operator.',
-      floatingVoid: messageBaseVoid,
       floatingFixVoid: 'Add void operator to ignore.',
-      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
-      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
       floatingPromiseArray: messagePromiseArray,
       floatingPromiseArrayVoid: messagePromiseArrayVoid,
+      floatingUselessRejectionHandler: `${messageBase} ${messageRejectionHandler}`,
+      floatingUselessRejectionHandlerVoid: `${messageBaseVoid} ${messageRejectionHandler}`,
+      floatingVoid: messageBaseVoid,
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
-          allowForKnownSafePromises: {
-            ...readonlynessOptionsSchema.properties.allow,
-            description: 'Type specifiers that are known to be safe to float.',
-          },
           allowForKnownSafeCalls: {
             ...readonlynessOptionsSchema.properties.allow,
             description:
               'Type specifiers of functions whose calls are safe to float.',
           },
+          allowForKnownSafePromises: {
+            ...readonlynessOptionsSchema.properties.allow,
+            description: 'Type specifiers that are known to be safe to float.',
+          },
           checkThenables: {
+            type: 'boolean',
             description:
               'Whether to check all "Thenable"s, not just the built-in Promise type.',
-            type: 'boolean',
-          },
-          ignoreVoid: {
-            description: 'Whether to ignore `void` expressions.',
-            type: 'boolean',
           },
           ignoreIIFE: {
+            type: 'boolean',
             description:
               'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
+          },
+          ignoreVoid: {
             type: 'boolean',
+            description: 'Whether to ignore `void` expressions.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'problem',
   },
   defaultOptions: [
     {
@@ -373,7 +375,9 @@ export default createRule<Options, MessageId>({
 
         // All other cases are unhandled.
         return { isUnhandled: true };
-      } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
+      }
+
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
         const alternateResult = isUnhandledPromise(checker, node.alternate);
@@ -381,7 +385,9 @@ export default createRule<Options, MessageId>({
           return alternateResult;
         }
         return isUnhandledPromise(checker, node.consequent);
-      } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+      }
+
+      if (node.type === AST_NODE_TYPES.LogicalExpression) {
         const leftResult = isUnhandledPromise(checker, node.left);
         if (leftResult.isUnhandled) {
           return leftResult;

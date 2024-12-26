@@ -17,12 +17,12 @@ describe('ESLint', () => {
       const eslint = new ESLint.LegacyESLint({
         // accepts legacy configs
         baseConfig: {
-          parserOptions: {},
           overrides: [],
+          parserOptions: {},
         },
         overrideConfig: {
-          parserOptions: {},
           overrides: [],
+          parserOptions: {},
         },
       });
       expect(eslint).toBeInstanceOf(LegacyESLint);

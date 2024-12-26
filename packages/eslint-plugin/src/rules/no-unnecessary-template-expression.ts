@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -10,6 +11,7 @@ import {
   isTypeFlagSet,
   isUndefinedIdentifier,
 } from '../util';
+import { rangeToLoc } from '../util/rangeToLoc';
 
 type MessageId = 'noUnnecessaryTemplateExpression';
 
@@ -27,13 +29,13 @@ function endsWithUnescapedDollarSign(str: string): boolean {
 export default createRule<[], MessageId>({
   name: 'no-unnecessary-template-expression',
   meta: {
-    fixable: 'code',
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary template expressions',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       noUnnecessaryTemplateExpression:
         'Template literal expression is unnecessary and can be simplified.',
@@ -46,7 +48,7 @@ export default createRule<[], MessageId>({
 
     function isUnderlyingTypeString(
       expression: TSESTree.Expression,
-    ): expression is TSESTree.StringLiteral | TSESTree.Identifier {
+    ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
       const type = getConstrainedTypeAtLocation(services, expression);
 
       const isString = (t: ts.Type): boolean => {
@@ -105,13 +107,16 @@ export default createRule<[], MessageId>({
 
         if (hasSingleStringVariable) {
           context.report({
-            node: node.expressions[0],
+            loc: rangeToLoc(context.sourceCode, [
+              node.expressions[0].range[0] - 2,
+              node.expressions[0].range[1] + 1,
+            ]),
             messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix | null {
               const wrappingCode = getMovedNodeCode({
-                sourceCode: context.sourceCode,
-                nodeToMove: node.expressions[0],
                 destinationNode: node,
+                nodeToMove: node.expressions[0],
+                sourceCode: context.sourceCode,
               });
 
               return fixer.replaceText(node, wrappingCode);
@@ -121,27 +126,58 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const fixableExpressions = node.expressions
-          .filter(
-            expression =>
-              isLiteral(expression) ||
-              isTemplateLiteral(expression) ||
+        const fixableExpressionsReversed = node.expressions
+          .map((expression, index) => ({
+            expression,
+            nextQuasi: node.quasis[index + 1],
+            prevQuasi: node.quasis[index],
+          }))
+          .filter(({ expression, nextQuasi }) => {
+            if (
               isUndefinedIdentifier(expression) ||
               isInfinityIdentifier(expression) ||
-              isNaNIdentifier(expression),
-          )
+              isNaNIdentifier(expression)
+            ) {
+              return true;
+            }
+
+            if (isLiteral(expression)) {
+              // allow trailing whitespace literal
+              if (startsWithNewLine(nextQuasi.value.raw)) {
+                return !(
+                  typeof expression.value === 'string' &&
+                  isWhitespace(expression.value)
+                );
+              }
+              return true;
+            }
+
+            if (isTemplateLiteral(expression)) {
+              // allow trailing whitespace literal
+              if (startsWithNewLine(nextQuasi.value.raw)) {
+                return !(
+                  expression.quasis.length === 1 &&
+                  isWhitespace(expression.quasis[0].value.raw)
+                );
+              }
+              return true;
+            }
+
+            return false;
+          })
           .reverse();
 
         let nextCharacterIsOpeningCurlyBrace = false;
 
-        for (const expression of fixableExpressions) {
+        for (const {
+          expression,
+          nextQuasi,
+          prevQuasi,
+        } of fixableExpressionsReversed) {
           const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
             [];
-          const index = node.expressions.indexOf(expression);
-          const prevQuasi = node.quasis[index];
-          const nextQuasi = node.quasis[index + 1];
 
-          if (nextQuasi.value.raw.length !== 0) {
+          if (nextQuasi.value.raw !== '') {
             nextCharacterIsOpeningCurlyBrace =
               nextQuasi.value.raw.startsWith('{');
           }
@@ -245,20 +281,17 @@ export default createRule<[], MessageId>({
             ]);
           }
 
+          const warnLocStart = prevQuasi.range[1] - 2;
+          const warnLocEnd = nextQuasi.range[0] + 1;
+
           context.report({
-            node: expression,
+            loc: rangeToLoc(context.sourceCode, [warnLocStart, warnLocEnd]),
             messageId: 'noUnnecessaryTemplateExpression',
             fix(fixer): TSESLint.RuleFix[] {
               return [
                 // Remove the quasis' parts that are related to the current expression.
-                fixer.removeRange([
-                  prevQuasi.range[1] - 2,
-                  expression.range[0],
-                ]),
-                fixer.removeRange([
-                  expression.range[1],
-                  nextQuasi.range[0] + 1,
-                ]),
+                fixer.removeRange([warnLocStart, expression.range[0]]),
+                fixer.removeRange([expression.range[1], warnLocEnd]),
 
                 ...fixers.flatMap(cb => cb(fixer)),
               ];
@@ -269,3 +302,19 @@ export default createRule<[], MessageId>({
     };
   },
 });
+
+function isWhitespace(x: string): boolean {
+  // allow empty string too since we went to allow
+  // `      ${''}
+  // `;
+  //
+  // in addition to
+  // `${'        '}
+  // `;
+  //
+  return /^\s*$/.test(x);
+}
+
+function startsWithNewLine(x: string): boolean {
+  return x.startsWith('\n') || x.startsWith('\r\n');
+}

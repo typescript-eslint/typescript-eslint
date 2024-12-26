@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -21,22 +22,22 @@ enum ArgumentType {
 
 export default createRule({
   name: 'prefer-regexp-exec',
-  defaultOptions: [],
-
   meta: {
     type: 'suggestion',
-    fixable: 'code',
     docs: {
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       regExpExecOverStringMatch: 'Use the `RegExp#exec()` method instead.',
     },
     schema: [],
   },
+
+  defaultOptions: [],
 
   create(context) {
     const globalScope = context.sourceCode.getScope(context.sourceCode.ast);
@@ -139,9 +140,9 @@ export default createRule({
             node: memberNode.property,
             messageId: 'regExpExecOverStringMatch',
             fix: getWrappingFixer({
-              sourceCode: context.sourceCode,
               node: callNode,
               innerNode: [objectNode],
+              sourceCode: context.sourceCode,
               wrap: objectCode => `${regExp.toString()}.exec(${objectCode})`,
             }),
           });
@@ -157,9 +158,9 @@ export default createRule({
               node: memberNode.property,
               messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                sourceCode: context.sourceCode,
                 node: callNode,
                 innerNode: [objectNode, argumentNode],
+                sourceCode: context.sourceCode,
                 wrap: (objectCode, argumentCode) =>
                   `${argumentCode}.exec(${objectCode})`,
               }),
@@ -170,9 +171,9 @@ export default createRule({
               node: memberNode.property,
               messageId: 'regExpExecOverStringMatch',
               fix: getWrappingFixer({
-                sourceCode: context.sourceCode,
                 node: callNode,
                 innerNode: [objectNode, argumentNode],
+                sourceCode: context.sourceCode,
                 wrap: (objectCode, argumentCode) =>
                   `RegExp(${argumentCode}).exec(${objectCode})`,
               }),

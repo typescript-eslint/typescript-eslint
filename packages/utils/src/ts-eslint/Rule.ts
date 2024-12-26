@@ -27,7 +27,11 @@ export interface RuleMetaDataDocs {
   url?: string;
 }
 
-export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
+export interface RuleMetaData<
+  MessageIds extends string,
+  PluginDocs = unknown,
+  Options extends readonly unknown[] = [],
+> {
   /**
    * True if the rule is deprecated, false otherwise
    */
@@ -65,12 +69,22 @@ export interface RuleMetaData<MessageIds extends string, PluginDocs = unknown> {
    * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
   type: 'layout' | 'problem' | 'suggestion';
+
+  /**
+   * Specifies default options for the rule. If present, any user-provided options in their config will be merged on top of them recursively.
+   * This merging will be applied directly to `context.options`.
+   * If you want backwards-compatible support for earlier ESLint version; consider using the top-level `defaultOptions` instead.
+   *
+   * since ESLint 9.15.0
+   */
+  defaultOptions?: Options;
 }
 
 export interface RuleMetaDataWithDocs<
   MessageIds extends string,
   PluginDocs = unknown,
-> extends RuleMetaData<MessageIds, PluginDocs> {
+  Options extends readonly unknown[] = [],
+> extends RuleMetaData<MessageIds, PluginDocs, Options> {
   /**
    * Documentation for the rule
    */
@@ -181,8 +195,6 @@ export type ReportDescriptor<MessageIds extends string> = (
 export interface SharedConfigurationSettings {
   [name: string]: unknown;
 }
-
-/* eslint-disable perfectionist/sort-interfaces */
 
 export interface RuleContext<
   MessageIds extends string,
@@ -312,8 +324,6 @@ export interface RuleContext<
   report(descriptor: ReportDescriptor<MessageIds>): void;
 }
 
-/* eslint-enable perfectionist/sort-interfaces */
-
 /**
  * Part of the code path analysis feature of ESLint:
  * https://eslint.org/docs/latest/extend/code-path-analysis
@@ -401,12 +411,12 @@ export interface CodePathSegment {
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
 export type CodePathFunction =
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((
       fromSegment: CodePathSegment,
       toSegment: CodePathSegment,
       node: TSESTree.Node,
     ) => void)
-  | ((codePath: CodePath, node: TSESTree.Node) => void)
   | ((segment: CodePathSegment, node: TSESTree.Node) => void);
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
@@ -659,7 +669,7 @@ export interface RuleModule<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaData<MessageIds, Docs>;
+  meta: RuleMetaData<MessageIds, Docs, Options>;
 }
 
 export type AnyRuleModule = RuleModule<string, readonly unknown[]>;
@@ -674,7 +684,7 @@ export interface RuleModuleWithMetaDocs<
   /**
    * Metadata about the rule
    */
-  meta: RuleMetaDataWithDocs<MessageIds, Docs>;
+  meta: RuleMetaDataWithDocs<MessageIds, Docs, Options>;
 }
 
 export type AnyRuleModuleWithMetaDocs = RuleModuleWithMetaDocs<

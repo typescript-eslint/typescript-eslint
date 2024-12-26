@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -10,6 +11,7 @@ type IdentifierLike = TSESTree.Identifier | TSESTree.JSXIdentifier;
 export default createRule({
   name: 'no-deprecated',
   meta: {
+    type: 'problem',
     docs: {
       description: 'Disallow using code marked as `@deprecated`',
       recommended: 'strict',
@@ -20,7 +22,6 @@ export default createRule({
       deprecatedWithReason: `\`{{name}}\` is deprecated. {{reason}}`,
     },
     schema: [],
-    type: 'problem',
   },
   defaultOptions: [],
   create(context) {
@@ -126,15 +127,13 @@ export default createRule({
       while (true) {
         switch (current.type) {
           case AST_NODE_TYPES.ExportAllDeclaration:
-          case AST_NODE_TYPES.ExportDefaultDeclaration:
           case AST_NODE_TYPES.ExportNamedDeclaration:
           case AST_NODE_TYPES.ImportDeclaration:
-          case AST_NODE_TYPES.ImportExpression:
             return true;
 
           case AST_NODE_TYPES.ArrowFunctionExpression:
           case AST_NODE_TYPES.BlockStatement:
-          case AST_NODE_TYPES.ClassBody:
+          case AST_NODE_TYPES.ClassDeclaration:
           case AST_NODE_TYPES.TSInterfaceDeclaration:
           case AST_NODE_TYPES.FunctionDeclaration:
           case AST_NODE_TYPES.FunctionExpression:
@@ -152,9 +151,14 @@ export default createRule({
     function getJsDocDeprecation(
       symbol: ts.Signature | ts.Symbol | undefined,
     ): string | undefined {
-      const tag = symbol
-        ?.getJsDocTags(checker)
-        .find(tag => tag.name === 'deprecated');
+      let jsDocTags: ts.JSDocTagInfo[] | undefined;
+      try {
+        jsDocTags = symbol?.getJsDocTags(checker);
+      } catch {
+        // workaround for https://github.com/microsoft/TypeScript/issues/60024
+        return;
+      }
+      const tag = jsDocTags?.find(tag => tag.name === 'deprecated');
 
       if (!tag) {
         return undefined;
@@ -296,12 +300,12 @@ export default createRule({
       context.report({
         ...(reason
           ? {
-              data: { name: node.name, reason },
               messageId: 'deprecatedWithReason',
+              data: { name: node.name, reason },
             }
           : {
-              data: { name: node.name },
               messageId: 'deprecated',
+              data: { name: node.name },
             }),
         node,
       });
