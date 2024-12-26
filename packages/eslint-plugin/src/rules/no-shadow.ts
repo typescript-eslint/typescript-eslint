@@ -524,17 +524,14 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      // Excepts function declaration nodes if is {"hoist":"function"}.
       if (options.hoist === 'functions') {
         return !functionsHoistedNodes.has(outerDef.node.type);
       }
 
-      // Excepts type declaration nodes if is {"hoist":"types"}.
       if (options.hoist === 'types') {
         return !typesHoistedNodes.has(outerDef.node.type);
       }
 
-      // Except both if is {"hoist":"functions-and-types"}
       if (options.hoist === 'functions-and-types') {
         return (
           !functionsHoistedNodes.has(outerDef.node.type) &&
