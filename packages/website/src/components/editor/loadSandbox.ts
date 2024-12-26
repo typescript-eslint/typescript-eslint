@@ -25,7 +25,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
         paths: {
           linter: '/sandbox',
           sandbox: 'https://www.typescriptlang.org/js/sandbox',
-          vs: `https://typescript.azureedge.net/cdn/${tsVersion}/monaco/min/vs`,
+          vs: `https://playgroundcdn.typescriptlang.org/cdn/${tsVersion}/monaco/min/vs`,
         },
         // This is something you need for monaco to work
         ignoreDuplicateModules: ['vs/editor/editor.main'],

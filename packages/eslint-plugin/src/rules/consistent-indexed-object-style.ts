@@ -3,9 +3,17 @@ import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule, isParenthesized, nullThrows } from '../util';
+import {
+  createRule,
+  getFixOrSuggest,
+  isParenthesized,
+  nullThrows,
+} from '../util';
 
-type MessageIds = 'preferIndexSignature' | 'preferRecord';
+type MessageIds =
+  | 'preferIndexSignature'
+  | 'preferIndexSignatureSuggestion'
+  | 'preferRecord';
 type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
@@ -17,8 +25,12 @@ export default createRule<Options, MessageIds>({
       recommended: 'stylistic',
     },
     fixable: 'code',
+    // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
+    hasSuggestions: true,
     messages: {
       preferIndexSignature: 'An index signature is preferred over a record.',
+      preferIndexSignatureSuggestion:
+        'Change into an index signature instead of a record.',
       preferRecord: 'A record is preferred over an index signature.',
     },
     schema: [
@@ -113,14 +125,27 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
+          const indexParam = params[0];
+
+          const shouldFix =
+            indexParam.type === AST_NODE_TYPES.TSStringKeyword ||
+            indexParam.type === AST_NODE_TYPES.TSNumberKeyword ||
+            indexParam.type === AST_NODE_TYPES.TSSymbolKeyword;
+
           context.report({
             node,
             messageId: 'preferIndexSignature',
-            fix(fixer) {
-              const key = context.sourceCode.getText(params[0]);
-              const type = context.sourceCode.getText(params[1]);
-              return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
-            },
+            ...getFixOrSuggest({
+              fixOrSuggest: shouldFix ? 'fix' : 'suggest',
+              suggestion: {
+                messageId: 'preferIndexSignatureSuggestion',
+                fix: fixer => {
+                  const key = context.sourceCode.getText(params[0]);
+                  const type = context.sourceCode.getText(params[1]);
+                  return fixer.replaceText(node, `{ [key: ${key}]: ${type} }`);
+                },
+              },
+            }),
           });
         },
       }),
