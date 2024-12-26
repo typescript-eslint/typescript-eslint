@@ -5,10 +5,13 @@ exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESL
 
 // somebody forgot that \`alert\` doesn't return anything
 const response = alert('Are you sure?');
+                 ~~~~~~~~~~~~~~~~~~~~~~ Placing a void expression inside another expression is forbidden. Move it to its own statement instead.
 console.log(alert('Are you sure?'));
+            ~~~~~~~~~~~~~~~~~~~~~~ Placing a void expression inside another expression is forbidden. Move it to its own statement instead.
 
 // it's not obvious whether the chained promise will contain the response (fixable)
 promise.then(value => window.postMessage(value));
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~ Returning a void expression from an arrow function shorthand is forbidden. Please add braces to the arrow function.
 
 // it looks like we are returning the result of \`console.error\` (fixable)
 function doSomething() {

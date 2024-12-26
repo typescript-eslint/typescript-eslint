@@ -3,80 +3,51 @@
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-declare const userName: string;
-const chars = [...userName];
-               ~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
+declare const promise: Promise<number>;
+const spreadPromise = { ...promise };
+                        ~~~~~~~~~~ Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?
 
-declare const arr: number[];
-const arrSpread = { ...arr };
-                    ~~~~~~ Using the spread operator on an array in an object will result in a list of indices.
-
-declare const set: Set<number>;
-const setSpread = { ...set };
-                    ~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
+declare function getObject(): Record<string, strings>;
+const getObjectSpread = { ...getObject };
+                          ~~~~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
 
 declare const map: Map<string, number>;
 const mapSpread = { ...map };
                     ~~~~~~ Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use \`Object.fromEntries(map)\` instead?
 
-declare function getObj(): { a: 1; b: 2 };
-const getObjSpread = { ...getObj };
-                       ~~~~~~~~~ Using the spread operator on a function without additional properties can cause unexpected behavior. Did you forget to call the function?
+declare const userName: string;
+const characters = [...userName];
+                    ~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
 "
 `;
 
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 2`] = `
-"Correct
+"Incorrect
 
-declare const userName: string;
-const chars = userName.split('');
+declare class Box {
+  value: number;
+}
+const boxSpread = { ...Box };
+                    ~~~~~~ Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.
 
-declare const arr: number[];
-const arrSpread = [...arr];
-
-declare const set: Set<number>;
-const setSpread = [...set];
-
-declare const map: Map<string, number>;
-const mapObject = Object.fromEntries(map);
-
-declare function getObj(): { a: 1; b: 2 };
-const getObjSpread = { ...getObj() };
+declare const instance: Box;
+const instanceSpread = { ...box };
 "
 `;
 
 exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
-"Incorrect
-
-type UnsafeIterable = Iterable<number>;
-
-declare const iterable: UnsafeIterable;
-
-const spreadIterable = { ...iterable };
-                         ~~~~~~~~~~~ Using the spread operator on an Iterable in an object can cause unexpected behavior.
-
-type UnsafeBrandedString = string & { __brand: 'unsafe' };
-
-declare const brandedString: UnsafeBrandedString;
-
-const spreadBrandedString = { ...brandedString };
-"
-`;
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
 "Correct
-Options: {"allow":["SafeIterable", "BrandedString"]}
 
-type SafeIterable = Iterable<number>;
+declare const promise: Promise<number>;
+const spreadPromise = { ...(await promise) };
 
-declare const iterable: SafeIterable;
+declare function getObject(): Record<string, strings>;
+const getObjectSpread = { ...getObject() };
 
-const spreadIterable = { ...iterable };
+declare const map: Map<string, number>;
+const mapObject = Object.fromEntries(map);
 
-type BrandedString = string & { __brand: 'safe' };
-
-declare const brandedString: BrandedString;
-
-const spreadBrandedString = { ...brandedString };
+declare const userName: string;
+const characters = userName.split('');
 "
 `;

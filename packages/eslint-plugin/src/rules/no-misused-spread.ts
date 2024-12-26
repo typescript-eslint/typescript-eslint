@@ -54,7 +54,7 @@ export default createRule<Options, MessageIds>({
       noIterableSpreadInObject:
         'Using the spread operator on an Iterable in an object can cause unexpected behavior.',
       noMapSpreadInObject:
-        'Using the spread operator on a Map in an object will result in an emtpy object. Did you mean to use `Object.fromEntries(map)` instead?',
+        'Using the spread operator on a Map in an object will result in an empty object. Did you mean to use `Object.fromEntries(map)` instead?',
       noPromiseSpreadInObject:
         'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
       noStringSpreadInArray:
@@ -88,17 +88,14 @@ export default createRule<Options, MessageIds>({
     function checkArraySpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
-        return;
-      }
-
-      if (isString(type)) {
+      if (
+        !typeMatchesSomeSpecifier(type, options.allow, services.program) &&
+        isString(type)
+      ) {
         context.report({
           node,
           messageId: 'noStringSpreadInArray',
         });
-
-        return;
       }
     }
 
