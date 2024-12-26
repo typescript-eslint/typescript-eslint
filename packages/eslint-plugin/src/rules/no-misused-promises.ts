@@ -989,11 +989,10 @@ function getHeritageTypes(
 }
 
 function getWellKnownStringOfSymbol(symbol: symbol): string | null {
-  switch (symbol) {
-    case Symbol.iterator:
-      return 'iterator';
-    case Symbol.asyncIterator:
-      return 'asyncIterator';
+  const description = symbol.description;
+
+  if (description?.startsWith('Symbol.')) {
+    return description.replace(/^Symbol./, '');
   }
 
   return null;
