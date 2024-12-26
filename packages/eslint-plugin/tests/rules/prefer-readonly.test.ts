@@ -2333,5 +2333,611 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
         }
       `,
     },
+    {
+      code: `
+        class Test {
+          private prop = 'hello';
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: string = 'hello';
+        }
+      `,
+    },
+    {
+      code: `
+        declare const hello: 'hello';
+
+        class Test {
+          private prop = hello;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        declare const hello: 'hello';
+
+        class Test {
+          private readonly prop = hello;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = 10;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: number = 10;
+        }
+      `,
+    },
+    {
+      code: `
+        declare const hello: 10;
+
+        class Test {
+          private prop = hello;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        declare const hello: 10;
+
+        class Test {
+          private readonly prop = hello;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = true;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: boolean = true;
+        }
+      `,
+    },
+    {
+      code: `
+        declare const hello: true;
+
+        class Test {
+          private prop = hello;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        declare const hello: true;
+
+        class Test {
+          private readonly prop = hello;
+        }
+      `,
+    },
+    {
+      code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        class Test {
+          private prop = Foo.Bar;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 8,
+          line: 8,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        class Test {
+          private readonly prop: Foo = Foo.Bar;
+        }
+      `,
+    },
+    {
+      code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const foo = Foo.Bar;
+
+        class Test {
+          private prop = foo;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const foo = Foo.Bar;
+
+        class Test {
+          private readonly prop: Foo = foo;
+        }
+      `,
+    },
+    {
+      code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        declare const foo: Foo;
+
+        class Test {
+          private prop = foo;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        declare const foo: Foo;
+
+        class Test {
+          private readonly prop = foo;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = { foo: 'bar' };
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = { foo: 'bar' };
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = [1, 2, 'three'];
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = [1, 2, 'three'];
+        }
+      `,
+    },
+    {
+      code: `
+        class X {
+          private _isValid = true;
+
+          getIsValid = () => this._isValid;
+
+          constructor(data?: {}) {
+            if (!data) {
+              this._isValid = false;
+            }
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '_isValid',
+          },
+          endColumn: 27,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class X {
+          private readonly _isValid: boolean = true;
+
+          getIsValid = () => this._isValid;
+
+          constructor(data?: {}) {
+            if (!data) {
+              this._isValid = false;
+            }
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop: string = 'hello';
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: string = 'hello';
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop: string | number = 'hello';
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: string | number = 'hello';
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop: string;
+
+          constructor() {
+            this.prop = 'hello';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: string;
+
+          constructor() {
+            this.prop = 'hello';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop;
+
+          constructor() {
+            this.prop = 'hello';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop;
+
+          constructor() {
+            this.prop = 'hello';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop;
+
+          constructor(x: boolean) {
+            if (x) {
+              this.prop = 'hello';
+            } else {
+              this.prop = 10;
+            }
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop;
+
+          constructor(x: boolean) {
+            if (x) {
+              this.prop = 'hello';
+            } else {
+              this.prop = 10;
+            }
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        declare const hello: 'hello' | 10;
+
+        class Test {
+          private prop = hello;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        declare const hello: 'hello' | 10;
+
+        class Test {
+          private readonly prop = hello;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = null;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = null;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = 'hello' as string;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = 'hello' as string;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = Promise.resolve('hello');
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = Promise.resolve('hello');
+        }
+      `,
+    },
   ],
 });

@@ -229,14 +229,8 @@ export default createRule<Options, MessageIds>({
             }
           })();
 
-          // add an explicit type annotation in cases in which adding a `readonly`
-          // modifier would change the type of the property
           const typeAnnotation = (() => {
-            if (violatingNode.type) {
-              return null;
-            }
-
-            if (!violatingNode.initializer) {
+            if (violatingNode.type || !violatingNode.initializer) {
               return null;
             }
 
@@ -250,14 +244,14 @@ export default createRule<Options, MessageIds>({
 
             const violatingType = checker.getTypeAtLocation(violatingNode);
 
+            // if the RHS is a literal, its type would be narrowed, while the
+            // type of the initializer (which isn't `readonly`) would be the
+            // widened type
             if (initializerType === violatingType) {
               return null;
             }
 
-            if (
-              !tsutils.isLiteralType(initializerType) &&
-              !tsutils.isEnumType(initializerType)
-            ) {
+            if (!tsutils.isLiteralType(initializerType)) {
               return null;
             }
 
