@@ -4,12 +4,12 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength, nullThrows } from '../util';
 
-type DirectiveConfig =
+export type DirectiveConfig =
   | boolean
   | 'allow-with-description'
   | { descriptionFormat: string };
 
-interface Options {
+export interface Options {
   minimumDescriptionLength?: number;
   'ts-check'?: DirectiveConfig;
   'ts-expect-error'?: DirectiveConfig;

@@ -62,7 +62,7 @@ export type Options = [
   } & Partial<Record<(typeof optionTesters)[number]['option'], boolean>>,
 ];
 
-type MessageId = 'invalidType';
+export type MessageId = 'invalidType';
 
 export default createRule<Options, MessageId>({
   name: 'restrict-template-expressions',
