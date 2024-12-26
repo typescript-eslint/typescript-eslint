@@ -15,17 +15,18 @@ TypeScript allows spreading objects whose properties are not typically meant to 
 This rule disallows using the spread syntax on values whose types indicate doing so may cause unexpected behavior.
 That includes the following cases:
 
-- Spreading a string into an array.
 - Spreading a `Promise` into an object.
   You probably meant to `await` it.
 - Spreading a function without properties into an object.
   You probably meant to call it.
-- Spreading a class instance into an object.
-  This does not faithfully copy the instance because only its own properties are copied, but the inheritance chain is lost, including all its methods.
+- Spreading an iterable (`Array`, `Map`, etc.) into an object.
+  Iterable objects usually do not have meaningful enumerable properties and you probably meant to spread it into an array instead.
+- Spreading a string into an array.
+  Spring enumeration behaviors in JavaScript around encoded characters are often surprising.
 - Spreading a `class` into an object.
   This copies all static own properties of the class, but none of the inheritance chain.
-- Spreading an iterable (`Map`, `Array`, etc.) into an object.
-  Iterable objects usually do not have meaningful enumerable properties and you probably meant to spread it into an array instead.
+- Spreading a class instance into an object.
+  This does not faithfully copy the instance because only its own properties are copied, but the inheritance chain is lost, including all its methods.
 
 ## Examples
 
@@ -33,40 +34,44 @@ That includes the following cases:
 <TabItem value="❌ Incorrect">
 
 ```ts
-declare const userName: string;
-const chars = [...userName];
+declare const promise: Promise<number>;
+const spreadPromise = { ...promise };
 
-declare const arr: number[];
-const arrSpread = { ...arr };
-
-declare const set: Set<number>;
-const setSpread = { ...set };
+declare function getObject(): Record<string, strings>;
+const getObjectSpread = { ...getObject };
 
 declare const map: Map<string, number>;
 const mapSpread = { ...map };
 
-declare function getObj(): { a: 1; b: 2 };
-const getObjSpread = { ...getObj };
+declare const userName: string;
+const characters = [...userName];
+```
+
+```ts
+declare class Box {
+  value: number;
+}
+const boxSpread = { ...Box };
+
+declare const instance: Box;
+const instanceSpread = { ...box };
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-declare const userName: string;
-const chars = userName.split('');
+declare const promise: Promise<number>;
+const spreadPromise = { ...(await promise) };
 
-declare const arr: number[];
-const arrSpread = [...arr];
-
-declare const set: Set<number>;
-const setSpread = [...set];
+declare function getObject(): Record<string, strings>;
+const getObjectSpread = { ...getObject() };
 
 declare const map: Map<string, number>;
 const mapObject = Object.fromEntries(map);
 
-declare function getObj(): { a: 1; b: 2 };
-const getObjSpread = { ...getObj() };
+declare const userName: string;
+const characters = userName.split('');
 ```
 
 </TabItem>
@@ -78,22 +83,16 @@ const getObjSpread = { ...getObj() };
 
 {/* insert option description */}
 
-This option allows marking specific types as "safe" to be spread. It takes an
-array of type specifiers to consider safe.
-
 This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
-Examples of a configuration for this option:
+Examples of a configuration for this option in a `src/index.ts` file:
 
 ```json
 "@typescript-eslint/no-misused-spread": [
   "error",
   {
-    "allowForKnownSafeIterables": [
-      "SafeType",
-      { "from": "file", "name": "SafeString", "path": "src/safe-string.ts" },
-      { "from": "lib", "name": "BrandedArray" },
-      { "from": "package", "name": "ThisIsSafe", "package": "safe-lib" }
+    "allow": [
+      { "from": "file", "name": "BrandedString", "path": "src/index.ts" },
     ]
   }
 ]
@@ -102,30 +101,16 @@ Examples of a configuration for this option:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts
-type UnsafeIterable = Iterable<number>;
+```ts option='{"allow":{ "from": "file", "name": "BrandedString", "path": "src/index.ts" }}'
+declare const unbrandedString: string;
 
-declare const iterable: UnsafeIterable;
-
-const spreadIterable = { ...iterable };
-
-type UnsafeBrandedString = string & { __brand: 'unsafe' };
-
-declare const brandedString: UnsafeBrandedString;
-
-const spreadBrandedString = { ...brandedString };
+const spreadBrandedString = { ...unbrandedString };
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allow":["SafeIterable", "BrandedString"]}'
-type SafeIterable = Iterable<number>;
-
-declare const iterable: SafeIterable;
-
-const spreadIterable = { ...iterable };
-
+```ts option='{"allow":{ "from": "file", "name": "BrandedString", "path": "src/index.ts" }}'
 type BrandedString = string & { __brand: 'safe' };
 
 declare const brandedString: BrandedString;
@@ -138,15 +123,9 @@ const spreadBrandedString = { ...brandedString };
 
 ## When Not To Use It
 
-If you intentionally want to use the spread operator in those cases, and expect
-the specific behavior that comes with it, you might not want this rule.
-For example, when you want to spread an array into an object and expect the
-result to be an object with the array elements as values and the array indices
-as keys.
+If your application intentionally works with raw data in unusual ways, such as directly manipulating class prototype chains, you might not want this rule.
 
-If your use cases for unusual spreads only involve a few types, you might consider using
-[ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1)
-and/or the [`allow` option](#allow) instead of completely disabling this rule.
+If your use cases for unusual spreads only involve a few types, you might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) and/or the [`allow` option](#allow) instead of completely disabling this rule.
 
 ## Further Reading
 
