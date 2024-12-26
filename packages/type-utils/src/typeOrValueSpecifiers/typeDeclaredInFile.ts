@@ -8,7 +8,7 @@ export function typeDeclaredInFile(
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
-  if (relativePath === undefined) {
+  if (relativePath == null) {
     const cwd = getCanonicalFileName(program.getCurrentDirectory());
     return declarationFiles.some(declaration =>
       getCanonicalFileName(declaration.fileName).startsWith(cwd),

@@ -120,10 +120,8 @@ export function createParseSettings(
         : undefined,
     setExternalModuleIndicator:
       tsestreeOptions.sourceType === 'module' ||
-      (tsestreeOptions.sourceType === undefined &&
-        extension === ts.Extension.Mjs) ||
-      (tsestreeOptions.sourceType === undefined &&
-        extension === ts.Extension.Mts)
+      (tsestreeOptions.sourceType == null && extension === ts.Extension.Mjs) ||
+      (tsestreeOptions.sourceType == null && extension === ts.Extension.Mts)
         ? (file): void => {
             file.externalModuleIndicator = true;
           }
@@ -136,8 +134,8 @@ export function createParseSettings(
     tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun
         ? 'Infinity'
-        : tsestreeOptions.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+        : (tsestreeOptions.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     )),
     tsconfigRootDir,
   };

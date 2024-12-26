@@ -30,6 +30,20 @@ switch (literal) {
 `;
 
 exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 3`] = `
+"Options: { "defaultCaseCommentPattern": "^skip default" }
+
+declare const value: 'a' | 'b';
+
+switch (value) {
+        ~~~~~ Switch is not exhaustive. Cases not matched: "b"
+  case 'a':
+    break;
+  // skip default
+}
+"
+`;
+
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 4`] = `
 "Incorrect
 
 type Day =
@@ -53,7 +67,7 @@ switch (day) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 4`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 5`] = `
 "Correct
 
 type Day =
@@ -94,7 +108,7 @@ switch (day) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 5`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 6`] = `
 "Correct
 Options: { "considerDefaultExhaustiveForUnions": true }
 
@@ -122,7 +136,7 @@ switch (day) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 6`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 7`] = `
 "Incorrect
 
 enum Fruit {
@@ -142,7 +156,7 @@ switch (fruit) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 8`] = `
 "Correct
 
 enum Fruit {
@@ -169,7 +183,7 @@ switch (fruit) {
 "
 `;
 
-exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs switch-exhaustiveness-check.mdx code examples ESLint output 9`] = `
 "Correct
 Options: { "considerDefaultExhaustiveForUnions": true }
 

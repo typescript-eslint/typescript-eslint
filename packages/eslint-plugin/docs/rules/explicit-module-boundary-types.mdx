@@ -242,7 +242,6 @@ export let funcExpr: FuncType = function () {
 };
 
 export let asTyped = (() => '') as () => string;
-export let castTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -253,9 +252,6 @@ export let objectProp: ObjectType = {
 export let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-export let objectPropCast = <ObjectType>{
-  foo: () => 1,
-};
 
 type FooType = (bar: string) => void;
 export const foo: FooType = bar => {};

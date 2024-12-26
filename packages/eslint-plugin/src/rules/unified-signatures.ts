@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
     function failureStringStart(otherLine?: number): string {
       // For only 2 overloads we don't need to specify which is the other one.
       const overloads =
-        otherLine === undefined
+        otherLine == null
           ? 'These overloads'
           : `This overload and the one on line ${otherLine}`;
       return `${overloads} can be combined into one signature`;
@@ -183,7 +183,7 @@ export default createRule<Options, MessageIds>({
             signature1 as SignatureDefinition,
             isTypeParameter,
           );
-          if (unify !== undefined) {
+          if (unify != null) {
             result.push({ only2: overloads.length === 2, unify });
           }
         });
@@ -213,9 +213,9 @@ export default createRule<Options, MessageIds>({
       // Must return the same type.
 
       const aTypeParams =
-        a.typeParameters !== undefined ? a.typeParameters.params : undefined;
+        a.typeParameters != null ? a.typeParameters.params : undefined;
       const bTypeParams =
-        b.typeParameters !== undefined ? b.typeParameters.params : undefined;
+        b.typeParameters != null ? b.typeParameters.params : undefined;
 
       if (ignoreDifferentlyNamedParameters) {
         const commonParamsLength = Math.min(a.params.length, b.params.length);
@@ -250,7 +250,7 @@ export default createRule<Options, MessageIds>({
         types2,
         parametersAreEqual,
       );
-      if (index === undefined) {
+      if (index == null) {
         return undefined;
       }
 
@@ -333,7 +333,7 @@ export default createRule<Options, MessageIds>({
     function getIsTypeParameter(
       typeParameters?: TSESTree.TSTypeParameterDeclaration,
     ): IsTypeParameter {
-      if (typeParameters === undefined) {
+      if (typeParameters == null) {
         return (() => false) as IsTypeParameter;
       }
 
@@ -444,8 +444,8 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return (
         a === b ||
-        (a !== undefined &&
-          b !== undefined &&
+        (a != null &&
+          b != null &&
           context.sourceCode.getText(a.typeAnnotation) ===
             context.sourceCode.getText(b.typeAnnotation))
       );
@@ -455,9 +455,7 @@ export default createRule<Options, MessageIds>({
       a: TSESTree.TypeNode | undefined,
       b: TSESTree.TypeNode | undefined,
     ): boolean {
-      return (
-        a === b || (a !== undefined && b !== undefined && a.type === b.type)
-      );
+      return a === b || (a != null && b != null && a.type === b.type);
     }
 
     /* Returns the first index where `a` and `b` differ. */
@@ -535,7 +533,7 @@ export default createRule<Options, MessageIds>({
         (containingNode ?? signature).parent === currentScope.parent
       ) {
         const overloads = currentScope.overloads.get(key);
-        if (overloads !== undefined) {
+        if (overloads != null) {
           overloads.push(signature);
         } else {
           currentScope.overloads.set(key, [signature]);
