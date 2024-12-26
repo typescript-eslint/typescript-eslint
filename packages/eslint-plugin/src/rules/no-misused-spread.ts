@@ -13,7 +13,7 @@ import {
   isPromiseLike,
   isTypeFlagSet,
   readonlynessOptionsSchema,
-  typeMatchesSpecifier,
+  typeMatchesSomeSpecifier,
 } from '../util';
 
 type Options = [
@@ -88,7 +88,7 @@ export default createRule<Options, MessageIds>({
     function checkArraySpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (isTypeAllowed(type)) {
+      if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
         return;
       }
 
@@ -105,7 +105,7 @@ export default createRule<Options, MessageIds>({
     function checkObjectSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
-      if (isTypeAllowed(type)) {
+      if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
         return;
       }
 
@@ -158,7 +158,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (isClassInstance(services.program, type)) {
+      if (isClassInstance(checker, type)) {
         context.report({
           node,
           messageId: 'noClassInstanceSpreadInObject',
@@ -175,16 +175,6 @@ export default createRule<Options, MessageIds>({
 
         return;
       }
-    }
-
-    function isTypeAllowed(type: ts.Type): boolean {
-      if (!options.allow) {
-        return false;
-      }
-
-      return options.allow.some(specifier =>
-        typeMatchesSpecifier(type, specifier, services.program),
-      );
     }
 
     return {
@@ -224,30 +214,24 @@ function isPromise(program: ts.Program, type: ts.Type): boolean {
   return isTypeRecurser(type, t => isPromiseLike(program, t));
 }
 
-// Builtin classes that are known to be problematic when spread,
-// but can't be detected in a reliable way.
-const BUILTIN_CLASSES = ['WeakRef'];
-
-function isClassInstance(program: ts.Program, type: ts.Type): boolean {
+function isClassInstance(checker: ts.TypeChecker, type: ts.Type): boolean {
   return isTypeRecurser(type, t => {
-    const symbol = t.getSymbol();
-
-    if (!symbol) {
+    // If the type itself has a construct signature, it's a class(-like)
+    if (t.getConstructSignatures().length) {
       return false;
     }
 
-    const isBuiltinProblematic = BUILTIN_CLASSES.some(name =>
-      isBuiltinSymbolLike(program, t, name),
-    );
+    const symbol = t.getSymbol();
 
-    if (isBuiltinProblematic) {
-      return true;
-    }
-
-    return (
-      t.isClassOrInterface() &&
-      tsutils.isSymbolFlagSet(t.symbol, ts.SymbolFlags.Value)
-    );
+    // If the type's symbol has a construct signature, the type is an instance
+    return !!symbol
+      ?.getDeclarations()
+      ?.some(
+        declaration =>
+          checker
+            .getTypeOfSymbolAtLocation(symbol, declaration)
+            .getConstructSignatures().length,
+      );
   });
 }
 

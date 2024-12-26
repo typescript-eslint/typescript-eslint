@@ -193,7 +193,6 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [{ allow: ['string'] }],
     },
-
     {
       code: `
         function f() {}
@@ -202,7 +201,6 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [{ allow: ['f'] }],
     },
-
     {
       code: `
         declare const iterator: Iterable<string>;
@@ -215,7 +213,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         type CustomIterable = {
@@ -228,7 +225,6 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [{ allow: ['CustomIterable'] }],
     },
-
     {
       code: `
         type CustomIterable = {
@@ -245,7 +241,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare module 'module' {
@@ -268,7 +263,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -281,7 +275,6 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [{ allow: ['A'] }],
     },
-
     {
       code: `
         const a = {
@@ -292,12 +285,6 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [{ allow: ['A'] }],
     },
-
-    // WeakSet is not iterable
-    `
-      declare const set: WeakSet<number>;
-      const o = { ...set };
-    `,
   ],
 
   invalid: [
@@ -312,7 +299,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const test = 'hello';
@@ -327,7 +313,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const test = \`he\${'ll'}o\`;
@@ -342,7 +327,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const test: string;
@@ -357,7 +341,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const test: string | number[];
@@ -372,7 +355,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const test: string & { __brand: 'test' };
@@ -387,7 +369,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const test: number | (boolean | (string & { __brand: true }));
@@ -402,7 +383,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getString(): string;
@@ -417,7 +397,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getString<T extends string>(): T;
@@ -432,7 +411,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getString(): string & { __brand: 'test' };
@@ -447,7 +425,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: 'const o = { ...[1, 2, 3] };',
       errors: [
@@ -459,7 +436,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const arr = [1, 2, 3];
@@ -474,7 +450,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const arr = [1, 2, 3] as const;
@@ -489,7 +464,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const arr: number[];
@@ -504,7 +478,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const arr: readonly number[];
@@ -519,7 +492,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const arr: number[] | string[];
@@ -534,7 +506,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const arr: number[] & string[];
@@ -549,7 +520,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getArray(): number[];
@@ -564,7 +534,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getArray(): readonly number[];
@@ -579,7 +548,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: 'const o = { ...new Set([1, 2, 3]) };',
       errors: [
@@ -591,7 +559,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const set = new Set([1, 2, 3]);
@@ -606,7 +573,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const set: Set<number>;
@@ -621,7 +587,20 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
+    {
+      code: `
+        declare const set: WeakSet<object>;
+        const o = { ...set };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 27,
+          line: 3,
+          messageId: 'noClassInstanceSpreadInObject',
+        },
+      ],
+    },
     {
       code: `
         declare const set: ReadonlySet<number>;
@@ -636,7 +615,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const set: Set<number> | { a: number };
@@ -651,7 +629,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getSet(): Set<number>;
@@ -666,7 +643,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const o = {
@@ -686,7 +662,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const map = new Map([
@@ -705,7 +680,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const map: Map<string, number>;
@@ -720,7 +694,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const map: ReadonlyMap<string, number>;
@@ -735,7 +708,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const map: WeakMap<{ a: number }, string>;
@@ -750,7 +722,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const map: Map<string, number> | { a: number };
@@ -765,7 +736,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getMap(): Map<string, number>;
@@ -780,7 +750,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const a: Map<boolean, string> & Set<number>;
@@ -795,7 +764,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const ref = new WeakRef({ a: 1 });
@@ -810,7 +778,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const promise = new Promise(() => {});
@@ -825,7 +792,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const maybePromise: Promise<number> | { a: number };
@@ -840,7 +806,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const promise: Promise<number> & { a: number };
@@ -855,7 +820,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getPromise(): Promise<number>;
@@ -870,7 +834,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getPromise<T extends Promise<number>>(arg: T): T;
@@ -885,7 +848,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         function f() {}
@@ -901,7 +863,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const f = () => {};
@@ -917,7 +878,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function f(): void;
@@ -933,7 +893,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getFunction(): () => void;
@@ -949,7 +908,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const f: () => void;
@@ -965,7 +923,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const f: () => void | { a: number };
@@ -981,7 +938,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         function* generator() {}
@@ -997,7 +953,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const iterator = {
@@ -1017,7 +972,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         type CustomIterable = {
@@ -1070,7 +1024,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const iterator: Iterable<string>;
@@ -1086,7 +1039,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const iterator: Iterable<string> | { a: number };
@@ -1102,7 +1054,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function getIterable(): Iterable<string>;
@@ -1118,7 +1069,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1142,7 +1092,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const o = { ...new Date() };
@@ -1156,7 +1105,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const element: HTMLElement;
@@ -1171,7 +1119,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         declare const regex: RegExp;
@@ -1186,7 +1133,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1208,7 +1154,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1228,7 +1173,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1248,7 +1192,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1268,7 +1211,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1288,7 +1230,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1308,7 +1249,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1328,7 +1268,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {
@@ -1348,7 +1287,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         class A {}
@@ -1364,7 +1302,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const A = class {};
@@ -1380,7 +1317,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const A = Set<number>;
@@ -1396,7 +1332,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: `
         const a = {
@@ -1416,7 +1351,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: noFormat`
         const a = { ...(class A { static value = 1 }) }
@@ -1430,7 +1364,6 @@ ruleTester.run('no-misused-spread', rule, {
         },
       ],
     },
-
     {
       code: noFormat`
         const a = { ...new (class A { static value = 1; })() };
