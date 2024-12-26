@@ -420,6 +420,17 @@ ruleTester.run('require-types-exports', rule, {
         return 1;
       }
     `,
+    `
+declare function wrap(listeners: unknown): unknown;
+
+type Abc = 'abc';
+
+export default wrap({
+  abc(input: Abc) {
+    //
+  },
+});
+    `,
   ],
 
   invalid: [
@@ -2720,20 +2731,14 @@ ruleTester.run('require-types-exports', rule, {
       `,
       errors: [
         {
-          column: 21,
-          data: {
-            name: 'Item',
-          },
-          endColumn: 25,
-          line: 9,
+          column: 29,
+          data: { name: 'ItemKey' },
+          line: 11,
           messageId: 'requireTypeExport',
         },
         {
-          column: 29,
-          data: {
-            name: 'ItemKey',
-          },
-          endColumn: 36,
+          column: 38,
+          data: { name: 'Item' },
           line: 11,
           messageId: 'requireTypeExport',
         },

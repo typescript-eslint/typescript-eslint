@@ -109,9 +109,7 @@ export default createRule<[], MessageIds>({
       context.report({
         node,
         messageId: 'requireTypeExport',
-        data: {
-          name,
-        },
+        data: { name },
       });
 
       reportedTypes.add(name);
@@ -128,9 +126,7 @@ export default createRule<[], MessageIds>({
       context.report({
         node,
         messageId: 'requireTypeExport',
-        data: {
-          name,
-        },
+        data: { name },
       });
 
       reportedTypes.add(name);
@@ -244,8 +240,7 @@ function getVisibleTypesRecursively(
       case AST_NODE_TYPES.NewExpression:
       case AST_NODE_TYPES.CallExpression:
         collect(node.callee);
-        node.arguments.forEach(arg => collect(arg));
-        node.typeArguments?.params.forEach(param => collect(param));
+        node.typeArguments?.params.forEach(collect);
         break;
 
       case AST_NODE_TYPES.BinaryExpression:
