@@ -68,11 +68,10 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
 
     for (const error of errors) {
       const startLine = error.line - 1;
-      const endLine =
-        error.endLine === undefined ? startLine : error.endLine - 1;
+      const endLine = error.endLine == null ? startLine : error.endLine - 1;
       const startColumn = error.column - 1;
       const endColumn =
-        error.endColumn === undefined ? startColumn : error.endColumn - 1;
+        error.endColumn == null ? startColumn : error.endColumn - 1;
       if (i < startLine || i > endLine) {
         continue;
       }

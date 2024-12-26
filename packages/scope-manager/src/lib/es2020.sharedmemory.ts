@@ -6,7 +6,9 @@
 import type { ImplicitLibVariableOptions } from '../variable';
 
 import { TYPE } from './base-config';
+import { es2020_bigint } from './es2020.bigint';
 
 export const es2020_sharedmemory = {
+  ...es2020_bigint,
   Atomics: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

@@ -16,7 +16,7 @@ jobs:
         with:
           files: packages/{eslint-plugin,typescript-eslint}/src/configs/{recommended,stylistic}*
       - if: steps.changed-stable-configs.outputs.any_changed == 'true'
-        uses: mheap/github-action-required-labels@v5.4.1
+        uses: mheap/github-action-required-labels@5.5.0
         with:
           add_comment: true
           count: 1

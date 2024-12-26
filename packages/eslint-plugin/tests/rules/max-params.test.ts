@@ -57,6 +57,18 @@ class Foo {
       `,
       options: [{ countVoidThis: true, max: 2 }],
     },
+    {
+      code: `
+declare function makeDate(m: number, d: number, y: number): Date;
+      `,
+      options: [{ max: 3 }],
+    },
+    {
+      code: `
+type sum = (a: number, b: number) => number;
+      `,
+      options: [{ max: 2 }],
+    },
   ],
   invalid: [
     { code: 'function foo(a, b, c, d) {}', errors: [{ messageId: 'exceed' }] },
@@ -97,6 +109,20 @@ class Foo {
 }
       `,
       errors: [{ messageId: 'exceed' }],
+    },
+    {
+      code: `
+declare function makeDate(m: number, d: number, y: number): Date;
+      `,
+      errors: [{ messageId: 'exceed' }],
+      options: [{ max: 1 }],
+    },
+    {
+      code: `
+type sum = (a: number, b: number) => number;
+      `,
+      errors: [{ messageId: 'exceed' }],
+      options: [{ max: 1 }],
     },
   ],
 });

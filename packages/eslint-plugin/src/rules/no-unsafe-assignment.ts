@@ -251,8 +251,8 @@ export default createRule({
       const receiverTsNode = services.esTreeNodeToTSNodeMap.get(receiverNode);
       const receiverType =
         comparisonType === ComparisonType.Contextual
-          ? getContextualType(checker, receiverTsNode as ts.Expression) ??
-            services.getTypeAtLocation(receiverNode)
+          ? (getContextualType(checker, receiverTsNode as ts.Expression) ??
+            services.getTypeAtLocation(receiverNode))
           : services.getTypeAtLocation(receiverNode);
       const senderType = services.getTypeAtLocation(senderNode);
 

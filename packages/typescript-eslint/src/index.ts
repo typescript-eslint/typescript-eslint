@@ -186,4 +186,9 @@ export default {
 };
 export { configs, parser, plugin };
 
-export { config, type ConfigWithExtends } from './config-helper';
+export {
+  config,
+  type ConfigWithExtends,
+  type InfiniteDepthConfigWithExtends,
+  type ConfigArray,
+} from './config-helper';
