@@ -764,7 +764,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableStatic {
-          private static readonly incorrectlyModifiableStatic = 7;
+          private static readonly incorrectlyModifiableStatic: number = 7;
         }
       `,
     },
@@ -788,7 +788,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableStatic {
-          static readonly #incorrectlyModifiableStatic = 7;
+          static readonly #incorrectlyModifiableStatic: number = 7;
         }
       `,
     },
@@ -876,11 +876,11 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableInline {
-          private readonly incorrectlyModifiableInline = 7;
+          private readonly incorrectlyModifiableInline: number = 7;
 
           public createConfusingChildClass() {
             return class {
-              private readonly incorrectlyModifiableInline = 7;
+              private readonly incorrectlyModifiableInline: number = 7;
             };
           }
         }
@@ -922,11 +922,11 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableInline {
-          readonly #incorrectlyModifiableInline = 7;
+          readonly #incorrectlyModifiableInline: number = 7;
 
           public createConfusingChildClass() {
             return class {
-              readonly #incorrectlyModifiableInline = 7;
+              readonly #incorrectlyModifiableInline: number = 7;
             };
           }
         }
@@ -956,7 +956,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableDelayed {
-          private readonly incorrectlyModifiableDelayed = 7;
+          private readonly incorrectlyModifiableDelayed: number = 7;
 
           public constructor() {
             this.incorrectlyModifiableDelayed = 7;
@@ -988,7 +988,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableDelayed {
-          readonly #incorrectlyModifiableDelayed = 7;
+          readonly #incorrectlyModifiableDelayed: number = 7;
 
           public constructor() {
             this.#incorrectlyModifiableDelayed = 7;
@@ -1026,7 +1026,7 @@ class Foo {
       ],
       output: `
         class TestChildClassExpressionModifiable {
-          private readonly childClassExpressionModifiable = 7;
+          private readonly childClassExpressionModifiable: number = 7;
 
           public createConfusingChildClass() {
             return class {
@@ -1070,7 +1070,7 @@ class Foo {
       ],
       output: `
         class TestChildClassExpressionModifiable {
-          readonly #childClassExpressionModifiable = 7;
+          readonly #childClassExpressionModifiable: number = 7;
 
           public createConfusingChildClass() {
             return class {
@@ -1109,7 +1109,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostMinus {
-          private readonly incorrectlyModifiablePostMinus = 7;
+          private readonly incorrectlyModifiablePostMinus: number = 7;
 
           public mutate() {
             this.incorrectlyModifiablePostMinus - 1;
@@ -1141,7 +1141,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostMinus {
-          readonly #incorrectlyModifiablePostMinus = 7;
+          readonly #incorrectlyModifiablePostMinus: number = 7;
 
           public mutate() {
             this.#incorrectlyModifiablePostMinus - 1;
@@ -1174,7 +1174,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostPlus {
-          private readonly incorrectlyModifiablePostPlus = 7;
+          private readonly incorrectlyModifiablePostPlus: number = 7;
 
           public mutate() {
             this.incorrectlyModifiablePostPlus + 1;
@@ -1207,7 +1207,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostPlus {
-          readonly #incorrectlyModifiablePostPlus = 7;
+          readonly #incorrectlyModifiablePostPlus: number = 7;
 
           public mutate() {
             this.#incorrectlyModifiablePostPlus + 1;
@@ -1239,7 +1239,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePreMinus {
-          private readonly incorrectlyModifiablePreMinus = 7;
+          private readonly incorrectlyModifiablePreMinus: number = 7;
 
           public mutate() {
             -this.incorrectlyModifiablePreMinus;
@@ -1272,7 +1272,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePreMinus {
-          readonly #incorrectlyModifiablePreMinus = 7;
+          readonly #incorrectlyModifiablePreMinus: number = 7;
 
           public mutate() {
             -this.#incorrectlyModifiablePreMinus;
@@ -1305,7 +1305,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePrePlus {
-          private readonly incorrectlyModifiablePrePlus = 7;
+          private readonly incorrectlyModifiablePrePlus: number = 7;
 
           public mutate() {
             +this.incorrectlyModifiablePrePlus;
@@ -1338,7 +1338,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePrePlus {
-          readonly #incorrectlyModifiablePrePlus = 7;
+          readonly #incorrectlyModifiablePrePlus: number = 7;
 
           public mutate() {
             +this.#incorrectlyModifiablePrePlus;
@@ -1375,7 +1375,7 @@ class Foo {
       ],
       output: `
         class TestOverlappingClassVariable {
-          private readonly overlappingClassVariable = 7;
+          private readonly overlappingClassVariable: number = 7;
 
           public workWithSimilarClass(other: SimilarClass) {
             other.overlappingClassVariable = 7;

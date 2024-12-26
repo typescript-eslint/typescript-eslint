@@ -229,13 +229,54 @@ export default createRule<Options, MessageIds>({
             }
           })();
 
+          // add an explicit type annotation in cases in which adding a `readonly`
+          // modifier would change the type of the property
+          const typeAnnotation = (() => {
+            if (violatingNode.type) {
+              return null;
+            }
+
+            if (!violatingNode.initializer) {
+              return null;
+            }
+
+            if (esNode.type !== AST_NODE_TYPES.PropertyDefinition) {
+              return null;
+            }
+
+            const initializerType = checker.getTypeAtLocation(
+              violatingNode.initializer,
+            );
+
+            const violatingType = checker.getTypeAtLocation(violatingNode);
+
+            if (initializerType === violatingType) {
+              return null;
+            }
+
+            if (
+              !tsutils.isLiteralType(initializerType) &&
+              !tsutils.isEnumType(initializerType)
+            ) {
+              return null;
+            }
+
+            return checker.typeToString(violatingType);
+          })();
+
           context.report({
             ...reportNodeOrLoc,
             messageId: 'preferReadonly',
             data: {
               name: context.sourceCode.getText(nameNode),
             },
-            fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
+            *fix(fixer) {
+              yield fixer.insertTextBefore(nameNode, 'readonly ');
+
+              if (typeAnnotation) {
+                yield fixer.insertTextAfter(nameNode, `: ${typeAnnotation}`);
+              }
+            },
           });
         }
       },
