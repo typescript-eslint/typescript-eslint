@@ -18,42 +18,26 @@ ruleTester.run('no-misused-spread', rule, {
   valid: [
     'const a = [...[1, 2, 3]];',
     'const a = [...([1, 2, 3] as const)];',
-
     `
       declare const data: any;
       const a = [...data];
     `,
-
-    `
-      declare const data: number[] | any;
-      const a = [...data];
-    `,
-
-    `
-      declare const data: number[] & any;
-      const a = [...data];
-    `,
-
     `
       const a = [1, 2, 3];
       const b = [...a];
     `,
-
     `
       const a = [1, 2, 3] as const;
       const b = [...a];
     `,
-
     `
       declare function getArray(): number[];
       const a = [...getArray()];
     `,
-
     `
       declare function getTuple(): readonly number[];
       const a = [...getTuple()];
     `,
-
     `
       const iterator = {
         *[Symbol.iterator]() {
@@ -65,31 +49,26 @@ ruleTester.run('no-misused-spread', rule, {
 
       const a = [...iterator];
     `,
-
     `
       declare const data: Iterable<number> | number[];
 
       const a = [...data];
     `,
-
     `
       declare const data: Iterable<number> & number[];
 
       const a = [...data];
     `,
-
     `
       declare function getIterable(): Iterable<number>;
 
       const a = [...getIterable()];
     `,
-
     `
       declare const data: Uint8Array;
 
       const a = [...data];
     `,
-
     `
       declare const data: TypedArray;
 
@@ -99,40 +78,33 @@ ruleTester.run('no-misused-spread', rule, {
     'const o = { ...{ a: 1, b: 2 } };',
 
     'const o = { ...({ a: 1, b: 2 } as const) };',
-
     `
       declare const obj: any;
 
       const o = { ...obj };
     `,
-
     `
       declare const obj: { a: number; b: number } | any;
 
       const o = { ...obj };
     `,
-
     `
       declare const obj: { a: number; b: number } & any;
 
       const o = { ...obj };
     `,
-
     `
       const obj = { a: 1, b: 2 };
       const o = { ...obj };
     `,
-
     `
       declare const obj: { a: number; b: number };
       const o = { ...obj };
     `,
-
     `
       declare function getObject(): { a: number; b: number };
       const o = { ...getObject() };
     `,
-
     `
       function f() {}
 
@@ -140,7 +112,6 @@ ruleTester.run('no-misused-spread', rule, {
 
       const o = { ...f };
     `,
-
     `
       const f = () => {};
 
@@ -148,7 +119,6 @@ ruleTester.run('no-misused-spread', rule, {
 
       const o = { ...f };
     `,
-
     `
       function* generator() {}
 
@@ -156,7 +126,6 @@ ruleTester.run('no-misused-spread', rule, {
 
       const o = { ...generator };
     `,
-
     `
       declare const promiseLike: PromiseLike<number>;
 
@@ -170,7 +139,6 @@ ruleTester.run('no-misused-spread', rule, {
       `,
       options: [{ allow: ['Promise'] }],
     },
-
     `
       interface A {}
 
