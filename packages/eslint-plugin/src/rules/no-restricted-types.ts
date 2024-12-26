@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, objectReduceKey } from '../util';
 
-type Types = Record<
+export type Types = Record<
   string,
   | boolean
   | string
