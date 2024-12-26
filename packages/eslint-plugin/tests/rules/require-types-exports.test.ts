@@ -52,12 +52,10 @@ ruleTester.run('require-types-exports', rule, {
         return a;
       }
     `,
-
     `
       type A = number;
       const f = (a: A): A => a;
     `,
-
     `
       type A = number;
       type B = string;
@@ -65,50 +63,41 @@ ruleTester.run('require-types-exports', rule, {
         return a;
       }
     `,
-
     `
       type A = number;
       type B = string;
       const f = (a: A | B): any => a;
     `,
-
     `
       type A = number;
       declare function f(a: A): void;
     `,
-
     `
       type A = number;
       function f({ a }: { a: A }): A {}
     `,
-
     `
       type A = number;
       const f = ({ a }: { a: A }): A => {};
     `,
-
     `
       type A = number;
       type B = string;
       function f([a, b]: [A, B]): void {}
     `,
-
     `
       type A = number;
       type B = string;
       const f = ([a, b]: [A, B]): void => {};
     `,
-
     `
       type A = number;
       function f<T extends A>(a: A): void {}
     `,
-
     `
       type A = number;
       const f = <T extends A>(a: A): void => {};
     `,
-
     `
       interface A {
         a: number;
@@ -118,7 +107,6 @@ ruleTester.run('require-types-exports', rule, {
         return a;
       }
     `,
-
     `
       interface A {
         a: number;
@@ -126,173 +114,143 @@ ruleTester.run('require-types-exports', rule, {
 
       const f = (a: A): A => a;
     `,
-
     `
       export type A = number;
       export function f(a: A): void {}
     `,
-
     `
       export type A = number;
       export const f = (a: A): void => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(a: A | B): void {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (a: A | B): void => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(a: A & B): void {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (a: A & B): void => {};
     `,
-
     `
       export type A = number;
       export function f(...args: A[]): void {}
     `,
-
     `
       export type A = number;
       export const f = (...args: A[]): void => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(args: { a: A; b: B; c: number }): void {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (args: { a: A; b: B; c: number }): void => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(args: [A, B]): void {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (args: [A, B]): void => {};
     `,
-
     `
       export type A = number;
       export function f(a: A = 1): void {}
     `,
-
     `
       export type A = number;
       export const f = (a: A = 1): void => {};
     `,
-
     `
       export type A = number;
       export function f(): A {}
     `,
-
     `
       export type A = number;
       export const f = (): A => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(): A | B {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (): A | B => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(): A & B {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (): A & B => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(): [A, B] {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (): [A, B] => {};
     `,
-
     `
       export type A = number;
       export type B = string;
       export function f(): { a: A; b: B } {}
     `,
-
     `
       export type A = number;
       export type B = string;
       export const f = (): { a: A; b: B } => {};
     `,
-
     `
       import { testFunction, type Arg } from './module';
 
       export function f(a: Arg): void {}
     `,
-
     `
       import { Arg } from './types';
 
       export function f(a: Arg): void {}
     `,
-
     `
       import type { Arg } from './types';
 
       export function f(a: Arg): void {}
     `,
-
     `
       import type { ImportedArg as Arg } from './types';
 
       export function f(a: Arg): void {}
     `,
-
     `
       import type { Arg } from './types';
 
       export function f<T extends Arg>(a: T): void {}
     `,
-
     `
       export type R = number;
 
@@ -304,7 +262,6 @@ ruleTester.run('require-types-exports', rule, {
         return value;
       }
     `,
-
     `
       import type { A } from './types';
 
@@ -322,7 +279,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       };
     `,
-
     `
       import type { A } from './types';
 
@@ -342,7 +298,6 @@ ruleTester.run('require-types-exports', rule, {
 
       export default value;
     `,
-
     `
       export enum Fruit {
         Apple,
@@ -352,31 +307,26 @@ ruleTester.run('require-types-exports', rule, {
 
       export function f(a: Fruit): void {}
     `,
-
     `
       export function f(arg: Record<PropertyKey, Promise<string>>) {
         return arg;
       }
     `,
-
     `
       export function f<T extends Record<PropertyKey, Promise<string>>>(arg: T) {
         return arg;
       }
     `,
-
     `
       export function f<T extends ReturnType<() => string>>(arg: T) {
         return arg;
       }
     `,
-
     `
       export class Wrapper {
         work(other: this) {}
       }
     `,
-
     `
       export namespace A {
         export namespace B {
@@ -388,7 +338,6 @@ ruleTester.run('require-types-exports', rule, {
         return arg;
       }
     `,
-
     `
       import * as ts from 'typescript';
 
@@ -396,7 +345,6 @@ ruleTester.run('require-types-exports', rule, {
         return arg;
       }
     `,
-
     `
       import ts from 'typescript';
 
@@ -404,17 +352,14 @@ ruleTester.run('require-types-exports', rule, {
         return arg;
       }
     `,
-
     `
       declare const element: HTMLElement;
 
       export default element;
     `,
-
     `
       export const date: Date = new Date();
     `,
-
     `
       import ts from 'typescript';
 
@@ -445,7 +390,6 @@ ruleTester.run('require-types-exports', rule, {
         func,
       };
     `,
-
     `
       export function func1() {
         return func2(1);
@@ -457,7 +401,6 @@ ruleTester.run('require-types-exports', rule, {
         return 1;
       }
     `,
-
     'export type ValueOf<T> = T[keyof T];',
 
     `
@@ -468,7 +411,6 @@ ruleTester.run('require-types-exports', rule, {
         return fruits[key];
       }
     `,
-
     `
       const fruits = { apple: 'apple' };
 
@@ -499,7 +441,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -518,7 +459,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -537,7 +477,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -556,7 +495,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -575,7 +513,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -594,7 +531,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -623,7 +559,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -652,7 +587,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -684,7 +618,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -716,7 +649,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -745,7 +677,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -774,7 +705,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -803,7 +733,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -832,7 +761,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -861,7 +789,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -900,7 +827,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -929,7 +855,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -958,7 +883,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -987,7 +911,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1006,7 +929,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1025,7 +947,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1044,7 +965,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1063,7 +983,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         enum Fruit {
@@ -1086,7 +1005,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         enum Fruit {
@@ -1109,7 +1027,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1128,7 +1045,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1157,7 +1073,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1186,7 +1101,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1215,7 +1129,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1244,7 +1157,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = string;
@@ -1263,7 +1175,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = string;
@@ -1282,7 +1193,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret = string;
@@ -1301,7 +1211,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret = string;
@@ -1320,7 +1229,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1349,7 +1257,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1378,7 +1285,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1407,7 +1313,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1436,7 +1341,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1465,7 +1369,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1494,7 +1397,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1523,7 +1425,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1552,7 +1453,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret = string;
@@ -1571,7 +1471,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1600,7 +1499,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1629,7 +1527,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1658,7 +1555,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret1 = string;
@@ -1687,7 +1583,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Ret = string;
@@ -1706,7 +1601,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1727,7 +1621,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1748,7 +1641,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1767,7 +1659,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg = number;
@@ -1786,7 +1677,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type R = number;
@@ -1811,7 +1701,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1853,7 +1742,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1884,7 +1772,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Arg1 = number;
@@ -1914,7 +1801,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         namespace A {
@@ -1939,7 +1825,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         namespace A {
@@ -1964,7 +1849,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         namespace A {
@@ -1991,7 +1875,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         namespace A {
@@ -2019,7 +1902,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         namespace A {
@@ -2046,7 +1928,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         import type { A } from './types';
@@ -2086,7 +1967,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         import type { A } from './types';
@@ -2128,7 +2008,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type T1 = number;
@@ -2185,7 +2064,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = string;
@@ -2226,7 +2104,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = string;
@@ -2269,7 +2146,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = string;
@@ -2306,7 +2182,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Fruit = 'apple' | 'banana';
@@ -2332,7 +2207,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Fruit = 'apple' | 'banana';
@@ -2358,7 +2232,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Fruit = 'apple' | 'banana';
@@ -2384,7 +2257,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Fruit = 'apple' | 'banana';
@@ -2410,7 +2282,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Fruit = 'apple' | 'banana';
@@ -2436,7 +2307,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2487,7 +2357,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2518,7 +2387,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2551,7 +2419,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2584,7 +2451,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2619,7 +2485,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2642,7 +2507,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2667,7 +2531,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2688,7 +2551,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2711,7 +2573,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2734,7 +2595,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         enum Fruit {
@@ -2761,7 +2621,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         enum Fruit {
@@ -2788,7 +2647,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         enum Fruit {
@@ -2815,7 +2673,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         enum Fruit {
@@ -2844,7 +2701,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Item = {
@@ -2883,7 +2739,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2906,7 +2761,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2929,7 +2783,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2952,7 +2805,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2975,7 +2827,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -2998,7 +2849,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3021,7 +2871,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3047,7 +2896,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3080,7 +2928,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3128,7 +2975,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3156,7 +3002,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3187,7 +3032,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3213,7 +3057,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type ItemsMap = Record<string, number>;
@@ -3244,7 +3087,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3267,7 +3109,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3301,7 +3142,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         declare function func<T>(): string;
@@ -3322,7 +3162,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type Apple = 'apple';
@@ -3351,7 +3190,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3372,7 +3210,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = number;
@@ -3407,7 +3244,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         type A = 'test';
@@ -3425,7 +3261,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         const fruits = { apple: 'apple' };
@@ -3448,7 +3283,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         const fruits = { apple: 'apple' };
@@ -3469,7 +3303,6 @@ ruleTester.run('require-types-exports', rule, {
         },
       ],
     },
-
     {
       code: `
         const fruits = { apple: 'apple' };
