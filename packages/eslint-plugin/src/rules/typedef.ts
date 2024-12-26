@@ -15,9 +15,9 @@ const enum OptionKeys {
   VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
-type Options = Partial<Record<OptionKeys, boolean>>;
+export type Options = Partial<Record<OptionKeys, boolean>>;
 
-type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
+export type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
 export default createRule<[Options], MessageIds>({
   name: 'typedef',

@@ -18,7 +18,7 @@ import {
   typeMatchesSomeSpecifier,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
     allowForKnownSafePromises?: TypeOrValueSpecifier[];

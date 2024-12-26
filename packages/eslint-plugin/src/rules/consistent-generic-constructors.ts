@@ -4,8 +4,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
-type Options = ['constructor' | 'type-annotation'];
+export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+export type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',

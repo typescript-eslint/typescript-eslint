@@ -15,7 +15,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     checksConditionals?: boolean;
     checksSpreads?: boolean;
