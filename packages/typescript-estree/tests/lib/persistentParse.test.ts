@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import tmp from 'tmp';
 
 import { clearCaches } from '../../src/clear-caches';
@@ -10,10 +10,10 @@ import {
 } from '../../src/parser';
 
 const CONTENTS = {
-  foo: 'console.log("foo")',
   bar: 'console.log("bar")',
-  'baz/bar': 'console.log("baz bar")',
   'bat/baz/bar': 'console.log("bat/baz/bar")',
+  'baz/bar': 'console.log("baz bar")',
+  foo: 'console.log("foo")',
   number: 'const foo = 1;',
   object: '(() => { })();',
   string: 'let a: "a" | "b";',
@@ -65,7 +65,9 @@ function setup(tsconfig: Record<string, unknown>, writeBar = true): string {
   fs.mkdirSync(path.join(tmpDir.name, 'src'));
   fs.mkdirSync(path.join(tmpDir.name, 'src', 'baz'));
   writeFile(tmpDir.name, 'foo');
-  writeBar && writeFile(tmpDir.name, 'bar');
+  if (writeBar) {
+    writeFile(tmpDir.name, 'bar');
+  }
 
   return tmpDir.name;
 }
@@ -77,11 +79,12 @@ function parseFile(
   ignoreTsconfigRootDir?: boolean,
 ): void {
   parseAndGenerateServices(CONTENTS[filename], {
-    project: './tsconfig.json',
-    tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
+    disallowAutomaticSingleRunInference: true,
     filePath: relative
       ? path.join('src', `${filename}.ts`)
       : path.join(tmpDir, 'src', `${filename}.ts`),
+    project: './tsconfig.json',
+    tsconfigRootDir: ignoreTsconfigRootDir ? undefined : tmpDir,
   });
 }
 
@@ -93,8 +96,8 @@ function baseTests(
   tsConfigExcludeBar: Record<string, unknown>,
   tsConfigIncludeAll: Record<string, unknown>,
 ): void {
-  // The experimental project server creates a default project for files
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+  // The project service creates a default project for files
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true') {
     return;
   }
 
@@ -239,12 +242,12 @@ function baseTests(
 describe('persistent parse', () => {
   describe('includes not ending in a slash', () => {
     const tsConfigExcludeBar = {
-      include: ['src'],
       exclude: ['./src/bar.ts'],
+      include: ['src'],
     };
     const tsConfigIncludeAll = {
-      include: ['src'],
       exclude: [],
+      include: ['src'],
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
@@ -256,12 +259,12 @@ describe('persistent parse', () => {
   */
   describe('includes ending in a slash', () => {
     const tsConfigExcludeBar = {
-      include: ['src/'],
       exclude: ['./src/bar.ts'],
+      include: ['src/'],
     };
     const tsConfigIncludeAll = {
-      include: ['src/'],
       exclude: [],
+      include: ['src/'],
     };
 
     baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
@@ -271,7 +274,7 @@ describe('persistent parse', () => {
   If there is no includes, then typescript will ask for a slightly different set of watchers.
   */
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('tsconfig with no includes / files', () => {
       const tsConfigExcludeBar = {
         exclude: ['./src/bar.ts'],
@@ -318,8 +321,8 @@ describe('persistent parse', () => {
   */
   describe('tsconfig with overlapping globs', () => {
     const tsConfigExcludeBar = {
-      include: ['./*', './**/*', './src/**/*'],
       exclude: ['./src/bar.ts'],
+      include: ['./*', './**/*', './src/**/*'],
     };
     const tsConfigIncludeAll = {
       include: ['./*', './**/*', './src/**/*'],

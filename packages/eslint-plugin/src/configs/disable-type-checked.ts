@@ -8,11 +8,7 @@
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export = {
-  parserOptions: {
-    project: false,
-    program: null,
-    EXPERIMENTAL_useProjectService: false,
-  },
+  parserOptions: { program: null, project: false, projectService: false },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',
@@ -22,6 +18,7 @@ export = {
     '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/no-deprecated': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-for-in-array': 'off',
@@ -30,7 +27,6 @@ export = {
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
-    '@typescript-eslint/no-throw-literal': 'off',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-unnecessary-qualifier': 'off',
@@ -44,8 +40,8 @@ export = {
     '@typescript-eslint/no-unsafe-enum-comparison': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-type-assertion': 'off',
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
-    '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/only-throw-error': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
@@ -61,6 +57,7 @@ export = {
     '@typescript-eslint/prefer-return-this-type': 'off',
     '@typescript-eslint/prefer-string-starts-ends-with': 'off',
     '@typescript-eslint/promise-function-async': 'off',
+    '@typescript-eslint/related-getter-setter-pairs': 'off',
     '@typescript-eslint/require-array-sort-compare': 'off',
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/restrict-plus-operands': 'off',

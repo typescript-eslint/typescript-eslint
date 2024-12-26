@@ -1,22 +1,23 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { TYPE } from './base-config';
 
 export const decorators = {
-  ClassMemberDecoratorContext: TYPE,
-  DecoratorContext: TYPE,
-  DecoratorMetadataObject: TYPE,
-  DecoratorMetadata: TYPE,
-  ClassDecoratorContext: TYPE,
-  ClassMethodDecoratorContext: TYPE,
-  ClassGetterDecoratorContext: TYPE,
-  ClassSetterDecoratorContext: TYPE,
   ClassAccessorDecoratorContext: TYPE,
-  ClassAccessorDecoratorTarget: TYPE,
   ClassAccessorDecoratorResult: TYPE,
+  ClassAccessorDecoratorTarget: TYPE,
+  ClassDecoratorContext: TYPE,
   ClassFieldDecoratorContext: TYPE,
+  ClassGetterDecoratorContext: TYPE,
+  ClassMemberDecoratorContext: TYPE,
+  ClassMethodDecoratorContext: TYPE,
+  ClassSetterDecoratorContext: TYPE,
+  DecoratorContext: TYPE,
+  DecoratorMetadata: TYPE,
+  DecoratorMetadataObject: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

@@ -1,12 +1,12 @@
+import packageData from '@typescript-eslint/parser/package.json';
 import Npm from '@uiw/react-shields/npm';
 import React from 'react';
 
-import packageData from '../../../package.json';
 import styles from './PackageLink.module.css';
 
 export interface PackageLinkProps {
-  scope?: string;
   packageName: string;
+  scope?: string;
 }
 
 export function PackageLink({

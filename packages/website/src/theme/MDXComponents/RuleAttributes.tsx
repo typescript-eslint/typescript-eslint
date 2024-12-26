@@ -1,8 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type {
+  RuleRecommendation,
+  RuleRecommendationAcrossConfigs,
+} from '@typescript-eslint/utils/ts-eslint';
+
 import Link from '@docusaurus/Link';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
-import type { RuleMetaDataDocs } from '@typescript-eslint/utils/ts-eslint';
 import React from 'react';
+
+import type { FeatureProps } from './Feature';
 
 import {
   FIXABLE_EMOJI,
@@ -11,7 +17,6 @@ import {
   STYLISTIC_CONFIG_EMOJI,
   SUGGESTIONS_EMOJI,
 } from '../../components/constants';
-import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
@@ -21,24 +26,31 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
+  Required<Record<Key, NonNullable<Base[Key]>>>;
 
-type RecommendedRuleMetaDataDocs<Options extends readonly unknown[]> =
-  MakeRequired<RuleMetaDataDocs<Options>, 'recommended'>;
+type RecommendedRuleMetaDataDocs = MakeRequired<
+  ESLintPluginDocs,
+  'recommended'
+>;
 
 const isRecommendedDocs = (
-  docs: RuleMetaDataDocs<unknown[]>,
-): docs is RecommendedRuleMetaDataDocs<unknown[]> => !!docs.recommended;
+  docs: ESLintPluginDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
 
-const getRecommendation = (
-  docs: RecommendedRuleMetaDataDocs<unknown[]>,
-): string[] => {
+const resolveRecommendation = (
+  recommended: RuleRecommendationAcrossConfigs<unknown[]>,
+): RuleRecommendation => {
+  return recommended.recommended === true ? 'recommended' : 'strict';
+};
+
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
   const recommended = docs.recommended;
   const recommendation =
     recommendations[
-      typeof recommended === 'object' ? 'recommended' : recommended
+      typeof recommended === 'object'
+        ? resolveRecommendation(recommended)
+        : recommended
     ];
 
   return docs.requiresTypeChecking

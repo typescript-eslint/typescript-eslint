@@ -2,12 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-invalid-this';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-  },
-});
+const ruleTester = new RuleTester();
 
 const errors = [
   { messageId: 'unexpectedThis' as const },
@@ -458,10 +453,12 @@ z(x => console.log(x, this));
 console.log(this);
 z(x => console.log(x, this));
       `,
-      parserOptions: {
-        ecmaFeatures: { globalReturn: true },
-      },
       errors,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { globalReturn: true },
+        },
+      },
     },
 
     // IIFE.
@@ -492,8 +489,8 @@ function foo() {
   z(x => console.log(x, this));
 }
       `,
-      options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
       errors,
+      options: [{ capIsConstructor: false }], // test that the option doesn't reverse the logic and mistakenly allows lowercase functions
     },
     {
       code: `
@@ -502,8 +499,8 @@ function Foo() {
   z(x => console.log(x, this));
 }
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -523,8 +520,8 @@ function Foo() {
   z(x => console.log(x, this));
 }
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -533,10 +530,12 @@ return function () {
   z(x => console.log(x, this));
 };
       `,
-      parserOptions: {
-        ecmaFeatures: { globalReturn: true },
-      },
       errors,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: { globalReturn: true },
+        },
+      },
     },
     {
       code: `
@@ -838,8 +837,8 @@ var Ctor = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -857,8 +856,8 @@ var func = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
 
     {
@@ -868,8 +867,8 @@ Ctor = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
     {
       code: `
@@ -887,8 +886,8 @@ func = function () {
   z(x => console.log(x, this));
 };
       `,
-      options: [{ capIsConstructor: false }],
       errors,
+      options: [{ capIsConstructor: false }],
     },
 
     {

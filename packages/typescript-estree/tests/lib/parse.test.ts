@@ -1,12 +1,14 @@
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
-import debug from 'debug';
-import * as globbyModule from 'globby';
-import { join, resolve } from 'path';
 import type * as typescriptModule from 'typescript';
+
+import debug from 'debug';
+import * as fastGlobModule from 'fast-glob';
+import { join, resolve } from 'node:path';
+
+import type { TSESTreeOptions } from '../../src/parser-options';
 
 import * as parser from '../../src';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
-import type { TSESTreeOptions } from '../../src/parser-options';
 import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
@@ -38,11 +40,11 @@ jest.mock('typescript', () => {
   };
 });
 
-jest.mock('globby', () => {
-  const globby = jest.requireActual<typeof globbyModule>('globby');
+jest.mock('fast-glob', () => {
+  const fastGlob = jest.requireActual<typeof fastGlobModule>('fast-glob');
   return {
-    ...globby,
-    sync: jest.fn(globby.sync),
+    ...fastGlob,
+    sync: jest.fn(fastGlob.sync),
   };
 });
 
@@ -51,13 +53,13 @@ const hrtimeSpy = jest.spyOn(process, 'hrtime');
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
-const globbySyncMock = jest.mocked(globbyModule.sync);
+const fastGlobSyncMock = jest.mocked(fastGlobModule.sync);
 
 /**
  * Aligns paths between environments, node for windows uses `\`, for linux and mac uses `/`
  */
 function alignErrorPath(error: Error): never {
-  error.message = error.message.replace(/\\(?!["])/gm, '/');
+  error.message = error.message.replaceAll(/\\(?!")/g, '/');
   throw error;
 }
 
@@ -71,15 +73,15 @@ describe('parseAndGenerateServices', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
       comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
       filePath: 'file.ts',
+      loc: true,
+      range: true,
+      tokens: true,
     };
     const projectConfig: TSESTreeOptions = {
       ...baseConfig,
-      tsconfigRootDir: FIXTURES_DIR,
       project: './tsconfig.json',
+      tsconfigRootDir: FIXTURES_DIR,
     };
 
     it('should not impact the use of parse()', () => {
@@ -166,11 +168,12 @@ describe('parseAndGenerateServices', () => {
 
   describe('isolated parsing', () => {
     const config: TSESTreeOptions = {
-      EXPERIMENTAL_useProjectService: false,
       comment: true,
-      tokens: true,
-      range: true,
+      disallowAutomaticSingleRunInference: true,
       loc: true,
+      projectService: false,
+      range: true,
+      tokens: true,
     };
     const testParse = ({
       ext,
@@ -199,8 +202,8 @@ describe('parseAndGenerateServices', () => {
         const exp = expect(() => {
           result = parser.parseAndGenerateServices(code, {
             ...config,
-            jsx: jsxSetting,
             filePath: join(FIXTURES_DIR, `file${ext}`),
+            jsx: jsxSetting,
           });
         });
         if (!shouldThrow) {
@@ -340,17 +343,145 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  describe('ESM parsing', () => {
+    describe('TLA(Top Level Await)', () => {
+      const config: TSESTreeOptions = {
+        comment: true,
+        loc: true,
+        projectService: false,
+        range: true,
+        tokens: true,
+      };
+      const code = 'await(1)';
+
+      const testParse = ({
+        ext,
+        shouldAllowTLA = false,
+        sourceType,
+      }: {
+        ext: '.js' | '.mjs' | '.mts' | '.ts';
+        shouldAllowTLA?: boolean;
+        sourceType?: 'module' | 'script';
+      }): void => {
+        const ast = parser.parse(code, {
+          ...config,
+          filePath: `file${ext}`,
+          sourceType,
+        });
+        const expressionType = (
+          ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parse(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+      const testParseAndGenerateServices = ({
+        ext,
+        shouldAllowTLA = false,
+        sourceType,
+      }: {
+        ext: '.js' | '.mjs' | '.mts' | '.ts';
+        shouldAllowTLA?: boolean;
+        sourceType?: 'module' | 'script';
+      }): void => {
+        const result = parser.parseAndGenerateServices(code, {
+          ...config,
+          filePath: `file${ext}`,
+          sourceType,
+        });
+        const expressionType = (
+          result.ast.body[0] as parser.TSESTree.ExpressionStatement
+        ).expression.type;
+
+        it(`parseAndGenerateServices(): should ${
+          shouldAllowTLA ? 'allow' : 'not allow'
+        } TLA for ${ext} file with sourceType = ${sourceType}`, () => {
+          expect(expressionType).toBe(
+            shouldAllowTLA
+              ? parser.AST_NODE_TYPES.AwaitExpression
+              : parser.AST_NODE_TYPES.CallExpression,
+          );
+        });
+      };
+
+      testParse({ ext: '.js' });
+      testParse({ ext: '.ts' });
+      testParse({ ext: '.mjs', shouldAllowTLA: true });
+      testParse({ ext: '.mts', shouldAllowTLA: true });
+
+      testParse({ ext: '.js', shouldAllowTLA: true, sourceType: 'module' });
+      testParse({ ext: '.ts', shouldAllowTLA: true, sourceType: 'module' });
+      testParse({ ext: '.mjs', shouldAllowTLA: true, sourceType: 'module' });
+      testParse({ ext: '.mts', shouldAllowTLA: true, sourceType: 'module' });
+
+      testParse({ ext: '.js', sourceType: 'script' });
+      testParse({ ext: '.ts', sourceType: 'script' });
+      testParse({ ext: '.mjs', sourceType: 'script' });
+      testParse({ ext: '.mts', sourceType: 'script' });
+
+      testParseAndGenerateServices({ ext: '.js' });
+      testParseAndGenerateServices({ ext: '.ts' });
+      testParseAndGenerateServices({ ext: '.mjs', shouldAllowTLA: true });
+      testParseAndGenerateServices({ ext: '.mts', shouldAllowTLA: true });
+
+      testParseAndGenerateServices({
+        ext: '.js',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+      testParseAndGenerateServices({
+        ext: '.ts',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+      testParseAndGenerateServices({
+        ext: '.mjs',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+      testParseAndGenerateServices({
+        ext: '.mts',
+        shouldAllowTLA: true,
+        sourceType: 'module',
+      });
+
+      testParseAndGenerateServices({
+        ext: '.js',
+        sourceType: 'script',
+      });
+      testParseAndGenerateServices({
+        ext: '.ts',
+        sourceType: 'script',
+      });
+      testParseAndGenerateServices({
+        ext: '.mjs',
+        sourceType: 'script',
+      });
+      testParseAndGenerateServices({
+        ext: '.mts',
+        sourceType: 'script',
+      });
+    });
+  });
+
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
-        tokens: true,
-        range: true,
+        disallowAutomaticSingleRunInference: true,
         loc: true,
+        range: true,
+        tokens: true,
         tsconfigRootDir: PROJECT_DIR,
-        project: './tsconfig.json',
       };
       const testParse =
         (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
@@ -360,10 +491,20 @@ describe('parseAndGenerateServices', () => {
               ...config,
               extraFileExtensions,
               filePath: join(PROJECT_DIR, filePath),
+              project: './tsconfig.json',
             });
           } catch (error) {
             alignErrorPath(error as Error);
           }
+        };
+      const testExtraFileExtensions =
+        (filePath: string, extraFileExtensions: string[]) => (): void => {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            extraFileExtensions,
+            filePath: join(PROJECT_DIR, filePath),
+            projectService: true,
+          });
         };
 
       describe('project includes', () => {
@@ -477,20 +618,61 @@ describe('parseAndGenerateServices', () => {
           `);
         });
       });
+
+      describe('"parserOptions.extraFileExtensions" is non-empty and projectService is true', () => {
+        describe('the extension matches', () => {
+          it('the file is included', () => {
+            expect(
+              testExtraFileExtensions('other/included.vue', ['.vue']),
+            ).not.toThrow();
+          });
+
+          it("the file isn't included", () => {
+            expect(
+              testExtraFileExtensions('other/notIncluded.vue', ['.vue']),
+            ).toThrow(/notIncluded\.vue was not found by the project service/);
+          });
+
+          it('duplicate extension', () => {
+            expect(
+              testExtraFileExtensions('ts/notIncluded.ts', ['.ts']),
+            ).toThrow(/notIncluded\.ts was not found by the project service/);
+          });
+        });
+
+        it('extension matching the file name but not a file on disk', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', [
+              '.unknown',
+            ]),
+          ).toThrow(
+            /unknownFileType\.unknown was not found by the project service/,
+          );
+        });
+
+        it('the extension does not match the file name', () => {
+          expect(
+            testExtraFileExtensions('other/unknownFileType.unknown', ['.vue']),
+          ).toThrow(
+            /unknownFileType\.unknown was not found by the project service/,
+          );
+        });
+      });
     });
 
     describe('invalid project error messages', () => {
-      if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+      if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
         it('throws when none of multiple projects include the file', () => {
           const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
           const code = 'var a = true';
           const config: TSESTreeOptions = {
             comment: true,
-            tokens: true,
-            range: true,
+            disallowAutomaticSingleRunInference: true,
             loc: true,
-            tsconfigRootDir: PROJECT_DIR,
             project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+            range: true,
+            tokens: true,
+            tsconfigRootDir: PROJECT_DIR,
           };
           const testParse = (filePath: string) => (): void => {
             try {
@@ -505,7 +687,7 @@ describe('parseAndGenerateServices', () => {
 
           expect(testParse('ts/notIncluded0j1.ts'))
             .toThrowErrorMatchingInlineSnapshot(`
-            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`:
             - <tsconfigRootDir>/tsconfig.json
             - <tsconfigRootDir>/tsconfig.extra.json
             However, none of those TSConfigs include this file. Either:
@@ -530,6 +712,7 @@ describe('parseAndGenerateServices', () => {
     it("shouldn't turn on debugger if no options were provided", () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: [],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).not.toHaveBeenCalled();
     });
@@ -537,6 +720,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('eslint:*,-eslint:code-path');
@@ -545,6 +729,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith('typescript-eslint:*');
@@ -553,6 +738,7 @@ describe('parseAndGenerateServices', () => {
     it('should turn on both eslint and typescript-eslint debugger', () => {
       parser.parseAndGenerateServices('const x = 1;', {
         debugLevel: ['typescript-eslint', 'eslint'],
+        disallowAutomaticSingleRunInference: true,
       });
       expect(debugEnable).toHaveBeenCalledTimes(1);
       expect(debugEnable).toHaveBeenCalledWith(
@@ -560,11 +746,12 @@ describe('parseAndGenerateServices', () => {
       );
     });
 
-    if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
       it('should turn on typescript debugger', () => {
         expect(() =>
           parser.parseAndGenerateServices('const x = 1;', {
             debugLevel: ['typescript'],
+            disallowAutomaticSingleRunInference: true,
             filePath: './path-that-doesnt-exist.ts',
             project: ['./tsconfig-that-doesnt-exist.json'],
           }),
@@ -580,7 +767,7 @@ describe('parseAndGenerateServices', () => {
     }
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     describe('projectFolderIgnoreList', () => {
       beforeEach(() => {
         parser.clearCaches();
@@ -590,11 +777,12 @@ describe('parseAndGenerateServices', () => {
       const code = 'var a = true';
       const config: TSESTreeOptions = {
         comment: true,
-        tokens: true,
-        range: true,
+        disallowAutomaticSingleRunInference: true,
         loc: true,
-        tsconfigRootDir: PROJECT_DIR,
         project: './**/tsconfig.json',
+        range: true,
+        tokens: true,
+        tsconfigRootDir: PROJECT_DIR,
       };
 
       const testParse =
@@ -605,8 +793,8 @@ describe('parseAndGenerateServices', () => {
         (): void => {
           parser.parseAndGenerateServices(code, {
             ...config,
-            projectFolderIgnoreList,
             filePath: join(PROJECT_DIR, filePath, './file.ts'),
+            projectFolderIgnoreList,
           });
         };
 
@@ -626,60 +814,100 @@ describe('parseAndGenerateServices', () => {
 
     describe('cacheLifetime', () => {
       describe('glob', () => {
+        const project = ['./**/tsconfig.json', './**/tsconfig.extra.json'];
+        // fast-glob returns arbitrary order of results to improve performance.
+        // `resolveProjectList()` calls fast-glob for each pattern to ensure the
+        // order is correct.
+        // Thus the expected call time of spy is the number of patterns.
+        const expectFastGlobCalls = project.length;
         function doParse(lifetime: CacheDurationSeconds): void {
           parser.parseAndGenerateServices('const x = 1', {
             cacheLifetime: {
               glob: lifetime,
             },
+            disallowAutomaticSingleRunInference: true,
             filePath: join(FIXTURES_DIR, 'file.ts'),
+            project,
             tsconfigRootDir: FIXTURES_DIR,
-            project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
           });
         }
 
         it('should cache globs if the lifetime is non-zero', () => {
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
 
         it('should not cache globs if the lifetime is zero', () => {
           doParse(0);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
           doParse(0);
-          // should call globby again because we specified immediate cache expiry
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // should call fast-glob again because we specified immediate cache expiry
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
+            expectFastGlobCalls * 2,
+          );
         });
 
         it('should evict the cache if the entry expires', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse(30);
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse(30);
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(
+            expectFastGlobCalls * 2,
+          );
         });
 
         it('should infinitely cache if passed Infinity', () => {
           hrtimeSpy.mockReturnValueOnce([1, 0]);
 
           doParse('Infinity');
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
 
           // wow so much time has passed
           hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
           doParse('Infinity');
-          // shouldn't call globby again due to the caching
-          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // shouldn't call fast-glob again due to the caching
+          expect(fastGlobSyncMock).toHaveBeenCalledTimes(expectFastGlobCalls);
         });
+      });
+    });
+
+    describe('project references', () => {
+      beforeEach(() => {
+        parser.clearCaches();
+      });
+
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectReferences');
+      const code = 'var a = true';
+
+      const testParse = () => (): void => {
+        parser.parseAndGenerateServices(code, {
+          disallowAutomaticSingleRunInference: true,
+          filePath: join(PROJECT_DIR, './file.ts'),
+          project: './**/tsconfig.json',
+          tsconfigRootDir: PROJECT_DIR,
+        });
+      };
+
+      it('throws a special-case error when project references are enabled in the only TSConfig and the file is not found', () => {
+        expect(testParse()).toThrowErrorMatchingInlineSnapshot(`
+        "ESLint was configured to run on \`<tsconfigRootDir>/file.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+        That TSConfig uses project "references" and doesn't include \`<tsconfigRootDir>/file.ts\` directly, which is not supported by \`parserOptions.project\`.
+        Either:
+        - Switch to \`parserOptions.projectService\`
+        - Use an ESLint-specific TSConfig
+        See the typescript-eslint docs for more info: https://typescript-eslint.io/troubleshooting/typed-linting#are-typescript-project-references-supported"
+        `);
       });
     });
   }

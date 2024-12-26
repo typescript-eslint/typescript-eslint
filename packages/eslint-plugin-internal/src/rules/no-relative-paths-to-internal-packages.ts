@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 
 import { createRule } from '../util';
 
@@ -10,15 +10,14 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: 'recommended',
       description: 'Disallow relative paths to internal packages',
     },
+    fixable: 'code',
     messages: {
       noRelativePathsToInternalPackages:
         'Use absolute paths instead of relative paths to import modules in other internal packages.',
     },
     schema: [],
-    fixable: 'code',
   },
 
   defaultOptions: [],

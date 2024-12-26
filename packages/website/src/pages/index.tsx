@@ -10,22 +10,21 @@ import { FinancialContributors } from '../components/FinancialContributors';
 import styles from './styles.module.css';
 
 interface FeatureItem {
-  title: string;
   description: React.JSX.Element;
   imageUrl?: string;
+  title: string;
 }
 
 const features: FeatureItem[] = [
   {
-    title: 'What are ESLint and TypeScript, and how do they compare?',
     description: (
       <>
         <div className="row padding-vert--lg">
           <div className="col col--2 text--center">
             <img
-              src="/img/eslint.svg"
               alt="eslint"
               className={styles.featureImage}
+              src="/img/eslint.svg"
             />
           </div>
           <div className="col col--8">
@@ -44,9 +43,9 @@ const features: FeatureItem[] = [
         <div className="row padding-vert--lg">
           <div className="col col--2 text--center">
             <img
-              src="/img/typescript.svg"
               alt="TypeScript"
               className={styles.featureImage}
+              src="/img/typescript.svg"
             />
           </div>
           <div className="col col--8">
@@ -64,9 +63,9 @@ const features: FeatureItem[] = [
         </div>
       </>
     ),
+    title: 'What are ESLint and TypeScript, and how do they compare?',
   },
   {
-    title: 'Why does this project exist?',
     description: (
       <div className="row padding-vert--lg text--justify">
         <div className="col col--offset-2 col--8">
@@ -103,16 +102,17 @@ const features: FeatureItem[] = [
         </div>
       </div>
     ),
+    title: 'Why does this project exist?',
   },
 ];
 
-function Feature({ title, description }: FeatureItem): React.JSX.Element {
+function Feature({ description, title }: FeatureItem): React.JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
       <div className="text--center">
         <Heading
           as="h2"
-          id={title.replace(/,/g, '').toLowerCase().replace(/\s|_/g, '-')}
+          id={title.replaceAll(',', '').toLowerCase().replaceAll(/\s|_/g, '-')}
         >
           {title}
         </Heading>
@@ -163,11 +163,11 @@ function Home(): React.JSX.Element {
 
         {features.map((props, idx) => (
           <section
-            key={idx}
             className={clsx(
               styles.features,
               idx % 2 === 1 ? styles.lightBackground : '',
             )}
+            key={idx}
           >
             <div className="container">
               <div className="row">

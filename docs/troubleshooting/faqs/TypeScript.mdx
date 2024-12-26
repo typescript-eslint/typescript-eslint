@@ -7,7 +7,7 @@ title: TypeScript FAQs
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-## Should TypeScript should be installed globally or locally?
+## Should TypeScript be installed globally or locally?
 
 Make sure that you have installed TypeScript locally i.e. by using `npm install typescript`, not `npm install -g typescript`,
 or by using `yarn add typescript`, not `yarn global add typescript`.
@@ -35,3 +35,20 @@ For example:
 - TypeScript itself might be on version _X+1-beta_ and think the variable is `string[]`
 
 See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/issues/4102#issuecomment-963265514) for more details.
+
+## Why aren't `// @ts-expect-error` or `// @ts-ignore` comments affecting lint results?
+
+[`// @ts-expect-error`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-9.html#-ts-expect-error-comments) and [`// @ts-ignore`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments) comment directives are a feature of TypeScript.
+They only impact TypeScript's type checking.
+TypeScript (a type checker) is a separate tool from ESLint (a linter).
+
+Similar, [ESLint configuration comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments) like `/* eslint ... */` only impact ESLint.
+They don't change anything with TypeScript's type checking.
+
+:::tip
+You can use ESLint to enforce good uses of both ESLint and TypeScript comment directives:
+
+- The [`@typescript-eslint/ban-ts-comment`](/rules/ban-ts-comment) rule can disallow `@ts-...` comments and/or require comment descriptions to explain their use
+- The [`@eslint-community/eslint-plugin-eslint-comments`](https://eslint-community.github.io/eslint-plugin-eslint-comments) plugin can enforce general ESLint comment best practices, including requiring descriptions
+
+:::

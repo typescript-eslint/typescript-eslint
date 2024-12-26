@@ -24,9 +24,6 @@
 <p align="center">
 👆
 </p>
-<p align="center">
-  Using ESLint v9? See: <a href="https://github.com/typescript-eslint/typescript-eslint/issues/8211">ESLint v9 Support</a>.
-</p>
 <!-- markdownlint-enable MD033 -->
 
 ## Code Contributors
@@ -47,4 +44,4 @@ In addition to submitting code and documentation updates, you can help us sustai
 
 ## License
 
-typescript-eslint inherits from the original TypeScript ESLint Parser license, as the majority of the work began there. It is licensed under a permissive BSD 2-clause license.
+typescript-eslint inherits is licensed under a permissive MIT license.

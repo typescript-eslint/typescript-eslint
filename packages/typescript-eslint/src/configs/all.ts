@@ -10,6 +10,10 @@ import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 import baseConfig from './base';
 import eslintRecommendedConfig from './eslint-recommended';
 
+/**
+ * Enables each the rules provided as a part of typescript-eslint. Note that many rules are not applicable in all codebases, or are meant to be configured.
+ * @see {@link https://typescript-eslint.io/users/configs#all}
+ */
 export default (
   plugin: FlatConfig.Plugin,
   parser: FlatConfig.Parser,
@@ -24,7 +28,6 @@ export default (
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/ban-ts-comment': 'error',
       '@typescript-eslint/ban-tslint-comment': 'error',
-      '@typescript-eslint/ban-types': 'error',
       '@typescript-eslint/class-literal-property-style': 'error',
       'class-methods-use-this': 'off',
       '@typescript-eslint/class-methods-use-this': 'error',
@@ -56,6 +59,7 @@ export default (
       '@typescript-eslint/no-base-to-string': 'error',
       '@typescript-eslint/no-confusing-non-null-assertion': 'error',
       '@typescript-eslint/no-confusing-void-expression': 'error',
+      '@typescript-eslint/no-deprecated': 'error',
       'no-dupe-class-members': 'off',
       '@typescript-eslint/no-dupe-class-members': 'error',
       '@typescript-eslint/no-duplicate-enum-values': 'error',
@@ -63,7 +67,6 @@ export default (
       '@typescript-eslint/no-dynamic-delete': 'error',
       'no-empty-function': 'off',
       '@typescript-eslint/no-empty-function': 'error',
-      '@typescript-eslint/no-empty-interface': 'error',
       '@typescript-eslint/no-empty-object-type': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-extra-non-null-assertion': 'error',
@@ -79,8 +82,6 @@ export default (
       '@typescript-eslint/no-invalid-void-type': 'error',
       'no-loop-func': 'off',
       '@typescript-eslint/no-loop-func': 'error',
-      'no-loss-of-precision': 'off',
-      '@typescript-eslint/no-loss-of-precision': 'error',
       'no-magic-numbers': 'off',
       '@typescript-eslint/no-magic-numbers': 'error',
       '@typescript-eslint/no-meaningless-void-operator': 'error',
@@ -97,6 +98,7 @@ export default (
       '@typescript-eslint/no-require-imports': 'error',
       'no-restricted-imports': 'off',
       '@typescript-eslint/no-restricted-imports': 'error',
+      '@typescript-eslint/no-restricted-types': 'error',
       'no-shadow': 'off',
       '@typescript-eslint/no-shadow': 'error',
       '@typescript-eslint/no-this-alias': 'error',
@@ -115,8 +117,10 @@ export default (
       '@typescript-eslint/no-unsafe-call': 'error',
       '@typescript-eslint/no-unsafe-declaration-merging': 'error',
       '@typescript-eslint/no-unsafe-enum-comparison': 'error',
+      '@typescript-eslint/no-unsafe-function-type': 'error',
       '@typescript-eslint/no-unsafe-member-access': 'error',
       '@typescript-eslint/no-unsafe-return': 'error',
+      '@typescript-eslint/no-unsafe-type-assertion': 'error',
       '@typescript-eslint/no-unsafe-unary-minus': 'error',
       'no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-expressions': 'error',
@@ -127,7 +131,7 @@ export default (
       'no-useless-constructor': 'off',
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/no-useless-empty-export': 'error',
-      '@typescript-eslint/no-var-requires': 'error',
+      '@typescript-eslint/no-wrapper-object-types': 'error',
       '@typescript-eslint/non-nullable-type-assertion-style': 'error',
       'no-throw-literal': 'off',
       '@typescript-eslint/only-throw-error': 'error',
@@ -153,6 +157,7 @@ export default (
       '@typescript-eslint/prefer-return-this-type': 'error',
       '@typescript-eslint/prefer-string-starts-ends-with': 'error',
       '@typescript-eslint/promise-function-async': 'error',
+      '@typescript-eslint/related-getter-setter-pairs': 'error',
       '@typescript-eslint/require-array-sort-compare': 'error',
       'require-await': 'off',
       '@typescript-eslint/require-await': 'error',

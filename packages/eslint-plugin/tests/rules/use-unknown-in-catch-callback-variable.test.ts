@@ -6,11 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
@@ -19,6 +20,18 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
       Promise.resolve().catch((err: unknown) => {
         throw err;
       });
+    `,
+    `
+      let x = Math.random() ? 'ca' + 'tch' : 'catch';
+      Promise.resolve()[x]((err: Error) => {});
+    `,
+    `
+      Promise.resolve().then(
+        () => {},
+        (err: unknown) => {
+          throw err;
+        },
+      );
     `,
     `
       Promise.resolve().catch(() => {
@@ -103,6 +116,68 @@ ruleTester.run('use-unknown-in-catch-callback-variable', rule, {
         console.log(find);
       });
     `,
+    'Promise.resolve.then();',
+    'Promise.resolve().then(() => {});',
+    `
+      declare const singleTupleArg: [() => void];
+      Promise.resolve().then(...singleTupleArg, (error: unknown) => {});
+    `,
+    `
+      declare const arrayArg: (() => void)[];
+      Promise.resolve().then(...arrayArg, error => {});
+    `,
+    `
+declare let iPromiseImAPromise: Promise<any>;
+declare const catchArgs: [(x: any) => void];
+iPromiseImAPromise.catch(...catchArgs);
+    `,
+    `
+declare const catchArgs: [
+  string | (() => never) | ((x: string) => void),
+  number,
+];
+Promise.reject(new Error()).catch(...catchArgs);
+    `,
+    `
+declare const you: [];
+declare const cannot: [];
+declare const fool: [];
+declare const me: [(x: Error) => void] | undefined;
+Promise.resolve(undefined).catch(...you, ...cannot, ...fool, ...me!);
+    `,
+    `
+declare const really: undefined[];
+declare const dumb: [];
+declare const code: (x: Error) => void;
+Promise.resolve(undefined).catch(...really, ...dumb, code);
+    `,
+    `
+declare const x: ((x: any) => string)[];
+Promise.resolve('string promise').catch(...x);
+    `,
+    `
+declare const x: any;
+Promise.resolve().catch(...x);
+    `,
+    `
+declare const thenArgs: [() => {}, (err: any) => {}];
+Promise.resolve().then(...thenArgs);
+    `,
+    // this is valid, because the `any` is a passed-in handler, not a function literal.
+    // https://github.com/typescript-eslint/typescript-eslint/issues/9057
+    `
+declare const yoloHandler: (x: any) => void;
+Promise.reject(new Error('I will reject!')).catch(yoloHandler);
+    `,
+    // type assertion is not a function literal.
+    `
+type InvalidHandler = (arg: any) => void;
+Promise.resolve().catch(<InvalidHandler>(
+  function (err /* awkward spot for comment */) {
+    throw err;
+  }
+));
+    `,
   ],
 
   invalid: [
@@ -123,6 +198,27 @@ Promise.resolve().catch((err: Error) => {
 Promise.resolve().catch((err: unknown) => {
   throw err;
 });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+        let method = 'catch';
+        Promise.resolve()[method]((error: Error) => {});
+      `,
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'wrongTypeAnnotationSuggestion',
+              output: `
+        let method = 'catch';
+        Promise.resolve()[method]((error: unknown) => {});
       `,
             },
           ],
@@ -268,25 +364,6 @@ Promise.resolve().catch(function (err: unknown /* awkward spot for comment */) {
 
     {
       code: `
-type InvalidHandler = (arg: any) => void;
-Promise.resolve().catch(<InvalidHandler>(
-  function (err /* awkward spot for comment */) {
-    throw err;
-  }
-));
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'useUnknown',
-          // We should _not_ make a suggestion due to the type assertion.
-          suggestions: null,
-        },
-      ],
-    },
-
-    {
-      code: `
 Promise.resolve().catch(function namedCallback(err: string) {
   throw err;
 });
@@ -326,6 +403,31 @@ Promise.resolve().catch(err => {
 Promise.resolve().catch((err: unknown) => {
   throw err;
 });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+Promise.resolve().then(
+  () => {},
+  error => {},
+);
+      `,
+      errors: [
+        {
+          messageId: 'useUnknown',
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+Promise.resolve().then(
+  () => {},
+  (error: unknown) => {},
+);
       `,
             },
           ],
@@ -494,80 +596,6 @@ Promise.reject(new Error('I will reject!')).catch(([err]: [unknown]) => {
 
     {
       code: `
-declare const yoloHandler: (x: any) => void;
-Promise.reject(new Error('I will reject!')).catch(yoloHandler);
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'useUnknown',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare let iPromiseImAPromise: Promise<any>;
-declare const catchArgs: [(x: any) => void];
-iPromiseImAPromise.catch(...catchArgs);
-      `,
-      errors: [
-        {
-          line: 4,
-          messageId: 'useUnknown',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const catchArgs: [
-  string | (() => never) | ((shouldFlag: string) => void),
-  number,
-];
-Promise.reject(new Error()).catch(...catchArgs);
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'useUnknown',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const you: [];
-declare const cannot: [];
-declare const fool: [];
-declare const me: [(shouldFlag: Error) => void] | undefined;
-Promise.resolve(undefined).catch(...you, ...cannot, ...fool, ...me!);
-      `,
-      errors: [
-        {
-          line: 6,
-          messageId: 'useUnknownSpreadArgs',
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const really: undefined[];
-declare const dumb: [];
-declare const code: (shouldFlag: Error) => void;
-Promise.resolve(undefined).catch(...really, ...dumb, code);
-      `,
-      errors: [
-        {
-          line: 5,
-          messageId: 'useUnknownSpreadArgs',
-        },
-      ],
-    },
-
-    {
-      code: `
 Promise.resolve(' a string ').catch(
   (a: any, b: () => any, c: (x: string & number) => void) => {},
 );
@@ -638,34 +666,6 @@ Promise.resolve()['catch']((x: unknown) => 'return');
 
     {
       code: `
-declare const x: any;
-Promise.resolve().catch(...x);
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'useUnknown',
-          suggestions: null,
-        },
-      ],
-    },
-
-    {
-      code: `
-declare const x: ((x: any) => string)[];
-Promise.resolve('string promise').catch(...x);
-      `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'useUnknown',
-          suggestions: null,
-        },
-      ],
-    },
-
-    {
-      code: `
 Promise.reject().catch((...x: any) => {});
       `,
       errors: [
@@ -725,6 +725,133 @@ Promise.resolve().catch((...{ find }: [string]) => {
 Promise.resolve().catch((...{ find }: [unknown]) => {
   console.log(find);
 });
+      `,
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: `
+declare const condition: boolean;
+Promise.resolve('foo').then(() => {}, condition ? err => {} : err => {});
+      `,
+      errors: [
+        {
+          column: 51,
+          endColumn: 54,
+          endLine: 3,
+          line: 3,
+
+          messageId: 'useUnknown',
+
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+declare const condition: boolean;
+Promise.resolve('foo').then(() => {}, condition ? (err: unknown) => {} : err => {});
+      `,
+            },
+          ],
+        },
+        {
+          column: 63,
+          endColumn: 66,
+          endLine: 3,
+          line: 3,
+
+          messageId: 'useUnknown',
+
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+declare const condition: boolean;
+Promise.resolve('foo').then(() => {}, condition ? err => {} : (err: unknown) => {});
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const condition: boolean;
+declare const maybeNullishHandler: null | ((err: any) => void);
+Promise.resolve('foo').catch(
+  condition
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
+    : (condition && (err => {})) || (err => {}),
+);
+      `,
+      errors: [
+        {
+          column: 56,
+          endColumn: 59,
+          endLine: 6,
+          line: 6,
+
+          messageId: 'useUnknown',
+
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+declare const condition: boolean;
+declare const maybeNullishHandler: null | ((err: any) => void);
+Promise.resolve('foo').catch(
+  condition
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
+    : (condition && (err => {})) || (err => {}),
+);
+      `,
+            },
+          ],
+        },
+        {
+          column: 22,
+          endColumn: 25,
+          endLine: 7,
+          line: 7,
+
+          messageId: 'useUnknown',
+
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+declare const condition: boolean;
+declare const maybeNullishHandler: null | ((err: any) => void);
+Promise.resolve('foo').catch(
+  condition
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
+    : (condition && ((err: unknown) => {})) || (err => {}),
+);
+      `,
+            },
+          ],
+        },
+        {
+          column: 38,
+          endColumn: 41,
+          endLine: 7,
+          line: 7,
+
+          messageId: 'useUnknown',
+
+          suggestions: [
+            {
+              messageId: 'addUnknownTypeAnnotationSuggestion',
+              output: `
+declare const condition: boolean;
+declare const maybeNullishHandler: null | ((err: any) => void);
+Promise.resolve('foo').catch(
+  condition
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
+    : (condition && (err => {})) || ((err: unknown) => {}),
+);
       `,
             },
           ],

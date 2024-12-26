@@ -1,19 +1,18 @@
-import 'jest-specific-snapshot';
-
-import assert from 'node:assert/strict';
-
-import { parseForESLint } from '@typescript-eslint/parser';
-import * as tseslintParser from '@typescript-eslint/parser';
-import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import fs from 'fs';
-import { marked } from 'marked';
 import type * as mdast from 'mdast';
 import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
 import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
 import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
-import path from 'path';
-import { titleCase } from 'title-case';
 import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
+
+import { parseForESLint } from '@typescript-eslint/parser';
+import * as tseslintParser from '@typescript-eslint/parser';
+import { Linter } from '@typescript-eslint/utils/ts-eslint';
+import 'jest-specific-snapshot';
+import { marked } from 'marked';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { titleCase } from 'title-case';
 
 import rules from '../src/rules';
 import { areOptionsValid } from './areOptionsValid';
@@ -43,7 +42,7 @@ type TokenType = marked.Token['type'];
 function tokenIs<Type extends TokenType>(
   token: marked.Token,
   type: Type,
-): token is marked.Token & { type: Type } {
+): token is { type: Type } & marked.Token {
   return token.type === type;
 }
 
@@ -53,7 +52,7 @@ function tokenIsHeading(token: marked.Token): token is marked.Tokens.Heading {
 
 function tokenIsH2(
   token: marked.Token,
-): token is marked.Tokens.Heading & { depth: 2 } {
+): token is { depth: 2 } & marked.Tokens.Heading {
   return (
     tokenIsHeading(token) && token.depth === 2 && !/[a-z]+: /.test(token.text)
   );
@@ -69,11 +68,10 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
 
     for (const error of errors) {
       const startLine = error.line - 1;
-      const endLine =
-        error.endLine === undefined ? startLine : error.endLine - 1;
+      const endLine = error.endLine == null ? startLine : error.endLine - 1;
       const startColumn = error.column - 1;
       const endColumn =
-        error.endColumn === undefined ? startColumn : error.endColumn - 1;
+        error.endColumn == null ? startColumn : error.endColumn - 1;
       if (i < startLine || i > endLine) {
         continue;
       }
@@ -83,11 +81,11 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
             ? Math.max(1, endColumn - startColumn)
             : line.length - startColumn,
         );
-        const squiggleWithIndent = ' '.repeat(startColumn) + squiggle + ' ';
+        const squiggleWithIndent = `${' '.repeat(startColumn)}${squiggle} `;
         const errorMessageIndent = ' '.repeat(squiggleWithIndent.length);
         output.push(
           squiggleWithIndent +
-            error.message.split('\n').join('\n' + errorMessageIndent),
+            error.message.replaceAll('\n', `\n${errorMessageIndent}`),
         );
       } else if (i === endLine) {
         output.push('~'.repeat(endColumn));
@@ -97,10 +95,10 @@ function renderLintResults(code: string, errors: Linter.LintMessage[]): string {
     }
   }
 
-  return output.join('\n').trim() + '\n';
+  return `${output.join('\n').trim()}\n`;
 }
 
-const linter = new Linter();
+const linter = new Linter({ configType: 'eslintrc' });
 linter.defineParser('@typescript-eslint/parser', tseslintParser);
 
 const eslintOutputSnapshotFolder = path.resolve(
@@ -125,18 +123,50 @@ describe('Validating rule docs', () => {
     unistUtilVisit = await dynamicImport('unist-util-visit');
   });
 
+  const oldStylisticRules = [
+    'block-spacing.md',
+    'brace-style.md',
+    'camelcase.md',
+    'comma-dangle.md',
+    'comma-spacing.md',
+    'func-call-spacing.md',
+    'indent.md',
+    'key-spacing.md',
+    'keyword-spacing.md',
+    'lines-around-comment.md',
+    'lines-between-class-members.md',
+    'member-delimiter-style.md',
+    'no-extra-parens.md',
+    'no-extra-semi.md',
+    'object-curly-spacing.md',
+    'padding-line-between-statements.md',
+    'quotes.md',
+    'semi.md',
+    'space-before-blocks.md',
+    'space-before-function-paren.md',
+    'space-infix-ops.md',
+    'type-annotation-spacing.md',
+  ];
+
   const ignoredFiles = new Set([
     'README.md',
+    'shared',
     'TEMPLATE.md',
     // These rule docs were left behind on purpose for legacy reasons. See the
     // comments in the files for more information.
-    'camelcase.md',
+    'ban-types.md',
     'no-duplicate-imports.mdx',
     'no-parameter-properties.mdx',
+    'no-useless-template-literals.mdx',
     'sort-type-union-intersection-members.mdx',
+    ...oldStylisticRules,
   ]);
 
-  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+  const rulesWithComplexOptions = new Set([
+    'array-type',
+    'member-ordering',
+    'no-restricted-types',
+  ]);
 
   // TODO: whittle this list down to as few as possible
   const rulesWithComplexOptionHeadings = new Set([
@@ -151,6 +181,7 @@ describe('Validating rule docs', () => {
     'no-confusing-void-expression',
     'no-duplicate-type-constituents',
     'no-empty-interface',
+    'no-empty-object-type',
     'no-explicit-any',
     'no-floating-promises',
     'no-inferrable-types',
@@ -196,10 +227,10 @@ describe('Validating rule docs', () => {
           type: 'hr',
         });
         expect(tokens[1]).toMatchObject({
+          depth: 2,
           text: description.includes("'")
             ? `description: "${description}."`
             : `description: '${description}.'`,
-          depth: 2,
           type: 'heading',
         });
       });
@@ -220,9 +251,10 @@ describe('Validating rule docs', () => {
         // Get all H2 headings objects as the other levels are variable by design.
         const headings = tokens.filter(tokenIsH2);
 
-        headings.forEach(heading =>
-          expect(heading.text).toBe(titleCase(heading.text)),
-        );
+        headings.forEach(heading => {
+          const nonCodeText = heading.text.replaceAll(/`[^`]*`/g, '');
+          expect(nonCodeText).toBe(titleCase(nonCodeText));
+        });
       });
 
       const headings = tokens.filter(tokenIsHeading);
@@ -230,16 +262,16 @@ describe('Validating rule docs', () => {
       const requiredHeadings = ['When Not To Use It'];
 
       const importantHeadings = new Set([
-        ...requiredHeadings,
         'How to Use',
         'Options',
         'Related To',
         'When Not To Use It',
+        ...requiredHeadings,
       ]);
 
       test('important headings must be h2s', () => {
         for (const heading of headings) {
-          if (importantHeadings.has(heading.raw.replace(/#/g, '').trim())) {
+          if (importantHeadings.has(heading.raw.replaceAll('#', '').trim())) {
             expect(heading.depth).toBe(2);
           }
         }
@@ -270,8 +302,7 @@ describe('Validating rule docs', () => {
       if (
         !rulesWithComplexOptions.has(ruleName) &&
         Array.isArray(schema) &&
-        !rule.meta.docs?.extendsBaseRule &&
-        rule.meta.type !== 'layout'
+        !rule.meta.docs?.extendsBaseRule
       ) {
         describe('rule options', () => {
           const headingsAfterOptions = headings.slice(
@@ -345,8 +376,8 @@ describe('Validating rule docs', () => {
                 jsx: /^tsx\b/i.test(lang),
               },
               ecmaVersion: 'latest',
-              sourceType: 'module',
               range: true,
+              sourceType: 'module',
             });
           } catch {
             throw new Error(`Parsing error:\n\n${token.text}`);
@@ -435,8 +466,9 @@ describe('Validating rule docs', () => {
             {
               parser: '@typescript-eslint/parser',
               parserOptions: {
-                tsconfigRootDir: rootPath,
+                disallowAutomaticSingleRunInference: true,
                 project: './tsconfig.json',
+                tsconfigRootDir: rootPath,
               },
               rules: {
                 [ruleName]: ruleConfig,
@@ -452,13 +484,13 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length === 0,
-                  'Expected not to contain lint errors (with skipValidation):\n' +
-                    token.value,
+                  `Expected not to contain lint errors (with skipValidation):
+${token.value}`,
                 );
               } else {
                 assert.ok(
                   messages.length > 0,
-                  'Expected to contain at least 1 lint error:\n' + token.value,
+                  `Expected to contain at least 1 lint error:\n${token.value}`,
                 );
               }
             } else {
@@ -466,13 +498,14 @@ describe('Validating rule docs', () => {
               if (token.meta?.includes('skipValidation')) {
                 assert.ok(
                   messages.length > 0,
-                  'Expected to contain at least 1 lint error (with skipValidation):\n' +
-                    token.value,
+                  `Expected to contain at least 1 lint error (with skipValidation):\n${
+                    token.value
+                  }`,
                 );
               } else {
                 assert.ok(
                   messages.length === 0,
-                  'Expected not to contain lint errors:\n' + token.value,
+                  `Expected not to contain lint errors:\n${token.value}`,
                 );
               }
             }
@@ -482,9 +515,10 @@ describe('Validating rule docs', () => {
           }
 
           expect(
-            testCaption.filter(Boolean).join('\n') +
-              '\n\n' +
-              renderLintResults(token.value, messages),
+            `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
+              token.value,
+              messages,
+            )}`,
           ).toMatchSpecificSnapshot(
             path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
           );

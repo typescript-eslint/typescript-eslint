@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -17,18 +19,19 @@ export default createRule<Options, MessageIds>({
   name: 'init-declarations',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description:
         'Require or disallow initialization in variable declarations',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
   },
   defaultOptions: ['always'],
   create(context, [mode]) {
-    // Make a custom context to adjust the the loc of reports where the base
+    // Make a custom context to adjust the loc of reports where the base
     // rule's behavior is a bit too aggressive with TS-specific syntax (namely,
     // type annotations).
     function getBaseContextOverride(): typeof context {

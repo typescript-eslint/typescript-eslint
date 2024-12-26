@@ -4,7 +4,7 @@ import type { Expression } from '../../unions/Expression';
 
 export interface ConditionalExpression extends BaseNode {
   type: AST_NODE_TYPES.ConditionalExpression;
-  test: Expression;
-  consequent: Expression;
   alternate: Expression;
+  consequent: Expression;
+  test: Expression;
 }

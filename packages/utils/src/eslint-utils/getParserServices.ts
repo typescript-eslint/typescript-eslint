@@ -3,10 +3,11 @@ import type {
   ParserServices,
   ParserServicesWithTypeInformation,
 } from '../ts-estree';
+
 import { parserSeemsToBeTSESLint } from './parserSeemsToBeTSESLint';
 
 const ERROR_MESSAGE_REQUIRES_PARSER_SERVICES =
-  'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
+  "You have used a rule which requires type information, but don't have parserOptions set to generate type information for this file. See https://typescript-eslint.io/getting-started/typed-linting for enabling linting with type information.";
 
 const ERROR_MESSAGE_UNKNOWN_PARSER =
   'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.';

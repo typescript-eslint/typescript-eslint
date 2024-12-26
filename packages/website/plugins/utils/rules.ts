@@ -1,13 +1,12 @@
-import type {
-  RuleMetaData,
-  RuleMetaDataDocs,
-  RuleModule,
-} from '@typescript-eslint/utils/ts-eslint';
-import * as fs from 'fs';
-import * as lz from 'lz-string';
-import * as path from 'path';
+import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 import type { VFile } from 'vfile';
+
+import * as lz from 'lz-string';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 import { nodeIsHeading } from './nodes';
 
@@ -22,21 +21,19 @@ export const sourceUrlPrefix =
  * @param withComment Whether to include a full comment note.
  * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
  */
-export function getEslintrcString(
+export function getRulesString(
   extendsBaseRuleName: string,
   stem: string,
   withComment: boolean,
 ): string {
-  return `{
-  "rules": {${
+  return `{${
     withComment
       ? '\n    // Note: you must disable the base rule as it can report incorrect errors'
       : ''
   }
     "${extendsBaseRuleName}": "off",
     "@typescript-eslint/${stem}": "error"
-  }
-}`;
+  }`;
 }
 
 export function convertToPlaygroundHash(eslintrc: string): string {
@@ -56,38 +53,36 @@ export function getUrlForRuleTest(ruleName: string): string {
   throw new Error(`Could not find test file for ${ruleName}.`);
 }
 
-export type RuleMetaDataWithDocs = RuleMetaData<string, readonly unknown[]> & {
-  docs: RuleMetaDataDocs<readonly unknown[]>;
-};
-
-export type RuleModuleWithMetaDocs = RuleModule<string, unknown[]> & {
-  meta: RuleMetaDataWithDocs;
-};
-
-export function isRuleModuleWithMetaDocs(
-  rule: RuleModule<string, unknown[]> | undefined,
-): rule is RuleModuleWithMetaDocs {
+export function isESLintPluginRuleModule(
+  rule: RuleModule<string, readonly unknown[]> | undefined,
+): rule is ESLintPluginRuleModule {
   return !!rule?.meta.docs;
 }
 
-export type VFileWithStem = VFile & {
+export type VFileWithStem = {
   stem: string;
-};
+} & VFile;
 
 export function isVFileWithStem(file: VFile): file is VFileWithStem {
   return !!file.stem;
 }
 
-export function findH2Index(
-  children: unist.Node[],
-  headingName: string,
+export function findHeadingIndex(
+  children: readonly unist.Node[],
+  depth: 2 | 3,
+  contents: string | ((node: mdast.PhrasingContent) => boolean),
 ): number {
+  const childMatch =
+    typeof contents === 'string'
+      ? (node: mdast.PhrasingContent): boolean =>
+          node.type === 'text' && node.value === contents
+      : contents;
+
   return children.findIndex(
     node =>
       nodeIsHeading(node) &&
-      node.depth === 2 &&
+      node.depth === depth &&
       node.children.length === 1 &&
-      node.children[0].type === 'text' &&
-      node.children[0].value === headingName,
+      childMatch(node.children[0]),
   );
 }

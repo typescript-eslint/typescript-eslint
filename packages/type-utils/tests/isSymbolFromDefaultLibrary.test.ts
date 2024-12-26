@@ -1,7 +1,8 @@
-import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
-import path from 'path';
 import type * as ts from 'typescript';
+
+import { parseForESLint } from '@typescript-eslint/parser';
+import path from 'node:path';
 
 import { isSymbolFromDefaultLibrary } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
@@ -13,9 +14,10 @@ describe('isSymbolFromDefaultLibrary', () => {
     program: ts.Program;
     symbol: ts.Symbol | undefined;
   } {
-    const { services, ast } = parseForESLint(code, {
-      project: './tsconfig.json',
+    const { ast, services } = parseForESLint(code, {
+      disallowAutomaticSingleRunInference: true,
       filePath: path.join(rootDir, 'file.ts'),
+      project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
     expectToHaveParserServices(services);

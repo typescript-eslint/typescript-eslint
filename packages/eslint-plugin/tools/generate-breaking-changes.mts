@@ -1,12 +1,11 @@
-import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ESLintPluginRuleModule,
+  TypeScriptESLintRules,
+} from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+
 import { fetch } from 'cross-fetch';
 // markdown-table is ESM, hence this file needs to be `.mts`
 import { markdownTable } from 'markdown-table';
-
-type RuleModuleWithDocs = RuleModule<string, unknown[]> & {
-  meta: { docs: object };
-};
 
 async function main(): Promise<void> {
   const rulesImport = await import('../src/rules/index.js');
@@ -18,7 +17,7 @@ async function main(): Promise<void> {
   */
   const rules = rulesImport.default as unknown as Record<
     string,
-    RuleModuleWithDocs
+    ESLintPluginRuleModule
   >;
 
   // Annotate which rules are new since the last version
@@ -39,7 +38,7 @@ async function main(): Promise<void> {
     // But this is an internal-only script and it's the easiest way to convert
     // the JS raw text into a runtime object. 🤷
     let oldRulesObject!: { rules: TypeScriptESLintRules };
-    eval('oldRulesObject = ' + oldObjectText);
+    eval(`oldRulesObject = ${oldObjectText}`);
     const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
 
     // 3. Get the keys that exist in (1) (new version) and not (2) (old version)
@@ -135,7 +134,7 @@ async function main(): Promise<void> {
 
   console.log(
     markdownTable([
-      ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style', 'Comment'],
+      ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style'],
       ...Object.entries(rules).map(([ruleName, { meta }]) => {
         const { deprecated } = meta;
         const { extendsBaseRule, recommended, requiresTypeChecking } =
@@ -149,7 +148,6 @@ async function main(): Promise<void> {
           recommended === 'recommended' ? '🟩' : '',
           recommended === 'strict' ? '🔵' : '',
           recommended === 'stylistic' ? '🔸' : '',
-          meta.type === 'layout' ? 'layout 📐' : '(todo)',
         ];
       }),
     ]),

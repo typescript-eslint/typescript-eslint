@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/joshuakgoldberg.jpg
-    name: Josh Goldberg
-    title: typescript-eslint Maintainer
-    url: https://github.com/JoshuaKGoldberg
+authors: joshuakgoldberg
 description: Announcing the release of typescript-eslint's v6 beta, including its changes and timeline.
 slug: announcing-typescript-eslint-v6-beta
 tags: [breaking changes, typescript-eslint, v5, v6]
@@ -364,13 +360,11 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
   - [Joshua Chen](https://github.com/Josh-Cena)
 - Community contributors whose PRs were merged into the 6.0.0 release:
-  <!-- cspell:disable -->
   - [Bryan Mishkin](https://github.com/bmish)
   - [fisker Cheung](https://github.com/fisker)
   - [Juan García](https://github.com/juank1809)
   - [Kevin Ball](https://github.com/kball)
   - [Marek Dědič](https://github.com/marekdedic)
   - [Mateusz Burzyński](https://github.com/Andarist)
-  <!-- cspell:enable -->
 
 See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/8) for the list of issues and associated merged pull requests.

@@ -1,13 +1,14 @@
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
+import type { OnHoverNodeFn, ParentNodeType } from './types';
+
 import { useBool } from '../../hooks/useBool';
 import Tooltip from '../inputs/Tooltip';
 import styles from './ASTViewer.module.css';
 import HiddenItem from './HiddenItem';
 import PropertyName from './PropertyName';
 import PropertyValue from './PropertyValue';
-import type { OnHoverNodeFn, ParentNodeType } from './types';
 import {
   filterProperties,
   getNodeType,
@@ -19,36 +20,36 @@ import {
 
 export interface JsonRenderProps<T> {
   readonly field?: string;
-  readonly typeName?: string;
-  readonly nodeType?: ParentNodeType;
-  readonly value: T;
   readonly lastElement?: boolean;
   readonly level: string;
+  readonly nodeType?: ParentNodeType;
   readonly onHover?: OnHoverNodeFn;
   readonly selectedPath?: string;
   readonly showTokens?: boolean;
+  readonly typeName?: string;
+  readonly value: T;
 }
 
 export interface ExpandableRenderProps
-  extends JsonRenderProps<unknown[] | object> {
+  extends JsonRenderProps<object | unknown[]> {
+  readonly closeBracket: string;
   readonly data: [string, unknown][];
   readonly openBracket: string;
-  readonly closeBracket: string;
 }
 
 function RenderExpandableObject({
-  field,
-  typeName,
-  nodeType,
-  data,
-  lastElement,
-  openBracket,
   closeBracket,
-  value,
+  data,
+  field,
+  lastElement,
   level,
+  nodeType,
   onHover,
+  openBracket,
   selectedPath,
   showTokens,
+  typeName,
+  value,
 }: ExpandableRenderProps): React.JSX.Element {
   const [expanded, toggleExpanded, setExpanded] = useBool(
     () => level === 'ast' || !!selectedPath?.startsWith(level),
@@ -88,24 +89,24 @@ function RenderExpandableObject({
         !expanded && styles.open,
         isActive && styles.selected,
       )}
-      role="list"
       data-level={level}
+      role="list"
     >
       {field && (
         <PropertyName
-          value={field}
-          onClick={toggleExpanded}
           className={styles.propName}
+          onClick={toggleExpanded}
           onHover={onHoverItem}
+          value={field}
         />
       )}
       {field && <span>: </span>}
       {typeName && (
         <PropertyName
-          value={typeName}
-          onClick={toggleExpanded}
           className={styles.tokenName}
+          onClick={toggleExpanded}
           onHover={onHoverItem}
+          value={typeName}
         />
       )}
       {typeName && <span> </span>}
@@ -115,20 +116,20 @@ function RenderExpandableObject({
         <div className={styles.subList}>
           {data.map((dataElement, index) => (
             <DataRender
-              key={dataElement[0]}
               field={dataElement[0]}
-              value={dataElement[1]}
+              key={dataElement[0]}
               lastElement={index === lastIndex}
               level={`${level}.${dataElement[0]}`}
+              nodeType={nodeType}
               onHover={onHover}
               selectedPath={selectedPath}
-              nodeType={nodeType}
               showTokens={showTokens}
+              value={dataElement[1]}
             />
           ))}
         </div>
       ) : (
-        <HiddenItem value={data} level={level} isArray={openBracket === '['} />
+        <HiddenItem isArray={openBracket === '['} level={level} value={data} />
       )}
 
       <span>{closeBracket}</span>
@@ -143,7 +144,7 @@ function JsonObject(
   const computed = useMemo(() => {
     const nodeType = getNodeType(props.value);
     return {
-      nodeType: nodeType,
+      nodeType,
       typeName: getTypeName(props.value, nodeType),
       value: Object.entries(props.value).filter(item =>
         filterProperties(item[0], item[1], nodeType, props.showTokens),
@@ -154,10 +155,10 @@ function JsonObject(
   return (
     <RenderExpandableObject
       {...props}
-      data={computed.value}
-      openBracket="{"
       closeBracket="}"
+      data={computed.value}
       nodeType={computed.nodeType}
+      openBracket="{"
       typeName={computed.typeName}
     />
   );
@@ -167,9 +168,9 @@ function JsonArray(props: JsonRenderProps<unknown[]>): React.JSX.Element {
   return (
     <RenderExpandableObject
       {...props}
+      closeBracket="]"
       data={Object.entries(props.value)}
       openBracket="["
-      closeBracket="]"
     />
   );
 }
@@ -180,18 +181,18 @@ function JsonIterable(
   return (
     <RenderExpandableObject
       {...props}
+      closeBracket=")"
       data={Object.entries(props.value)}
       openBracket="("
-      closeBracket=")"
     />
   );
 }
 
 function JsonPrimitiveValue({
   field,
-  value,
-  nodeType,
   lastElement,
+  nodeType,
+  value,
 }: JsonRenderProps<unknown>): React.JSX.Element {
   const tooltip = useMemo(() => {
     if (field && nodeType) {
@@ -201,7 +202,7 @@ function JsonPrimitiveValue({
   }, [value, field, nodeType]);
 
   return (
-    <div role="listitem" className={styles.valueBody}>
+    <div className={styles.valueBody} role="listitem">
       {field && <span className={styles.propName}>{field}: </span>}
       {tooltip ? (
         <Tooltip hover={true} position="right" text={tooltip}>

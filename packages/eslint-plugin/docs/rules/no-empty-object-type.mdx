@@ -83,25 +83,17 @@ By default, this rule flags both interfaces and object types.
 
 ### `allowInterfaces`
 
-Whether to allow empty interfaces, as one of:
+{/* insert option description */}
+
+Allowed values are:
 
 - `'always'`: to always allow interfaces with no fields
 - `'never'` _(default)_: to never allow interfaces with no fields
 - `'with-single-extends'`: to allow empty interfaces that `extend` from a single base interface
 
-Examples of code for this rule with `{ allowInterfaces: 'with-single-extends' }`:
+Examples of **correct** code for this rule with `{ allowInterfaces: 'with-single-extends' }`:
 
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowInterfaces": "with-single-extends" }'
-interface Foo {}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowInterfaces": "with-single-extends" }'
+```ts option='{ "allowInterfaces": "with-single-extends" }' showPlaygroundButton
 interface Base {
   value: boolean;
 }
@@ -109,38 +101,19 @@ interface Base {
 interface Derived extends Base {}
 ```
 
-</TabItem>
-</Tabs>
-
 ### `allowObjectTypes`
 
-Whether to allow empty object type literals, as one of:
+{/* insert option description */}
+
+Allowed values are:
 
 - `'always'`: to always allow object type literals with no fields
 - `'never'` _(default)_: to never allow object type literals with no fields
 
-Examples of code for this rule with `{ allowObjectTypes: 'always' }`:
-
-<Tabs>
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowObjectTypes": "always" }'
-interface Base {}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowObjectTypes": "always" }'
-type Base = {};
-```
-
-</TabItem>
-</Tabs>
-
 ### `allowWithName`
 
-A stringified regular expression to allow interfaces and object type aliases with the configured name.
+{/* insert option description */}
+
 This can be useful if your existing code style includes a pattern of declaring empty types with `{}` instead of `object`.
 
 Examples of code for this rule with `{ allowWithName: 'Props$' }`:
@@ -148,7 +121,7 @@ Examples of code for this rule with `{ allowWithName: 'Props$' }`:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "allowWithName": "Props$" }'
+```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
 interface InterfaceValue {}
 
 type TypeValue = {};
@@ -157,7 +130,7 @@ type TypeValue = {};
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{ "allowWithName": "Props$" }'
+```ts option='{ "allowWithName": "Props$" }' showPlaygroundButton
 interface InterfaceProps {}
 
 type TypeProps = {};

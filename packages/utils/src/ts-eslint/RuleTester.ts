@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-deprecated */
 import { RuleTester as ESLintRuleTester } from 'eslint';
 
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
@@ -11,11 +12,10 @@ import type {
   SharedConfigurationSettings,
 } from './Rule';
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 interface ValidTestCase<Options extends readonly unknown[]> {
-  /**
-   * Name for the test case.
-   */
-  readonly name?: string;
   /**
    * Code for the test case.
    */
@@ -33,6 +33,14 @@ interface ValidTestCase<Options extends readonly unknown[]> {
    */
   readonly globals?: Readonly<Linter.GlobalsConfig>;
   /**
+   * Name for the test case.
+   */
+  readonly name?: string;
+  /**
+   * Run this case exclusively for debugging in supported test frameworks.
+   */
+  readonly only?: boolean;
+  /**
    * Options for the test case.
    */
   readonly options?: Readonly<Options>;
@@ -48,21 +56,20 @@ interface ValidTestCase<Options extends readonly unknown[]> {
    * Settings for the test case.
    */
   readonly settings?: Readonly<SharedConfigurationSettings>;
-  /**
-   * Run this case exclusively for debugging in supported test frameworks.
-   */
-  readonly only?: boolean;
 }
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 interface SuggestionOutput<MessageIds extends string> {
-  /**
-   * Reported message ID.
-   */
-  readonly messageId: MessageIds;
   /**
    * The data used to fill the message template.
    */
   readonly data?: ReportDescriptorMessageData;
+  /**
+   * Reported message ID.
+   */
+  readonly messageId: MessageIds;
   /**
    * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
@@ -73,6 +80,9 @@ interface SuggestionOutput<MessageIds extends string> {
   // readonly desc?: string;
 }
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 interface InvalidTestCase<
   MessageIds extends string,
   Options extends readonly unknown[],
@@ -84,9 +94,12 @@ interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: string | null;
+  readonly output?: string | string[] | null;
 }
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 interface TestCaseError<MessageIds extends string> {
   /**
    * The 1-based column number of the reported start location.
@@ -127,26 +140,38 @@ interface TestCaseError<MessageIds extends string> {
 
 /**
  * @param text a string describing the rule
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
  */
 type RuleTesterTestFrameworkFunction = (
   text: string,
   callback: () => void,
 ) => void;
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 interface RunTests<
   MessageIds extends string,
   Options extends readonly unknown[],
 > {
   // RuleTester.run also accepts strings for valid cases
-  readonly valid: readonly (ValidTestCase<Options> | string)[];
   readonly invalid: readonly InvalidTestCase<MessageIds, Options>[];
+  readonly valid: readonly (string | ValidTestCase<Options>)[];
 }
+
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 interface RuleTesterConfig extends ClassicConfig.Config {
   // should be require.resolve(parserPackageName)
   readonly parser: string;
   readonly parserOptions?: Readonly<ParserOptions>;
 }
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class RuleTesterBase {
   /**
    * Creates a new instance of RuleTester.
@@ -158,7 +183,7 @@ declare class RuleTesterBase {
    * Adds a new rule test to execute.
    * @param ruleName The name of the rule to run.
    * @param rule The rule to test.
-   * @param test The collection of tests to run.
+   * @param tests The collection of tests to run.
    */
   run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
@@ -198,15 +223,18 @@ declare class RuleTesterBase {
   ): void;
 }
 
+/**
+ * @deprecated Use `@typescript-eslint/rule-tester` instead.
+ */
 class RuleTester extends (ESLintRuleTester as typeof RuleTesterBase) {}
 
 export {
-  InvalidTestCase,
-  SuggestionOutput,
+  type InvalidTestCase,
   RuleTester,
-  RuleTesterConfig,
-  RuleTesterTestFrameworkFunction,
-  RunTests,
-  TestCaseError,
-  ValidTestCase,
+  type RuleTesterConfig,
+  type RuleTesterTestFrameworkFunction,
+  type RunTests,
+  type SuggestionOutput,
+  type TestCaseError,
+  type ValidTestCase,
 };

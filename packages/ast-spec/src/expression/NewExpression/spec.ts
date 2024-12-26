@@ -6,10 +6,7 @@ import type { Expression } from '../../unions/Expression';
 
 export interface NewExpression extends BaseNode {
   type: AST_NODE_TYPES.NewExpression;
-  callee: Expression;
   arguments: CallExpressionArgument[];
+  callee: Expression;
   typeArguments: TSTypeParameterInstantiation | undefined;
-
-  /** @deprecated Use {@link `typeArguments`} instead. */
-  typeParameters: TSTypeParameterInstantiation | undefined;
 }

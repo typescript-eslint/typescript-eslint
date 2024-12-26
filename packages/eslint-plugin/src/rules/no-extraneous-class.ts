@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -21,39 +22,39 @@ export default createRule<Options, MessageIds>({
       description: 'Disallow classes used as namespaces',
       recommended: 'strict',
     },
+    messages: {
+      empty: 'Unexpected empty class.',
+      onlyConstructor: 'Unexpected class with only a constructor.',
+      onlyStatic: 'Unexpected class with only static properties.',
+    },
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
           allowConstructorOnly: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that contain only a constructor.',
-            type: 'boolean',
           },
           allowEmpty: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that have no body (i.e. are empty).',
-            type: 'boolean',
           },
           allowStaticOnly: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that only contain static members.',
-            type: 'boolean',
           },
           allowWithDecorator: {
+            type: 'boolean',
             description:
               'Whether to allow extraneous classes that include a decorator.',
-            type: 'boolean',
           },
         },
       },
     ],
-    messages: {
-      empty: 'Unexpected empty class.',
-      onlyStatic: 'Unexpected class with only static properties.',
-      onlyConstructor: 'Unexpected class with only a constructor.',
-    },
   },
   defaultOptions: [
     {
@@ -79,9 +80,7 @@ export default createRule<Options, MessageIds>({
 
     return {
       ClassBody(node): void {
-        const parent = node.parent as
-          | TSESTree.ClassDeclaration
-          | TSESTree.ClassExpression;
+        const parent = node.parent;
 
         if (parent.superClass || isAllowWithDecorator(parent)) {
           return;

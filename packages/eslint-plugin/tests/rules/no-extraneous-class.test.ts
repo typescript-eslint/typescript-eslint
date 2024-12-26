@@ -13,9 +13,7 @@ const onlyConstructor = {
   messageId: 'onlyConstructor' as const,
 };
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-extraneous-class', rule, {
   valid: [
@@ -167,12 +165,12 @@ export default class {
 @FooDecorator
 class Foo {}
       `,
-      options: [{ allowWithDecorator: false }],
       errors: [
         {
           messageId: 'empty',
         },
       ],
+      options: [{ allowWithDecorator: false }],
     },
     {
       code: `
@@ -185,12 +183,12 @@ class Foo {
   }
 }
       `,
-      options: [{ allowWithDecorator: false }],
       errors: [
         {
           messageId: 'onlyConstructor',
         },
       ],
+      options: [{ allowWithDecorator: false }],
     },
     {
       code: `

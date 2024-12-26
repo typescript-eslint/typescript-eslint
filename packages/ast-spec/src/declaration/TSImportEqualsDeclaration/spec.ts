@@ -12,23 +12,28 @@ interface TSImportEqualsDeclarationBase extends BaseNode {
    */
   id: Identifier;
   /**
+   * The kind of the import. Always `'value'` unless `moduleReference` is a
+   * `TSExternalModuleReference`.
+   */
+  importKind: ImportKind;
+  /**
    * The value being aliased.
-   * ```
+   * @example
+   * ```ts
    * import F1 = A;
    * import F2 = A.B.C;
    * import F3 = require('mod');
    * ```
    */
   moduleReference: Identifier | TSExternalModuleReference | TSQualifiedName;
-  /**
-   * The kind of the import. Always `'value'` unless `moduleReference` is a
-   * `TSExternalModuleReference`.
-   */
-  importKind: ImportKind;
 }
 
 export interface TSImportEqualsNamespaceDeclaration
   extends TSImportEqualsDeclarationBase {
+  /**
+   * The kind of the import.
+   */
+  importKind: 'value';
   /**
    * The value being aliased.
    * ```
@@ -37,14 +42,14 @@ export interface TSImportEqualsNamespaceDeclaration
    * ```
    */
   moduleReference: Identifier | TSQualifiedName;
-  /**
-   * The kind of the import.
-   */
-  importKind: 'value';
 }
 
 export interface TSImportEqualsRequireDeclaration
   extends TSImportEqualsDeclarationBase {
+  /**
+   * The kind of the import.
+   */
+  importKind: ImportKind;
   /**
    * The value being aliased.
    * ```
@@ -52,10 +57,6 @@ export interface TSImportEqualsRequireDeclaration
    * ```
    */
   moduleReference: TSExternalModuleReference;
-  /**
-   * The kind of the import.
-   */
-  importKind: ImportKind;
 }
 
 export type TSImportEqualsDeclaration =

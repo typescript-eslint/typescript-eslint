@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "7.15.0",
+  "version": "8.18.2",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -18,7 +18,7 @@
   },
   "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -40,22 +40,23 @@
     "clean": "npx nx clean",
     "clean-fixtures": "npx nx clean-fixtures",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "npx nx generate-lib",
+    "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "npx nx test --code-coverage",
     "typecheck": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "7.15.0",
-    "@typescript-eslint/visitor-keys": "7.15.0"
+    "@typescript-eslint/types": "8.18.2",
+    "@typescript-eslint/visitor-keys": "8.18.2"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "7.15.0",
+    "@typescript-eslint/typescript-estree": "8.18.2",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
+    "prettier": "^3.2.5",
     "pretty-format": "*",
     "typescript": "*"
   },

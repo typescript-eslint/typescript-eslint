@@ -1,7 +1,8 @@
-import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/typescript-estree';
-import path from 'path';
 import type * as ts from 'typescript';
+
+import { parseForESLint } from '@typescript-eslint/parser';
+import path from 'node:path';
 
 import { getTypeName } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
@@ -11,8 +12,9 @@ describe('getTypeName', () => {
     const rootDir = path.join(__dirname, 'fixtures');
 
     const { ast, services } = parseForESLint(code, {
-      project: './tsconfig.json',
+      disallowAutomaticSingleRunInference: true,
       filePath: path.join(rootDir, 'file.ts'),
+      project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     });
     expectToHaveParserServices(services);
@@ -23,7 +25,7 @@ describe('getTypeName', () => {
   }
 
   function runTest(code: string, expected: string): void {
-    const { type, checker } = getTypes(code);
+    const { checker, type } = getTypes(code);
     const result = getTypeName(checker, type);
     expect(result).toBe(expected);
   }

@@ -2,8 +2,9 @@
 import type * as ts from 'typescript';
 
 import type { ParserServices, TSESLint, TSESTree } from '../../src';
-import { ESLintUtils } from '../../src';
 import type { FlatConfig } from '../../src/ts-eslint';
+
+import { ESLintUtils } from '../../src';
 
 type UnknownRuleContext = Readonly<TSESLint.RuleContext<string, unknown[]>>;
 
@@ -27,15 +28,14 @@ const createMockRuleContext = (
   }) as unknown as UnknownRuleContext;
 
 const requiresParserServicesMessageTemplate = (parser = '\\S*'): string =>
-  'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.\n' +
+  'You have used a rule which requires type information, .+\n' +
   `Parser: ${parser}`;
 const baseErrorRegex = (parser?: string): RegExp =>
   new RegExp(requiresParserServicesMessageTemplate(parser));
 const unknownParserErrorRegex = (parser?: string): RegExp =>
   new RegExp(
-    requiresParserServicesMessageTemplate(parser) +
-      '\n' +
-      'Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.',
+    `${requiresParserServicesMessageTemplate(parser)}
+Note: detected a parser other than @typescript-eslint/parser. Make sure the parser is configured to forward "parserOptions.project" to @typescript-eslint/parser.`,
   );
 
 describe('getParserServices', () => {

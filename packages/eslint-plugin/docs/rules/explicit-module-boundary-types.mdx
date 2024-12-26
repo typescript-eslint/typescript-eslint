@@ -97,17 +97,19 @@ If you are working on a codebase within which you lint non-TypeScript code (i.e.
 
 ### `allowArgumentsExplicitlyTypedAsAny`
 
-When this option is `true`, the rule ignores arguments that are explicitly typed as any.
+{/* insert option description */}
+
+Examples of code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false }`:
 
 <Tabs>
-<TabItem value="❌ Incorrect for `allowArgumentsExplicitlyTypedAsAny: false`">
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
 export const func = (value: any): number => value + 1;
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `allowArgumentsExplicitlyTypedAsAny: true`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "allowArgumentsExplicitlyTypedAsAny": true }'
 export const func = (value: any): number => value + 1;
@@ -118,10 +120,12 @@ export const func = (value: any): number => value + 1;
 
 ### `allowDirectConstAssertionInArrowFunctions`
 
-When this option is `true`, the rule ignores return type annotations on body-less arrow functions that return an `as const` type assertion.
+{/* insert option description */}
+
+Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions: false }`:
 
 <Tabs>
-<TabItem value="❌ Incorrect for `allowDirectConstAssertionInArrowFunctions: false`">
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "allowDirectConstAssertionInArrowFunctions": false }'
 export const func = (value: number) => ({ type: 'X', value });
@@ -132,7 +136,7 @@ export const bar = () => 1;
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `allowDirectConstAssertionInArrowFunctions: true`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "allowDirectConstAssertionInArrowFunctions": true }'
 export const func = (value: number) => ({ type: 'X', value }) as const;
@@ -147,6 +151,8 @@ export const bar = () => 1 as const;
 </Tabs>
 
 ### `allowedNames`
+
+{/* insert option description */}
 
 You may pass function/method names you would like this rule to ignore, like so:
 
@@ -163,10 +169,12 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 ### `allowHigherOrderFunctions`
 
-When this option is `true`, the rule ignores return type annotations on function, which is immediately returning another function expression.
+{/* insert option description */}
+
+Examples of code for this rule with `{ allowHigherOrderFunctions: false }`:
 
 <Tabs>
-<TabItem value="❌ Incorrect for `allowHigherOrderFunctions: false`">
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "allowHigherOrderFunctions": false }'
 export const arrowFn = () => () => {};
@@ -181,7 +189,7 @@ export function foo(outer: string) {
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `allowHigherOrderFunctions: true`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "allowHigherOrderFunctions": true }'
 export const arrowFn = () => (): void => {};
@@ -200,10 +208,12 @@ export function foo(outer: string) {
 
 ### `allowTypedFunctionExpressions`
 
-When this option is `true`, the rule ignores type annotations on the variable of a function expression.
+{/* insert option description */}
+
+Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
 
 <Tabs>
-<TabItem value="❌ Incorrect for `allowTypedFunctionExpressions: false`">
+<TabItem value="❌ Incorrect">
 
 ```ts option='{ "allowTypedFunctionExpressions": false }'
 export let arrowFn = () => 'test';
@@ -220,7 +230,7 @@ export const foo = bar => {};
 ```
 
 </TabItem>
-<TabItem value="✅ Correct for `allowTypedFunctionExpressions: true`">
+<TabItem value="✅ Correct">
 
 ```ts option='{ "allowTypedFunctionExpressions": true }'
 type FuncType = () => string;
@@ -232,7 +242,6 @@ export let funcExpr: FuncType = function () {
 };
 
 export let asTyped = (() => '') as () => string;
-export let castTyped = <() => string>(() => '');
 
 interface ObjectType {
   foo(): number;
@@ -243,9 +252,6 @@ export let objectProp: ObjectType = {
 export let objectPropAs = {
   foo: () => 1,
 } as ObjectType;
-export let objectPropCast = <ObjectType>{
-  foo: () => 1,
-};
 
 type FooType = (bar: string) => void;
 export const foo: FooType = bar => {};

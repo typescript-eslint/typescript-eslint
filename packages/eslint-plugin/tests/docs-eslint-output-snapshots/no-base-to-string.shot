@@ -12,22 +12,32 @@ const value = new MyClass();
 value + '';
 ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
 
-// Interpolation and manual .toString() calls too:
+// Interpolation and manual .toString() and \`toLocaleString()\` calls too:
 \`Value: \${value}\`;
           ~~~~~ 'value' will use Object's default stringification format ('[object Object]') when stringified.
+String({});
+       ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
 ({}).toString();
  ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
+({}).toLocaleString();
+ ~~ '{}' will use Object's default stringification format ('[object Object]') when stringified.
+
+// Stringifying objects or instances in an array with the \`Array.prototype.join\`.
+[{}, new MyClass()].join('');
+~~~~~~~~~~~~~~~~~~~ Using \`join()\` for [{}, new MyClass()] will use Object's default stringification format ('[object Object]') when stringified.
 "
 `;
 
 exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 2`] = `
 "Correct
 
-// These types all have useful .toString()s
+// These types all have useful .toString() and \`toLocaleString()\` methods
 'Text' + true;
 \`Value: \${123}\`;
 \`Arrays too: \${[1, 2, 3]}\`;
 (() => {}).toString();
+String(42);
+(() => {}).toLocaleString();
 
 // Defining a custom .toString class is considered acceptable
 class CustomToString {
@@ -54,5 +64,6 @@ exports[`Validating rule docs no-base-to-string.mdx code examples ESLint output 
 let value = /regex/;
 value.toString();
 let text = \`\${value}\`;
+String(/regex/);
 "
 `;

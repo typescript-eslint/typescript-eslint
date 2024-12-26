@@ -1,6 +1,7 @@
 ---
 id: general
 title: General
+pagination_next: troubleshooting/faqs/eslint
 ---
 
 import Tabs from '@theme/Tabs';
@@ -14,7 +15,7 @@ First make sure you've read the docs and understand ESLint configuration files:
 - [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
 
 Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
-We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
+We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the rule.
 In your config file the keys of the `rules` object are the names of the rules you wish to configure and the values follow the following form:
 
 ```ts
@@ -34,7 +35,7 @@ Some examples
 <Tabs groupId="eslint-config">
 <TabItem value="Flat Config">
 
-```js title="eslint.config.js"
+```js title="eslint.config.mjs"
 export default tseslint.config(
   // ... the rest of your config ...
   {
@@ -73,34 +74,118 @@ This generic rule allows you to specify a [selector](https://eslint.org/docs/dev
 
 You can use an AST visualization tool such as [typescript-eslint playground](/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
-For example, you can ban enums (or some variation of) using one of the following configs:
+<details>
+<summary>Banning confusing property uses</summary>
 
 ```jsonc
 {
   "rules": {
     "no-restricted-syntax": [
       "error",
-      // ban all enums
+
+      // Ban accessing `constructor.name`:
       {
-        "selector": "TSEnumDeclaration",
-        "message": "My reason for not using any enums at all",
+        "selector": "MemberExpression[object.property.name='constructor'][property.name='name']",
+        "message": "'constructor.name' is not reliable after code minifier usage.",
       },
 
-      // ban just const enums
+      // Ban get and set accessors:
       {
-        "selector": "TSEnumDeclaration[const=true]",
-        "message": "My reason for not using const enums",
-      },
-
-      // ban just non-const enums
-      {
-        "selector": "TSEnumDeclaration:not([const=true])",
-        "message": "My reason for not using non-const enums",
+        "selector": "Property:matches([kind = \"get\"], [kind = \"set\"]), MethodDefinition:matches([kind = \"get\"], [kind = \"set\"])",
+        "message": "Don't use get and set accessors.",
       },
     ],
   },
 }
 ```
+
+</details>
+
+<details>
+<summary>Banning specific uses of class properties</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+
+      // Ban `private` members:
+      {
+        "selector": ":matches(PropertyDefinition, MethodDefinition)[accessibility=\"private\"]",
+        "message": "Use `#private` members instead.",
+      },
+
+      // Ban `#private` members:
+      {
+        "selector": ":matches(PropertyDefinition, MethodDefinition) > PrivateIdentifier.key",
+        "message": "Use the `private` modifier instead.",
+      },
+
+      // Ban static `this`:
+      {
+        "selector": "MethodDefinition[static = true] ThisExpression",
+        "message": "Prefer using the class's name directly.",
+      },
+    ],
+  },
+}
+```
+
+</details>
+
+<details>
+<summary>Banning specific uses of TypeScript enums</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+
+      // Ban all enums:
+      {
+        "selector": "TSEnumDeclaration",
+        "message": "My reason for not using any enums at all.",
+      },
+
+      // Ban just `const` enums:
+      {
+        "selector": "TSEnumDeclaration[const=true]",
+        "message": "My reason for not using const enums.",
+      },
+
+      // Ban just non-`const` enums:
+      {
+        "selector": "TSEnumDeclaration:not([const=true])",
+        "message": "My reason for not using non-const enums.",
+      },
+    ],
+  },
+}
+```
+
+</details>
+
+<details>
+<summary>Banning specific uses of TypeScript tuples</summary>
+
+```jsonc
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      // enforce tuple members have labels
+      {
+        "selector": "TSTupleType > :not(TSNamedTupleMember)",
+        "message": "All tuples should have labels.",
+      },
+    ],
+  },
+}
+```
+
+</details>
 
 ## How do I check to see what versions are installed?
 
@@ -140,12 +225,63 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
 Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-assignment`](/rules/no-unsafe-assignment), and [`no-unsafe-call`](/rules/no-unsafe-call) are often impacted.
 
+## How does typescript-eslint compare to native-speed linters?
+
+"Native-speed" linters such as [Biome linter](https://biomejs.dev/linter), [Deno linter](https://docs.deno.com/runtime/manual/tools/linter), and [oxlint](https://oxc.rs/docs/guide/usage/linter.html) run in very fast languages such as Go or Rust, and so can generally run significantly faster than ESLint in non-type-aware-linting.
+They can also be easier to configure because they don't need to support the full ecosystem and legacy trail of ESLint.
+
+However, until they support [typed linting](../../getting-started/Typed_Linting.mdx), they aren't a full replacement for typescript-eslint.
+If you plan on using them, we recommend "dual linting": using those linters for what they support, then adding in ESLint for typed linting in a parallel or second step.
+Our `*-type-checked-only` [Shared Configs](../../users/Shared_Configurations.mdx) will enable only type-checked rules in your ESLint config.
+
+For example, the following config enables only the recommended config's type-checked rules with [`recommendedTypeCheckedOnly`](../../users/Shared_Configurations.mdx#recommended-type-checked-only):
+
+<Tabs groupId="eslint-config">
+<TabItem value="Flat Config">
+
+{/* prettier-ignore */}
+```js title="eslint.config.mjs"
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  tseslint.configs.recommendedTypeCheckedOnly,
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+);
+```
+
+</TabItem>
+<TabItem value="Legacy Config">
+
+```js title=".eslintrc.cjs"
+module.exports = {
+  extends: ['plugin:@typescript-eslint/recommended-type-checked-only'],
+  parserOptions: {
+    projectService: true,
+    tsconfigRootDir: __dirname,
+  },
+  root: true,
+};
+```
+
+</TabItem>
+</Tabs>
+
+For example, [oxlint's Integration > ESLint documentation](https://oxc.rs/docs/guide/usage/linter#eslint) describes how to turn off ESLint rules that are already supported by oxlint.
+
 ## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
 
 If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
 Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
 
-If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
+If you're using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
 
 - Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
 - Disabling half of them at a time to narrow down which plugin it is

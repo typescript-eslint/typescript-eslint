@@ -14,16 +14,15 @@ foo(anyTyped, 1, 'a');
 
 const anyArray: any[] = [];
 foo(...anyArray);
-    ~~~~~~~~~~~ Unsafe spread of an \`any\` array type.
+    ~~~~~~~~~~~ Unsafe spread of an \`any[]\` array type.
 
 const tuple1 = ['a', anyTyped, 'b'] as const;
 foo(...tuple1);
     ~~~~~~~~~ Unsafe spread of a tuple type. The argument is of type \`any\` and is assigned to a parameter of type \`number\`.
 
 const tuple2 = [1] as const;
-foo('a', ...tuple, anyTyped);
-         ~~~~~~~~ Unsafe spread of an \`any\` type.
-                   ~~~~~~~~ Unsafe argument of type \`any\` assigned to a parameter of type \`number\`.
+foo('a', ...tuple2, anyTyped);
+                    ~~~~~~~~ Unsafe argument of type \`any\` assigned to a parameter of type \`string\`.
 
 declare function bar(arg1: string, arg2: number, ...rest: string[]): void;
 const x = [1, 2] as [number, ...number[]];

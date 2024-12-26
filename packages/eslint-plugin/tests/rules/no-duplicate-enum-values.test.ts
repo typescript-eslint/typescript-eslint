@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-duplicate-enum-values';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-duplicate-enum-values', rule, {
   valid: [
@@ -86,10 +84,10 @@ enum E {
       `,
       errors: [
         {
-          line: 4,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 1 },
+          line: 4,
+          messageId: 'duplicateValue',
         },
       ],
     },
@@ -102,10 +100,10 @@ enum E {
       `,
       errors: [
         {
-          line: 4,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
         },
       ],
     },
@@ -120,16 +118,16 @@ enum E {
       `,
       errors: [
         {
-          line: 4,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
         },
         {
-          line: 6,
           column: 3,
-          messageId: 'duplicateValue',
           data: { value: 1 },
+          line: 6,
+          messageId: 'duplicateValue',
         },
       ],
     },

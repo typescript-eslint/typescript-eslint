@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
@@ -14,8 +15,6 @@ type FunctionLike =
 
 export default createRule({
   name: 'prefer-return-this-type',
-  defaultOptions: [],
-
   meta: {
     type: 'suggestion',
     docs: {
@@ -24,12 +23,14 @@ export default createRule({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     messages: {
       useThisType: 'Use `this` type instead.',
     },
     schema: [],
-    fixable: 'code',
   },
+
+  defaultOptions: [],
 
   create(context) {
     const services = getParserServices(context);

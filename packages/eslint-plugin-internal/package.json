@@ -1,9 +1,18 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "7.15.0",
   "private": true,
   "main": "dist/index.js",
   "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/eslint-plugin-internal"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "homepage": "https://typescript-eslint.io",
+  "license": "MIT",
   "scripts": {
     "build": "npx tsc -b tsconfig.build.json",
     "clean": "npx tsc -b tsconfig.build.json --clean",
@@ -15,10 +24,10 @@
   },
   "dependencies": {
     "@prettier/sync": "^0.5.1",
-    "@typescript-eslint/rule-tester": "7.15.0",
-    "@typescript-eslint/scope-manager": "7.15.0",
-    "@typescript-eslint/type-utils": "7.15.0",
-    "@typescript-eslint/utils": "7.15.0",
+    "@typescript-eslint/rule-tester": "workspace:*",
+    "@typescript-eslint/scope-manager": "workspace:*",
+    "@typescript-eslint/type-utils": "workspace:*",
+    "@typescript-eslint/utils": "workspace:*",
     "prettier": "^3.2.5"
   },
   "devDependencies": {

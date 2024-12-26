@@ -16,9 +16,7 @@ This rule restricts what can be thrown as an exception.
 
 :::info[Migration from `no-throw-literal`]
 
-This rule was formerly known as [`no-throw-literal`](./no-throw-literal.mdx).
-We encourage users to migrate to the new name, `only-throw-error`, as the old name will be removed in a future major version of typescript-eslint.
-
+This rule was formerly known as `no-throw-literal`.
 The new name is a drop-in replacement with identical functionality.
 
 :::
@@ -105,6 +103,27 @@ This rule adds the following options:
 ```ts
 interface Options {
   /**
+   * Type specifiers that can be thrown.
+   */
+  allow?: (
+    | {
+        from: 'file';
+        name: [string, ...string[]] | string;
+        path?: string;
+      }
+    | {
+        from: 'lib';
+        name: [string, ...string[]] | string;
+      }
+    | {
+        from: 'package';
+        name: [string, ...string[]] | string;
+        package: string;
+      }
+    | string
+  )[];
+
+  /**
    * Whether to always allow throwing values typed as `any`.
    */
   allowThrowingAny?: boolean;
@@ -116,8 +135,9 @@ interface Options {
 }
 
 const defaultOptions: Options = {
-  allowThrowingAny: false,
-  allowThrowingUnknown: false,
+  allow: [],
+  allowThrowingAny: true,
+  allowThrowingUnknown: true,
 };
 ```
 

@@ -1,25 +1,24 @@
-import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
+
+import { parseForESLint } from '@typescript-eslint/parser';
 import Ajv from 'ajv';
-import path from 'path';
+import path from 'node:path';
 
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
-import {
-  typeMatchesSpecifier,
-  typeOrValueSpecifierSchema,
-} from '../src/TypeOrValueSpecifier';
+
+import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
     const ajv = new Ajv();
-    const validate = ajv.compile(typeOrValueSpecifierSchema);
+    const validate = ajv.compile(typeOrValueSpecifiersSchema);
 
-    function runTestPositive(data: unknown): void {
-      expect(validate(data)).toBe(true);
+    function runTestPositive(typeOrValueSpecifier: unknown): void {
+      expect(validate([typeOrValueSpecifier])).toBe(true);
     }
 
-    function runTestNegative(data: unknown): void {
-      expect(validate(data)).toBe(false);
+    function runTestNegative(typeOrValueSpecifier: unknown): void {
+      expect(validate([typeOrValueSpecifier])).toBe(false);
     }
 
     it.each([['MyType'], ['myValue'], ['any'], ['void'], ['never']])(
@@ -131,8 +130,9 @@ describe('TypeOrValueSpecifier', () => {
     ): void {
       const rootDir = path.join(__dirname, 'fixtures');
       const { ast, services } = parseForESLint(code, {
-        project: './tsconfig.json',
+        disallowAutomaticSingleRunInference: true,
         filePath: path.join(rootDir, 'file.ts'),
+        project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
       const type = services
@@ -341,7 +341,85 @@ describe('TypeOrValueSpecifier', () => {
           package: '@babel/code-frame',
         },
       ],
+      // The following type is available from the multi-file @types/node package.
+      [
+        'import { it } from "node:test"; type Test = typeof it;',
+        {
+          from: 'package',
+          name: 'it',
+          package: 'node:test',
+        },
+      ],
+      [
+        `
+          declare module "node:test" {
+            export function it(): void;
+          }
+
+          import { it } from "node:test";
+
+          type Test = typeof it;
+        `,
+        {
+          from: 'package',
+          name: 'it',
+          package: 'node:test',
+        },
+      ],
     ])('matches a matching package specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        `
+          type Other = { __otherBrand: true };
+          type SafePromise = Promise<number> & { __safeBrand: string };
+          type JoinedPromise = SafePromise & {};
+        `,
+        { from: 'file', name: ['Other'] },
+      ],
+      // The SafePromise alias acts as an actual alias ("cut-and-paste"). I.e.:
+      // type JoinedPromise = Promise<number> & { __safeBrand: string };
+      [
+        `
+          type SafePromise = Promise<number> & { __safeBrand: string };
+          type JoinedPromise = SafePromise & {};
+        `,
+        { from: 'file', name: ['SafePromise'] },
+      ],
+    ])(
+      "doesn't match a mismatched type specifier for an intersection type: %s",
+      runTestNegative,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        `
+          type SafePromise = Promise<number> & { __safeBrand: string };
+          type JoinedPromise = SafePromise & {};
+        `,
+        { from: 'file', name: ['JoinedPromise'] },
+      ],
+    ])(
+      'matches a matching type specifier for an intersection type: %s',
+      runTestPositive,
+    );
+
+    it("does not match a `declare global` with the 'global' package name", () => {
+      runTestNegative(
+        `
+          declare global {
+            export type URL = {};
+          }
+
+          type Test = URL;
+        `,
+        {
+          from: 'package',
+          name: 'URL',
+          package: 'global',
+        },
+      );
+    });
 
     it.each<[string, TypeOrValueSpecifier]>([
       [
@@ -368,7 +446,7 @@ describe('TypeOrValueSpecifier', () => {
         'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
         { from: 'package', name: 'TsNode', package: 'typescript' },
       ],
-    ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
+    ])("doesn't match a mismatched package specifier: %s", runTestNegative);
 
     it.each<[string, TypeOrValueSpecifier]>([
       [

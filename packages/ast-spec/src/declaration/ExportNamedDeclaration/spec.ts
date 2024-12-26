@@ -1,7 +1,10 @@
 import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type { StringLiteral } from '../../expression/literal/StringLiteral/spec';
-import type { ExportSpecifier } from '../../special/ExportSpecifier/spec';
+import type {
+  ExportSpecifier,
+  ExportSpecifierWithIdentifierLocal,
+} from '../../special/ExportSpecifier/spec';
 import type { ImportAttribute } from '../../special/ImportAttribute/spec';
 import type { NamedExportDeclarations } from '../../unions/ExportDeclaration';
 import type { ExportKind } from '../ExportAndImportKind';
@@ -10,8 +13,9 @@ interface ExportNamedDeclarationBase extends BaseNode {
   type: AST_NODE_TYPES.ExportNamedDeclaration;
   /**
    * The assertions declared for the export.
-   * ```
-   * export { foo } from 'mod' assert { type: 'json' };
+   * @example
+   * ```ts
+   * export { foo } from 'mod' assert \{ type: 'json' \};
    * ```
    * This will be an empty array if `source` is `null`
    * @deprecated Replaced with {@link `attributes`}.
@@ -19,15 +23,17 @@ interface ExportNamedDeclarationBase extends BaseNode {
   assertions: ImportAttribute[];
   /**
    * The attributes declared for the export.
-   * ```
-   * export { foo } from 'mod' with { type: 'json' };
+   * @example
+   * ```ts
+   * export { foo } from 'mod' with \{ type: 'json' \};
    * ```
    * This will be an empty array if `source` is `null`
    */
   attributes: ImportAttribute[];
   /**
    * The exported declaration.
-   * ```
+   * @example
+   * ```ts
    * export const x = 1;
    * ```
    * This will be `null` if `source` is not `null`, or if there are `specifiers`
@@ -43,7 +49,8 @@ interface ExportNamedDeclarationBase extends BaseNode {
   source: StringLiteral | null;
   /**
    * The specifiers being exported.
-   * ```
+   * @example
+   * ```ts
    * export { a, b };
    * ```
    * This will be an empty array if `declaration` is not `null`
@@ -71,6 +78,8 @@ export interface ExportNamedDeclarationWithoutSourceWithMultiple
   attributes: ImportAttribute[];
   declaration: null;
   source: null;
+  // Cannot have literal local without a source
+  specifiers: ExportSpecifierWithIdentifierLocal[];
 }
 
 /**
@@ -95,7 +104,7 @@ export interface ExportNamedDeclarationWithoutSourceWithSingle
   /**
    * This will always be an empty array.
    */
-  specifiers: ExportSpecifier[];
+  specifiers: ExportSpecifierWithIdentifierLocal[];
 }
 
 /**
@@ -109,6 +118,10 @@ export interface ExportNamedDeclarationWithSource
   declaration: null;
   source: StringLiteral;
 }
+
+export type ExportNamedDeclarationWithoutSource =
+  | ExportNamedDeclarationWithoutSourceWithMultiple
+  | ExportNamedDeclarationWithoutSourceWithSingle;
 
 export type ExportNamedDeclaration =
   | ExportNamedDeclarationWithoutSourceWithMultiple

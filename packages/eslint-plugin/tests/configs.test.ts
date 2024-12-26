@@ -16,13 +16,6 @@ const EXTENSION_RULES = Object.entries(rules)
       ] as const,
   );
 
-function entriesToObject<T = unknown>(value: [string, T][]): Record<string, T> {
-  return value.reduce<Record<string, T>>((accum, [k, v]) => {
-    accum[k] = v;
-    return accum;
-  }, {});
-}
-
 function filterRules(
   values: Record<string, string | unknown[]>,
 ): [string, string | unknown[]][] {
@@ -33,14 +26,14 @@ function filterRules(
 
 interface FilterAndMapRuleConfigsSettings {
   excludeDeprecated?: boolean;
-  typeChecked?: 'exclude' | 'include-only';
   recommendations?: (RuleRecommendation | undefined)[];
+  typeChecked?: 'exclude' | 'include-only';
 }
 
 function filterAndMapRuleConfigs({
   excludeDeprecated,
-  typeChecked,
   recommendations,
+  typeChecked,
 }: FilterAndMapRuleConfigsSettings = {}): [string, unknown][] {
   let result = Object.entries(rules);
 
@@ -59,14 +52,14 @@ function filterAndMapRuleConfigs({
   if (recommendations) {
     result = result.filter(([, rule]) => {
       switch (typeof rule.meta.docs?.recommended) {
-        case 'undefined':
-          return false;
         case 'object':
           return Object.keys(rule.meta.docs.recommended).some(recommended =>
             recommendations.includes(recommended as RuleRecommendation),
           );
         case 'string':
           return recommendations.includes(rule.meta.docs.recommended);
+        default:
+          return false;
       }
     });
   }
@@ -118,7 +111,9 @@ describe('all.ts', () => {
       excludeDeprecated: true,
     });
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -135,7 +130,9 @@ describe('disable-type-checked.ts', () => {
       .filter(([, rule]) => rule.meta.docs?.requiresTypeChecking)
       .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off']);
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 });
 
@@ -147,11 +144,13 @@ describe('recommended.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'exclude',
       recommendations: ['recommended'],
+      typeChecked: 'exclude',
     });
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -168,7 +167,9 @@ describe('recommended-type-checked.ts', () => {
       recommendations: ['recommended'],
     });
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -182,11 +183,13 @@ describe('recommended-type-checked-only.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'include-only',
       recommendations: ['recommended'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -201,11 +204,13 @@ describe('strict.ts', () => {
     // note: exclude deprecated rules, this config is allowed to change between minor versions
     const ruleConfigs = filterAndMapRuleConfigs({
       excludeDeprecated: true,
-      typeChecked: 'exclude',
       recommendations: ['recommended', 'strict'],
+      typeChecked: 'exclude',
     });
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -222,7 +227,9 @@ describe('strict-type-checked.ts', () => {
       excludeDeprecated: true,
       recommendations: ['recommended', 'strict'],
     });
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -237,11 +244,13 @@ describe('strict-type-checked-only.ts', () => {
     // note: exclude deprecated rules, this config is allowed to change between minor versions
     const ruleConfigs = filterAndMapRuleConfigs({
       excludeDeprecated: true,
-      typeChecked: 'include-only',
       recommendations: ['recommended', 'strict'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -255,11 +264,13 @@ describe('stylistic.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'exclude',
       recommendations: ['stylistic'],
+      typeChecked: 'exclude',
     });
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -275,7 +286,9 @@ describe('stylistic-type-checked.ts', () => {
   });
 
   it('contains all stylistic rules, excluding deprecated ones', () => {
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);
@@ -289,11 +302,13 @@ describe('stylistic-type-checked-only.ts', () => {
     const configRules = filterRules(unfilteredConfigRules);
     // note: include deprecated rules so that the config doesn't change between major bumps
     const ruleConfigs = filterAndMapRuleConfigs({
-      typeChecked: 'include-only',
       recommendations: ['stylistic'],
+      typeChecked: 'include-only',
     }).filter(([ruleName]) => ruleName);
 
-    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+    expect(Object.fromEntries(ruleConfigs)).toEqual(
+      Object.fromEntries(configRules),
+    );
   });
 
   itHasBaseRulesOverriden(unfilteredConfigRules);

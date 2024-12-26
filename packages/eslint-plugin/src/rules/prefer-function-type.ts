@@ -1,16 +1,18 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
 export const phrases = {
-  [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
   [AST_NODE_TYPES.TSInterfaceDeclaration]: 'Interface',
+  [AST_NODE_TYPES.TSTypeLiteral]: 'Type literal',
 } as const;
 
 export default createRule({
   name: 'prefer-function-type',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Enforce using function types instead of interfaces with call signatures',
@@ -24,7 +26,6 @@ export default createRule({
         "`this` refers to the function type '{{ interfaceName }}', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?",
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -76,7 +77,7 @@ export default createRule({
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
-        member.returnType !== undefined
+        member.returnType != null
       ) {
         if (
           tsThisTypes?.length &&
@@ -108,9 +109,10 @@ export default createRule({
               const text = context.sourceCode
                 .getText()
                 .slice(start, member.range[1]);
-              const comments = context.sourceCode
-                .getCommentsBefore(member)
-                .concat(context.sourceCode.getCommentsAfter(member));
+              const comments = [
+                ...context.sourceCode.getCommentsBefore(member),
+                ...context.sourceCode.getCommentsAfter(member),
+              ];
               let suggestion = `${text.slice(0, colonPos)} =>${text.slice(
                 colonPos + 1,
               )}`;
@@ -123,7 +125,7 @@ export default createRule({
               }
 
               if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
-                if (node.typeParameters !== undefined) {
+                if (node.typeParameters != null) {
                   suggestion = `type ${context.sourceCode
                     .getText()
                     .slice(
@@ -142,15 +144,13 @@ export default createRule({
                 node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
                 isParentExported
               ) {
-                const commentsText = comments.reduce((text, comment) => {
-                  return (
-                    text +
-                    (comment.type === AST_TOKEN_TYPES.Line
-                      ? `//${comment.value}`
-                      : `/*${comment.value}*/`) +
-                    '\n'
-                  );
-                }, '');
+                const commentsText = comments
+                  .map(({ type, value }) =>
+                    type === AST_TOKEN_TYPES.Line
+                      ? `//${value}\n`
+                      : `/*${value}*/\n`,
+                  )
+                  .join('');
                 // comments should move before export and not between export and interface declaration
                 fixes.push(fixer.insertTextBefore(node.parent, commentsText));
               } else {
@@ -194,14 +194,6 @@ export default createRule({
         // when entering an interface reset the count of `this`s to empty.
         tsThisTypes = [];
       },
-      'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
-        // inside an interface keep track of all ThisType references.
-        // unless it's inside a nested type literal in which case it's invalid code anyway
-        // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
-        if (literalNesting === 0 && tsThisTypes != null) {
-          tsThisTypes.push(node);
-        }
-      },
       'TSInterfaceDeclaration:exit'(
         node: TSESTree.TSInterfaceDeclaration,
       ): void {
@@ -210,6 +202,14 @@ export default createRule({
         }
         // on exit check member and reset the array to nothing.
         tsThisTypes = null;
+      },
+      'TSInterfaceDeclaration TSThisType'(node: TSESTree.TSThisType): void {
+        // inside an interface keep track of all ThisType references.
+        // unless it's inside a nested type literal in which case it's invalid code anyway
+        // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
+        if (literalNesting === 0 && tsThisTypes != null) {
+          tsThisTypes.push(node);
+        }
       },
       // keep track of nested literals to avoid complaining about invalid `this` uses
       'TSInterfaceDeclaration TSTypeLiteral'(): void {

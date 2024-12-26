@@ -111,6 +111,10 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/twitter.svg') no-repeat;
 }
 
+.bluesky-link::before {
+  background: url('/img/bluesky.svg') no-repeat;
+}
+
 .header-image-link:hover {
   opacity: 0.6;
 }
@@ -204,10 +208,18 @@ h6 {
   text-decoration: underline;
 }
 
+.markdown a:has(code) {
+  text-underline-offset: 0.25em;
+}
+
 .markdown a * {
   vertical-align: baseline;
 }
 
 td > p:last-child {
   margin-bottom: 0;
+}
+
+h5 {
+  font-weight: bold;
 }

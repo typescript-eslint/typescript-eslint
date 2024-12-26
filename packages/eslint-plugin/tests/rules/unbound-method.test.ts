@@ -1,18 +1,20 @@
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/unbound-method';
+
 import rule from '../../src/rules/unbound-method';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -39,7 +41,7 @@ ${code}
 }
 function addContainsMethodsClassInvalid(
   code: string[],
-): TSESLint.InvalidTestCase<MessageIds, Options>[] {
+): InvalidTestCase<MessageIds, Options>[] {
   return code.map(c => ({
     code: addContainsMethodsClass(c),
     errors: [
@@ -56,8 +58,62 @@ ruleTester.run('unbound-method', rule, {
     'Promise.resolve().then(console.log);',
     "['1', '2', '3'].map(Number.parseInt);",
     '[5.2, 7.1, 3.6].map(Math.floor);',
+    `
+      const foo = Number;
+      ['1', '2', '3'].map(foo.parseInt);
+    `,
+    `
+      const foo = Math;
+      [5.2, 7.1, 3.6].map(foo.floor);
+    `,
+    "['1', '2', '3'].map(Number['floor']);",
     'const x = console.log;',
     'const x = Object.defineProperty;',
+    `
+      const foo = Object;
+      const x = foo.defineProperty;
+    `,
+    'const x = String.fromCharCode;',
+    `
+      const foo = String;
+      const x = foo.fromCharCode;
+    `,
+    'const x = RegExp.prototype;',
+    'const x = Symbol.keyFor;',
+    `
+      const foo = Symbol;
+      const x = foo.keyFor;
+    `,
+    'const x = Array.isArray;',
+    `
+      const foo = Array;
+      const x = foo.isArray;
+    `,
+    `
+      class Foo extends Array {}
+      const x = Foo.isArray;
+    `,
+    'const x = Proxy.revocable;',
+    `
+      const foo = Proxy;
+      const x = foo.revocable;
+    `,
+    'const x = Date.parse;',
+    `
+      const foo = Date;
+      const x = foo.parse;
+    `,
+    'const x = Atomics.load;',
+    `
+      const foo = Atomics;
+      const x = foo.load;
+    `,
+    'const x = Reflect.deleteProperty;',
+    'const x = JSON.stringify;',
+    `
+      const foo = JSON;
+      const x = foo.stringify;
+    `,
     `
       const o = {
         f: function (this: void) {},
@@ -284,6 +340,130 @@ class Foo {
 }
 const { bound } = new Foo();
     `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+function foo({ bound } = new Foo()) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+declare const bar: Foo;
+function foo({ bound }: Foo) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+class Bar {
+  bound = () => 'bar';
+}
+function foo({ bound }: Foo | Bar) {}
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+type foo = ({ bound }: Foo) => void;
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+type foo = ({ unbound }: Foo) => void;
+    `,
+    `
+class Foo {
+  bound = () => 'foo';
+}
+class Bar {
+  bound = () => 'bar';
+}
+function foo({ bound }: Foo & Bar) {}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+declare const { unbound }: Foo;
+    `,
+    "declare const { unbound } = '***';",
+    `
+class Foo {
+  unbound = function () {};
+}
+type foo = (a: (b: (c: ({ unbound }: Foo) => void) => void) => void) => void;
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  property: ({ unbound }: Foo) => void;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+function foo<T extends ({ unbound }: Foo) => void>() {}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+abstract class Bar {
+  abstract foo({ unbound }: Foo);
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+declare class Bar {
+  foo({ unbound }: Foo);
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+declare function foo({ unbound }: Foo);
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+interface Bar {
+  foo: ({ unbound }: Foo) => void;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+interface Bar {
+  foo({ unbound }: Foo): void;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+interface Bar {
+  new ({ unbound }: Foo): Foo;
+}
+    `,
+    `
+class Foo {
+  unbound = function () {};
+}
+type foo = new ({ unbound }: Foo) => void;
+    `,
+    'const { unbound } = { unbound: () => {} };',
+    'function foo({ unbound }: { unbound: () => void } = { unbound: () => {} }) {}',
     // https://github.com/typescript-eslint/typescript-eslint/issues/1866
     `
 class BaseClass {
@@ -386,15 +566,15 @@ new ContainsMethods().unbound;
 
 ContainsMethods.unboundStatic;
       `,
-      options: [
-        {
-          ignoreStatic: true,
-        },
-      ],
       errors: [
         {
           line: 8,
           messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+      options: [
+        {
+          ignoreStatic: true,
         },
       ],
     },
@@ -438,6 +618,117 @@ instance.unbound = x; // THIS SHOULD NOT
       errors: [
         {
           line: 9,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Number {
+  static parseInt = function (string: string, radix?: number): number {};
+}
+const foo = Foo;
+['1', '2', '3'].map(foo.parseInt);
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Number;
+const x = foo.toFixed;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Object;
+const x = foo.hasOwnProperty;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: String;
+const x = foo.slice;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: Date;
+const x = foo.getTime;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Number {}
+const x = Foo.parseInt;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends String {}
+const x = Foo.fromCharCode;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Object {}
+const x = Foo.defineProperty;
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Date {}
+const x = Foo.parse;
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -516,6 +807,291 @@ let unbound;
     },
     {
       code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo = new Foo()) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = bar) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = { unbound: () => {} }) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+declare const bar: Foo;
+function foo({ unbound }: Foo = { unbound: function () {} }) {}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function bar(cb: (arg: Foo) => void) {}
+bar(({ unbound }) => {});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function bar(cb: (arg: { unbound: () => void }) => void) {}
+bar(({ unbound } = new Foo()) => {});
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+for (const { unbound } of [new Foo(), new Foo()]) {
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+
+  foo({ unbound }: Foo) {}
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = function () {};
+}
+function foo({ unbound }: Foo | Bar) {}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+function foo({ unbound }: { unbound: () => string } | Foo) {}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+function foo({ unbound }: Foo | Bar) {}
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+const foo = ({ unbound }: Foo & { foo: () => 'bar' }) => {};
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+const foo = ({ unbound }: (Foo & { foo: () => 'bar' }) | Bar) => {};
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+const foo = ({ unbound }: Foo & Bar) => {};
+      `,
+      errors: [
+        {
+          line: 8,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  unbound = function () {};
+
+  other = function () {};
+}
+class Bar {
+  unbound = () => {};
+}
+const foo = ({ unbound, ...rest }: Foo & Bar) => {};
+      `,
+      errors: [
+        {
+          line: 10,
+          messageId: 'unbound',
+        },
+      ],
+    },
+    {
+      code: 'const { unbound } = { unbound: function () {} };',
+      errors: [
+        {
+          line: 1,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+function foo(
+  { unbound }: { unbound: () => void } = { unbound: function () {} },
+) {}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  floor = function () {};
+}
+
+const { floor } = Math.random() > 0.5 ? new Foo() : Math;
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'unboundWithoutThisAnnotation',
+        },
+      ],
+    },
+    {
+      code: `
 class CommunicationError {
   foo() {}
 }
@@ -579,8 +1155,8 @@ class OtherClass extends BaseClass {
       `,
       errors: [
         {
-          line: 8,
           column: 15,
+          line: 8,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -601,8 +1177,8 @@ class OtherClass extends BaseClass {
       `,
       errors: [
         {
-          line: 9,
           column: 9,
+          line: 9,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -618,9 +1194,9 @@ const { a, b } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 9,
           endColumn: 10,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -636,9 +1212,9 @@ const { a: c } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 9,
           endColumn: 10,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],
@@ -654,9 +1230,9 @@ const { b, a } = values;
       `,
       errors: [
         {
-          line: 7,
           column: 12,
           endColumn: 13,
+          line: 7,
           messageId: 'unboundWithoutThisAnnotation',
         },
       ],

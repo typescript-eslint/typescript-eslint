@@ -6,15 +6,15 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootDir = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
-ruleTester.run('strict-enums-comparison', rule, {
+ruleTester.run('no-unsafe-enum-comparison', rule, {
   valid: [
     "'a' > 'b';",
     "'a' < 'b';",
@@ -220,16 +220,6 @@ ruleTester.run('strict-enums-comparison', rule, {
       declare const left: string | Vegetable;
       declare const right: string | Vegetable2;
       left === right;
-    `,
-    `
-      enum Vegetable {
-        Asparagus = 'asparagus',
-        Beet = 'beet',
-        Celery = 'celery',
-      }
-      type WeirdString = string & { __someBrand: void };
-      declare const weirdString: WeirdString;
-      Vegetable.Asparagus === weirdString;
     `,
     `
       enum Vegetable {
@@ -1211,6 +1201,50 @@ ruleTester.run('strict-enums-comparison', rule, {
           ],
         },
       ],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const foo: number & {};
+        if (foo === Fruit.Apple) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+        declare const foo: number & { __someBrand: void };
+        if (foo === Fruit.Apple) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+        declare const foo: string & {};
+        if (foo === Vegetable.Asparagus) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+        declare const foo: string & { __someBrand: void };
+        if (foo === Vegetable.Asparagus) {
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
   ],
 });

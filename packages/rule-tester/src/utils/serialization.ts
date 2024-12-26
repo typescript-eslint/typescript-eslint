@@ -3,7 +3,7 @@
  */
 function isSerializablePrimitiveOrPlainObject(val: unknown): boolean {
   return (
-    // eslint-disable-next-line eqeqeq
+    // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
     val === null ||
     typeof val === 'string' ||
     typeof val === 'boolean' ||
@@ -25,15 +25,15 @@ export function isSerializable(val: unknown): boolean {
   if (typeof val === 'object') {
     const valAsObj = val as Record<string, unknown>;
     for (const property in valAsObj) {
-      // TODO(#9028): use `Object.hasOwn` (used in eslint@9) once we upgrade to eslint@9
-      if (Object.prototype.hasOwnProperty.call(valAsObj, property)) {
+      if (Object.hasOwn(valAsObj, property)) {
         if (!isSerializablePrimitiveOrPlainObject(valAsObj[property])) {
           return false;
         }
-        if (typeof valAsObj[property] === 'object') {
-          if (!isSerializable(valAsObj[property])) {
-            return false;
-          }
+        if (
+          typeof valAsObj[property] === 'object' &&
+          !isSerializable(valAsObj[property])
+        ) {
+          return false;
         }
       }
     }

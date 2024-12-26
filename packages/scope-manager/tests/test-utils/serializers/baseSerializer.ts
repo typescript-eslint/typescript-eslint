@@ -20,11 +20,8 @@ function createSerializer<Constructor extends ConstructorSignature>(
   const SEEN_THINGS = new Set<unknown>();
 
   return {
-    test(val): boolean {
-      return val instanceof type;
-    },
     serialize(
-      thing: Record<string, unknown> & { $id?: number },
+      thing: { $id?: number } & Record<string, unknown>,
       config,
       indentation,
       depth,
@@ -33,7 +30,7 @@ function createSerializer<Constructor extends ConstructorSignature>(
     ): string {
       const id = thing.$id != null ? `$${thing.$id}` : '';
       // If `type` is a base class, we should print out the name of the subclass
-      // eslint-disable-next-line @typescript-eslint/ban-types
+      // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
       const constructorName = (Object.getPrototypeOf(thing) as Object)
         .constructor.name;
 
@@ -54,6 +51,7 @@ function createSerializer<Constructor extends ConstructorSignature>(
       const childIndentation = indentation + config.indent;
       for (const key of keys) {
         let value = thing[key as string];
+        // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
         if (value === undefined) {
           continue;
         }
@@ -77,6 +75,9 @@ function createSerializer<Constructor extends ConstructorSignature>(
 
       const out = outputLines.join('\n');
       return out;
+    },
+    test(val): boolean {
+      return val instanceof type;
     },
   };
 }

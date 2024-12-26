@@ -20,4 +20,4 @@ type InferMessageIdsTypeFromRule<T> =
       ? MessageIds
       : unknown;
 
-export { InferOptionsTypeFromRule, InferMessageIdsTypeFromRule };
+export type { InferMessageIdsTypeFromRule, InferOptionsTypeFromRule };

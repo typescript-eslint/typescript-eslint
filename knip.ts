@@ -1,4 +1,4 @@
-import type { KnipConfig } from 'knip';
+import type { KnipConfig } from 'knip' with { 'resolution-mode': 'import' };
 
 export default {
   rules: {
@@ -13,6 +13,7 @@ export default {
   },
   workspaces: {
     '.': {
+      entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -20,21 +21,14 @@ export default {
         '@babel/parser',
         '@babel/types',
         '@nx/workspace',
-        'cross-fetch',
         'glob',
         'husky',
         'jest-specific-snapshot',
         'make-dir',
         'ncp',
         'tmp',
-
-        // imported in eslint.config.js
-        '@typescript-eslint/utils',
-      ],
-      entry: ['tools/release/changelog-renderer.js'],
-      ignoreBinaries: [
-        // https://github.com/webpro/knip/issues/433
-        'stylelint',
+        // imported for type purposes only
+        'website',
       ],
     },
     'packages/ast-spec': {
@@ -68,6 +62,9 @@ export default {
       entry: ['src/use-at-your-own-risk.ts'],
       ignore: ['tests/fixtures/**'],
     },
+    'packages/utils': {
+      ignore: ['tests/**/*.type-test.ts'],
+    },
     'packages/website': {
       entry: [
         'docusaurus.config.mts',
@@ -90,6 +87,7 @@ export default {
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
         '@docusaurus/plugin-content-docs',
+        '@docusaurus/plugin-content-blog',
         '@docusaurus/theme-search-algolia',
         '@docusaurus/ExecutionEnvironment',
         '@docusaurus/Link',
@@ -97,17 +95,15 @@ export default {
         '@docusaurus/useDocusaurusContext',
         '@docusaurus/useBaseUrl',
         '@docusaurus/BrowserOnly',
-        '@docusaurus/theme-classic',
+        '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
         '^@theme/.*',
         '^@theme-original/.*',
+        'docusaurus-plugin-typedoc',
+        'typedoc-plugin-markdown',
       ],
     },
     'packages/website-eslint': {
-      ignoreDependencies: [
-        // virtual module
-        'vt',
-      ],
       entry: [
         'src/index.js',
         'src/mock/assert.js',
@@ -118,6 +114,10 @@ export default {
         'src/mock/path.js',
         'src/mock/typescript.js',
         'src/mock/util.js',
+      ],
+      ignoreDependencies: [
+        // virtual module
+        'vt',
       ],
     },
     'tools/dummypkg': {},

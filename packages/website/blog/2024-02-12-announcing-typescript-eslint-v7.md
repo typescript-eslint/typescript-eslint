@@ -1,9 +1,5 @@
 ---
-authors:
-  - image_url: /img/team/bradzacher.jpg
-    name: Brad Zacher
-    title: typescript-eslint Maintainer
-    url: https://github.com/bradzacher
+authors: bradzacher
 description: Announcing the release of typescript-eslint's stable v7 release
 slug: announcing-typescript-eslint-v7
 tags: [breaking changes, typescript-eslint, v6, v7, flat configs]

@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -22,14 +24,7 @@ function checkAccessibility(node: TSESTree.MethodDefinition): boolean {
     case 'private':
       return false;
     case 'public':
-      if (
-        node.parent.type === AST_NODE_TYPES.ClassBody &&
-        (
-          node.parent.parent as
-            | TSESTree.ClassDeclaration
-            | TSESTree.ClassExpression
-        ).superClass
-      ) {
+      if (node.parent.parent.superClass) {
         return false;
       }
       break;
@@ -52,14 +47,15 @@ export default createRule<Options, MessageIds>({
   name: 'no-useless-constructor',
   meta: {
     type: 'problem',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow unnecessary constructors',
-      recommended: 'strict',
       extendsBaseRule: true,
+      recommended: 'strict',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
   },
   defaultOptions: [],
   create(context) {

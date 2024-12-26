@@ -1,3 +1,4 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
@@ -72,10 +73,10 @@ export function isReadonlyTypeLike(
   program: ts.Program,
   type: ts.Type,
   predicate?: (
-    subType: ts.Type & {
+    subType: {
       aliasSymbol: ts.Symbol;
       aliasTypeArguments: readonly ts.Type[];
-    },
+    } & ts.Type,
   ) => boolean,
 ): boolean {
   return isBuiltinTypeAliasLike(program, type, subtype => {
@@ -88,10 +89,10 @@ export function isBuiltinTypeAliasLike(
   program: ts.Program,
   type: ts.Type,
   predicate: (
-    subType: ts.Type & {
+    subType: {
       aliasSymbol: ts.Symbol;
       aliasTypeArguments: readonly ts.Type[];
-    },
+    } & ts.Type,
   ) => boolean,
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subtype => {
@@ -104,10 +105,10 @@ export function isBuiltinTypeAliasLike(
     if (
       isSymbolFromDefaultLibrary(program, aliasSymbol) &&
       predicate(
-        subtype as ts.Type & {
+        subtype as {
           aliasSymbol: ts.Symbol;
           aliasTypeArguments: readonly ts.Type[];
-        },
+        } & ts.Type,
       )
     ) {
       return true;
@@ -120,7 +121,7 @@ export function isBuiltinTypeAliasLike(
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
-  symbolName: string,
+  symbolName: string | string[],
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
     const symbol = subType.getSymbol();
@@ -128,8 +129,12 @@ export function isBuiltinSymbolLike(
       return false;
     }
 
+    const actualSymbolName = symbol.getName();
+
     if (
-      symbol.getName() === symbolName &&
+      (Array.isArray(symbolName)
+        ? symbolName.some(name => actualSymbolName === name)
+        : actualSymbolName === symbolName) &&
       isSymbolFromDefaultLibrary(program, symbol)
     ) {
       return true;
@@ -153,6 +158,16 @@ export function isBuiltinSymbolLikeRecurser(
     return type.types.every(t =>
       isBuiltinSymbolLikeRecurser(program, t, predicate),
     );
+  }
+  // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
+  if ((tsutils.isTypeParameter as (type: ts.Type) => boolean)(type)) {
+    const t = type.getConstraint();
+
+    if (t) {
+      return isBuiltinSymbolLikeRecurser(program, t, predicate);
+    }
+
+    return false;
   }
 
   const predicateResult = predicate(type);

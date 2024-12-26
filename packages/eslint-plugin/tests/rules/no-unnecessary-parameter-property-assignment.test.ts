@@ -2,12 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unnecessary-parameter-property-assignment';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-  },
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-unnecessary-parameter-property-assignment', rule, {
   valid: [
@@ -183,8 +178,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -199,8 +194,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -215,8 +210,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -231,8 +226,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -248,8 +243,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -264,8 +259,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -280,8 +275,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -296,8 +291,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -312,8 +307,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -331,8 +326,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 7,
           column: 5,
+          line: 7,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -350,8 +345,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 7,
           column: 5,
+          line: 7,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -371,13 +366,13 @@ class Foo {
       `,
       errors: [
         {
-          line: 6,
           column: 9,
+          line: 6,
           messageId: 'unnecessaryAssign',
         },
         {
-          line: 9,
           column: 5,
+          line: 9,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -395,8 +390,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -414,8 +409,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -435,13 +430,13 @@ class Foo {
       `,
       errors: [
         {
-          line: 4,
           column: 5,
+          line: 4,
           messageId: 'unnecessaryAssign',
         },
         {
-          line: 8,
           column: 7,
+          line: 8,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -458,8 +453,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 5,
           column: 7,
+          line: 5,
           messageId: 'unnecessaryAssign',
         },
       ],
@@ -476,8 +471,8 @@ class Foo {
       `,
       errors: [
         {
-          line: 5,
           column: 7,
+          line: 5,
           messageId: 'unnecessaryAssign',
         },
       ],

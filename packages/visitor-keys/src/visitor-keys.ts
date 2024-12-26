@@ -1,4 +1,5 @@
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
+
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
 type VisitorKeys = Record<string, readonly string[] | undefined>;
@@ -140,10 +141,9 @@ const SharedVisitorKeys = (() => {
   ] as const;
 
   return {
+    AbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
     AnonymousFunction,
-    Function: ['id', ...AnonymousFunction],
-    FunctionType,
-
+    AsExpression: ['expression', 'typeAnnotation'],
     ClassDeclaration: [
       'decorators',
       'id',
@@ -153,10 +153,9 @@ const SharedVisitorKeys = (() => {
       'implements',
       'body',
     ],
-
-    AbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
+    Function: ['id', ...AnonymousFunction],
+    FunctionType,
     PropertyDefinition: [...AbstractPropertyDefinition, 'value'],
-    TypeAssertion: ['expression', 'typeAnnotation'],
   } as const;
 })();
 
@@ -176,7 +175,7 @@ const additionalKeys: AdditionalKeys = {
   Identifier: ['decorators', 'typeAnnotation'],
   ImportAttribute: ['key', 'value'],
   ImportDeclaration: ['specifiers', 'source', 'assertions'],
-  ImportExpression: ['source', 'attributes'],
+  ImportExpression: ['source', 'options'],
   JSXClosingFragment: [],
   JSXOpeningElement: ['name', 'typeArguments', 'attributes'],
   JSXOpeningFragment: [],
@@ -194,7 +193,7 @@ const additionalKeys: AdditionalKeys = {
   TSAbstractPropertyDefinition: SharedVisitorKeys.AbstractPropertyDefinition,
   TSAnyKeyword: [],
   TSArrayType: ['elementType'],
-  TSAsExpression: SharedVisitorKeys.TypeAssertion,
+  TSAsExpression: SharedVisitorKeys.AsExpression,
   TSAsyncKeyword: [],
   TSBigIntKeyword: [],
   TSBooleanKeyword: [],
@@ -206,7 +205,8 @@ const additionalKeys: AdditionalKeys = {
   TSDeclareFunction: SharedVisitorKeys.Function,
   TSDeclareKeyword: [],
   TSEmptyBodyFunctionExpression: ['id', ...SharedVisitorKeys.FunctionType],
-  TSEnumDeclaration: ['id', 'members'],
+  TSEnumBody: ['members'],
+  TSEnumDeclaration: ['id', 'body'],
   TSEnumMember: ['id', 'initializer'],
   TSExportAssignment: ['expression'],
   TSExportKeyword: [],
@@ -224,7 +224,7 @@ const additionalKeys: AdditionalKeys = {
   TSIntersectionType: ['types'],
   TSIntrinsicKeyword: [],
   TSLiteralType: ['literal'],
-  TSMappedType: ['nameType', 'typeParameter', 'typeAnnotation'],
+  TSMappedType: ['key', 'constraint', 'nameType', 'typeAnnotation'],
   TSMethodSignature: ['typeParameters', 'key', 'params', 'returnType'],
   TSModuleBlock: ['body'],
   TSModuleDeclaration: ['id', 'body'],
@@ -244,12 +244,7 @@ const additionalKeys: AdditionalKeys = {
   TSQualifiedName: ['left', 'right'],
   TSReadonlyKeyword: [],
   TSRestType: ['typeAnnotation'],
-  TSSatisfiesExpression: [
-    // this is intentionally different to SharedVisitorKeys.TypeAssertion because
-    // the type annotation comes first in the source code
-    'typeAnnotation',
-    'expression',
-  ],
+  TSSatisfiesExpression: SharedVisitorKeys.AsExpression,
   TSStaticKeyword: [],
   TSStringKeyword: [],
   TSSymbolKeyword: [],
@@ -258,7 +253,7 @@ const additionalKeys: AdditionalKeys = {
   TSTupleType: ['elementTypes'],
   TSTypeAliasDeclaration: ['id', 'typeParameters', 'typeAnnotation'],
   TSTypeAnnotation: ['typeAnnotation'],
-  TSTypeAssertion: SharedVisitorKeys.TypeAssertion,
+  TSTypeAssertion: ['typeAnnotation', 'expression'],
   TSTypeLiteral: ['members'],
   TSTypeOperator: ['typeAnnotation'],
   TSTypeParameter: ['name', 'constraint', 'default'],
@@ -275,4 +270,4 @@ const additionalKeys: AdditionalKeys = {
 
 const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith(additionalKeys);
 
-export { visitorKeys, VisitorKeys };
+export { visitorKeys, type VisitorKeys };

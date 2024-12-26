@@ -38,6 +38,10 @@ If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to
 
 ### `allowPrivateClassPropertyAccess`
 
+{/* insert option description */}
+
+This can be useful because TypeScript will report a type error on dot notation but not array notation.
+
 Example of a correct code when `allowPrivateClassPropertyAccess` is set to `true`:
 
 ```ts option='{ "allowPrivateClassPropertyAccess": true }' showPlaygroundButton
@@ -51,6 +55,10 @@ x['priv_prop'] = 123;
 
 ### `allowProtectedClassPropertyAccess`
 
+{/* insert option description */}
+
+This can be useful because TypeScript will report a type error on dot notation but not array notation.
+
 Example of a correct code when `allowProtectedClassPropertyAccess` is set to `true`:
 
 ```ts option='{ "allowProtectedClassPropertyAccess": true }' showPlaygroundButton
@@ -63,6 +71,8 @@ x['protected_prop'] = 123;
 ```
 
 ### `allowIndexSignaturePropertyAccess`
+
+{/* insert option description */}
 
 Example of correct code when `allowIndexSignaturePropertyAccess` is set to `true`:
 

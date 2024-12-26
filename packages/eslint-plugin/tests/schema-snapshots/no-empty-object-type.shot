@@ -9,14 +9,17 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowInterfaces": {
+        "description": "Whether to allow empty interfaces.",
         "enum": ["always", "never", "with-single-extends"],
         "type": "string"
       },
       "allowObjectTypes": {
-        "enum": ["always", "in-type-alias-with-name", "never"],
+        "description": "Whether to allow empty object type literals.",
+        "enum": ["always", "never"],
         "type": "string"
       },
       "allowWithName": {
+        "description": "A stringified regular expression to allow interfaces and object type aliases with the configured name.",
         "type": "string"
       }
     },
@@ -29,8 +32,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    allowInterfaces?: 'always' | 'never' | 'with-single-extends';
-    allowObjectTypes?: 'always' | 'in-type-alias-with-name' | 'never';
+    /** Whether to allow empty interfaces. */
+    allowInterfaces?:
+      | 'never'
+      | 'with-single-extends'
+      /** Whether to allow empty interfaces. */
+      | 'always';
+    /** Whether to allow empty object type literals. */
+    allowObjectTypes?:
+      | 'never'
+      /** Whether to allow empty object type literals. */
+      | 'always';
+    /** A stringified regular expression to allow interfaces and object type aliases with the configured name. */
     allowWithName?: string;
   },
 ];

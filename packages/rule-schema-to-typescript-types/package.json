@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "7.15.0",
+  "version": "8.18.2",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -11,7 +11,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^18.18.0 || >=20.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -34,13 +34,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "7.15.0",
-    "@typescript-eslint/utils": "7.15.0",
+    "@typescript-eslint/type-utils": "8.18.2",
+    "@typescript-eslint/utils": "8.18.2",
     "natural-compare": "^1.4.0",
     "prettier": "^3.2.5"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3"
+    "@jest/types": "29.6.3",
+    "typescript": "*"
   },
   "funding": {
     "type": "opencollective",

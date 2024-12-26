@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
@@ -37,11 +38,11 @@ export default createRule({
 
     return {
       TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-        const enumMembers = node.members;
+        const enumMembers = node.body.members;
         const seenValues = new Set<number | string>();
 
         enumMembers.forEach(member => {
-          if (member.initializer === undefined) {
+          if (member.initializer == null) {
             return;
           }
 
@@ -52,7 +53,7 @@ export default createRule({
             value = Number(member.initializer.value);
           }
 
-          if (value === undefined) {
+          if (value == null) {
             return;
           }
 

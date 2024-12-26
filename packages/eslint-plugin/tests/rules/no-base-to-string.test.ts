@@ -5,11 +5,11 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2018,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
 });
 
@@ -44,9 +44,9 @@ ruleTester.run('no-base-to-string', rule, {
     ...literalList.map(i => `\`\${${i}}\`;`),
 
     // operator + +=
-    ...literalListWrapped
-      .map(l => literalListWrapped.map(r => `${l} + ${r};`))
-      .reduce((pre, cur) => [...pre, ...cur]),
+    ...literalListWrapped.flatMap(l =>
+      literalListWrapped.map(r => `${l} + ${r};`),
+    ),
 
     // toString()
     ...literalListWrapped.map(i => `${i === '1' ? `(${i})` : i}.toString();`),
@@ -60,12 +60,20 @@ ruleTester.run('no-base-to-string', rule, {
       `,
     ),
 
+    // String()
+    ...literalList.map(i => `String(${i});`),
     `
 function someFunction() {}
 someFunction.toString();
 let text = \`\${someFunction}\`;
     `,
+    `
+function someFunction() {}
+someFunction.toLocaleString();
+let text = \`\${someFunction}\`;
+    `,
     'unknownObject.toString();',
+    'unknownObject.toLocaleString();',
     'unknownObject.someOtherMethod();',
     `
 class CustomToString {
@@ -79,11 +87,19 @@ class CustomToString {
 const literalWithToString = {
   toString: () => 'Hello, world!',
 };
-'' + literalToString;
+'' + literalWithToString;
     `,
     `
 const printer = (inVar: string | number | boolean) => {
   inVar.toString();
+};
+printer('');
+printer(1);
+printer(true);
+    `,
+    `
+const printer = (inVar: string | number | boolean) => {
+  inVar.toLocaleString();
 };
 printer('');
 printer(1);
@@ -118,6 +134,131 @@ tag\`\${{}}\`;
     "'' += new Error();",
     "'' += new URL();",
     "'' += new URLSearchParams();",
+    `
+Number(1);
+    `,
+    {
+      code: 'String(/regex/);',
+      options: [{ ignoredTypeNames: ['RegExp'] }],
+    },
+    {
+      code: `
+type Foo = { a: string } | { b: string };
+declare const foo: Foo;
+String(foo);
+      `,
+      options: [{ ignoredTypeNames: ['Foo'] }],
+    },
+    `
+function String(value) {
+  return value;
+}
+declare const myValue: object;
+String(myValue);
+    `,
+    `
+import { String } from 'foo';
+String({});
+    `,
+    `
+['foo', 'bar'].join('');
+    `,
+
+    `
+([{}, 'bar'] as string[]).join('');
+    `,
+    `
+function foo<T extends string>(array: T[]) {
+  return array.join();
+}
+    `,
+    `
+class Foo {
+  toString() {
+    return '';
+  }
+}
+[new Foo()].join();
+    `,
+    `
+class Foo {
+  join() {}
+}
+const foo = new Foo();
+foo.join();
+    `,
+    `
+declare const array: string[];
+array.join('');
+    `,
+    `
+class Foo {}
+declare const array: (string & Foo)[];
+array.join('');
+    `,
+    `
+class Foo {}
+class Bar {}
+declare const array: (string & Foo)[] | (string & Bar)[];
+array.join('');
+    `,
+    `
+class Foo {}
+class Bar {}
+declare const array: (string & Foo)[] & (string & Bar)[];
+array.join('');
+    `,
+    `
+class Foo {}
+class Bar {}
+declare const tuple: [string & Foo, string & Bar];
+tuple.join('');
+    `,
+    `
+class Foo {}
+declare const tuple: [string] & [Foo];
+tuple.join('');
+    `,
+    // don't bother trying to interpret spread args.
+    `
+let objects = [{}, {}];
+String(...objects);
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8585
+    `
+type Constructable<Entity> = abstract new (...args: any[]) => Entity;
+
+interface GuildChannel {
+  toString(): \`<#\${string}>\`;
+}
+
+declare const foo: Constructable<GuildChannel & { bar: 1 }>;
+class ExtendedGuildChannel extends foo {}
+declare const bb: ExtendedGuildChannel;
+bb.toString();
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8585 with intersection order reversed.
+    `
+type Constructable<Entity> = abstract new (...args: any[]) => Entity;
+
+interface GuildChannel {
+  toString(): \`<#\${string}>\`;
+}
+
+declare const foo: Constructable<{ bar: 1 } & GuildChannel>;
+class ExtendedGuildChannel extends foo {}
+declare const bb: ExtendedGuildChannel;
+bb.toString();
+    `,
+    `
+function foo<T>(x: T) {
+  String(x);
+}
+    `,
+    `
+declare const u: unknown;
+String(u);
+    `,
   ],
   invalid: [
     {
@@ -145,7 +286,31 @@ tag\`\${{}}\`;
       ],
     },
     {
+      code: '({}).toLocaleString();',
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
       code: "'' + {};",
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '{}',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: 'String({});',
       errors: [
         {
           data: {
@@ -172,6 +337,21 @@ tag\`\${{}}\`;
       code: `
         let someObjectOrString = Math.random() ? { a: true } : 'text';
         someObjectOrString.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'someObjectOrString',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        let someObjectOrString = Math.random() ? { a: true } : 'text';
+        someObjectOrString.toLocaleString();
       `,
       errors: [
         {
@@ -216,6 +396,21 @@ tag\`\${{}}\`;
     {
       code: `
         let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
+        someObjectOrObject.toLocaleString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'someObjectOrObject',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        let someObjectOrObject = Math.random() ? { a: true, b: true } : { a: true };
         someObjectOrObject + '';
       `,
       errors: [
@@ -243,6 +438,369 @@ tag\`\${{}}\`;
             name: 'intersection',
           },
           messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+declare const foo: string | Foo;
+\`\${foo}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+class Bar {}
+declare const foo: Bar | Foo;
+\`\${foo}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {}
+class Bar {}
+declare const foo: Bar & Foo;
+\`\${foo}\`;
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        [{}, {}].join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: '[{}, {}]',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        const array = [{}, {}];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {}
+        [new A(), 'str'].join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: "[new A(), 'str']",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const array: (string | Foo)[];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const array: (string & Foo) | (string | Foo)[];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        class Bar {}
+        declare const array: Foo[] & Bar[];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const array: string[] | Foo[];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [string, Foo];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [Foo, Foo];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [Foo | string, string];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [string, string] | [Foo, Foo];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        class Foo {}
+        declare const tuple: [Foo, string] & [Foo, Foo];
+        tuple.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'tuple',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        const array = ['string', { foo: 'bar' }];
+        array.join('');
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noUncheckedIndexedAccess.json',
+          tsconfigRootDir: rootDir,
+        },
+      },
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          return array.join();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          array[0].toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'array[0]',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(value: T) {
+          value.toString();
+        }
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'value',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Bar = Record<string, string>;
+declare const foo: Bar | string;
+foo.toString();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'foo',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          return array;
+        }
+        foo([{ foo: 'foo' }]).join();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: "foo([{ foo: 'foo' }])",
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+        type Bar = Record<string, string>;
+        function foo<T extends string | Bar>(array: T[]) {
+          return array;
+        }
+        foo([{ foo: 'foo' }, 'bar']).join();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: "foo([{ foo: 'foo' }, 'bar'])",
+          },
+          messageId: 'baseArrayJoin',
         },
       ],
     },
