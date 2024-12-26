@@ -51,3 +51,14 @@ declare const userName: string;
 const characters = userName.split('');
 "
 `;
+
+exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
+"Incorrect
+Options: {"allow":[{ "from": "file", "name": "BrandedString", "path": "file.ts" }]}
+
+declare const unbrandedString: string;
+
+const spreadUnbrandedString = [...unbrandedString];
+                               ~~~~~~~~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`String.split('')\` instead.
+"
+`;
