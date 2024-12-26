@@ -2,7 +2,6 @@
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'node:path';
-import { options } from 'yargs';
 
 import type {
   MessageId,
