@@ -1273,80 +1273,11 @@ class MySubclass extends MyClass {
     },
     {
       code: `
-class MyClass {
-  1(): Promise<void> {}
-}
-
-class MySubclass extends MyClass {
-  async 1(): void {}
-}
-      `,
-    },
-    {
-      code: `
-class MyClass {
-  1(): Promise<void> {}
-}
-
-class MySubclass extends MyClass {
-  async [1](): void {}
-}
-      `,
-    },
-    {
-      code: noFormat`
-class MyClass {
-  stringLiteral(): Promise<void> {}
-}
-
-class MySubclass extends MyClass {
-  async 'stringLiteral'(): void {}
-}
-
-      `,
-    },
-    {
-      code: `
-class MyClass {
-  computedStringLiteral(): Promise<void> {}
-}
-
-class MySubclass extends MyClass {
-  async ['computedStringLiteral'](): void {}
-}
-      `,
-    },
-    {
-      code: `
-class MyClass {
-  [Symbol.iterator](): Promise<void> {}
-}
-
-class MySubclass extends MyClass {
-  async [Symbol.iterator](): void {}
-}
-      `,
-    },
-    {
-      code: `
-const staticSymbol = Symbol.for('static symbol');
-
-class MyClass {
-  [staticSymbol](): Promise<void> {}
-}
-
-class MySubclass extends MyClass {
-  async [staticSymbol](): void {}
-}
-      `,
-    },
-    {
-      code: `
 interface MyInterface {
   1(): void;
 }
 
-class MySubclass extends MyInterface {
+class MySubclass implements MyInterface {
   1(): void {}
 }
       `,
@@ -1357,7 +1288,7 @@ interface MyInterface {
   1(): void;
 }
 
-class MySubclass extends MyInterface {
+class MySubclass implements MyInterface {
   [1](): void {}
 }
       `,
@@ -1368,7 +1299,7 @@ interface MyInterface {
   stringLiteral(): void;
 }
 
-class MySubclass extends MyInterface {
+class MySubclass implements MyInterface {
   'stringLiteral'(): void {}
 }
 
@@ -1380,7 +1311,7 @@ interface MyInterface {
   computedStringLiteral(): void;
 }
 
-class MySubclass extends MyInterface {
+class MySubclass implements MyInterface {
   ['computedStringLiteral'](): void {}
 }
       `,
@@ -1391,7 +1322,7 @@ interface MyInterface {
   [Symbol.iterator](): void;
 }
 
-class MySubclass extends MyInterface {
+class MySubclass implements MyInterface {
   [Symbol.iterator](): void {}
 }
       `,
@@ -1404,78 +1335,8 @@ interface MyInterface {
   [staticSymbol](): void;
 }
 
-class MySubclass extends MyInterface {
+class MySubclass implements MyInterface {
   [staticSymbol](): void {}
-}
-      `,
-    },
-
-    {
-      code: `
-interface MyInterface {
-  1(): Promise<void>;
-}
-
-class MySubclass extends MyInterface {
-  async 1(): void {}
-}
-      `,
-    },
-    {
-      code: `
-interface MyInterface {
-  1(): Promise<void>;
-}
-
-class MySubclass extends MyInterface {
-  async [1](): void {}
-}
-      `,
-    },
-    {
-      code: noFormat`
-interface MyInterface {
-  stringLiteral(): Promise<void>;
-}
-
-class MySubclass extends MyInterface {
-  async 'stringLiteral'(): void {}
-}
-
-      `,
-    },
-    {
-      code: `
-interface MyInterface {
-  computedStringLiteral(): Promise<void>;
-}
-
-class MySubclass extends MyInterface {
-  async ['computedStringLiteral'](): void {}
-}
-      `,
-    },
-    {
-      code: `
-interface MyInterface {
-  [Symbol.iterator](): Promise<void>;
-}
-
-class MySubclass extends MyInterface {
-  async [Symbol.iterator](): void {}
-}
-      `,
-    },
-    {
-      code: `
-const staticSymbol = Symbol.for('static symbol');
-
-interface MyInterface {
-  [staticSymbol](): Promise<void>;
-}
-
-class MySubclass extends MyInterface {
-  async [staticSymbol](): void {}
 }
       `,
     },
@@ -1513,8 +1374,8 @@ interface MyInterface {
   [staticSymbol](): Promise<void>;
 }
 
-class MySubclass extends MyInterface {
-  async [staticSymbol](): void {}
+class MySubclass implements MyInterface {
+  async [staticSymbol](): Promise<void> {}
 }
       `,
     },
