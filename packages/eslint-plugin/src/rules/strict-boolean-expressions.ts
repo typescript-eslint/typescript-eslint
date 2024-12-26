@@ -13,7 +13,7 @@ import {
   getParserServices,
   getWrappingFixer,
   isArrayMethodCallWithPredicate,
-  isParenlessFunctionExpression,
+  isParenlessArrowFunction,
   isTypeArrayTypeOrUnionOfArrayTypes,
   nullThrows,
 } from '../util';
@@ -342,10 +342,9 @@ export default createRule<Options, MessageId>({
                 messageId: 'explicitBooleanReturnType',
                 fix: fixer => {
                   if (
-                    isParenlessFunctionExpression(
-                      predicateNode,
-                      context.sourceCode,
-                    )
+                    predicateNode.type ===
+                      AST_NODE_TYPES.ArrowFunctionExpression &&
+                    isParenlessArrowFunction(predicateNode, context.sourceCode)
                   ) {
                     return [
                       fixer.insertTextBefore(predicateNode.params[0], '('),

@@ -225,8 +225,8 @@ function isRestParameterDeclaration(decl: ts.Declaration): boolean {
   return ts.isParameter(decl) && decl.dotDotDotToken != null;
 }
 
-function isParenlessFunctionExpression(
-  node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+function isParenlessArrowFunction(
+  node: TSESTree.ArrowFunctionExpression,
   sourceCode: TSESLint.SourceCode,
 ): boolean {
   return (
@@ -336,7 +336,7 @@ export {
   getNameFromMember,
   getStaticMemberAccessValue,
   isDefinitionFile,
-  isParenlessFunctionExpression,
+  isParenlessArrowFunction,
   isRestParameterDeclaration,
   isStaticMemberAccessOfValue,
   MemberNameType,
