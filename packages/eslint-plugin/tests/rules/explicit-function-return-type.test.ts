@@ -443,6 +443,53 @@ const func = (value: number) => x as const;
     },
     {
       code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) =>
+  ({ type: 'X', value }) as const satisfies R satisfies R satisfies R;
+      `,
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: true,
+        },
+      ],
+    },
+    {
+      code: `
 new Promise(resolve => {});
 new Foo(1, () => {});
       `,
@@ -1722,6 +1769,30 @@ const func = (value: number) => ({ type: 'X', value }) as const;
           endColumn: 32,
           endLine: 2,
           line: 2,
+          messageId: 'missingReturnType',
+        },
+      ],
+      options: [
+        {
+          allowDirectConstAssertionInArrowFunctions: false,
+        },
+      ],
+    },
+    {
+      code: `
+interface R {
+  type: string;
+  value: number;
+}
+
+const func = (value: number) => ({ type: 'X', value }) as const satisfies R;
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 32,
+          endLine: 7,
+          line: 7,
           messageId: 'missingReturnType',
         },
       ],

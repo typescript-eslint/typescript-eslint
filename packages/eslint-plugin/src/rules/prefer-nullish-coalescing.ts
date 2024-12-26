@@ -477,6 +477,13 @@ function isConditionalTest(node: TSESTree.Node): boolean {
   }
 
   if (
+    parent.type === AST_NODE_TYPES.UnaryExpression &&
+    parent.operator === '!'
+  ) {
+    return isConditionalTest(parent);
+  }
+
+  if (
     (parent.type === AST_NODE_TYPES.ConditionalExpression ||
       parent.type === AST_NODE_TYPES.DoWhileStatement ||
       parent.type === AST_NODE_TYPES.IfStatement ||
@@ -552,7 +559,9 @@ function isMixedLogicalExpression(
     if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
-      } else if (['||', '||='].includes(current.operator)) {
+      }
+
+      if (['||', '||='].includes(current.operator)) {
         // check the pieces of the node to catch cases like `a || b || c && d`
         queue.push(current.parent, current.left, current.right);
       }

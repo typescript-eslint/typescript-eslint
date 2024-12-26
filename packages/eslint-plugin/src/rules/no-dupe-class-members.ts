@@ -19,6 +19,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-dupe-class-members',
   meta: {
     type: 'problem',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow duplicate class members',
       extendsBaseRule: true,

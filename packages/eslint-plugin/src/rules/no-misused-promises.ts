@@ -402,7 +402,7 @@ export default createRule<Options, MessageId>({
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (
-        tsNode.initializer === undefined ||
+        tsNode.initializer == null ||
         node.init == null ||
         node.id.typeAnnotation == null
       ) {
@@ -432,7 +432,7 @@ export default createRule<Options, MessageId>({
       if (ts.isPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
-          contextualType !== undefined &&
+          contextualType != null &&
           isVoidReturningFunctionType(
             checker,
             tsNode.initializer,
@@ -463,7 +463,7 @@ export default createRule<Options, MessageId>({
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.name);
         if (
-          contextualType !== undefined &&
+          contextualType != null &&
           isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
           returnsThenable(checker, tsNode.name)
         ) {
@@ -489,7 +489,7 @@ export default createRule<Options, MessageId>({
           return;
         }
         const objType = checker.getContextualType(obj);
-        if (objType === undefined) {
+        if (objType == null) {
           return;
         }
         const staticAccessValue = getStaticMemberAccessValue(node, context);
@@ -501,7 +501,7 @@ export default createRule<Options, MessageId>({
           staticAccessValue,
           checker,
         );
-        if (propertySymbol === undefined) {
+        if (propertySymbol == null) {
           return;
         }
 
@@ -531,7 +531,7 @@ export default createRule<Options, MessageId>({
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.expression === undefined || node.argument == null) {
+      if (tsNode.expression == null || node.argument == null) {
         return;
       }
 
@@ -553,7 +553,7 @@ export default createRule<Options, MessageId>({
 
       const contextualType = checker.getContextualType(tsNode.expression);
       if (
-        contextualType !== undefined &&
+        contextualType != null &&
         isVoidReturningFunctionType(
           checker,
           tsNode.expression,
@@ -583,7 +583,7 @@ export default createRule<Options, MessageId>({
 
       for (const nodeMember of tsNode.members) {
         const memberName = nodeMember.name?.getText();
-        if (memberName === undefined) {
+        if (memberName == null) {
           // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
           // and construct signatures can't be async.
           // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
@@ -635,7 +635,7 @@ export default createRule<Options, MessageId>({
         staticAccessValue,
         checker,
       );
-      if (heritageMember === undefined) {
+      if (heritageMember == null) {
         return;
       }
       const memberType = checker.getTypeOfSymbolAtLocation(
@@ -667,7 +667,7 @@ export default createRule<Options, MessageId>({
       );
       const contextualType = checker.getContextualType(expressionContainer);
       if (
-        contextualType !== undefined &&
+        contextualType != null &&
         isVoidReturningFunctionType(
           checker,
           expressionContainer,
@@ -725,7 +725,7 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 
     // If one of the alternates has no then property, it is not thenable in all
     // cases.
-    if (thenProp === undefined) {
+    if (thenProp == null) {
       return false;
     }
 

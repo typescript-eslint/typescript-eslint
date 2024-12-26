@@ -14,7 +14,6 @@ import perfectionistPlugin from 'eslint-plugin-perfectionist';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import regexpPlugin from 'eslint-plugin-regexp';
-import sonarjsPlugin from 'eslint-plugin-sonarjs';
 import unicornPlugin from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import url from 'node:url';
@@ -33,18 +32,16 @@ export default tseslint.config(
       ['@typescript-eslint/internal']: tseslintInternalPlugin,
       ['eslint-comments']: eslintCommentsPlugin,
       ['eslint-plugin']: eslintPluginPlugin,
-      // https://github.com/import-js/eslint-plugin-import/issues/2948
-      ['import']: fixupPluginRules(importPlugin),
+      ['import']: importPlugin,
       ['jest']: jestPlugin,
       ['jsdoc']: jsdocPlugin,
-      ['jsx-a11y']: jsxA11yPlugin,
+      // @ts-expect-error -- https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1038
+      ['jsx-a11y']: jsxA11yPlugin.flatConfigs.recommended.plugins['jsx-a11y'],
       ['perfectionist']: perfectionistPlugin,
       // https://github.com/facebook/react/issues/28313
+      ['react']: reactPlugin,
       ['react-hooks']: fixupPluginRules(reactHooksPlugin),
-      // https://github.com/jsx-eslint/eslint-plugin-react/issues/3699
-      ['react']: fixupPluginRules(reactPlugin),
       ['regexp']: regexpPlugin,
-      ['sonarjs']: sonarjsPlugin,
       ['unicorn']: unicornPlugin,
     },
     /* eslint-enable no-useless-computed-key */
@@ -86,8 +83,8 @@ export default tseslint.config(
 
   // extends ...
   eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   jsdocPlugin.configs['flat/recommended-typescript-error'],
 
   // base config
@@ -191,6 +188,7 @@ export default tseslint.config(
       // Internal repo rules
       //
 
+      '@typescript-eslint/internal/eqeq-nullish': 'error',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
       '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
         'error',
@@ -211,7 +209,12 @@ export default tseslint.config(
       ],
       'logical-assignment-operators': 'error',
       'no-console': 'error',
-      'no-else-return': 'error',
+      'no-else-return': [
+        'error',
+        {
+          allowElseIf: false,
+        },
+      ],
       'no-fallthrough': [
         'error',
         { commentPattern: '.*intentional fallthrough.*' },
@@ -337,8 +340,6 @@ export default tseslint.config(
       'regexp/prefer-question-quantifier': 'error',
       'regexp/prefer-w': 'error',
 
-      'sonarjs/no-duplicated-branches': 'error',
-
       //
       // eslint-plugin-unicorn
       //
@@ -457,7 +458,7 @@ export default tseslint.config(
   //
 
   {
-    extends: [...compat.config(eslintPluginPlugin.configs.recommended)],
+    extends: [eslintPluginPlugin.configs['flat/recommended']],
     files: [
       'packages/eslint-plugin-internal/**/*.{ts,tsx,cts,mts}',
       'packages/eslint-plugin-tslint/**/*.{ts,tsx,cts,mts}',
@@ -563,9 +564,10 @@ export default tseslint.config(
 
   {
     extends: [
-      ...compat.config(jsxA11yPlugin.configs.recommended),
-      ...fixupConfigRules(compat.config(reactPlugin.configs.recommended)),
-      ...fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
+      jsxA11yPlugin.flatConfigs.recommended,
+      reactPlugin.configs.flat.recommended,
+      // https://github.com/facebook/react/pull/30774
+      fixupConfigRules(compat.config(reactHooksPlugin.configs.recommended)),
     ],
     files: ['packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
     rules: {

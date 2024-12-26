@@ -13,7 +13,9 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 type FunctionLike =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression;
+  | TSESTree.FunctionExpression
+  | TSESTree.TSDeclareFunction
+  | TSESTree.TSFunctionType;
 
 type FunctionRuleListener<T extends FunctionLike> = (node: T) => void;
 
@@ -26,6 +28,7 @@ export default createRule<Options, MessageIds>({
   name: 'max-params',
   meta: {
     type: 'suggestion',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description:
         'Enforce a maximum number of parameters in function definitions',
@@ -96,6 +99,8 @@ export default createRule<Options, MessageIds>({
       ArrowFunctionExpression: wrapListener(baseRules.ArrowFunctionExpression),
       FunctionDeclaration: wrapListener(baseRules.FunctionDeclaration),
       FunctionExpression: wrapListener(baseRules.FunctionExpression),
+      TSDeclareFunction: wrapListener(baseRules.FunctionDeclaration),
+      TSFunctionType: wrapListener(baseRules.FunctionDeclaration),
     };
   },
 });
