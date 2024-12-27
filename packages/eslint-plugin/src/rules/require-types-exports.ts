@@ -32,7 +32,7 @@ export default createRule({
       requireTypeExport:
         '"{{ name }}" is used in other exports, so it should also be exported.',
       requireTypeQueryExport:
-        '"{{ name }}" is used in other exports, so it should also be exported as its own type.',
+        '"{{ name }}" is used in other exports, so `{{ name }}` or `typeof {{ name }}` should also be exported.',
     },
     schema: [],
   },
