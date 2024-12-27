@@ -30,9 +30,9 @@ export default createRule({
     },
     messages: {
       requireTypeExport:
-        '"{{ name }}" is used in other exports, so it should also be exported.',
+        '`{{ name }}` is used in exports, so it should also be exported.',
       requireTypeQueryExport:
-        '"{{ name }}" is used in other exports, so `{{ name }}` or `typeof {{ name }}` should also be exported.',
+        '`typeof {{ name }}` is used in exports, so `{{ name }}` and/or a standalone `typeof {{ name }}` should also be exported.',
     },
     schema: [],
   },
@@ -117,7 +117,7 @@ export default createRule({
         return;
       }
 
-      reportIfNeeded(name, name, node, 'requireTypeExport');
+      reportIfNeeded(name, node, 'requireTypeExport');
     }
 
     function checkTypeQuery(node: TSESTree.TSTypeQuery) {
@@ -126,21 +126,16 @@ export default createRule({
       }
 
       const nameQueried = getTypeName(node.exprName);
-      const nameType = `typeof ${nameQueried}`;
-
-      reportIfNeeded(nameQueried, nameType, node, 'requireTypeQueryExport');
+      reportIfNeeded(nameQueried, node, 'requireTypeQueryExport');
     }
 
     function reportIfNeeded(
-      nameQueried: string,
-      nameType: string,
+      name: string,
       node: TSESTree.Node,
       messageId: MessageId,
     ) {
-      const declaration = findVariable(
-        context.sourceCode.getScope(node),
-        nameQueried,
-      )?.identifiers[0];
+      const declaration = findVariable(context.sourceCode.getScope(node), name)
+        ?.identifiers[0];
 
       if (!declaration || reportedNodes.has(declaration)) {
         return;
@@ -155,9 +150,9 @@ export default createRule({
       }
 
       context.report({
-        node,
+        node: declaration,
         messageId,
-        data: { name: nameType },
+        data: { name },
       });
     }
 
@@ -208,9 +203,6 @@ function getTypeName(node: TSESTree.EntityName): string {
   switch (node.type) {
     case AST_NODE_TYPES.Identifier:
       return node.name;
-
-    // case AST_NODE_TYPES.TSImportType:
-    //   return `import(${getTypeName(node.argument)})`;
 
     case AST_NODE_TYPES.TSQualifiedName:
       // Namespaced types such as enums are not exported directly,

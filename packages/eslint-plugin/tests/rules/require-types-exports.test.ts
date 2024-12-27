@@ -471,12 +471,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -489,12 +489,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -507,12 +507,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 40,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -525,12 +525,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 28,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 31,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -543,12 +543,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -561,11 +561,98 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 33,
+          endColumn: 17,
+          line: 2,
+          messageId: 'requireTypeExport',
+        },
+      ],
+    },
+    {
+      code: `
+        type Arg1 = number;
+        type Arg2 = string;
+
+        export function f(a: Arg1, b: Arg2): void {}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            name: 'Arg1',
+          },
+          endColumn: 18,
+          line: 2,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
+          data: {
+            name: 'Arg2',
+          },
+          endColumn: 18,
+          line: 3,
+          messageId: 'requireTypeExport',
+        },
+      ],
+    },
+    {
+      code: `
+        type Arg1 = number;
+        type Arg2 = string;
+
+        export const f = (a: Arg1, b: Arg2): void => {};
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            name: 'Arg1',
+          },
+          endColumn: 18,
+          line: 2,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
+          data: {
+            name: 'Arg2',
+          },
+          endColumn: 18,
+          line: 3,
+          messageId: 'requireTypeExport',
+        },
+      ],
+    },
+    {
+      code: `
+        type Arg1 = number;
+
+        interface Arg2 {
+          a: string;
+        }
+
+        export function f(a: Arg1, b: Arg2): void {}
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            name: 'Arg1',
+          },
+          endColumn: 18,
+          line: 2,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 19,
+          data: {
+            name: 'Arg2',
+          },
+          endColumn: 23,
           line: 4,
           messageId: 'requireTypeExport',
         },
@@ -574,93 +661,6 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
     {
       code: `
         type Arg1 = number;
-        type Arg2 = string;
-
-        export function f(a: Arg1, b: Arg2): void {}
-      `,
-      errors: [
-        {
-          column: 30,
-          data: {
-            name: 'Arg1',
-          },
-          endColumn: 34,
-          line: 5,
-          messageId: 'requireTypeExport',
-        },
-        {
-          column: 39,
-          data: {
-            name: 'Arg2',
-          },
-          endColumn: 43,
-          line: 5,
-          messageId: 'requireTypeExport',
-        },
-      ],
-    },
-    {
-      code: `
-        type Arg1 = number;
-        type Arg2 = string;
-
-        export const f = (a: Arg1, b: Arg2): void => {};
-      `,
-      errors: [
-        {
-          column: 30,
-          data: {
-            name: 'Arg1',
-          },
-          endColumn: 34,
-          line: 5,
-          messageId: 'requireTypeExport',
-        },
-        {
-          column: 39,
-          data: {
-            name: 'Arg2',
-          },
-          endColumn: 43,
-          line: 5,
-          messageId: 'requireTypeExport',
-        },
-      ],
-    },
-    {
-      code: `
-        type Arg1 = number;
-
-        interface Arg2 {
-          a: string;
-        }
-
-        export function f(a: Arg1, b: Arg2): void {}
-      `,
-      errors: [
-        {
-          column: 30,
-          data: {
-            name: 'Arg1',
-          },
-          endColumn: 34,
-          line: 8,
-          messageId: 'requireTypeExport',
-        },
-        {
-          column: 39,
-          data: {
-            name: 'Arg2',
-          },
-          endColumn: 43,
-          line: 8,
-          messageId: 'requireTypeExport',
-        },
-      ],
-    },
-    {
-      code: `
-        type Arg1 = number;
 
         interface Arg2 {
           a: string;
@@ -670,21 +670,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 34,
-          line: 8,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 39,
+          column: 19,
           data: {
             name: 'Arg2',
           },
-          endColumn: 43,
-          line: 8,
+          endColumn: 23,
+          line: 4,
           messageId: 'requireTypeExport',
         },
       ],
@@ -698,21 +698,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -726,21 +726,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -754,21 +754,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -782,21 +782,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -810,21 +810,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 40,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 46,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -839,30 +839,30 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 40,
-          line: 6,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 46,
-          line: 6,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
         {
-          column: 60,
+          column: 14,
           data: {
             name: 'Arg3',
           },
-          endColumn: 64,
-          line: 6,
+          endColumn: 18,
+          line: 4,
           messageId: 'requireTypeExport',
         },
       ],
@@ -876,21 +876,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 40,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 46,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -904,21 +904,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 46,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 51,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 55,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -932,21 +932,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 46,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 51,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 55,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -959,12 +959,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 39,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -977,12 +977,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 39,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -995,12 +995,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1013,12 +1013,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1035,12 +1035,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 35,
-          line: 8,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1057,12 +1057,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 35,
-          line: 8,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1075,12 +1075,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 40,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1094,21 +1094,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1122,21 +1122,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1150,21 +1150,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1178,21 +1178,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1205,12 +1205,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 38,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 41,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1223,12 +1223,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 45,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1241,12 +1241,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Ret',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1259,12 +1259,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Ret',
           },
-          endColumn: 33,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1278,21 +1278,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1306,21 +1306,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1334,21 +1334,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1362,21 +1362,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 34,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1390,21 +1390,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 31,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 35,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1418,21 +1418,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 31,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 35,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1446,21 +1446,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 35,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 39,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1474,21 +1474,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 35,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 39,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1501,12 +1501,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret',
           },
-          endColumn: 40,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1520,21 +1520,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1548,21 +1548,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1576,21 +1576,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1604,21 +1604,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Ret1',
           },
-          endColumn: 41,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'Ret2',
           },
-          endColumn: 48,
-          line: 5,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1631,12 +1631,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 38,
+          column: 14,
           data: {
             name: 'Ret',
           },
-          endColumn: 41,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1651,12 +1651,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 26,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1671,12 +1671,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 35,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1689,12 +1689,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 38,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 41,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1707,12 +1707,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 38,
+          column: 14,
           data: {
             name: 'Arg',
           },
-          endColumn: 41,
-          line: 4,
+          endColumn: 17,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1731,12 +1731,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 31,
+          column: 14,
           data: {
             name: 'R',
           },
-          endColumn: 32,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1754,30 +1754,30 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 45,
-          data: {
-            name: 'Arg2',
-          },
-          endColumn: 49,
-          line: 6,
-          messageId: 'requireTypeExport',
-        },
-        {
-          column: 24,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 28,
-          line: 7,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 26,
+          column: 14,
+          data: {
+            name: 'Arg2',
+          },
+          endColumn: 18,
+          line: 3,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
           data: {
             name: 'Ret',
           },
-          endColumn: 29,
-          line: 9,
+          endColumn: 17,
+          line: 4,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1793,21 +1793,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 38,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 38,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 42,
-          line: 6,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1822,21 +1822,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 31,
+          column: 14,
           data: {
             name: 'Arg1',
           },
-          endColumn: 35,
-          line: 5,
+          endColumn: 18,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 20,
+          column: 14,
           data: {
             name: 'Arg2',
           },
-          endColumn: 24,
-          line: 6,
+          endColumn: 18,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1855,12 +1855,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 19,
           data: {
             name: 'A',
           },
-          endColumn: 37,
-          line: 8,
+          endColumn: 20,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1879,12 +1879,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 33,
-          line: 8,
+          endColumn: 15,
+          line: 6,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1905,12 +1905,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 33,
-          line: 10,
+          endColumn: 15,
+          line: 8,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1932,12 +1932,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 33,
-          line: 11,
+          endColumn: 15,
+          line: 9,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1958,12 +1958,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 33,
-          line: 10,
+          endColumn: 15,
+          line: 8,
           messageId: 'requireTypeExport',
         },
       ],
@@ -1988,21 +1988,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 44,
+          column: 14,
           data: {
             name: 'T1',
           },
-          endColumn: 46,
-          line: 10,
+          endColumn: 16,
+          line: 4,
           messageId: 'requireTypeExport',
         },
         {
-          column: 64,
+          column: 19,
           data: {
             name: 'T2',
           },
-          endColumn: 66,
-          line: 10,
+          endColumn: 21,
+          line: 6,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2029,21 +2029,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'T1',
           },
-          endColumn: 39,
-          line: 10,
+          endColumn: 16,
+          line: 4,
           messageId: 'requireTypeExport',
         },
         {
-          column: 57,
+          column: 19,
           data: {
             name: 'T2',
           },
-          endColumn: 59,
-          line: 10,
+          endColumn: 21,
+          line: 6,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2076,30 +2076,30 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 18,
+          column: 14,
           data: {
             name: 'T1',
           },
-          endColumn: 20,
-          line: 12,
+          endColumn: 16,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 20,
+          column: 19,
           data: {
             name: 'T2',
           },
-          endColumn: 22,
-          line: 14,
+          endColumn: 21,
+          line: 4,
           messageId: 'requireTypeExport',
         },
         {
-          column: 13,
+          column: 14,
           data: {
             name: 'T3',
           },
-          endColumn: 15,
-          line: 17,
+          endColumn: 16,
+          line: 8,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2125,21 +2125,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 23,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 24,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2167,21 +2167,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 23,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 24,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2203,21 +2203,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 23,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 24,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2237,12 +2237,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 27,
-          line: 4,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2262,12 +2262,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 27,
-          line: 4,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2287,12 +2287,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 27,
-          line: 4,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2312,12 +2312,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 42,
-          line: 9,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2337,12 +2337,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 41,
-          line: 9,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2360,39 +2360,39 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 27,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 28,
-          line: 7,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 30,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 31,
-          line: 7,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
         {
-          column: 43,
+          column: 14,
           data: {
             name: 'C',
           },
-          endColumn: 44,
-          line: 7,
+          endColumn: 15,
+          line: 4,
           messageId: 'requireTypeExport',
         },
         {
-          column: 51,
+          column: 14,
           data: {
             name: 'D',
           },
-          endColumn: 52,
-          line: 7,
+          endColumn: 15,
+          line: 5,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2408,21 +2408,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 24,
-          line: 6,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 27,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 28,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2440,21 +2440,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 33,
-          line: 6,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 36,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 37,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2472,21 +2472,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 28,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 29,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 32,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 33,
-          line: 5,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2506,21 +2506,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 38,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2537,12 +2537,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 33,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 34,
-          line: 4,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2561,12 +2561,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 42,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 43,
-          line: 4,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2581,12 +2581,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 28,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 29,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2603,12 +2603,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 38,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2625,12 +2625,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 4,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2651,12 +2651,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 46,
-          line: 8,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2677,12 +2677,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 26,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 37,
-          line: 8,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2703,12 +2703,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 26,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 37,
-          line: 8,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2731,12 +2731,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 26,
+          column: 14,
           data: {
             name: 'Fruit',
           },
-          endColumn: 37,
-          line: 8,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2760,15 +2760,15 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 29,
-          data: { name: 'ItemKey' },
-          line: 11,
+          column: 14,
+          data: { name: 'Item' },
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 38,
-          data: { name: 'Item' },
-          line: 11,
+          column: 14,
+          data: { name: 'ItemKey' },
+          line: 7,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2785,12 +2785,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 21,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 22,
-          line: 4,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2807,12 +2807,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 21,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 22,
-          line: 7,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2829,12 +2829,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 28,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 29,
-          line: 7,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2851,12 +2851,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 21,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 22,
-          line: 7,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2873,12 +2873,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 21,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 22,
-          line: 7,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2895,12 +2895,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 4,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2920,12 +2920,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2943,21 +2943,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 38,
-          line: 9,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -2981,30 +2981,30 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 6,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 38,
-          line: 14,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
         {
-          column: 37,
+          column: 14,
           data: {
             name: 'C',
           },
-          endColumn: 38,
-          line: 15,
+          endColumn: 15,
+          line: 4,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3026,12 +3026,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3047,21 +3047,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 25,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 26,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3081,12 +3081,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 41,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 42,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3102,21 +3102,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 39,
-          data: {
-            name: 'Key',
-          },
-          endColumn: 42,
-          line: 5,
-          messageId: 'requireTypeExport',
-        },
-        {
-          column: 53,
+          column: 14,
           data: {
             name: 'ItemsMap',
           },
-          endColumn: 61,
-          line: 5,
+          endColumn: 22,
+          line: 2,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
+          data: {
+            name: 'Key',
+          },
+          endColumn: 17,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3133,12 +3133,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 22,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 23,
-          line: 4,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3157,21 +3157,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 24,
-          line: 5,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 23,
+          column: 14,
           data: {
             name: 'B',
           },
-          endColumn: 24,
-          line: 6,
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3186,12 +3186,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 29,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 30,
-          line: 6,
+          endColumn: 15,
+          line: 4,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3201,25 +3201,25 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
         type Apple = 'apple';
         type Banana = 'banana';
 
-        export type Fruites = Apple | Banana;
+        export type Fruits = Apple | Banana;
       `,
       errors: [
         {
-          column: 31,
+          column: 14,
           data: {
             name: 'Apple',
           },
-          endColumn: 36,
-          line: 5,
+          endColumn: 19,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 39,
+          column: 14,
           data: {
             name: 'Banana',
           },
-          endColumn: 45,
-          line: 5,
+          endColumn: 20,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3239,7 +3239,7 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
             name: 'A',
           },
           endColumn: 15,
-          line: 5,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3259,21 +3259,21 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 27,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 28,
-          line: 9,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
         {
-          column: 27,
+          column: 19,
           data: {
             name: 'B',
           },
-          endColumn: 28,
-          line: 10,
+          endColumn: 20,
+          line: 4,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3285,12 +3285,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 33,
+          column: 14,
           data: {
             name: 'A',
           },
-          endColumn: 34,
-          line: 3,
+          endColumn: 15,
+          line: 2,
           messageId: 'requireTypeExport',
         },
       ],
@@ -3307,12 +3307,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 52,
+          column: 15,
           data: {
-            name: 'typeof fruits',
+            name: 'fruits',
           },
-          endColumn: 65,
-          line: 4,
+          endColumn: 21,
+          line: 2,
           messageId: 'requireTypeQueryExport',
         },
       ],
@@ -3327,12 +3327,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 56,
+          column: 15,
           data: {
-            name: 'typeof fruits',
+            name: 'fruits',
           },
-          endColumn: 75,
-          line: 4,
+          endColumn: 21,
+          line: 2,
           messageId: 'requireTypeQueryExport',
         },
       ],
@@ -3347,12 +3347,12 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       `,
       errors: [
         {
-          column: 34,
+          column: 15,
           data: {
-            name: 'typeof fruits',
+            name: 'fruits',
           },
-          endColumn: 47,
-          line: 5,
+          endColumn: 21,
+          line: 2,
           messageId: 'requireTypeQueryExport',
         },
       ],

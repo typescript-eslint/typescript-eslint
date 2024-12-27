@@ -20,21 +20,21 @@ Otherwise, consumers may have to use utility types like [`Parameters`](https://w
 <TabItem value="❌ Incorrect">
 
 ```ts
-type Arg = string;
-type Result = number;
-
-export function strLength(arg: Arg): Result {
-  return arg.length;
-}
-```
-
-```ts
 interface Fruit {
   name: string;
   color: string;
 }
 
 export const getFruitName = (fruit: Fruit) => fruit.name;
+```
+
+```ts
+const fruits = {
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
 ```
 
 ```ts
@@ -51,21 +51,21 @@ export declare function getRandomColor(): Color;
 <TabItem value="✅ Correct">
 
 ```ts
-export type Arg = string;
-export type Result = number;
-
-export function strLength(arg: Arg): Result {
-  return arg.length;
-}
-```
-
-```ts
 export interface Fruit {
   name: string;
   color: string;
 }
 
 export const getFruitName = (fruit: Fruit) => fruit.name;
+```
+
+```ts
+export const fruits = {
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
 ```
 
 ```ts
