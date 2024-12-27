@@ -10,6 +10,7 @@ import {
   forEachYieldExpression,
   getParserServices,
   isFunction,
+  nullThrows,
 } from '../util';
 
 export default createRule({
@@ -47,15 +48,18 @@ export default createRule({
         return fixer.removeRange([beforeToken.range[0], node.range[1]]);
       }
 
-      const afterToken = context.sourceCode.getTokenAfter(node, {
+      context.sourceCode.getTokenAfter(node, {
         filter: token => token.value === '|',
       });
 
-      if (afterToken?.value === '|') {
-        return fixer.removeRange([node.range[0], afterToken.range[1]]);
-      }
+      const afterToken = nullThrows(
+        context.sourceCode.getTokenAfter(node, {
+          filter: token => token.value === '|',
+        }),
+        'following token has to be a union token',
+      );
 
-      return fixer.remove(node);
+      return fixer.removeRange([node.range[0], afterToken.range[1]]);
     }
 
     function reportAndRemoveUnusedReturnTypes(
@@ -252,15 +256,8 @@ export default createRule({
     }
 
     function getActualYieldTypes(
-      node:
-        | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionDeclaration
-        | TSESTree.FunctionExpression,
+      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): ts.Type[] {
-      if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
-        return [];
-      }
-
       return collectTypeParts(node.body, forEachYieldExpression);
     }
 
@@ -405,7 +402,10 @@ export default createRule({
         const actualReturnTypes = getActualReturnTypes(node);
 
         if (node.generator) {
-          const actualYieldTypes = getActualYieldTypes(node);
+          const actualYieldTypes = getActualYieldTypes(
+            // a generator function cannot be an arrow function
+            node as TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
+          );
 
           if (node.async) {
             checkAsyncGeneratorFunction(
