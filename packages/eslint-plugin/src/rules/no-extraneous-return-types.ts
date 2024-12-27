@@ -48,8 +48,7 @@ export default createRule({
       }
 
       const afterToken = context.sourceCode.getTokenAfter(node, {
-        filter: token =>
-          token.value === '|' || token.value === '[' || token.value === '<',
+        filter: token => token.value === '|',
       });
 
       if (afterToken?.value === '|') {
@@ -59,10 +58,26 @@ export default createRule({
       return fixer.remove(node);
     }
 
+    function reportAndRemoveUnusedReturnTypes(
+      node: TSESTree.TypeNode,
+      type: ts.Type,
+    ) {
+      const canFix = !isFunction(node.parent.parent);
+
+      context.report({
+        node,
+        messageId: 'unusedReturnTypes',
+        data: {
+          type: checker.typeToString(type),
+        },
+        fix: canFix ? fixer => removeTypeAnnotation(fixer, node) : null,
+      });
+    }
+
     function getRelevantReturnTypesOrReport(
       node: TSESTree.TypeNode,
       returnTypes: ts.Type[],
-    ): ts.Type[] | null {
+    ): ts.Type[] | undefined {
       const type = services.getTypeAtLocation(node);
 
       const relevantReturnTypes = returnTypes.filter(returnType =>
@@ -70,18 +85,8 @@ export default createRule({
       );
 
       if (relevantReturnTypes.length === 0) {
-        const canFix = !isFunction(node.parent.parent);
-
-        context.report({
-          node,
-          messageId: 'unusedReturnTypes',
-          data: {
-            type: checker.typeToString(type),
-          },
-          fix: canFix ? fixer => removeTypeAnnotation(fixer, node) : null,
-        });
-
-        return null;
+        reportAndRemoveUnusedReturnTypes(node, type);
+        return;
       }
 
       return relevantReturnTypes;
@@ -138,7 +143,6 @@ export default createRule({
       returnTypes: ts.Type[],
       allowUnusedVoidOrUndefinedValues = false,
     ): void {
-      // catch-all for generics including promises, maps, sets, and user-defined ones
       if (node.type === AST_NODE_TYPES.TSTypeReference && node.typeArguments) {
         checkTypeReferenceReturnType(
           node,
@@ -148,7 +152,6 @@ export default createRule({
         return;
       }
 
-      // special-case for tuple structure `[A, B]`
       const tupleElementTypes = getTypeArgumentIfTupleNode(node);
 
       if (tupleElementTypes) {
@@ -156,7 +159,6 @@ export default createRule({
         return;
       }
 
-      // special-case for non-generic array structure `A[]`
       const arrayTypeArgument = getTypeArgumentIfArrayNode(node);
 
       if (arrayTypeArgument) {
@@ -204,16 +206,7 @@ export default createRule({
       });
 
       if (!hasMatchingReturnStatement) {
-        const canFix = !isFunction(node.parent.parent);
-
-        context.report({
-          node,
-          messageId: 'unusedReturnTypes',
-          data: {
-            type: checker.typeToString(constrainedReturnType),
-          },
-          fix: canFix ? fixer => removeTypeAnnotation(fixer, node) : null,
-        });
+        reportAndRemoveUnusedReturnTypes(node, constrainedReturnType);
       }
     }
 
@@ -282,11 +275,9 @@ export default createRule({
       );
 
       if (!generatorTypeArguments) {
-        // no unused return types
         return;
       }
 
-      // `Generator<YieldType, ReturnType, NexType>`
       const yieldTypeArgument = generatorTypeArguments.at(0);
       const returnTypeArgument = generatorTypeArguments.at(1);
 
@@ -314,11 +305,9 @@ export default createRule({
       );
 
       if (!generatorTypeArguments) {
-        // no unused return types
         return;
       }
 
-      // `AsyncGenerator<YieldType, ReturnType, NexType>`
       const yieldTypeArgument = generatorTypeArguments.at(0);
       const returnTypeArgument = generatorTypeArguments.at(1);
 
@@ -333,7 +322,6 @@ export default createRule({
       if (returnTypeArgument && actualReturnTypes.length > 0) {
         checkReturnType(
           returnTypeArgument,
-          // `async` functions may return promise and non-promise expressions
           expandPromiseTypes(actualReturnTypes),
         );
       }
@@ -349,8 +337,6 @@ export default createRule({
         return;
       }
 
-      // the type can be omitted if there are no `yield` statements and no return
-      // type argument
       if (!returnTypeArgument) {
         context.report({
           node: yieldTypeArgument.parent,
@@ -365,7 +351,6 @@ export default createRule({
         return;
       }
 
-      // the type can be replaced with `unknown` if it's ignored
       if (yieldTypeArgument.type !== AST_NODE_TYPES.TSUnknownKeyword) {
         context.report({
           node: yieldTypeArgument,
@@ -392,7 +377,6 @@ export default createRule({
 
       checkReturnType(
         promiseTypeArgument[0],
-        // `async` functions may return promise and non-promise expressions
         expandPromiseTypes(actualReturnTypes),
         true,
       );
@@ -441,8 +425,6 @@ export default createRule({
         }
 
         if (actualReturnTypes.length === 0) {
-          // this is a type error unless the return type includes `void`,
-          // `undefined` or `any`
           return;
         }
 
@@ -466,7 +448,6 @@ function getTypeArgumentsForTypeName(
   node: TSESTree.TypeNode,
 ): TSESTree.TypeNode[] | null {
   if (
-    // Check for AsyncGenerator<...> type reference
     node.type === AST_NODE_TYPES.TSTypeReference &&
     node.typeName.type === AST_NODE_TYPES.Identifier &&
     node.typeName.name === typeName &&
@@ -482,10 +463,7 @@ function getTypeArgumentsForTypeName(
 function getTypeArgumentIfArrayNode(
   node: TSESTree.TypeNode,
 ): TSESTree.TypeNode | null {
-  if (
-    // Check for (...)[]
-    node.type === AST_NODE_TYPES.TSArrayType
-  ) {
+  if (node.type === AST_NODE_TYPES.TSArrayType) {
     return node.elementType;
   }
 
@@ -496,7 +474,6 @@ function getTypeArgumentIfTupleNode(
   node: TSESTree.TypeNode,
 ): TSESTree.TypeNode[] | null {
   if (
-    // Check for [...]
     node.type === AST_NODE_TYPES.TSTupleType &&
     node.elementTypes.length > 0
   ) {
