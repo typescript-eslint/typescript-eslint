@@ -6,7 +6,7 @@ import type { SponsorData } from '../types';
 import { Sponsor } from '../Sponsor';
 import styles from './styles.module.css';
 
-interface SponsorsProps {
+export interface SponsorsProps {
   className: string;
   expanded?: boolean;
   includeName?: boolean;

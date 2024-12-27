@@ -1,4 +1,4 @@
-interface TsParsedEnums {
+export interface TsParsedEnums {
   LanguageVariant: Record<number, string>;
   ModifierFlags: Record<number, string>;
   NodeFlags: Record<number, string>;

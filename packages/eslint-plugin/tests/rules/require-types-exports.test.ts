@@ -431,6 +431,10 @@ export default wrap({
   },
 });
     `,
+    'export function example(config: string): typeof config {}',
+    'export function example(config: string): typeof config.length {}',
+    "export function example(config: string): (typeof config)['length'] {}",
+    "export function example(config: string): typeof import('config') {}",
   ],
 
   invalid: [
@@ -3300,7 +3304,7 @@ export default wrap({
         {
           column: 56,
           data: {
-            name: 'typeof fruits.apple',
+            name: 'typeof fruits',
           },
           endColumn: 75,
           line: 4,

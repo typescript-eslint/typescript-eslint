@@ -3,8 +3,8 @@ import type MonacoEditor from 'monaco-editor';
 import type * as SandboxFactory from '../../vendor/sandbox';
 import type { WebLinterModule } from '../linter/types';
 
-type Monaco = typeof MonacoEditor;
-type Sandbox = typeof SandboxFactory;
+export type Monaco = typeof MonacoEditor;
+export type Sandbox = typeof SandboxFactory;
 
 export interface SandboxModel {
   lintUtils: WebLinterModule;
