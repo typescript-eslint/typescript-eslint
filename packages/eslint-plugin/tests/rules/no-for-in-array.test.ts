@@ -329,5 +329,45 @@ function foo() {
         },
       ],
     },
+    {
+      code: `
+declare const x:
+  | (({ a: string } & string[]) | Record<string, boolean>)
+  | Record<number, string>;
+
+for (const k in x) {
+  console.log(k);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x:
+  | (({ a: string } & RegExpExecArray) | Record<string, boolean>)
+  | Record<number, string>;
+
+for (const k in x) {
+  console.log(k);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
   ],
 });
