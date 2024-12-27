@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, isNodeInside } from '../util';
 import { referenceContainsTypeQuery } from '../util/referenceContainsTypeQuery';
 
 const SENTINEL_TYPE =
@@ -144,10 +144,7 @@ function isClassRefInClassDecorator(
   }
 
   for (const deco of variable.defs[0].node.decorators) {
-    if (
-      reference.identifier.range[0] >= deco.range[0] &&
-      reference.identifier.range[1] <= deco.range[1]
-    ) {
+    if (isNodeInside(reference.identifier, deco)) {
       return true;
     }
   }

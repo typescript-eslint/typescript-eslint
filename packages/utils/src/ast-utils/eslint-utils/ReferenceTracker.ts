@@ -41,7 +41,7 @@ interface ReferenceTracker {
     traceMap: ReferenceTracker.TraceMap<T>,
   ): IterableIterator<ReferenceTracker.FoundReference<T>>;
 }
-interface ReferenceTrackerStatic {
+export interface ReferenceTrackerStatic {
   readonly CALL: typeof ReferenceTrackerCALL;
   readonly CONSTRUCT: typeof ReferenceTrackerCONSTRUCT;
   readonly ESM: typeof ReferenceTrackerESM;

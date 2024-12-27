@@ -1,6 +1,6 @@
-type SnapshotPathFn = (i: number) => string;
+export type SnapshotPathFn = (i: number) => string;
 
-interface SuccessSnapshotPaths {
+export interface SuccessSnapshotPaths {
   readonly ast: SnapshotPathFn;
   readonly tokens: SnapshotPathFn;
 }

@@ -6,7 +6,7 @@ import {
 } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, findVariable } from '../util';
+import { createRule, findVariable, isNodeInside } from '../util';
 
 export default createRule({
   name: 'require-types-exports',
@@ -463,16 +463,6 @@ function getDeclarationForName(
   return sourceCode.getScope(node).set.get(name)?.identifiers.at(0);
 }
 
-function isDeclarationInside(
-  declaration: TSESTree.Node,
-  parent: TSESTree.Node,
-) {
-  return (
-    declaration.range[0] >= parent.range[0] &&
-    declaration.range[1] <= parent.range[1]
-  );
-}
-
 function isReferencedNameInside(
   child: TSESTree.EntityName | TSESTree.TSImportType,
   parent: TSESTree.Node,
@@ -485,7 +475,7 @@ function isReferencedNameInside(
 
   const declaration = getDeclarationForName(child, localName, sourceCode);
 
-  return !!declaration && isDeclarationInside(declaration, parent);
+  return !!declaration && isNodeInside(declaration, parent);
 }
 
 function collectFunctionReturnStatements(
