@@ -3,27 +3,26 @@
 exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-type Arg = string;
-type Result = number;
-
-export function strLength(arg: Arg): Result {
-                               ~~~ "Arg" is used in other exports, so it should also be exported.
-                                     ~~~~~~ "Result" is used in other exports, so it should also be exported.
-  return arg.length;
+interface Fruit {
+          ~~~~~ \`Fruit\` is used in exports, so it should also be exported.
+  name: string;
+  color: string;
 }
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
 "
 `;
 
 exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 2`] = `
 "Incorrect
 
-interface Fruit {
-  name: string;
-  color: string;
-}
+const fruits = {
+      ~~~~~~ \`typeof fruits\` is used in exports, so \`fruits\` and/or a standalone \`typeof fruits\` should also be exported.
+  apple: '🍏',
+  banana: '🍌',
+};
 
-export const getFruitName = (fruit: Fruit) => fruit.name;
-                                    ~~~~~ "Fruit" is used in other exports, so it should also be exported.
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
 "
 `;
 
@@ -31,29 +30,17 @@ exports[`Validating rule docs require-types-exports.mdx code examples ESLint out
 "Incorrect
 
 enum Color {
+     ~~~~~ \`Color\` is used in exports, so it should also be exported.
   Red = 'red',
   Green = 'green',
   Blue = 'blue',
 }
 
 export declare function getRandomColor(): Color;
-                                          ~~~~~ "Color" is used in other exports, so it should also be exported.
 "
 `;
 
 exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 4`] = `
-"Correct
-
-export type Arg = string;
-export type Result = number;
-
-export function strLength(arg: Arg): Result {
-  return arg.length;
-}
-"
-`;
-
-exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 5`] = `
 "Correct
 
 export interface Fruit {
@@ -62,6 +49,18 @@ export interface Fruit {
 }
 
 export const getFruitName = (fruit: Fruit) => fruit.name;
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 5`] = `
+"Correct
+
+export const fruits = {
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
 "
 `;
 
