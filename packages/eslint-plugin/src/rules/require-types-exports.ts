@@ -113,10 +113,8 @@ export default createRule({
         return;
       }
 
-      const declaration = findVariable(
-        context.sourceCode.getScope(node),
-        name,
-      )?.identifiers.at(0);
+      const declaration = findVariable(context.sourceCode.getScope(node), name)
+        ?.identifiers[0];
       if (
         !declaration ||
         isDeclarationExported(declaration, getParserServices(context, true))
@@ -149,8 +147,11 @@ export default createRule({
       const declaration = findVariable(
         context.sourceCode.getScope(node),
         queriedName,
-      );
-      if (!declaration) {
+      )?.identifiers[0];
+      if (
+        !declaration ||
+        isDeclarationExported(declaration, getParserServices(context, true))
+      ) {
         return;
       }
 

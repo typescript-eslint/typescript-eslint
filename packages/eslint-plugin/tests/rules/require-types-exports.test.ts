@@ -454,6 +454,13 @@ declare module '@babel/eslint-parser' {
   export function parse(options: Options): void;
 }
     `,
+    `
+export const pairs = { KEY: 'value' } as const;
+
+export function emitDeprecationWarning(akey: keyof typeof pairs) {
+  console.log(key);
+}
+    `,
   ],
   invalid: [
     {
