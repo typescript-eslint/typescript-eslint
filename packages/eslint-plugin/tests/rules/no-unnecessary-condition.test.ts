@@ -27,6 +27,12 @@ const optionsWithExactOptionalPropertyTypes = {
   tsconfigRootDir: rootPath,
 };
 
+const optionsWithNoUncheckedIndexedAccess = {
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
+};
+
 const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
@@ -286,6 +292,22 @@ function count(
 ) {
   return list.filter(predicate).length;
 }
+    `,
+    `
+declare const test: <T>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+declare const test: <T extends boolean>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+[1, null].filter(1 as any);
+    `,
+    `
+[1, null].filter(1 as never);
     `,
     // Ignores non-array methods of the same name
     `
@@ -591,11 +613,7 @@ const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -649,11 +667,7 @@ function Foo(outer: Outer, key: Foo): number | undefined {
 }
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -666,11 +680,51 @@ declare const key: Key;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: Record<string, { key: string }>;
+};
+declare const foo: Foo;
+foo.key?.someKey?.key;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: {
+    [key: string]: () => void;
+  };
+};
+declare const foo: Foo;
+foo.key?.value?.();
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a?.a;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     `
@@ -1048,9 +1102,14 @@ switch (b1) {
         { column: 18, line: 16, messageId: 'alwaysTruthy' },
         {
           column: 8,
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'true',
+            trueOrFalse: 'true',
+          },
           line: 18,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1144,10 +1203,13 @@ function test(a: 'a') {
         {
           column: 10,
           data: {
+            left: '"a"',
+            operator: '===',
+            right: '"a"',
             trueOrFalse: 'true',
           },
           line: 3,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1160,10 +1222,13 @@ a > b;
       errors: [
         {
           data: {
+            left: '"34"',
+            operator: '>',
+            right: '"56"',
             trueOrFalse: 'false',
           },
           line: 4,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1175,9 +1240,14 @@ if (y === 0) {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '1',
+            operator: '===',
+            right: '0',
+            trueOrFalse: 'false',
+          },
           line: 3,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1189,9 +1259,14 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '1',
+            operator: '==',
+            right: '"1"',
+            trueOrFalse: 'true',
+          },
           line: 3,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1201,9 +1276,14 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '2.3',
+            operator: '>',
+            right: '2.3',
+            trueOrFalse: 'false',
+          },
           line: 2,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1213,9 +1293,14 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '2.3',
+            operator: '>=',
+            right: '2.3',
+            trueOrFalse: 'true',
+          },
           line: 2,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1225,9 +1310,14 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '2n',
+            operator: '<',
+            right: '2n',
+            trueOrFalse: 'false',
+          },
           line: 2,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1237,9 +1327,14 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '2n',
+            operator: '<=',
+            right: '2n',
+            trueOrFalse: 'true',
+          },
           line: 2,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1249,9 +1344,14 @@ if (1 == '1') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '-2n',
+            operator: '!==',
+            right: '2n',
+            trueOrFalse: 'true',
+          },
           line: 2,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1263,9 +1363,14 @@ if (1 == '2') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: '1',
+            operator: '==',
+            right: '"2"',
+            trueOrFalse: 'false',
+          },
           line: 3,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1277,9 +1382,14 @@ if (1 != '2') {
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: '1',
+            operator: '!=',
+            right: '"2"',
+            trueOrFalse: 'true',
+          },
           line: 3,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1298,10 +1408,38 @@ if (x === Foo.a) {
         {
           column: 5,
           data: {
+            left: 'Foo.a',
+            operator: '===',
+            right: 'Foo.a',
             trueOrFalse: 'true',
           },
           line: 8,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  a = 1,
+  b = 2,
+}
+
+const x = Foo.a;
+if (x === 1) {
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            left: 'Foo.a',
+            operator: '===',
+            right: 1,
+            trueOrFalse: 'true',
+          },
+          line: 8,
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1317,11 +1455,16 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'null',
+            operator: '==',
+            right: 'undefined',
+            trueOrFalse: 'true',
+          },
           endColumn: 28,
           endLine: 4,
           line: 4,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1337,11 +1480,16 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: 'null',
+            operator: '===',
+            right: 'undefined',
+            trueOrFalse: 'false',
+          },
           endColumn: 29,
           endLine: 4,
           line: 4,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1357,11 +1505,16 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'false' },
+          data: {
+            left: 'null',
+            operator: '!=',
+            right: 'undefined',
+            trueOrFalse: 'false',
+          },
           endColumn: 28,
           endLine: 4,
           line: 4,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1377,11 +1530,16 @@ function takesMaybeValue(a: null | object) {
       errors: [
         {
           column: 14,
-          data: { trueOrFalse: 'true' },
+          data: {
+            left: 'null',
+            operator: '!==',
+            right: 'undefined',
+            trueOrFalse: 'true',
+          },
           endColumn: 29,
           endLine: 4,
           line: 4,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1391,8 +1549,13 @@ true === false;
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
-          messageId: 'literalBooleanExpression',
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'false',
+            trueOrFalse: 'false',
+          },
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1402,8 +1565,13 @@ true === true;
       `,
       errors: [
         {
-          data: { trueOrFalse: 'true' },
-          messageId: 'literalBooleanExpression',
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'true',
+            trueOrFalse: 'true',
+          },
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1413,8 +1581,13 @@ true === undefined;
       `,
       errors: [
         {
-          data: { trueOrFalse: 'false' },
-          messageId: 'literalBooleanExpression',
+          data: {
+            left: 'true',
+            operator: '===',
+            right: 'undefined',
+            trueOrFalse: 'false',
+          },
+          messageId: 'comparisonBetweenLiteralTypes',
         },
       ],
     },
@@ -1625,6 +1798,14 @@ function nothing3(x: [string, string]) {
         { column: 25, line: 13, messageId: 'alwaysFalsy' },
         { column: 25, line: 17, messageId: 'alwaysFalsy' },
       ],
+    },
+    {
+      code: `
+declare const test: <T extends true>() => T;
+
+[1, null].filter(test);
+      `,
+      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
     },
     // Indexing cases
     {

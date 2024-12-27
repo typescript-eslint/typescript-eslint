@@ -70,7 +70,10 @@ function ConfigEditorField({
           indeterminate={Boolean(value) && !isDefault(value, item.defaults)}
           name={`config_${item.key}`}
           onChange={(checked): void =>
-            onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
+            onChange(
+              item.key,
+              checked ? (item.defaults?.[0] ?? true) : undefined,
+            )
           }
           value={item.key}
         />

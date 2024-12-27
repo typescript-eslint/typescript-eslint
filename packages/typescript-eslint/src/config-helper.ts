@@ -66,6 +66,9 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   extends?: InfiniteDepthConfigWithExtends[];
 }
 
+// exported so that users that make configs with tsconfig `declaration: true` can name the type
+export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
+
 /**
  * Utility function to make it easy to strictly type your "Flat" config file
  * @example
@@ -88,7 +91,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
  */
 export function config(
   ...configs: InfiniteDepthConfigWithExtends[]
-): TSESLint.FlatConfig.ConfigArray {
+): ConfigArray {
   const flattened =
     // @ts-expect-error -- intentionally an infinite type
     configs.flat(Infinity) as ConfigWithExtends[];
