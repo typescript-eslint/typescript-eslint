@@ -1,12 +1,22 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServices,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 
 import {
   ImplicitLibVariable,
   ScopeType,
 } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 
-import { createRule, findVariable, isNodeInside } from '../util';
+import {
+  createRule,
+  findVariable,
+  getParserServices,
+  isNodeInside,
+} from '../util';
 
 export default createRule({
   name: 'require-types-exports',
@@ -18,7 +28,7 @@ export default createRule({
     },
     messages: {
       requireTypeExport:
-        '"{{ name }}" is used in other exports from this file, so it should also be exported.',
+        '"{{ name }}" is used in other exports, so it should also be exported.',
     },
     schema: [],
   },
@@ -103,8 +113,14 @@ export default createRule({
         return;
       }
 
-      const declaration = findVariable(context.sourceCode.getScope(node), name);
-      if (!declaration) {
+      const declaration = findVariable(
+        context.sourceCode.getScope(node),
+        name,
+      )?.identifiers.at(0);
+      if (
+        !declaration ||
+        isDeclarationExported(declaration, getParserServices(context, true))
+      ) {
         return;
       }
 
@@ -434,6 +450,33 @@ function isCollectableType(
   | TSESTree.TSModuleDeclaration
   | TSESTree.TSTypeAliasDeclaration {
   return collectibleNodeTypes.has(node.type);
+}
+
+const exportNodeTypes = new Set([
+  AST_NODE_TYPES.ExportDefaultDeclaration,
+  AST_NODE_TYPES.ExportNamedDeclaration,
+  AST_NODE_TYPES.ExportAllDeclaration,
+]);
+
+function isDeclarationExported(
+  declaration: TSESTree.Node,
+  services: ParserServices,
+) {
+  if (!declaration.parent) {
+    return false;
+  }
+
+  if (exportNodeTypes.has(declaration.parent.type)) {
+    return true;
+  }
+
+  if (
+    tsutils.isBlockLike(services.esTreeNodeToTSNodeMap.get(declaration.parent))
+  ) {
+    return false;
+  }
+
+  return isDeclarationExported(declaration.parent, services);
 }
 
 const functionNodeTypes = new Set([

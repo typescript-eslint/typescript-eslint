@@ -3,7 +3,7 @@
 import path from 'node:path';
 
 // Definitions for deprecation warnings.
-const deprecationWarningMessages = {
+export const deprecationWarningMessages = {
   ESLINT_LEGACY_ECMAFEATURES:
     "The 'ecmaFeatures' config file property is deprecated and has no effect.",
 } as const;

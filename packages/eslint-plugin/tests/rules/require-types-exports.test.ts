@@ -439,6 +439,21 @@ export default wrap({
     'export function example(config: typeof ExternalGlobal) {}',
     'export function example(config: typeof ExternalGlobal.length) {}',
     "export function example(config: (typeof ExternalGlobal)['length']) {}",
+    `
+export namespace Values {
+  export type Fruit = 'apple';
+
+  export function logFruit(fruit: Fruit) {
+    console.log(fruit);
+  }
+}
+    `,
+    `
+declare module '@babel/eslint-parser' {
+  export interface Options {}
+  export function parse(options: Options): void;
+}
+    `,
   ],
   invalid: [
     {
