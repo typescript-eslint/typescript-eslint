@@ -9,6 +9,7 @@ import {
   forEachReturnStatement,
   forEachYieldExpression,
   getParserServices,
+  isFunction,
 } from '../util';
 
 export default createRule({
@@ -69,13 +70,15 @@ export default createRule({
       );
 
       if (relevantReturnTypes.length === 0) {
+        const canFix = !isFunction(node.parent.parent);
+
         context.report({
           node,
           messageId: 'unusedReturnTypes',
           data: {
             type: checker.typeToString(type),
           },
-          fix: fixer => removeTypeAnnotation(fixer, node),
+          fix: canFix ? fixer => removeTypeAnnotation(fixer, node) : null,
         });
 
         return null;
@@ -201,13 +204,15 @@ export default createRule({
       });
 
       if (!hasMatchingReturnStatement) {
+        const canFix = !isFunction(node.parent.parent);
+
         context.report({
           node,
           messageId: 'unusedReturnTypes',
           data: {
             type: checker.typeToString(constrainedReturnType),
           },
-          fix: fixer => removeTypeAnnotation(fixer, node),
+          fix: canFix ? fixer => removeTypeAnnotation(fixer, node) : null,
         });
       }
     }

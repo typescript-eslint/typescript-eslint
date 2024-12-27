@@ -2950,5 +2950,39 @@ function test(): [[string | number], [ boolean]] {
 }
       `,
     },
+
+    // type errors
+    {
+      code: `
+function test(): number {
+  return 'one';
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: 'number',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
+    {
+      code: `
+function test(): [number] {
+  return 10;
+}
+      `,
+      errors: [
+        {
+          data: {
+            type: '[number]',
+          },
+          line: 2,
+          messageId: 'unusedReturnTypes',
+        },
+      ],
+    },
   ],
 });
