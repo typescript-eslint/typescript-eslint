@@ -9,11 +9,9 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-extraneous-return-types** for documentation.
 
-Explicit return type annotations are optional in TypeScript. However, explicit return types do make it visually more clear what type is returned by a function.
-
-A function can include return type annotations that are never used. This can happen when refactoring code or by mistake. Having unused return types adds unnecessary complexity because it needs to be handled by code that calls the function.
-
-This rule reports cases where a function has an unused return type annotation.
+Explicit function return type annotations can sometimes be helpful in TypeScript to describe a more precise return type than what the type checker would infer.
+Functions that can return one of multiple types of values generally use union types to describe their return type.
+This lint rule checks for "extraneous", or unnecessary, constituents of union type returns: those that don't describe a type the function can return.
 
 ## Examples
 
