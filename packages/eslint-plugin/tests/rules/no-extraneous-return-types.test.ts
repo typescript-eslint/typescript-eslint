@@ -2589,6 +2589,11 @@ function* test(): Generator<number, string | boolean> {
           messageId: 'unusedGeneratorYieldTypes',
         },
       ],
+      output: `
+function* test(): Generator<unknown, string | boolean> {
+  return 'one' as 'one' | true;
+}
+      `,
     },
     {
       code: `
@@ -2779,6 +2784,11 @@ async function* test(): AsyncGenerator<number, string | boolean> {
           messageId: 'unusedGeneratorYieldTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator<unknown, string | boolean> {
+  return 'one' as 'one' | true;
+}
+      `,
     },
     {
       code: `

@@ -370,6 +370,7 @@ export default createRule({
         context.report({
           node: yieldTypeArgument,
           messageId: 'unusedGeneratorYieldTypes',
+          fix: fixer => fixer.replaceText(yieldTypeArgument, 'unknown'),
         });
         return;
       }
