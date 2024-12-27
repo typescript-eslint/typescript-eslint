@@ -1,10 +1,10 @@
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  isBuiltinSymbolLike,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
@@ -33,8 +33,9 @@ export default createRule({
         const type = getConstrainedTypeAtLocation(services, node.right);
 
         if (
-          isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
-          (type.flags & ts.TypeFlags.StringLike) !== 0
+          isArray(checker, type) ||
+          isRegExpExecArrayLike(services.program, type) ||
+          isArgumentsObjectType(type)
         ) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
@@ -46,19 +47,32 @@ export default createRule({
   },
 });
 
-function isTypeArrayTypeOrUnionOfArrayTypes(
-  type: ts.Type,
-  checker: ts.TypeChecker,
-): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
-    if (tsutils.isTypeFlagSet(t, ts.TypeFlags.Undefined | ts.TypeFlags.Null)) {
-      continue;
-    }
+function isArgumentsObjectType(type: ts.Type): boolean {
+  return (
+    type.getSymbol()?.escapedName === ts.escapeLeadingUnderscores('IArguments')
+  );
+}
 
-    if (!checker.isArrayType(t)) {
-      return false;
-    }
+function isRegExpExecArrayLike(program: ts.Program, type: ts.Type): boolean {
+  return isTypeRecurser(type, t =>
+    isBuiltinSymbolLike(program, t, 'RegExpExecArray'),
+  );
+}
+
+function isArray(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return isTypeRecurser(
+    type,
+    t => checker.isArrayType(t) || checker.isTupleType(t),
+  );
+}
+
+function isTypeRecurser(
+  type: ts.Type,
+  predicate: (t: ts.Type) => boolean,
+): boolean {
+  if (type.isUnionOrIntersection()) {
+    return type.types.some(t => isTypeRecurser(t, predicate));
   }
 
-  return true;
+  return predicate(type);
 }

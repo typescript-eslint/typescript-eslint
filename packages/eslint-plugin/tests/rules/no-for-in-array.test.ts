@@ -25,6 +25,14 @@ for (const x in { a: 1, b: 2, c: 3 }) {
   console.log(x);
 }
     `,
+    // this is normally a type error, this test is here to make sure the rule
+    // doesn't include an "extra" report for it
+    `
+declare const nullish: null | undefined;
+// @ts-expect-error
+for (const k in nullish) {
+}
+    `,
   ],
 
   invalid: [
@@ -215,7 +223,7 @@ for (const x in arr) {
     },
     {
       code: `
-declare const arr: boolean[] | undefined | null;
+declare const arr: boolean[] | { a: 1; b: 2; c: 3 };
 
 for (const x in arr) {
   console.log(x);
@@ -227,6 +235,96 @@ for (const x in arr) {
           endColumn: 21,
           endLine: 4,
           line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: [number, string];
+
+for (const x in arr) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: [number, string] | { a: 1; b: 2; c: 3 };
+
+for (const x in arr) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 21,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: string[] | Record<number, string>;
+
+for (const k in x) {
+  console.log(k);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 19,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+const reArray = /fe/.exec('foo');
+
+for (const x in reArray) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  for (const a in arguments) {
+    console.log(a);
+  }
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 29,
+          endLine: 3,
+          line: 3,
           messageId: 'forInViolation',
         },
       ],
