@@ -10,6 +10,7 @@ import {
 } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
@@ -105,6 +106,7 @@ export default createRule({
       const { typeQueries, typeReferences } = getVisibleTypesRecursively(
         node,
         context.sourceCode,
+        getParserServices(context, true),
       );
 
       typeReferences.forEach(checkTypeReference);
@@ -222,6 +224,7 @@ interface VisibleTypes {
 function getVisibleTypesRecursively(
   node: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
+  services: ParserServices,
 ): VisibleTypes {
   const typeReferences = new Set<TSESTree.TSTypeReference>();
   const typeQueries = new Set<TSESTree.TSTypeQuery>();
@@ -306,7 +309,7 @@ function getVisibleTypesRecursively(
         collect(child.returnType?.typeAnnotation);
 
         if (child.body) {
-          collectFunctionReturnStatements(child).forEach(collect);
+          collectFunctionReturnStatements(child, services).forEach(collect);
         }
         break;
 
@@ -448,18 +451,15 @@ const exportNodeTypes = new Set([
 ]);
 
 function isDeclarationExported(
-  declaration: TSESTree.Node,
+  declaration: TSESTree.Node & { parent: TSESTree.Node },
   services: ParserServices,
 ) {
-  if (!declaration.parent) {
-    return false;
-  }
-
   if (exportNodeTypes.has(declaration.parent.type)) {
     return true;
   }
 
   if (
+    declaration.parent.type === AST_NODE_TYPES.Program ||
     tsutils.isBlockLike(services.esTreeNodeToTSNodeMap.get(declaration.parent))
   ) {
     return false;
@@ -510,11 +510,13 @@ function isReferencedNameInside(
   return !!declaration && isNodeInside(declaration, parent);
 }
 
+// TODO: This will have to use type information :(
 function collectFunctionReturnStatements(
   functionNode:
     | TSESTree.ArrowFunctionExpression
     | TSESTree.FunctionDeclaration
     | TSESTree.FunctionExpression,
+  services: ParserServices,
 ): Set<TSESTree.Node> {
   const isArrowFunctionReturn =
     functionNode.type === AST_NODE_TYPES.ArrowFunctionExpression &&

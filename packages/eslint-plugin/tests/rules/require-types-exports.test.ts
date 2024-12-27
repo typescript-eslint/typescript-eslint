@@ -16,6 +16,25 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('require-types-exports', rule, {
   valid: [
+    'const someValue = undeclared;',
+    'let someValue = undeclared;',
+    'let someValue = a;',
+    'let someValue = a();',
+    'a();',
+    'a.b();',
+    'a[b]();',
+    "a['b']();",
+    "a['b'](c);",
+    'export const a = () => b;',
+    'export const a = () => b[0];',
+    'export const a = () => [b];',
+    'export const a = () => [, b];',
+    'export const a = () => [b, ,];',
+    'export const a = () => ({});',
+    'export const a = () => ({ a });',
+    'export const a = () => ({ a: a });',
+    'export const a = () => ({ a: b });',
+
     'export function f(): void {}',
     'export const f = (): void => {};',
 
@@ -43,9 +62,17 @@ ruleTester.run('require-types-exports', rule, {
     'export function f(...args: unknown[]): void {}',
     'export const f = (...args: unknown[]): void => {};',
 
+    'export function f(...args): void {}',
+    'export const f = (...args): void => {};',
+
     'export default function f(): void {}',
     'export default (): void => {};',
 
+    `
+      function f(a: A): A {
+        return a;
+      }
+    `,
     `
       type A = number;
       function f(a: A): A {
@@ -71,6 +98,10 @@ ruleTester.run('require-types-exports', rule, {
     `
       type A = number;
       declare function f(a: A): void;
+    `,
+    `
+      type A = number;
+      function f({ a }): A {}
     `,
     `
       type A = number;
@@ -227,6 +258,10 @@ ruleTester.run('require-types-exports', rule, {
       export const f = (): { a: A; b: B } => {};
     `,
     `
+      export type A = number;
+      export const f = ({ a }: { a: A }): void => {};
+    `,
+    `
       import { testFunction, type Arg } from './module';
 
       export function f(a: Arg): void {}
@@ -327,6 +362,13 @@ ruleTester.run('require-types-exports', rule, {
         work(other: this) {}
       }
     `,
+    `
+      export class Wrapper {
+        work(other: typeof this) {}
+      }
+    `,
+    'export function noop(x: this) {}',
+    'export function noop(x: typeof this) {}',
     `
       export namespace A {
         export namespace B {
@@ -459,6 +501,18 @@ export const pairs = { KEY: 'value' } as const;
 
 export function emitDeprecationWarning(akey: keyof typeof pairs) {
   console.log(key);
+}
+    `,
+    `
+declare function identity<T>(input: T): T;
+
+interface Box {
+  // ...
+}
+
+export function usesType() {
+  const box: Box = {};
+  return identity(box);
 }
     `,
   ],
@@ -3013,6 +3067,54 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
       code: `
         type A = number;
         type B = number;
+        type C = number;
+
+        export function func1<R extends A>(arg: R) {
+          switch (Math.random()) {
+            case 0:
+              return func2(arg);
+            case 1:
+              return func3(arg);
+          }
+        }
+
+        declare function func2(arg: B): B;
+        declare function func3(arg: C): C;
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            name: 'A',
+          },
+          endColumn: 15,
+          line: 2,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
+          data: {
+            name: 'B',
+          },
+          endColumn: 15,
+          line: 3,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
+          data: {
+            name: 'C',
+          },
+          endColumn: 15,
+          line: 4,
+          messageId: 'requireTypeExport',
+        },
+      ],
+    },
+    {
+      code: `
+        type A = number;
+        type B = number;
 
         export function func1<R extends A>(arg: R) {
           const a = (() => {
@@ -3032,6 +3134,15 @@ export function emitDeprecationWarning(akey: keyof typeof pairs) {
           },
           endColumn: 15,
           line: 2,
+          messageId: 'requireTypeExport',
+        },
+        {
+          column: 14,
+          data: {
+            name: 'B',
+          },
+          endColumn: 15,
+          line: 3,
           messageId: 'requireTypeExport',
         },
       ],
