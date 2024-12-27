@@ -9577,14 +9577,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-eslint-plugin@npm:^6.3.1":
-  version: 6.3.1
-  resolution: "eslint-plugin-eslint-plugin@npm:6.3.1"
+  version: 6.4.0
+  resolution: "eslint-plugin-eslint-plugin@npm:6.4.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     estraverse: ^5.3.0
   peerDependencies:
     eslint: ">=8.23.0"
-  checksum: 293445663be2c2d03f39b1f513fedfc4eeac25e2bc4cd3ad76476c8d836a86b2e31c534afe3673a783cf3d5f0d50685b43e851502ea8f7773020427dbd7efe04
+  checksum: 8cf4e4928c207fec5fd5ae025a0ec3c11e8d7d147aee1732a0eff4c3d258a279981ca26d3d4b35df22dcc61db0da8973d51466f1c783d5e03785c78e167ba03c
   languageName: node
   linkType: hard
 
@@ -9618,8 +9618,8 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-jest@npm:^28.9.0":
-  version: 28.9.0
-  resolution: "eslint-plugin-jest@npm:28.9.0"
+  version: 28.10.0
+  resolution: "eslint-plugin-jest@npm:28.10.0"
   dependencies:
     "@typescript-eslint/utils": ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependencies:
@@ -9631,7 +9631,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: 90863fab5f3f2f033d98042b13769dc82504c489506872ae9926a1d2b6bcc25c5dc41105e28643f5eb81943aff1aa1cd4d44ada5c1add0a43f1c7a619adbc3d2
+  checksum: d7931a891b11019978bc539ec48fbf1bd82a12d61cd7b592185eaafa3086d1b758a40fac498fa120edeb1ca9cca0df915cb851904c1f19287cc9202e10f5d8d7
   languageName: node
   linkType: hard
 
@@ -10961,9 +10961,9 @@ __metadata:
   linkType: hard
 
 "globals@npm:^15.0.0, globals@npm:^15.9.0":
-  version: 15.13.0
-  resolution: "globals@npm:15.13.0"
-  checksum: 3f98514ce25a21150b246fbd63aeaeb271a93b3340cf7f4f6e9934d3b37dbb4b0fddef9c470183097dcfd2e8757bb86bbae701588f0e376667d8d9d6f665db3b
+  version: 15.14.0
+  resolution: "globals@npm:15.14.0"
+  checksum: fa993433a01bf4a118904fbafbcff34db487fce83f73da75fb4a8653afc6dcd72905e6208c49bab307ff0980928273d0ecd1cfc67e1a4782dabfbd92c234ab68
   languageName: node
   linkType: hard
 
