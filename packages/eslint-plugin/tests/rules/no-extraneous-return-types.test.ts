@@ -2466,6 +2466,9 @@ function* test(): Generator<number> {}
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator {}
+      `,
     },
     {
       code: `
@@ -2480,6 +2483,9 @@ function* test(): Generator<string | number> {}
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+function* test(): Generator {}
+      `,
     },
     {
       code: `
@@ -2650,6 +2656,9 @@ async function* test(): AsyncGenerator<number> {}
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator {}
+      `,
     },
     {
       code: `
@@ -2664,6 +2673,9 @@ async function* test(): AsyncGenerator<string | number> {}
           messageId: 'unusedReturnTypes',
         },
       ],
+      output: `
+async function* test(): AsyncGenerator {}
+      `,
     },
     {
       code: `

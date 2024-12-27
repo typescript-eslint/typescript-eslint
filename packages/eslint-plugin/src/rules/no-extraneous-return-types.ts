@@ -353,13 +353,14 @@ export default createRule({
       // type argument
       if (!returnTypeArgument) {
         context.report({
-          node: yieldTypeArgument,
+          node: yieldTypeArgument.parent,
           messageId: 'unusedReturnTypes',
           data: {
             type: checker.typeToString(
               services.getTypeAtLocation(yieldTypeArgument),
             ),
           },
+          fix: fixer => fixer.remove(yieldTypeArgument.parent),
         });
         return;
       }
