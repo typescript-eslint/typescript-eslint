@@ -7,8 +7,8 @@ type Arg = string;
 type Result = number;
 
 export function strLength(arg: Arg): Result {
-                               ~~~ "Arg" is used in other exports from this file, so it should also be exported.
-                                     ~~~~~~ "Result" is used in other exports from this file, so it should also be exported.
+                               ~~~ "Arg" is used in other exports, so it should also be exported.
+                                     ~~~~~~ "Result" is used in other exports, so it should also be exported.
   return arg.length;
 }
 "
@@ -23,7 +23,7 @@ interface Fruit {
 }
 
 export const getFruitName = (fruit: Fruit) => fruit.name;
-                                    ~~~~~ "Fruit" is used in other exports from this file, so it should also be exported.
+                                    ~~~~~ "Fruit" is used in other exports, so it should also be exported.
 "
 `;
 
@@ -37,7 +37,7 @@ enum Color {
 }
 
 export declare function getRandomColor(): Color;
-                                          ~~~~~ "Color" is used in other exports from this file, so it should also be exported.
+                                          ~~~~~ "Color" is used in other exports, so it should also be exported.
 "
 `;
 

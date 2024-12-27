@@ -18,6 +18,8 @@ import {
   isNodeInside,
 } from '../util';
 
+export type MessageId = 'requireTypeExport' | 'requireTypeQueryExport';
+
 export default createRule({
   name: 'require-types-exports',
   meta: {
@@ -29,13 +31,15 @@ export default createRule({
     messages: {
       requireTypeExport:
         '"{{ name }}" is used in other exports, so it should also be exported.',
+      requireTypeQueryExport:
+        '"{{ name }}" is used in other exports, so it should also be exported as its own type.',
     },
     schema: [],
   },
   defaultOptions: [],
   create(context) {
     const externalizedTypes = new Set<string>();
-    const reportedTypes = new Set<string>();
+    const reportedNodes = new Set<TSESTree.Node>();
 
     function collectImportedTypes(
       node:
@@ -109,26 +113,11 @@ export default createRule({
 
     function checkTypeReference(node: TSESTree.TSTypeReference) {
       const name = getTypeName(node.typeName);
-      if (externalizedTypes.has(name) || reportedTypes.has(name)) {
+      if (externalizedTypes.has(name)) {
         return;
       }
 
-      const declaration = findVariable(context.sourceCode.getScope(node), name)
-        ?.identifiers[0];
-      if (
-        !declaration ||
-        isDeclarationExported(declaration, getParserServices(context, true))
-      ) {
-        return;
-      }
-
-      context.report({
-        node,
-        messageId: 'requireTypeExport',
-        data: { name },
-      });
-
-      reportedTypes.add(name);
+      reportIfNeeded(name, name, node, 'requireTypeExport');
     }
 
     function checkTypeQuery(node: TSESTree.TSTypeQuery) {
@@ -136,20 +125,30 @@ export default createRule({
         return;
       }
 
-      const queriedName = getTypeName(node.exprName);
-      const name = `typeof ${queriedName}`;
+      const nameQueried = getTypeName(node.exprName);
+      const nameType = `typeof ${nameQueried}`;
 
-      const isReported = reportedTypes.has(name);
-      if (isReported) {
+      reportIfNeeded(nameQueried, nameType, node, 'requireTypeQueryExport');
+    }
+
+    function reportIfNeeded(
+      nameQueried: string,
+      nameType: string,
+      node: TSESTree.Node,
+      messageId: MessageId,
+    ) {
+      const declaration = findVariable(
+        context.sourceCode.getScope(node),
+        nameQueried,
+      )?.identifiers[0];
+
+      if (!declaration || reportedNodes.has(declaration)) {
         return;
       }
 
-      const declaration = findVariable(
-        context.sourceCode.getScope(node),
-        queriedName,
-      )?.identifiers[0];
+      reportedNodes.add(declaration);
+
       if (
-        !declaration ||
         isDeclarationExported(declaration, getParserServices(context, true))
       ) {
         return;
@@ -157,12 +156,9 @@ export default createRule({
 
       context.report({
         node,
-        // messageId: 'requireTypeQueryExport',
-        messageId: 'requireTypeExport',
-        data: { name },
+        messageId,
+        data: { name: nameType },
       });
-
-      reportedTypes.add(name);
     }
 
     return {
