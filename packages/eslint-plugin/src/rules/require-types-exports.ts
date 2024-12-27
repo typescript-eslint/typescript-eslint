@@ -8,9 +8,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, findVariable } from '../util';
 
-export type MessageIds = 'requireTypeExport';
-
-export default createRule<[], MessageIds>({
+export default createRule({
   name: 'require-types-exports',
   meta: {
     type: 'suggestion',
@@ -101,8 +99,12 @@ export default createRule<[], MessageIds>({
 
     function checkTypeReference(node: TSESTree.TSTypeReference) {
       const name = getTypeName(node.typeName);
-
       if (externalizedTypes.has(name) || reportedTypes.has(name)) {
+        return;
+      }
+
+      const declaration = findVariable(context.sourceCode.getScope(node), name);
+      if (!declaration) {
         return;
       }
 
@@ -120,15 +122,25 @@ export default createRule<[], MessageIds>({
         return;
       }
 
-      const name = `typeof ${getTypeName(node.exprName)}`;
-      const isReported = reportedTypes.has(name);
+      const queriedName = getTypeName(node.exprName);
+      const name = `typeof ${queriedName}`;
 
+      const isReported = reportedTypes.has(name);
       if (isReported) {
+        return;
+      }
+
+      const declaration = findVariable(
+        context.sourceCode.getScope(node),
+        queriedName,
+      );
+      if (!declaration) {
         return;
       }
 
       context.report({
         node,
+        // messageId: 'requireTypeQueryExport',
         messageId: 'requireTypeExport',
         data: { name },
       });
@@ -165,7 +177,7 @@ export default createRule<[], MessageIds>({
 });
 
 function getLeftmostIdentifier(
-  node: TSESTree.EntityName | TSESTree.TSImportType,
+  node: TSESTree.EntityName | TSESTree.TSImportType | TSESTree.TSTypeReference,
 ) {
   switch (node.type) {
     case AST_NODE_TYPES.Identifier:
@@ -179,9 +191,7 @@ function getLeftmostIdentifier(
   }
 }
 
-function getTypeName(
-  node: TSESTree.EntityName, // | TSESTree.TSImportType ,
-): string {
+function getTypeName(node: TSESTree.EntityName): string {
   switch (node.type) {
     case AST_NODE_TYPES.Identifier:
       return node.name;
@@ -347,7 +357,7 @@ function getVisibleTypesRecursively(
       case AST_NODE_TYPES.TSTypeQuery:
         if (
           isInsideFunctionDeclaration(child) &&
-          !isReferencedNameInside(child, node, sourceCode)
+          !isReferencedNameInside(child.exprName, node, sourceCode)
         ) {
           typeQueries.add(child);
         }
@@ -445,26 +455,37 @@ function isInsideFunctionDeclaration(node: TSESTree.Node): boolean {
   return isInsideFunctionDeclaration(node.parent);
 }
 
+function getDeclarationForName(
+  node: TSESTree.Node,
+  name: string,
+  sourceCode: TSESLint.SourceCode,
+) {
+  return sourceCode.getScope(node).set.get(name)?.identifiers.at(0);
+}
+
+function isDeclarationInside(
+  declaration: TSESTree.Node,
+  parent: TSESTree.Node,
+) {
+  return (
+    declaration.range[0] >= parent.range[0] &&
+    declaration.range[1] <= parent.range[1]
+  );
+}
+
 function isReferencedNameInside(
-  child: TSESTree.TSTypeQuery,
+  child: TSESTree.EntityName | TSESTree.TSImportType,
   parent: TSESTree.Node,
   sourceCode: TSESLint.SourceCode,
 ) {
-  const localName = getLeftmostIdentifier(child.exprName);
+  const localName = getLeftmostIdentifier(child);
   if (!localName) {
     return false;
   }
 
-  const scope = sourceCode.getScope(child);
-  const identifier = scope.set.get(localName)?.identifiers.at(0);
-  if (!identifier) {
-    return false;
-  }
+  const declaration = getDeclarationForName(child, localName, sourceCode);
 
-  return (
-    identifier.range[0] >= parent.range[0] &&
-    identifier.range[1] <= parent.range[1]
-  );
+  return !!declaration && isDeclarationInside(declaration, parent);
 }
 
 function collectFunctionReturnStatements(

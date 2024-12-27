@@ -435,8 +435,11 @@ export default wrap({
     'export function example(config: string): typeof config.length {}',
     "export function example(config: string): (typeof config)['length'] {}",
     "export function example(config: string): typeof import('config') {}",
+    'export function example(config: ExternalGlobal) {}',
+    'export function example(config: typeof ExternalGlobal) {}',
+    'export function example(config: typeof ExternalGlobal.length) {}',
+    "export function example(config: (typeof ExternalGlobal)['length']) {}",
   ],
-
   invalid: [
     {
       code: `
