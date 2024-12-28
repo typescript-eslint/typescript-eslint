@@ -331,6 +331,7 @@ for (const x in arrayLike) {
       languageOptions: {
         parserOptions: {
           project: './tsconfig.lib-dom.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
@@ -355,6 +356,7 @@ for (const x in arrayLike) {
       languageOptions: {
         parserOptions: {
           project: './tsconfig.lib-dom.json',
+          projectService: false,
           tsconfigRootDir: rootDir,
         },
       },
