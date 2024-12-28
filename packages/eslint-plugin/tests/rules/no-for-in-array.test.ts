@@ -7,7 +7,7 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      project: './tsconfig.json',
+      project: './tsconfig.lib-dom.json',
       tsconfigRootDir: rootDir,
     },
   },
@@ -187,124 +187,160 @@ for (const x
     },
     {
       code: `
-declare const arr: string[] | null;
+declare const array: string[] | null;
 
-for (const x in arr) {
-  console.log(x);
-}
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'forInViolation',
-        },
-      ],
-    },
-    {
-      code: `
-declare const arr: number[] | undefined;
-
-for (const x in arr) {
-  console.log(x);
-}
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'forInViolation',
-        },
-      ],
-    },
-    {
-      code: `
-declare const arr: boolean[] | { a: 1; b: 2; c: 3 };
-
-for (const x in arr) {
-  console.log(x);
-}
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'forInViolation',
-        },
-      ],
-    },
-    {
-      code: `
-declare const arr: [number, string];
-
-for (const x in arr) {
-  console.log(x);
-}
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'forInViolation',
-        },
-      ],
-    },
-    {
-      code: `
-declare const arr: [number, string] | { a: 1; b: 2; c: 3 };
-
-for (const x in arr) {
-  console.log(x);
-}
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 21,
-          endLine: 4,
-          line: 4,
-          messageId: 'forInViolation',
-        },
-      ],
-    },
-    {
-      code: `
-declare const x: string[] | Record<number, string>;
-
-for (const k in x) {
-  console.log(k);
-}
-      `,
-      errors: [
-        {
-          column: 1,
-          endColumn: 19,
-          endLine: 4,
-          line: 4,
-          messageId: 'forInViolation',
-        },
-      ],
-    },
-    {
-      code: `
-const reArray = /fe/.exec('foo');
-
-for (const x in reArray) {
-  console.log(x);
+for (const key in array) {
+  console.log(key);
 }
       `,
       errors: [
         {
           column: 1,
           endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const array: number[] | undefined;
+
+for (const key in array) {
+  console.log(key);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const array: boolean[] | { a: 1; b: 2; c: 3 };
+
+for (const key in array) {
+  console.log(key);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const array: [number, string];
+
+for (const key in array) {
+  console.log(key);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const array: [number, string] | { a: 1; b: 2; c: 3 };
+
+for (const key in array) {
+  console.log(key);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const array: string[] | Record<number, string>;
+
+for (const key in array) {
+  console.log(key);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 25,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+const arrayLike = /fe/.exec('foo');
+
+for (const x in arrayLike) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arrayLike: HTMLCollection;
+
+for (const x in arrayLike) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
+          endLine: 4,
+          line: 4,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const arrayLike: NodeList;
+
+for (const x in arrayLike) {
+  console.log(x);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 27,
           endLine: 4,
           line: 4,
           messageId: 'forInViolation',
@@ -331,18 +367,18 @@ function foo() {
     },
     {
       code: `
-declare const x:
+declare const array:
   | (({ a: string } & string[]) | Record<string, boolean>)
   | Record<number, string>;
 
-for (const k in x) {
-  console.log(k);
+for (const key in array) {
+  console.log(key);
 }
       `,
       errors: [
         {
           column: 1,
-          endColumn: 19,
+          endColumn: 25,
           endLine: 6,
           line: 6,
           messageId: 'forInViolation',
@@ -351,18 +387,18 @@ for (const k in x) {
     },
     {
       code: `
-declare const x:
+declare const array:
   | (({ a: string } & RegExpExecArray) | Record<string, boolean>)
   | Record<number, string>;
 
-for (const k in x) {
+for (const key in array) {
   console.log(k);
 }
       `,
       errors: [
         {
           column: 1,
-          endColumn: 19,
+          endColumn: 25,
           endLine: 6,
           line: 6,
           messageId: 'forInViolation',

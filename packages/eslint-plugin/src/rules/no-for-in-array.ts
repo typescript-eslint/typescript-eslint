@@ -32,11 +32,7 @@ export default createRule({
 
         const type = getConstrainedTypeAtLocation(services, node.right);
 
-        if (
-          isArray(checker, type) ||
-          isRegExpExecArrayLike(services.program, type) ||
-          isArgumentsObjectType(services.program, type)
-        ) {
+        if (isArray(checker, type) || isArrayLike(services.program, type)) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forInViolation',
@@ -47,13 +43,14 @@ export default createRule({
   },
 });
 
-function isArgumentsObjectType(program: ts.Program, type: ts.Type): boolean {
-  return isBuiltinSymbolLike(program, type, 'IArguments');
-}
-
-function isRegExpExecArrayLike(program: ts.Program, type: ts.Type): boolean {
+function isArrayLike(program: ts.Program, type: ts.Type): boolean {
   return isTypeRecurser(type, t =>
-    isBuiltinSymbolLike(program, t, 'RegExpExecArray'),
+    isBuiltinSymbolLike(program, t, [
+      'IArguments',
+      'HTMLCollection',
+      'RegExpExecArray',
+      'NodeList',
+    ]),
   );
 }
 

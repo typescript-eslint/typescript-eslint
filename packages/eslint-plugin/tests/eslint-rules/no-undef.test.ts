@@ -219,7 +219,7 @@ const links = document.querySelectorAll(selector) as NodeListOf<HTMLElement>;
       `,
       languageOptions: {
         parserOptions: {
-          lib: ['dom'],
+          lib: ['es2023'],
         },
       },
     },
