@@ -6,7 +6,7 @@ import {
 } from '@typescript-eslint/type-utils';
 import * as tsutils from 'ts-api-utils';
 
-import type { ConstraintTypeInfo } from './getConstraintTypeInfo';
+import { getConstraintTypeInfo } from './getConstraintTypeInfo';
 
 export enum Awaitable {
   Always,
@@ -17,9 +17,12 @@ export enum Awaitable {
 export function needsToBeAwaited(
   checker: ts.TypeChecker,
   node: ts.Node,
-  constraintTypeInfo: ConstraintTypeInfo,
+  type: ts.Type,
 ): Awaitable {
-  const { constraintType, isTypeParameter } = constraintTypeInfo;
+  const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    checker,
+    type,
+  );
 
   // unconstrained generic types should be treated as unknown
   if (isTypeParameter && constraintType == null) {

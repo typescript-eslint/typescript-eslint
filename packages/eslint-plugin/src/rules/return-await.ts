@@ -303,11 +303,8 @@ export default createRule({
         child = expression;
       }
 
-      const certainty = needsToBeAwaited(
-        checker,
-        expression,
-        getConstraintTypeInfo(checker, checker.getTypeAtLocation(child)),
-      );
+      const type = checker.getTypeAtLocation(child);
+      const certainty = needsToBeAwaited(checker, expression, type);
 
       // handle awaited _non_thenables
 

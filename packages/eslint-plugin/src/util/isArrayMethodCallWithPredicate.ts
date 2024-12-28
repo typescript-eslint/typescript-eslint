@@ -4,10 +4,10 @@ import type {
 } from '@typescript-eslint/utils';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 
+import { getConstrainedTypeAtLocation } from '@typescript-eslint/type-utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
-import { getConstrainedTypeAtLocation } from './index';
 import { getStaticMemberAccessValue } from './misc';
 
 const ARRAY_PREDICATE_FUNCTIONS = new Set<unknown>([

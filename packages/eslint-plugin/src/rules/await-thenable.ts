@@ -52,16 +52,11 @@ export default createRule<[], MessageId>({
 
     return {
       AwaitExpression(node): void {
-        const awaitedNode = node.argument;
-        const awaitedTsNode = services.esTreeNodeToTSNodeMap.get(awaitedNode);
-        const certainty = needsToBeAwaited(
-          checker,
-          awaitedTsNode,
-          getConstraintTypeInfo(
-            checker,
-            checker.getTypeAtLocation(awaitedTsNode),
-          ),
-        );
+        const awaitedEsNode = node.argument;
+        const type = services.getTypeAtLocation(awaitedEsNode);
+        const awaitedTsNode = services.esTreeNodeToTSNodeMap.get(awaitedEsNode);
+
+        const certainty = needsToBeAwaited(checker, awaitedTsNode, type);
 
         if (certainty === Awaitable.Never) {
           context.report({
