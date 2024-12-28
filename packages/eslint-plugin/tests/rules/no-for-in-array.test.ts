@@ -7,7 +7,7 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   languageOptions: {
     parserOptions: {
-      project: './tsconfig.lib-dom.json',
+      project: './tsconfig.json',
       tsconfigRootDir: rootDir,
     },
   },
@@ -328,6 +328,12 @@ for (const x in arrayLike) {
           messageId: 'forInViolation',
         },
       ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.lib-dom.json',
+          tsconfigRootDir: rootDir,
+        },
+      },
     },
     {
       code: `
@@ -346,6 +352,12 @@ for (const x in arrayLike) {
           messageId: 'forInViolation',
         },
       ],
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.lib-dom.json',
+          tsconfigRootDir: rootDir,
+        },
+      },
     },
     {
       code: `
