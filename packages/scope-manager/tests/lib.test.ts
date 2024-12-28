@@ -11,15 +11,29 @@ describe('implicit lib definitions', () => {
     expect(variables).toHaveLength(1);
   });
 
-  it('should define implicit variables', () => {
-    const { scopeManager } = parseAndAnalyze('', {
+  it('should define an implicit variable if there is a reference', () => {
+    const { scopeManager } = parseAndAnalyze('new ArrayBuffer();', {
       lib: ['es2015'],
     });
 
     const variables = scopeManager.variables;
-    expect(variables.length).toBeGreaterThan(1);
+    expect(
+      variables.some(
+        v => v instanceof ImplicitLibVariable && v.name === 'ArrayBuffer',
+      ),
+    ).toEqual(true);
+  });
 
-    const variable = variables[0];
-    expect(variable).toBeInstanceOf(ImplicitLibVariable);
+  it('should define an implicit variable if there is a collision', () => {
+    const { scopeManager } = parseAndAnalyze('var Symbol = {};', {
+      lib: ['es2015'],
+    });
+
+    const variables = scopeManager.variables;
+    expect(
+      variables.some(
+        v => v instanceof ImplicitLibVariable && v.name === 'Symbol',
+      ),
+    ).toEqual(true);
   });
 });
