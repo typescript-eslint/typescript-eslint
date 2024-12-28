@@ -1,4 +1,4 @@
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -35,7 +35,7 @@ export default createRule({
         if (
           isArray(checker, type) ||
           isRegExpExecArrayLike(services.program, type) ||
-          isArgumentsObjectType(type)
+          isArgumentsObjectType(services.program, type)
         ) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
@@ -47,10 +47,8 @@ export default createRule({
   },
 });
 
-function isArgumentsObjectType(type: ts.Type): boolean {
-  return (
-    type.getSymbol()?.escapedName === ts.escapeLeadingUnderscores('IArguments')
-  );
+function isArgumentsObjectType(program: ts.Program, type: ts.Type): boolean {
+  return isBuiltinSymbolLike(program, type, 'IArguments');
 }
 
 function isRegExpExecArrayLike(program: ts.Program, type: ts.Type): boolean {
