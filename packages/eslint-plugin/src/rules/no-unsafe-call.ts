@@ -4,7 +4,7 @@ import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getThisExpression,
   isBuiltinSymbolLike,
@@ -51,7 +51,7 @@ export default createRule<[], MessageIds>({
       reportingNode: TSESTree.Node,
       messageId: MessageIds,
     ): void {
-      const type = DEPRECATED_getConstrainedTypeAtLocation(services, node);
+      const type = getConstrainedTypeAtLocation(services, node);
 
       if (isTypeAnyType(type)) {
         if (!isNoImplicitThis) {
@@ -60,7 +60,7 @@ export default createRule<[], MessageIds>({
           if (
             thisExpression &&
             isTypeAnyType(
-              DEPRECATED_getConstrainedTypeAtLocation(services, thisExpression),
+              getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeCallThis';

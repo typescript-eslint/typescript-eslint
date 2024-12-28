@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   isClosingBraceToken,
   isOpeningBraceToken,
@@ -147,7 +147,7 @@ export default createRule<Options, MessageIds>({
         switchCase => switchCase.test == null,
       );
 
-      const discriminantType = DEPRECATED_getConstrainedTypeAtLocation(
+      const discriminantType = getConstrainedTypeAtLocation(
         services,
         node.discriminant,
       );
@@ -167,7 +167,7 @@ export default createRule<Options, MessageIds>({
           continue;
         }
 
-        const caseType = DEPRECATED_getConstrainedTypeAtLocation(
+        const caseType = getConstrainedTypeAtLocation(
           services,
           switchCase.test,
         );

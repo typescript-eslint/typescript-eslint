@@ -7,7 +7,7 @@ import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getStaticValue,
   isStaticMemberAccessOfValue,
@@ -94,7 +94,7 @@ export default createRule({
           if (isStaticMemberAccessOfValue(callee, context, 'filter')) {
             const filterNode = callee.property;
 
-            const filteredObjectType = DEPRECATED_getConstrainedTypeAtLocation(
+            const filteredObjectType = getConstrainedTypeAtLocation(
               services,
               callee.object,
             );

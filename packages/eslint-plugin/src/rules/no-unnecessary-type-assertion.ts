@@ -8,7 +8,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getContextualType,
   getDeclaration,
   getModifiers,
@@ -123,7 +123,7 @@ export default createRule<Options, MessageIds>({
         ) {
           // check if the defined variable type has changed since assignment
           const declarationType = checker.getTypeFromTypeNode(declaration.type);
-          const type = DEPRECATED_getConstrainedTypeAtLocation(services, node);
+          const type = getConstrainedTypeAtLocation(services, node);
           if (
             declarationType === type &&
             // `declare`s are never narrowed, so never skip them
@@ -319,10 +319,7 @@ export default createRule<Options, MessageIds>({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        const type = DEPRECATED_getConstrainedTypeAtLocation(
-          services,
-          node.expression,
-        );
+        const type = getConstrainedTypeAtLocation(services, node.expression);
 
         if (!isNullableType(type)) {
           if (

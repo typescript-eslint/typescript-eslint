@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstraintTypeInfoAtLocation,
+  getConstraintTypeInfo,
   getParserServices,
   isStrongPrecedenceNode,
 } from '../util';
@@ -85,6 +85,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -94,8 +95,10 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const { constraintType, isTypeParameter } =
-        getConstraintTypeInfoAtLocation(services, comparison.expression);
+      const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+        checker,
+        services.getTypeAtLocation(comparison.expression),
+      );
 
       if (isTypeParameter && constraintType == null) {
         return undefined;

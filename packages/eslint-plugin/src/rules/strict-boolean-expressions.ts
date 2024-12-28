@@ -9,7 +9,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
   isArrayMethodCallWithPredicate,
@@ -426,7 +426,7 @@ export default createRule<Options, MessageId>({
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
     function checkNode(node: TSESTree.Expression): void {
-      const type = DEPRECATED_getConstrainedTypeAtLocation(services, node);
+      const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -1104,10 +1104,7 @@ function isArrayLengthExpression(
   if (node.property.name !== 'length') {
     return false;
   }
-  const objectType = DEPRECATED_getConstrainedTypeAtLocation(
-    services,
-    node.object,
-  );
+  const objectType = getConstrainedTypeAtLocation(services, node.object);
   return isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
 }
 

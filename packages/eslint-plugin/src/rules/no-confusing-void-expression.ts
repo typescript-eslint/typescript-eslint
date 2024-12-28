@@ -8,7 +8,7 @@ import type { MakeRequired } from '../util';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   isClosingParenToken,
   isOpeningParenToken,
@@ -116,7 +116,7 @@ export default createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const type = DEPRECATED_getConstrainedTypeAtLocation(services, node);
+        const type = getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
@@ -420,10 +420,7 @@ export default createRule<Options, MessageId>({
           ? node.argument
           : node.body;
 
-      const type = DEPRECATED_getConstrainedTypeAtLocation(
-        services,
-        targetNode,
-      );
+      const type = getConstrainedTypeAtLocation(services, targetNode);
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
 

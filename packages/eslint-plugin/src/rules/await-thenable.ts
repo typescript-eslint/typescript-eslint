@@ -5,7 +5,7 @@ import * as tsutils from 'ts-api-utils';
 import {
   Awaitable,
   createRule,
-  getConstraintTypeInfoAtLocation,
+  getConstraintTypeInfo,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
@@ -57,7 +57,10 @@ export default createRule<[], MessageId>({
         const certainty = needsToBeAwaited(
           checker,
           awaitedTsNode,
-          getConstraintTypeInfoAtLocation(services, awaitedNode),
+          getConstraintTypeInfo(
+            checker,
+            checker.getTypeAtLocation(awaitedTsNode),
+          ),
         );
 
         if (certainty === Awaitable.Never) {

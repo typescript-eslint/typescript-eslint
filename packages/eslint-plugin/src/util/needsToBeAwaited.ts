@@ -1,4 +1,3 @@
-import type { ConstraintTypeInfo } from '@typescript-eslint/type-utils';
 import type * as ts from 'typescript';
 
 import {
@@ -6,6 +5,8 @@ import {
   isTypeUnknownType,
 } from '@typescript-eslint/type-utils';
 import * as tsutils from 'ts-api-utils';
+
+import type { ConstraintTypeInfo } from './getConstraintTypeInfo';
 
 export enum Awaitable {
   Always,

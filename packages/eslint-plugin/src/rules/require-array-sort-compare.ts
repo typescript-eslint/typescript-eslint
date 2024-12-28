@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   getTypeName,
   isStaticMemberAccessOfValue,
@@ -70,7 +70,7 @@ export default createRule<Options, MessageIds>({
       if (!isStaticMemberAccessOfValue(callee, context, 'sort', 'toSorted')) {
         return;
       }
-      const calleeObjType = DEPRECATED_getConstrainedTypeAtLocation(
+      const calleeObjType = getConstrainedTypeAtLocation(
         services,
         callee.object,
       );

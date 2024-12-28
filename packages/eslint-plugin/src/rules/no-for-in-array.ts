@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getParserServices,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
@@ -30,10 +30,7 @@ export default createRule({
         const services = getParserServices(context);
         const checker = services.program.getTypeChecker();
 
-        const type = DEPRECATED_getConstrainedTypeAtLocation(
-          services,
-          node.right,
-        );
+        const type = getConstrainedTypeAtLocation(services, node.right);
 
         if (
           isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||

@@ -7,7 +7,7 @@ import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
-import { DEPRECATED_getConstrainedTypeAtLocation } from './index';
+import { getConstrainedTypeAtLocation } from './index';
 import { getStaticMemberAccessValue } from './misc';
 
 const ARRAY_PREDICATE_FUNCTIONS = new Set<unknown>([
@@ -36,10 +36,7 @@ export function isArrayMethodCallWithPredicate(
   }
 
   const checker = services.program.getTypeChecker();
-  const type = DEPRECATED_getConstrainedTypeAtLocation(
-    services,
-    node.callee.object,
-  );
+  const type = getConstrainedTypeAtLocation(services, node.callee.object);
   return tsutils
     .unionTypeParts(type)
     .flatMap(part => tsutils.intersectionTypeParts(part))

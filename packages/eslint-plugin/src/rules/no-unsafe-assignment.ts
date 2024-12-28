@@ -6,7 +6,7 @@ import * as tsutils from 'ts-api-utils';
 
 import {
   createRule,
-  DEPRECATED_getConstrainedTypeAtLocation,
+  getConstrainedTypeAtLocation,
   getContextualType,
   getParserServices,
   getThisExpression,
@@ -270,7 +270,7 @@ export default createRule({
           if (
             thisExpression &&
             isTypeAnyType(
-              DEPRECATED_getConstrainedTypeAtLocation(services, thisExpression),
+              getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'anyAssignmentThis';
