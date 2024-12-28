@@ -23,7 +23,16 @@ export type ConstraintTypeInfo =
   | ConstraintTypeInfoUnconstrained;
 
 /**
- * Resolves the given node's type, and returns info about whether it is a generic or ordinary type.
+ * Returns whether the type is a generic and what its constraint is.
+ *
+ * If the type is not a generic, `isTypeParameter` will be `false`, and
+ * `constraintType` will be the same as the input type.
+ *
+ * If the type is a generic, and it is constrained, `isTypeParameter` will be
+ * `true`, and `constraintType` will be the constraint type.
+ *
+ * If the type is a generic, but it is not constrained, `constraintType` will be
+ * `undefined` (rather than an `unknown` type), due to https://github.com/microsoft/TypeScript/issues/60475
  *
  * Successor to {@link getConstrainedTypeAtLocation} due to https://github.com/typescript-eslint/typescript-eslint/issues/10438
  *
