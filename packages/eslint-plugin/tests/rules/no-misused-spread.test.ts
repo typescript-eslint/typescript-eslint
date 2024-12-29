@@ -267,7 +267,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 12,
           endColumn: 21,
           line: 1,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -281,7 +281,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 27,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -295,7 +295,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 27,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -309,7 +309,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 27,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -323,7 +323,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 27,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -337,7 +337,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 27,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -351,7 +351,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 27,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -365,7 +365,47 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 34,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text);
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 29,
+          line: 6,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text, 'and', ...text);
+      `,
+      errors: [
+        {
+          column: 22,
+          endColumn: 29,
+          line: 6,
+          messageId: 'noStringSpread',
+        },
+        {
+          column: 38,
+          endColumn: 45,
+          line: 6,
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -379,7 +419,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 34,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },
@@ -393,7 +433,7 @@ ruleTester.run('no-misused-spread', rule, {
           column: 20,
           endColumn: 34,
           line: 3,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         },
       ],
     },

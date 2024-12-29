@@ -30,7 +30,7 @@ type MessageIds =
   | 'noIterableSpreadInObject'
   | 'noMapSpreadInObject'
   | 'noPromiseSpreadInObject'
-  | 'noStringSpreadInArray';
+  | 'noStringSpread';
 
 export default createRule<Options, MessageIds>({
   name: 'no-misused-spread',
@@ -57,8 +57,8 @@ export default createRule<Options, MessageIds>({
         'Using the spread operator on a Map in an object will result in an empty object. Did you mean to use `Object.fromEntries(map)` instead?',
       noPromiseSpreadInObject:
         'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
-      noStringSpreadInArray:
-        "Using the spread operator on a string can cause unexpected behavior. Prefer `String.split('')` instead.",
+      noStringSpread:
+        "Using the spread operator on a string can cause unexpected behavior. Prefer `.split('')` instead.",
     },
     schema: [
       {
@@ -85,7 +85,7 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    function checkArraySpread(node: TSESTree.SpreadElement): void {
+    function checkArrayOrCallSpread(node: TSESTree.SpreadElement): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
       if (
@@ -94,7 +94,7 @@ export default createRule<Options, MessageIds>({
       ) {
         context.report({
           node,
-          messageId: 'noStringSpreadInArray',
+          messageId: 'noStringSpread',
         });
       }
     }
@@ -169,13 +169,12 @@ export default createRule<Options, MessageIds>({
           node,
           messageId: 'noClassDeclarationSpreadInObject',
         });
-
-        return;
       }
     }
 
     return {
-      'ArrayExpression > SpreadElement': checkArraySpread,
+      'ArrayExpression > SpreadElement': checkArrayOrCallSpread,
+      'CallExpression > SpreadElement': checkArrayOrCallSpread,
       'ObjectExpression > SpreadElement': checkObjectSpread,
     };
   },
