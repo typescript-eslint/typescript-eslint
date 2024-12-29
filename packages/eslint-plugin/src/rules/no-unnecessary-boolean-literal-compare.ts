@@ -6,7 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstraintTypeInfo,
+  getConstraintInfo,
   getParserServices,
   isStrongPrecedenceNode,
 } from '../util';
@@ -95,7 +95,7 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+      const { constraintType, isTypeParameter } = getConstraintInfo(
         checker,
         services.getTypeAtLocation(comparison.expression),
       );

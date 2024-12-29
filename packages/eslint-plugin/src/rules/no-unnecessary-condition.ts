@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
@@ -654,15 +655,7 @@ export default createRule<Options, MessageId>({
             getConstrainedTypeAtLocation(services, callback),
           )
           .map(sig => sig.getReturnType())
-          .map(t => {
-            // TODO: use `getConstraintTypeInfoAtLocation` once it's merged
-            // https://github.com/typescript-eslint/typescript-eslint/pull/10496
-            if (tsutils.isTypeParameter(t)) {
-              return checker.getBaseConstraintOfType(t);
-            }
-
-            return t;
-          });
+          .map(t => getConstraintInfo(checker, t).constraintType);
 
         if (returnTypes.length === 0) {
           // Not a callable function, e.g. `any`

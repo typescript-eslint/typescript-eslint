@@ -7,7 +7,7 @@ import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
 
-import { getConstraintTypeInfo } from '../../src/util/getConstraintTypeInfo';
+import { getConstraintInfo } from '../../src/util/getConstraintInfo';
 
 function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
   services: ParserServicesWithTypeInformation;
@@ -23,7 +23,7 @@ function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
   });
 }
 
-describe('getConstraintTypeInfoAtLocation', () => {
+describe('getConstraintInfo', () => {
   it('returns undefined for unconstrained generic', () => {
     const sourceCode = `
 function foo<T>(x: T);
@@ -36,7 +36,7 @@ function foo<T>(x: T);
     const parameterNode = functionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );
@@ -59,7 +59,7 @@ function foo<T extends unknown>(x: T);
     const parameterNode = functionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );
@@ -82,7 +82,7 @@ function foo<T extends any>(x: T);
     const parameterNode = functionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );
@@ -105,7 +105,7 @@ function foo<T extends string>(x: T);
     const parameterNode = functionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );
@@ -128,7 +128,7 @@ function foo(x: string);
     const parameterNode = functionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );
@@ -157,7 +157,7 @@ function foo<T extends string>() {
     const parameterNode = innerFunctionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );
@@ -185,7 +185,7 @@ function foo<T>() {
     const parameterNode = innerFunctionNode.params[0];
     const parameterType = services.getTypeAtLocation(parameterNode);
 
-    const { constraintType, isTypeParameter } = getConstraintTypeInfo(
+    const { constraintType, isTypeParameter } = getConstraintInfo(
       checker,
       parameterType,
     );

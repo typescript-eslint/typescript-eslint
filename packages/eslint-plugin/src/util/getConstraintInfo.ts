@@ -42,7 +42,7 @@ export type ConstraintTypeInfo =
  * @internal
  *
  */
-export function getConstraintTypeInfo(
+export function getConstraintInfo(
   checker: ts.TypeChecker,
   type: ts.Type,
 ): ConstraintTypeInfo {

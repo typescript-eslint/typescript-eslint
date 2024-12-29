@@ -6,7 +6,6 @@ import * as ts from 'typescript';
 import {
   Awaitable,
   createRule,
-  getConstraintTypeInfo,
   getFixOrSuggest,
   getParserServices,
   isAwaitExpression,

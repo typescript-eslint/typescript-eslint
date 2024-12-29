@@ -5,7 +5,6 @@ import * as tsutils from 'ts-api-utils';
 import {
   Awaitable,
   createRule,
-  getConstraintTypeInfo,
   getFixOrSuggest,
   getParserServices,
   isAwaitKeyword,
@@ -52,11 +51,17 @@ export default createRule<[], MessageId>({
 
     return {
       AwaitExpression(node): void {
-        const awaitedEsNode = node.argument;
-        const type = services.getTypeAtLocation(awaitedEsNode);
-        const awaitedTsNode = services.esTreeNodeToTSNodeMap.get(awaitedEsNode);
+        const awaitArgumentEsNode = node.argument;
+        const awaitArgumentType =
+          services.getTypeAtLocation(awaitArgumentEsNode);
+        const awaitArgumentTsNode =
+          services.esTreeNodeToTSNodeMap.get(awaitArgumentEsNode);
 
-        const certainty = needsToBeAwaited(checker, awaitedTsNode, type);
+        const certainty = needsToBeAwaited(
+          checker,
+          awaitArgumentTsNode,
+          awaitArgumentType,
+        );
 
         if (certainty === Awaitable.Never) {
           context.report({
