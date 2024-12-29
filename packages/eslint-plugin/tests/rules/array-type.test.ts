@@ -1956,7 +1956,6 @@ interface FooInterface {
       output: 'declare function foo<E extends readonly string[]>(extra: E): E;',
     },
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/10519
       code: 'type Conditional<T> = Array<T extends string ? string : number>;',
       errors: [
         {
@@ -1968,7 +1967,6 @@ interface FooInterface {
       output: 'type Conditional<T> = (T extends string ? string : number)[];',
     },
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/10519
       code: 'type Conditional<T> = (T extends string ? string : number)[];',
       errors: [
         {
@@ -1981,7 +1979,6 @@ interface FooInterface {
         'type Conditional<T> = Array<T extends string ? string : number>;',
     },
     {
-      // https://github.com/typescript-eslint/typescript-eslint/issues/10519
       code: 'type Conditional<T> = (T extends string ? string : number)[];',
       errors: [
         {
