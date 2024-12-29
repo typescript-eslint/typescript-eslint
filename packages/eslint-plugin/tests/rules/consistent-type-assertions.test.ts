@@ -85,6 +85,38 @@ print?.(<Foo>{ bar: 5 })
 print?.call(<Foo>{ bar: 5 })
 print\`\${<Foo>{ bar: 5 }}\`
 `;
+const ARRAY_LITERAL_AS_CASTS = `
+const x = [] as string[];
+const x = ['a'] as string[];
+const x = [] as Array<string>;
+const x = ['a'] as Array<string>;
+const x = [Math.random() ? 'a' : 'b'] as 'a'[];
+`;
+const ARRAY_LITERAL_ANGLE_BRACKET_CASTS = `
+const x = <string[]>[];
+const x = <string[]>['a'];
+const x = <Array<string>>[];
+const x = <Array<string>>['a'];
+const x = <'a'[]>[Math.random() ? 'a' : 'b'];
+`;
+const ARRAY_LITERAL_ARGUMENT_AS_CASTS = `
+print([5] as Foo);
+new print([5] as Foo);
+function foo() { throw [5] as Foo }
+function b(x = [5] as Foo.Bar) {}
+function c(x = [5] as Foo) {}
+print?.([5] as Foo);
+print?.call([5] as Foo);
+print\`\${[5] as Foo}\`;
+`;
+const ARRAY_LITERAL_ARGUMENT_BRACKET_CASTS = `
+print(<Foo>[5]);
+new print(<Foo>[5]);
+function foo() { throw <Foo>[5] }
+print?.(<Foo>[5]);
+print?.call(<Foo>[5]);
+print\`\${<Foo>[5]}\`;
+`;
 
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
@@ -133,6 +165,40 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           assertionStyle: 'angle-bracket',
           objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: ARRAY_LITERAL_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: ARRAY_LITERAL_ARGUMENT_AS_CASTS,
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<Options>({
+      code: ARRAY_LITERAL_ARGUMENT_BRACKET_CASTS,
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
         },
       ],
     }),
@@ -671,5 +737,485 @@ const bs = (x <<= y) as any;
       ],
       output: 'const ternary = (true ? x : y) as any;',
     },
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_AS_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'never',
+        },
+        {
+          line: 3,
+          messageId: 'never',
+        },
+        {
+          line: 4,
+          messageId: 'never',
+        },
+        {
+          line: 5,
+          messageId: 'never',
+        },
+        {
+          line: 6,
+          messageId: 'never',
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'never',
+        },
+        {
+          line: 3,
+          messageId: 'never',
+        },
+        {
+          line: 4,
+          messageId: 'never',
+        },
+        {
+          line: 5,
+          messageId: 'never',
+        },
+        {
+          line: 6,
+          messageId: 'never',
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_AS_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'angle-bracket',
+        },
+        {
+          line: 3,
+          messageId: 'angle-bracket',
+        },
+        {
+          line: 4,
+          messageId: 'angle-bracket',
+        },
+        {
+          line: 5,
+          messageId: 'angle-bracket',
+        },
+        {
+          line: 6,
+          messageId: 'angle-bracket',
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+      output: null,
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'as',
+        },
+        {
+          line: 3,
+          messageId: 'as',
+        },
+        {
+          line: 4,
+          messageId: 'as',
+        },
+        {
+          line: 5,
+          messageId: 'as',
+        },
+        {
+          line: 6,
+          messageId: 'as',
+        },
+      ],
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      output: ARRAY_LITERAL_AS_CASTS,
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_AS_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: 'const x: string[] = [];',
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: 'const x = [] satisfies string[];',
+            },
+          ],
+        },
+        {
+          line: 3,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: `const x: string[] = ['a'];`,
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `const x = ['a'] satisfies string[];`,
+            },
+          ],
+        },
+        {
+          line: 4,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: 'const x: Array<string> = [];',
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: 'const x = [] satisfies Array<string>;',
+            },
+          ],
+        },
+        {
+          line: 5,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: `const x: Array<string> = ['a'];`,
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `const x = ['a'] satisfies Array<string>;`,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'as',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: 'const x: string[] = [];',
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: 'const x = [] satisfies string[];',
+            },
+          ],
+        },
+        {
+          line: 3,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: `const x: string[] = ['a'];`,
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `const x = ['a'] satisfies string[];`,
+            },
+          ],
+        },
+        {
+          line: 4,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: 'const x: Array<string> = [];',
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: 'const x = [] satisfies Array<string>;',
+            },
+          ],
+        },
+        {
+          line: 5,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: `const x: Array<string> = ['a'];`,
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `const x = ['a'] satisfies Array<string>;`,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
+            },
+            {
+              data: { cast: 'string' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_ARGUMENT_AS_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 3,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `new print([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 4,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `function foo() { throw [5] satisfies Foo }`,
+            },
+          ],
+        },
+        {
+          line: 5,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `function b(x = [5] satisfies Foo.Bar) {}`,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `function c(x = [5] satisfies Foo) {}`,
+            },
+          ],
+        },
+        {
+          line: 7,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print?.([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 8,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print?.call([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 9,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print\`\${[5] satisfies Foo}\`;`,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'as',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests<MessageIds, Options>({
+      code: ARRAY_LITERAL_ARGUMENT_BRACKET_CASTS,
+      errors: [
+        {
+          line: 2,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 3,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `new print([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 4,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `function foo() { throw [5] satisfies Foo }`,
+            },
+          ],
+        },
+        {
+          line: 5,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print?.([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 6,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print?.call([5] satisfies Foo);`,
+            },
+          ],
+        },
+        {
+          line: 7,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `print\`\${[5] satisfies Foo}\`;`,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    }),
   ],
 });

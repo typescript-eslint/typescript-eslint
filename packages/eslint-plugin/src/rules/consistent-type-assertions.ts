@@ -18,13 +18,17 @@ export type MessageIds =
   | 'angle-bracket'
   | 'as'
   | 'never'
+  | 'replaceArrayTypeAssertionWithAnnotation'
+  | 'replaceArrayTypeAssertionWithSatisfies'
   | 'replaceObjectTypeAssertionWithAnnotation'
   | 'replaceObjectTypeAssertionWithSatisfies'
+  | 'unexpectedArrayTypeAssertion'
   | 'unexpectedObjectTypeAssertion';
 type OptUnion =
   | {
       assertionStyle: 'angle-bracket' | 'as';
       objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+      arrayLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
     }
   | {
       assertionStyle: 'never';
@@ -45,10 +49,15 @@ export default createRule<Options, MessageIds>({
       'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
       as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
       never: 'Do not use any type assertions.',
+      replaceArrayTypeAssertionWithAnnotation:
+        'Use const x: [{cast}] = [ ... ] instead.',
+      replaceArrayTypeAssertionWithSatisfies:
+        'Use const x = [ ... ] satisfies [{cast}] instead.',
       replaceObjectTypeAssertionWithAnnotation:
         'Use const x: {{cast}} = { ... } instead.',
       replaceObjectTypeAssertionWithSatisfies:
         'Use const x = { ... } satisfies {{cast}} instead.',
+      unexpectedArrayTypeAssertion: 'Always prefer const x: T[] = [ ... ].',
       unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
     },
     schema: [
@@ -70,6 +79,11 @@ export default createRule<Options, MessageIds>({
             type: 'object',
             additionalProperties: false,
             properties: {
+              arrayLiteralTypeAssertions: {
+                type: 'string',
+                description: 'TBD',
+                enum: ['allow', 'allow-as-parameter', 'never'],
+              },
               assertionStyle: {
                 type: 'string',
                 description: 'The expected assertion style to enforce.',
@@ -89,6 +103,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      arrayLiteralTypeAssertions: 'allow',
       assertionStyle: 'as',
       objectLiteralTypeAssertions: 'allow',
     },
@@ -192,7 +207,64 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function checkExpression(
+    function getSuggests(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      annotationMessageId: MessageIds,
+      satisfiesMessageId: MessageIds,
+    ): TSESLint.ReportSuggestionArray<MessageIds> {
+      const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
+      if (
+        node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
+        !node.parent.id.typeAnnotation
+      ) {
+        const { parent } = node;
+        suggest.push({
+          messageId: annotationMessageId,
+          data: { cast: context.sourceCode.getText(node.typeAnnotation) },
+          fix: fixer => [
+            fixer.insertTextAfter(
+              parent.id,
+              `: ${context.sourceCode.getText(node.typeAnnotation)}`,
+            ),
+            fixer.replaceText(
+              node,
+              getTextWithParentheses(context.sourceCode, node.expression),
+            ),
+          ],
+        });
+      }
+      suggest.push({
+        messageId: satisfiesMessageId,
+        data: { cast: context.sourceCode.getText(node.typeAnnotation) },
+        fix: fixer => [
+          fixer.replaceText(
+            node,
+            getTextWithParentheses(context.sourceCode, node.expression),
+          ),
+          fixer.insertTextAfter(
+            node,
+            ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
+          ),
+        ],
+      });
+      return suggest;
+    }
+
+    function isAsParameter(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      return (
+        node.parent.type === AST_NODE_TYPES.NewExpression ||
+        node.parent.type === AST_NODE_TYPES.CallExpression ||
+        node.parent.type === AST_NODE_TYPES.ThrowStatement ||
+        node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
+        node.parent.type === AST_NODE_TYPES.JSXExpressionContainer ||
+        (node.parent.type === AST_NODE_TYPES.TemplateLiteral &&
+          node.parent.parent.type === AST_NODE_TYPES.TaggedTemplateExpression)
+      );
+    }
+
+    function checkExpressionForObjectAssertion(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
       if (
@@ -218,45 +290,48 @@ export default createRule<Options, MessageIds>({
       }
 
       if (checkType(node.typeAnnotation)) {
-        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-        if (
-          node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
-          !node.parent.id.typeAnnotation
-        ) {
-          const { parent } = node;
-          suggest.push({
-            messageId: 'replaceObjectTypeAssertionWithAnnotation',
-            data: { cast: context.sourceCode.getText(node.typeAnnotation) },
-            fix: fixer => [
-              fixer.insertTextAfter(
-                parent.id,
-                `: ${context.sourceCode.getText(node.typeAnnotation)}`,
-              ),
-              fixer.replaceText(
-                node,
-                getTextWithParentheses(context.sourceCode, node.expression),
-              ),
-            ],
-          });
-        }
-        suggest.push({
-          messageId: 'replaceObjectTypeAssertionWithSatisfies',
-          data: { cast: context.sourceCode.getText(node.typeAnnotation) },
-          fix: fixer => [
-            fixer.replaceText(
-              node,
-              getTextWithParentheses(context.sourceCode, node.expression),
-            ),
-            fixer.insertTextAfter(
-              node,
-              ` satisfies ${context.sourceCode.getText(node.typeAnnotation)}`,
-            ),
-          ],
-        });
+        const suggest = getSuggests(
+          node,
+          'replaceObjectTypeAssertionWithAnnotation',
+          'replaceObjectTypeAssertionWithSatisfies',
+        );
 
         context.report({
           node,
           messageId: 'unexpectedObjectTypeAssertion',
+          suggest,
+        });
+      }
+    }
+
+    function checkExpressionForArrayAssertion(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): void {
+      if (
+        options.assertionStyle === 'never' ||
+        options.arrayLiteralTypeAssertions === 'allow' ||
+        node.expression.type !== AST_NODE_TYPES.ArrayExpression
+      ) {
+        return;
+      }
+
+      if (
+        options.arrayLiteralTypeAssertions === 'allow-as-parameter' &&
+        isAsParameter(node)
+      ) {
+        return;
+      }
+
+      if (checkType(node.typeAnnotation)) {
+        const suggest = getSuggests(
+          node,
+          'replaceArrayTypeAssertionWithAnnotation',
+          'replaceArrayTypeAssertionWithSatisfies',
+        );
+
+        context.report({
+          node,
+          messageId: 'unexpectedArrayTypeAssertion',
           suggest,
         });
       }
@@ -269,7 +344,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkExpression(node);
+        checkExpressionForObjectAssertion(node);
+        checkExpressionForArrayAssertion(node);
       },
       TSTypeAssertion(node): void {
         if (options.assertionStyle !== 'angle-bracket') {
@@ -277,7 +353,8 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        checkExpression(node);
+        checkExpressionForObjectAssertion(node);
+        checkExpressionForArrayAssertion(node);
       },
     };
   },
