@@ -273,6 +273,21 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
+        function withText<Text extends string>(text: Text) {
+          return [...text];
+        }
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 26,
+          line: 3,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
         const test = 'hello';
         const a = [...test];
       `,
@@ -405,6 +420,23 @@ ruleTester.run('no-misused-spread', rule, {
           column: 38,
           endColumn: 45,
           line: 6,
+          messageId: 'noStringSpread',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function textIdentity(...args: string[]);
+
+        function withText<Text extends string>(text: Text) {
+          textIdentity(...text);
+        }
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 31,
+          line: 5,
           messageId: 'noStringSpread',
         },
       ],
@@ -799,6 +831,21 @@ ruleTester.run('no-misused-spread', rule, {
         {
           column: 21,
           endColumn: 31,
+          line: 3,
+          messageId: 'noPromiseSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+        function withPromise<P extends Promise<void>>(promise: P) {
+          return { ...promise };
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 30,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
         },
