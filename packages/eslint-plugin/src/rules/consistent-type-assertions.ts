@@ -81,7 +81,8 @@ export default createRule<Options, MessageIds>({
             properties: {
               arrayLiteralTypeAssertions: {
                 type: 'string',
-                description: 'TBD',
+                description:
+                  'Whether to always prefer type declarations for array literals used as variable initializers, rather than type assertions.',
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
               assertionStyle: {
