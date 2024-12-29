@@ -78,9 +78,7 @@ ruleTester.run('no-misused-spread', rule, {
 
       const a = [...data];
     `,
-
     'const o = { ...{ a: 1, b: 2 } };',
-
     'const o = { ...({ a: 1, b: 2 } as const) };',
     `
       declare const obj: any;
@@ -924,6 +922,28 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
+        interface FunctionWithProps {
+          (): string;
+          prop: boolean;
+        }
+
+        type FunctionWithoutProps = () => string;
+
+        declare const obj: FunctionWithProps | FunctionWithoutProps | object;
+
+        const o = { ...obj };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 27,
+          line: 11,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
         const f = () => {};
 
         const o = { ...f };
@@ -1372,6 +1392,28 @@ ruleTester.run('no-misused-spread', rule, {
           column: 21,
           endColumn: 25,
           line: 4,
+          messageId: 'noClassDeclarationSpreadInObject',
+        },
+      ],
+    },
+    {
+      code: `
+        class Declaration {
+          declaration?: boolean;
+        }
+        const Expression = class {
+          expression?: boolean;
+        };
+
+        declare const either: typeof Declaration | typeof Expression;
+
+        const o = { ...either };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 30,
+          line: 11,
           messageId: 'noClassDeclarationSpreadInObject',
         },
       ],
