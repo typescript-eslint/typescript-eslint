@@ -117,6 +117,8 @@ const foo = <Foo props={{ bar: 1 } as Bar} />;
 
 ### `arrayLiteralTypeAssertions`
 
+{/* insert option description */}
+
 Always prefer `const x: T[] = [ ... ];` to `const x = [ ... ] as T[];` (or similar with angle brackets). The rationale for this is exactly the same as for `objectLiteralTypeAssertions`.
 
 The const assertion `const x = [1, 2, 3] as const`, introduced in TypeScript 3.4, is considered beneficial and is ignored by this option.
