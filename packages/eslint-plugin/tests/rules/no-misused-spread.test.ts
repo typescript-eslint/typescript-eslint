@@ -185,6 +185,20 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
+        type BrandedString = string & { __brand: 'safe' };
+
+        declare const brandedString: BrandedString;
+
+        const spreadBrandedString = [...brandedString];
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'BrandedString' }],
+        },
+      ],
+    },
+    {
+      code: `
         type CustomIterable = {
           [Symbol.iterator]: () => Generator<string>;
         };

@@ -101,7 +101,7 @@ Examples of a configuration for this option in a `file.ts` file:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allow":[{ "from": "file", "name": "BrandedString", "path": "file.ts" }]}'
+```ts option='{"allow":[{ "from": "file", "name": "BrandedString" }]}'
 declare const unbrandedString: string;
 
 const spreadUnbrandedString = [...unbrandedString];
@@ -110,7 +110,7 @@ const spreadUnbrandedString = [...unbrandedString];
 </TabItem>
 <TabItem value="✅ Correct">
 
-```ts option='{"allow":[{ "from": "file", "name": "BrandedString", "path": "file.ts" }]}'
+```ts option='{"allow":[{ "from": "file", "name": "BrandedString" }]}'
 type BrandedString = string & { __brand: 'safe' };
 
 declare const brandedString: BrandedString;
