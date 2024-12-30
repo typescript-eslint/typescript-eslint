@@ -11,29 +11,110 @@ describe('implicit lib definitions', () => {
     expect(variables).toHaveLength(1);
   });
 
-  it('should define an implicit variable if there is a reference', () => {
+  it('should define an implicit variable if there is a value reference', () => {
     const { scopeManager } = parseAndAnalyze('new ArrayBuffer();', {
       lib: ['es2015'],
     });
 
     const variables = scopeManager.variables;
-    expect(
-      variables.some(
-        v => v instanceof ImplicitLibVariable && v.name === 'ArrayBuffer',
-      ),
-    ).toEqual(true);
+    const arrayBufferVariables = variables.filter(
+      v => v.name === 'ArrayBuffer',
+    );
+    expect(arrayBufferVariables).toHaveLength(1);
+    expect(arrayBufferVariables[0]).toBeInstanceOf(ImplicitLibVariable);
   });
 
-  it('should define an implicit variable if there is a collision', () => {
-    const { scopeManager } = parseAndAnalyze('var Symbol = {};', {
+  it('should define an implicit variable if there is a type reference', () => {
+    const { scopeManager } = parseAndAnalyze('type T = ArrayBuffer;', {
       lib: ['es2015'],
     });
 
     const variables = scopeManager.variables;
-    expect(
-      variables.some(
-        v => v instanceof ImplicitLibVariable && v.name === 'Symbol',
-      ),
-    ).toEqual(true);
+    const arrayBufferVariables = variables.filter(
+      v => v.name === 'ArrayBuffer',
+    );
+    expect(arrayBufferVariables).toHaveLength(1);
+    expect(arrayBufferVariables[0]).toBeInstanceOf(ImplicitLibVariable);
+  });
+
+  it('should define an implicit variable if there is a nested value reference', () => {
+    const { scopeManager } = parseAndAnalyze(
+      'var f = () => new ArrayBuffer();',
+      {
+        lib: ['es2015'],
+      },
+    );
+
+    const variables = scopeManager.variables;
+    const arrayBufferVariables = variables.filter(
+      v => v.name === 'ArrayBuffer',
+    );
+    expect(arrayBufferVariables).toHaveLength(1);
+    expect(arrayBufferVariables[0]).toBeInstanceOf(ImplicitLibVariable);
+  });
+
+  it('should define an implicit variable if there is a nested type reference', () => {
+    const { scopeManager } = parseAndAnalyze(
+      'var f = <T extends ArrayBuffer>(): T => undefined as T;',
+      {
+        lib: ['es2015'],
+      },
+    );
+
+    const variables = scopeManager.variables;
+    const arrayBufferVariables = variables.filter(
+      v => v.name === 'ArrayBuffer',
+    );
+    expect(arrayBufferVariables).toHaveLength(1);
+    expect(arrayBufferVariables[0]).toBeInstanceOf(ImplicitLibVariable);
+  });
+
+  it('should define an implicit variable if there is a value collision', () => {
+    const { scopeManager } = parseAndAnalyze('var Symbol = 1;', {
+      lib: ['es2015'],
+    });
+
+    const variables = scopeManager.variables;
+    const symbolVariables = variables.filter(v => v.name === 'Symbol');
+    expect(symbolVariables).toHaveLength(1);
+    expect(symbolVariables[0]).toBeInstanceOf(ImplicitLibVariable);
+  });
+
+  it('should define an implicit variable if there is a type collision', () => {
+    const { scopeManager } = parseAndAnalyze('type Symbol = 1;', {
+      lib: ['es2015'],
+    });
+
+    const variables = scopeManager.variables;
+    const symbolVariables = variables.filter(v => v.name === 'Symbol');
+    expect(symbolVariables).toHaveLength(1);
+    expect(symbolVariables[0]).toBeInstanceOf(ImplicitLibVariable);
+  });
+
+  it('should define an implicit variable if there is a nested value collision', () => {
+    const { scopeManager } = parseAndAnalyze('var f = (Symbol) => Symbol;', {
+      lib: ['es2015'],
+    });
+
+    const variables = scopeManager.variables;
+    const symbolVariables = variables.filter(v => v.name === 'Symbol');
+    expect(symbolVariables).toHaveLength(2);
+    expect(symbolVariables.some(v => v instanceof ImplicitLibVariable)).toBe(
+      true,
+    );
+    expect(symbolVariables.some(v => !(v instanceof ImplicitLibVariable))).toBe(
+      true,
+    );
+  });
+
+  it('should define an implicit variable if there is a nested type collision', () => {
+    const { scopeManager } = parseAndAnalyze('var f = (a: Symbol) => a;', {
+      lib: ['es2015'],
+    });
+
+    const variables = scopeManager.variables;
+    const symbolVariables = variables.filter(v => v.name === 'Symbol');
+    expect(symbolVariables).toHaveLength(1);
+    expect(symbolVariables[0]).toBeInstanceOf(ImplicitLibVariable);
   });
 });
