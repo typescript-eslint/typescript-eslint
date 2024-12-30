@@ -175,8 +175,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function collectToStringCertainty(type: ts.Type): Usefulness {
-      // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
-      if ((tsutils.isTypeParameter as (t: ts.Type) => boolean)(type)) {
+      if (tsutils.isTypeParameter(type)) {
         const constraint = type.getConstraint();
         if (constraint) {
           return collectToStringCertainty(constraint);
