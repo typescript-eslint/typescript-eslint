@@ -243,8 +243,7 @@ export default createRule<Options, MessageIds>({
       const declaration = declarations[0];
       const isBaseToString =
         ts.isInterfaceDeclaration(declaration.parent) &&
-        (declaration.parent.name.text === 'Object' ||
-          declaration.parent.name.text === 'Array');
+        declaration.parent.name.text === 'Object';
       return isBaseToString ? Usefulness.Never : Usefulness.Always;
     }
 
