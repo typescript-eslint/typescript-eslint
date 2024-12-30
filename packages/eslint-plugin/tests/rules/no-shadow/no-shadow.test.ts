@@ -281,6 +281,24 @@ declare const Test: {
       code: `
 const arg = 0;
 
+type Bar = new (arg: number) => typeof arg;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
 declare namespace Lib {
   function test(arg: string): typeof arg;
 }
@@ -750,6 +768,14 @@ const arg = 0;
 declare const Test: {
   new (arg: string): typeof arg;
 };
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+type Bar = new (arg: number) => typeof arg;
       `,
       options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
     },
