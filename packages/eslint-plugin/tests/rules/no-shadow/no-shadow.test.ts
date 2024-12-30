@@ -261,6 +261,26 @@ declare class Test {
       code: `
 const arg = 0;
 
+declare const Test: {
+  new (arg: string): typeof arg;
+};
+      `,
+      errors: [
+        {
+          data: {
+            name: 'arg',
+            shadowedColumn: 7,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+        },
+      ],
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: false }],
+    },
+    {
+      code: `
+const arg = 0;
+
 declare namespace Lib {
   function test(arg: string): typeof arg;
 }
@@ -720,6 +740,16 @@ const arg = 0;
 declare class Test {
   p1(arg: string): typeof arg;
 }
+      `,
+      options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
+    },
+    {
+      code: `
+const arg = 0;
+
+declare const Test: {
+  new (arg: string): typeof arg;
+};
       `,
       options: [{ ignoreFunctionTypeParameterNameValueShadow: true }],
     },

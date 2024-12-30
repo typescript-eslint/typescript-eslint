@@ -24,6 +24,7 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSMethodSignature,
   AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
   AST_NODE_TYPES.TSDeclareFunction,
+  AST_NODE_TYPES.TSConstructSignatureDeclaration,
 ]);
 
 export default createRule<Options, MessageIds>({
