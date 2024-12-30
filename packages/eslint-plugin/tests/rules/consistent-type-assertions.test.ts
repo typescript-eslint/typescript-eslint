@@ -867,12 +867,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: 'const x: string[] = [];',
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: 'const x = [] satisfies string[];',
             },
@@ -883,12 +883,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: `const x: string[] = ['a'];`,
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `const x = ['a'] satisfies string[];`,
             },
@@ -899,12 +899,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: 'const x: Array<string> = [];',
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: 'const x = [] satisfies Array<string>;',
             },
@@ -915,12 +915,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: `const x: Array<string> = ['a'];`,
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `const x = ['a'] satisfies Array<string>;`,
             },
@@ -931,12 +931,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: "'a'[]" },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
             },
             {
-              data: { cast: 'string' },
+              data: { cast: "'a'[]" },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
             },
@@ -958,12 +958,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: 'const x: string[] = [];',
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: 'const x = [] satisfies string[];',
             },
@@ -974,12 +974,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: `const x: string[] = ['a'];`,
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'string[]' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `const x = ['a'] satisfies string[];`,
             },
@@ -990,12 +990,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: 'const x: Array<string> = [];',
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: 'const x = [] satisfies Array<string>;',
             },
@@ -1006,12 +1006,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: `const x: Array<string> = ['a'];`,
             },
             {
-              data: { cast: 'string' },
+              data: { cast: 'Array<string>' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `const x = ['a'] satisfies Array<string>;`,
             },
@@ -1022,12 +1022,12 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'string' },
+              data: { cast: "'a'[]" },
               messageId: 'replaceArrayTypeAssertionWithAnnotation',
               output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
             },
             {
-              data: { cast: 'string' },
+              data: { cast: "'a'[]" },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
             },
@@ -1082,7 +1082,7 @@ const bs = (x <<= y) as any;
           messageId: 'unexpectedArrayTypeAssertion',
           suggestions: [
             {
-              data: { cast: 'Foo' },
+              data: { cast: 'Foo.Bar' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `function b(x = [5] satisfies Foo.Bar) {}`,
             },
