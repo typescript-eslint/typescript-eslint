@@ -548,6 +548,13 @@ function getRank(
 ): number {
   const type = getNodeType(node);
 
+  if (
+    node.type === AST_NODE_TYPES.MethodDefinition &&
+    node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+  ) {
+    return -1;
+  }
+
   if (type == null) {
     // shouldn't happen but just in case, put it on the end
     return orderConfig.length - 1;
