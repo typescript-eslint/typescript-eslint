@@ -2473,5 +2473,67 @@ if (+(a ?? b)) {
         },
       ],
     },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox || getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ? defaultBox : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
   ],
 });
