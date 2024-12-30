@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
@@ -653,16 +654,7 @@ export default createRule<Options, MessageId>({
           .getCallSignaturesOfType(
             getConstrainedTypeAtLocation(services, callback),
           )
-          .map(sig => sig.getReturnType())
-          .map(t => {
-            // TODO: use `getConstraintTypeInfoAtLocation` once it's merged
-            // https://github.com/typescript-eslint/typescript-eslint/pull/10496
-            if (tsutils.isTypeParameter(t)) {
-              return checker.getBaseConstraintOfType(t);
-            }
-
-            return t;
-          });
+          .map(sig => sig.getReturnType());
 
         if (returnTypes.length === 0) {
           // Not a callable function, e.g. `any`
@@ -673,16 +665,21 @@ export default createRule<Options, MessageId>({
         let hasTruthyReturnTypes = false;
 
         for (const type of returnTypes) {
+          const { constraintType } = getConstraintInfo(checker, type);
           // Predicate is always necessary if it involves `any` or `unknown`
-          if (!type || isTypeAnyType(type) || isTypeUnknownType(type)) {
+          if (
+            !constraintType ||
+            isTypeAnyType(constraintType) ||
+            isTypeUnknownType(constraintType)
+          ) {
             return;
           }
 
-          if (isPossiblyFalsy(type)) {
+          if (isPossiblyFalsy(constraintType)) {
             hasFalsyReturnTypes = true;
           }
 
-          if (isPossiblyTruthy(type)) {
+          if (isPossiblyTruthy(constraintType)) {
             hasTruthyReturnTypes = true;
           }
 
