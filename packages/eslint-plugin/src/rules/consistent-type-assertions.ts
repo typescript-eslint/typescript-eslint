@@ -50,9 +50,9 @@ export default createRule<Options, MessageIds>({
       as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
       never: 'Do not use any type assertions.',
       replaceArrayTypeAssertionWithAnnotation:
-        'Use const x: [{cast}] = [ ... ] instead.',
+        'Use const x: {{cast}} = [ ... ] instead.',
       replaceArrayTypeAssertionWithSatisfies:
-        'Use const x = [ ... ] satisfies [{cast}] instead.',
+        'Use const x = [ ... ] satisfies {{cast}} instead.',
       replaceObjectTypeAssertionWithAnnotation:
         'Use const x: {{cast}} = { ... } instead.',
       replaceObjectTypeAssertionWithSatisfies:
