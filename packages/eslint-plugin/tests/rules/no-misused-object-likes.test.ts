@@ -103,14 +103,14 @@ Object.keys(data);
             type: 'Set',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectKeys',
         },
       ],
     },
     {
       code: `
 declare const data: Set<string>;
-Object.keys(data, 'extra-arg');
+Object.values(data, 'extra-arg');
       `,
       errors: [
         {
@@ -119,14 +119,14 @@ Object.keys(data, 'extra-arg');
             type: 'Set',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectValues',
         },
       ],
     },
     {
       code: `
-declare const data: Set<string> | number;
-Object.keys(data);
+declare const data: Set<string> | { a: number };
+Object.assign(data);
       `,
       errors: [
         {
@@ -135,14 +135,16 @@ Object.keys(data);
             type: 'Set',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectAssign',
         },
       ],
     },
     {
       code: `
-declare const data: number | (boolean | (string & Set<string>));
-Object.keys(data);
+declare const data:
+  | { a: number }
+  | ({ b: boolean } | ({ c: string } & Set<string>));
+Object.entries(data);
       `,
       errors: [
         {
@@ -150,15 +152,15 @@ Object.keys(data);
           data: {
             type: 'Set',
           },
-          line: 3,
-          messageId: 'misusedObjectKeys',
+          line: 5,
+          messageId: 'noMapOrSetInObjectEntries',
         },
       ],
     },
     {
       code: `
 function test<T extends Set<string>>(data: T) {
-  Object.keys(data);
+  Object.hasOwn(data, 'key');
 }
       `,
       errors: [
@@ -168,7 +170,7 @@ function test<T extends Set<string>>(data: T) {
             type: 'Set',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectHasOwn',
         },
       ],
     },
@@ -177,7 +179,7 @@ function test<T extends Set<string>>(data: T) {
 class ExtendedSet extends Set<string> {}
 
 declare const data: ExtendedSet;
-Object.keys(data);
+Object.hasOwnProperty(data, 'key');
       `,
       errors: [
         {
@@ -186,14 +188,14 @@ Object.keys(data);
             type: 'Set',
           },
           line: 5,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectHasOwnProperty',
         },
       ],
     },
     {
       code: `
 declare const data: Set<string>;
-Object['keys'](data);
+Object['values'](data);
       `,
       errors: [
         {
@@ -202,7 +204,7 @@ Object['keys'](data);
             type: 'Set',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectValues',
         },
       ],
     },
@@ -218,14 +220,14 @@ Object.keys(data);
             type: 'Map',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectKeys',
         },
       ],
     },
     {
       code: `
 declare const data: Map<string, string>;
-Object.keys(data, 'extra-arg');
+Object.assign(data, 'extra-arg');
       `,
       errors: [
         {
@@ -234,13 +236,31 @@ Object.keys(data, 'extra-arg');
             type: 'Map',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectAssign',
         },
       ],
     },
     {
       code: `
-declare const data: Map<string, string> | string;
+declare const data: Map<string, string> | { a: string };
+Object.entries(data);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'noMapOrSetInObjectEntries',
+        },
+      ],
+    },
+    {
+      code: `
+declare const data:
+  | { a: number }
+  | ({ b: boolean } | ({ c: string } & Map<string, number>));
 Object.keys(data);
       `,
       errors: [
@@ -249,31 +269,15 @@ Object.keys(data);
           data: {
             type: 'Map',
           },
-          line: 3,
-          messageId: 'misusedObjectKeys',
-        },
-      ],
-    },
-    {
-      code: `
-declare const data: number | (boolean | (string & Map<string, number>));
-Object.keys(data);
-      `,
-      errors: [
-        {
-          column: 1,
-          data: {
-            type: 'Map',
-          },
-          line: 3,
-          messageId: 'misusedObjectKeys',
+          line: 5,
+          messageId: 'noMapOrSetInObjectKeys',
         },
       ],
     },
     {
       code: `
 function test<T extends Map<string, string>>(data: T) {
-  Object.keys(data);
+  Object.hasOwn(data, 'foo');
 }
       `,
       errors: [
@@ -283,7 +287,7 @@ function test<T extends Map<string, string>>(data: T) {
             type: 'Map',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectHasOwn',
         },
       ],
     },
@@ -292,7 +296,7 @@ function test<T extends Map<string, string>>(data: T) {
 class ExtendedMap extends Map<string, string> {}
 
 declare const data: ExtendedMap;
-Object.keys(data);
+Object.values(data);
       `,
       errors: [
         {
@@ -301,7 +305,7 @@ Object.keys(data);
             type: 'Map',
           },
           line: 5,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectValues',
         },
       ],
     },
@@ -317,7 +321,7 @@ Object['keys'](data);
             type: 'Map',
           },
           line: 3,
-          messageId: 'misusedObjectKeys',
+          messageId: 'noMapOrSetInObjectKeys',
         },
       ],
     },

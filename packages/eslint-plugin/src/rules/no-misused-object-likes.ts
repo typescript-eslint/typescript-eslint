@@ -20,20 +20,20 @@ import {
 type Options = [];
 
 type MessageIds =
-  | 'misuedObjectEntries'
-  | 'misusedHasOwn'
-  | 'misusedHasOwnProperty'
-  | 'misusedObjectAssign'
-  | 'misusedObjectKeys'
-  | 'misusedObjectValues';
+  | 'noMapOrSetInObjectAssign'
+  | 'noMapOrSetInObjectEntries'
+  | 'noMapOrSetInObjectHasOwn'
+  | 'noMapOrSetInObjectHasOwnProperty'
+  | 'noMapOrSetInObjectKeys'
+  | 'noMapOrSetInObjectValues';
 
 const objectConstructorMethodsMap = new Map<string, MessageIds>([
-  ['assign', 'misusedObjectAssign'],
-  ['entries', 'misuedObjectEntries'],
-  ['hasOwn', 'misusedHasOwn'],
-  ['hasOwnProperty', 'misusedHasOwnProperty'],
-  ['keys', 'misusedObjectKeys'],
-  ['values', 'misusedObjectValues'],
+  ['assign', 'noMapOrSetInObjectAssign'],
+  ['entries', 'noMapOrSetInObjectEntries'],
+  ['hasOwn', 'noMapOrSetInObjectHasOwn'],
+  ['hasOwnProperty', 'noMapOrSetInObjectHasOwnProperty'],
+  ['keys', 'noMapOrSetInObjectKeys'],
+  ['values', 'noMapOrSetInObjectValues'],
 ]);
 
 export default createRule<Options, MessageIds>({
@@ -46,17 +46,17 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      misuedObjectEntries:
-        "Using 'Object.entries()' on a '{{type}}' will return an empty array. Consider using the 'entries()' method instead.",
-      misusedHasOwn:
-        "Using 'hasOwn()' on a '{{type}}' may lead to unexpected results. Consider using the 'has(key)' method instead.",
-      misusedHasOwnProperty:
-        "Using 'hasOwnProperty()' on a '{{type}}' may lead to unexno-misused-object-likes-rulepected results. Consider using the 'has(key)' method instead.",
-      misusedObjectAssign:
+      noMapOrSetInObjectAssign:
         "Using 'Object.assign()' with a '{{type}}' may lead to unexpected results. Consider alternative approaches instead.",
-      misusedObjectKeys:
+      noMapOrSetInObjectEntries:
+        "Using 'Object.entries()' on a '{{type}}' will return an empty array. Consider using the 'entries()' method instead.",
+      noMapOrSetInObjectHasOwn:
+        "Using 'Object.hasOwn()' on a '{{type}}' may lead to unexpected results. Consider using the 'has(key)' method instead.",
+      noMapOrSetInObjectHasOwnProperty:
+        "Using 'Object.hasOwnProperty()' on a '{{type}}' may lead to unexpected results. Consider using the 'has(key)' method instead.",
+      noMapOrSetInObjectKeys:
         "Using 'Object.keys()' on a '{{type}}' will return an empty array. Consider using the 'keys()' method instead.",
-      misusedObjectValues:
+      noMapOrSetInObjectValues:
         "Using 'Object.values()' on a '{{type}}' will return an empty array. Consider using the 'values()' method instead.",
     },
     schema: [],
