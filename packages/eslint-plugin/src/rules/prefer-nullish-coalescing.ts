@@ -381,8 +381,6 @@ export default createRule<Options, MessageIds>({
               isNodeEqual(testNode, node.alternate)
             ) {
               identifier = testNode;
-            } else {
-              return;
             }
           }
         }
