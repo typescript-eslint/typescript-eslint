@@ -69,6 +69,10 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
       return ['es2021.full'];
     case ScriptTarget.ES2022:
       return ['es2022.full'];
+    case ScriptTarget.ES2023:
+      return ['es2023.full'];
+    case ScriptTarget.ES2024:
+      return ['es2024.full'];
     case ScriptTarget.ESNext:
       return ['esnext.full'];
     default:
@@ -77,14 +81,14 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
 }
 
 function parse(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
 function parseForESLint(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
   if (!parserOptions || typeof parserOptions !== 'object') {
@@ -147,6 +151,7 @@ function parseForESLint(
       log('Resolved libs from program: %o', analyzeOptions.lib);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxPragma === undefined &&
       compilerOptions.jsxFactory != null
     ) {
@@ -156,6 +161,7 @@ function parseForESLint(
       log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxFragmentName === undefined &&
       compilerOptions.jsxFragmentFactory != null
     ) {

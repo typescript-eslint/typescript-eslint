@@ -20,11 +20,14 @@ export * from './isUndefinedIdentifier';
 export * from './misc';
 export * from './needsPrecedingSemiColon';
 export * from './objectIterators';
+export * from './needsToBeAwaited';
 export * from './scopeUtils';
 export * from './types';
+export * from './getConstraintInfo';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
+
 const {
   applyDefault,
   deepMerge,

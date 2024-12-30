@@ -1,9 +1,10 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type { Node } from 'unist';
 
+import type { RuleDocsPage } from '../RuleDocsPage';
+
 import { nodeIsHeading, nodeIsMdxFlowExpression } from '../../utils/nodes';
 import { findHeadingIndex } from '../../utils/rules';
-import type { RuleDocsPage } from '../RuleDocsPage';
 
 const knownSkippedRules = new Set([
   'array-type',
@@ -12,8 +13,8 @@ const knownSkippedRules = new Set([
 ]);
 
 const emptyOptionDefaults = new Map<unknown, unknown>([
-  ['boolean', false],
   ['array', []],
+  ['boolean', false],
 ]);
 
 export function insertRuleOptions(page: RuleDocsPage): void {
@@ -73,6 +74,7 @@ export function insertRuleOptions(page: RuleDocsPage): void {
     page.spliceChildren(
       commentInsertionIndex,
       0,
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- I don't know whether this is safe to fix
       defaultValue !== undefined
         ? `${option.description} Default: \`${JSON.stringify(defaultValue)}\`.`
         : option.description,

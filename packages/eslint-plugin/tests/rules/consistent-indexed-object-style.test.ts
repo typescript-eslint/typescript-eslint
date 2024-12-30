@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/consistent-indexed-object-style';
 
@@ -33,6 +33,7 @@ interface Foo {
     'type Foo = { [key: string]: string | Foo };',
     'type Foo = { [key: string]: Foo };',
     'type Foo = { [key: string]: Foo } | Foo;',
+    'type Foo = { [key in string]: Foo };',
     `
 interface Foo {
   [key: string]: Foo;
@@ -48,6 +49,132 @@ interface Foo<T> {
   [key: string]: Foo<T> | string;
 }
     `,
+    `
+interface Foo {
+  [s: string]: Foo & {};
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo | string;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: Foo extends T ? string : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends Foo ? string : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends true ? Foo : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends true ? string : Foo;
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo[number];
+}
+    `,
+    `
+interface Foo {
+  [s: string]: {}[Foo];
+}
+    `,
+
+    // circular (indirect)
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Record<string, Foo1>;
+}
+    `,
+    `
+type Foo1 = {
+  [key: string]: Foo2;
+};
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+type Foo3 = {
+  [key: string]: Foo1;
+};
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+type Foo1 = {
+  [key: string]: Foo2;
+};
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+type ExampleUnion = boolean | number;
+
+type ExampleRoot = ExampleUnion | ExampleObject;
+
+interface ExampleObject {
+  [key: string]: ExampleRoot;
+}
+    `,
+
     // Type literal
     'type Foo = {};',
     `
@@ -93,6 +220,7 @@ interface Foo {
   [];
 }
     `,
+
     // 'index-signature'
     // Unhandled type
     {
@@ -140,6 +268,28 @@ interface Foo {
     {
       code: 'type T = A.B;',
       options: ['index-signature'],
+    },
+
+    {
+      // mapped type that uses the key cannot be converted to record
+      code: 'type T = { [key in Foo]: key | number };',
+    },
+    {
+      code: `
+function foo(e: { readonly [key in PropertyKey]-?: key }) {}
+      `,
+    },
+
+    {
+      // `in keyof` mapped types are not convertible to Record.
+      code: `
+function f(): {
+  // intentionally not using a Record to preserve optionals
+  [k in keyof ParseResult]: unknown;
+} {
+  return {};
+}
+      `,
     },
   ],
   invalid: [
@@ -369,6 +519,133 @@ interface Foo {
 }
       `,
     },
+    {
+      code: `
+interface Foo {
+  [key: string]: { foo: Foo };
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, { foo: Foo }>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: Foo[];
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, Foo[]>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: () => Foo;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, () => Foo>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [s: string]: [Foo];
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, [Foo]>;
+      `,
+    },
+
+    // Circular (indirect)
+    {
+      code: `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo1 = Record<string, Foo2>;
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo1 {
+  [key: string]: Record<string, Foo2>;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo1 = Record<string, Record<string, Foo2>>;
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+    },
+    {
+      code: `
+type Foo1 = {
+  [key: string]: { foo2: Foo2 };
+};
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+type Foo3 = {
+  [key: string]: Record<string, Foo1>;
+};
+      `,
+      errors: [
+        { column: 13, line: 2, messageId: 'preferRecord' },
+        { column: 13, line: 6, messageId: 'preferRecord' },
+        { column: 13, line: 10, messageId: 'preferRecord' },
+      ],
+      output: `
+type Foo1 = Record<string, { foo2: Foo2 }>;
+
+type Foo2 = Record<string, Foo3>;
+
+type Foo3 = Record<string, Record<string, Foo1>>;
+      `,
+    },
 
     // Generic
     {
@@ -376,6 +653,57 @@ interface Foo {
       errors: [{ column: 20, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'type Foo = Generic<{ [key: string]: any }>;',
+    },
+
+    // Record with an index node that may potentially break index-signature style
+    {
+      code: 'type Foo = Record<string | number, any>;',
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output: 'type Foo = { [key: string | number]: any };',
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
+    },
+    {
+      code: "type Foo = Record<Exclude<'a' | 'b' | 'c', 'a'>, any>;",
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output:
+                "type Foo = { [key: Exclude<'a' | 'b' | 'c', 'a'>]: any };",
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
+    },
+
+    // Record with valid index node should use an auto-fix
+    {
+      code: 'type Foo = Record<number, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      options: ['index-signature'],
+      output: 'type Foo = { [key: number]: any };',
+    },
+    {
+      code: 'type Foo = Record<symbol, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      options: ['index-signature'],
+      output: 'type Foo = { [key: symbol]: any };',
     },
 
     // Function types
@@ -390,6 +718,191 @@ interface Foo {
       errors: [{ column: 17, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'function foo(): { [key: string]: any } {}',
+    },
+    {
+      code: 'type T = { readonly [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+      output: `type T = Readonly<Record<string, number>>;`,
+    },
+    {
+      code: 'type T = { +readonly [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+      output: `type T = Readonly<Record<string, number>>;`,
+    },
+    {
+      // There is no fix, since there isn't a builtin Mutable<T> :(
+      code: 'type T = { -readonly [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+    },
+    {
+      code: 'type T = { [key in string]: number };',
+      errors: [{ column: 10, messageId: 'preferRecord' }],
+      output: `type T = Record<string, number>;`,
+    },
+    {
+      code: `
+function foo(e: { [key in PropertyKey]?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 50,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Partial<Record<PropertyKey, string>>) {}
+      `,
+    },
+    {
+      code: `
+function foo(e: { [key in PropertyKey]+?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Partial<Record<PropertyKey, string>>) {}
+      `,
+    },
+    {
+      code: `
+function foo(e: { [key in PropertyKey]-?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 51,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Required<Record<PropertyKey, string>>) {}
+      `,
+    },
+    {
+      code: `
+function foo(e: { readonly [key in PropertyKey]-?: string }) {}
+      `,
+      errors: [
+        {
+          column: 17,
+          endColumn: 60,
+          endLine: 2,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function foo(e: Readonly<Required<Record<PropertyKey, string>>>) {}
+      `,
+    },
+    {
+      code: `
+type Options = [
+  { [Type in (typeof optionTesters)[number]['option']]?: boolean } & {
+    allow?: TypeOrValueSpecifier[];
+  },
+];
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 67,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Options = [
+  Partial<Record<(typeof optionTesters)[number]['option'], boolean>> & {
+    allow?: TypeOrValueSpecifier[];
+  },
+];
+      `,
+    },
+    {
+      code: `
+export type MakeRequired<Base, Key extends keyof Base> = {
+  [K in Key]-?: NonNullable<Base[Key]>;
+} & Omit<Base, Key>;
+      `,
+      errors: [
+        {
+          column: 58,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+export type MakeRequired<Base, Key extends keyof Base> = Required<Record<Key, NonNullable<Base[Key]>>> & Omit<Base, Key>;
+      `,
+    },
+    {
+      // in parenthesized expression is convertible to Record
+      code: noFormat`
+function f(): {
+  [k in (keyof ParseResult)]: unknown;
+} {
+  return {};
+}
+      `,
+      errors: [
+        {
+          column: 15,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+function f(): Record<keyof ParseResult, unknown> {
+  return {};
+}
+      `,
+    },
+
+    // missing index signature type annotation while checking for a recursive type
+    {
+      code: `
+interface Foo {
+  [key: string]: Bar;
+}
+
+interface Bar {
+  [key: string];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo = Record<string, Bar>;
+
+interface Bar {
+  [key: string];
+}
+      `,
     },
   ],
 });

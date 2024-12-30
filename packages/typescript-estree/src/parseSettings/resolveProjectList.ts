@@ -3,12 +3,13 @@ import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
+import type { TSESTreeOptions } from '../parser-options';
+
 import {
   createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
 } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
@@ -74,8 +75,8 @@ export function resolveProjectList(
     RESOLUTION_CACHE = new ExpiringCache(
       options.singleRun
         ? 'Infinity'
-        : options.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+        : (options.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     );
   } else {
     const cached = RESOLUTION_CACHE.get(cacheKey);

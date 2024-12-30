@@ -13,10 +13,19 @@ const baseRule = getESLintCoreRule('no-unused-expressions');
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 type Options = InferOptionsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [
+  {
+    allowShortCircuit: false,
+    allowTaggedTemplates: false,
+    allowTernary: false,
+  },
+];
+
 export default createRule<Options, MessageIds>({
   name: 'no-unused-expressions',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Disallow unused expressions',
       extendsBaseRule: true,
@@ -26,13 +35,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  defaultOptions: [
-    {
-      allowShortCircuit: false,
-      allowTaggedTemplates: false,
-      allowTernary: false,
-    },
-  ],
+  defaultOptions,
   create(context, [{ allowShortCircuit = false, allowTernary = false }]) {
     const rules = baseRule.create(context);
 

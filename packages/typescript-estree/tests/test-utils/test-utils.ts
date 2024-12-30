@@ -3,7 +3,8 @@ import type {
   TSESTree,
   TSESTreeOptions,
 } from '../../src';
-import { parse as parserParse, parseAndGenerateServices } from '../../src';
+
+import { parseAndGenerateServices, parse as parserParse } from '../../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
@@ -125,6 +126,7 @@ export function omitDeep(
 
     for (const prop in node) {
       if (Object.hasOwn(node, prop)) {
+        // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
         if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
           // Filter out omitted and undefined props from the node
           // eslint-disable-next-line @typescript-eslint/no-dynamic-delete

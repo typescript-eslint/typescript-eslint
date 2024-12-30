@@ -32,9 +32,6 @@ export type JSONSchema4TypeExtended =
   | JSONSchema4Object
   | JSONSchema4Type;
 
-// Workaround for infinite type recursion
-// Also, https://github.com/typescript-eslint/typescript-eslint/issues/7863
-// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface JSONSchema4Object {
   [key: string]: JSONSchema4TypeExtended;
 }
@@ -146,7 +143,7 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.26
    */
-  extends?: string[] | string | undefined;
+  extends?: string | string[] | undefined;
 
   id?: string | undefined;
 
@@ -167,7 +164,7 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.7
    */
-  required?: string[] | boolean | undefined;
+  required?: boolean | string[] | undefined;
 
   /**
    * This attribute is a string that provides a short description of the
@@ -238,7 +235,7 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4
    */
-  additionalProperties?: JSONSchema4 | boolean | undefined;
+  additionalProperties?: boolean | JSONSchema4 | undefined;
 
   /**
    * The `dependencies` keyword conditionally applies a sub-schema when a given
@@ -302,7 +299,7 @@ export interface JSONSchema4ArraySchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.6
    */
-  additionalItems?: JSONSchema4 | boolean | undefined;
+  additionalItems?: boolean | JSONSchema4 | undefined;
 
   /**
    * This attribute defines the allowed items in an instance array, and

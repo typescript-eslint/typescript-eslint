@@ -413,11 +413,11 @@ function getReportDescriptor(
     },
     messageId: 'preferOptionalChain',
     ...getFixOrSuggest({
+      fixOrSuggest: useSuggestionFixer ? 'suggest' : 'fix',
       suggestion: {
         fix,
         messageId: 'optionalChainSuggest',
       },
-      useFix: !useSuggestionFixer,
     }),
   };
 

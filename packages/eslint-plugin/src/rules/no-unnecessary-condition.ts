@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
@@ -26,10 +27,31 @@ import {
 
 // Truthiness utilities
 // #region
+const valueIsPseudoBigInt = (
+  value: number | string | ts.PseudoBigInt,
+): value is ts.PseudoBigInt => {
+  return typeof value === 'object';
+};
+
+const getValueOfLiteralType = (
+  type: ts.LiteralType,
+): bigint | number | string => {
+  if (valueIsPseudoBigInt(type.value)) {
+    return pseudoBigIntToBigInt(type.value);
+  }
+  return type.value;
+};
+
+const isFalsyBigInt = (type: ts.Type): boolean => {
+  return (
+    tsutils.isLiteralType(type) &&
+    valueIsPseudoBigInt(type.value) &&
+    !getValueOfLiteralType(type)
+  );
+};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
-  //  || type.
-  (type.isLiteral() && !!type.value);
+  (type.isLiteral() && !!getValueOfLiteralType(type));
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
@@ -49,7 +71,13 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+      intersectionParts.every(
+        type =>
+          !tsutils.isFalsyType(type) &&
+          // below is a workaround for ts-api-utils bug
+          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
+          !isFalsyBigInt(type),
+      ),
     );
 
 // Nullish utilities
@@ -63,13 +91,83 @@ const isPossiblyNullish = (type: ts.Type): boolean =>
 const isAlwaysNullish = (type: ts.Type): boolean =>
   tsutils.unionTypeParts(type).every(isNullishType);
 
-// isLiteralType only covers numbers and strings, this is a more exhaustive check.
-const isLiteral = (type: ts.Type): boolean =>
-  tsutils.isBooleanLiteralType(type) ||
-  type.flags === ts.TypeFlags.Undefined ||
-  type.flags === ts.TypeFlags.Null ||
-  type.flags === ts.TypeFlags.Void ||
-  type.isLiteral();
+function toStaticValue(
+  type: ts.Type,
+):
+  | { value: bigint | boolean | number | string | null | undefined }
+  | undefined {
+  // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
+  if (tsutils.isBooleanLiteralType(type)) {
+    // Using `type.intrinsicName` instead of `type.value` because `type.value`
+    // is `undefined`, contrary to what the type guard tells us.
+    // See https://github.com/JoshuaKGoldberg/ts-api-utils/issues/528
+    return { value: type.intrinsicName === 'true' };
+  }
+  if (type.flags === ts.TypeFlags.Undefined) {
+    return { value: undefined };
+  }
+  if (type.flags === ts.TypeFlags.Null) {
+    return { value: null };
+  }
+  if (type.isLiteral()) {
+    return { value: getValueOfLiteralType(type) };
+  }
+
+  return undefined;
+}
+
+function pseudoBigIntToBigInt(value: ts.PseudoBigInt): bigint {
+  return BigInt((value.negative ? '-' : '') + value.base10Value);
+}
+
+const BOOL_OPERATORS = new Set([
+  '<',
+  '>',
+  '<=',
+  '>=',
+  '==',
+  '===',
+  '!=',
+  '!==',
+] as const);
+
+type BoolOperator = typeof BOOL_OPERATORS extends Set<infer T> ? T : never;
+
+function isBoolOperator(operator: string): operator is BoolOperator {
+  return (BOOL_OPERATORS as Set<string>).has(operator);
+}
+
+function booleanComparison(
+  left: unknown,
+  operator: BoolOperator,
+  right: unknown,
+): boolean {
+  switch (operator) {
+    case '!=':
+      // eslint-disable-next-line eqeqeq -- intentionally comparing with loose equality
+      return left != right;
+    case '!==':
+      return left !== right;
+    case '<':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left < right;
+    case '<=':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left <= right;
+    case '==':
+      // eslint-disable-next-line eqeqeq -- intentionally comparing with loose equality
+      return left == right;
+    case '===':
+      return left === right;
+    case '>':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left > right;
+    case '>=':
+      // @ts-expect-error: we don't care if the comparison seems unintentional.
+      return left >= right;
+  }
+}
+
 // #endregion
 
 export type Options = [
@@ -86,7 +184,7 @@ export type MessageId =
   | 'alwaysNullish'
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
-  | 'literalBooleanExpression'
+  | 'comparisonBetweenLiteralTypes'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -114,8 +212,8 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
-        'Unnecessary conditional, both sides of the expression are literal values.',
+      comparisonBetweenLiteralTypes:
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}, since `{{left}} {{operator}} {{right}}` is {{trueOrFalse}}.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
@@ -175,6 +273,10 @@ export default createRule<Options, MessageId>({
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
+    );
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      compilerOptions,
+      'noUncheckedIndexedAccess',
     );
 
     if (
@@ -371,19 +473,6 @@ export default createRule<Options, MessageId>({
      *      - https://github.com/microsoft/TypeScript/issues/32627
      *      - https://github.com/microsoft/TypeScript/issues/37160 (handled)
      */
-    const BOOL_OPERATORS = new Set([
-      '<',
-      '>',
-      '<=',
-      '>=',
-      '==',
-      '===',
-      '!=',
-      '!==',
-    ] as const);
-    type BoolOperator = Parameters<typeof BOOL_OPERATORS.has>[0];
-    const isBoolOperator = (operator: string): operator is BoolOperator =>
-      (BOOL_OPERATORS as Set<string>).has(operator);
     function checkIfBoolExpressionIsNecessaryConditional(
       node: TSESTree.Node,
       left: TSESTree.Node,
@@ -392,10 +481,30 @@ export default createRule<Options, MessageId>({
     ): void {
       const leftType = getConstrainedTypeAtLocation(services, left);
       const rightType = getConstrainedTypeAtLocation(services, right);
-      if (isLiteral(leftType) && isLiteral(rightType)) {
-        context.report({ node, messageId: 'literalBooleanExpression' });
+
+      const leftStaticValue = toStaticValue(leftType);
+      const rightStaticValue = toStaticValue(rightType);
+
+      if (leftStaticValue != null && rightStaticValue != null) {
+        const conditionIsTrue = booleanComparison(
+          leftStaticValue.value,
+          operator,
+          rightStaticValue.value,
+        );
+
+        context.report({
+          node,
+          messageId: 'comparisonBetweenLiteralTypes',
+          data: {
+            left: checker.typeToString(leftType),
+            operator,
+            right: checker.typeToString(rightType),
+            trueOrFalse: conditionIsTrue ? 'true' : 'false',
+          },
+        });
         return;
       }
+
       // Workaround for https://github.com/microsoft/TypeScript/issues/37160
       if (isStrictNullChecks) {
         const UNDEFINED = ts.TypeFlags.Undefined;
@@ -546,21 +655,48 @@ export default createRule<Options, MessageId>({
             getConstrainedTypeAtLocation(services, callback),
           )
           .map(sig => sig.getReturnType());
-        /* istanbul ignore if */ if (returnTypes.length === 0) {
-          // Not a callable function
+
+        if (returnTypes.length === 0) {
+          // Not a callable function, e.g. `any`
           return;
         }
-        // Predicate is always necessary if it involves `any` or `unknown`
-        if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
-          return;
+
+        let hasFalsyReturnTypes = false;
+        let hasTruthyReturnTypes = false;
+
+        for (const type of returnTypes) {
+          const { constraintType } = getConstraintInfo(checker, type);
+          // Predicate is always necessary if it involves `any` or `unknown`
+          if (
+            !constraintType ||
+            isTypeAnyType(constraintType) ||
+            isTypeUnknownType(constraintType)
+          ) {
+            return;
+          }
+
+          if (isPossiblyFalsy(constraintType)) {
+            hasFalsyReturnTypes = true;
+          }
+
+          if (isPossiblyTruthy(constraintType)) {
+            hasTruthyReturnTypes = true;
+          }
+
+          // bail early if both a possibly-truthy and a possibly-falsy have been detected
+          if (hasFalsyReturnTypes && hasTruthyReturnTypes) {
+            return;
+          }
         }
-        if (!returnTypes.some(isPossiblyFalsy)) {
+
+        if (!hasFalsyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(isPossiblyTruthy)) {
+
+        if (!hasTruthyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
@@ -650,8 +786,17 @@ export default createRule<Options, MessageId>({
           if (propType) {
             return isNullableType(propType);
           }
+          const indexInfo = checker.getIndexInfosOfType(type);
 
-          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
+          return indexInfo.some(info => {
+            const isStringTypeName =
+              getTypeName(checker, info.keyType) === 'string';
+
+            return (
+              isStringTypeName &&
+              (isNoUncheckedIndexedAccess || isNullableType(info.type))
+            );
+          });
         });
         return !isOwnNullable && isNullableType(prevType);
       }

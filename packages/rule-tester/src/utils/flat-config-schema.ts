@@ -10,8 +10,8 @@ import { normalizeSeverityToNumber } from './severity';
 type PluginMemberName = `${string}/${string}`;
 
 interface ObjectPropertySchema<T = unknown> {
-  merge: ((a: T, b: T) => T) | string;
-  validate: ((value: unknown) => asserts value is T) | string;
+  merge: string | ((a: T, b: T) => T);
+  validate: string | ((value: unknown) => asserts value is T);
 }
 
 const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
@@ -29,7 +29,7 @@ const ruleSeverities = new Map<SharedConfig.RuleLevel, SharedConfig.Severity>([
  * @returns `true` if the value is a non-null object.
  */
 function isNonNullObject(value: unknown): boolean {
-  // eslint-disable-next-line eqeqeq
+  // eslint-disable-next-line eqeqeq, @typescript-eslint/internal/eqeq-nullish
   return typeof value === 'object' && value !== null;
 }
 
@@ -104,6 +104,7 @@ function deepMerge<First extends object, Second extends object>(
         secondValue!,
         mergeMap,
       );
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     } else if (secondValue === undefined) {
       (result as ObjectLike)[key] = firstValue;
     }
@@ -204,7 +205,7 @@ class InvalidRuleSeverityError extends Error {
 function assertIsRuleSeverity(ruleId: string, value: unknown): void {
   const severity = ruleSeverities.get(value as SharedConfig.RuleLevel);
 
-  if (severity === undefined) {
+  if (severity == null) {
     throw new InvalidRuleSeverityError(ruleId, value);
   }
 }
@@ -279,8 +280,8 @@ const ALLOWED_SEVERITIES = new Set([0, 1, 2, 'error', 'off', 'warn']);
 const disableDirectiveSeveritySchema: ObjectPropertySchema<SharedConfig.RuleLevel> =
   {
     merge(
-      first: SharedConfig.RuleLevel | boolean | undefined,
-      second: SharedConfig.RuleLevel | boolean | undefined,
+      first: boolean | SharedConfig.RuleLevel | undefined,
+      second: boolean | SharedConfig.RuleLevel | undefined,
     ): SharedConfig.RuleLevel {
       const value = second ?? first;
 

@@ -111,6 +111,10 @@ html[data-theme='dark'] .image-link::before {
   background: url('/img/twitter.svg') no-repeat;
 }
 
+.bluesky-link::before {
+  background: url('/img/bluesky.svg') no-repeat;
+}
+
 .header-image-link:hover {
   opacity: 0.6;
 }

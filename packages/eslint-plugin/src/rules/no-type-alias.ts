@@ -229,7 +229,7 @@ export default createRule<Options, MessageIds>({
     const isValidGeneric = (type: TypeWithLabel): boolean => {
       return (
         type.node.type === AST_NODE_TYPES.TSTypeReference &&
-        type.node.typeArguments !== undefined
+        type.node.typeArguments != null
       );
     };
 

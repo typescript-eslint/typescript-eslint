@@ -1,12 +1,12 @@
-import * as fs from 'node:fs';
-import * as path from 'node:path';
-
 import type { ESLintPluginRuleModule } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
-import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 import type { VFile } from 'vfile';
+
+import * as lz from 'lz-string';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 import { nodeIsHeading } from './nodes';
 
@@ -21,21 +21,19 @@ export const sourceUrlPrefix =
  * @param withComment Whether to include a full comment note.
  * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
  */
-export function getEslintrcString(
+export function getRulesString(
   extendsBaseRuleName: string,
   stem: string,
   withComment: boolean,
 ): string {
-  return `{
-  "rules": {${
+  return `{${
     withComment
       ? '\n    // Note: you must disable the base rule as it can report incorrect errors'
       : ''
   }
     "${extendsBaseRuleName}": "off",
     "@typescript-eslint/${stem}": "error"
-  }
-}`;
+  }`;
 }
 
 export function convertToPlaygroundHash(eslintrc: string): string {
@@ -61,9 +59,9 @@ export function isESLintPluginRuleModule(
   return !!rule?.meta.docs;
 }
 
-export type VFileWithStem = VFile & {
+export type VFileWithStem = {
   stem: string;
-};
+} & VFile;
 
 export function isVFileWithStem(file: VFile): file is VFileWithStem {
   return !!file.stem;

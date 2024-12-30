@@ -1,7 +1,7 @@
+import type * as ts from 'typescript/lib/tsserverlibrary';
+
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-
-import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import { CORE_COMPILER_OPTIONS } from './shared';
 
@@ -16,7 +16,7 @@ function getParsedConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.ParsedCommandLine {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition, @typescript-eslint/internal/eqeq-nullish
   if (tsserver.sys === undefined) {
     throw new Error(
       '`getParsedConfigFile` is only supported in a Node-like environment.',
@@ -27,11 +27,11 @@ function getParsedConfigFile(
     configFile,
     CORE_COMPILER_OPTIONS,
     {
+      fileExists: fs.existsSync,
+      getCurrentDirectory,
       onUnRecoverableConfigFileDiagnostic: diag => {
         throw new Error(formatDiagnostics([diag])); // ensures that `parsed` is defined.
       },
-      fileExists: fs.existsSync,
-      getCurrentDirectory,
       readDirectory: tsserver.sys.readDirectory,
       readFile: file =>
         fs.readFileSync(

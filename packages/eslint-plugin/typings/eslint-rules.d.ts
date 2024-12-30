@@ -113,7 +113,12 @@ declare module 'eslint/lib/rules/max-params' {
     unknown,
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
-      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionDeclaration(
+        node:
+          | TSESTree.FunctionDeclaration
+          | TSESTree.TSDeclareFunction
+          | TSESTree.TSFunctionType,
+      ): void;
       FunctionExpression(node: TSESTree.FunctionExpression): void;
     }
   >;
@@ -256,11 +261,11 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
   const rule: TSESLint.RuleModule<
     'customMessage' | 'defaultMessage',
     (
+      | string
       | {
           message?: string;
           name: string;
         }
-      | string
     )[],
     unknown,
     {
@@ -404,7 +409,7 @@ declare module 'eslint/lib/rules/no-useless-constructor' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'noUselessConstructor',
+    'noUselessConstructor' | 'removeConstructor',
     [],
     unknown,
     {
@@ -539,6 +544,7 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
 
   namespace rule {
     export type ArrayOfStringOrObject = (
+      | string
       | {
           // extended
           allowTypeImports?: boolean;
@@ -546,7 +552,6 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
           message?: string;
           name: string;
         }
-      | string
     )[];
     export type ArrayOfStringOrObjectPatterns =
       | {

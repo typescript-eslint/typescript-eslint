@@ -30,31 +30,42 @@ const nullishTypes = ['null', 'undefined', 'null | undefined'];
 const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
 
 function typeValidTest(
-  cb: (type: string) => ValidTestCase<Options> | string,
-): (ValidTestCase<Options> | string)[] {
-  return types.map(type => cb(type));
+  cb: (type: string, equals: '' | '=') => string | ValidTestCase<Options>,
+): (string | ValidTestCase<Options>)[] {
+  return [
+    ...types.map(type => cb(type, '')),
+    ...types.map(type => cb(type, '=')),
+  ];
 }
-function nullishTypeTest<
+
+const nullishTypeTest = <
   T extends
+    | string
     | InvalidTestCase<MessageIds, Options>
-    | ValidTestCase<Options>
-    | string,
->(cb: (nullish: string, type: string) => T): T[] {
-  return nullishTypes.flatMap(nullish => types.map(type => cb(nullish, type)));
-}
+    | ValidTestCase<Options>,
+>(
+  cb: (nullish: string, type: string, equals: string) => T,
+): T[] =>
+  nullishTypes.flatMap(nullish =>
+    types.flatMap(type =>
+      ['', ...(cb.length === 3 ? ['='] : [])].map(equals =>
+        cb(nullish, type, equals),
+      ),
+    ),
+  );
 
 ruleTester.run('prefer-nullish-coalescing', rule, {
   valid: [
     ...typeValidTest(
-      type => `
-declare const x: ${type};
-x || 'foo';
+      (type, equals) => `
+declare let x: ${type};
+(x ||${equals} 'foo');
       `,
     ),
     ...nullishTypeTest(
-      (nullish, type) => `
-declare const x: ${type} | ${nullish};
-x ?? 'foo';
+      (nullish, type, equals) => `
+declare let x: ${type} | ${nullish};
+x ??${equals} 'foo';
       `,
     ),
 
@@ -87,31 +98,31 @@ x ?? 'foo';
       'null != x ? y : x;',
       'undefined != x ? y : x;',
       `
-declare const x: string;
+declare let x: string;
 x === null ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x === null ? x : y;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 x === undefined ? x : y;
       `,
       `
-declare const x: string | undefined | null;
+declare let x: string | undefined | null;
 x !== undefined ? x : y;
       `,
       `
-declare const x: string | undefined | null;
+declare let x: string | undefined | null;
 x !== null ? x : y;
       `,
       `
-declare const x: string | null | any;
+declare let x: string | null | any;
 x === null ? x : y;
       `,
       `
-declare const x: string | null | unknown;
+declare let x: string | null | unknown;
 x === null ? x : y;
       `,
     ].map(code => ({
@@ -120,113 +131,113 @@ x === null ? x : y;
     })),
 
     // ignoreConditionalTests
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-x || 'foo' ? null : null;
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo') ? null : null;
       `,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+if ((x ||${equals} 'foo')) {}
       `,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-do {} while (x || 'foo')
+declare let x: ${type} | ${nullish};
+do {} while ((x ||${equals} 'foo'))
       `,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-for (;x || 'foo';) {}
+declare let x: ${type} | ${nullish};
+for (;(x ||${equals} 'foo');) {}
       `,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-while (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+while ((x ||${equals} 'foo')) {}
       `,
     })),
 
     // ignoreMixedLogicalExpressions
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
 a || b && c;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a || b || c && d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
     })),
     ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
-declare const x: ${type} | undefined;
+declare let x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
     ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
-declare const x: ${type} | undefined;
+declare let x: ${type} | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
     ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
-declare const x: (${type} & { __brand?: any }) | undefined;
+declare let x: (${type} & { __brand?: any }) | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
     ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
       code: `
-declare const x: (${type} & { __brand?: any }) | undefined;
+declare let x: (${type} & { __brand?: any }) | undefined;
 x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
     `
-      declare const x: any;
-      declare const y: number;
+      declare let x: any;
+      declare let y: number;
       x || y;
     `,
     `
-      declare const x: unknown;
-      declare const y: number;
+      declare let x: unknown;
+      declare let y: number;
       x || y;
     `,
     `
-      declare const x: never;
-      declare const y: number;
+      declare let x: never;
+      declare let y: number;
       x || y;
     `,
     {
       code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
+declare let x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
       options: [
@@ -242,7 +253,7 @@ x || y;
     },
     {
       code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
+declare let x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
       options: [
@@ -258,7 +269,7 @@ x || y;
     },
     {
       code: `
-declare const x: 0 | 'foo' | undefined;
+declare let x: 0 | 'foo' | undefined;
 x || y;
       `,
       options: [
@@ -272,7 +283,7 @@ x || y;
     },
     {
       code: `
-declare const x: 0 | 'foo' | undefined;
+declare let x: 0 | 'foo' | undefined;
 x || y;
       `,
       options: [
@@ -291,7 +302,7 @@ enum Enum {
   B = 1,
   C = 2,
 }
-declare const x: Enum | undefined;
+declare let x: Enum | undefined;
 x || y;
       `,
       options: [
@@ -309,7 +320,7 @@ enum Enum {
   B = 1,
   C = 2,
 }
-declare const x: Enum.A | Enum.B | undefined;
+declare let x: Enum.A | Enum.B | undefined;
 x || y;
       `,
       options: [
@@ -327,7 +338,7 @@ enum Enum {
   B = 'b',
   C = 'c',
 }
-declare const x: Enum | undefined;
+declare let x: Enum | undefined;
 x || y;
       `,
       options: [
@@ -345,7 +356,7 @@ enum Enum {
   B = 'b',
   C = 'c',
 }
-declare const x: Enum.A | Enum.B | undefined;
+declare let x: Enum.A | Enum.B | undefined;
 x || y;
       `,
       options: [
@@ -356,17 +367,261 @@ x || y;
         },
       ],
     },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a || b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a || b || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a || (b && c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean((a || b) ?? c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a ?? (b || c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a ? b || c : 'fail');
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(a ? 'success' : b || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(((a = b), b || c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a || b || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a || (b && c)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if ((a || b) ?? c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a ?? (b || c)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a ? b || c : 'fail') {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (a ? 'success' : b || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (((a = b), b || c)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
   ],
   invalid: [
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-x || 'foo';
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo');
       `,
       errors: [
         {
-          column: 3,
-          endColumn: 5,
+          column: 4,
+          endColumn: 6 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -374,8 +629,8 @@ x || 'foo';
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-x ?? 'foo';
+declare let x: ${type} | ${nullish};
+(x ??${equals} 'foo');
       `,
             },
           ],
@@ -501,35 +756,35 @@ x ?? 'foo';
 
     ...[
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x !== undefined ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 undefined !== x ? x : y;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x === undefined ? y : x;
       `,
       `
-declare const x: string | undefined;
+declare let x: string | undefined;
 undefined === x ? y : x;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 x !== null ? x : y;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 null !== x ? x : y;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 x === null ? y : x;
       `,
       `
-declare const x: string | null;
+declare let x: string | null;
 null === x ? y : x;
       `,
     ].map(code => ({
@@ -559,7 +814,7 @@ x ?? y;
     // noStrictNullCheck
     {
       code: `
-declare const x: string[] | null;
+declare let x: string[] | null;
 if (x) {
 }
       `,
@@ -579,15 +834,15 @@ if (x) {
     },
 
     // ignoreConditionalTests
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-x || 'foo' ? null : null;
+declare let x: ${type} | ${nullish};
+(x ||${equals} 'foo') ? null : null;
       `,
       errors: [
         {
-          column: 3,
-          endColumn: 5,
+          column: 4,
+          endColumn: 6 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -595,8 +850,8 @@ x || 'foo' ? null : null;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-x ?? 'foo' ? null : null;
+declare let x: ${type} | ${nullish};
+(x ??${equals} 'foo') ? null : null;
       `,
             },
           ],
@@ -605,15 +860,15 @@ x ?? 'foo' ? null : null;
       options: [{ ignoreConditionalTests: false }],
       output: null,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+if ((x ||${equals} 'foo')) {}
       `,
       errors: [
         {
-          column: 7,
-          endColumn: 9,
+          column: 8,
+          endColumn: 10 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -621,8 +876,8 @@ if (x || 'foo') {}
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-if (x ?? 'foo') {}
+declare let x: ${type} | ${nullish};
+if ((x ??${equals} 'foo')) {}
       `,
             },
           ],
@@ -631,15 +886,15 @@ if (x ?? 'foo') {}
       options: [{ ignoreConditionalTests: false }],
       output: null,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-do {} while (x || 'foo')
+declare let x: ${type} | ${nullish};
+do {} while ((x ||${equals} 'foo'))
       `,
       errors: [
         {
-          column: 16,
-          endColumn: 18,
+          column: 17,
+          endColumn: 19 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -647,8 +902,8 @@ do {} while (x || 'foo')
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-do {} while (x ?? 'foo')
+declare let x: ${type} | ${nullish};
+do {} while ((x ??${equals} 'foo'))
       `,
             },
           ],
@@ -657,41 +912,15 @@ do {} while (x ?? 'foo')
       options: [{ ignoreConditionalTests: false }],
       output: null,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-for (;x || 'foo';) {}
-      `,
-      errors: [
-        {
-          column: 9,
-          endColumn: 11,
-          endLine: 3,
-          line: 3,
-          messageId: 'preferNullishOverOr',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: ${type} | ${nullish};
-for (;x ?? 'foo';) {}
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreConditionalTests: false }],
-      output: null,
-    })),
-    ...nullishTypeTest((nullish, type) => ({
-      code: `
-declare const x: ${type} | ${nullish};
-while (x || 'foo') {}
+declare let x: ${type} | ${nullish};
+for (;(x ||${equals} 'foo');) {}
       `,
       errors: [
         {
           column: 10,
-          endColumn: 12,
+          endColumn: 12 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -699,8 +928,34 @@ while (x || 'foo') {}
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-while (x ?? 'foo') {}
+declare let x: ${type} | ${nullish};
+for (;(x ??${equals} 'foo');) {}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreConditionalTests: false }],
+      output: null,
+    })),
+    ...nullishTypeTest((nullish, type, equals) => ({
+      code: `
+declare let x: ${type} | ${nullish};
+while ((x ||${equals} 'foo')) {}
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 13 + equals.length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: ${type} | ${nullish};
+while ((x ??${equals} 'foo')) {}
       `,
             },
           ],
@@ -713,9 +968,9 @@ while (x ?? 'foo') {}
     // ignoreMixedLogicalExpressions
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
 a || b && c;
       `,
       errors: [
@@ -729,9 +984,9 @@ a || b && c;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
 a ?? b && c;
       `,
             },
@@ -742,10 +997,10 @@ a ?? b && c;
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a || b || c && d;
       `,
       errors: [
@@ -759,10 +1014,10 @@ a || b || c && d;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 (a ?? b) || c && d;
       `,
             },
@@ -778,10 +1033,10 @@ declare const d: ${type} | ${nullish};
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a || b ?? c && d;
       `,
             },
@@ -792,10 +1047,10 @@ a || b ?? c && d;
     })),
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && b || c || d;
       `,
       errors: [
@@ -809,10 +1064,10 @@ a && b || c || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && (b ?? c) || d;
       `,
             },
@@ -828,10 +1083,10 @@ a && (b ?? c) || d;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type} | ${nullish};
-declare const c: ${type} | ${nullish};
-declare const d: ${type} | ${nullish};
+declare let a: ${type} | ${nullish};
+declare let b: ${type} | ${nullish};
+declare let c: ${type} | ${nullish};
+declare let d: ${type} | ${nullish};
 a && b || c ?? d;
       `,
             },
@@ -842,15 +1097,15 @@ a && b || c ?? d;
     })),
 
     // should not false positive for functions inside conditional tests
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (() => x || 'foo') {}
+declare let x: ${type} | ${nullish};
+if (() => (x ||${equals} 'foo')) {}
       `,
       errors: [
         {
-          column: 13,
-          endColumn: 15,
+          column: 14,
+          endColumn: 16 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -858,8 +1113,8 @@ if (() => x || 'foo') {}
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-if (() => x ?? 'foo') {}
+declare let x: ${type} | ${nullish};
+if (() => (x ??${equals} 'foo')) {}
       `,
             },
           ],
@@ -867,15 +1122,15 @@ if (() => x ?? 'foo') {}
       ],
       output: null,
     })),
-    ...nullishTypeTest((nullish, type) => ({
+    ...nullishTypeTest((nullish, type, equals) => ({
       code: `
-declare const x: ${type} | ${nullish};
-if (function werid() { return x || 'foo' }) {}
+declare let x: ${type} | ${nullish};
+if (function weird() { return (x ||${equals} 'foo') }) {}
       `,
       errors: [
         {
-          column: 33,
-          endColumn: 35,
+          column: 34,
+          endColumn: 36 + equals.length,
           endLine: 3,
           line: 3,
           messageId: 'preferNullishOverOr',
@@ -883,8 +1138,8 @@ if (function werid() { return x || 'foo' }) {}
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: ${type} | ${nullish};
-if (function werid() { return x ?? 'foo' }) {}
+declare let x: ${type} | ${nullish};
+if (function weird() { return (x ??${equals} 'foo') }) {}
       `,
             },
           ],
@@ -895,9 +1150,9 @@ if (function werid() { return x ?? 'foo' }) {}
     // https://github.com/typescript-eslint/typescript-eslint/issues/1290
     ...nullishTypeTest((nullish, type) => ({
       code: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type};
-declare const c: ${type};
+declare let a: ${type} | ${nullish};
+declare let b: ${type};
+declare let c: ${type};
 a || b || c;
       `,
       errors: [
@@ -911,9 +1166,9 @@ a || b || c;
             {
               messageId: 'suggestNullish',
               output: `
-declare const a: ${type} | ${nullish};
-declare const b: ${type};
-declare const c: ${type};
+declare let a: ${type} | ${nullish};
+declare let b: ${type};
+declare let c: ${type};
 (a ?? b) || c;
       `,
             },
@@ -925,7 +1180,7 @@ declare const c: ${type};
     // default for missing option
     {
       code: `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x || y;
       `,
       errors: [
@@ -935,7 +1190,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: string | undefined;
+declare let x: string | undefined;
 x ?? y;
       `,
             },
@@ -951,7 +1206,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: number | undefined;
+declare let x: number | undefined;
 x || y;
       `,
       errors: [
@@ -961,7 +1216,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: number | undefined;
+declare let x: number | undefined;
 x ?? y;
       `,
             },
@@ -977,7 +1232,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: boolean | undefined;
+declare let x: boolean | undefined;
 x || y;
       `,
       errors: [
@@ -987,7 +1242,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: boolean | undefined;
+declare let x: boolean | undefined;
 x ?? y;
       `,
             },
@@ -1003,7 +1258,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: bigint | undefined;
+declare let x: bigint | undefined;
 x || y;
       `,
       errors: [
@@ -1013,7 +1268,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: bigint | undefined;
+declare let x: bigint | undefined;
 x ?? y;
       `,
             },
@@ -1030,7 +1285,7 @@ x ?? y;
     // falsy
     {
       code: `
-declare const x: '' | undefined;
+declare let x: '' | undefined;
 x || y;
       `,
       errors: [
@@ -1040,7 +1295,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: '' | undefined;
+declare let x: '' | undefined;
 x ?? y;
       `,
             },
@@ -1061,7 +1316,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: \`\` | undefined;
+declare let x: \`\` | undefined;
 x || y;
       `,
       errors: [
@@ -1071,7 +1326,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: \`\` | undefined;
+declare let x: \`\` | undefined;
 x ?? y;
       `,
             },
@@ -1092,7 +1347,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 0 | undefined;
+declare let x: 0 | undefined;
 x || y;
       `,
       errors: [
@@ -1102,7 +1357,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0 | undefined;
+declare let x: 0 | undefined;
 x ?? y;
       `,
             },
@@ -1123,7 +1378,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 0n | undefined;
+declare let x: 0n | undefined;
 x || y;
       `,
       errors: [
@@ -1133,7 +1388,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0n | undefined;
+declare let x: 0n | undefined;
 x ?? y;
       `,
             },
@@ -1154,7 +1409,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: false | undefined;
+declare let x: false | undefined;
 x || y;
       `,
       errors: [
@@ -1164,7 +1419,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: false | undefined;
+declare let x: false | undefined;
 x ?? y;
       `,
             },
@@ -1186,7 +1441,7 @@ x ?? y;
     // truthy
     {
       code: `
-declare const x: 'a' | undefined;
+declare let x: 'a' | undefined;
 x || y;
       `,
       errors: [
@@ -1196,7 +1451,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 'a' | undefined;
+declare let x: 'a' | undefined;
 x ?? y;
       `,
             },
@@ -1217,7 +1472,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: \`hello\${'string'}\` | undefined;
+declare let x: \`hello\${'string'}\` | undefined;
 x || y;
       `,
       errors: [
@@ -1227,7 +1482,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: \`hello\${'string'}\` | undefined;
+declare let x: \`hello\${'string'}\` | undefined;
 x ?? y;
       `,
             },
@@ -1248,7 +1503,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 1 | undefined;
+declare let x: 1 | undefined;
 x || y;
       `,
       errors: [
@@ -1258,7 +1513,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 1 | undefined;
+declare let x: 1 | undefined;
 x ?? y;
       `,
             },
@@ -1279,7 +1534,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 1n | undefined;
+declare let x: 1n | undefined;
 x || y;
       `,
       errors: [
@@ -1289,7 +1544,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 1n | undefined;
+declare let x: 1n | undefined;
 x ?? y;
       `,
             },
@@ -1310,7 +1565,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: true | undefined;
+declare let x: true | undefined;
 x || y;
       `,
       errors: [
@@ -1320,7 +1575,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: true | undefined;
+declare let x: true | undefined;
 x ?? y;
       `,
             },
@@ -1342,7 +1597,7 @@ x ?? y;
     // Unions of same primitive
     {
       code: `
-declare const x: 'a' | 'b' | undefined;
+declare let x: 'a' | 'b' | undefined;
 x || y;
       `,
       errors: [
@@ -1352,7 +1607,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 'a' | 'b' | undefined;
+declare let x: 'a' | 'b' | undefined;
 x ?? y;
       `,
             },
@@ -1373,7 +1628,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 'a' | \`b\` | undefined;
+declare let x: 'a' | \`b\` | undefined;
 x || y;
       `,
       errors: [
@@ -1383,7 +1638,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 'a' | \`b\` | undefined;
+declare let x: 'a' | \`b\` | undefined;
 x ?? y;
       `,
             },
@@ -1404,7 +1659,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 0 | 1 | undefined;
+declare let x: 0 | 1 | undefined;
 x || y;
       `,
       errors: [
@@ -1414,7 +1669,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0 | 1 | undefined;
+declare let x: 0 | 1 | undefined;
 x ?? y;
       `,
             },
@@ -1435,7 +1690,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 1 | 2 | 3 | undefined;
+declare let x: 1 | 2 | 3 | undefined;
 x || y;
       `,
       errors: [
@@ -1445,7 +1700,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 1 | 2 | 3 | undefined;
+declare let x: 1 | 2 | 3 | undefined;
 x ?? y;
       `,
             },
@@ -1466,7 +1721,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 0n | 1n | undefined;
+declare let x: 0n | 1n | undefined;
 x || y;
       `,
       errors: [
@@ -1476,7 +1731,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0n | 1n | undefined;
+declare let x: 0n | 1n | undefined;
 x ?? y;
       `,
             },
@@ -1497,7 +1752,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: 1n | 2n | 3n | undefined;
+declare let x: 1n | 2n | 3n | undefined;
 x || y;
       `,
       errors: [
@@ -1507,7 +1762,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 1n | 2n | 3n | undefined;
+declare let x: 1n | 2n | 3n | undefined;
 x ?? y;
       `,
             },
@@ -1528,7 +1783,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: true | false | undefined;
+declare let x: true | false | undefined;
 x || y;
       `,
       errors: [
@@ -1538,7 +1793,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: true | false | undefined;
+declare let x: true | false | undefined;
 x ?? y;
       `,
             },
@@ -1560,7 +1815,7 @@ x ?? y;
     // Mixed unions
     {
       code: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
+declare let x: 0 | 1 | 0n | 1n | undefined;
 x || y;
       `,
       errors: [
@@ -1570,7 +1825,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: 0 | 1 | 0n | 1n | undefined;
+declare let x: 0 | 1 | 0n | 1n | undefined;
 x ?? y;
       `,
             },
@@ -1591,7 +1846,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: true | false | null | undefined;
+declare let x: true | false | null | undefined;
 x || y;
       `,
       errors: [
@@ -1601,7 +1856,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: true | false | null | undefined;
+declare let x: true | false | null | undefined;
 x ?? y;
       `,
             },
@@ -1622,7 +1877,7 @@ x ?? y;
     },
     {
       code: `
-declare const x: null;
+declare let x: null;
 x || y;
       `,
       errors: [
@@ -1632,7 +1887,7 @@ x || y;
             {
               messageId: 'suggestNullish',
               output: `
-declare const x: null;
+declare let x: null;
 x ?? y;
       `,
             },
@@ -1707,7 +1962,7 @@ enum Enum {
   B = 1,
   C = 2,
 }
-declare const x: Enum | undefined;
+declare let x: Enum | undefined;
 x || y;
       `,
       errors: [
@@ -1722,7 +1977,7 @@ enum Enum {
   B = 1,
   C = 2,
 }
-declare const x: Enum | undefined;
+declare let x: Enum | undefined;
 x ?? y;
       `,
             },
@@ -1738,7 +1993,7 @@ enum Enum {
   B = 1,
   C = 2,
 }
-declare const x: Enum.A | Enum.B | undefined;
+declare let x: Enum.A | Enum.B | undefined;
 x || y;
       `,
       errors: [
@@ -1753,7 +2008,7 @@ enum Enum {
   B = 1,
   C = 2,
 }
-declare const x: Enum.A | Enum.B | undefined;
+declare let x: Enum.A | Enum.B | undefined;
 x ?? y;
       `,
             },
@@ -1769,7 +2024,7 @@ enum Enum {
   B = 'b',
   C = 'c',
 }
-declare const x: Enum | undefined;
+declare let x: Enum | undefined;
 x || y;
       `,
       errors: [
@@ -1784,7 +2039,7 @@ enum Enum {
   B = 'b',
   C = 'c',
 }
-declare const x: Enum | undefined;
+declare let x: Enum | undefined;
 x ?? y;
       `,
             },
@@ -1800,7 +2055,7 @@ enum Enum {
   B = 'b',
   C = 'c',
 }
-declare const x: Enum.A | Enum.B | undefined;
+declare let x: Enum.A | Enum.B | undefined;
 x || y;
       `,
       errors: [
@@ -1815,7 +2070,7 @@ enum Enum {
   B = 'b',
   C = 'c',
 }
-declare const x: Enum.A | Enum.B | undefined;
+declare let x: Enum.A | Enum.B | undefined;
 x ?? y;
       `,
             },
@@ -1823,6 +2078,256 @@ x ?? y;
         },
       ],
       output: null,
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = Boolean(a || b);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+let c: boolean | undefined;
+
+const x = Boolean(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: false,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = String(a || b);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = String(a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(() => a || b);
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(() => a ?? b);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(function weird() {
+  return a || b;
+});
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(function weird() {
+  return a ?? b;
+});
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+declare function f(x: unknown): unknown;
+
+const x = Boolean(f(a || b));
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+declare function f(x: unknown): unknown;
+
+const x = Boolean(f(a ?? b));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(1 + (a || b));
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(1 + (a ?? b));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+declare function f(x: unknown): unknown;
+
+if (f(a || b)) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+declare function f(x: unknown): unknown;
+
+if (f(a ?? b)) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: string | undefined;
+declare const b: string;
+
+if (+(a || b)) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const a: string | undefined;
+declare const b: string;
+
+if (+(a ?? b)) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
     },
   ],
 });

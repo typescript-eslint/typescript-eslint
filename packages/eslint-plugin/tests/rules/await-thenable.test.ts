@@ -227,6 +227,119 @@ for await (const s of asyncIter) {
 }
       `,
     },
+    {
+      code: `
+declare const d: AsyncDisposable;
+
+await using foo = d;
+
+export {};
+      `,
+    },
+    {
+      code: `
+using foo = {
+  [Symbol.dispose]() {},
+};
+
+export {};
+      `,
+    },
+    {
+      code: `
+await using foo = 3 as any;
+
+export {};
+      `,
+    },
+    {
+      // bad bad code but not this rule's problem
+      code: `
+using foo = {
+  async [Symbol.dispose]() {},
+};
+
+export {};
+      `,
+    },
+    {
+      code: `
+declare const maybeAsyncDisposable: Disposable | AsyncDisposable;
+async function foo() {
+  await using _ = maybeAsyncDisposable;
+}
+      `,
+    },
+    {
+      code: `
+async function iterateUsing(arr: Array<AsyncDisposable>) {
+  for (await using foo of arr) {
+  }
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends unknown>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends any>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+async function wrapper<T extends number | Promise<unknown>>(value: T) {
+  return await value;
+}
+      `,
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class C<R extends unknown> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -424,7 +537,7 @@ for await (const value of yieldNumbers()) {
           endColumn: 42,
           endLine: 7,
           line: 7,
-          messageId: 'forAwaitOfNonThenable',
+          messageId: 'forAwaitOfNonAsyncIterable',
           suggestions: [
             {
               messageId: 'convertToOrdinaryFor',
@@ -456,7 +569,7 @@ for await (const value of yieldNumberPromises()) {
       `,
       errors: [
         {
-          messageId: 'forAwaitOfNonThenable',
+          messageId: 'forAwaitOfNonAsyncIterable',
           suggestions: [
             {
               messageId: 'convertToOrdinaryFor',
@@ -468,6 +581,205 @@ function* yieldNumberPromises() {
 }
 for  (const value of yieldNumberPromises()) {
   console.log(value);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+async function foo() {
+  await using d = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 29,
+          endLine: 4,
+          line: 4,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+declare const disposable: Disposable;
+async function foo() {
+   using d = disposable;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  await using _ = {
+    async [Symbol.dispose]() {},
+  };
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 4,
+          endLine: 5,
+          line: 3,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function foo() {
+   using _ = {
+    async [Symbol.dispose]() {},
+  };
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const disposable: Disposable;
+declare const asyncDisposable: AsyncDisposable;
+async function foo() {
+  await using a = disposable,
+    b = asyncDisposable,
+    c = disposable,
+    d = asyncDisposable,
+    e = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 19,
+          endColumn: 29,
+          endLine: 5,
+          line: 5,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 9,
+          line: 9,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+declare const anee: any;
+declare const disposable: Disposable;
+async function foo() {
+  await using a = anee,
+    b = disposable;
+}
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 19,
+          endLine: 6,
+          line: 6,
+          messageId: 'awaitUsingOfNonAsyncDisposable',
+        },
+      ],
+    },
+    {
+      code: `
+async function wrapper<T extends number>(value: T) {
+  return await value;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          endColumn: 21,
+          endLine: 3,
+          line: 3,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+async function wrapper<T extends number>(value: T) {
+  return  value;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<T> {
+  async wrapper<T extends string>(value: T) {
+    return  value;
+  }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return await value;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 12,
+          endColumn: 23,
+          endLine: 4,
+          line: 4,
+          messageId: 'await',
+          suggestions: [
+            {
+              messageId: 'removeAwait',
+              output: `
+class C<R extends number> {
+  async wrapper<T extends R>(value: T) {
+    return  value;
+  }
 }
       `,
             },

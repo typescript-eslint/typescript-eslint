@@ -6,19 +6,18 @@ import { createRule, objectReduceKey } from '../util';
 
 type Types = Record<
   string,
+  | boolean
+  | string
   | {
       fixWith?: string;
       message: string;
       suggest?: readonly string[];
     }
-  | boolean
-  | string
   | null
 >;
 
 export type Options = [
   {
-    extendDefaults?: boolean;
     types?: Types;
   },
 ];
@@ -37,7 +36,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: { fixWith?: string; message?: string } | true | string | null,
+  bannedType: string | { fixWith?: string; message?: string } | true | null,
 ): string {
   if (!bannedType || bannedType === true) {
     return '';
@@ -146,7 +145,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const bannedType = bannedTypes.get(name);
 
-      if (bannedType === undefined || bannedType === false) {
+      if (bannedType == null || bannedType === false) {
         return;
       }
 

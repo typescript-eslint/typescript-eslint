@@ -26,7 +26,6 @@ The type can either be a type name literal (`OldType`) or a a type name with gen
 The values can be:
 
 - A string, which is the error message to be reported; or
-- `false` to specifically un-ban this type (useful when you are using `extendDefaults`); or
 - An object with the following properties:
   - `message: string`: the message to display when the type is matched.
   - `fixWith?: string`: a string to replace the banned type with when the fixer is run. If this is omitted, no fix will be done.

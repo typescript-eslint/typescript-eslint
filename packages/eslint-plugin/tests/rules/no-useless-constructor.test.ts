@@ -5,11 +5,6 @@ import rule from '../../src/rules/no-useless-constructor';
 
 const ruleTester = new RuleTester();
 
-const error = {
-  messageId: 'noUselessConstructor' as const,
-  type: AST_NODE_TYPES.MethodDefinition,
-};
-
 ruleTester.run('no-useless-constructor', rule, {
   valid: [
     'class A {}',
@@ -220,7 +215,22 @@ class A {
   constructor() {}
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -230,7 +240,22 @@ class A extends B {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -240,7 +265,22 @@ class A extends B {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -250,7 +290,22 @@ class A extends B {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -260,7 +315,22 @@ class A extends B {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -270,7 +340,22 @@ class A extends B.C {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B.C {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -280,7 +365,22 @@ class A extends B {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -290,7 +390,22 @@ class A extends B {
   }
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A extends B {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
     {
       code: `
@@ -298,7 +413,22 @@ class A {
   public constructor() {}
 }
       `,
-      errors: [error],
+      errors: [
+        {
+          messageId: 'noUselessConstructor',
+          suggestions: [
+            {
+              messageId: 'removeConstructor',
+              output: `
+class A {
+${'  '}
+}
+      `,
+            },
+          ],
+          type: AST_NODE_TYPES.MethodDefinition,
+        },
+      ],
     },
   ],
 });

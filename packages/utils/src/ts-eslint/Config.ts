@@ -73,7 +73,7 @@ export namespace ClassicConfig {
     /**
      * The path to other config files or the package name of shareable configs.
      */
-    extends?: string[] | string;
+    extends?: string | string[];
     /**
      * The global variable settings.
      */
@@ -117,15 +117,15 @@ export namespace ClassicConfig {
   }
 
   export interface ConfigOverride extends BaseConfig {
-    excludedFiles?: string[] | string;
-    files: string[] | string;
+    excludedFiles?: string | string[];
+    files: string | string[];
   }
 
   export interface Config extends BaseConfig {
     /**
      * The glob patterns that ignore to lint.
      */
-    ignorePatterns?: string[] | string;
+    ignorePatterns?: string | string[];
     /**
      * The root flag.
      */
@@ -150,7 +150,7 @@ export namespace FlatConfig {
   export type SourceType = 'commonjs' | ParserOptionsTypes.SourceType;
 
   export interface SharedConfigs {
-    [key: string]: Config;
+    [key: string]: Config | ConfigArray;
   }
   export interface Plugin {
     /**
@@ -197,9 +197,9 @@ export namespace FlatConfig {
      * @default "off"
      */
     reportUnusedDisableDirectives?:
+      | boolean
       | SharedConfig.Severity
-      | SharedConfig.SeverityString
-      | boolean;
+      | SharedConfig.SeverityString;
   }
 
   export interface LanguageOptions {
@@ -250,14 +250,18 @@ export namespace FlatConfig {
      * If not specified, the configuration object applies to all files matched by any other configuration object.
      */
     files?: (
-      | string[] // yes, a single layer of array nesting is supported
       | string
+      | string[] // yes, a single layer of array nesting is supported
     )[];
     /**
      * An array of glob patterns indicating the files that the configuration object should not apply to.
      * If not specified, the configuration object applies to all files matched by files.
      */
     ignores?: string[];
+    /**
+     * Language specifier in the form `namespace/language-name` where `namespace` is a plugin name set in the `plugins` field.
+     */
+    language?: string;
     /**
      * An object containing settings related to how JavaScript is configured for linting.
      */
@@ -280,7 +284,7 @@ export namespace FlatConfig {
      * a string indicating the name of a processor inside of a plugin
      * (i.e., `"pluginName/processorName"`).
      */
-    processor?: Processor | string;
+    processor?: string | Processor;
     /**
      * An object containing the configured rules.
      * When `files` or `ignores` are specified, these rule configurations are only available to the matching files.
