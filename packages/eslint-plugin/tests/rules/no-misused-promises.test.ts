@@ -3144,5 +3144,22 @@ interface MySubinterface extends MyInterface {
         },
       ],
     },
+    {
+      code: `
+class MyClass {
+  ''(): void {}
+}
+
+class MySubclass extends MyClass {
+  async ''(): Promise<void> {}
+}
+      `,
+      errors: [
+        {
+          line: 7,
+          messageId: 'voidReturnInheritedMethod',
+        },
+      ],
+    },
   ],
 });

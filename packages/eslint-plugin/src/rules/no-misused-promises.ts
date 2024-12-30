@@ -493,7 +493,7 @@ export default createRule<Options, MessageId>({
           return;
         }
         const staticAccessValue = getStaticMemberAccessValue(node, context);
-        if (!staticAccessValue) {
+        if (staticAccessValue == null) {
           return;
         }
         const propertySymbol = getMemberIfExists(
@@ -604,7 +604,7 @@ export default createRule<Options, MessageId>({
           context,
         );
 
-        if (!staticAccessValue) {
+        if (staticAccessValue == null) {
           continue;
         }
 
@@ -1018,7 +1018,7 @@ function getMemberIfExists(
 
   const wellKnownSymbolName = getWellKnownStringOfSymbol(staticAccessValue);
 
-  if (wellKnownSymbolName) {
+  if (wellKnownSymbolName != null) {
     return tsutils.getWellKnownSymbolPropertyOfType(
       type,
       wellKnownSymbolName,
