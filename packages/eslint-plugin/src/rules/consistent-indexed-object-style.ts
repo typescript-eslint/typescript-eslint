@@ -1,3 +1,4 @@
+import type { ScopeVariable } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
@@ -6,6 +7,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import {
   createRule,
   getFixOrSuggest,
+  isNodeEqual,
   isParenthesized,
   nullThrows,
 } from '../util';
@@ -78,16 +80,12 @@ export default createRule<Options, MessageIds>({
       if (parentId) {
         const scope = context.sourceCode.getScope(parentId);
         const superVar = ASTUtils.findVariable(scope, parentId.name);
-        if (superVar) {
-          const isCircular = superVar.references.some(
-            item =>
-              item.isTypeReference &&
-              node.range[0] <= item.identifier.range[0] &&
-              node.range[1] >= item.identifier.range[1],
-          );
-          if (isCircular) {
-            return;
-          }
+
+        if (
+          superVar &&
+          isDeeplyReferencingType(node, superVar, new Set([parentId]))
+        ) {
+          return;
         }
       }
 
@@ -268,4 +266,90 @@ function findParentDeclaration(
     return findParentDeclaration(node.parent);
   }
   return undefined;
+}
+
+function isDeeplyReferencingType(
+  node: TSESTree.Node,
+  superVar: ScopeVariable,
+  visited: Set<TSESTree.Node>,
+): boolean {
+  if (visited.has(node)) {
+    // something on the chain is circular but it's not the reference being checked
+    return false;
+  }
+
+  visited.add(node);
+
+  switch (node.type) {
+    case AST_NODE_TYPES.TSTypeLiteral:
+      return node.members.some(member =>
+        isDeeplyReferencingType(member, superVar, visited),
+      );
+    case AST_NODE_TYPES.TSTypeAliasDeclaration:
+      return isDeeplyReferencingType(node.typeAnnotation, superVar, visited);
+    case AST_NODE_TYPES.TSIndexedAccessType:
+      return [node.indexType, node.objectType].some(type =>
+        isDeeplyReferencingType(type, superVar, visited),
+      );
+    case AST_NODE_TYPES.TSConditionalType:
+      return [
+        node.checkType,
+        node.extendsType,
+        node.falseType,
+        node.trueType,
+      ].some(type => isDeeplyReferencingType(type, superVar, visited));
+    case AST_NODE_TYPES.TSUnionType:
+    case AST_NODE_TYPES.TSIntersectionType:
+      return node.types.some(type =>
+        isDeeplyReferencingType(type, superVar, visited),
+      );
+    case AST_NODE_TYPES.TSInterfaceDeclaration:
+      return node.body.body.some(type =>
+        isDeeplyReferencingType(type, superVar, visited),
+      );
+    case AST_NODE_TYPES.TSTypeAnnotation:
+      return isDeeplyReferencingType(node.typeAnnotation, superVar, visited);
+    case AST_NODE_TYPES.TSIndexSignature: {
+      if (node.typeAnnotation) {
+        return isDeeplyReferencingType(node.typeAnnotation, superVar, visited);
+      }
+      break;
+    }
+    case AST_NODE_TYPES.TSTypeParameterInstantiation: {
+      return node.params.some(param =>
+        isDeeplyReferencingType(param, superVar, visited),
+      );
+    }
+    case AST_NODE_TYPES.TSTypeReference: {
+      if (isDeeplyReferencingType(node.typeName, superVar, visited)) {
+        return true;
+      }
+
+      if (
+        node.typeArguments &&
+        isDeeplyReferencingType(node.typeArguments, superVar, visited)
+      ) {
+        return true;
+      }
+
+      break;
+    }
+    case AST_NODE_TYPES.Identifier: {
+      // check if the identifier is a reference of the type being checked
+      if (superVar.references.some(ref => isNodeEqual(ref.identifier, node))) {
+        return true;
+      }
+
+      // otherwise, follow its definition(s)
+      const refVar = ASTUtils.findVariable(superVar.scope, node.name);
+
+      if (refVar) {
+        return refVar.defs.some(def =>
+          isDeeplyReferencingType(def.node, superVar, visited),
+        );
+      }
+    }
+  }
+
+  return false;
 }
