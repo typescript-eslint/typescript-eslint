@@ -173,6 +173,38 @@ export default createRule<Options, MessageIds>({
       };
     }
 
+    function getTypeAnnotationForViolatingNode(
+      node: TSESTree.Node,
+      type: ts.Type,
+      initializerType: ts.Type,
+    ) {
+      const annotation = checker.typeToString(type);
+
+      // verify the about-to-be-added type annotation is in-scope
+      if (tsutils.isTypeFlagSet(initializerType, ts.TypeFlags.EnumLiteral)) {
+        const scope = context.sourceCode.getScope(node);
+        const variable = ASTUtils.findVariable(scope, annotation);
+
+        if (variable == null) {
+          return null;
+        }
+
+        const definition = variable.defs.find(def => def.isTypeDefinition);
+
+        if (definition == null) {
+          return null;
+        }
+
+        const definitionType = services.getTypeAtLocation(definition.node);
+
+        if (definitionType !== type) {
+          return null;
+        }
+      }
+
+      return annotation;
+    }
+
     return {
       [`${functionScopeBoundaries}:exit`](
         node:
@@ -230,19 +262,16 @@ export default createRule<Options, MessageIds>({
           })();
 
           const typeAnnotation = (() => {
-            if (violatingNode.type || !violatingNode.initializer) {
-              return null;
-            }
-
             if (esNode.type !== AST_NODE_TYPES.PropertyDefinition) {
               return null;
             }
 
-            const initializerType = checker.getTypeAtLocation(
-              violatingNode.initializer,
-            );
+            if (esNode.typeAnnotation || !esNode.value) {
+              return null;
+            }
 
-            const violatingType = checker.getTypeAtLocation(violatingNode);
+            const violatingType = services.getTypeAtLocation(esNode);
+            const initializerType = services.getTypeAtLocation(esNode.value);
 
             // if the RHS is a literal, its type would be narrowed, while the
             // type of the initializer (which isn't `readonly`) would be the
@@ -255,7 +284,11 @@ export default createRule<Options, MessageIds>({
               return null;
             }
 
-            return checker.typeToString(violatingType);
+            return getTypeAnnotationForViolatingNode(
+              esNode,
+              violatingType,
+              initializerType,
+            );
           })();
 
           context.report({

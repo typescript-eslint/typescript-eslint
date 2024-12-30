@@ -2601,6 +2601,144 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
     },
     {
       code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const bar = Foo.Bar;
+
+        function wrapper() {
+          const Foo = 10;
+
+          class Test {
+            private prop = bar;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 25,
+          endLine: 13,
+          line: 13,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const bar = Foo.Bar;
+
+        function wrapper() {
+          const Foo = 10;
+
+          class Test {
+            private readonly prop = bar;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const bar = Foo.Bar;
+
+        function wrapper() {
+          type Foo = 10;
+
+          class Test {
+            private prop = bar;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 13,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 25,
+          endLine: 13,
+          line: 13,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const bar = Foo.Bar;
+
+        function wrapper() {
+          type Foo = 10;
+
+          class Test {
+            private readonly prop = bar;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        const Bar = (function () {
+          enum Foo {
+            Bar,
+            Bazz,
+          }
+
+          return Foo;
+        })();
+
+        const bar = Bar.Bar;
+
+        class Test {
+          private prop = bar;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 14,
+          line: 14,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        const Bar = (function () {
+          enum Foo {
+            Bar,
+            Bazz,
+          }
+
+          return Foo;
+        })();
+
+        const bar = Bar.Bar;
+
+        class Test {
+          private readonly prop = bar;
+        }
+      `,
+    },
+    {
+      code: `
         class Test {
           private prop = { foo: 'bar' };
         }
