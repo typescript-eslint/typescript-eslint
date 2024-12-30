@@ -1,5 +1,5 @@
 ---
-description: 'Disallow using `Object.{assign|entries|hasOwn|keys|values}(...)` and the `in` operator on Map/Set objects.'
+description: 'Disallow using `Object` methods on `Map` or `Set` when it might cause unexpected behavior.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -9,26 +9,35 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/no-misused-object-likes** for documentation.
 
-Methods like `Object.assign()`, `Object.entries()`, `Object.hasOwn()`, `Object.keys()`, and `Object.values()` can be
-used work with collections of data stored in objects. However, when working with `Map` or `Set` objects, even though
-they are collections, using these methods are a mistake because they do not properly write to (in the case of
-`Object.assign()`) or read from the object.
+Object methods like `Object.keys` and `Object.values` are intended for plain objects. Using them on `Map` or `Set` is a common mistake that may lead to unexpected behavior.
 
-This rule prevents such methods from being used on `Map` and `Set` objects.
+This rule disallows such usage, encouraging correct alternatives.
 
 <Tabs>
   <TabItem value="❌ Incorrect">
 		```ts
-			console.log(Object.values(new Set('abc')));
-			Object.assign(new Map(), { k: 'v' });
-		```
-	</TabItem>
+      const mySet = new Set(['foo', 'bar']);
+			Object.values(mySet);
+
+      const myMap = new Map([['foo', 'bar'], ['hello', 'world']]);
+    		Object.entries(myMap);
+    	```
+    </TabItem>
+
   <TabItem value="✅ Correct">
 		```ts
-			console.log([...new Set('abc').values()]);
-			new Map().set('k', 'v');
-		```
-	</TabItem>
+      const mySet = new Set(['foo', 'bar']);
+			mySet.keys();
+
+      const myMap = new Map([['foo', 'bar'], ['hello', 'world']]);
+    		myMap.entries();
+    	```
+    </TabItem>
+
 </Tabs>
 
-{/* Intentionally Omitted: When Not To Use It */}
+## When Not To Use It
+
+If your application extends the `Map` or `Set` types in unusual ways or manipulating their class prototype chains, you might not want this rule.
+
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

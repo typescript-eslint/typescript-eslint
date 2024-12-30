@@ -3,16 +3,23 @@
 exports[`Validating rule docs no-misused-object-likes.mdx code examples ESLint output 1`] = `
 "Incorrect
 
-console.log(Object.values(new Set('abc')));
-             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Don't use \`Object.values()\` on Set objects — it will not properly check the contents.
-	Object.assign(new Map(), { k: 'v' });
+const mySet = new Set(['foo', 'bar']);
+	Object.values(mySet);
+ ~~~~~~~~~~~~~~~~~~~~ Using 'Object.values()' on a 'Set' will return an empty array. Consider using the 'values()' method instead.
+
+const myMap = new Map([['foo', 'bar'], ['hello', 'world']]);
+	Object.entries(myMap);
+ ~~~~~~~~~~~~~~~~~~~~~ Using 'Object.entries()' on a 'Map' will return an empty array. Consider using the 'entries()' method instead.
 "
 `;
 
 exports[`Validating rule docs no-misused-object-likes.mdx code examples ESLint output 2`] = `
 "Correct
 
-console.log([...new Set('abc').values()]);
-	new Map().set('k', 'v');
+const mySet = new Set(['foo', 'bar']);
+	mySet.keys();
+
+const myMap = new Map([['foo', 'bar'], ['hello', 'world']]);
+	myMap.entries();
 "
 `;

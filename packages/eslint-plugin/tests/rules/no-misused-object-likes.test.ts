@@ -16,105 +16,310 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-misused-object-likes', rule, {
   valid: [
+    "Object.keys({ a: 'a' });",
+    'Object.keys([1, 2, 3]);',
+    'Object.keys([1, 2, 3] as const);',
     `
-      class ExMap extends Map {}
-      const map = new ExMap();
-      Object.keys(map);
+declare const data: unknown;
+Object.keys(data);
     `,
     `
-      class ExMap extends Map {}
-      const map = new ExMap();
-      Object.values(map);
+declare const data: any;
+Object.keys(data);
     `,
     `
-      class ExMap extends Map {}
-      const map = new ExMap();
-      Object.entries(map);
+declare const data: [1, 2, 3];
+Object.keys(data);
     `,
     `
-      const test = {};
-      Object.entries(test);
+declare const data: Set<string>;
+data.keys();
     `,
     `
-      const test = {};
-      Object.keys(test);
+declare const data: Map<string, string>;
+data.keys();
     `,
     `
-      const test = {};
-      Object.values(test);
+declare const data: Set;
+Object.keys(data);
     `,
     `
-      const test = [];
-      Object.keys(test);
+declare const data: Map;
+Object.keys(data);
     `,
     `
-      const test = [];
-      Object.values(test);
+declare const data: Map<string>;
+Object.keys(data);
     `,
     `
-      const test = [];
-      Object.entries(test);
+function test<T>(data: T) {
+  Object.keys(data);
+}
     `,
     `
-      const test = 123;
-      Object.keys(test);
+function test<T>(data: string[]) {
+  Object.keys(data);
+}
     `,
-    'Object.values(new (class Map {})());',
     `
-      const Object = { keys: () => {} };
-      Object.keys(new Map());
+function test<T>(data: Record<string, number>) {
+  Object.keys(data);
+}
+    `,
+    `
+declare const data: Iterable<string>;
+Object.keys(data);
+    `,
+    // error type
+    `
+Object.keys(data);
+    `,
+    `
+declare const data: Set<string>;
+keys(data);
+    `,
+    `
+declare const data: Set<string>;
+Object.create(data);
+    `,
+    `
+declare const data: Set<string>;
+Object[Symbol.iterator](data);
+    `,
+    `
+Object.keys();
     `,
   ],
   invalid: [
     {
       code: `
-        const map = new Map();
-        const result = Object.keys(map);
+declare const data: Set<string>;
+Object.keys(data);
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
     {
       code: `
-        const map = new Map();
-        const result = Object.entries(map);
+declare const data: Set<string>;
+Object.keys(data, 'extra-arg');
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
     {
       code: `
-        const map = new Map();
-        const result = Object.values(map);
+declare const data: Set<string> | number;
+Object.keys(data);
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
     {
       code: `
-        const set = new Set();
-        const result = Object.keys(set);
+declare const data: number | (boolean | (string & Set<string>));
+Object.keys(data);
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
     {
       code: `
-        const set = new Set();
-        const result = Object.entries(set);
+function test<T extends Set<string>>(data: T) {
+  Object.keys(data);
+}
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 3,
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
     {
       code: `
-        const set = new Set();
-        const result = Object.values(set);
+class ExtendedSet extends Set<string> {}
+
+declare const data: ExtendedSet;
+Object.keys(data);
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Set',
+          },
+          line: 5,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
     {
       code: `
-        const test = new WeakMap();
-        Object.keys(test);
+declare const data: Set<string>;
+Object['keys'](data);
       `,
-      errors: [{ messageId: 'misusedObjectLike' }],
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Set',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
     },
-    { code: '4 in new Set();', errors: [{ messageId: 'misusedObjectLike' }] },
+    {
+      code: `
+declare const data: Map<string, string>;
+Object.keys(data);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
+    {
+      code: `
+declare const data: Map<string, string>;
+Object.keys(data, 'extra-arg');
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
+    {
+      code: `
+declare const data: Map<string, string> | string;
+Object.keys(data);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
+    {
+      code: `
+declare const data: number | (boolean | (string & Map<string, number>));
+Object.keys(data);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
+    {
+      code: `
+function test<T extends Map<string, string>>(data: T) {
+  Object.keys(data);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
+    {
+      code: `
+class ExtendedMap extends Map<string, string> {}
+
+declare const data: ExtendedMap;
+Object.keys(data);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 5,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
+    {
+      code: `
+declare const data: Map<string, string>;
+Object['keys'](data);
+      `,
+      errors: [
+        {
+          column: 1,
+          data: {
+            type: 'Map',
+          },
+          line: 3,
+          messageId: 'misusedObjectKeys',
+        },
+      ],
+    },
   ],
 });
