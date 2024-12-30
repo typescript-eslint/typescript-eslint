@@ -3,12 +3,8 @@ import type { Lib, TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
-import {
-  ImplicitLibVariable,
-  type ImplicitLibVariableOptions,
-  type Variable,
-} from '../variable';
 import type { ScopeManager } from '../ScopeManager';
+import type { ImplicitLibVariableOptions, Variable } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -25,6 +21,7 @@ import {
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
 import { TYPE, VALUE, TYPE_VALUE } from '../lib/base-config';
+import { ImplicitLibVariable } from '../variable';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
@@ -42,12 +39,11 @@ interface ReferencerOptions extends VisitorOptions {
 type ImplicitVariableMap = Map<string, ImplicitLibVariableOptions>;
 
 // The `TSLibraries` object should have this type instead, but that's outside the scope of this prototype
-const entriesByLib: Map<Lib, [string, ImplicitLibVariableOptions][]> =
-  new Map();
+const entriesByLib = new Map<Lib, [string, ImplicitLibVariableOptions][]>();
 // This object caches by the serialized JSON representation of the file's libs array
-const variablesFromSerializedLibs: Map<string, ImplicitVariableMap> = new Map();
+const variablesFromSerializedLibs = new Map<string, ImplicitVariableMap>();
 // This object caches by reference from the file's libs array
-const variablesFromRawLibs: WeakMap<Lib[], ImplicitVariableMap> = new WeakMap();
+const variablesFromRawLibs = new WeakMap<Lib[], ImplicitVariableMap>();
 
 // Referencing variables and creating bindings.
 class Referencer extends Visitor {
@@ -71,7 +67,7 @@ class Referencer extends Visitor {
       variablesFromRawLibs.get(this.#lib);
     if (!implicitVariablesFromLibs) {
       // Try to find out if this is a different object but same content we've seen before.
-      const libs: Lib[] = this.#lib.slice().sort();
+      const libs: Lib[] = [...this.#lib].sort();
       const serialized: string = JSON.stringify(libs);
       implicitVariablesFromLibs = variablesFromSerializedLibs.get(serialized);
       if (!implicitVariablesFromLibs) {
@@ -116,8 +112,8 @@ class Referencer extends Visitor {
     }
 
     // Collect all names that are defined or referenced.
-    const allScopes: Set<Scope> = new Set([globalScope]);
-    const allNames: Set<string> = new Set();
+    const allScopes = new Set<Scope>([globalScope]);
+    const allNames = new Set<string>();
 
     for (const scope of allScopes) {
       for (const childScope of scope.childScopes) {
@@ -135,8 +131,8 @@ class Referencer extends Visitor {
 
     // Rules only care about implicit globals if they are referenced or overlap with a local declaration,
     // so add only those implicit globals.
-    const replacements: Map<Variable, Variable> = new Map();
-    const arraysToProcess: Set<Variable[]> = new Set([globalScope.variables]);
+    const replacements = new Map<Variable, Variable>();
+    const arraysToProcess = new Set<Variable[]>([globalScope.variables]);
     const { declaredVariables } = this.scopeManager;
     for (const name of allNames) {
       const libVariable: ImplicitLibVariableOptions | undefined =
@@ -156,20 +152,25 @@ class Referencer extends Visitor {
           // Copy over information about the conflicting declaration
           for (const def of existingVariable.defs) {
             newVariable.defs.push(def);
+            // These arrays were created during defineVariable invocation
             const parentDeclarations =
               def.parent && declaredVariables.get(def.parent);
-            const nodeDeclarations = declaredVariables.get(def.node);
             if (parentDeclarations) {
               arraysToProcess.add(parentDeclarations);
             }
+
+            const nodeDeclarations = declaredVariables.get(def.node);
             if (nodeDeclarations) {
               arraysToProcess.add(nodeDeclarations);
             }
           }
+
+          // This mapping is unidirectional, so just copy
           for (const identifier of existingVariable.identifiers) {
             newVariable.identifiers.push(identifier);
           }
-          // References should not have been bound yet, so no action should be needed.
+
+          // References should not have been bound yet, so no action needed
         } else {
           globalScope.defineImplicitVariable(name, libVariable);
         }
