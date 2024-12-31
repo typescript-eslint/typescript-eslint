@@ -106,6 +106,7 @@ export function config(
       typeof configWithExtends !== 'object' ||
       !('extends' in configWithExtends)
     ) {
+      // `configWithExtends` could be anything, but we'll assume it's a `Config` object for TS purposes.
       return configWithExtends as Config;
     }
     const { extends: extendsArr, ...config } = configWithExtends as {
@@ -114,8 +115,10 @@ export function config(
       files?: unknown;
       ignores?: unknown;
     };
+    // `config` could be anything, but we'll assume it's a `Config` object for TS purposes.
+    const configToReturn = config as Config;
     if (extendsArr.length === 0) {
-      return config as Config;
+      return configToReturn;
     }
     const extendsArrFlattened = extendsArr.flat(
       Infinity,
@@ -159,7 +162,7 @@ export function config(
           ...(name && { name }),
         };
       }),
-      config as Config,
+      configToReturn,
     ];
   });
 }
