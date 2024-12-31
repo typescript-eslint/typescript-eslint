@@ -38,29 +38,37 @@ export default {
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
+        'typings/global.d.ts',
       ],
     },
     'packages/eslint-plugin': {
-      ignore: ['tests/fixtures/**'],
+      ignore: [
+        'tests/fixtures/**',
+        'typings/eslint-rules.d.ts',
+        'typings/typescript.d.ts',
+      ],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
     },
     'packages/integration-tests': {
-      ignore: ['fixtures/**'],
+      ignore: ['fixtures/**', 'typings/global.d.ts'],
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
+    },
+    'packages/rule-tester': {
+      ignore: ['typings/eslint.d.ts'],
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
     },
     'packages/type-utils': {
-      ignore: ['tests/fixtures/**'],
+      ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
     },
     'packages/typescript-estree': {
       entry: ['src/use-at-your-own-risk.ts'],
-      ignore: ['tests/fixtures/**'],
+      ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
     },
     'packages/utils': {
       ignore: ['tests/**/*.type-test.ts'],
