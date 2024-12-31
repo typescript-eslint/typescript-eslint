@@ -14,12 +14,14 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
+      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
         '@babel/eslint-parser',
         '@babel/parser',
         '@babel/types',
+        '@nx/js',
         '@nx/workspace',
         'glob',
         'husky',
@@ -71,7 +73,11 @@ export default {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
     },
     'packages/utils': {
-      ignore: ['tests/**/*.type-test.ts'],
+      ignore: [
+        'tests/**/*.type-test.ts',
+        'typings/eslint.d.ts',
+        'typings/eslint-community-eslint-utils.d.ts',
+      ],
     },
     'packages/website': {
       entry: [
@@ -85,12 +91,16 @@ export default {
         'src/theme/**/*.tsx',
         'src/theme/prism-include-languages.js',
       ],
+      ignore: ['src/globals.d.ts', 'src/hooks/*', 'typings/*'],
       ignoreDependencies: [
         // used in MDX docs
         'raw-loader',
 
         // it's imported only as type (esquery types are forked and defined in packages/website/typings/esquery.d.ts)
         'esquery',
+
+        // Referenced in webpack via the CopyPlugin
+        '@typescript-eslint/website-eslint',
 
         '@docusaurus/mdx-loader',
         '@docusaurus/types',
@@ -105,6 +115,7 @@ export default {
         '@docusaurus/BrowserOnly',
         '@docusaurus/module-type-aliases',
         '@generated/docusaurus.config',
+        '^@site/.*',
         '^@theme/.*',
         '^@theme-original/.*',
         'docusaurus-plugin-typedoc',
