@@ -312,6 +312,10 @@ ruleTester.run('no-deprecated', rule, {
       }
       <foo bar={1} />;
     `,
+    `
+      declare const test: string;
+      const bar = { test };
+    `,
   ],
   invalid: [
     {
