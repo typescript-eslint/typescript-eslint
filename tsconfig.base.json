@@ -17,12 +17,8 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noEmitOnError": true,
-    // TODO: Check but I think Brad requested to enforce via linting
-    "noFallthroughCasesInSwitch": false,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
-    // TODO: Check but I think Brad requested to enforce via linting
-    "noUnusedLocals": false,
     "pretty": true,
     "removeComments": false,
     "resolveJsonModule": false,
