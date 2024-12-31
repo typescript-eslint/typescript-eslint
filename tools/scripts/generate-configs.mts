@@ -119,8 +119,13 @@ async function main(): Promise<void> {
     [key, value]: RuleEntry,
     settings: ConfigRuleSettings = {},
   ): LinterConfigRules {
-    if (settings.deprecated && value.meta.deprecated) {
-      return config;
+    if (value.meta.deprecated) {
+      if (value.meta.docs.recommended) {
+        throw new Error(`${key} is both deprecated and recommended.`);
+      }
+      if (settings.deprecated) {
+        return config;
+      }
     }
 
     // Explicitly exclude rules requiring type-checking
