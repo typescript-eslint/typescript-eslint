@@ -109,12 +109,15 @@ export function config(
       // `configWithExtends` could be anything, but we'll assume it's a `Config` object for TS purposes.
       return configWithExtends as Config;
     }
-    const { extends: extendsArr, ...config } = configWithExtends as {
+    interface ObjectWithExtends {
       extends: InfiniteDepthConfigWithExtends[];
-      name?: unknown;
-      files?: unknown;
-      ignores?: unknown;
-    };
+    }
+    const {
+      extends: extendsArr,
+      ...config
+    }: ObjectWithExtends &
+      Partial<Record<'files' | 'ignores' | 'name', unknown>> =
+      configWithExtends as ObjectWithExtends;
     // `config` could be any object, but we'll assume it's a `Config` object for TS purposes.
     const configToReturn = config as Config;
     if (extendsArr.length === 0) {
