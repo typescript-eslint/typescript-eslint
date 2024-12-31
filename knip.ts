@@ -42,6 +42,7 @@ export default {
     },
     'packages/eslint-plugin': {
       ignore: ['tests/fixtures/**'],
+      ignoreDependencies: ['vite'],
     },
     'packages/eslint-plugin-internal': {
       ignore: ['tests/fixtures/**'],
