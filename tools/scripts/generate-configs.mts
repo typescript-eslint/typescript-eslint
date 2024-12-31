@@ -89,6 +89,10 @@ async function main(): Promise<void> {
       ),
   );
 
+  // special case - return-await used to be an extension, but no longer is.
+  // See https://github.com/typescript-eslint/typescript-eslint/issues/9517
+  BASE_RULES_TO_BE_OVERRIDDEN.set('return-await', 'no-return-await');
+
   type RuleEntry = [string, ESLintPluginRuleModule];
 
   const allRuleEntries: RuleEntry[] = Object.entries(eslintPlugin.rules).sort(
