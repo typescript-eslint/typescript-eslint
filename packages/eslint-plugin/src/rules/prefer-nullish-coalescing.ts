@@ -410,9 +410,8 @@ export default createRule<Options, MessageIds>({
             return false;
           }
 
-          const nullishFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
-
           if (implicitEquality) {
+            const nullishFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
             return (flags & ~nullishFlags & ts.TypeFlags.PossiblyFalsy) === 0;
           }
 
