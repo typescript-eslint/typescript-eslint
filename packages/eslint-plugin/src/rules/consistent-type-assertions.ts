@@ -208,18 +208,18 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function getSuggests(
+    function getSuggestions(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       annotationMessageId: MessageIds,
       satisfiesMessageId: MessageIds,
     ): TSESLint.ReportSuggestionArray<MessageIds> {
-      const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
+      const suggestions: TSESLint.ReportSuggestionArray<MessageIds> = [];
       if (
         node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
         !node.parent.id.typeAnnotation
       ) {
         const { parent } = node;
-        suggest.push({
+        suggestions.push({
           messageId: annotationMessageId,
           data: { cast: context.sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
@@ -234,7 +234,7 @@ export default createRule<Options, MessageIds>({
           ],
         });
       }
-      suggest.push({
+      suggestions.push({
         messageId: satisfiesMessageId,
         data: { cast: context.sourceCode.getText(node.typeAnnotation) },
         fix: fixer => [
@@ -248,7 +248,7 @@ export default createRule<Options, MessageIds>({
           ),
         ],
       });
-      return suggest;
+      return suggestions;
     }
 
     function isAsParameter(
@@ -291,7 +291,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (checkType(node.typeAnnotation)) {
-        const suggest = getSuggests(
+        const suggest = getSuggestions(
           node,
           'replaceObjectTypeAssertionWithAnnotation',
           'replaceObjectTypeAssertionWithSatisfies',
@@ -324,7 +324,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (checkType(node.typeAnnotation)) {
-        const suggest = getSuggests(
+        const suggest = getSuggestions(
           node,
           'replaceArrayTypeAssertionWithAnnotation',
           'replaceArrayTypeAssertionWithSatisfies',
