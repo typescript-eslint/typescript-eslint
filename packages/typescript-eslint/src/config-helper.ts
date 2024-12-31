@@ -118,11 +118,6 @@ export function config(
     }: ObjectWithExtends &
       Partial<Record<'files' | 'ignores' | 'name', unknown>> =
       configWithExtends as ObjectWithExtends;
-    // `config` could be any object, but we'll assume it's a `Config` object for TS purposes.
-    const configToReturn = config as Config;
-    if (extendsArr.length === 0) {
-      return configToReturn;
-    }
     const extendsArrFlattened = extendsArr.flat(
       Infinity,
     ) as ConfigWithExtends[];
@@ -165,7 +160,8 @@ export function config(
           ...(name && { name }),
         };
       }),
-      configToReturn,
+      // `config` could be any object, but we'll assume it's a `Config` object for TS purposes.
+      config as Config,
     ];
   });
 }
