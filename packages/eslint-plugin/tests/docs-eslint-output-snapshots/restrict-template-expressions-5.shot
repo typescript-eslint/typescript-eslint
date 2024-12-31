@@ -1,0 +1,4 @@
+Options: { "allowNullish": true }
+
+const arg = condition ? 'ok' : null;
+const msg1 = `arg = ${arg}`;

@@ -1,0 +1,10 @@
+Incorrect
+Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
+
+const x = { foo: 1 } as T;
+          ~~~~~~~~~~~~~~~ Always prefer const x: T = { ... }.
+
+function bar() {
+  return { foo: 1 } as T;
+         ~~~~~~~~~~~~~~~ Always prefer const x: T = { ... }.
+}

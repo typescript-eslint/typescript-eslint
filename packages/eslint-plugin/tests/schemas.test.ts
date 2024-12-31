@@ -1,8 +1,8 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import 'jest-specific-snapshot';
 import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
+import { it, describe, expect } from 'vitest';
 
 import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
@@ -49,7 +49,6 @@ const ONLY = '';
 describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
   for (const [ruleName, ruleDef] of Object.entries(rules)) {
     if (SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName)) {
-      // eslint-disable-next-line jest/no-disabled-tests -- intentional skip for documentation purposes
       it.skip(ruleName, () => {});
       continue;
     }
@@ -88,7 +87,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         PRETTIER_CONFIG.tsType,
       );
 
-      expect(
+      await expect(
         [
           '',
           '# SCHEMA:',
@@ -99,12 +98,12 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           '',
           compilationResult,
         ].join('\n'),
-      ).toMatchSpecificSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
+      ).toMatchFileSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
     });
   }
 });
 
-test('There should be no old snapshots for rules that have been deleted', () => {
+it('There should be no old snapshots for rules that have been deleted', () => {
   const files = fs.readdirSync(snapshotFolder);
   const names = new Set(
     Object.keys(rules)
@@ -191,7 +190,7 @@ describe('Rule schemas should validate options correctly', () => {
   };
 
   for (const [ruleName, rule] of Object.entries(rules)) {
-    test(`${ruleName} must accept valid options`, () => {
+    it(`${ruleName} must accept valid options`, () => {
       if (
         !areOptionsValid(
           rule,
@@ -202,7 +201,7 @@ describe('Rule schemas should validate options correctly', () => {
       }
     });
 
-    test(`${ruleName} rejects arbitrary options`, () => {
+    it(`${ruleName} rejects arbitrary options`, () => {
       if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
         throw new Error(`Options succeeded validation for arbitrary options`);
       }

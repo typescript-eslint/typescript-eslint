@@ -1,0 +1,36 @@
+Incorrect
+
+foo && foo.a && foo.a.b && foo.a.b.c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+foo && foo['a'] && foo['a'].b && foo['a'].b.c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+foo && foo.a && foo.a.b && foo.a.b.method && foo.a.b.method();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// With empty objects
+(((foo || {}).a || {}).b || {}).c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+ ~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  ~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+(((foo || {})['a'] || {}).b || {}).c;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  ~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// With negated `or`s
+!foo || !foo.bar;
+~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+!foo || !foo[bar];
+~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+!foo || !foo.bar || !foo.bar.baz || !foo.bar.baz();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// this rule also supports converting chained strict nullish checks:
+foo &&
+~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  foo.a != null &&
+~~~~~~~~~~~~~~~
+  foo.a.b !== null &&
+  foo.a.b.c != undefined &&
+  foo.a.b.c.d !== undefined &&
+  foo.a.b.c.d.e;

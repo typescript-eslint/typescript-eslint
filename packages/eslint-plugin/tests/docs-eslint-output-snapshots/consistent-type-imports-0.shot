@@ -1,0 +1,6 @@
+Options: { "prefer": "type-imports" }
+
+import type { Foo } from 'Foo';
+import type Bar from 'Bar';
+type T = Foo;
+const x: Bar = 1;

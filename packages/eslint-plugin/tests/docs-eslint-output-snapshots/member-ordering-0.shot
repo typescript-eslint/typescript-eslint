@@ -1,0 +1,15 @@
+Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+interface Foo {
+  B: string; // -> field
+
+  new (); // -> constructor
+  ~~~~~~~ Member new should be declared before all field definitions.
+
+  A(): void; // -> method
+  ~~~~~~~~~~ Member A should be declared before all field definitions.
+
+  [Z: string]: any; // -> signature
+  ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
+}

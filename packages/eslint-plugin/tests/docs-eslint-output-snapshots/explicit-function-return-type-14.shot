@@ -1,0 +1,5 @@
+Incorrect
+Options: { "allowIIFEs": true }
+
+var func = () => 'foo';
+              ~~ Missing return type on function.

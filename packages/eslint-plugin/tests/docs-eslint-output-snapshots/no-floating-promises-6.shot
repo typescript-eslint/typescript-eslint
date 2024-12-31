@@ -1,0 +1,13 @@
+Incorrect
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+
+let promise: Promise<number> = Promise.resolve(2);
+promise;
+~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.
+
+function returnsPromise(): Promise<number> {
+  return Promise.resolve(42);
+}
+
+returnsPromise();
+~~~~~~~~~~~~~~~~~ Promises must be awaited, end with a call to .catch, end with a call to .then with a rejection handler or be explicitly marked as ignored with the `void` operator.

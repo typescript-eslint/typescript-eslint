@@ -1,0 +1,4 @@
+Correct
+
+foo?.bar;
+foo?.bar();

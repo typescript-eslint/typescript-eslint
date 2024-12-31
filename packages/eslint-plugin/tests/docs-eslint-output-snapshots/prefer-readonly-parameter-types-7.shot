@@ -1,0 +1,7 @@
+Incorrect
+Options: { "checkParameterProperties": true }
+
+class Foo {
+  constructor(private paramProp: string[]) {}
+                      ~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
+}

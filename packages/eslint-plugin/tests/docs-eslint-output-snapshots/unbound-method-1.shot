@@ -1,0 +1,27 @@
+Correct
+
+class MyClass {
+  public logUnbound(): void {
+    console.log(this);
+  }
+
+  public logBound = () => console.log(this);
+}
+
+const instance = new MyClass();
+
+// logBound will always be bound with the correct scope
+const { logBound } = instance;
+logBound();
+
+// .bind and lambdas will also add a correct scope
+const dotBindLog = instance.logUnbound.bind(instance);
+const innerLog = () => instance.logUnbound();
+
+// arith.double explicitly declares that it does not refer to `this` internally
+const arith = {
+  double(this: void, x: number): number {
+    return x * 2;
+  },
+};
+const { double } = arith;

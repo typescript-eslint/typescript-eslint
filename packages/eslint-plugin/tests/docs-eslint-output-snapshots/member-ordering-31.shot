@@ -1,0 +1,11 @@
+Correct
+Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
+
+interface Foo {
+  [a: string]: number;
+  a: boolean;
+  b(): void;
+
+  (): Baz;
+  new (): Bar;
+}

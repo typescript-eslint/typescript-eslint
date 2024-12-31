@@ -1,4 +1,5 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import { describe } from 'vitest';
 
 import rule from '../../src/rules/no-unsafe-type-assertion';
 import { getFixturesRootDir } from '../RuleTester';

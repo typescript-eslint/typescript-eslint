@@ -1,0 +1,10 @@
+Correct
+
+let noParametersOrReturn: () => void;
+noParametersOrReturn = () => {};
+
+let stringToNumber: (text: string) => number;
+stringToNumber = text => text.length;
+
+let identity: <T>(value: T) => T;
+identity = value => value;

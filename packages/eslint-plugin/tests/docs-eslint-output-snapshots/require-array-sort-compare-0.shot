@@ -1,0 +1,10 @@
+Incorrect
+
+const array: any[];
+const stringArray: string[];
+
+array.sort();
+~~~~~~~~~~~~ Require 'compare' argument.
+
+// String arrays should be sorted using `String#localeCompare`.
+stringArray.sort();

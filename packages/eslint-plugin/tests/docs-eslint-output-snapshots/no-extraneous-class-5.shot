@@ -1,0 +1,11 @@
+
+
+// utilities.ts
+export function sayHello() {
+  console.log('Hello, world!');
+}
+
+// consumers.ts
+import * as utilities from './utilities';
+
+utilities.sayHello();

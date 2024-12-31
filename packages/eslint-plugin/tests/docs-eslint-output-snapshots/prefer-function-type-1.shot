@@ -1,0 +1,6 @@
+Incorrect
+
+function foo(example: { (): number }): number {
+                        ~~~~~~~~~~ Type literal only has a call signature, you should use a function type instead.
+  return example();
+}

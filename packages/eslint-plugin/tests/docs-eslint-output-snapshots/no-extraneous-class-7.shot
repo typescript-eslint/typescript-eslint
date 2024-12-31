@@ -1,0 +1,10 @@
+Incorrect
+
+export class Utilities {
+             ~~~~~~~~~ Unexpected class with only static properties.
+  static mutableCount = 1;
+
+  static incrementCount() {
+    Utilities.mutableCount += 1;
+  }
+}

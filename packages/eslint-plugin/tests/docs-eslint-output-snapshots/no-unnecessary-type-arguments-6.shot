@@ -1,0 +1,8 @@
+Correct
+
+class C<T = number> {}
+new C();
+new C<string>();
+
+class D extends C {}
+class D extends C<string> {}

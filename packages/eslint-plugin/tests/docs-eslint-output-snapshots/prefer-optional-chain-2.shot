@@ -1,0 +1,11 @@
+Options: { "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": true }
+
+declare const foo: { bar: boolean } | null | undefined;
+declare function acceptsBoolean(arg: boolean): void;
+
+// ✅ typechecks succesfully as the expression only returns `boolean`
+acceptsBoolean(foo != null && foo.bar);
+               ~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+
+// ❌ typechecks UNSUCCESSFULLY as the expression returns `boolean | undefined`
+acceptsBoolean(foo?.bar);

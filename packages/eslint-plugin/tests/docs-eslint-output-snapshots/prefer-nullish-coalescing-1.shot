@@ -1,0 +1,15 @@
+Options: { "ignoreTernaryTests": false }
+
+const foo: any = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+foo ?? 'a string';
+foo ?? 'a string';
+
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
+
+const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';

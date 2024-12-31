@@ -1,0 +1,23 @@
+Incorrect
+Options: "record"
+
+interface IndexSignatureInterface {
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ A record is preferred over an index signature.
+  [key: string]: unknown;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+}
+~
+
+type IndexSignatureType = {
+                          ~ A record is preferred over an index signature.
+  [key: string]: unknown;
+~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type MappedType = {
+                  ~ A record is preferred over an index signature.
+  [key in string]: unknown;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~

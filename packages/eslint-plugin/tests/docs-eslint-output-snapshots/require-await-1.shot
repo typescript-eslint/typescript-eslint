@@ -1,0 +1,12 @@
+Correct
+
+function returnNumber() {
+  return 1;
+}
+
+function* syncGenerator() {
+  yield 1;
+}
+
+const num = returnNumber();
+const callSyncGenerator = () => syncGenerator();

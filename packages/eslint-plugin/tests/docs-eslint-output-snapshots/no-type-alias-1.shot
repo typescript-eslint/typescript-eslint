@@ -1,0 +1,26 @@
+Options: { "allowAliases": "in-unions" }
+
+// primitives
+type Foo = 'a';
+           ~~~ Type aliases are not allowed.
+
+type Foo = string;
+           ~~~~~~ Type aliases are not allowed.
+
+type Foo = string & string[];
+           ~~~~~~ Aliases in intersection types are not allowed.
+                    ~~~~~~~~ Aliases in intersection types are not allowed.
+
+type Foo = `foo-${number}`;
+           ~~~~~~~~~~~~~~~ Type aliases are not allowed.
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar;
+           ~~~ Type aliases are not allowed.
+
+type Foo = Bar & Baz;
+           ~~~ Aliases in intersection types are not allowed.
+                 ~~~ Aliases in intersection types are not allowed.

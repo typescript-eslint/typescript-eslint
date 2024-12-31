@@ -1,0 +1,10 @@
+Correct
+Options: { "arrowParameter": true }
+
+const logsSize = (size: number) => console.log(size);
+
+['hello', 'world'].map((text: string) => text.length);
+
+const mapper = {
+  map: (text: string) => text + '...',
+};

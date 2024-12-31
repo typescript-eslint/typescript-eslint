@@ -1,0 +1,14 @@
+Incorrect
+
+// utilities.ts
+export class Utilities {
+             ~~~~~~~~~ Unexpected class with only static properties.
+  static sayHello() {
+    console.log('Hello, world!');
+  }
+}
+
+// consumers.ts
+import { Utilities } from './utilities';
+
+Utilities.sayHello();

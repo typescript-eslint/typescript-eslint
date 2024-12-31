@@ -1,0 +1,6 @@
+Incorrect
+
+function foo(bar?: { n: number }) {
+  return bar!?.n;
+         ~~~~ Forbidden extra non-null assertion.
+}

@@ -1,0 +1,9 @@
+Incorrect
+Options: { "default": "generic" }
+
+const x: string[] = ['a', 'b'];
+         ~~~~~~~~ Array type using 'string[]' is forbidden. Use 'Array<string>' instead.
+const y: readonly string[] = ['a', 'b'];
+         ~~~~~~~~~~~~~~~~~ Array type using 'readonly string[]' is forbidden. Use 'ReadonlyArray<string>' instead.
+const z: Readonly<string[]> = ['a', 'b'];
+                  ~~~~~~~~ Array type using 'string[]' is forbidden. Use 'Array<string>' instead.

@@ -1,0 +1,7 @@
+Options: { "treatMethodsAsReadonly": true }
+
+type MyType = {
+  readonly prop: string;
+  method(): string; // note: this method is mutable
+};
+function foo(arg: MyType) {}

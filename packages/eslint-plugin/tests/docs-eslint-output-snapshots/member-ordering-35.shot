@@ -1,0 +1,8 @@
+Correct
+Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
+
+interface Foo {
+  a: boolean;
+  c: string;
+  b?: number;
+}

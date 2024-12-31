@@ -1,0 +1,11 @@
+Incorrect
+Options: { "allowExpressions": true }
+
+function test() {}
+~~~~~~~~~~~~~ Missing return type on function.
+
+const fn = () => {};
+              ~~ Missing return type on function.
+
+export default () => {};
+                  ~~ Missing return type on function.

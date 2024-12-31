@@ -1,0 +1,13 @@
+Options: { "ignoredMethodNames": ["specificMethod", "whateverMethod"] }
+
+class Animal {
+  get specificMethod() {
+    console.log('No error because you specified this method on option');
+  }
+  get whateverMethod() {
+    console.log('No error because you specified this method on option');
+  }
+  public get otherMethod() {
+    console.log('This method comply with this rule');
+  }
+}

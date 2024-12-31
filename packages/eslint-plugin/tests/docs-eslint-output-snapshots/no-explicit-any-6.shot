@@ -1,0 +1,4 @@
+Incorrect
+
+function greet(): Array<Array<any>> {}
+                              ~~~ Unexpected any. Specify a different type.

@@ -1,0 +1,9 @@
+Correct
+
+declare const foo: string;
+
+// starts with
+foo.startsWith('bar');
+
+// ends with
+foo.endsWith('bar');

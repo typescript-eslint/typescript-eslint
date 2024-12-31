@@ -1,0 +1,14 @@
+Correct
+Options: {"checkThenables": true}
+
+declare function createPromiseLike(): PromiseLike<string>;
+
+await createPromiseLike();
+
+interface MyThenable {
+  then(onFulfilled: () => void, onRejected: () => void): MyThenable;
+}
+
+declare function createMyThenable(): MyThenable;
+
+await createMyThenable();

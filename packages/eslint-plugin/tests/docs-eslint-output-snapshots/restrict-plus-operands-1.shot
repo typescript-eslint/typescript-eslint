@@ -1,0 +1,4 @@
+Correct
+
+let foo = 1n + 1n;
+let fn = (a: string, b: string) => a + b;

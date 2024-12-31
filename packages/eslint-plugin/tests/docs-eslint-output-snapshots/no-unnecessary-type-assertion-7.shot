@@ -1,0 +1,3 @@
+Correct
+
+const foo = 3 as number;

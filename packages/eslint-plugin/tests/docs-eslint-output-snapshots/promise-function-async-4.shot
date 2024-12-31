@@ -1,0 +1,7 @@
+Incorrect
+Options: { "allowedPromiseNames": ["Bluebird"] }
+
+class Bluebird {}
+
+const returnsBluebird = () => new Bluebird(() => {});
+                           ~~ Functions that return promises must be async.

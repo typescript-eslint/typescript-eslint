@@ -1,0 +1,10 @@
+Options: { "defaultCaseCommentPattern": "^skip default" }
+
+declare const value: 'a' | 'b';
+
+switch (value) {
+        ~~~~~ Switch is not exhaustive. Cases not matched: "b"
+  case 'a':
+    break;
+  // skip default
+}

@@ -1,0 +1,12 @@
+Correct
+Options: { "allowHigherOrderFunctions": true }
+
+export const arrowFn = () => (): void => {};
+
+export function fn() {
+  return function (): void {};
+}
+
+export function foo(outer: string) {
+  return function (inner: string): void {};
+}

@@ -1,0 +1,7 @@
+Correct
+Options: { "memberVariableDeclaration": true }
+
+class ContainsText {
+  delayedText: string;
+  immediateTextImplicit: string = 'text';
+}

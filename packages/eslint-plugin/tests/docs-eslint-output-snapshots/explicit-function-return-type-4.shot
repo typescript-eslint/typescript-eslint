@@ -1,0 +1,15 @@
+Incorrect
+Options: { "allowTypedFunctionExpressions": true }
+
+let arrowFn = () => 'test';
+                 ~~ Missing return type on function.
+
+let funcExpr = function () {
+               ~~~~~~~~~ Missing return type on function.
+  return 'test';
+};
+
+let objectProp = {
+  foo: () => 1,
+  ~~~~~ Missing return type on function.
+};

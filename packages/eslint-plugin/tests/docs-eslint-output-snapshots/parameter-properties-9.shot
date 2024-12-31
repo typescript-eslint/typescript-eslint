@@ -1,0 +1,10 @@
+Correct
+Options: { "allow": ["public"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public name: string) {}
+}

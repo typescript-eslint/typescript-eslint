@@ -1,0 +1,5 @@
+Correct
+Options: { "allowAny": true }
+
+let fn = (a: number, b: any) => a + b;
+let fn = (a: string, b: any) => a + b;

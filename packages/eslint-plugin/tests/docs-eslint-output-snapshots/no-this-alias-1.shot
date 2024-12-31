@@ -1,0 +1,5 @@
+Correct
+
+setTimeout(() => {
+  this.doWork();
+});

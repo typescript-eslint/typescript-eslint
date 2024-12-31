@@ -1,0 +1,10 @@
+Incorrect
+Options: { "allowFunctionsWithoutTypeParameters": true }
+
+function foo<T>(t: T) {
+~~~~~~~~~~~~~~~ Missing return type on function.
+  return t;
+}
+
+const bar = <T>(t: T) => t;
+                      ~~ Missing return type on function.

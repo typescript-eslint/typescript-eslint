@@ -1,0 +1,12 @@
+Options: { "overrides": { "accessors" : "off" } }
+
+class Animal {
+  constructor(protected animalName) {}
+  ~~~~~~~~~~~ Missing accessibility modifier on method definition constructor.
+  public get name() {
+    return this.animalName;
+  }
+  get legs() {
+    return this.legCount;
+  }
+}

@@ -1,0 +1,6 @@
+Options: { "disallowTypeAnnotations": true }
+
+type T = import('Foo').Foo;
+         ~~~~~~~~~~~~~~~~~ `import()` type annotations are forbidden.
+const x: import('Bar') = 1;
+         ~~~~~~~~~~~~~ `import()` type annotations are forbidden.

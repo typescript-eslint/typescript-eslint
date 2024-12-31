@@ -1,0 +1,5 @@
+Incorrect
+
+const f: Function = () => {};
+f();
+~ Unsafe call of a(n) `Function` typed value.

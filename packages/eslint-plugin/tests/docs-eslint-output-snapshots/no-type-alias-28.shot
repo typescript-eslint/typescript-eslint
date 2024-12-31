@@ -1,0 +1,5 @@
+Options: { "allowTupleTypes": "in-intersections" }
+
+type Foo = [number] & [number, number];
+
+type Foo = [string] & [number];

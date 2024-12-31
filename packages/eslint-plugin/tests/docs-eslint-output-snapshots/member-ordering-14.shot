@@ -1,0 +1,14 @@
+Correct
+Options: { "default": ["public-static-field", "static-field", "instance-field"] }
+
+class Foo {
+  public static A: string; // -> public static field
+
+  private static B: string; // -> static field
+  protected static C: string; // -> static field
+  private static D: string; // -> static field
+
+  private E: string; // -> instance field
+
+  [Z: string]: any; // (irrelevant)
+}

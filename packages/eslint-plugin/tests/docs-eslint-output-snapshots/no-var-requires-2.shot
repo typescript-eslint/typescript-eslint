@@ -1,0 +1,5 @@
+Incorrect
+Options: { "allow": ["/package.json$"] }
+
+const foo = require('../data.json');
+            ~~~~~~~~~~~~~~~~~~~~~~~ Require statement not part of import statement.

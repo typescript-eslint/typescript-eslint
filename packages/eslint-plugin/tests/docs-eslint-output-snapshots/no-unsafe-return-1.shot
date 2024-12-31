@@ -1,0 +1,21 @@
+Correct
+
+function foo1() {
+  return 1;
+}
+function foo2() {
+  return Object.create(null) as Record<string, unknown>;
+}
+
+const foo3 = () => [];
+const foo4 = () => ['a'];
+
+async function foo5() {
+  return Promise.resolve(1);
+}
+
+function assignability1(): Set<string> {
+  return new Set<string>(['foo']);
+}
+type TAssign = () => Set<string>;
+const assignability2: TAssign = () => new Set(['foo']);

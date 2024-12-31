@@ -1,0 +1,8 @@
+Incorrect
+
+let bar: 2 = 2;
+         ~ Expected a `const` assertion instead of a literal type annotation.
+let foo = <'bar'>'bar';
+           ~~~~~ Expected a `const` instead of a literal type assertion.
+let foo = { bar: 'baz' as 'baz' };
+                          ~~~~~ Expected a `const` instead of a literal type assertion.

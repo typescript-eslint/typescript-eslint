@@ -1,0 +1,16 @@
+Correct
+Options: "never"
+
+async function validNever1() {
+  try {
+    return Promise.resolve('try');
+  } catch (e) {}
+}
+
+async function validNever2() {
+  return Promise.resolve('try');
+}
+
+async function validNever3() {
+  return 'value';
+}

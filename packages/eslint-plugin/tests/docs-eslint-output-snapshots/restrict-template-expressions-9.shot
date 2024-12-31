@@ -1,0 +1,4 @@
+Options: { "allowArray": true }
+
+const arg = ['foo', 'bar'];
+const msg1 = `arg = ${arg}`;

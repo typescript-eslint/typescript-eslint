@@ -1,0 +1,12 @@
+Correct
+Options: { "allowBitwiseExpressions": true }
+
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = 1 >>> 0,
+  D = 1 | 0,
+  E = 1 & 0,
+  F = 1 ^ 0,
+  G = ~1,
+}

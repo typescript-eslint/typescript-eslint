@@ -1,0 +1,6 @@
+Correct
+
+enum A {
+  B,
+  C = B,
+}

@@ -1,0 +1,18 @@
+Correct
+Options: "getters"
+
+class Mx {
+  // no readonly modifier
+  public myField1 = 'hello';
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  public static get myField3() {
+    return 1;
+  }
+
+  private get ['myField4']() {
+    return 'hello world';
+  }
+}

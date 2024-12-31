@@ -1,0 +1,10 @@
+Correct
+Options: {"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}
+
+import { foo } from 'other-module';
+
+import type foo from 'import-foo';
+export type { Foo } from 'import-foo';
+
+import type baz from 'import-baz';
+export type { Baz } from 'import-baz';

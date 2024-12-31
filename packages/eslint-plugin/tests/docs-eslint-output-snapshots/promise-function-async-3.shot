@@ -1,0 +1,4 @@
+Correct
+Options: { "allowAny": false }
+
+const returnsAny = async () => ({}) as any;

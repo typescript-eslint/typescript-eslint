@@ -1,0 +1,6 @@
+Correct
+Options: { "checkUnknown": false }
+
+declare const thing: unknown;
+
+thing && thing.toString();

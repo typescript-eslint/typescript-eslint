@@ -1,0 +1,9 @@
+Incorrect
+Options: { "allowAsImport": true }
+
+var foo = require('foo');
+          ~~~~~~~~~~~~~~ A `require()` style import is forbidden.
+const foo = require('foo');
+            ~~~~~~~~~~~~~~ A `require()` style import is forbidden.
+let foo = require('foo');
+          ~~~~~~~~~~~~~~ A `require()` style import is forbidden.

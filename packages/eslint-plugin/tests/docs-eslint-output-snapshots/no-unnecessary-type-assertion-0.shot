@@ -1,0 +1,5 @@
+Incorrect
+
+const foo = 3;
+const bar = foo!;
+            ~~~~ This assertion is unnecessary since it does not change the type of the expression.

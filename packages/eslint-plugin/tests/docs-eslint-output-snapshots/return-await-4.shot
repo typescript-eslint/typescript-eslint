@@ -1,0 +1,10 @@
+Correct
+Options: "error-handling-correctness-only"
+
+async function asyncFunction(): Promise<void> {
+  if (Math.random() < 0.5) {
+    return await Promise.resolve();
+  } else {
+    return Promise.resolve();
+  }
+}

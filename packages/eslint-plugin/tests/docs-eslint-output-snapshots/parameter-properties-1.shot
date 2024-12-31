@@ -1,0 +1,5 @@
+Correct
+
+class Foo {
+  constructor(name: string) {}
+}

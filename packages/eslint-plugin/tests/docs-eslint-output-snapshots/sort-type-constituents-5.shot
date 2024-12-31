@@ -1,0 +1,4 @@
+Correct
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = A & B;

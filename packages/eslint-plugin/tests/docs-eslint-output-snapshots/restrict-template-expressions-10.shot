@@ -1,0 +1,4 @@
+
+
+const error = new Error();
+const msg1 = `arg = ${error}`;

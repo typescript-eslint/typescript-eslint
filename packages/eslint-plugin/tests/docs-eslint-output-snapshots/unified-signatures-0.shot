@@ -1,0 +1,5 @@
+Incorrect
+
+function x(x: number): void;
+function x(x: string): void;
+           ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.

@@ -1,0 +1,18 @@
+Options: { "allowLiterals": "always" }
+
+type Foo = {};
+
+type Foo = {
+  name: string;
+  age: number;
+};
+
+type Foo = {
+  name: string;
+  age: number;
+  walk: (miles: number) => void;
+};
+
+type Foo = { name: string } | { age: number };
+
+type Foo = { name: string } & { age: number };

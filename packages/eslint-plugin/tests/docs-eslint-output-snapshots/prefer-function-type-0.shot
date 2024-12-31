@@ -1,0 +1,6 @@
+Incorrect
+
+interface Example {
+  (): string;
+  ~~~~~~~~~~~ Interface only has a call signature, you should use a function type instead.
+}

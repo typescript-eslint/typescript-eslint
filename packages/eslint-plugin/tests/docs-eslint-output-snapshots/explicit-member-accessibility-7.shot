@@ -1,0 +1,13 @@
+Options: { "accessibility": "no-public", "overrides": { "properties": "explicit" } }
+
+class Animal {
+  constructor(protected animalName) {}
+  get name() {
+    return this.animalName;
+  }
+  protected set name(value: string) {
+    this.animalName = value;
+  }
+  public legs: number;
+  private hasFleas: boolean;
+}

@@ -1,0 +1,12 @@
+Options: { "allowAliases": "in-intersections" }
+
+// primitives
+type Foo = string & string[];
+
+type Foo = `a-${number}` & `b-${number}`;
+
+// reference types
+interface Bar {}
+class Baz implements Bar {}
+
+type Foo = Bar & Baz;

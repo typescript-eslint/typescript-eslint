@@ -1,0 +1,10 @@
+Correct
+Options: { "allow": ["protected"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected name: string) {}
+}

@@ -1,0 +1,25 @@
+Correct
+
+const a = 10n;
+const a = BigInt(10);
+const a = !0;
+const a = Boolean(null);
+const a = true;
+const a = null;
+const a = 10;
+const a = Infinity;
+const a = NaN;
+const a = Number('1');
+const a = /a/;
+const a = new RegExp('a');
+const a = `str`;
+const a = String(1);
+const a = Symbol('a');
+const a = undefined;
+const a = void someValue;
+
+class Foo {
+  prop = 5;
+}
+
+function fn(a = 5, b = true) {}

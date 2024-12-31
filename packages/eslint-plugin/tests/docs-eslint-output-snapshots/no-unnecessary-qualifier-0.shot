@@ -1,0 +1,7 @@
+Incorrect
+
+enum A {
+  B,
+  C = A.B,
+      ~ Qualifier is unnecessary since 'B' is in scope.
+}

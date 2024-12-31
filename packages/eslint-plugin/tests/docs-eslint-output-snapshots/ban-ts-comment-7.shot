@@ -1,0 +1,7 @@
+Correct
+Options: { "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }
+
+if (false) {
+  // @ts-expect-error The rationale for this override is described in issue #1337 on GitLab
+  console.log('hello');
+}

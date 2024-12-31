@@ -1,0 +1,8 @@
+Correct
+Options: { "allowedNames": ["self"] }
+
+class Example {
+  method() {
+    const self = this;
+  }
+}

@@ -1,0 +1,13 @@
+Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
+  B: string; // -> field
+
+  // no constructor
+
+  A(): void; // -> method
+  ~~~~~~~~~~ Member A should be declared before all field definitions.
+
+  // no signature
+};

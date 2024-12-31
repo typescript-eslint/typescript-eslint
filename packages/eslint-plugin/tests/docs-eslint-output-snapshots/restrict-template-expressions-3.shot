@@ -1,0 +1,5 @@
+Options: { "allowBoolean": true }
+
+const arg = true;
+const msg1 = `arg = ${arg}`;
+const msg2 = `arg = ${arg || 'not truthy'}`;

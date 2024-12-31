@@ -1,0 +1,4 @@
+Correct
+Options: "type"
+
+type T = { x: number };

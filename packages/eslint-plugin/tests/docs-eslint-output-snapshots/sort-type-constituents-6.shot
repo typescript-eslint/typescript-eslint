@@ -1,0 +1,5 @@
+Incorrect
+Options: { "checkUnions": true }
+
+type ExampleUnion = B | A;
+                    ~~~~~ Union type ExampleUnion constituents must be sorted.

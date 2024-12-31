@@ -1,0 +1,13 @@
+Incorrect
+Options: { "ts-ignore": true }
+
+if (false) {
+  // @ts-ignore: Unreachable code error
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.
+  console.log('hello');
+}
+if (false) {
+  /* @ts-ignore: Unreachable code error */
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.
+  console.log('hello');
+}

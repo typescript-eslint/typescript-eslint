@@ -1,0 +1,15 @@
+Correct
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+class Foo {
+  [Z: string]: any; // -> signature
+
+  public static A(): void {} // -> method
+  public B(): void {} // -> method
+
+  constructor() {} // -> constructor
+
+  private C: string; // -> field
+  public D: string; // -> field
+  protected static E: string; // -> field
+}

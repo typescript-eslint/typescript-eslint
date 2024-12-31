@@ -1,0 +1,10 @@
+Incorrect
+Options: { "allowHigherOrderFunctions": true }
+
+var arrowFn = () => () => {};
+                       ~~ Missing return type on function.
+
+function fn() {
+  return function () {};
+         ~~~~~~~~~ Missing return type on function.
+}

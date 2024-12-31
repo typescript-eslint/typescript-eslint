@@ -1,0 +1,10 @@
+Correct
+Options: { "allow": ["readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(readonly name: string) {}
+}

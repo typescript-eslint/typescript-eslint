@@ -1,0 +1,16 @@
+Incorrect
+
+export class Utilities {
+             ~~~~~~~~~ Unexpected class with only static properties.
+  static util1() {
+    return Utilities.util3();
+  }
+
+  static util2() {
+    /* ... */
+  }
+
+  static util3() {
+    /* ... */
+  }
+}

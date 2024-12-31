@@ -1,7 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unnecessary-boolean-literal-compare 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,11 +5,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowComparingNullableBooleansToFalse": {
-        "description": "Whether to allow comparisons between nullable boolean variables and \`false\`.",
+        "description": "Whether to allow comparisons between nullable boolean variables and `false`.",
         "type": "boolean"
       },
       "allowComparingNullableBooleansToTrue": {
-        "description": "Whether to allow comparisons between nullable boolean variables and \`true\`.",
+        "description": "Whether to allow comparisons between nullable boolean variables and `true`.",
         "type": "boolean"
       }
     },
@@ -26,11 +22,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to allow comparisons between nullable boolean variables and \`false\`. */
+    /** Whether to allow comparisons between nullable boolean variables and `false`. */
     allowComparingNullableBooleansToFalse?: boolean;
-    /** Whether to allow comparisons between nullable boolean variables and \`true\`. */
+    /** Whether to allow comparisons between nullable boolean variables and `true`. */
     allowComparingNullableBooleansToTrue?: boolean;
   },
 ];
-"
-`;
+

@@ -1,0 +1,7 @@
+Incorrect
+
+namespace A {
+  export type B = number;
+  const x: A.B = 3;
+           ~ Qualifier is unnecessary since 'B' is in scope.
+}

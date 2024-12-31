@@ -1,0 +1,4 @@
+Correct
+
+// Modern Node.js API, uses `new URL()`
+const url2 = new URL('/foo', 'http://www.example.com');

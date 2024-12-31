@@ -1,0 +1,5 @@
+Options: { "ignoreParameters": true }
+
+function foo(a: number = 5, b: boolean = true) {
+  // ...
+}

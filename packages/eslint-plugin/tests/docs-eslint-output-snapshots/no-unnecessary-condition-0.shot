@@ -1,0 +1,29 @@
+Incorrect
+
+function head<T>(items: T[]) {
+  // items can never be nullable, so this is unnecessary
+  if (items) {
+      ~~~~~ Unnecessary conditional, value is always truthy.
+    return items[0].toUpperCase();
+  }
+}
+
+function foo(arg: 'bar' | 'baz') {
+  // arg is never nullable or empty string, so this is unnecessary
+  if (arg) {
+      ~~~ Unnecessary conditional, value is always truthy.
+  }
+}
+
+function bar<T>(arg: string) {
+  // arg can never be nullish, so ?. is unnecessary
+  return arg?.length;
+            ~~ Unnecessary optional chain on a non-nullish value.
+}
+
+// Checks array predicate return types, where possible
+[
+  [1, 2],
+  [3, 4],
+].filter(t => t); // number[] is always truthy
+              ~ Unnecessary conditional, value is always truthy.

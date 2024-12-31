@@ -1,0 +1,11 @@
+Options: { "allowInGenericTypeArguments": false }
+
+logAndReturn<void>(undefined);
+             ~~~~ void is only valid as a return type.
+
+let voidPromise: Promise<void> = new Promise<void>(() => {});
+                         ~~~~ void is only valid as a return type.
+                                             ~~~~ void is only valid as a return type.
+let voidMap: Map<string, void> = new Map<string, void>();
+                         ~~~~ void is only valid as a return type.
+                                                 ~~~~ void is only valid as a return type.

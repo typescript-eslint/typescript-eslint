@@ -1,0 +1,4 @@
+Incorrect
+
+const ages: Array<any> = ['seventeen'];
+                  ~~~ Unexpected any. Specify a different type.

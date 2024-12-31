@@ -1,0 +1,7 @@
+Incorrect
+Options: { "allowDirectConstAssertionInArrowFunctions": true }
+
+const func = (value: number) => ({ type: 'X', value }) as any;
+                             ~~ Missing return type on function.
+const func = (value: number) => ({ type: 'X', value }) as Action;
+                             ~~ Missing return type on function.

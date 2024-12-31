@@ -1,0 +1,7 @@
+Correct
+Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
+
+class X implements Y {
+  method() {}
+  property = () => {};
+}

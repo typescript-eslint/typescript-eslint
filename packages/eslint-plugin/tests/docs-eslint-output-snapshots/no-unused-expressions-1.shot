@@ -1,0 +1,15 @@
+Correct
+
+function getSet() {
+  return Set;
+}
+
+// Funtion calls are allowed, so type expressions that wrap function calls are allowed
+getSet()<number>;
+getSet() as Set<unknown>;
+getSet()!;
+
+// Namespaces can have directives
+namespace A {
+  'use strict';
+}

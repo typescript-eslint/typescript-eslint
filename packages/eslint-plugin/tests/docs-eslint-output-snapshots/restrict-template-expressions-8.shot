@@ -1,0 +1,4 @@
+Options: { "allowNever": true }
+
+const arg = 'something';
+const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;

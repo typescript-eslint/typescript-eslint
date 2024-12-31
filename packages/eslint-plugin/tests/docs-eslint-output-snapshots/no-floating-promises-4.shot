@@ -1,0 +1,8 @@
+Options: { "ignoreVoid": true }
+
+async function returnsPromise() {
+  return 'value';
+}
+void returnsPromise();
+
+void Promise.reject('value');

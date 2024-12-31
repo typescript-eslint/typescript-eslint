@@ -1,0 +1,4 @@
+Options: { "typesToIgnore": ["Foo"] }
+
+type Foo = 3;
+const foo: Foo = 3;

@@ -1,0 +1,7 @@
+Incorrect
+
+interface ReturnsSelf {
+  // returns the function itself, not the `this` argument.
+  (arg: string): this;
+                 ~~~~ `this` refers to the function type 'ReturnsSelf', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?
+}

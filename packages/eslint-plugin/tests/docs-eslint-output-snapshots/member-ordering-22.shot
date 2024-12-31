@@ -1,0 +1,15 @@
+Incorrect
+Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
+  B: string; // -> field
+
+  A(): void; // -> method
+  ~~~~~~~~~~ Member A should be declared before all field definitions.
+
+  new (); // -> constructor
+  ~~~~~~~ Member new should be declared before all field definitions.
+
+  [Z: string]: any; // -> signature
+  ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
+};

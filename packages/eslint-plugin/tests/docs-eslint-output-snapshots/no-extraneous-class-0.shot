@@ -1,0 +1,20 @@
+Incorrect
+
+class StaticConstants {
+      ~~~~~~~~~~~~~~~ Unexpected class with only static properties.
+  static readonly version = 42;
+
+  static isProduction() {
+    return process.env.NODE_ENV === 'production';
+  }
+}
+
+class HelloWorldLogger {
+      ~~~~~~~~~~~~~~~~ Unexpected class with only a constructor.
+  constructor() {
+    console.log('Hello, world!');
+  }
+}
+
+abstract class Foo {}
+               ~~~ Unexpected empty class.

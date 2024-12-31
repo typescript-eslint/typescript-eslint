@@ -1,0 +1,12 @@
+Options: { "ignoreStatic": true }
+
+class OtherClass {
+  static log() {
+    console.log(OtherClass);
+  }
+}
+
+// With `ignoreStatic`, statics are assumed to not rely on a particular scope
+const { log } = OtherClass;
+
+log();

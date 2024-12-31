@@ -1,6 +1,7 @@
 import * as parser from '@typescript-eslint/parser';
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { TSESLint } from '@typescript-eslint/utils';
+import { it, describe } from 'vitest';
 
 import type { OptionString } from '../../src/rules/array-type';
 
@@ -2232,14 +2233,14 @@ type BrokenArray = {
 
 describe('schema validation', () => {
   // https://github.com/typescript-eslint/typescript-eslint/issues/6852
-  test("array-type does not accept 'simple-array' option", () => {
+  it("array-type does not accept 'simple-array' option", () => {
     if (areOptionsValid(rule, [{ default: 'simple-array' }])) {
       throw new Error(`Options succeeded validation for bad options`);
     }
   });
 
   // https://github.com/typescript-eslint/typescript-eslint/issues/6892
-  test('array-type does not accept non object option', () => {
+  it('array-type does not accept non object option', () => {
     if (areOptionsValid(rule, ['array'])) {
       throw new Error(`Options succeeded validation for bad options`);
     }

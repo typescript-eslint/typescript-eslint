@@ -1,0 +1,14 @@
+Correct
+Options: {"allowForKnownSafePromises":[{"from":"file","name":"SafePromise"},{"from":"lib","name":"PromiseLike"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+
+// promises can be marked as safe by using branded types
+type SafePromise = Promise<number> & { __linterBrands?: string };
+
+let promise: SafePromise = Promise.resolve(2);
+promise;
+
+function returnsSafePromise(): SafePromise {
+  return Promise.resolve(42);
+}
+
+returnsSafePromise();

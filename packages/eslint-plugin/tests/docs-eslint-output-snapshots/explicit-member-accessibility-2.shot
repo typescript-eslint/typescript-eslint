@@ -1,0 +1,28 @@
+Options: { "accessibility": "no-public" }
+
+class Animal {
+  public constructor(
+  ~~~~~~ Public accessibility modifier on method definition constructor.
+    public breed,
+    name,
+  ) {
+    // Parameter property and constructor
+    this.animalName = name;
+  }
+  public animalName: string; // Property
+  ~~~~~~ Public accessibility modifier on class property animalName.
+  public get name(): string {
+  ~~~~~~ Public accessibility modifier on get property accessor name.
+    // get accessor
+    return this.animalName;
+  }
+  public set name(value: string) {
+  ~~~~~~ Public accessibility modifier on set property accessor name.
+    // set accessor
+    this.animalName = value;
+  }
+  public walk() {
+  ~~~~~~ Public accessibility modifier on method definition walk.
+    // method
+  }
+}

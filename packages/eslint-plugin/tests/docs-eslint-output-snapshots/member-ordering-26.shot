@@ -1,0 +1,14 @@
+Incorrect
+Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
+
+interface Foo {
+  B(): void;
+  c(): void;
+  a(): void;
+  ~~~~~~~~~~ Member a should be declared before member c.
+
+  a: x;
+  B: x;
+  ~~~~~ Member B should be declared before member a.
+  c: x;
+}

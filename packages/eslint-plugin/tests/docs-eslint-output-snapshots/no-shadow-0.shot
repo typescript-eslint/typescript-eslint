@@ -1,0 +1,11 @@
+Options: { "ignoreTypeValueShadow": true }
+
+type Foo = number;
+interface Bar {
+  prop: number;
+}
+
+function f() {
+  const Foo = 1;
+  const Bar = 'test';
+}

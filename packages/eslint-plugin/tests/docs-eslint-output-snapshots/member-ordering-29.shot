@@ -1,0 +1,12 @@
+Correct
+Options: {"default":{"order":"alphabetically-case-insensitive"}}
+
+interface Foo {
+  a: x;
+  B: x;
+  c: x;
+
+  a(): void;
+  B(): void;
+  c(): void;
+}

@@ -1,0 +1,4 @@
+Correct
+Options: { "types": "never" }
+
+import { value } from 'code';

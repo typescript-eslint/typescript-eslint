@@ -1,0 +1,6 @@
+Correct
+Options: { "variableDeclaration": true }
+
+const text: string = 'text';
+let initialText: string = 'text';
+let delayedText: string;

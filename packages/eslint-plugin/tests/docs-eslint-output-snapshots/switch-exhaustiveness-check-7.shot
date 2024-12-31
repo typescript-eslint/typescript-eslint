@@ -1,0 +1,23 @@
+Correct
+
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  case Fruit.Banana:
+    console.log('a banana');
+    break;
+
+  case Fruit.Cherry:
+    console.log('a cherry');
+    break;
+}

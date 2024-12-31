@@ -1,0 +1,28 @@
+Correct
+
+// just a regular void function in a statement position
+alert('Hello, world!');
+
+// this function returns a boolean value so it's ok
+const response = confirm('Are you sure?');
+console.log(confirm('Are you sure?'));
+
+// now it's obvious that `postMessage` doesn't return any response
+promise.then(value => {
+  window.postMessage(value);
+});
+
+// now it's explicit that we want to log the error and return early
+function doSomething() {
+  if (!somethingToDo) {
+    console.error('Nothing to do!');
+    return;
+  }
+
+  console.log('Doing a thing...');
+}
+
+// using logical expressions for their side effects is fine
+cond && console.log('true');
+cond || console.error('false');
+cond ? console.log('true') : console.error('false');

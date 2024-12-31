@@ -1,0 +1,9 @@
+Options: { "ignoreIIFE": true }
+
+await (async function () {
+  await res(1);
+})();
+
+(async function () {
+  await res(1);
+})();

@@ -1,0 +1,9 @@
+Incorrect
+Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
+
+interface Foo {
+  a: boolean;
+  ~~~~~~~~~~~ Member a should be declared after all optional members.
+  b?: number;
+  c: string;
+}

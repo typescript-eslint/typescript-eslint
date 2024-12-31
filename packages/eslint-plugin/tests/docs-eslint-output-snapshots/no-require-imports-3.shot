@@ -1,0 +1,4 @@
+Correct
+Options: { "allow": ["/package.json$"] }
+
+console.log(require('../package.json').version);

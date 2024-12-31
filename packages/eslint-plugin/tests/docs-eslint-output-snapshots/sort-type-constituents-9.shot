@@ -1,0 +1,4 @@
+Correct
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = 123 | null;

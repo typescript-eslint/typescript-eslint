@@ -1,0 +1,14 @@
+Options: { "ignoreConditionalTests": false }
+
+declare const a: string | null;
+declare const b: string | null;
+
+if (a ?? b) {
+}
+if ((a ??= b)) {
+}
+while (a ?? b) {}
+while ((a ??= b)) {}
+do {} while (a ?? b);
+for (let i = 0; a ?? b; i += 1) {}
+(a ?? b) ? true : false;

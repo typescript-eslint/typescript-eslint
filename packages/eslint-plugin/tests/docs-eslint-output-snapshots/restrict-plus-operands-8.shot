@@ -1,0 +1,7 @@
+Incorrect
+Options: { "allowNumberAndString": true }
+
+let fn = (a: number, b: unknown) => a + b;
+                                        ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`. Got `unknown`.
+let fn = (a: number, b: never) => a + b;
+                                      ~ Invalid operand for a '+' operation. Operands must each be a number or string, allowing a string + any of: `any`, `boolean`, `null`, `RegExp`, `undefined`. Got `never`.

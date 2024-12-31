@@ -1,0 +1,4 @@
+Correct
+
+// returns the function itself, not the `this` argument.
+type ReturnsSelf = (arg: string) => ReturnsSelf;

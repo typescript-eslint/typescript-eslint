@@ -1,0 +1,6 @@
+Correct
+Options: { "countVoidThis": false, "max": 1 }
+
+function hasNoThis(this: void, first: string) {
+  // ...
+}

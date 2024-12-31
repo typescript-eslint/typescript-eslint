@@ -1,0 +1,6 @@
+Options: { "allow": ["decoratedFunctions"] }
+
+class Foo {
+  @decorator()
+  foo() {}
+}

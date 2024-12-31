@@ -1,0 +1,13 @@
+Correct
+
+export function util1() {
+  return util3();
+}
+
+export function util2() {
+  /* ... */
+}
+
+export function util3() {
+  /* ... */
+}

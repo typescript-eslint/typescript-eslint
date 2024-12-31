@@ -1,0 +1,32 @@
+Correct
+
+setTimeout(function () {
+  alert('Hi!');
+}, 100);
+
+setInterval(function () {
+  alert('Hi!');
+}, 100);
+
+setImmediate(function () {
+  alert('Hi!');
+});
+
+execScript(function () {
+  alert('Hi!');
+});
+
+const fn = () => {};
+setTimeout(fn, 100);
+
+const foo = {
+  fn: function () {},
+};
+setTimeout(foo.fn, 100);
+setTimeout(foo.fn.bind(this), 100);
+
+class Foo {
+  static fn = () => {};
+}
+
+setTimeout(Foo.fn, 100);

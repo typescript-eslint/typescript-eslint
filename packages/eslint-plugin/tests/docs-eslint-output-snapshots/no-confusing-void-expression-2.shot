@@ -1,0 +1,3 @@
+Options: { "ignoreArrowShorthand": true }
+
+promise.then(value => window.postMessage(value));

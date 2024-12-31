@@ -1,0 +1,7 @@
+Options: { "ignoreTypeReferences": true }
+
+let var1: StringOrNumber;
+type StringOrNumber = string | number;
+
+let var2: Enum;
+enum Enum {}

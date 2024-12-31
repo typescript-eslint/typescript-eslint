@@ -1,0 +1,11 @@
+Incorrect
+
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.

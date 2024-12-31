@@ -1,0 +1,4 @@
+Options: { "allowRegExp": true }
+
+const arg = /foo/;
+const msg1 = `arg = ${arg}`;

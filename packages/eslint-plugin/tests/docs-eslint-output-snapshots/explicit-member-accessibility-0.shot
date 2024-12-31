@@ -1,0 +1,25 @@
+
+
+class Animal {
+  constructor(name) {
+  ~~~~~~~~~~~ Missing accessibility modifier on method definition constructor.
+    // No accessibility modifier
+    this.animalName = name;
+  }
+  animalName: string; // No accessibility modifier
+  ~~~~~~~~~~ Missing accessibility modifier on class property animalName.
+  get name(): string {
+  ~~~~~~~~ Missing accessibility modifier on get property accessor name.
+    // No accessibility modifier
+    return this.animalName;
+  }
+  set name(value: string) {
+  ~~~~~~~~ Missing accessibility modifier on set property accessor name.
+    // No accessibility modifier
+    this.animalName = value;
+  }
+  walk() {
+  ~~~~ Missing accessibility modifier on method definition walk.
+    // method
+  }
+}

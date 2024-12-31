@@ -1,0 +1,6 @@
+Incorrect
+
+declare const someCondition: boolean;
+if (someCondition === true) {
+    ~~~~~~~~~~~~~~~~~~~~~~ This expression unnecessarily compares a boolean value to a boolean instead of using it directly.
+}

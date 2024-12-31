@@ -1,0 +1,11 @@
+Options: { "ignoreVoidReturningFunctions": true }
+
+function foo(): void {
+  return console.log();
+}
+
+function onError(callback: () => void): void {
+  callback();
+}
+
+onError(() => console.log('oops'));

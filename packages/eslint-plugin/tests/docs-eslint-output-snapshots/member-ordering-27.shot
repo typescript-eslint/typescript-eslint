@@ -1,0 +1,12 @@
+Correct
+Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
+
+interface Foo {
+  B(): void;
+  a(): void;
+  c(): void;
+
+  B: x;
+  a: x;
+  c: x;
+}

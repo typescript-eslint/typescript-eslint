@@ -1,0 +1,11 @@
+Options: { "allowCallbacks": "always" }
+
+type Foo = () => void;
+
+type Foo = (name: string) => string;
+
+class Person {}
+
+type Foo = (name: string, age: number) => string | Person;
+
+type Foo = (name: string, age: number) => string & Person;

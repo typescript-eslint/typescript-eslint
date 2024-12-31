@@ -1,0 +1,31 @@
+Incorrect
+Options: { "parameter": true }
+
+function logsSize(size): void {
+                  ~~~~ Expected size to have a type annotation.
+  console.log(size);
+}
+
+const doublesSize = function (size): number {
+                              ~~~~ Expected size to have a type annotation.
+  return size * 2;
+};
+
+const divider = {
+  curriesSize(size): number {
+              ~~~~ Expected size to have a type annotation.
+    return size;
+  },
+  dividesSize: function (size): number {
+                         ~~~~ Expected size to have a type annotation.
+    return size / 2;
+  },
+};
+
+class Logger {
+  log(text): boolean {
+      ~~~~ Expected text to have a type annotation.
+    console.log('>', text);
+    return true;
+  }
+}

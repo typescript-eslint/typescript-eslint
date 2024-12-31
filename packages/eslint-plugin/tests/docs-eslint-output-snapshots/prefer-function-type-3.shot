@@ -1,0 +1,3 @@
+Correct
+
+type Example = () => string;

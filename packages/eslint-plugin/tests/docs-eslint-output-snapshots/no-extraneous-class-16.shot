@@ -1,0 +1,7 @@
+Correct
+Options: { "allowWithDecorator": true }
+
+@logOnRead()
+class Constants {
+  static readonly version = 42;
+}

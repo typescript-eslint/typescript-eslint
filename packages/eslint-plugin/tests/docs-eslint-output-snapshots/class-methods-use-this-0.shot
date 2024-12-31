@@ -1,0 +1,6 @@
+Options: { "ignoreOverrideMethods": true }
+
+class X {
+  override method() {}
+  override property = () => {};
+}

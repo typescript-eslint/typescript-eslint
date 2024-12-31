@@ -1,0 +1,3 @@
+Correct
+
+function greet(param: Array<string>): string {}

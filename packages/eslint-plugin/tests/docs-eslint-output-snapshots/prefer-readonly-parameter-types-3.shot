@@ -1,0 +1,19 @@
+Incorrect
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+
+import { Foo } from 'some-lib';
+import { Bar } from 'incorrect-lib';
+
+interface HTMLElement {
+  prop: string;
+}
+
+// Incorrect because Foo is not a local type
+function fn1(arg: Foo) {}
+
+// Incorrect because HTMLElement is not from the default library
+function fn2(arg: HTMLElement) {}
+             ~~~~~~~~~~~~~~~~ Parameter should be a read only type.
+
+// Incorrect because Bar is not from "bar-lib"
+function fn3(arg: Bar) {}

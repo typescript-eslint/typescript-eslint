@@ -1,0 +1,32 @@
+Incorrect
+Options: { "allow": ["private"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}

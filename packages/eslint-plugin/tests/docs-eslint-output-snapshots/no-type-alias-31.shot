@@ -1,0 +1,11 @@
+Options: { "allowGenerics": "always" }
+
+type Foo = Bar<string>;
+
+type Foo = Record<string, number>;
+
+type Foo = Readonly<Bar>;
+
+type Foo = Partial<Bar>;
+
+type Foo = Omit<Bar, 'a' | 'b'>;

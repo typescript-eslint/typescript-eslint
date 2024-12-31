@@ -1,0 +1,68 @@
+Incorrect
+Options: "in-try-catch"
+
+async function invalidInTryCatch1() {
+  try {
+    return Promise.reject('try');
+           ~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+  } catch (e) {
+    // Doesn't execute due to missing await.
+  }
+}
+
+async function invalidInTryCatch2() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    // Unnecessary await; rejections here don't impact control flow.
+    return await Promise.reject('catch');
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
+  }
+}
+
+// Prints 'starting async work', 'cleanup', 'async work done'.
+async function invalidInTryCatch3() {
+  async function doAsyncWork(): Promise<void> {
+    console.log('starting async work');
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    console.log('async work done');
+  }
+
+  try {
+    throw new Error('error');
+  } catch (e) {
+    // Missing await.
+    return doAsyncWork();
+           ~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+  } finally {
+    console.log('cleanup');
+  }
+}
+
+async function invalidInTryCatch4() {
+  try {
+    throw new Error('error');
+  } catch (e) {
+    throw new Error('error2');
+  } finally {
+    // Unnecessary await; rejections here don't impact control flow.
+    return await Promise.reject('finally');
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
+  }
+}
+
+async function invalidInTryCatch5() {
+  return await Promise.resolve('try');
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is not allowed in this context.
+}
+
+async function invalidInTryCatch6() {
+  return await 'value';
+         ~~~~~~~~~~~~~ Returning an awaited value that is not a promise is not allowed.
+}
+
+async function invalidInTryCatch7() {
+  using x = createDisposable();
+  return Promise.reject('using in scope');
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning an awaited promise is required in this context.
+}

@@ -1,0 +1,7 @@
+Correct
+Options: { "allowNullish": true }
+
+let fn = (a: number, b: undefined) => a + b;
+let fn = (a: number, b: null) => a + b;
+let fn = (a: string, b: undefined) => a + b;
+let fn = (a: string, b: null) => a + b;

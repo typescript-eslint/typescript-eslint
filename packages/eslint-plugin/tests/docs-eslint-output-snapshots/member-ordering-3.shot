@@ -1,0 +1,20 @@
+Incorrect
+Options: { "default": ["signature", "method", "constructor", "field"] }
+
+const Foo = class {
+  private C: string; // -> field
+  public D: string; // -> field
+
+  constructor() {} // -> constructor
+  ~~~~~~~~~~~~~~~~ Member constructor should be declared before all field definitions.
+
+  public static A(): void {} // -> method
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Member A should be declared before all field definitions.
+  public B(): void {} // -> method
+  ~~~~~~~~~~~~~~~~~~~ Member B should be declared before all field definitions.
+
+  [Z: string]: any; // -> signature
+  ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
+
+  protected static E: string; // -> field
+};

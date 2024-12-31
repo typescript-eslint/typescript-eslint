@@ -1,0 +1,17 @@
+Correct
+
+enum Fruit {
+  Apple,
+}
+
+declare let fruit: Fruit;
+
+fruit === Fruit.Apple;
+
+enum Vegetable {
+  Asparagus = 'asparagus',
+}
+
+declare let vegetable: Vegetable;
+
+vegetable === Vegetable.Asparagus;

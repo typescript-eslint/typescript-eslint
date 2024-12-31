@@ -1,0 +1,5 @@
+Options: { "allowAny": true }
+
+const user = JSON.parse('{ "name": "foo" }');
+const msg1 = `arg = ${user.name}`;
+const msg2 = `arg = ${user.name || 'the user with no name'}`;

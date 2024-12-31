@@ -1,0 +1,25 @@
+Incorrect
+
+// Should indicate that no value is returned (void)
+export function test() {
+       ~~~~~~~~~~~~~ Missing return type on function.
+  return;
+}
+
+// Should indicate that a string is returned
+export var arrowFn = () => 'test';
+                        ~~ Missing return type on function.
+
+// All arguments should be typed
+export var arrowFn = (arg): string => `test ${arg}`;
+                      ~~~ Argument 'arg' should be typed.
+export var arrowFn = (arg: any): string => `test ${arg}`;
+                      ~~~~~~~~ Argument 'arg' should be typed with a non-any type.
+
+export class Test {
+  // Should indicate that no value is returned (void)
+  method() {
+  ~~~~~~ Missing return type on function.
+    return;
+  }
+}

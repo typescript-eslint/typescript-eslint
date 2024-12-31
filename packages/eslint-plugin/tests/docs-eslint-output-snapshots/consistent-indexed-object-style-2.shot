@@ -1,0 +1,5 @@
+Incorrect
+Options: "index-signature"
+
+type RecordType = Record<string, unknown>;
+                  ~~~~~~~~~~~~~~~~~~~~~~~ An index signature is preferred over a record.

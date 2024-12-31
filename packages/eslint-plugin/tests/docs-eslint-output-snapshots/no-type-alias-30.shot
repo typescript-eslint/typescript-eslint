@@ -1,0 +1,5 @@
+Options: { "allowTupleTypes": "in-unions-and-intersections" }
+
+type Foo = [number] & [number, number];
+
+type Foo = [string] | [number];

@@ -1,0 +1,5 @@
+Correct
+
+namespace Example {}
+
+declare module 'foo' {}

@@ -1,0 +1,15 @@
+Correct
+
+declare const properlyTyped: { prop: { a: string } };
+
+properlyTyped.prop.a;
+properlyTyped.prop['a'];
+
+const key = 'a';
+properlyTyped.prop[key];
+
+const arr = [1, 2, 3];
+arr[1];
+let idx = 1;
+arr[idx];
+arr[idx++];

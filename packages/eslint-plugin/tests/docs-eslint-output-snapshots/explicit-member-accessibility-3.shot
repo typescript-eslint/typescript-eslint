@@ -1,0 +1,23 @@
+Options: { "accessibility": "no-public" }
+
+class Animal {
+  constructor(
+    protected breed,
+    name,
+  ) {
+    // Parameter property and constructor
+    this.name = name;
+  }
+  private animalName: string; // Property
+  get name(): string {
+    // get accessor
+    return this.animalName;
+  }
+  private set name(value: string) {
+    // set accessor
+    this.animalName = value;
+  }
+  protected walk() {
+    // method
+  }
+}

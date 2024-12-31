@@ -1,0 +1,7 @@
+Correct
+Options: { "ignoreStringArrays": true }
+
+const one = '1';
+const two = '2';
+const three = '3';
+[one, two, three].sort();

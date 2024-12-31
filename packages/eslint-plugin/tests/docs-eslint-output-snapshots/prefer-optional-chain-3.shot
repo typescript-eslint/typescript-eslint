@@ -1,0 +1,7 @@
+Incorrect
+Options: { "checkAny": true }
+
+declare const thing: any;
+
+thing && thing.toString();
+~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.

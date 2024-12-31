@@ -1,0 +1,4 @@
+Incorrect
+
+function greet(): any {}
+                  ~~~ Unexpected any. Specify a different type.

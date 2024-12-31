@@ -1,0 +1,12 @@
+Correct
+
+declare const array: string[];
+
+for (const x of array) {
+  console.log(x);
+}
+
+for (let i = 0; i < array.length; i++) {
+  // i is used, so for-of could not be used.
+  console.log(i, array[i]);
+}

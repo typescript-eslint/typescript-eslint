@@ -1,0 +1,25 @@
+Incorrect
+
+// Should indicate that no value is returned (void)
+function test() {
+~~~~~~~~~~~~~ Missing return type on function.
+  return;
+}
+
+// Should indicate that a number is returned
+var fn = function () {
+         ~~~~~~~~~ Missing return type on function.
+  return 1;
+};
+
+// Should indicate that a string is returned
+var arrowFn = () => 'test';
+                 ~~ Missing return type on function.
+
+class Test {
+  // Should indicate that no value is returned (void)
+  method() {
+  ~~~~~~ Missing return type on function.
+    return;
+  }
+}

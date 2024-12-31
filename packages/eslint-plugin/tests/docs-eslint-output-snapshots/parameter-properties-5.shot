@@ -1,0 +1,10 @@
+Correct
+Options: { "allow": ["private"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private name: string) {}
+}

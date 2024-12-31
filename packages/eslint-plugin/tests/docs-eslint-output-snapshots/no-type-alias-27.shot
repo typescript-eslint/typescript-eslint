@@ -1,0 +1,12 @@
+Options: { "allowTupleTypes": "in-intersections" }
+
+type Foo = [number];
+           ~~~~~~~~ Type tuple types are not allowed.
+
+type Foo = [number] | [number, number];
+           ~~~~~~~~ Tuple Types in union types are not allowed.
+                      ~~~~~~~~~~~~~~~~ Tuple Types in union types are not allowed.
+
+type Foo = [string] | [number];
+           ~~~~~~~~ Tuple Types in union types are not allowed.
+                      ~~~~~~~~ Tuple Types in union types are not allowed.

@@ -1,0 +1,14 @@
+Incorrect
+
+function makeSyncDisposable(): Disposable {
+  return {
+    [Symbol.dispose](): void {
+      // Dispose of the resource
+    },
+  };
+}
+
+async function shouldNotAwait() {
+  await using resource = makeSyncDisposable();
+                         ~~~~~~~~~~~~~~~~~~~~ Unexpected `await using` of a value that is not async disposable.
+}

@@ -1,0 +1,6 @@
+Incorrect
+
+function foo(x: number): number {
+  return x!; // unnecessary non-null
+         ~~ This assertion is unnecessary since it does not change the type of the expression.
+}

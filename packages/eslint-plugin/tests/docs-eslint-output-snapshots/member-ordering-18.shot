@@ -1,0 +1,16 @@
+Incorrect
+Options: { "classExpressions": ["method", "constructor", "field"] }
+
+const foo = class {
+  private C: string; // -> field
+  public D: string; // -> field
+  protected static E: string; // -> field
+
+  constructor() {} // -> constructor
+  ~~~~~~~~~~~~~~~~ Member constructor should be declared before all field definitions.
+
+  public static A(): void {} // -> method
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Member A should be declared before all field definitions.
+  public B(): void {} // -> method
+  ~~~~~~~~~~~~~~~~~~~ Member B should be declared before all field definitions.
+};

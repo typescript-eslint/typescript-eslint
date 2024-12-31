@@ -1,0 +1,5 @@
+Incorrect
+
+import 'some-other-module';
+export {};
+~~~~~~~~~~ Empty export does nothing and can be removed.

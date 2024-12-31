@@ -1,0 +1,24 @@
+Correct
+Options: { "prefer": "parameter-property" }
+
+class Foo {
+  private differentName: string;
+  constructor(name: string) {
+    this.differentName = name;
+  }
+}
+
+class Foo {
+  private differentType: number | undefined;
+  constructor(differentType: number) {
+    this.differentType = differentType;
+  }
+}
+
+class Foo {
+  protected logicInConstructor: string;
+  constructor(logicInConstructor: string) {
+    console.log('Hello, world!');
+    this.logicInConstructor = logicInConstructor;
+  }
+}

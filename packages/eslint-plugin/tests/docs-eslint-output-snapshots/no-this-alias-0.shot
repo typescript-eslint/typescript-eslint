@@ -1,0 +1,8 @@
+Incorrect
+
+const self = this;
+      ~~~~ Unexpected aliasing of 'this' to local variable.
+
+setTimeout(function () {
+  self.doWork();
+});

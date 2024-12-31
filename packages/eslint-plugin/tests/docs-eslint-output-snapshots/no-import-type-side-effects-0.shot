@@ -1,0 +1,10 @@
+Incorrect
+
+import { type A } from 'mod';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
+import { type A as AA } from 'mod';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
+import { type A, type B } from 'mod';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.
+import { type A as AA, type B as BB } from 'mod';
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TypeScript will only remove the inline type specifiers which will leave behind a side effect import at runtime. Convert this to a top-level type qualifier to properly remove the entire import.

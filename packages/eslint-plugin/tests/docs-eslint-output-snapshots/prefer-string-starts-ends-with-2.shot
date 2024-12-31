@@ -1,0 +1,8 @@
+Options: { "allowSingleElementEquality": "always" }
+
+declare const text: string;
+
+text[0] === 'a';
+text[0] === text[0].toUpperCase();
+text[0] === text[1];
+text[text.length - 1] === 'b';

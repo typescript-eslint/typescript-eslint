@@ -1,0 +1,5 @@
+Correct
+Options: { "ts-expect-error": { "descriptionFormat": "^: TS\\d+ because .+$" } }
+
+// @ts-expect-error: TS1234 because the library definition is wrong
+const a = doSomething('hello');

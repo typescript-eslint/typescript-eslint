@@ -1,0 +1,18 @@
+Incorrect
+Options: { "allowHigherOrderFunctions": false }
+
+export const arrowFn = () => () => {};
+                          ~~ Missing return type on function.
+                                ~~ Missing return type on function.
+
+export function fn() {
+       ~~~~~~~~~~~ Missing return type on function.
+  return function () {};
+         ~~~~~~~~~ Missing return type on function.
+}
+
+export function foo(outer: string) {
+       ~~~~~~~~~~~~ Missing return type on function.
+  return function (inner: string) {};
+         ~~~~~~~~~ Missing return type on function.
+}

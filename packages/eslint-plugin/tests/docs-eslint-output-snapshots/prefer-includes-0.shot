@@ -1,0 +1,26 @@
+Incorrect
+
+const str: string;
+const array: any[];
+const readonlyArray: ReadonlyArray<any>;
+const typedArray: UInt8Array;
+const maybe: string;
+const userDefined: {
+  indexOf(x: any): number;
+  includes(x: any): boolean;
+};
+
+str.indexOf(value) !== -1;
+~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
+array.indexOf(value) !== -1;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
+readonlyArray.indexOf(value) === -1;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
+typedArray.indexOf(value) > -1;
+maybe?.indexOf('') !== -1;
+~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
+userDefined.indexOf(value) >= 0;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Use 'includes()' method instead.
+
+/example/.test(str);
+~~~~~~~~~~~~~~~~~~~ Use `String#includes()` method with a string instead.

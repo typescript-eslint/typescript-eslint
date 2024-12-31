@@ -1,0 +1,18 @@
+Correct
+
+let anyObject: object;
+let anyValue: unknown;
+
+type AnyObjectA = object;
+type AnyValueA = unknown;
+
+type AnyObjectB = object;
+type AnyValueB = unknown;
+
+let objectWith: { property: boolean };
+
+interface InterfaceWith {
+  property: boolean;
+}
+
+type TypeWith = { property: boolean };

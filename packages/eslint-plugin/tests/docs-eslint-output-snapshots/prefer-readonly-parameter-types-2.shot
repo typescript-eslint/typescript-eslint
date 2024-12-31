@@ -1,0 +1,27 @@
+Incorrect
+Options: {"allow":[{"from":"file","name":"Foo"},{"from":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+
+interface ThisIsMutable {
+  prop: string;
+}
+
+interface Wrapper {
+  sub: ThisIsMutable;
+}
+
+interface WrapperWithOther {
+  readonly sub: Foo;
+  otherProp: string;
+}
+
+// Incorrect because ThisIsMutable is not readonly
+function fn1(arg: ThisIsMutable) {}
+             ~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.
+
+// Incorrect because Wrapper.sub is not readonly
+function fn2(arg: Wrapper) {}
+             ~~~~~~~~~~~~ Parameter should be a read only type.
+
+// Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+function fn3(arg: WrapperWithOther) {}
+             ~~~~~~~~~~~~~~~~~~~~~ Parameter should be a read only type.

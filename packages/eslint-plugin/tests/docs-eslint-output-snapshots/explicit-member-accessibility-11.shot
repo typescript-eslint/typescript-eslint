@@ -1,0 +1,5 @@
+Options: { "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }
+
+class Animal {
+  constructor(public animalName: string) {}
+}

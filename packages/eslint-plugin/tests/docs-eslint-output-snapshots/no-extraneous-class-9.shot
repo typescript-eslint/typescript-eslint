@@ -1,0 +1,5 @@
+Incorrect
+Options: { "allowConstructorOnly": true }
+
+class NoFields {}
+      ~~~~~~~~ Unexpected empty class.

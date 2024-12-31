@@ -1,0 +1,9 @@
+Incorrect
+Options: { "types": "prefer-import" }
+
+/// <reference types="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use `import` style instead.
+
+import { valueA } from 'code';
+
+globalThis.valueB;

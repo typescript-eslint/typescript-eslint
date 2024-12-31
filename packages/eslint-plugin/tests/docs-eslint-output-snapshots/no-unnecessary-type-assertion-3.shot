@@ -1,0 +1,5 @@
+Incorrect
+
+type Foo = number;
+const foo = (3 + 5) as Foo;
+            ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.

@@ -1,0 +1,6 @@
+Options: { "ignoreEnums": false }
+
+enum foo {
+  SECOND = 1000,
+           ~~~~ No magic number: 1000.
+}

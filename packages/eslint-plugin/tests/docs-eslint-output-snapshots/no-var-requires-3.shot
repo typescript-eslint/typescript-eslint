@@ -1,0 +1,4 @@
+Correct
+Options: { "allow": ["/package.json$"] }
+
+const foo = require('../package.json');

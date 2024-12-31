@@ -1,0 +1,12 @@
+Correct
+Options: { "interfaces": ["signature", "method", "constructor", "field"] }
+
+interface Foo {
+  [Z: string]: any; // -> signature
+
+  A(): void; // -> method
+
+  new (); // -> constructor
+
+  B: string; // -> field
+}

@@ -1,0 +1,24 @@
+Incorrect
+
+type PossibleValues = string | number | void;
+                                        ~~~~ void is not valid as a constituent in a union type
+type MorePossibleValues = string | ((number & any) | (string | void));
+                                                               ~~~~ void is not valid as a constituent in a union type
+
+function logSomething(thing: void) {}
+                             ~~~~ void is only valid as a return type or generic type argument.
+function printArg<T = void>(arg: T) {}
+
+logAndReturn<void>(undefined);
+             ~~~~ void is only valid as a return type or generic type argument.
+
+interface Interface {
+  lambda: () => void;
+  prop: void;
+        ~~~~ void is only valid as a return type or generic type argument.
+}
+
+class MyClass {
+  private readonly propName: void;
+                             ~~~~ void is only valid as a return type or generic type argument.
+}

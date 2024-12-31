@@ -1,0 +1,36 @@
+Incorrect
+Options: { "checksVoidReturn": true }
+
+[1, 2, 3].forEach(async value => {
+                  ~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
+  await fetch(`/${value}`);
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+});
+~
+
+new Promise<void>(async (resolve, reject) => {
+                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise returned in function argument where a void return was expected.
+  await fetch('/');
+~~~~~~~~~~~~~~~~~~~
+  resolve();
+~~~~~~~~~~~~
+});
+~
+
+document.addEventListener('click', async () => {
+  console.log('synchronous call');
+  await fetch('/');
+  console.log('synchronous call');
+});
+
+interface MySyncInterface {
+  setThing(): void;
+}
+class MyClass implements MySyncInterface {
+  async setThing(): Promise<void> {
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Promise-returning method provided where a void return was expected by extended/implemented type 'MySyncInterface'.
+    this.thing = await fetchThing();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }
+~~~
+}

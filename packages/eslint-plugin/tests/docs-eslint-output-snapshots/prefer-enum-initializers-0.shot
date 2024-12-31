@@ -1,0 +1,21 @@
+Incorrect
+
+enum Status {
+  Open = 1,
+  Close,
+  ~~~~~ The value of the member 'Close' should be explicitly defined.
+}
+
+enum Direction {
+  Up,
+  ~~ The value of the member 'Up' should be explicitly defined.
+  Down,
+  ~~~~ The value of the member 'Down' should be explicitly defined.
+}
+
+enum Color {
+  Red,
+  ~~~ The value of the member 'Red' should be explicitly defined.
+  Green = 'Green',
+  Blue = 'Blue',
+}

@@ -1,0 +1,12 @@
+Correct
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    console.log(this.props);
+    console.log(this.state);
+  }
+}

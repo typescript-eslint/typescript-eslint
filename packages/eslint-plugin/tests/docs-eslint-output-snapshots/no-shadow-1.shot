@@ -1,0 +1,4 @@
+Options: { "ignoreFunctionTypeParameterNameValueShadow": true }
+
+const test = 1;
+type Func = (test: string) => typeof test;

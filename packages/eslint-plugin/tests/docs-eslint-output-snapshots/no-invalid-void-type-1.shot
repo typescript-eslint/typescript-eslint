@@ -1,0 +1,11 @@
+Correct
+
+type NoOp = () => void;
+
+function noop(): void {}
+
+let trulyUndefined = void 0;
+
+async function promiseMeSomething(): Promise<void> {}
+
+type stillVoid = void | never;

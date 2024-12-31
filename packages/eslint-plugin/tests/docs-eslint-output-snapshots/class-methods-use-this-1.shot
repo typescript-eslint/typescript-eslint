@@ -1,0 +1,6 @@
+Options: { "ignoreClassesThatImplementAnInterface": true }
+
+class X implements Y {
+  method() {}
+  property = () => {};
+}

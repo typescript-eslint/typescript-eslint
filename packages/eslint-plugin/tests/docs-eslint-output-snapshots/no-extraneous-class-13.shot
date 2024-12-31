@@ -1,0 +1,5 @@
+Incorrect
+Options: { "allowStaticOnly": true }
+
+class EmptyClass {}
+      ~~~~~~~~~~ Unexpected empty class.

@@ -1,0 +1,19 @@
+Correct
+
+function f(a = 0) {}
+function f(a: number, b = 0) {}
+function f(a: number, b?: number) {}
+function f(a: number, b?: number, c = 0) {}
+function f(a: number, b = 0, c?: number) {}
+class Foo {
+  constructor(
+    public a,
+    private b = 0,
+  ) {}
+}
+class Foo {
+  constructor(
+    public a,
+    private b?: number,
+  ) {}
+}

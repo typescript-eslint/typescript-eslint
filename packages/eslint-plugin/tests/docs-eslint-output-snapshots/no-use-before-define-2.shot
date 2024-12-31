@@ -1,0 +1,4 @@
+Options: { "typedefs": false }
+
+let myVar: StringOrNumber;
+type StringOrNumber = string | number;

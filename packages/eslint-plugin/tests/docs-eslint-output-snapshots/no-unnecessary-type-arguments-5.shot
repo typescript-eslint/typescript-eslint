@@ -1,0 +1,5 @@
+Correct
+
+function g<T = number, U = string>() {}
+g<string>();
+g<number, number>();

@@ -1,0 +1,13 @@
+Correct
+
+interface Foo<T> {}
+
+type Bar<T> = {};
+
+class Baz<T> {
+  qux<U>() {}
+}
+
+const Quux = <T>() => {};
+
+function Quuz<T>() {}

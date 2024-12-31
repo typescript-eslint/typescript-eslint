@@ -1,0 +1,5 @@
+Incorrect
+
+function greet(param: Array<any>): Array<any> {}
+                            ~~~ Unexpected any. Specify a different type.
+                                         ~~~ Unexpected any. Specify a different type.

@@ -1,0 +1,12 @@
+Correct
+Options: { "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }
+
+const x: T = { foo: 1 };
+const y = { foo: 1 } as any;
+const z = { foo: 1 } as unknown;
+bar({ foo: 1 } as T);
+new Clazz({ foo: 1 } as T);
+function bar() {
+  throw { foo: 1 } as Foo;
+}
+const foo = <Foo props={{ bar: 1 } as Bar} />;

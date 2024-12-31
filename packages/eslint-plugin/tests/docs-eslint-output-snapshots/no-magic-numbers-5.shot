@@ -1,0 +1,8 @@
+Options: { "ignoreReadonlyClassProperties": true }
+
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}

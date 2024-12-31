@@ -1,0 +1,22 @@
+Correct
+Options: { "considerDefaultExhaustiveForUnions": true }
+
+// requires `considerDefaultExhaustiveForUnions` to be set to true
+
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  default:
+    console.log('a fruit');
+    break;
+}

@@ -1,0 +1,11 @@
+Incorrect
+Options: { "allowDirectConstAssertionInArrowFunctions": false }
+
+export const func = (value: number) => ({ type: 'X', value });
+                                    ~~ Missing return type on function.
+export const foo = () => ({
+                      ~~ Missing return type on function.
+  bar: true,
+});
+export const bar = () => 1;
+                      ~~ Missing return type on function.

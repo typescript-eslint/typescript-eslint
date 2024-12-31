@@ -1,0 +1,5 @@
+Incorrect
+Options: { "caseSensitive": true }
+
+type T = 'DeletedAt' | 'DeleteForever';
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Union type T constituents must be sorted.

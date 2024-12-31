@@ -1,0 +1,28 @@
+Options: { "allowLiterals": "in-intersections" }
+
+type Foo = {};
+           ~~ Type literals are not allowed.
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+};
+~
+
+type Foo = {
+           ~ Type literals are not allowed.
+  name: string;
+~~~~~~~~~~~~~~~
+  age: number;
+~~~~~~~~~~~~~~
+  walk: (miles: number) => void;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+};
+~
+
+type Foo = { name: string } | { age: number };
+           ~~~~~~~~~~~~~~~~ Literals in union types are not allowed.
+                              ~~~~~~~~~~~~~~~ Literals in union types are not allowed.

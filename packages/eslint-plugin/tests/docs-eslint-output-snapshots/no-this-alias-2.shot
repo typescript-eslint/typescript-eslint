@@ -1,0 +1,15 @@
+Incorrect
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    const { props, state } = this;
+          ~~~~~~~~~~~~~~~~ Unexpected aliasing of members of 'this' to local variables.
+
+    console.log(props);
+    console.log(state);
+  }
+}

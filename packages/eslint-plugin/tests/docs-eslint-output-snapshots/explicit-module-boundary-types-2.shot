@@ -1,0 +1,5 @@
+Incorrect
+Options: { "allowArgumentsExplicitlyTypedAsAny": false }
+
+export const func = (value: any): number => value + 1;
+                     ~~~~~~~~~~ Argument 'value' should be typed with a non-any type.

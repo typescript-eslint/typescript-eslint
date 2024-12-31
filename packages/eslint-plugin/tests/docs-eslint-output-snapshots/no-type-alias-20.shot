@@ -1,0 +1,17 @@
+Options: { "allowMappedTypes": "in-intersections" }
+
+type Foo<T> = { readonly [P in keyof T]: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T> = { [P in keyof T]?: T[P] };
+              ~~~~~~~~~~~~~~~~~~~~~~~~~ Type mapped types are not allowed.
+
+type Foo<T, U> =
+  | { readonly [P in keyof T]: T[P] }
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+  | { readonly [P in keyof U]: U[P] };
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+
+type Foo<T, U> = { [P in keyof T]?: T[P] } | { [P in keyof U]?: U[P] };
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.
+                                             ~~~~~~~~~~~~~~~~~~~~~~~~~ Mapped types in union types are not allowed.

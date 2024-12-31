@@ -1,0 +1,7 @@
+Correct
+
+enum Status {
+  Unknown,
+  Closed,
+  Open,
+}

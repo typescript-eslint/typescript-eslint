@@ -1,0 +1,9 @@
+Options: { "ignoredTypeNames": ["RegExp"] }
+
+`${/regex/}`;
+'' + /regex/;
+/regex/.toString();
+let value = /regex/;
+value.toString();
+let text = `${value}`;
+String(/regex/);

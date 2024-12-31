@@ -1,0 +1,5 @@
+Incorrect
+
+export const value = 'Hello, world!';
+export {};
+~~~~~~~~~~ Empty export does nothing and can be removed.

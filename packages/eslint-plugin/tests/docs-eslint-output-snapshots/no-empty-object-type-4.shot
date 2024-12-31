@@ -1,0 +1,6 @@
+Correct
+Options: { "allowWithName": "Props$" }
+
+interface InterfaceProps {}
+
+type TypeProps = {};

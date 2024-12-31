@@ -1,0 +1,9 @@
+Incorrect
+Options: { "onlyInlineLambdas": true }
+
+class Container {
+  private onClick = () => {
+  ~~~~~~~~~~~~~~~ Member 'onClick' is never reassigned; mark it as `readonly`.
+    /* ... */
+  };
+}

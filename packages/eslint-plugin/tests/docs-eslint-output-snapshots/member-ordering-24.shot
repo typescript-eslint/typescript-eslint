@@ -1,0 +1,14 @@
+Incorrect
+Options: {"default":{"order":"alphabetically"}}
+
+interface Foo {
+  a: x;
+  B: x;
+  ~~~~~ Member B should be declared before member a.
+  c: x;
+
+  B(): void;
+  c(): void;
+  a(): void;
+  ~~~~~~~~~~ Member a should be declared before member c.
+}

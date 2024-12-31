@@ -1,0 +1,12 @@
+Incorrect
+
+interface ButtonProps {
+  onClick: () => void;
+}
+
+class Button implements ButtonProps {
+  onClick = () => console.log('button!');
+}
+
+export { Button, ButtonProps };
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Type export ButtonProps is not a value and should be exported using `export type`.

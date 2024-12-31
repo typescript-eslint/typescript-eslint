@@ -1,0 +1,12 @@
+Options: { "ignoreMixedLogicalExpressions": false }
+
+declare const a: string | null;
+declare const b: string | null;
+declare const c: string | null;
+declare const d: string | null;
+
+a ?? (b && c);
+a ??= b && c;
+(a && b) ?? c ?? d;
+a ?? (b && c) ?? d;
+a ?? (b && c && d);

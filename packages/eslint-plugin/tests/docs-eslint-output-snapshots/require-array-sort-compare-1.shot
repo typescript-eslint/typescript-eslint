@@ -1,0 +1,9 @@
+Correct
+
+const array: any[];
+const userDefinedType: { sort(): void };
+
+array.sort((a, b) => a - b);
+array.sort((a, b) => a.localeCompare(b));
+
+userDefinedType.sort();

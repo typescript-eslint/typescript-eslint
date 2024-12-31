@@ -1,0 +1,6 @@
+Correct
+Options: { "checkString": false }
+
+declare const thing: string;
+
+thing && thing.toString();

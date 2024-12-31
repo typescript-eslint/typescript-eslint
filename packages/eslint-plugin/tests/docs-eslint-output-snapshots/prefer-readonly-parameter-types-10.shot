@@ -1,0 +1,6 @@
+Incorrect
+Options: { "ignoreInferredTypes": true }
+
+import { acceptsCallback, CallbackOptions } from 'external-dependency';
+
+acceptsCallback((options: CallbackOptions) => {});

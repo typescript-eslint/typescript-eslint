@@ -1,0 +1,12 @@
+Correct
+Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
+
+type Foo = {
+  [Z: string]: any; // -> signature
+
+  A(): void; // -> method
+
+  new (); // -> constructor
+
+  B: string; // -> field
+};

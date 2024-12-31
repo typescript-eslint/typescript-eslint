@@ -1,0 +1,13 @@
+Incorrect
+
+declare class C {
+  new(): C;
+  ~~~~~~~~~ Class cannot have method named `new`.
+}
+
+interface I {
+  new (): I;
+  ~~~~~~~~~~ Interfaces cannot be constructed, only classes.
+  constructor(): void;
+  ~~~~~~~~~~~~~~~~~~~~ Interfaces cannot be constructed, only classes.
+}

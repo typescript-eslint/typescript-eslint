@@ -1,0 +1,10 @@
+Correct
+Options: { "allow": ["private readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+}

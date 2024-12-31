@@ -1,0 +1,14 @@
+Correct
+Options: { "treatMethodsAsReadonly": false }
+
+type MyType = Readonly<{
+  prop: string;
+  method(): string;
+}>;
+function foo(arg: MyType) {}
+
+type MyOtherType = {
+  readonly prop: string;
+  readonly method: () => string;
+};
+function bar(arg: MyOtherType) {}

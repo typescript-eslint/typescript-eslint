@@ -1,0 +1,10 @@
+Correct
+Options: { "allowComparingNullableBooleansToFalse": false }
+
+declare const someUndefinedCondition: boolean | undefined;
+if (!(someUndefinedCondition ?? true)) {
+}
+
+declare const someNullCondition: boolean | null;
+if (someNullCondition ?? true) {
+}

@@ -1,0 +1,10 @@
+Correct
+Options: { "enums": false }
+
+function foo() {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}

@@ -1,0 +1,8 @@
+Options: { "allowProtectedClassPropertyAccess": true }
+
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;

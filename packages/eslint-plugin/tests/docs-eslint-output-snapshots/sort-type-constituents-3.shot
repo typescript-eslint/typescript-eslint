@@ -1,0 +1,4 @@
+Correct
+Options: { "caseSensitive": true }
+
+type T = 'DeleteForever' | 'DeletedAt';

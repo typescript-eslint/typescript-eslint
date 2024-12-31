@@ -1,0 +1,7 @@
+Incorrect
+Options: { "types": "never" }
+
+/// <reference types="code" />
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Do not use a triple slash reference for code, use `import` style instead.
+
+globalThis.value;

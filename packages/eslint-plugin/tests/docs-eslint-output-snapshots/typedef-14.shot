@@ -1,0 +1,5 @@
+Incorrect
+Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
+
+const text = 'text';
+      ~~~~~~~~~~~~~ Expected text to have a type annotation.

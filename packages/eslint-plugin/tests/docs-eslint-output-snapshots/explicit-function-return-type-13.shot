@@ -1,0 +1,14 @@
+Correct
+Options: { "allowFunctionsWithoutTypeParameters": true }
+
+function foo<T>(t: T): T {
+  return t;
+}
+
+const bar = <T>(t: T): T => t;
+
+function allowedFunction(x: string) {
+  return x;
+}
+
+const allowedArrow = (x: string) => x;

@@ -1,0 +1,4 @@
+Correct
+Options: { "allowDeclarations": false }
+
+declare module 'foo' {}

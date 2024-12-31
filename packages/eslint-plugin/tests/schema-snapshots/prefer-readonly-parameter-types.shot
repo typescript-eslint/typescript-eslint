@@ -1,7 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-readonly-parameter-types 1`] = `
-"
 # SCHEMA:
 
 [
@@ -151,5 +147,4 @@ type Options = [
     treatMethodsAsReadonly?: boolean;
   },
 ];
-"
-`;
+

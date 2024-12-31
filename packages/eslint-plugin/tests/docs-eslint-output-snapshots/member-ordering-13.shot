@@ -1,0 +1,22 @@
+Incorrect
+Options: { "default": ["public-static-field", "static-field", "instance-field"] }
+
+const foo = class {
+  public T(): void {} // method (irrelevant)
+
+  private static B: string; // -> static field
+
+  constructor() {} // constructor (irrelevant)
+
+  private E: string; // -> instance field
+
+  protected static C: string; // -> static field
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Member C should be declared before all instance field definitions.
+  private static D: string; // -> static field
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Member D should be declared before all instance field definitions.
+
+  [Z: string]: any; // signature (irrelevant)
+
+  public static A: string; // -> public static field
+  ~~~~~~~~~~~~~~~~~~~~~~~~ Member A should be declared before all static field definitions.
+};

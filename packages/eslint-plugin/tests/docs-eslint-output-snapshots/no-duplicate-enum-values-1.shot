@@ -1,0 +1,7 @@
+Incorrect
+
+enum E {
+  A = 'A',
+  B = 'A',
+  ~~~~~~~ Duplicate enum member value A.
+}

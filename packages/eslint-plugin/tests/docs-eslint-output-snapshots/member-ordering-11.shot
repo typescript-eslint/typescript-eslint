@@ -1,0 +1,18 @@
+Correct
+Options: { "default": ["public-instance-method", "public-static-field"] }
+
+const Foo = class {
+  public B(): void {} // -> public instance method
+
+  private C: string; // (irrelevant)
+
+  [Z: string]: any; // (irrelevant)
+
+  public D: string; // (irrelevant)
+
+  constructor() {} // (irrelevant)
+
+  public static A(): void {} // (irrelevant)
+
+  public static E: string; // -> public static field
+};

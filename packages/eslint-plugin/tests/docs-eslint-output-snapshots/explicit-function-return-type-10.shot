@@ -1,0 +1,10 @@
+Incorrect
+Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
+
+var join = (a: string, b: string) => `${a}${b}`;
+                                  ~~ Missing return type on function.
+
+const log = (message: string) => {
+                              ~~ Missing return type on function.
+  console.log(message);
+};
