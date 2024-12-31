@@ -48,7 +48,8 @@
     "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
-    "test": "jest --coverage --passWithNoTests",
+    "test": "jest --passWithNoTests",
+    "test-coverage": "jest --coverage --passWithNoTests",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
