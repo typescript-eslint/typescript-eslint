@@ -1,4 +1,0 @@
-Correct
-
-const x = { 0: 'a' };
-const y = x[0];

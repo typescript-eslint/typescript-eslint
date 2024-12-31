@@ -1,0 +1,39 @@
+Incorrect
+
+function x(x: number): void;
+function x(x: string): void;
+           ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.
+
+Incorrect
+
+function y(): void;
+function y(...x: number[]): void;
+           ~~~~~~~~~~~~~~ These overloads can be combined into one signature with a rest parameter.
+
+Correct
+
+function x(x: number | string): void;
+
+Correct
+
+function y(...x: number[]): void;
+
+Correct
+
+// This rule won't check overload signatures with different rest parameter types.
+// See https://github.com/microsoft/TypeScript/issues/5077
+function f(...a: number[]): void;
+function f(...a: string[]): void;
+
+Incorrect
+Options: { "ignoreDifferentlyNamedParameters": true }
+
+function f(a: number): void;
+function f(a: string): void;
+           ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.
+
+Correct
+Options: { "ignoreDifferentlyNamedParameters": true }
+
+function f(a: number): void;
+function f(b: string): void;

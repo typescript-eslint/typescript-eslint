@@ -1,0 +1,120 @@
+Incorrect
+
+type T1 = B | A;
+          ~~~~~ Union type T1 constituents must be sorted.
+
+type T2 = { b: string } & { a: string };
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Intersection type T2 constituents must be sorted.
+
+type T3 = [1, 2, 4] & [1, 2, 3];
+          ~~~~~~~~~~~~~~~~~~~~~ Intersection type T3 constituents must be sorted.
+
+type T4 =
+  | [1, 2, 4]
+  ~~~~~~~~~~~ Union type T4 constituents must be sorted.
+  | [1, 2, 3]
+~~~~~~~~~~~~~
+  | { b: string }
+~~~~~~~~~~~~~~~~~
+  | { a: string }
+~~~~~~~~~~~~~~~~~
+  | (() => void)
+~~~~~~~~~~~~~~~~
+  | (() => string)
+~~~~~~~~~~~~~~~~~~
+  | 'b'
+~~~~~~~
+  | 'a'
+~~~~~~~
+  | 'b'
+~~~~~~~
+  | 'a'
+~~~~~~~
+  | readonly string[]
+~~~~~~~~~~~~~~~~~~~~~
+  | readonly number[]
+~~~~~~~~~~~~~~~~~~~~~
+  | string[]
+~~~~~~~~~~~~
+  | number[]
+~~~~~~~~~~~~
+  | B
+~~~~~
+  | A
+~~~~~
+  | string
+~~~~~~~~~~
+  | any;
+~~~~~~~
+
+Correct
+
+type T1 = A | B;
+
+type T2 = { a: string } & { b: string };
+
+type T3 = [1, 2, 3] & [1, 2, 4];
+
+type T4 =
+  | A
+  | B
+  | number[]
+  | string[]
+  | any
+  | string
+  | readonly number[]
+  | readonly string[]
+  | 'a'
+  | 'a'
+  | 'b'
+  | 'b'
+  | (() => string)
+  | (() => void)
+  | { a: string }
+  | { b: string }
+  | [1, 2, 3]
+  | [1, 2, 4];
+
+Incorrect
+Options: { "caseSensitive": true }
+
+type T = 'DeletedAt' | 'DeleteForever';
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Union type T constituents must be sorted.
+
+Correct
+Options: { "caseSensitive": true }
+
+type T = 'DeleteForever' | 'DeletedAt';
+
+Incorrect
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = B & A;
+                           ~~~~~ Intersection type ExampleIntersection constituents must be sorted.
+
+Correct
+Options: { "checkIntersections": true }
+
+type ExampleIntersection = A & B;
+
+Incorrect
+Options: { "checkUnions": true }
+
+type ExampleUnion = B | A;
+                    ~~~~~ Union type ExampleUnion constituents must be sorted.
+
+Correct
+Options: { "checkUnions": true }
+
+type ExampleUnion = A | B;
+
+Incorrect
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = null | 123;
+                    ~~~~~~~~~~ Union type ExampleGroup constituents must be sorted.
+
+Correct
+Options: { "groupOrder": ["literal", "nullish" ]}
+
+type ExampleGroup = 123 | null;

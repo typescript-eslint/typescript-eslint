@@ -1,0 +1,402 @@
+Incorrect
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+
+class Foo {
+  constructor(name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["readonly"] }
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(readonly name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["private"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["private"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["protected"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["protected"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["public"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["public"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["private readonly"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["private readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["protected readonly"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["protected readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+}
+
+Incorrect
+Options: { "allow": ["public readonly"] }
+
+class Foo {
+  constructor(readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(public name: string) {}
+              ~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(private readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+class Foo {
+  constructor(protected readonly name: string) {}
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
+}
+
+Correct
+Options: { "allow": ["public readonly"] }
+
+class Foo {
+  constructor(name: string) {}
+}
+
+class Foo {
+  constructor(public readonly name: string) {}
+}
+
+Incorrect
+Options: { "prefer": "parameter-property" }
+
+class Foo {
+  private name: string;
+  ~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  public readonly name: string;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+
+class Foo {
+  constructor(name: string) {
+    this.name = name;
+  }
+  name: string;
+  ~~~~~~~~~~~~~ Property name should be declared as a parameter property.
+}
+
+Correct
+Options: { "prefer": "parameter-property" }
+
+class Foo {
+  private differentName: string;
+  constructor(name: string) {
+    this.differentName = name;
+  }
+}
+
+class Foo {
+  private differentType: number | undefined;
+  constructor(differentType: number) {
+    this.differentType = differentType;
+  }
+}
+
+class Foo {
+  protected logicInConstructor: string;
+  constructor(logicInConstructor: string) {
+    console.log('Hello, world!');
+    this.logicInConstructor = logicInConstructor;
+  }
+}

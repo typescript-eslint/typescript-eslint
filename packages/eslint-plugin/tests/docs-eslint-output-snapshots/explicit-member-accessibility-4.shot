@@ -1,9 +1,0 @@
-Options: { "overrides": { "constructors": "no-public" } }
-
-class Animal {
-  public constructor(protected animalName) {}
-  ~~~~~~ Public accessibility modifier on method definition constructor.
-  public get name() {
-    return this.animalName;
-  }
-}

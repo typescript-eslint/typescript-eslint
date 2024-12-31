@@ -1,5 +1,0 @@
-Correct
-Options: { "allowAsImport": true }
-
-import foo = require('foo');
-import foo from 'foo';

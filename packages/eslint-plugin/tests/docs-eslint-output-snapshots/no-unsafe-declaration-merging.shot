@@ -1,0 +1,19 @@
+Incorrect
+
+interface Foo {}
+          ~~~ Unsafe declaration merging between classes and interfaces.
+
+class Foo {}
+      ~~~ Unsafe declaration merging between classes and interfaces.
+
+Correct
+
+interface Foo {}
+class Bar implements Foo {}
+
+namespace Baz {}
+namespace Baz {}
+enum Baz {}
+
+namespace Qux {}
+function Qux() {}

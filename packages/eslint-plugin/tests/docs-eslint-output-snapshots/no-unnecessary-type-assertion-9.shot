@@ -1,5 +1,0 @@
-Correct
-
-function foo(x: number | undefined): number {
-  return x!;
-}

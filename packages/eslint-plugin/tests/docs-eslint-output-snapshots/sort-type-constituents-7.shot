@@ -1,4 +1,0 @@
-Correct
-Options: { "checkUnions": true }
-
-type ExampleUnion = A | B;

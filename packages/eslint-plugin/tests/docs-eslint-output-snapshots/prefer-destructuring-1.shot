@@ -1,3 +1,0 @@
-
-
-const x: string = obj.x; // This is correct by default. You can also forbid this by an option.

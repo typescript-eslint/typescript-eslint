@@ -1,4 +1,0 @@
-Correct
-Options: { "lib": "never" }
-
-import { value } from 'code';

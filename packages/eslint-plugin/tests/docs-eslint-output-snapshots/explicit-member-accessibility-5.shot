@@ -1,8 +1,0 @@
-Options: { "overrides": { "constructors": "no-public" } }
-
-class Animal {
-  constructor(protected animalName) {}
-  public get name() {
-    return this.animalName;
-  }
-}

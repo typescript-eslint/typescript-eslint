@@ -1,9 +1,0 @@
-Incorrect
-Options: { "allowEmpty": true }
-
-class NoFields {
-      ~~~~~~~~ Unexpected class with only a constructor.
-  constructor() {
-    console.log('Hello, world!');
-  }
-}

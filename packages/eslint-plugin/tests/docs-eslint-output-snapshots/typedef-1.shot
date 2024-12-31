@@ -1,9 +1,0 @@
-Correct
-Options: { "arrayDestructuring": true }
-
-const [a]: number[] = [1];
-const [b]: [number] = [2];
-const [c, d]: [boolean, string] = [true, 'text'];
-
-for (const [key, val] of new Map([['key', 1]])) {
-}

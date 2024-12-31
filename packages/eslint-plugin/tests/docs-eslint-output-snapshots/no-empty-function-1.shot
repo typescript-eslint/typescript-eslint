@@ -1,5 +1,0 @@
-Options: { "allow": ["protected-constructors"] }
-
-class Foo {
-  protected constructor() {}
-}

@@ -1,8 +1,0 @@
-Correct
-Options: { "allowIIFEs": true }
-
-var foo = (() => 'foo')();
-
-var bar = (function () {
-  return 'bar';
-})();

@@ -1,0 +1,26 @@
+Options: { "allowPrivateClassPropertyAccess": true }
+
+class X {
+  private priv_prop = 123;
+}
+
+const x = new X();
+x['priv_prop'] = 123;
+
+Options: { "allowProtectedClassPropertyAccess": true }
+
+class X {
+  protected protected_prop = 123;
+}
+
+const x = new X();
+x['protected_prop'] = 123;
+
+Options: { "allowIndexSignaturePropertyAccess": true }
+
+class X {
+  [key: string]: number;
+}
+
+const x = new X();
+x['hello'] = 123;

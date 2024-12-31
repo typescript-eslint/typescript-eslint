@@ -1,5 +1,0 @@
-Incorrect
-
-const x = ['a'];
-const y = x[0];
-      ~~~~~~~~ Use array destructuring.

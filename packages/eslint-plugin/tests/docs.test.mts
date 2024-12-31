@@ -425,19 +425,28 @@ describe('Validating rule docs', () => {
           return unistUtilVisit.CONTINUE;
         });
 
-        let tokenIndex = 0;
+        const snapshotContents: string[] = [];
+
         for (const [token, shouldContainLintErrors] of tokensToLint) {
-          await lintCodeBlock(tokenIndex++, token, shouldContainLintErrors);
+          const snapshotContent = lintCodeBlock(token, shouldContainLintErrors);
+          if (snapshotContent) {
+            snapshotContents.push(snapshotContent);
+          }
         }
 
-        async function lintCodeBlock(
-          tokenIndex: number,
+        if (snapshotContents.length > 0) {
+          await expect(snapshotContents.join('\n')).toMatchFileSnapshot(
+            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+          );
+        }
+
+        function lintCodeBlock(
           token: mdast.Code,
           shouldContainLintErrors: boolean | 'skip-check',
-        ): Promise<void> {
+        ): string | null {
           const lang = token.lang?.trim();
           if (!lang || !/^tsx?\b/i.test(lang)) {
-            return;
+            return null;
           }
 
           const optionRegex = /option='(?<option>.*?)'/;
@@ -512,17 +521,10 @@ ${token.value}`,
             testCaption.push(`Options: ${option}`);
           }
 
-          await expect(
-            `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
-              token.value,
-              messages,
-            )}`,
-          ).toMatchFileSnapshot(
-            path.join(
-              eslintOutputSnapshotFolder,
-              `${ruleName}-${tokenIndex}.shot`,
-            ),
-          );
+          return `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
+            token.value,
+            messages,
+          )}`;
         }
       });
     });

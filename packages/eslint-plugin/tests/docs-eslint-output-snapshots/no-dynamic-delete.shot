@@ -1,0 +1,26 @@
+Incorrect
+
+// Dynamic, difficult-to-reason-about lookups
+const name = 'name';
+delete container[name];
+                 ~~~~ Do not delete dynamically computed property keys.
+delete container[name.toUpperCase()];
+                 ~~~~~~~~~~~~~~~~~~ Do not delete dynamically computed property keys.
+
+Correct
+
+const container: { [i: string]: number } = {
+  /* ... */
+};
+
+// Constant runtime lookups by string index
+delete container.aaa;
+
+// Constants that must be accessed by []
+delete container[7];
+delete container[-1];
+
+// All strings are allowed, to be compatible with the noPropertyAccessFromIndexSignature
+// TS compiler option
+delete container['aaa'];
+delete container['Infinity'];

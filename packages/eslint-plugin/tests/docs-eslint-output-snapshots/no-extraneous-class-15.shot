@@ -1,7 +1,0 @@
-Incorrect
-Options: { "allowWithDecorator": true }
-
-class Constants {
-      ~~~~~~~~~ Unexpected class with only static properties.
-  static readonly version = 42;
-}

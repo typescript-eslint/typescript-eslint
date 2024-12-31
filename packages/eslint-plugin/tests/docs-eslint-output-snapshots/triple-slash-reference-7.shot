@@ -1,4 +1,0 @@
-Correct
-Options: { "types": "prefer-import" }
-
-import { valueA, valueB } from 'code';

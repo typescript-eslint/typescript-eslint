@@ -1,9 +1,0 @@
-Correct
-
-let myBigint: bigint;
-let myBoolean: boolean;
-let myNumber: number;
-let myString: string;
-let mySymbol: symbol;
-
-let myObject: object = "Type 'string' is not assignable to type 'object'.";

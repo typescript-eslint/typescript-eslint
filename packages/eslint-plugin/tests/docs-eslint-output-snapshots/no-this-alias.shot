@@ -1,0 +1,62 @@
+Incorrect
+
+const self = this;
+      ~~~~ Unexpected aliasing of 'this' to local variable.
+
+setTimeout(function () {
+  self.doWork();
+});
+
+Correct
+
+setTimeout(() => {
+  this.doWork();
+});
+
+Incorrect
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    const { props, state } = this;
+          ~~~~~~~~~~~~~~~~ Unexpected aliasing of members of 'this' to local variables.
+
+    console.log(props);
+    console.log(state);
+  }
+}
+
+Correct
+Options: { "allowDestructuring": false }
+
+class ComponentLike {
+  props: unknown;
+  state: unknown;
+
+  render() {
+    console.log(this.props);
+    console.log(this.state);
+  }
+}
+
+Incorrect
+Options: { "allowedNames": ["self"] }
+
+class Example {
+  method() {
+    const that = this;
+          ~~~~ Unexpected aliasing of 'this' to local variable.
+  }
+}
+
+Correct
+Options: { "allowedNames": ["self"] }
+
+class Example {
+  method() {
+    const self = this;
+  }
+}

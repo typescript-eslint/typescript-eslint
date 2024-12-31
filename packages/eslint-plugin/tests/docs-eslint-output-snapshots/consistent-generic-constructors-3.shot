@@ -1,7 +1,0 @@
-Correct
-Options: "type-annotation"
-
-const map: Map<string, number> = new Map();
-const set: Set<string> = new Set();
-const set = new Set();
-const set: Set<string> = new Set<string>();

@@ -1,4 +1,0 @@
-Options: { "ignorePrimitives": { "string": true } }
-
-const foo: string | undefined = 'bar';
-foo || 'a string';

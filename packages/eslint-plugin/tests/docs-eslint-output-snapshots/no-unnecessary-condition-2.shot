@@ -1,5 +1,0 @@
-Options: { "allowConstantLoopConditions": true }
-
-while (true) {}
-for (; true; ) {}
-do {} while (true);

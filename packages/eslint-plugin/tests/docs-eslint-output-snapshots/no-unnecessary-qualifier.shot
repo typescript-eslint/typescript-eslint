@@ -1,0 +1,29 @@
+Incorrect
+
+enum A {
+  B,
+  C = A.B,
+      ~ Qualifier is unnecessary since 'B' is in scope.
+}
+
+Incorrect
+
+namespace A {
+  export type B = number;
+  const x: A.B = 3;
+           ~ Qualifier is unnecessary since 'B' is in scope.
+}
+
+Correct
+
+enum A {
+  B,
+  C = B,
+}
+
+Correct
+
+namespace A {
+  export type B = number;
+  const x: B = 3;
+}

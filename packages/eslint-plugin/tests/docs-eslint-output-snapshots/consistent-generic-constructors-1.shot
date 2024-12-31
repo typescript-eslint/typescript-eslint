@@ -1,8 +1,0 @@
-Correct
-Options: "constructor"
-
-const map = new Map<string, number>();
-const map: Map<string, number> = new MyMap();
-const set = new Set<string>();
-const set = new Set();
-const set: Set<string> = new Set<string>();

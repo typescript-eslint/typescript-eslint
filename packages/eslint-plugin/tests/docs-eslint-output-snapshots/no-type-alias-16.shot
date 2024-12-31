@@ -1,5 +1,0 @@
-Options: { "allowLiterals": "in-unions-and-intersections" }
-
-type Foo = { name: string } | { age: number };
-
-type Foo = { name: string } & { age: number };

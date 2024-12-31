@@ -1,3 +1,0 @@
-Options: { "allowConditionalTypes": "always" }
-
-type Foo<T> = T extends number ? number : null;

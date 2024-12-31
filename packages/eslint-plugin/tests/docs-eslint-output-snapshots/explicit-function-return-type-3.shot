@@ -1,8 +1,0 @@
-Correct
-Options: { "allowExpressions": true }
-
-node.addEventListener('click', () => {});
-
-node.addEventListener('click', function () {});
-
-const foo = arr.map(i => i * i);

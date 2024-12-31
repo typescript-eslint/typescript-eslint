@@ -1,5 +1,0 @@
-Options: { "allowTupleTypes": "in-unions" }
-
-type Foo = [number] | [number, number];
-
-type Foo = [string] | [number];

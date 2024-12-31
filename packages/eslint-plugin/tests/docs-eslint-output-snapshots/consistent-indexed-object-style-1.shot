@@ -1,4 +1,0 @@
-Correct
-Options: "record"
-
-type RecordType = Record<string, unknown>;

@@ -1,0 +1,61 @@
+Incorrect
+Options: "fields"
+
+class Mx {
+  public static get myField1() {
+                    ~~~~~~~~ Literals should be exposed using readonly fields.
+    return 1;
+  }
+
+  private get ['myField2']() {
+               ~~~~~~~~~~ Literals should be exposed using readonly fields.
+    return 'hello world';
+  }
+}
+
+Correct
+Options: "fields"
+
+class Mx {
+  public readonly myField1 = 1;
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  private readonly ['myField3'] = 'hello world';
+
+  public get myField4() {
+    return `hello from ${window.location.href}`;
+  }
+}
+
+Incorrect
+Options: "getters"
+
+class Mx {
+  readonly myField1 = 1;
+           ~~~~~~~~ Literals should be exposed using getters.
+  readonly myField2 = `hello world`;
+           ~~~~~~~~ Literals should be exposed using getters.
+  private readonly myField3 = 'hello world';
+                   ~~~~~~~~ Literals should be exposed using getters.
+}
+
+Correct
+Options: "getters"
+
+class Mx {
+  // no readonly modifier
+  public myField1 = 'hello';
+
+  // not a literal
+  public readonly myField2 = [1, 2, 3];
+
+  public static get myField3() {
+    return 1;
+  }
+
+  private get ['myField4']() {
+    return 'hello world';
+  }
+}

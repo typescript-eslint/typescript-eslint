@@ -1,8 +1,0 @@
-Correct
-Options: { "allowHigherOrderFunctions": true }
-
-var arrowFn = () => (): void => {};
-
-function fn() {
-  return function (): void {};
-}

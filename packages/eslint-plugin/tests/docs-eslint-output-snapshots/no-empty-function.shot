@@ -1,0 +1,30 @@
+Options: { "allow": ["private-constructors"] }
+
+class Foo {
+  private constructor() {}
+}
+
+Options: { "allow": ["protected-constructors"] }
+
+class Foo {
+  protected constructor() {}
+}
+
+Options: { "allow": ["decoratedFunctions"] }
+
+class Foo {
+  @decorator()
+  foo() {}
+}
+
+Options: { "allow": ["overrideMethods"] }
+
+abstract class Base {
+  protected greet(): void {
+    console.log('Hello!');
+  }
+}
+
+class Foo extends Base {
+  protected override greet(): void {}
+}

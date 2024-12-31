@@ -1,8 +1,0 @@
-Incorrect
-
-var foo = require('foo');
-          ~~~~~~~~~~~~~~ Require statement not part of import statement.
-const foo = require('foo');
-            ~~~~~~~~~~~~~~ Require statement not part of import statement.
-let foo = require('foo');
-          ~~~~~~~~~~~~~~ Require statement not part of import statement.

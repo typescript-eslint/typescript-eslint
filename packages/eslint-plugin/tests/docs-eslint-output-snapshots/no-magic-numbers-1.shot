@@ -1,5 +1,0 @@
-Options: { "ignoreEnums": true }
-
-enum foo {
-  SECOND = 1000,
-}

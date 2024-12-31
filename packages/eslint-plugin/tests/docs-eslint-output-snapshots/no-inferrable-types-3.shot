@@ -1,5 +1,0 @@
-Options: { "ignoreProperties": true }
-
-class Foo {
-  prop: number = 5;
-}

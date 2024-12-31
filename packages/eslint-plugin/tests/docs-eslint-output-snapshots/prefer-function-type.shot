@@ -1,0 +1,61 @@
+Incorrect
+
+interface Example {
+  (): string;
+  ~~~~~~~~~~~ Interface only has a call signature, you should use a function type instead.
+}
+
+Incorrect
+
+function foo(example: { (): number }): number {
+                        ~~~~~~~~~~ Type literal only has a call signature, you should use a function type instead.
+  return example();
+}
+
+Incorrect
+
+interface ReturnsSelf {
+  // returns the function itself, not the `this` argument.
+  (arg: string): this;
+                 ~~~~ `this` refers to the function type 'ReturnsSelf', did you intend to use a generic `this` parameter like `<Self>(this: Self, ...) => Self` instead?
+}
+
+Correct
+
+type Example = () => string;
+
+Correct
+
+function foo(example: () => number): number {
+  return bar();
+}
+
+Correct
+
+// returns the function itself, not the `this` argument.
+type ReturnsSelf = (arg: string) => ReturnsSelf;
+
+Correct
+
+function foo(bar: { (): string; baz: number }): string {
+  return bar();
+}
+
+Correct
+
+interface Foo {
+  bar: string;
+}
+interface Bar extends Foo {
+  (): void;
+}
+
+Correct
+
+// multiple call signatures (overloads) is allowed:
+interface Overloaded {
+  (data: string): number;
+  (id: number): string;
+}
+// this is equivelent to Overloaded interface.
+type Intersection = ((data: string) => number) & ((id: number) => string);

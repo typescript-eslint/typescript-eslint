@@ -1,5 +1,0 @@
-Incorrect
-Options: { "checkIntersections": true }
-
-type ExampleIntersection = B & A;
-                           ~~~~~ Intersection type ExampleIntersection constituents must be sorted.

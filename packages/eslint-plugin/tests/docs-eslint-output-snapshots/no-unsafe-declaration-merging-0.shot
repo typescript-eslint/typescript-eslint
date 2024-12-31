@@ -1,7 +1,0 @@
-Incorrect
-
-interface Foo {}
-          ~~~ Unsafe declaration merging between classes and interfaces.
-
-class Foo {}
-      ~~~ Unsafe declaration merging between classes and interfaces.

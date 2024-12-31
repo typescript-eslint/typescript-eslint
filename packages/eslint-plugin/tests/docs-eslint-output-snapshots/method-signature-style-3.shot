@@ -1,9 +1,0 @@
-Correct
-Options: "method"
-
-interface T1 {
-  func(arg: string): number;
-}
-type T2 = {
-  func(arg: boolean): void;
-};

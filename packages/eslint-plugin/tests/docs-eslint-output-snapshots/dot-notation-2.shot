@@ -1,8 +1,0 @@
-Options: { "allowIndexSignaturePropertyAccess": true }
-
-class X {
-  [key: string]: number;
-}
-
-const x = new X();
-x['hello'] = 123;

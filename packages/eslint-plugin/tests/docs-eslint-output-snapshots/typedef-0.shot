@@ -1,7 +1,0 @@
-Incorrect
-Options: { "arrayDestructuring": true }
-
-const [a] = [1];
-      ~~~ Expected a type annotation.
-const [b, c] = [1, 2];
-      ~~~~~~ Expected a type annotation.

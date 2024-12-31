@@ -1,4 +1,0 @@
-Incorrect
-
-const age: any = 'seventeen';
-           ~~~ Unexpected any. Specify a different type.

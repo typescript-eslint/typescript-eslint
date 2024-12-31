@@ -1,6 +1,0 @@
-Correct
-
-const maybe: string | undefined = Math.random() > 0.5 ? '' : undefined;
-
-const definitely = maybe!;
-const alsoDefinitely = maybe!;

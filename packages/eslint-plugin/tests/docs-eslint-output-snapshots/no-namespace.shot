@@ -1,0 +1,83 @@
+Incorrect
+
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+Correct
+
+declare module 'foo' {}
+
+// anything inside a d.ts file
+
+Incorrect
+Options: { "allowDeclarations": true }
+
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+Correct
+Options: { "allowDeclarations": true }
+
+declare module 'foo' {}
+declare module foo {}
+declare namespace foo {}
+
+declare global {
+  namespace foo {}
+}
+
+declare module foo {
+  namespace foo {}
+}
+
+Incorrect
+Options: { "allowDeclarations": false }
+
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+Correct
+Options: { "allowDeclarations": false }
+
+declare module 'foo' {}
+
+Incorrect
+Options: { "allowDefinitionFiles": true }
+
+// if outside a d.ts file
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+// if outside a d.ts file and allowDeclarations = false
+module foo {}
+~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+namespace foo {}
+~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare module foo {}
+~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+declare namespace foo {}
+~~~~~~~~~~~~~~~~~~~~~~~~ ES2015 module syntax is preferred over namespaces.
+
+Correct
+Options: { "allowDefinitionFiles": true }
+
+declare module 'foo' {}
+
+// anything inside a d.ts file

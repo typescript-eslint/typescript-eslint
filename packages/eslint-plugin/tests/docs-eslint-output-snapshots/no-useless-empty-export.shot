@@ -1,0 +1,19 @@
+Incorrect
+
+export const value = 'Hello, world!';
+export {};
+~~~~~~~~~~ Empty export does nothing and can be removed.
+
+Incorrect
+
+import 'some-other-module';
+export {};
+~~~~~~~~~~ Empty export does nothing and can be removed.
+
+Correct
+
+export const value = 'Hello, world!';
+
+Correct
+
+import 'some-other-module';

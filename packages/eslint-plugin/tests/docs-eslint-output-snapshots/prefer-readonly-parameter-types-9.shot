@@ -1,8 +1,0 @@
-Options: { "checkParameterProperties": false }
-
-class Foo {
-  constructor(
-    private paramProp1: string[],
-    private paramProp2: readonly string[],
-  ) {}
-}

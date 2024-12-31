@@ -1,5 +1,0 @@
-Incorrect
-Options: { "groupOrder": ["literal", "nullish" ]}
-
-type ExampleGroup = null | 123;
-                    ~~~~~~~~~~ Union type ExampleGroup constituents must be sorted.

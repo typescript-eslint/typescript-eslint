@@ -1,7 +1,0 @@
-Correct
-Options: { "propertyDeclaration": true }
-
-type Members = {
-  member: boolean;
-  otherMember: string;
-};

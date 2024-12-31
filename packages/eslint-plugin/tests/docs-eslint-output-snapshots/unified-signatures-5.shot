@@ -1,6 +1,0 @@
-Incorrect
-Options: { "ignoreDifferentlyNamedParameters": true }
-
-function f(a: number): void;
-function f(a: string): void;
-           ~~~~~~~~~ These overloads can be combined into one signature taking `number | string`.

@@ -1,5 +1,0 @@
-Incorrect
-
-function y(): void;
-function y(...x: number[]): void;
-           ~~~~~~~~~~~~~~ These overloads can be combined into one signature with a rest parameter.

@@ -1,7 +1,0 @@
-Options: { "allowInterfaces": "with-single-extends" }
-
-interface Base {
-  value: boolean;
-}
-
-interface Derived extends Base {}

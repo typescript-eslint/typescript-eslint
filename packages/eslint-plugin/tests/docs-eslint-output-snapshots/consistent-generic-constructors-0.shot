@@ -1,7 +1,0 @@
-Incorrect
-Options: "constructor"
-
-const map: Map<string, number> = new Map();
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.
-const set: Set<string> = new Set();
-      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The generic type arguments should be specified as part of the constructor type arguments.

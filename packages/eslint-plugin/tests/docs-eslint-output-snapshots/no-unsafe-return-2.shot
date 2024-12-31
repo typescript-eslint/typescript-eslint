@@ -1,9 +1,0 @@
-
-
-function foo1(): unknown {
-  return JSON.parse(singleObjString); // Return type for JSON.parse is any.
-}
-
-function foo2(): unknown[] {
-  return [] as any[];
-}

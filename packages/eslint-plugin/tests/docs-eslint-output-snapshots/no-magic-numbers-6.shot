@@ -1,6 +1,0 @@
-Options: { "ignoreTypeIndexes": false }
-
-type Foo = Bar[0];
-               ~ No magic number: 0.
-type Baz = Parameters<Foo>[2];
-                           ~ No magic number: 2.

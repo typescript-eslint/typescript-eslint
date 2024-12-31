@@ -1,0 +1,37 @@
+Incorrect
+
+const array: any[];
+const stringArray: string[];
+
+array.sort();
+~~~~~~~~~~~~ Require 'compare' argument.
+
+// String arrays should be sorted using `String#localeCompare`.
+stringArray.sort();
+
+Correct
+
+const array: any[];
+const userDefinedType: { sort(): void };
+
+array.sort((a, b) => a - b);
+array.sort((a, b) => a.localeCompare(b));
+
+userDefinedType.sort();
+
+Incorrect
+Options: { "ignoreStringArrays": true }
+
+const one = 1;
+const two = 2;
+const three = 3;
+[one, two, three].sort();
+~~~~~~~~~~~~~~~~~~~~~~~~ Require 'compare' argument.
+
+Correct
+Options: { "ignoreStringArrays": true }
+
+const one = '1';
+const two = '2';
+const three = '3';
+[one, two, three].sort();

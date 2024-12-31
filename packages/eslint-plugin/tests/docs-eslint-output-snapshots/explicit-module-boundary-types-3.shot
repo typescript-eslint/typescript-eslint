@@ -1,4 +1,0 @@
-Correct
-Options: { "allowArgumentsExplicitlyTypedAsAny": true }
-
-export const func = (value: any): number => value + 1;

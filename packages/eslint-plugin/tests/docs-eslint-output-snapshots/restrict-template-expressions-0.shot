@@ -1,9 +1,0 @@
-Incorrect
-
-const arg1 = [1, 2];
-const msg1 = `arg1 = ${arg1}`;
-                       ~~~~ Invalid type "number[]" of template literal expression.
-
-const arg2 = { name: 'Foo' };
-const msg2 = `arg2 = ${arg2 || null}`;
-                       ~~~~~~~~~~~~ Invalid type "{ name: string; }" of template literal expression.

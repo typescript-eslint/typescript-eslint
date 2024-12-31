@@ -1,4 +1,0 @@
-
-
-const x: string = obj.x; // This is incorrect and the auto fixer provides following untyped fix.
-// const { x } = obj;

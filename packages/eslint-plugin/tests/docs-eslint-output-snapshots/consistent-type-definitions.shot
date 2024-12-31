@@ -1,0 +1,28 @@
+Incorrect
+Options: "interface"
+
+type T = { x: number };
+     ~ Use an `interface` instead of a `type`.
+
+Correct
+Options: "interface"
+
+type T = string;
+type Foo = string | {};
+
+interface T {
+  x: number;
+}
+
+Incorrect
+Options: "type"
+
+interface T {
+          ~ Use a `type` instead of an `interface`.
+  x: number;
+}
+
+Correct
+Options: "type"
+
+type T = { x: number };

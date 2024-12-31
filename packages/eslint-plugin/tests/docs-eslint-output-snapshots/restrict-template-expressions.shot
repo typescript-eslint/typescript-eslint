@@ -1,0 +1,66 @@
+Incorrect
+
+const arg1 = [1, 2];
+const msg1 = `arg1 = ${arg1}`;
+                       ~~~~ Invalid type "number[]" of template literal expression.
+
+const arg2 = { name: 'Foo' };
+const msg2 = `arg2 = ${arg2 || null}`;
+                       ~~~~~~~~~~~~ Invalid type "{ name: string; }" of template literal expression.
+
+Correct
+
+const arg = 'foo';
+const msg1 = `arg = ${arg}`;
+const msg2 = `arg = ${arg || 'default'}`;
+
+const stringWithKindProp: string & { _kind?: 'MyString' } = 'foo';
+const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
+
+Options: { "allowNumber": true }
+
+const arg = 123;
+const msg1 = `arg = ${arg}`;
+const msg2 = `arg = ${arg || 'zero'}`;
+
+Options: { "allowBoolean": true }
+
+const arg = true;
+const msg1 = `arg = ${arg}`;
+const msg2 = `arg = ${arg || 'not truthy'}`;
+
+Options: { "allowAny": true }
+
+const user = JSON.parse('{ "name": "foo" }');
+const msg1 = `arg = ${user.name}`;
+const msg2 = `arg = ${user.name || 'the user with no name'}`;
+
+Options: { "allowNullish": true }
+
+const arg = condition ? 'ok' : null;
+const msg1 = `arg = ${arg}`;
+
+Options: { "allowRegExp": true }
+
+const arg = new RegExp('foo');
+const msg1 = `arg = ${arg}`;
+
+Options: { "allowRegExp": true }
+
+const arg = /foo/;
+const msg1 = `arg = ${arg}`;
+
+Options: { "allowNever": true }
+
+const arg = 'something';
+const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
+
+Options: { "allowArray": true }
+
+const arg = ['foo', 'bar'];
+const msg1 = `arg = ${arg}`;
+
+
+
+const error = new Error();
+const msg1 = `arg = ${error}`;

@@ -1,9 +1,0 @@
-Incorrect
-Options: { "allowedNames": ["self"] }
-
-class Example {
-  method() {
-    const that = this;
-          ~~~~ Unexpected aliasing of 'this' to local variable.
-  }
-}

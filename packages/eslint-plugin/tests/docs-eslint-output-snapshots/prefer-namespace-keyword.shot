@@ -1,0 +1,10 @@
+Incorrect
+
+module Example {}
+~~~~~~~~~~~~~~~~~ Use 'namespace' instead of 'module' to declare custom TypeScript modules.
+
+Correct
+
+namespace Example {}
+
+declare module 'foo' {}

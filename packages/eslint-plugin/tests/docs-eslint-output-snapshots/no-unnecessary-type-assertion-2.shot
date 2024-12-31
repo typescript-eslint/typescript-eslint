@@ -1,5 +1,0 @@
-Incorrect
-
-type Foo = number;
-const foo = <Foo>(3 + 5);
-            ~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.

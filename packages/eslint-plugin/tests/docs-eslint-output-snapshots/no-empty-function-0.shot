@@ -1,5 +1,0 @@
-Options: { "allow": ["private-constructors"] }
-
-class Foo {
-  private constructor() {}
-}

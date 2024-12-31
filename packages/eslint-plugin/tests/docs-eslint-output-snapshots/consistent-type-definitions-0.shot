@@ -1,5 +1,0 @@
-Incorrect
-Options: "interface"
-
-type T = { x: number };
-     ~ Use an `interface` instead of a `type`.

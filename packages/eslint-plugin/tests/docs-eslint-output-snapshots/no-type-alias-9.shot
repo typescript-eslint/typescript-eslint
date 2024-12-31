@@ -1,3 +1,0 @@
-Options: { "allowConstructors": "always" }
-
-type Foo = new () => void;

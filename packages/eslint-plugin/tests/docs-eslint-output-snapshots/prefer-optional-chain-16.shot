@@ -1,8 +1,0 @@
-Correct
-Options: { "requireNullish": true }
-
-declare const thing1: string | null;
-thing1?.toString();
-
-declare const thing2: string;
-thing2 && thing2.toString();

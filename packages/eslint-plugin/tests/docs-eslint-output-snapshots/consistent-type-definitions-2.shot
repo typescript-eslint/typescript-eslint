@@ -1,7 +1,0 @@
-Incorrect
-Options: "type"
-
-interface T {
-          ~ Use a `type` instead of an `interface`.
-  x: number;
-}

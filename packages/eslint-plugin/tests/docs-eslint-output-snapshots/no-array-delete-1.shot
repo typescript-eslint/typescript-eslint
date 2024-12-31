@@ -1,5 +1,0 @@
-Correct
-
-declare const arr: number[];
-
-arr.splice(0, 1);

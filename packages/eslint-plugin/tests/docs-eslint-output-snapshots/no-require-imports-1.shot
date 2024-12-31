@@ -1,5 +1,0 @@
-Correct
-
-import * as lib1 from 'lib1';
-import { lib2 } from 'lib2';
-import * as lib3 from 'lib3';

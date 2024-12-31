@@ -1,8 +1,0 @@
-Incorrect
-
-enum Status {
-  Unknown,
-  Closed = 1,
-  Open = 'open',
-         ~~~~~~ Mixing number and string enums can be confusing.
-}

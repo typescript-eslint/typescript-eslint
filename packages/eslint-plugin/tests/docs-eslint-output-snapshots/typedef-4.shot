@@ -1,9 +1,0 @@
-Incorrect
-Options: { "memberVariableDeclaration": true }
-
-class ContainsText {
-  delayedText;
-  ~~~~~~~~~~~~ Expected delayedText to have a type annotation.
-  immediateTextImplicit = 'text';
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected immediateTextImplicit to have a type annotation.
-}

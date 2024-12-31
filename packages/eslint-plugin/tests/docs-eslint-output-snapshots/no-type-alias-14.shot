@@ -1,3 +1,0 @@
-Options: { "allowLiterals": "in-intersections" }
-
-type Foo = { name: string } & { age: number };

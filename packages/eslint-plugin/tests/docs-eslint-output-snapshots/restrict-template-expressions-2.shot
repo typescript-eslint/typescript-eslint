@@ -1,5 +1,0 @@
-Options: { "allowNumber": true }
-
-const arg = 123;
-const msg1 = `arg = ${arg}`;
-const msg2 = `arg = ${arg || 'zero'}`;

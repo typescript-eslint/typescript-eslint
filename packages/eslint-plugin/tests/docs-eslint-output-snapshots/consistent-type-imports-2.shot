@@ -1,8 +1,0 @@
-Incorrect
-
-import { Foo } from 'Foo';
-~~~~~~~~~~~~~~~~~~~~~~~~~~ All imports in the declaration are only used as types. Use `import type`.
-import Bar from 'Bar';
-~~~~~~~~~~~~~~~~~~~~~~ All imports in the declaration are only used as types. Use `import type`.
-type T = Foo;
-const x: Bar = 1;

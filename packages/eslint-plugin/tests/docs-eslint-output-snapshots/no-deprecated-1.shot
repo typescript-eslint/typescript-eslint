@@ -1,7 +1,0 @@
-Incorrect
-
-import { parse } from 'node:url';
-
-// 'parse' is deprecated. Use the WHATWG URL API instead.
-const url = parse('/foo');
-            ~~~~~ `parse` is deprecated. Use the WHATWG URL API instead.

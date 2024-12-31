@@ -1,8 +1,0 @@
-Incorrect
-Options: { "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }
-
-if (false) {
-  // @ts-expect-error: TODO
-  ~~~~~~~~~~~~~~~~~~~~~~~~~ Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 10 characters or longer.
-  console.log('hello');
-}

@@ -1,5 +1,0 @@
-Correct
-Options: { "ignoreDifferentlyNamedParameters": true }
-
-function f(a: number): void;
-function f(b: string): void;

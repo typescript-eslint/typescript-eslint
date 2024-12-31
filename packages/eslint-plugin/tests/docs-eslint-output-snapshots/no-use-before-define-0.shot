@@ -1,9 +1,0 @@
-Incorrect
-Options: { "enums": true }
-
-const x = Foo.FOO;
-          ~~~ 'Foo' was used before it was defined.
-
-enum Foo {
-  FOO,
-}

@@ -1,8 +1,0 @@
-Incorrect
-
-const lib1 = require('lib1');
-             ~~~~~~~~~~~~~~~ A `require()` style import is forbidden.
-const { lib2 } = require('lib2');
-                 ~~~~~~~~~~~~~~~ A `require()` style import is forbidden.
-import lib3 = require('lib3');
-              ~~~~~~~~~~~~~~~ A `require()` style import is forbidden.

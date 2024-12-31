@@ -1,8 +1,0 @@
-Incorrect
-
-void (() => {})();
-~~~~~~~~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored
-
-function foo() {}
-void foo();
-~~~~~~~~~~ void operator shouldn't be used on void; it should convey that a return value is being ignored

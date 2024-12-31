@@ -1,7 +1,0 @@
-Incorrect
-Options: { "default": "array" }
-
-const x: Array<string> = ['a', 'b'];
-         ~~~~~~~~~~~~~ Array type using 'Array<string>' is forbidden. Use 'string[]' instead.
-const y: ReadonlyArray<string> = ['a', 'b'];
-         ~~~~~~~~~~~~~~~~~~~~~ Array type using 'ReadonlyArray<string>' is forbidden. Use 'readonly string[]' instead.

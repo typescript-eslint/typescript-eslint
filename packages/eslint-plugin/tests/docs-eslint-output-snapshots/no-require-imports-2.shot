@@ -1,5 +1,0 @@
-Incorrect
-Options: { "allow": ["/package.json$"] }
-
-console.log(require('../data.json').version);
-            ~~~~~~~~~~~~~~~~~~~~~~~ A `require()` style import is forbidden.

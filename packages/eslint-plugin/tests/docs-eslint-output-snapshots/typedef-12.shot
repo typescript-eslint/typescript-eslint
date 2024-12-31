@@ -1,9 +1,0 @@
-Incorrect
-Options: { "variableDeclaration": true }
-
-const text = 'text';
-      ~~~~~~~~~~~~~ Expected text to have a type annotation.
-let initialText = 'text';
-    ~~~~~~~~~~~~~~~~~~~~ Expected initialText to have a type annotation.
-let delayedText;
-    ~~~~~~~~~~~ Expected delayedText to have a type annotation.

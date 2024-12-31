@@ -1,0 +1,14 @@
+Incorrect
+Options: { "countVoidThis": false, "max": 1 }
+
+function hasNoThis(this: void, first: string, second: string) {
+~~~~~~~~~~~~~~~~~~ Function 'hasNoThis' has too many parameters (2). Maximum allowed is 1.
+  // ...
+}
+
+Correct
+Options: { "countVoidThis": false, "max": 1 }
+
+function hasNoThis(this: void, first: string) {
+  // ...
+}

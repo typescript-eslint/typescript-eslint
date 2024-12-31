@@ -1,6 +1,0 @@
-Correct
-Options: { "allowStaticOnly": true }
-
-class NotEmptyClass {
-  static version = 42;
-}

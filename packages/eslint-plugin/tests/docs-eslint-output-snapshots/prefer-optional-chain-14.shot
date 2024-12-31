@@ -1,6 +1,0 @@
-Correct
-Options: { "checkBigInt": false }
-
-declare const thing: bigint;
-
-thing && thing.toString();

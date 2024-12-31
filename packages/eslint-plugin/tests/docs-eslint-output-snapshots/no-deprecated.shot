@@ -1,0 +1,31 @@
+Incorrect
+
+/** @deprecated Use apiV2 instead. */
+declare function apiV1(): Promise<string>;
+
+declare function apiV2(): Promise<string>;
+
+await apiV1();
+      ~~~~~ `apiV1` is deprecated. Use apiV2 instead.
+
+Incorrect
+
+import { parse } from 'node:url';
+
+// 'parse' is deprecated. Use the WHATWG URL API instead.
+const url = parse('/foo');
+            ~~~~~ `parse` is deprecated. Use the WHATWG URL API instead.
+
+Correct
+
+/** @deprecated Use apiV2 instead. */
+declare function apiV1(): Promise<string>;
+
+declare function apiV2(): Promise<string>;
+
+await apiV2();
+
+Correct
+
+// Modern Node.js API, uses `new URL()`
+const url2 = new URL('/foo', 'http://www.example.com');

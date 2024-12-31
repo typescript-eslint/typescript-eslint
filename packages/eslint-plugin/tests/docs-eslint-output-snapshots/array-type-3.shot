@@ -1,6 +1,0 @@
-Correct
-Options: { "default": "generic" }
-
-const x: Array<string> = ['a', 'b'];
-const y: ReadonlyArray<string> = ['a', 'b'];
-const z: Readonly<Array<string>> = ['a', 'b'];

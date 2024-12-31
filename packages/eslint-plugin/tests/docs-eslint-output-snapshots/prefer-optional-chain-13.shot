@@ -1,7 +1,0 @@
-Incorrect
-Options: { "checkBigInt": true }
-
-declare const thing: bigint;
-
-thing && thing.toString();
-~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.

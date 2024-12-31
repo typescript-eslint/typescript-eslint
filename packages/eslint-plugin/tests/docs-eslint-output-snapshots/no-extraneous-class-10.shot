@@ -1,8 +1,0 @@
-Correct
-Options: { "allowConstructorOnly": true }
-
-class NoFields {
-  constructor() {
-    console.log('Hello, world!');
-  }
-}

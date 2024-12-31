@@ -1,9 +1,0 @@
-Correct
-Options: "interface"
-
-type T = string;
-type Foo = string | {};
-
-interface T {
-  x: number;
-}

@@ -1,0 +1,59 @@
+Options: { "ignoreEnums": false }
+
+enum foo {
+  SECOND = 1000,
+           ~~~~ No magic number: 1000.
+}
+
+Options: { "ignoreEnums": true }
+
+enum foo {
+  SECOND = 1000,
+}
+
+Options: { "ignoreNumericLiteralTypes": false }
+
+type SmallPrimes = 2 | 3 | 5 | 7 | 11;
+                   ~ No magic number: 2.
+                       ~ No magic number: 3.
+                           ~ No magic number: 5.
+                               ~ No magic number: 7.
+                                   ~~ No magic number: 11.
+
+Options: { "ignoreNumericLiteralTypes": true }
+
+type SmallPrimes = 2 | 3 | 5 | 7 | 11;
+
+Options: { "ignoreReadonlyClassProperties": false }
+
+class Foo {
+  readonly A = 1;
+               ~ No magic number: 1.
+  readonly B = 2;
+               ~ No magic number: 2.
+  public static readonly C = 1;
+                             ~ No magic number: 1.
+  static readonly D = 1;
+                      ~ No magic number: 1.
+}
+
+Options: { "ignoreReadonlyClassProperties": true }
+
+class Foo {
+  readonly A = 1;
+  readonly B = 2;
+  public static readonly C = 1;
+  static readonly D = 1;
+}
+
+Options: { "ignoreTypeIndexes": false }
+
+type Foo = Bar[0];
+               ~ No magic number: 0.
+type Baz = Parameters<Foo>[2];
+                           ~ No magic number: 2.
+
+Options: { "ignoreTypeIndexes": true }
+
+type Foo = Bar[0];
+type Baz = Parameters<Foo>[2];

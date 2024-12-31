@@ -1,4 +1,0 @@
-Incorrect
-
-const foo = 'foo' as const;
-            ~~~~~~~~~~~~~~ This assertion is unnecessary since it does not change the type of the expression.

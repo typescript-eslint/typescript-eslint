@@ -1,6 +1,0 @@
-Correct
-Options: { "allowedPromiseNames": ["Bluebird"] }
-
-class Bluebird {}
-
-const returnsBluebird = async () => new Bluebird(() => {});

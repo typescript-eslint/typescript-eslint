@@ -1,7 +1,0 @@
-Incorrect
-
-enum E {
-  A = 0,
-  B = 0,
-  ~~~~~ Duplicate enum member value 0.
-}

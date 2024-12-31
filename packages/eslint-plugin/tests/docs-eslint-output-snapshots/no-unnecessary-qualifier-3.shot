@@ -1,6 +1,0 @@
-Correct
-
-namespace A {
-  export type B = number;
-  const x: B = 3;
-}

@@ -1,0 +1,18 @@
+Incorrect
+
+interface Example {
+  property?: string;
+}
+
+declare const example: Example;
+const includesBaz = example.property!.includes('baz');
+                    ~~~~~~~~~~~~~~~~~ Forbidden non-null assertion.
+
+Correct
+
+interface Example {
+  property?: string;
+}
+
+declare const example: Example;
+const includesBaz = example.property?.includes('baz') ?? false;

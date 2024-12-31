@@ -1,6 +1,0 @@
-Incorrect
-Options: { "objectDestructuring": true }
-
-const { length } = 'text';
-      ~~~~~~~~~~ Expected a type annotation.
-const [b, c] = Math.random() ? [1, 2] : [3, 4];

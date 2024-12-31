@@ -1,4 +1,0 @@
-Options: { "ignoreTypeIndexes": true }
-
-type Foo = Bar[0];
-type Baz = Parameters<Foo>[2];

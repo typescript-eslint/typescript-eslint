@@ -1,6 +1,0 @@
-Correct
-Options: { "onlyInlineLambdas": true }
-
-class Container {
-  private neverModifiedPrivate = 'unchanged';
-}

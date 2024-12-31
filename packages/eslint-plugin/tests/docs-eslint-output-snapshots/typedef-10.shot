@@ -1,9 +1,0 @@
-Incorrect
-Options: { "propertyDeclaration": true }
-
-type Members = {
-  member;
-  ~~~~~~~ Expected member to have a type annotation.
-  otherMember;
-  ~~~~~~~~~~~~ Expected otherMember to have a type annotation.
-};

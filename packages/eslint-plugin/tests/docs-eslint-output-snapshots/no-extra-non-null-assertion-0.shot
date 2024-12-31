@@ -1,6 +1,0 @@
-Incorrect
-
-const foo: { bar: number } | null = null;
-const bar = foo!!!.bar;
-            ~~~~~ Forbidden extra non-null assertion.
-            ~~~~ Forbidden extra non-null assertion.

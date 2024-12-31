@@ -1,8 +1,0 @@
-Correct
-Options: { "skipCompoundAssignments": false }
-
-let foo: bigint = 0n;
-foo += 1n;
-
-let bar: number = 1;
-bar += 1;

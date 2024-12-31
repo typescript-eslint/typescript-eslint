@@ -1,6 +1,0 @@
-Correct
-Options: { "allowDefinitionFiles": true }
-
-declare module 'foo' {}
-
-// anything inside a d.ts file

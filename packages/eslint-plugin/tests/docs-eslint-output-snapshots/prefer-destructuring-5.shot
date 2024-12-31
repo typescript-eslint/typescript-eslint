@@ -1,4 +1,0 @@
-Correct
-Options: { "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }
-
-const { x }: { x: string } = obj;

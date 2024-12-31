@@ -1,0 +1,33 @@
+Incorrect
+Options: { "enums": true }
+
+const x = Foo.FOO;
+          ~~~ 'Foo' was used before it was defined.
+
+enum Foo {
+  FOO,
+}
+
+Correct
+Options: { "enums": false }
+
+function foo() {
+  return Foo.FOO;
+}
+
+enum Foo {
+  FOO,
+}
+
+Options: { "typedefs": false }
+
+let myVar: StringOrNumber;
+type StringOrNumber = string | number;
+
+Options: { "ignoreTypeReferences": true }
+
+let var1: StringOrNumber;
+type StringOrNumber = string | number;
+
+let var2: Enum;
+enum Enum {}

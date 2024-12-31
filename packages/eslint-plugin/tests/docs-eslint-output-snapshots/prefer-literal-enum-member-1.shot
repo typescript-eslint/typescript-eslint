@@ -1,8 +1,0 @@
-Correct
-
-enum Valid {
-  A, // No initializer; initialized with ascending integers starting from 0
-  B = 'TestStr', // A regular string
-  C = `A template literal string`, // A template literal without interpolation
-  D = 4, // A number
-}

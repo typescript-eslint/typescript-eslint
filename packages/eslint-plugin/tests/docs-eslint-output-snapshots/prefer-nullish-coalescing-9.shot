@@ -1,6 +1,0 @@
-Options: { "ignoreBooleanCoercion": false }
-
-let a: string | true | undefined;
-let b: string | boolean | undefined;
-
-const x = Boolean(a ?? b);

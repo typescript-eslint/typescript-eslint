@@ -1,8 +1,0 @@
-Incorrect
-
-await 'value';
-~~~~~~~~~~~~~ Unexpected `await` of a non-Promise (non-"Thenable") value.
-
-const createValue = () => 'value';
-await createValue();
-~~~~~~~~~~~~~~~~~~~ Unexpected `await` of a non-Promise (non-"Thenable") value.

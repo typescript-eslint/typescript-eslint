@@ -1,8 +1,0 @@
-Incorrect
-
-// Dynamic, difficult-to-reason-about lookups
-const name = 'name';
-delete container[name];
-                 ~~~~ Do not delete dynamically computed property keys.
-delete container[name.toUpperCase()];
-                 ~~~~~~~~~~~~~~~~~~ Do not delete dynamically computed property keys.

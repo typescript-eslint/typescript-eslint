@@ -1,5 +1,0 @@
-Incorrect
-Options: { "object": true }, { "enforceForDeclarationWithTypeAnnotation": true }
-
-const x: string = obj.x;
-      ~~~~~~~~~~~~~~~~~ Use object destructuring.

@@ -1,6 +1,0 @@
-Incorrect
-Options: { "ts-expect-error": { "descriptionFormat": "^: TS\\d+ because .+$" } }
-
-// @ts-expect-error: the library definition is wrong
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The description for the "@ts-expect-error" directive must match the ^: TS\d+ because .+$ format.
-const a = doSomething('hello');

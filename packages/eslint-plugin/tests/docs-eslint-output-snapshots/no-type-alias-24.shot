@@ -1,9 +1,0 @@
-Options: { "allowTupleTypes": "always" }
-
-type Foo = [number];
-
-type Foo = [number] | [number, number];
-
-type Foo = [number] & [number, number];
-
-type Foo = [number] | ([number, number] & [string, string]);

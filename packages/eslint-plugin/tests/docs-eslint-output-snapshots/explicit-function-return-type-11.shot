@@ -1,4 +1,0 @@
-Correct
-Options: { "allowConciseArrowFunctionExpressionsStartingWithVoid": true }
-
-var log = (message: string) => void console.log(message);

@@ -1,4 +1,0 @@
-Correct
-Options: { "allowRegExp": true }
-
-let fn = (a: string, b: RegExp) => a + b;

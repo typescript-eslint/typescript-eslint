@@ -1,6 +1,0 @@
-Correct
-Options: { "checkNumber": false }
-
-declare const thing: number;
-
-thing && thing.toString();

@@ -1,5 +1,0 @@
-Correct
-
-// This is a comment that just happens to mention tslint
-/* This is a multiline comment that just happens to mention tslint */
-someCode(); // This is a comment that just happens to mention tslint

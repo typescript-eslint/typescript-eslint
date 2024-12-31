@@ -1,7 +1,0 @@
-Incorrect
-
-interface Box {
-  get value(): string;
-               ~~~~~~ `get()` type should be assignable to its equivalent `set()` type.
-  set value(newValue: number);
-}

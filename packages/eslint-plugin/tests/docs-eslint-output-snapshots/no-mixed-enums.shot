@@ -1,0 +1,32 @@
+Incorrect
+
+enum Status {
+  Unknown,
+  Closed = 1,
+  Open = 'open',
+         ~~~~~~ Mixing number and string enums can be confusing.
+}
+
+Correct
+
+enum Status {
+  Unknown = 0,
+  Closed = 1,
+  Open = 2,
+}
+
+Correct
+
+enum Status {
+  Unknown,
+  Closed,
+  Open,
+}
+
+Correct
+
+enum Status {
+  Unknown = 'unknown',
+  Closed = 'closed',
+  Open = 'open',
+}

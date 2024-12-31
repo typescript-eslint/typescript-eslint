@@ -1,5 +1,0 @@
-Incorrect
-Options: { "allowAny": false }
-
-const returnsAny = () => ({}) as any;
-                      ~~ Functions that return promises must be async.

@@ -1,6 +1,0 @@
-Correct
-Options: { "checkParameterProperties": true }
-
-class Foo {
-  constructor(private paramProp: readonly string[]) {}
-}

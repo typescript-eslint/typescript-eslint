@@ -1,5 +1,0 @@
-Correct
-Options: { "allowDirectConstAssertionInArrowFunctions": true }
-
-const func = (value: number) => ({ foo: 'bar', value }) as const;
-const func = () => x as const;

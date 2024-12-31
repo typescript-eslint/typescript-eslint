@@ -1,5 +1,0 @@
-Correct
-Options: { "allowBoolean": true }
-
-let fn = (a: number, b: boolean) => a + b;
-let fn = (a: string, b: boolean) => a + b;

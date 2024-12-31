@@ -1,3 +1,0 @@
-Options: { "allowLiterals": "in-unions" }
-
-type Foo = { name: string } | { age: number };

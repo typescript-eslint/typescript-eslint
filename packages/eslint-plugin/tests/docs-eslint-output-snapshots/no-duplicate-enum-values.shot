@@ -1,0 +1,29 @@
+Incorrect
+
+enum E {
+  A = 0,
+  B = 0,
+  ~~~~~ Duplicate enum member value 0.
+}
+
+Incorrect
+
+enum E {
+  A = 'A',
+  B = 'A',
+  ~~~~~~~ Duplicate enum member value A.
+}
+
+Correct
+
+enum E {
+  A = 0,
+  B = 1,
+}
+
+Correct
+
+enum E {
+  A = 'A',
+  B = 'B',
+}
