@@ -115,7 +115,7 @@ export function config(
       files?: unknown;
       ignores?: unknown;
     };
-    // `config` could be anything, but we'll assume it's a `Config` object for TS purposes.
+    // `config` could be any object, but we'll assume it's a `Config` object for TS purposes.
     const configToReturn = config as Config;
     if (extendsArr.length === 0) {
       return configToReturn;
