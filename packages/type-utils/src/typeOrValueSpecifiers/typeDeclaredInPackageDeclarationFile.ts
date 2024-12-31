@@ -37,7 +37,7 @@ function typeDeclaredInDeclarationFile(
   return declarationFiles.some(declaration => {
     const packageIdName = program.sourceFileToPackageName.get(declaration.path);
     return (
-      packageIdName !== undefined &&
+      packageIdName != null &&
       matcher.test(packageIdName) &&
       program.isSourceFileFromExternalLibrary(declaration)
     );

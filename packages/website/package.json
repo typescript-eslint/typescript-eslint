@@ -1,6 +1,16 @@
 {
   "name": "website",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/website"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "homepage": "https://typescript-eslint.io",
+  "license": "MIT",
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear",
@@ -38,7 +48,7 @@
     "react-markdown": "^9.0.1",
     "react-resizable-panels": "^0.0.63",
     "semver": "^7.6.0",
-    "typedoc": "^0.26.11",
+    "typedoc": "^0.27.0",
     "typedoc-plugin-markdown": "^4.2.10",
     "typescript": "*"
   },

@@ -49,6 +49,132 @@ interface Foo<T> {
   [key: string]: Foo<T> | string;
 }
     `,
+    `
+interface Foo {
+  [s: string]: Foo & {};
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo | string;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: Foo extends T ? string : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends Foo ? string : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends true ? Foo : number;
+}
+    `,
+    `
+interface Foo<T> {
+  [s: string]: T extends true ? string : Foo;
+}
+    `,
+    `
+interface Foo {
+  [s: string]: Foo[number];
+}
+    `,
+    `
+interface Foo {
+  [s: string]: {}[Foo];
+}
+    `,
+
+    // circular (indirect)
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Record<string, Foo1>;
+}
+    `,
+    `
+type Foo1 = {
+  [key: string]: Foo2;
+};
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+type Foo3 = {
+  [key: string]: Foo1;
+};
+    `,
+    `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+type Foo1 = {
+  [key: string]: Foo2;
+};
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo1;
+}
+    `,
+    `
+type ExampleUnion = boolean | number;
+
+type ExampleRoot = ExampleUnion | ExampleObject;
+
+interface ExampleObject {
+  [key: string]: ExampleRoot;
+}
+    `,
+
     // Type literal
     'type Foo = {};',
     `
@@ -94,6 +220,7 @@ interface Foo {
   [];
 }
     `,
+
     // 'index-signature'
     // Unhandled type
     {
@@ -392,6 +519,133 @@ interface Foo {
 }
       `,
     },
+    {
+      code: `
+interface Foo {
+  [key: string]: { foo: Foo };
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, { foo: Foo }>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: Foo[];
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, Foo[]>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [key: string]: () => Foo;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, () => Foo>;
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  [s: string]: [Foo];
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo = Record<string, [Foo]>;
+      `,
+    },
+
+    // Circular (indirect)
+    {
+      code: `
+interface Foo1 {
+  [key: string]: Foo2;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo1 = Record<string, Foo2>;
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+    },
+    {
+      code: `
+interface Foo1 {
+  [key: string]: Record<string, Foo2>;
+}
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+      errors: [{ column: 1, line: 2, messageId: 'preferRecord' }],
+      output: `
+type Foo1 = Record<string, Record<string, Foo2>>;
+
+interface Foo2 {
+  [key: string]: Foo3;
+}
+
+interface Foo3 {
+  [key: string]: Foo2;
+}
+      `,
+    },
+    {
+      code: `
+type Foo1 = {
+  [key: string]: { foo2: Foo2 };
+};
+
+type Foo2 = {
+  [key: string]: Foo3;
+};
+
+type Foo3 = {
+  [key: string]: Record<string, Foo1>;
+};
+      `,
+      errors: [
+        { column: 13, line: 2, messageId: 'preferRecord' },
+        { column: 13, line: 6, messageId: 'preferRecord' },
+        { column: 13, line: 10, messageId: 'preferRecord' },
+      ],
+      output: `
+type Foo1 = Record<string, { foo2: Foo2 }>;
+
+type Foo2 = Record<string, Foo3>;
+
+type Foo3 = Record<string, Record<string, Foo1>>;
+      `,
+    },
 
     // Generic
     {
@@ -399,6 +653,57 @@ interface Foo {
       errors: [{ column: 20, line: 1, messageId: 'preferIndexSignature' }],
       options: ['index-signature'],
       output: 'type Foo = Generic<{ [key: string]: any }>;',
+    },
+
+    // Record with an index node that may potentially break index-signature style
+    {
+      code: 'type Foo = Record<string | number, any>;',
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output: 'type Foo = { [key: string | number]: any };',
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
+    },
+    {
+      code: "type Foo = Record<Exclude<'a' | 'b' | 'c', 'a'>, any>;",
+      errors: [
+        {
+          column: 12,
+          line: 1,
+          messageId: 'preferIndexSignature',
+          suggestions: [
+            {
+              messageId: 'preferIndexSignatureSuggestion',
+              output:
+                "type Foo = { [key: Exclude<'a' | 'b' | 'c', 'a'>]: any };",
+            },
+          ],
+        },
+      ],
+      options: ['index-signature'],
+    },
+
+    // Record with valid index node should use an auto-fix
+    {
+      code: 'type Foo = Record<number, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      options: ['index-signature'],
+      output: 'type Foo = { [key: number]: any };',
+    },
+    {
+      code: 'type Foo = Record<symbol, any>;',
+      errors: [{ column: 12, line: 1, messageId: 'preferIndexSignature' }],
+      options: ['index-signature'],
+      output: 'type Foo = { [key: symbol]: any };',
     },
 
     // Function types
@@ -567,6 +872,35 @@ function f(): {
       output: `
 function f(): Record<keyof ParseResult, unknown> {
   return {};
+}
+      `,
+    },
+
+    // missing index signature type annotation while checking for a recursive type
+    {
+      code: `
+interface Foo {
+  [key: string]: Bar;
+}
+
+interface Bar {
+  [key: string];
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 2,
+          endLine: 4,
+          line: 2,
+          messageId: 'preferRecord',
+        },
+      ],
+      output: `
+type Foo = Record<string, Bar>;
+
+interface Bar {
+  [key: string];
 }
       `,
     },

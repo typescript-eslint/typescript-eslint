@@ -5,7 +5,6 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
   getParserServices,
   isTypeAnyType,
   isTypeUnknownType,
@@ -22,11 +21,15 @@ export default createRule({
     },
     messages: {
       unsafeOfAnyTypeAssertion:
-        'Unsafe cast from {{type}} detected: consider using type guards or a safer cast.',
+        'Unsafe assertion from {{type}} detected: consider using type guards or a safer assertion.',
       unsafeToAnyTypeAssertion:
-        'Unsafe cast to {{type}} detected: consider using a more specific type to ensure safety.',
+        'Unsafe assertion to {{type}} detected: consider using a more specific type to ensure safety.',
+      unsafeToUnconstrainedTypeAssertion:
+        "Unsafe type assertion: '{{type}}' could be instantiated with an arbitrary type which could be unrelated to the original type.",
       unsafeTypeAssertion:
         "Unsafe type assertion: type '{{type}}' is more narrow than the original type.",
+      unsafeTypeAssertionAssignableToConstraint:
+        "Unsafe type assertion: the original type is assignable to the constraint of type '{{type}}', but '{{type}}' could be instantiated with a different subtype of its constraint.",
     },
     schema: [],
   },
@@ -49,20 +52,14 @@ export default createRule({
     function checkExpression(
       node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
-      const expressionType = getConstrainedTypeAtLocation(
-        services,
-        node.expression,
-      );
-      const assertedType = getConstrainedTypeAtLocation(
-        services,
-        node.typeAnnotation,
-      );
+      const expressionType = services.getTypeAtLocation(node.expression);
+      const assertedType = services.getTypeAtLocation(node.typeAnnotation);
 
       if (expressionType === assertedType) {
         return;
       }
 
-      // handle cases when casting unknown ==> any.
+      // handle cases when asserting unknown ==> any.
       if (isTypeAnyType(assertedType) && isTypeUnknownType(expressionType)) {
         context.report({
           node,
@@ -115,24 +112,60 @@ export default createRule({
 
       // Use the widened type in case of an object literal so `isTypeAssignableTo()`
       // won't fail on excess property check.
-      const nodeWidenedType = isObjectLiteralType(expressionType)
+      const expressionWidenedType = isObjectLiteralType(expressionType)
         ? checker.getWidenedType(expressionType)
         : expressionType;
 
       const isAssertionSafe = checker.isTypeAssignableTo(
-        nodeWidenedType,
+        expressionWidenedType,
         assertedType,
       );
-
-      if (!isAssertionSafe) {
-        context.report({
-          node,
-          messageId: 'unsafeTypeAssertion',
-          data: {
-            type: checker.typeToString(assertedType),
-          },
-        });
+      if (isAssertionSafe) {
+        return;
       }
+
+      // Produce a more specific error message when targeting a type parameter
+      if (tsutils.isTypeParameter(assertedType)) {
+        const assertedTypeConstraint =
+          checker.getBaseConstraintOfType(assertedType);
+        if (!assertedTypeConstraint) {
+          // asserting to an unconstrained type parameter is unsafe
+          context.report({
+            node,
+            messageId: 'unsafeToUnconstrainedTypeAssertion',
+            data: {
+              type: checker.typeToString(assertedType),
+            },
+          });
+          return;
+        }
+
+        // special case message if the original type is assignable to the
+        // constraint of the target type parameter
+        const isAssignableToConstraint = checker.isTypeAssignableTo(
+          expressionWidenedType,
+          assertedTypeConstraint,
+        );
+        if (isAssignableToConstraint) {
+          context.report({
+            node,
+            messageId: 'unsafeTypeAssertionAssignableToConstraint',
+            data: {
+              type: checker.typeToString(assertedType),
+            },
+          });
+          return;
+        }
+      }
+
+      // General error message
+      context.report({
+        node,
+        messageId: 'unsafeTypeAssertion',
+        data: {
+          type: checker.typeToString(assertedType),
+        },
+      });
     }
 
     return {

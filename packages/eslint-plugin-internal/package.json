@@ -3,6 +3,16 @@
   "private": true,
   "main": "dist/index.js",
   "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/eslint-plugin-internal"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "homepage": "https://typescript-eslint.io",
+  "license": "MIT",
   "scripts": {
     "build": "npx tsc -b tsconfig.build.json",
     "clean": "npx tsc -b tsconfig.build.json --clean",
