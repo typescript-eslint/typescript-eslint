@@ -119,7 +119,10 @@ const foo = <Foo props={{ bar: 1 } as Bar} />;
 
 {/* insert option description */}
 
-Always prefer `const x: T[] = [ ... ];` to `const x = [ ... ] as T[];` (or similar with angle brackets). The rationale for this is exactly the same as for `objectLiteralTypeAssertions`.
+Always prefer `const x: T[] = [ ... ];` to `const x = [ ... ] as T[];` (or similar with angle brackets).
+
+The compiler will warn for excess properties of elements with this syntax, but not missing _required_ fields of those objects.
+For example: `const x: {foo: number}[] = [{}];` will fail to compile, but `const x = [{}] as [{ foo: number }]` will succeed.
 
 The const assertion `const x = [1, 2, 3] as const`, introduced in TypeScript 3.4, is considered beneficial and is ignored by this option.
 
