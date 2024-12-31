@@ -390,12 +390,10 @@ export default createRule<Options, MessageIds>({
         }
 
         const isFixable = ((): boolean => {
+          const implicitEquality = !operator || operator === '!';
+
           // it is fixable if we check for both null and undefined, or not if neither
-          if (
-            operator &&
-            operator !== '!' &&
-            hasUndefinedCheck === hasNullCheck
-          ) {
+          if (!implicitEquality && hasUndefinedCheck === hasNullCheck) {
             return hasUndefinedCheck;
           }
 
@@ -412,13 +410,10 @@ export default createRule<Options, MessageIds>({
             return false;
           }
 
-          if (!operator || operator === '!') {
-            return (
-              (flags &
-                ~(ts.TypeFlags.Null | ts.TypeFlags.Undefined) &
-                ts.TypeFlags.PossiblyFalsy) ===
-              0
-            );
+          const nullishFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
+
+          if (implicitEquality) {
+            return (flags & ~nullishFlags & ts.TypeFlags.PossiblyFalsy) === 0;
           }
 
           const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
