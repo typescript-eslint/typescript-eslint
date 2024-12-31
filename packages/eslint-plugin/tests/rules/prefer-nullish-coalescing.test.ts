@@ -158,6 +158,38 @@ declare let x: string | null | undefined;
 !x ? y : x;
       `,
       `
+declare let x: string | object;
+x ? x : y;
+      `,
+      `
+declare let x: string | object;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | null | undefined;
+!x ? y : x;
+      `,
+      `
 declare let x: number;
 x ? x : y;
       `,
@@ -262,11 +294,283 @@ declare let x: any;
 !x ? y : x;
       `,
       `
+declare let x: any | null;
+x ? x : y;
+      `,
+      `
+declare let x: any | null;
+!x ? y : x;
+      `,
+      `
+declare let x: any | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | null | undefined;
+!x ? y : x;
+      `,
+      `
 declare let x: unknown;
 x ? x : y;
       `,
       `
 declare let x: unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any;
+x ? x : y;
+      `,
+      `
+declare let x: string | any;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any;
+x ? x : y;
+      `,
+      `
+declare let x: object | any;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown | null | undefined;
 !x ? y : x;
       `,
     ].map(code => ({
