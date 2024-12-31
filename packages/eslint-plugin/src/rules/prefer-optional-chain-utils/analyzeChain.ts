@@ -9,7 +9,7 @@ import type {
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -208,9 +208,13 @@ const analyzeOrChainOperand: OperandAnalyzer = (
  */
 function getReportRange(
   chain: ValidOperand[],
-  boundary: TSESTree.Range,
+  node: TSESTree.Node,
   sourceCode: SourceCode,
 ): TSESTree.Range {
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    return node.range;
+  }
+  const boundary = node.range;
   const leftNode = chain[0].node;
   const rightNode = chain[chain.length - 1].node;
   let leftMost = nullThrows(
@@ -242,13 +246,17 @@ function getReportRange(
 }
 
 function getReportDescriptor(
-  sourceCode: SourceCode,
+  context: RuleContext<
+    PreferOptionalChainMessageIds,
+    [PreferOptionalChainOptions]
+  >,
   parserServices: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
 ): ReportDescriptor<PreferOptionalChainMessageIds> {
+  const sourceCode = context.sourceCode;
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -324,7 +332,7 @@ function getReportDescriptor(
   // 6) diff(`foo.bar.baz?.bam`, `foo.bar.baz.bam()`) = `()`
   // 7) result = `foo?.bar?.baz?.bam?.()`
 
-  const parts = [];
+  const parts: FlattenedChain[] = [];
   for (const current of chain) {
     const nextOperand = flattenChainExpression(
       sourceCode,
@@ -401,7 +409,42 @@ function getReportDescriptor(
     newCode = `!${newCode}`;
   }
 
-  const reportRange = getReportRange(chain, node.range, sourceCode);
+  const reportRange = getReportRange(chain, node, sourceCode);
+
+  if (node.type === AST_NODE_TYPES.IfStatement) {
+    const chainEndedWithSemicolon =
+      sourceCode.getTokenAfter(lastOperand.node)?.value === ';';
+    if (chainEndedWithSemicolon) {
+      newCode += ';';
+    }
+
+    const nodeBeforeTheComment = chainEndedWithSemicolon
+      ? lastOperand.node.parent
+      : lastOperand.node;
+    const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
+    const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
+    if (commentsBefore.length || commentsAfter.length) {
+      useSuggestionFixer = true;
+      const indentationCount = node.loc.start.column;
+      const indentation = ' '.repeat(indentationCount);
+      const newLineIndentation = `\n${indentation}`;
+      function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
+        return comments
+          .map(({ type, value }) =>
+            type === AST_TOKEN_TYPES.Line ? `//${value}` : `/*${value}*/`,
+          )
+          .join(newLineIndentation);
+      }
+      if (commentsBefore.length > 0) {
+        const commentsText = getTextFromCommentsArray(commentsBefore);
+        newCode = `${commentsText}\n${indentation}${newCode}`;
+      }
+      if (commentsAfter.length > 0) {
+        const commentsText = getTextFromCommentsArray(commentsAfter);
+        newCode = `${newCode}\n${indentation}${commentsText}`;
+      }
+    }
+  }
 
   const fix: ReportFixFunction = fixer =>
     fixer.replaceTextRange(reportRange, newCode);
@@ -555,7 +598,7 @@ export function analyzeChain(
         options,
         subChainFlat.slice(0, -1).map(({ node }) => node),
         getReportDescriptor(
-          context.sourceCode,
+          context,
           parserServices,
           node,
           operator,
