@@ -190,6 +190,38 @@ declare let x: number | null | undefined;
 !x ? y : x;
       `,
       `
+declare let x: bigint;
+x ? x : y;
+      `,
+      `
+declare let x: bigint;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | null;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | null;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | null | undefined;
+!x ? y : x;
+      `,
+      `
 declare let x: boolean;
 x ? x : y;
       `,
@@ -929,6 +961,94 @@ x ? x : y;
       `,
       `
 declare let x: object | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: Function;
+x ? x : y;
+      `,
+      `
+declare let x: Function;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | null;
+x ? x : y;
+      `,
+      `
+declare let x: Function | null;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: Function | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: Function | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string;
+x ? x : y;
+      `,
+      `
+declare let x: () => string;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | null;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | null;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | null | undefined;
 !x ? y : x;
       `,
     ].map(code => ({
