@@ -2926,6 +2926,7 @@ defaultBox ?? getFallbackBox();
           ],
         },
       ],
+      output: null,
     },
     {
       code: `
