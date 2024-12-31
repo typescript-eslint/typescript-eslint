@@ -68,6 +68,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
 
 // exported so that users that make configs with tsconfig `declaration: true` can name the type
 export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
+type Config = TSESLint.FlatConfig.Config;
 
 /**
  * Utility function to make it easy to strictly type your "Flat" config file
@@ -92,13 +93,29 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
 export function config(
   ...configs: InfiniteDepthConfigWithExtends[]
 ): ConfigArray {
-  const flattened =
+  /* We intentionally temporarily change the type to `unknown`, to ensure that we make no assumptions about the types of
+  the arguments passed to this function at runtime. If any argument is an unexpected type, we should not cause a
+  `TypeError`, and instead, we should silently return the unexpected argument unchanged, because ESLint will later
+   validate the types. */
+  const flattened: unknown[] =
     // @ts-expect-error -- intentionally an infinite type
-    configs.flat(Infinity) as ConfigWithExtends[];
+    configs.flat(Infinity);
   return flattened.flatMap((configWithExtends, configIndex) => {
-    const { extends: extendsArr, ...config } = configWithExtends;
-    if (extendsArr == null || extendsArr.length === 0) {
-      return config;
+    if (
+      !configWithExtends ||
+      typeof configWithExtends !== 'object' ||
+      !('extends' in configWithExtends)
+    ) {
+      return configWithExtends as Config;
+    }
+    const { extends: extendsArr, ...config } = configWithExtends as {
+      extends: InfiniteDepthConfigWithExtends[];
+      name?: unknown;
+      files?: unknown;
+      ignores?: unknown;
+    };
+    if (extendsArr.length === 0) {
+      return config as Config;
     }
     const extendsArrFlattened = extendsArr.flat(
       Infinity,
@@ -106,9 +123,7 @@ export function config(
 
     const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
       (acc, extension, extensionIndex) => {
-        const maybeExtension = extension as
-          | TSESLint.FlatConfig.Config
-          | undefined;
+        const maybeExtension = extension as Config | undefined;
         if (maybeExtension == null) {
           acc.push(extensionIndex);
         }
@@ -118,8 +133,11 @@ export function config(
     );
     if (undefinedExtensions.length) {
       const configName =
-        configWithExtends.name != null
-          ? `, named "${configWithExtends.name}",`
+        config.name != null
+          ? `, named "${
+              // eslint-disable-next-line @typescript-eslint/no-base-to-string,@typescript-eslint/restrict-template-expressions
+              config.name
+            }",`
           : ' (anonymous)';
       const extensionIndices = undefinedExtensions.join(', ');
       throw new Error(
@@ -133,12 +151,15 @@ export function config(
         const name = [config.name, extension.name].filter(Boolean).join('__');
         return {
           ...extension,
-          ...(config.files && { files: config.files }),
-          ...(config.ignores && { ignores: config.ignores }),
+          ...Object.fromEntries(
+            Object.entries(config).filter(([key]) =>
+              ['files', 'ignores'].includes(key),
+            ),
+          ),
           ...(name && { name }),
         };
       }),
-      config,
+      config as Config,
     ];
   });
 }
