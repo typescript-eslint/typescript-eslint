@@ -334,8 +334,7 @@ function collectTypeParameterUsageCounts(
       return;
     }
 
-    // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
-    if ((tsutils.isTypeParameter as (type: ts.Type) => boolean)(type)) {
+    if (tsutils.isTypeParameter(type)) {
       const declaration = type.getSymbol()?.getDeclarations()?.[0] as
         | ts.TypeParameterDeclaration
         | undefined;
