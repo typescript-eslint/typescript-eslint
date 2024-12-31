@@ -772,7 +772,7 @@ export class RuleTester extends TestFramework {
       passNumber++;
 
       const SourceCodePrototype = SourceCode.prototype as Record<
-        string,
+        ForbiddenMethodName,
         ForbiddenFunction
       >;
 
