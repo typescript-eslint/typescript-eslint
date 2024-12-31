@@ -1625,24 +1625,74 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
     }),
 
     // number (array.length) in boolean context
-    ...batchedSingleLineTests<MessageId, Options>({
-      code: noFormat`
-        if (![].length) {}
-        (a: number[]) => a.length && "..."
-        <T extends unknown[]>(...a: T) => a.length || "empty";
+
+    {
+      code: `
+if (![].length) {
+}
       `,
       errors: [
-        { column: 6, line: 2, messageId: 'conditionErrorNumber' },
-        { column: 26, line: 3, messageId: 'conditionErrorNumber' },
-        { column: 43, line: 4, messageId: 'conditionErrorNumber' },
+        {
+          column: 6,
+          line: 2,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthZero',
+              output: `
+if ([].length === 0) {
+}
+      `,
+            },
+          ],
+        },
       ],
       options: [{ allowNumber: false }],
-      output: `
-        if ([].length === 0) {}
-        (a: number[]) => (a.length > 0) && "..."
-        <T extends unknown[]>(...a: T) => (a.length > 0) || "empty";
+    },
+    {
+      code: `
+(a: number[]) => a.length && '...';
       `,
-    }),
+      errors: [
+        {
+          column: 18,
+          line: 2,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthNonzero',
+              // not technically the same; changes from returning (nonzero) number to returning true
+              output: `
+(a: number[]) => (a.length > 0) && '...';
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+<T extends unknown[]>(...a: T) => a.length || 'empty';
+      `,
+      errors: [
+        {
+          column: 35,
+          line: 2,
+          messageId: 'conditionErrorNumber',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthNonzero',
+              // not technically the same; changes from returning (nonzero) number to returning true
+              output: `
+<T extends unknown[]>(...a: T) => (a.length > 0) || 'empty';
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
 
     // mixed `string | number` value in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
@@ -1967,10 +2017,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 0,
           That = 1,
@@ -1979,6 +2029,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum != null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       code: `
@@ -1997,10 +2052,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 0,
           That = 1,
@@ -2009,6 +2064,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       code: `
@@ -2027,10 +2087,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This,
           That,
@@ -2039,6 +2099,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       code: `
@@ -2057,10 +2122,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 'a',
@@ -2069,6 +2134,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       code: `
@@ -2087,10 +2157,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 0,
@@ -2099,6 +2169,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       code: `
@@ -2117,10 +2192,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 'one',
           That = 'two',
@@ -2129,6 +2204,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       code: `
@@ -2147,10 +2227,10 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 7,
           line: 7,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 1,
           That = 2,
@@ -2159,6 +2239,11 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
         if (theEnum == null) {
         }
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
 
     // nullable mixed enum in boolean context
@@ -2178,16 +2263,21 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 0,
           That = 'one',
         }
         (value?: ExampleEnum) => ((value != null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       // falsy string and truthy number
@@ -2205,16 +2295,21 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 1,
         }
         (value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       // truthy string and truthy number
@@ -2232,16 +2327,21 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = 'this',
           That = 1,
         }
         (value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
     {
       // falsy string and falsy number
@@ -2259,16 +2359,21 @@ if (((Boolean('')) && {}) || (foo && void 0)) { }
           endLine: 6,
           line: 6,
           messageId: 'conditionErrorNullableEnum',
-        },
-      ],
-      options: [{ allowNullableEnum: false }],
-      output: `
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         enum ExampleEnum {
           This = '',
           That = 0,
         }
         (value?: ExampleEnum) => ((value == null) ? 1 : 0);
       `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableEnum: false }],
     },
 
     // any in boolean context
