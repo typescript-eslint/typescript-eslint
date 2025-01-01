@@ -359,12 +359,12 @@ x!;
       `,
     },
     "let a = (Date.now() % 2 ? 'a' : 'b') as 'a' | 'b';",
-    noFormat`
-      const state: "expired" | "pending" = "pending";
+    `
+      const state: 'expired' | 'pending' = 'pending';
 
       function main() {
         return {
-          type: \`\${state}Request\` as \`\${typeof state}Request\`
+          type: \`\${state}Request\` as \`\${typeof state}Request\`,
         };
       }
     `,
