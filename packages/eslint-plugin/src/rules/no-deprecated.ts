@@ -363,12 +363,12 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
-
       const type = services.getTypeAtLocation(node);
       if (typeMatchesSomeSpecifier(type, allow, services.program)) {
         return;
       }
+
+      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
 
       context.report({
         ...(reason
