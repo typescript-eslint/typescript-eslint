@@ -55,6 +55,10 @@ ruleTester.run('no-array-delete', rule, {
       declare const test: never;
       delete test[0];
     `,
+    // Shouldn't ever happen but to ensure we require member expressions
+    `
+      delete console.log();
+    `,
   ],
 
   invalid: [
@@ -590,6 +594,29 @@ ruleTester.run('no-array-delete', rule, {
         declare const b: number;
 
         a.splice((b + 1) * (b + 2), 1);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const arr: string & Array<number>;
+        delete arr[0];
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 22,
+          line: 3,
+          messageId: 'noArrayDelete',
+          suggestions: [
+            {
+              messageId: 'useSplice',
+              output: `
+        declare const arr: string & Array<number>;
+        arr.splice(0, 1);
       `,
             },
           ],
