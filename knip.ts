@@ -91,7 +91,12 @@ export default {
         'src/theme/**/*.tsx',
         'src/theme/prism-include-languages.js',
       ],
-      ignore: ['src/globals.d.ts', 'src/hooks/*', 'typings/*'],
+      ignore: [
+        'src/globals.d.ts',
+        'src/hooks/*',
+        'src/types.d.ts',
+        'typings/*',
+      ],
       ignoreDependencies: [
         // used in MDX docs
         'raw-loader',
