@@ -39,18 +39,18 @@ const defaultOptions: Options = {
 
 ### hoist: `types`
 
-Examples of incorrect code for the `{ "hoist": ["types"] }` option:
+Examples of incorrect code for the `{ "hoist": "types" }` option:
 
-```ts option='{ "hoist": ["types"] }' showPlaygroundButton
+```ts option='{ "hoist": "types" }' showPlaygroundButton
 type Bar<Foo> = 1;
 type Foo = 1;
 ```
 
 ### hoist: `functions-and-types`
 
-Examples of incorrect code for the `{ "hoist": ["functions-and-types"] }` option:
+Examples of incorrect code for the `{ "hoist": "functions-and-types" }` option:
 
-```ts option='{ "hoist": ["functions-and-types"] }' showPlaygroundButton
+```ts option='{ "hoist": "functions-and-types" }' showPlaygroundButton
 // types
 type Bar<Foo> = 1;
 type Foo = 1;
