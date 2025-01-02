@@ -3,7 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -12,7 +12,10 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   getWrappingFixer,
+  isArrayMethodCallWithPredicate,
+  isParenlessArrowFunction,
   isTypeArrayTypeOrUnionOfArrayTypes,
+  nullThrows,
 } from '../util';
 import { findTruthinessAssertedArgument } from '../util/assertionFunctionUtils';
 
@@ -43,6 +46,8 @@ export type MessageId =
   | 'conditionErrorOther'
   | 'conditionErrorString'
   | 'conditionFixCastBoolean'
+  | 'conditionFixCompareArrayLengthNonzero'
+  | 'conditionFixCompareArrayLengthZero'
   | 'conditionFixCompareEmptyString'
   | 'conditionFixCompareFalse'
   | 'conditionFixCompareNaN'
@@ -53,7 +58,10 @@ export type MessageId =
   | 'conditionFixDefaultEmptyString'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultZero'
-  | 'noStrictNullCheck';
+  | 'explicitBooleanReturnType'
+  | 'noStrictNullCheck'
+  | 'predicateCannotBeAsync'
+  | 'predicateReturnsNonBoolean';
 
 export default createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -63,7 +71,6 @@ export default createRule<Options, MessageId>({
       description: 'Disallow certain types in boolean expressions',
       requiresTypeChecking: true,
     },
-    fixable: 'code',
     hasSuggestions: true,
     messages: {
       conditionErrorAny:
@@ -102,6 +109,10 @@ export default createRule<Options, MessageId>({
       conditionFixCastBoolean:
         'Explicitly convert value to a boolean (`Boolean(value)`)',
 
+      conditionFixCompareArrayLengthNonzero:
+        "Change condition to check array's length (`value.length > 0`)",
+      conditionFixCompareArrayLengthZero:
+        "Change condition to check array's length (`value.length === 0`)",
       conditionFixCompareEmptyString:
         'Change condition to check for empty string (`value !== ""`)',
       conditionFixCompareFalse:
@@ -122,8 +133,13 @@ export default createRule<Options, MessageId>({
         'Explicitly treat nullish value the same as false (`value ?? false`)',
       conditionFixDefaultZero:
         'Explicitly treat nullish value the same as 0 (`value ?? 0`)',
+      explicitBooleanReturnType:
+        'Add an explicit `boolean` return type annotation.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
+      predicateCannotBeAsync:
+        "Predicate function should not be 'async'; expected a boolean return type.",
+      predicateReturnsNonBoolean: 'Predicate function should return a boolean.',
     },
     schema: [
       {
@@ -275,6 +291,104 @@ export default createRule<Options, MessageId>({
       if (assertedArgument != null) {
         traverseNode(assertedArgument, true);
       }
+      if (isArrayMethodCallWithPredicate(context, services, node)) {
+        const predicate = node.arguments.at(0);
+
+        if (predicate) {
+          checkArrayMethodCallPredicate(predicate);
+        }
+      }
+    }
+
+    /**
+     * Dedicated function to check array method predicate calls. Reports predicate
+     * arguments that don't return a boolean value.
+     *
+     * Ignores the `allow*` options and requires a boolean value.
+     */
+    function checkArrayMethodCallPredicate(
+      predicateNode: TSESTree.CallExpressionArgument,
+    ): void {
+      const isFunctionExpression = ASTUtils.isFunction(predicateNode);
+
+      // custom message for accidental `async` function expressions
+      if (isFunctionExpression && predicateNode.async) {
+        return context.report({
+          node: predicateNode,
+          messageId: 'predicateCannotBeAsync',
+        });
+      }
+
+      const returnTypes = services
+        .getTypeAtLocation(predicateNode)
+        .getCallSignatures()
+        .map(signature => {
+          const type = signature.getReturnType();
+
+          if (tsutils.isTypeParameter(type)) {
+            return checker.getBaseConstraintOfType(type) ?? type;
+          }
+
+          return type;
+        });
+
+      if (returnTypes.every(returnType => isBooleanType(returnType))) {
+        return;
+      }
+
+      const canFix = isFunctionExpression && !predicateNode.returnType;
+
+      return context.report({
+        node: predicateNode,
+        messageId: 'predicateReturnsNonBoolean',
+        suggest: canFix
+          ? [
+              {
+                messageId: 'explicitBooleanReturnType',
+                fix: fixer => {
+                  if (
+                    predicateNode.type ===
+                      AST_NODE_TYPES.ArrowFunctionExpression &&
+                    isParenlessArrowFunction(predicateNode, context.sourceCode)
+                  ) {
+                    return [
+                      fixer.insertTextBefore(predicateNode.params[0], '('),
+                      fixer.insertTextAfter(
+                        predicateNode.params[0],
+                        '): boolean',
+                      ),
+                    ];
+                  }
+
+                  if (predicateNode.params.length === 0) {
+                    const closingBracket = nullThrows(
+                      context.sourceCode.getFirstToken(
+                        predicateNode,
+                        token => token.value === ')',
+                      ),
+                      'function expression has to have a closing parenthesis.',
+                    );
+
+                    return fixer.insertTextAfter(closingBracket, ': boolean');
+                  }
+
+                  const lastClosingParenthesis = nullThrows(
+                    context.sourceCode.getTokenAfter(
+                      predicateNode.params[predicateNode.params.length - 1],
+                      token => token.value === ')',
+                    ),
+                    'function expression has to have a closing parenthesis.',
+                  );
+
+                  return fixer.insertTextAfter(
+                    lastClosingParenthesis,
+                    ': boolean',
+                  );
+                },
+              },
+            ]
+          : null,
+      });
     }
 
     /**
@@ -571,23 +685,33 @@ export default createRule<Options, MessageId>({
               context.report({
                 node,
                 messageId: 'conditionErrorNumber',
-                fix: getWrappingFixer({
-                  node: node.parent,
-                  innerNode: node,
-                  sourceCode: context.sourceCode,
-                  wrap: code => `${code} === 0`,
-                }),
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareArrayLengthZero',
+                    fix: getWrappingFixer({
+                      node: node.parent,
+                      innerNode: node,
+                      sourceCode: context.sourceCode,
+                      wrap: code => `${code} === 0`,
+                    }),
+                  },
+                ],
               });
             } else {
               // if (array.length)
               context.report({
                 node,
                 messageId: 'conditionErrorNumber',
-                fix: getWrappingFixer({
-                  node,
-                  sourceCode: context.sourceCode,
-                  wrap: code => `${code} > 0`,
-                }),
+                suggest: [
+                  {
+                    messageId: 'conditionFixCompareArrayLengthNonzero',
+                    fix: getWrappingFixer({
+                      node,
+                      sourceCode: context.sourceCode,
+                      wrap: code => `${code} > 0`,
+                    }),
+                  },
+                ],
               });
             }
           } else if (isLogicalNegationExpression(node.parent)) {
@@ -803,22 +927,32 @@ export default createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
-              fix: getWrappingFixer({
-                node: node.parent,
-                innerNode: node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} == null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: getWrappingFixer({
+                    node: node.parent,
+                    innerNode: node,
+                    sourceCode: context.sourceCode,
+                    wrap: code => `${code} == null`,
+                  }),
+                },
+              ],
             });
           } else {
             context.report({
               node,
               messageId: 'conditionErrorNullableEnum',
-              fix: getWrappingFixer({
-                node,
-                sourceCode: context.sourceCode,
-                wrap: code => `${code} != null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: getWrappingFixer({
+                    node,
+                    sourceCode: context.sourceCode,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+              ],
             });
           }
         }
@@ -1007,11 +1141,13 @@ function isArrayLengthExpression(
 function isBrandedBoolean(type: ts.Type): boolean {
   return (
     type.isIntersection() &&
-    type.types.some(childType =>
-      tsutils.isTypeFlagSet(
-        childType,
-        ts.TypeFlags.BooleanLiteral | ts.TypeFlags.Boolean,
-      ),
-    )
+    type.types.some(childType => isBooleanType(childType))
+  );
+}
+
+function isBooleanType(expressionType: ts.Type): boolean {
+  return tsutils.isTypeFlagSet(
+    expressionType,
+    ts.TypeFlags.Boolean | ts.TypeFlags.BooleanLiteral,
   );
 }

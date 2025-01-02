@@ -782,14 +782,14 @@ declare const condition: boolean;
 declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? (err => {}, err => {}, maybeNullishHandler) ?? (err => {})
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
     : (condition && (err => {})) || (err => {}),
 );
       `,
       errors: [
         {
-          column: 55,
-          endColumn: 58,
+          column: 56,
+          endColumn: 59,
           endLine: 6,
           line: 6,
 
@@ -803,7 +803,7 @@ declare const condition: boolean;
 declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? (err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {})
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? ((err: unknown) => {}))
     : (condition && (err => {})) || (err => {}),
 );
       `,
@@ -826,7 +826,7 @@ declare const condition: boolean;
 declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? (err => {}, err => {}, maybeNullishHandler) ?? (err => {})
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
     : (condition && ((err: unknown) => {})) || (err => {}),
 );
       `,
@@ -849,7 +849,7 @@ declare const condition: boolean;
 declare const maybeNullishHandler: null | ((err: any) => void);
 Promise.resolve('foo').catch(
   condition
-    ? (err => {}, err => {}, maybeNullishHandler) ?? (err => {})
+    ? ((err => {}, err => {}, maybeNullishHandler) ?? (err => {}))
     : (condition && (err => {})) || ((err: unknown) => {}),
 );
       `,

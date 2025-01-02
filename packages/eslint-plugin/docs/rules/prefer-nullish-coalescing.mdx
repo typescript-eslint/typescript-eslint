@@ -102,7 +102,7 @@ while (a ?? b) {}
 while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
-a ?? b ? true : false;
+(a ?? b) ? true : false;
 ```
 
 ### `ignoreMixedLogicalExpressions`
@@ -198,13 +198,13 @@ const x = Boolean(a ?? b);
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
-{/* insert option description */}
-
 :::danger Deprecated
 
-> This option will be removed in the next major version of typescript-eslint.
-> :::
-> Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+This option will be removed in the next major version of typescript-eslint.
+
+:::
+
+{/* insert option description */}
 
 Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
 

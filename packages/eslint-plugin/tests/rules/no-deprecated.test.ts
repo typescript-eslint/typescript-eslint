@@ -683,6 +683,36 @@ ruleTester.run('no-deprecated', rule, {
     },
     {
       code: `
+        /** @deprecated */
+        declare const test: string;
+        const myObj = {
+          prop: test,
+          deep: {
+            prop: test,
+          },
+        };
+      `,
+      errors: [
+        {
+          column: 17,
+          data: { name: 'test' },
+          endColumn: 21,
+          endLine: 5,
+          line: 5,
+          messageId: 'deprecated',
+        },
+        {
+          column: 19,
+          data: { name: 'test' },
+          endColumn: 23,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
         /** @deprecated */ const a = { b: 1 };
         const { c = 'd' } = a.b;
       `,

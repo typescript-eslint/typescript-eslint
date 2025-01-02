@@ -27,6 +27,12 @@ const optionsWithExactOptionalPropertyTypes = {
   tsconfigRootDir: rootPath,
 };
 
+const optionsWithNoUncheckedIndexedAccess = {
+  project: './tsconfig.noUncheckedIndexedAccess.json',
+  projectService: false,
+  tsconfigRootDir: getFixturesRootDir(),
+};
+
 const necessaryConditionTest = (condition: string): string => `
 declare const b1: ${condition};
 declare const b2: boolean;
@@ -286,6 +292,22 @@ function count(
 ) {
   return list.filter(predicate).length;
 }
+    `,
+    `
+declare const test: <T>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+declare const test: <T extends boolean>() => T;
+
+[1, null].filter(test);
+    `,
+    `
+[1, null].filter(1 as any);
+    `,
+    `
+[1, null].filter(1 as never);
     `,
     // Ignores non-array methods of the same name
     `
@@ -591,11 +613,7 @@ const key = '1' as BrandedKey;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -649,11 +667,7 @@ function Foo(outer: Outer, key: Foo): number | undefined {
 }
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     {
@@ -666,11 +680,51 @@ declare const key: Key;
 foo?.[key]?.trim();
       `,
       languageOptions: {
-        parserOptions: {
-          project: './tsconfig.noUncheckedIndexedAccess.json',
-          projectService: false,
-          tsconfigRootDir: getFixturesRootDir(),
-        },
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: Record<string, { key: string }>;
+};
+declare const foo: Foo;
+foo.key?.someKey?.key;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type Foo = {
+  key?: {
+    [key: string]: () => void;
+  };
+};
+declare const foo: Foo;
+foo.key?.value?.();
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
+      },
+    },
+    {
+      code: `
+type A = {
+  [name in Lowercase<string>]?: {
+    [name in Lowercase<string>]: {
+      a: 1;
+    };
+  };
+};
+
+declare const a: A;
+
+a.a?.a?.a;
+      `,
+      languageOptions: {
+        parserOptions: optionsWithNoUncheckedIndexedAccess,
       },
     },
     `
@@ -1744,6 +1798,14 @@ function nothing3(x: [string, string]) {
         { column: 25, line: 13, messageId: 'alwaysFalsy' },
         { column: 25, line: 17, messageId: 'alwaysFalsy' },
       ],
+    },
+    {
+      code: `
+declare const test: <T extends true>() => T;
+
+[1, null].filter(test);
+      `,
+      errors: [{ column: 18, line: 4, messageId: 'alwaysTruthyFunc' }],
     },
     // Indexing cases
     {
