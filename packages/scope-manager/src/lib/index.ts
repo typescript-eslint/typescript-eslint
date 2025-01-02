@@ -26,6 +26,7 @@ import { es2016_array_include } from './es2016.array.include';
 import { es2016_full } from './es2016.full';
 import { es2016_intl } from './es2016.intl';
 import { es2017 } from './es2017';
+import { es2017_arraybuffer } from './es2017.arraybuffer';
 import { es2017_date } from './es2017.date';
 import { es2017_full } from './es2017.full';
 import { es2017_intl } from './es2017.intl';
@@ -70,13 +71,21 @@ import { es2022_full } from './es2022.full';
 import { es2022_intl } from './es2022.intl';
 import { es2022_object } from './es2022.object';
 import { es2022_regexp } from './es2022.regexp';
-import { es2022_sharedmemory } from './es2022.sharedmemory';
 import { es2022_string } from './es2022.string';
 import { es2023 } from './es2023';
 import { es2023_array } from './es2023.array';
 import { es2023_collection } from './es2023.collection';
 import { es2023_full } from './es2023.full';
 import { es2023_intl } from './es2023.intl';
+import { es2024 } from './es2024';
+import { es2024_arraybuffer } from './es2024.arraybuffer';
+import { es2024_collection } from './es2024.collection';
+import { es2024_full } from './es2024.full';
+import { es2024_object } from './es2024.object';
+import { es2024_promise } from './es2024.promise';
+import { es2024_regexp } from './es2024.regexp';
+import { es2024_sharedmemory } from './es2024.sharedmemory';
+import { es2024_string } from './es2024.string';
 import { esnext } from './esnext';
 import { esnext_array } from './esnext.array';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -124,6 +133,7 @@ const lib = {
   'es2016.full': es2016_full,
   'es2016.intl': es2016_intl,
   es2017,
+  'es2017.arraybuffer': es2017_arraybuffer,
   'es2017.date': es2017_date,
   'es2017.full': es2017_full,
   'es2017.intl': es2017_intl,
@@ -168,13 +178,21 @@ const lib = {
   'es2022.intl': es2022_intl,
   'es2022.object': es2022_object,
   'es2022.regexp': es2022_regexp,
-  'es2022.sharedmemory': es2022_sharedmemory,
   'es2022.string': es2022_string,
   es2023,
   'es2023.array': es2023_array,
   'es2023.collection': es2023_collection,
   'es2023.full': es2023_full,
   'es2023.intl': es2023_intl,
+  es2024,
+  'es2024.arraybuffer': es2024_arraybuffer,
+  'es2024.collection': es2024_collection,
+  'es2024.full': es2024_full,
+  'es2024.object': es2024_object,
+  'es2024.promise': es2024_promise,
+  'es2024.regexp': es2024_regexp,
+  'es2024.sharedmemory': es2024_sharedmemory,
+  'es2024.string': es2024_string,
   esnext,
   'esnext.array': esnext_array,
   'esnext.asynciterable': esnext_asynciterable,

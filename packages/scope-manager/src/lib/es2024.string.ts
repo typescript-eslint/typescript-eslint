@@ -7,6 +7,6 @@ import type { ImplicitLibVariableOptions } from '../variable';
 
 import { TYPE } from './base-config';
 
-export const es2022_sharedmemory = {
-  Atomics: TYPE,
+export const es2024_string = {
+  String: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

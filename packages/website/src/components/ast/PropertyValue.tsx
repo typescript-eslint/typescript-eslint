@@ -22,32 +22,38 @@ function getSimpleModel(data: unknown): SimpleModel {
       shortValue: value.length > 250 ? value.substring(0, 200) : undefined,
       value,
     };
-  } else if (typeof data === 'number') {
+  }
+  if (typeof data === 'number') {
     return {
       className: styles.propNumber,
       value: String(data),
     };
-  } else if (typeof data === 'bigint') {
+  }
+  if (typeof data === 'bigint') {
     return {
       className: styles.propNumber,
       value: `${data}n`,
     };
-  } else if (data instanceof RegExp) {
+  }
+  if (data instanceof RegExp) {
     return {
       className: styles.propRegExp,
       value: String(data),
     };
-  } else if (data == null) {
+  }
+  if (data == null) {
     return {
       className: styles.propEmpty,
       value: String(data),
     };
-  } else if (typeof data === 'boolean') {
+  }
+  if (typeof data === 'boolean') {
     return {
       className: styles.propBoolean,
       value: data ? 'true' : 'false',
     };
-  } else if (data instanceof Error) {
+  }
+  if (data instanceof Error) {
     return {
       className: styles.propError,
       value: `Error: ${data.message}`,

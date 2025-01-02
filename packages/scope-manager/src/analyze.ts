@@ -94,6 +94,7 @@ function analyze(
     jsxFragmentName:
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     jsxPragma:
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       providedOptions?.jsxPragma === undefined
         ? DEFAULT_OPTIONS.jsxPragma
         : providedOptions.jsxPragma,

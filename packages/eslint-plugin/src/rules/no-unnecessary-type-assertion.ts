@@ -117,9 +117,9 @@ export default createRule<Options, MessageIds>({
 
         if (
           // is it `const x!: number`
-          declaration.initializer === undefined &&
-          declaration.exclamationToken === undefined &&
-          declaration.type !== undefined
+          declaration.initializer == null &&
+          declaration.exclamationToken == null &&
+          declaration.type != null
         ) {
           // check if the defined variable type has changed since assignment
           const declarationType = checker.getTypeFromTypeNode(declaration.type);
