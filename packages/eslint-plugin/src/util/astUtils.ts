@@ -7,6 +7,13 @@ import { escapeRegExp } from './escapeRegExp';
 // deeply re-export, for convenience
 export * from '@typescript-eslint/utils/ast-utils';
 
+export function isNodeInside(
+  child: TSESTree.Node,
+  parent: TSESTree.Node,
+): boolean {
+  return child.range[0] > parent.range[0] && child.range[1] < parent.range[1];
+}
+
 // The following is copied from `eslint`'s source code since it doesn't exist in eslint@5.
 // https://github.com/eslint/eslint/blob/145aec1ab9052fbca96a44d04927c595951b1536/lib/rules/utils/ast-utils.js#L1751-L1779
 // Could be export { getNameLocationInGlobalDirectiveComment } from 'eslint/lib/rules/utils/ast-utils'

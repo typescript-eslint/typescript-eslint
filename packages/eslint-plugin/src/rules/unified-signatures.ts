@@ -53,12 +53,12 @@ type MethodDefinition =
   | TSESTree.MethodDefinition
   | TSESTree.TSAbstractMethodDefinition;
 
-type MessageIds =
+export type MessageIds =
   | 'omittingRestParameter'
   | 'omittingSingleParameter'
   | 'singleParameterDifference';
 
-type Options = [
+export type Options = [
   {
     ignoreDifferentlyNamedParameters?: boolean;
   },

@@ -38,10 +38,12 @@ export interface CreateLinter {
   updateParserOptions(sourceType?: SourceType): void;
 }
 
+export type TSVFS = typeof tsvfs;
+
 export function createLinter(
   system: PlaygroundSystem,
   webLinterModule: WebLinterModule,
-  vfs: typeof tsvfs,
+  vfs: TSVFS,
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));

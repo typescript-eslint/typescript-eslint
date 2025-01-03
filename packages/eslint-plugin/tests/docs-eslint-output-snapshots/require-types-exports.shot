@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+interface Fruit {
+          ~~~~~ \`Fruit\` is used in exports, so it should also be exported.
+  name: string;
+  color: string;
+}
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+const fruits = {
+      ~~~~~~ \`typeof fruits\` is used in exports, so \`fruits\` and/or a standalone \`typeof fruits\` should also be exported.
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 3`] = `
+"Incorrect
+
+enum Color {
+     ~~~~~ \`Color\` is used in exports, so it should also be exported.
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+
+export declare function getRandomColor(): Color;
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 4`] = `
+"Correct
+
+export interface Fruit {
+  name: string;
+  color: string;
+}
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 5`] = `
+"Correct
+
+export const fruits = {
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
+"
+`;
+
+exports[`Validating rule docs require-types-exports.mdx code examples ESLint output 6`] = `
+"Correct
+
+export enum Color {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+
+export declare function getRandomColor(): Color;
+"
+`;

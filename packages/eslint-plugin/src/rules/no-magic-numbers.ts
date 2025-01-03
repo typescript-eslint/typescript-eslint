@@ -13,8 +13,8 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-magic-numbers');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // Extend base schema with additional property to ignore TS numeric literal types
 const schema = deepMerge(

@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows } from '../util';
 
-type Modifier =
+export type Modifier =
   | 'private'
   | 'private readonly'
   | 'protected'
@@ -13,16 +13,16 @@ type Modifier =
   | 'public readonly'
   | 'readonly';
 
-type Prefer = 'class-property' | 'parameter-property';
+export type Prefer = 'class-property' | 'parameter-property';
 
-type Options = [
+export type Options = [
   {
     allow?: Modifier[];
     prefer?: Prefer;
   },
 ];
 
-type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
+export type MessageIds = 'preferClassProperty' | 'preferParameterProperty';
 
 export default createRule<Options, MessageIds>({
   name: 'parameter-properties',

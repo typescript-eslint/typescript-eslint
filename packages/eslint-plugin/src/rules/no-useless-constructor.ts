@@ -12,8 +12,8 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-useless-constructor');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 /**
  * Check if method with accessibility is not useless

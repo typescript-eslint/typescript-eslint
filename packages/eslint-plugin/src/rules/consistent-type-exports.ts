@@ -14,7 +14,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     fixMixedExportsWithInlineTypeSpecifier: boolean;
   },
@@ -34,7 +34,7 @@ interface ReportValueExport {
   valueSpecifiers: TSESTree.ExportSpecifier[];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'multipleExportsAreTypes'
   | 'singleExportIsType'
   | 'typeOverValue';

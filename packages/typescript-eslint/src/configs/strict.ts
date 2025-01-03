@@ -56,6 +56,7 @@ export default (
       '@typescript-eslint/prefer-as-const': 'error',
       '@typescript-eslint/prefer-literal-enum-member': 'error',
       '@typescript-eslint/prefer-namespace-keyword': 'error',
+      '@typescript-eslint/require-types-exports': 'error',
       '@typescript-eslint/triple-slash-reference': 'error',
       '@typescript-eslint/unified-signatures': 'error',
     },

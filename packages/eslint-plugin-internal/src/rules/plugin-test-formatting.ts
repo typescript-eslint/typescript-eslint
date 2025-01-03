@@ -87,14 +87,14 @@ function escapeTemplateString(code: string): string {
   return fixed;
 }
 
-type Options = [
+export type Options = [
   {
     // This option exists so that rules like type-annotation-spacing can exist without every test needing a prettier-ignore
     formatWithPrettier?: boolean;
   },
 ];
 
-type MessageIds =
+export type MessageIds =
   | 'invalidFormatting'
   | 'invalidFormattingErrorTest'
   | 'noUnnecessaryNoFormat'

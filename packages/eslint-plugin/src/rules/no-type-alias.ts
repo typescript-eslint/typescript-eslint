@@ -4,14 +4,14 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Values =
+export type Values =
   | 'always'
   | 'in-intersections'
   | 'in-unions'
   | 'in-unions-and-intersections'
   | 'never';
 
-type Options = [
+export type Options = [
   {
     allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
@@ -23,7 +23,7 @@ type Options = [
     allowTupleTypes?: Values;
   },
 ];
-type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
+export type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
   | AST_NODE_TYPES.TSIntersectionType

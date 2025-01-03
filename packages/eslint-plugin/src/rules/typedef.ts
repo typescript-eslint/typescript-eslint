@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-const enum OptionKeys {
+export const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
   ArrowParameter = 'arrowParameter',
   MemberVariableDeclaration = 'memberVariableDeclaration',
@@ -15,9 +15,9 @@ const enum OptionKeys {
   VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
-type Options = Partial<Record<OptionKeys, boolean>>;
+export type Options = Partial<Record<OptionKeys, boolean>>;
 
-type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
+export type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
 export default createRule<[Options], MessageIds>({
   name: 'typedef',

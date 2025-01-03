@@ -15,7 +15,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     checksConditionals?: boolean;
     checksSpreads?: boolean;
@@ -23,7 +23,7 @@ type Options = [
   },
 ];
 
-interface ChecksVoidReturnOptions {
+export interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
   inheritedMethods?: boolean;
@@ -32,7 +32,7 @@ interface ChecksVoidReturnOptions {
   variables?: boolean;
 }
 
-type MessageId =
+export type MessageId =
   | 'conditional'
   | 'predicate'
   | 'spread'

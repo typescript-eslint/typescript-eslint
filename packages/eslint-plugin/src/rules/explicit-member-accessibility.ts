@@ -14,12 +14,12 @@ import {
 } from '../util/getMemberHeadLoc';
 import { rangeToLoc } from '../util/rangeToLoc';
 
-type AccessibilityLevel =
+export type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
   | 'no-public' // don't require public
   | 'off'; // don't check
 
-interface Config {
+export interface Config {
   accessibility?: AccessibilityLevel;
   ignoredMethodNames?: string[];
   overrides?: {
@@ -31,9 +31,9 @@ interface Config {
   };
 }
 
-type Options = [Config];
+export type Options = [Config];
 
-type MessageIds =
+export type MessageIds =
   | 'addExplicitAccessibility'
   | 'missingAccessibility'
   | 'unwantedPublicAccessibility';

@@ -8,7 +8,7 @@ import { getTypescriptOptions } from '../lib/jsonSchema';
 import { shallowEqual } from '../lib/shallowEqual';
 import ConfigEditor from './ConfigEditor';
 
-interface ConfigTypeScriptProps {
+export interface ConfigTypeScriptProps {
   readonly className?: string;
   readonly config?: string;
   readonly onChange: (config: Partial<ConfigModel>) => void;
