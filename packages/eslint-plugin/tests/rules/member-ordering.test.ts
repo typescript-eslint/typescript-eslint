@@ -2148,6 +2148,52 @@ interface Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  public baz(): void;
+  @Decorator() public baz() {}
+
+  @Decorator() bar() {}
+}
+      `,
+      options: [
+        {
+          default: ['public-decorated-method', 'public-instance-method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  public bar(): void;
+  @Decorator() bar() {}
+
+  public baz(): void;
+  @Decorator() public baz() {}
+}
+      `,
+      options: [
+        {
+          default: ['public-instance-method', 'public-decorated-method'],
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  @Decorator() bar() {}
+
+  public baz(): void;
+  @Decorator() public baz() {}
+}
+      `,
+      options: [
+        {
+          default: ['public-instance-method', 'public-decorated-method'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -4439,7 +4485,7 @@ abstract class Foo {
 class Foo {
   C: number;
   [A: string]: number;
-  public static D(): {};
+  public static D() {}
   static [B: string]: number;
 }
       `,
@@ -4471,7 +4517,7 @@ class Foo {
 abstract class Foo {
   abstract B: string;
   abstract A(): void;
-  public C(): {};
+  public C() {}
 }
       `,
       errors: [
@@ -4623,7 +4669,7 @@ class Foo {
       code: `
 class Foo {
   A: string;
-  private C(): void;
+  private C() {}
   constructor() {}
   @Dec() private B: string;
   set D() {}
@@ -4975,7 +5021,7 @@ class Foo {
       code: `
 class Foo {
   A: string;
-  private C(): void;
+  private C() {}
   constructor() {}
   private readonly B: string;
   set D() {}
@@ -5265,6 +5311,29 @@ interface Foo {
         {
           default: ['method', 'get'],
         },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  static foo() {}
+  foo(): void;
+  foo() {}
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: {
+            name: 'foo',
+            rank: 'public static method',
+          },
+          line: 5,
+          messageId: 'incorrectGroupOrder',
+        },
+      ],
+      options: [
+        { default: ['public-instance-method', 'public-static-method'] },
       ],
     },
   ],

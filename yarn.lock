@@ -4089,9 +4089,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-darwin-arm64@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-darwin-arm64@npm:20.3.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@nx/nx-darwin-x64@npm:20.2.2":
   version: 20.2.2
   resolution: "@nx/nx-darwin-x64@npm:20.2.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nx/nx-darwin-x64@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-darwin-x64@npm:20.3.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -4103,9 +4117,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-freebsd-x64@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-freebsd-x64@npm:20.3.0"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@nx/nx-linux-arm-gnueabihf@npm:20.2.2":
   version: 20.2.2
   resolution: "@nx/nx-linux-arm-gnueabihf@npm:20.2.2"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@nx/nx-linux-arm-gnueabihf@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:20.3.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -4117,9 +4145,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-linux-arm64-gnu@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-linux-arm64-gnu@npm:20.3.0"
+  conditions: os=linux & cpu=arm64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@nx/nx-linux-arm64-musl@npm:20.2.2":
   version: 20.2.2
   resolution: "@nx/nx-linux-arm64-musl@npm:20.2.2"
+  conditions: os=linux & cpu=arm64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@nx/nx-linux-arm64-musl@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-linux-arm64-musl@npm:20.3.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
@@ -4131,9 +4173,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-linux-x64-gnu@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-linux-x64-gnu@npm:20.3.0"
+  conditions: os=linux & cpu=x64 & libc=glibc
+  languageName: node
+  linkType: hard
+
 "@nx/nx-linux-x64-musl@npm:20.2.2":
   version: 20.2.2
   resolution: "@nx/nx-linux-x64-musl@npm:20.2.2"
+  conditions: os=linux & cpu=x64 & libc=musl
+  languageName: node
+  linkType: hard
+
+"@nx/nx-linux-x64-musl@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-linux-x64-musl@npm:20.3.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -4145,9 +4201,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nx/nx-win32-arm64-msvc@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-win32-arm64-msvc@npm:20.3.0"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@nx/nx-win32-x64-msvc@npm:20.2.2":
   version: 20.2.2
   resolution: "@nx/nx-win32-x64-msvc@npm:20.2.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@nx/nx-win32-x64-msvc@npm:20.3.0":
+  version: 20.3.0
+  resolution: "@nx/nx-win32-x64-msvc@npm:20.3.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -5621,7 +5691,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/eslint-plugin@8.18.2, @typescript-eslint/eslint-plugin@workspace:*, @typescript-eslint/eslint-plugin@workspace:^, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
+"@typescript-eslint/eslint-plugin@8.19.0, @typescript-eslint/eslint-plugin@workspace:*, @typescript-eslint/eslint-plugin@workspace:^, @typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
@@ -5630,12 +5700,12 @@ __metadata:
     "@types/marked": ^5.0.2
     "@types/mdast": ^4.0.3
     "@types/natural-compare": "*"
-    "@typescript-eslint/rule-schema-to-typescript-types": 8.18.2
-    "@typescript-eslint/rule-tester": 8.18.2
-    "@typescript-eslint/scope-manager": 8.18.2
-    "@typescript-eslint/type-utils": 8.18.2
-    "@typescript-eslint/utils": 8.18.2
-    "@typescript-eslint/visitor-keys": 8.18.2
+    "@typescript-eslint/rule-schema-to-typescript-types": 8.19.0
+    "@typescript-eslint/rule-tester": 8.19.0
+    "@typescript-eslint/scope-manager": 8.19.0
+    "@typescript-eslint/type-utils": 8.19.0
+    "@typescript-eslint/utils": 8.19.0
+    "@typescript-eslint/visitor-keys": 8.19.0
     ajv: ^6.12.6
     cross-env: ^7.0.3
     cross-fetch: "*"
@@ -5654,7 +5724,7 @@ __metadata:
     prettier: ^3.2.5
     rimraf: "*"
     title-case: ^3.0.3
-    ts-api-utils: ^1.3.0
+    ts-api-utils: ^2.0.0
     tsx: "*"
     typescript: "*"
     unist-util-visit: ^5.0.0
@@ -5677,16 +5747,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@8.18.2, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@8.19.0, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
     "@jest/types": 29.6.3
     "@types/glob": "*"
-    "@typescript-eslint/scope-manager": 8.18.2
-    "@typescript-eslint/types": 8.18.2
-    "@typescript-eslint/typescript-estree": 8.18.2
-    "@typescript-eslint/visitor-keys": 8.18.2
+    "@typescript-eslint/scope-manager": 8.19.0
+    "@typescript-eslint/types": 8.19.0
+    "@typescript-eslint/typescript-estree": 8.19.0
+    "@typescript-eslint/visitor-keys": 8.19.0
     debug: ^4.3.4
     downlevel-dts: "*"
     glob: "*"
@@ -5700,29 +5770,29 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-schema-to-typescript-types@8.18.2, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
+"@typescript-eslint/rule-schema-to-typescript-types@8.19.0, @typescript-eslint/rule-schema-to-typescript-types@workspace:*, @typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/type-utils": 8.18.2
-    "@typescript-eslint/utils": 8.18.2
+    "@typescript-eslint/type-utils": 8.19.0
+    "@typescript-eslint/utils": 8.19.0
     natural-compare: ^1.4.0
     prettier: ^3.2.5
     typescript: "*"
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/rule-tester@8.18.2, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
+"@typescript-eslint/rule-tester@8.19.0, @typescript-eslint/rule-tester@workspace:*, @typescript-eslint/rule-tester@workspace:packages/rule-tester":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-tester@workspace:packages/rule-tester"
   dependencies:
     "@jest/types": 29.6.3
     "@types/json-stable-stringify-without-jsonify": ^1.0.2
     "@types/lodash.merge": 4.6.9
-    "@typescript-eslint/parser": 8.18.2
-    "@typescript-eslint/typescript-estree": 8.18.2
-    "@typescript-eslint/utils": 8.18.2
+    "@typescript-eslint/parser": 8.19.0
+    "@typescript-eslint/typescript-estree": 8.19.0
+    "@typescript-eslint/utils": 8.19.0
     ajv: ^6.12.6
     chai: ^4.4.1
     eslint-visitor-keys: ^4.2.0
@@ -5740,15 +5810,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/scope-manager@8.18.2, @typescript-eslint/scope-manager@workspace:*, @typescript-eslint/scope-manager@workspace:^, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
+"@typescript-eslint/scope-manager@8.19.0, @typescript-eslint/scope-manager@workspace:*, @typescript-eslint/scope-manager@workspace:^, @typescript-eslint/scope-manager@workspace:packages/scope-manager":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
     "@jest/types": 29.6.3
     "@types/glob": "*"
-    "@typescript-eslint/types": 8.18.2
-    "@typescript-eslint/typescript-estree": 8.18.2
-    "@typescript-eslint/visitor-keys": 8.18.2
+    "@typescript-eslint/types": 8.19.0
+    "@typescript-eslint/typescript-estree": 8.19.0
+    "@typescript-eslint/visitor-keys": 8.19.0
     glob: "*"
     jest-specific-snapshot: "*"
     make-dir: "*"
@@ -5758,21 +5828,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/type-utils@8.18.2, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
+"@typescript-eslint/type-utils@8.19.0, @typescript-eslint/type-utils@workspace:*, @typescript-eslint/type-utils@workspace:packages/type-utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/type-utils@workspace:packages/type-utils"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/parser": 8.18.2
-    "@typescript-eslint/typescript-estree": 8.18.2
-    "@typescript-eslint/utils": 8.18.2
+    "@typescript-eslint/parser": 8.19.0
+    "@typescript-eslint/typescript-estree": 8.19.0
+    "@typescript-eslint/utils": 8.19.0
     ajv: ^6.12.6
     debug: ^4.3.4
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.2.5
     rimraf: "*"
-    ts-api-utils: ^1.3.0
+    ts-api-utils: ^2.0.0
     typescript: "*"
   peerDependencies:
     eslint: ^8.57.0 || ^9.0.0
@@ -5780,7 +5850,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/types@8.18.2, @typescript-eslint/types@^8.9.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
+"@typescript-eslint/types@8.19.0, @typescript-eslint/types@^8.9.0, @typescript-eslint/types@workspace:*, @typescript-eslint/types@workspace:^, @typescript-eslint/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
@@ -5859,7 +5929,7 @@ __metadata:
     make-dir: ^4.0.0
     markdownlint-cli: ^0.43.0
     ncp: ^2.0.0
-    nx: 20.2.2
+    nx: 20.3.0
     prettier: 3.4.2
     pretty-format: ^29.7.0
     rimraf: ^5.0.5
@@ -5872,13 +5942,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/typescript-estree@8.18.2, @typescript-eslint/typescript-estree@workspace:*, @typescript-eslint/typescript-estree@workspace:^, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
+"@typescript-eslint/typescript-estree@8.19.0, @typescript-eslint/typescript-estree@workspace:*, @typescript-eslint/typescript-estree@workspace:^, @typescript-eslint/typescript-estree@workspace:packages/typescript-estree":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/types": 8.18.2
-    "@typescript-eslint/visitor-keys": 8.18.2
+    "@typescript-eslint/types": 8.19.0
+    "@typescript-eslint/visitor-keys": 8.19.0
     debug: ^4.3.4
     fast-glob: ^3.3.2
     glob: "*"
@@ -5889,21 +5959,21 @@ __metadata:
     rimraf: "*"
     semver: ^7.6.0
     tmp: "*"
-    ts-api-utils: ^1.3.0
+    ts-api-utils: ^2.0.0
     typescript: "*"
   peerDependencies:
     typescript: ">=4.8.4 <5.8.0"
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/utils@8.18.2, @typescript-eslint/utils@^6.0.0 || ^7.0.0 || ^8.0.0, @typescript-eslint/utils@^8.9.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
+"@typescript-eslint/utils@8.19.0, @typescript-eslint/utils@^6.0.0 || ^7.0.0 || ^8.0.0, @typescript-eslint/utils@^8.9.0, @typescript-eslint/utils@workspace:*, @typescript-eslint/utils@workspace:^, @typescript-eslint/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/utils@workspace:packages/utils"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
-    "@typescript-eslint/scope-manager": 8.18.2
-    "@typescript-eslint/types": 8.18.2
-    "@typescript-eslint/typescript-estree": 8.18.2
+    "@typescript-eslint/scope-manager": 8.19.0
+    "@typescript-eslint/types": 8.19.0
+    "@typescript-eslint/typescript-estree": 8.19.0
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.2.5
@@ -5915,13 +5985,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/visitor-keys@8.18.2, @typescript-eslint/visitor-keys@workspace:*, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
+"@typescript-eslint/visitor-keys@8.19.0, @typescript-eslint/visitor-keys@workspace:*, @typescript-eslint/visitor-keys@workspace:packages/visitor-keys":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/visitor-keys@workspace:packages/visitor-keys"
   dependencies:
     "@jest/types": 29.6.3
     "@types/eslint-visitor-keys": "*"
-    "@typescript-eslint/types": 8.18.2
+    "@typescript-eslint/types": 8.19.0
     downlevel-dts: "*"
     eslint-visitor-keys: ^4.2.0
     jest: 29.7.0
@@ -8061,11 +8131,11 @@ __metadata:
   linkType: hard
 
 "cross-fetch@npm:*, cross-fetch@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "cross-fetch@npm:4.0.0"
+  version: 4.1.0
+  resolution: "cross-fetch@npm:4.1.0"
   dependencies:
-    node-fetch: ^2.6.12
-  checksum: ecca4f37ffa0e8283e7a8a590926b66713a7ef7892757aa36c2d20ffa27b0ac5c60dcf453119c809abe5923fc0bae3702a4d896bfb406ef1077b0d0018213e24
+    node-fetch: ^2.7.0
+  checksum: c02fa85d59f83e50dbd769ee472c9cc984060c403ee5ec8654659f61a525c1a655eef1c7a35e365c1a107b4e72d76e786718b673d1cb3c97f61d4644cb0a9f9d
   languageName: node
   linkType: hard
 
@@ -9577,14 +9647,14 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-eslint-plugin@npm:^6.3.1":
-  version: 6.3.1
-  resolution: "eslint-plugin-eslint-plugin@npm:6.3.1"
+  version: 6.4.0
+  resolution: "eslint-plugin-eslint-plugin@npm:6.4.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.4.0
     estraverse: ^5.3.0
   peerDependencies:
     eslint: ">=8.23.0"
-  checksum: 293445663be2c2d03f39b1f513fedfc4eeac25e2bc4cd3ad76476c8d836a86b2e31c534afe3673a783cf3d5f0d50685b43e851502ea8f7773020427dbd7efe04
+  checksum: 8cf4e4928c207fec5fd5ae025a0ec3c11e8d7d147aee1732a0eff4c3d258a279981ca26d3d4b35df22dcc61db0da8973d51466f1c783d5e03785c78e167ba03c
   languageName: node
   linkType: hard
 
@@ -9618,8 +9688,8 @@ __metadata:
   linkType: hard
 
 "eslint-plugin-jest@npm:^28.9.0":
-  version: 28.9.0
-  resolution: "eslint-plugin-jest@npm:28.9.0"
+  version: 28.10.0
+  resolution: "eslint-plugin-jest@npm:28.10.0"
   dependencies:
     "@typescript-eslint/utils": ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependencies:
@@ -9631,7 +9701,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: 90863fab5f3f2f033d98042b13769dc82504c489506872ae9926a1d2b6bcc25c5dc41105e28643f5eb81943aff1aa1cd4d44ada5c1add0a43f1c7a619adbc3d2
+  checksum: d7931a891b11019978bc539ec48fbf1bd82a12d61cd7b592185eaafa3086d1b758a40fac498fa120edeb1ca9cca0df915cb851904c1f19287cc9202e10f5d8d7
   languageName: node
   linkType: hard
 
@@ -10961,9 +11031,9 @@ __metadata:
   linkType: hard
 
 "globals@npm:^15.0.0, globals@npm:^15.9.0":
-  version: 15.13.0
-  resolution: "globals@npm:15.13.0"
-  checksum: 3f98514ce25a21150b246fbd63aeaeb271a93b3340cf7f4f6e9934d3b37dbb4b0fddef9c470183097dcfd2e8757bb86bbae701588f0e376667d8d9d6f665db3b
+  version: 15.14.0
+  resolution: "globals@npm:15.14.0"
+  checksum: fa993433a01bf4a118904fbafbcff34db487fce83f73da75fb4a8653afc6dcd72905e6208c49bab307ff0980928273d0ecd1cfc67e1a4782dabfbd92c234ab68
   languageName: node
   linkType: hard
 
@@ -15073,7 +15143,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.12":
+"node-fetch@npm:^2.7.0":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -15337,6 +15407,90 @@ __metadata:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
   checksum: 9b83bf5b8f2bc163d114366a5fd65d1951662d556d7a0842b1606f1a9009333cd2a0ef92d9cdfec807df07a4499ef389f367d38752be323c1d9b93066830b14f
+  languageName: node
+  linkType: hard
+
+"nx@npm:20.3.0":
+  version: 20.3.0
+  resolution: "nx@npm:20.3.0"
+  dependencies:
+    "@napi-rs/wasm-runtime": 0.2.4
+    "@nx/nx-darwin-arm64": 20.3.0
+    "@nx/nx-darwin-x64": 20.3.0
+    "@nx/nx-freebsd-x64": 20.3.0
+    "@nx/nx-linux-arm-gnueabihf": 20.3.0
+    "@nx/nx-linux-arm64-gnu": 20.3.0
+    "@nx/nx-linux-arm64-musl": 20.3.0
+    "@nx/nx-linux-x64-gnu": 20.3.0
+    "@nx/nx-linux-x64-musl": 20.3.0
+    "@nx/nx-win32-arm64-msvc": 20.3.0
+    "@nx/nx-win32-x64-msvc": 20.3.0
+    "@yarnpkg/lockfile": ^1.1.0
+    "@yarnpkg/parsers": 3.0.2
+    "@zkochan/js-yaml": 0.0.7
+    axios: ^1.7.4
+    chalk: ^4.1.0
+    cli-cursor: 3.1.0
+    cli-spinners: 2.6.1
+    cliui: ^8.0.1
+    dotenv: ~16.4.5
+    dotenv-expand: ~11.0.6
+    enquirer: ~2.3.6
+    figures: 3.2.0
+    flat: ^5.0.2
+    front-matter: ^4.0.2
+    ignore: ^5.0.4
+    jest-diff: ^29.4.1
+    jsonc-parser: 3.2.0
+    lines-and-columns: 2.0.3
+    minimatch: 9.0.3
+    node-machine-id: 1.1.12
+    npm-run-path: ^4.0.1
+    open: ^8.4.0
+    ora: 5.3.0
+    resolve.exports: 2.0.3
+    semver: ^7.5.3
+    string-width: ^4.2.3
+    tar-stream: ~2.2.0
+    tmp: ~0.2.1
+    tsconfig-paths: ^4.1.2
+    tslib: ^2.3.0
+    yaml: ^2.6.0
+    yargs: ^17.6.2
+    yargs-parser: 21.1.1
+  peerDependencies:
+    "@swc-node/register": ^1.8.0
+    "@swc/core": ^1.3.85
+  dependenciesMeta:
+    "@nx/nx-darwin-arm64":
+      optional: true
+    "@nx/nx-darwin-x64":
+      optional: true
+    "@nx/nx-freebsd-x64":
+      optional: true
+    "@nx/nx-linux-arm-gnueabihf":
+      optional: true
+    "@nx/nx-linux-arm64-gnu":
+      optional: true
+    "@nx/nx-linux-arm64-musl":
+      optional: true
+    "@nx/nx-linux-x64-gnu":
+      optional: true
+    "@nx/nx-linux-x64-musl":
+      optional: true
+    "@nx/nx-win32-arm64-msvc":
+      optional: true
+    "@nx/nx-win32-x64-msvc":
+      optional: true
+  peerDependenciesMeta:
+    "@swc-node/register":
+      optional: true
+    "@swc/core":
+      optional: true
+  bin:
+    nx: bin/nx.js
+    nx-cloud: bin/nx-cloud.js
+  checksum: 9dd20c9a4e83e2bf21a24487bdd9a011f19aa949722f46bbecbbc7a15a985de6811d9ac5140f2d764f55667be5f18b260d116ef577383338d272f5f4e2a46b7a
   languageName: node
   linkType: hard
 
@@ -17374,10 +17528,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"resolve.exports@npm:^2.0.0":
-  version: 2.0.2
-  resolution: "resolve.exports@npm:2.0.2"
-  checksum: 1c7778ca1b86a94f8ab4055d196c7d87d1874b96df4d7c3e67bbf793140f0717fd506dcafd62785b079cd6086b9264424ad634fb904409764c3509c3df1653f2
+"resolve.exports@npm:2.0.3, resolve.exports@npm:^2.0.0":
+  version: 2.0.3
+  resolution: "resolve.exports@npm:2.0.3"
+  checksum: abfb9f98278dcd0c19b8a49bb486abfafa23df4636d49128ea270dc982053c3ef230a530aecda1fae1322873fdfa6c97674fc539651ddfdb375ac58e0b8ef6df
   languageName: node
   linkType: hard
 
@@ -19036,12 +19190,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-api-utils@npm:^1.3.0":
-  version: 1.4.0
-  resolution: "ts-api-utils@npm:1.4.0"
+"ts-api-utils@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "ts-api-utils@npm:2.0.0"
   peerDependencies:
-    typescript: ">=4.2.0"
-  checksum: 477601317dc8a6d961788663ee76984005ed20c70689bd6f807eed2cad258d3731edcc4162d438ce04782ca62a05373ba51e484180fc2a081d8dab2bf693a5af
+    typescript: ">=4.8.4"
+  checksum: f16f3e4e3308e7ad7ccf0bec3e0cb2e06b46c2d6919c40b6439e37912409c72f14340d231343b2b1b8cc17c2b8b01c5f2418690ea788312db6ca4e72cf2df6d8
   languageName: node
   linkType: hard
 
@@ -19310,9 +19464,9 @@ __metadata:
   resolution: "typescript-eslint@workspace:packages/typescript-eslint"
   dependencies:
     "@jest/types": 29.6.3
-    "@typescript-eslint/eslint-plugin": 8.18.2
-    "@typescript-eslint/parser": 8.18.2
-    "@typescript-eslint/utils": 8.18.2
+    "@typescript-eslint/eslint-plugin": 8.19.0
+    "@typescript-eslint/parser": 8.19.0
+    "@typescript-eslint/utils": 8.19.0
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.2.5
