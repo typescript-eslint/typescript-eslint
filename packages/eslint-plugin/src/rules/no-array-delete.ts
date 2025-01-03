@@ -3,11 +3,7 @@ import type * as ts from 'typescript';
 
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import {
-  createRule,
-  getConstrainedTypeAtLocation,
-  getParserServices,
-} from '../util';
+import { createRule, getConstraintInfo, getParserServices } from '../util';
 
 type MessageId = 'noArrayDelete' | 'useSplice';
 
@@ -58,9 +54,16 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const type = getConstrainedTypeAtLocation(services, argument.object);
+        const { constraintType } = getConstraintInfo(
+          checker,
+          services.getTypeAtLocation(argument.object),
+        );
 
-        if (!isUnderlyingTypeArray(type)) {
+        if (constraintType == null) {
+          return;
+        }
+
+        if (!isUnderlyingTypeArray(constraintType)) {
           return;
         }
 
