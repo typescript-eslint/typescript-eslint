@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class CatchClauseDefinition extends DefinitionBase<
+export class CatchClauseDefinition extends DefinitionBase<
   DefinitionType.CatchClause,
   TSESTree.CatchClause,
   null,
@@ -16,5 +16,3 @@ class CatchClauseDefinition extends DefinitionBase<
     super(DefinitionType.CatchClause, name, node, null);
   }
 }
-
-export { CatchClauseDefinition };

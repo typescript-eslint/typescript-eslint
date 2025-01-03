@@ -36,16 +36,15 @@ const {
   nullThrows,
   NullThrowsReasons,
 } = ESLintUtils;
-type InferMessageIdsTypeFromRule<T> =
+export type InferMessageIdsTypeFromRule<T> =
   ESLintUtils.InferMessageIdsTypeFromRule<T>;
-type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
+export type InferOptionsTypeFromRule<T> =
+  ESLintUtils.InferOptionsTypeFromRule<T>;
 
 export {
   applyDefault,
   deepMerge,
   getParserServices,
-  type InferMessageIdsTypeFromRule,
-  type InferOptionsTypeFromRule,
   isObjectNotArray,
   nullThrows,
   NullThrowsReasons,

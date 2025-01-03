@@ -94,6 +94,5 @@ namespace ReferenceTracker {
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#referencetracker-class}
  */
-const ReferenceTracker = eslintUtils.ReferenceTracker as ReferenceTrackerStatic;
-
-export { ReferenceTracker };
+export const ReferenceTracker =
+  eslintUtils.ReferenceTracker as ReferenceTrackerStatic;

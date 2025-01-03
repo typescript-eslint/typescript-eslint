@@ -20,7 +20,7 @@ type Node = { type: AST_NODE_TYPES } & Record<string, unknown>;
 type Identifier = { name: string; type: AST_NODE_TYPES.Identifier } & Node;
 const SEEN_NODES = new Map<Node, number>();
 
-const serializer: NewPlugin = {
+export const serializer: NewPlugin = {
   serialize(node: Node): string {
     if (node.type === AST_NODE_TYPES.Identifier) {
       return `Identifier<"${(node as Identifier).name}">`;
@@ -50,5 +50,3 @@ const serializer: NewPlugin = {
     );
   },
 };
-
-export { serializer };
