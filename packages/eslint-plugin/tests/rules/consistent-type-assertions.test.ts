@@ -157,6 +157,18 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       },
     },
+    {
+      code: `
+const x = { key: 'value' } as any;
+      `,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
+    {
+      code: `
+const x = { key: 'value' } as unknown;
+      `,
+      options: [{ assertionStyle: 'as', objectLiteralTypeAssertions: 'never' }],
+    },
   ],
   invalid: [
     ...dedupeTestCases(
