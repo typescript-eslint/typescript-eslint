@@ -6,6 +6,10 @@ import styles from './styles.module.css';
 export default function NotFound(): React.JSX.Element {
   const location = useLocation();
 
+  // https://github.com/sindresorhus/eslint-plugin-unicorn/issues/2521
+  // eslint-disable-next-line @typescript-eslint/no-misused-spread
+  const pathNameQuoted = [...`'${location.pathname}'`];
+
   return (
     <main className="container margin-vert--xl">
       <div className="row">
@@ -13,7 +17,7 @@ export default function NotFound(): React.JSX.Element {
           <h1 className={styles.title}>
             <div className={styles.code}>$ npx eslint .</div>
             <strong>
-              {[...`'${location.pathname}'`].map((letter, i) => (
+              {pathNameQuoted.map((letter, i) => (
                 <span className={styles.word} key={i}>
                   {letter}
                 </span>

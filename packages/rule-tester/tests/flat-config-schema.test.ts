@@ -16,7 +16,7 @@ describe('merge', () => {
     expect(result).toEqual({ ...first, ...second });
   });
 
-  it('returns an emtpy object if both values are undefined', () => {
+  it('returns an empty object if both values are undefined', () => {
     const result = merge(undefined, undefined);
 
     expect(result).toEqual({});
