@@ -1,13 +1,12 @@
 {
-  "extends": "./tsconfig.build.json",
-  "compilerOptions": {
-    "composite": false,
-    "rootDir": "."
-  },
-  "include": ["src", "typings", "tests", "tools"],
-  "exclude": ["tests/fixtures/**/*"],
+  "extends": "../../tsconfig.base.json",
+  "files": [],
+  "include": [],
   "references": [
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../visitor-keys/tsconfig.build.json" }
+    { "path": "../visitor-keys" },
+    { "path": "../ast-spec" },
+    { "path": "../types" },
+    { "path": "./tsconfig.build.json" },
+    { "path": "./tsconfig.spec.json" }
   ]
 }

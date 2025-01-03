@@ -1,0 +1,21 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/packages/eslint-plugin-internal",
+    "module": "NodeNext",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "jest.config.js",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "tests"
+  ],
+  "exclude": ["**/fixtures/**"],
+  "references": [
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ]
+}

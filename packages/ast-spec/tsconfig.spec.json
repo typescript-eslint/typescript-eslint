@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc/packages/ast-spec",
+    "module": "NodeNext",
+    "types": ["jest", "node"]
+  },
+  "include": [
+    "jest.config.js",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "tests",
+    "typings"
+  ],
+  "references": [
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    }
+  ]
+}
