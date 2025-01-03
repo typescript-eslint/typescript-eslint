@@ -1200,14 +1200,15 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        declare const element: HTMLElement;
+        declare class HTMLElementLike {}
+        declare const element: HTMLElementLike;
         const o = { ...element };
       `,
       errors: [
         {
           column: 21,
           endColumn: 31,
-          line: 3,
+          line: 4,
           messageId: 'noClassInstanceSpreadInObject',
         },
       ],
