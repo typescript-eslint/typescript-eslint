@@ -90,16 +90,15 @@ type Config = TSESLint.FlatConfig.Config;
  * );
  * ```
  */
-export function config(
+export const config = (
   ...configs: InfiniteDepthConfigWithExtends[]
-): ConfigArray {
+): ConfigArray => configWithoutAssumptions(configs);
+function configWithoutAssumptions(configs: unknown[]): ConfigArray {
   /* We intentionally temporarily change the type to `unknown`, to ensure that we make no assumptions about the types of
   the arguments passed to this function at runtime. If any argument is an unexpected type, we should not cause a
   `TypeError`, and instead, we should silently return the unexpected argument unchanged, because ESLint will later
    validate the types. */
-  const flattened: unknown[] =
-    // @ts-expect-error -- intentionally an infinite type
-    configs.flat(Infinity);
+  const flattened = configs.flat(Infinity);
   return flattened.flatMap((configWithExtends, configIndex) => {
     if (
       !configWithExtends ||
@@ -109,23 +108,28 @@ export function config(
       // `configWithExtends` could be anything, but we'll assume it's a `Config` object for TS purposes.
       return configWithExtends as Config;
     }
-    interface ObjectWithExtends {
-      extends: InfiniteDepthConfigWithExtends[];
-    }
     const {
       extends: extendsArr,
       ...config
-    }: ObjectWithExtends &
-      Partial<Record<'files' | 'ignores' | 'name', unknown>> =
-      configWithExtends as ObjectWithExtends;
-    const extendsArrFlattened = extendsArr.flat(
-      Infinity,
-    ) as ConfigWithExtends[];
+    }: { extends: unknown } & Partial<
+      Record<'files' | 'ignores' | 'name', unknown>
+    > = configWithExtends;
+    const { name } = config;
+    const nameIsString = typeof name === 'string';
+    const configError = (message: string) =>
+      new TypeError(
+        `Config ${
+          nameIsString ? `"${name}"` : '(unnamed)'
+        }: Key "extends": ${message} at user-defined index ${configIndex}.`,
+      );
+    if (!Array.isArray(extendsArr)) {
+      throw configError('Expected value to be an array');
+    }
+    const extendsArrFlattened: unknown[] = extendsArr.flat(Infinity);
 
     const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
       (acc, extension, extensionIndex) => {
-        const maybeExtension = extension as Config | undefined;
-        if (maybeExtension == null) {
+        if (extension == null) {
           acc.push(extensionIndex);
         }
         return acc;
@@ -133,31 +137,25 @@ export function config(
       [],
     );
     if (undefinedExtensions.length) {
-      const configName =
-        config.name != null
-          ? `, named "${
-              // eslint-disable-next-line @typescript-eslint/no-base-to-string,@typescript-eslint/restrict-template-expressions
-              config.name
-            }",`
-          : ' (anonymous)';
-      const extensionIndices = undefinedExtensions.join(', ');
-      throw new Error(
-        `Your config at index ${configIndex}${configName} contains undefined` +
-          ` extensions at the following indices: ${extensionIndices}.`,
+      throw configError(
+        `Undefined extensions at the following indices: ${undefinedExtensions.join(', ')}`,
       );
     }
 
     return [
-      ...extendsArrFlattened.map(extension => {
-        const name = [config.name, extension.name].filter(Boolean).join('__');
+      ...(extendsArrFlattened as { name?: unknown }[]).map(extension => {
+        const mergedName = [nameIsString && name, extension.name]
+          .filter(Boolean)
+          .join('__');
         return {
-          ...extension,
+          // `extension` could be any object, but we'll assume it's a `Config` object for TS purposes.
+          ...(extension as Config),
           ...Object.fromEntries(
             Object.entries(config).filter(([key]) =>
               ['files', 'ignores'].includes(key),
             ),
           ),
-          ...(name && { name }),
+          ...(mergedName && { name: mergedName }),
         };
       }),
       // `config` could be any object, but we'll assume it's a `Config` object for TS purposes.
