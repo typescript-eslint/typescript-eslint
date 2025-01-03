@@ -14,7 +14,9 @@ import {
   getCanonicalFileName,
 } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:getWatchProgramsForProjects',
+);
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches

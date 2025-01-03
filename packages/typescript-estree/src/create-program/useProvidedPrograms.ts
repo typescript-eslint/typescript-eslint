@@ -8,7 +8,9 @@ import type { ASTAndDefiniteProgram } from './shared';
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { getAstFromProgram } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:useProvidedPrograms',
+);
 
 function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,

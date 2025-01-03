@@ -4,7 +4,7 @@ import * as ts from 'typescript';
 
 import { isTypeFlagSet } from './typeFlagUtils';
 
-const log = debug('typescript-eslint:eslint-plugin:utils:types');
+const log = debug('typescript-eslint:type-utils:predicates');
 
 /**
  * Checks if the given type is (or accepts) nullable

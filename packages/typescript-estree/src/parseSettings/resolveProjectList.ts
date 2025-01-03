@@ -16,7 +16,7 @@ import {
 } from './ExpiringCache';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:resolveProjectList',
+  'typescript-eslint:typescript-estree:parseSettings:resolveProjectList',
 );
 
 let RESOLUTION_CACHE: ExpiringCache<
