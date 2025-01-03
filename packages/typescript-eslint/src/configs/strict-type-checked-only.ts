@@ -75,10 +75,10 @@ export default (
         {
           allowAny: false,
           allowBoolean: false,
+          allowNever: false,
           allowNullish: false,
           allowNumber: false,
           allowRegExp: false,
-          allowNever: false,
         },
       ],
       'no-return-await': 'off',
