@@ -1,3 +1,4 @@
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import debug from 'debug';
 import path from 'node:path';
 import * as ts from 'typescript';
@@ -18,9 +19,7 @@ import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
 import { warnAboutTSVersion } from './warnAboutTSVersion';
 
-const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:createParseSettings',
-);
+const log = debugForFile(__filename);
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;

@@ -14,10 +14,10 @@ import type * as ts from 'typescript';
 import { analyze } from '@typescript-eslint/scope-manager';
 import { parseAndGenerateServices } from '@typescript-eslint/typescript-estree';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import { ScriptTarget } from 'typescript';
 
-const log = debug('typescript-eslint:parser:parser');
+const log = debugForFile(__filename);
 
 interface ESLintProgram extends AST<{ comment: true; tokens: true }> {
   comments: TSESTree.Comment[];

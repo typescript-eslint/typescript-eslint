@@ -1,6 +1,7 @@
 import type { CacheDurationSeconds } from '@typescript-eslint/types';
 import type * as typescriptModule from 'typescript';
 
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import debug from 'debug';
 import * as fastGlobModule from 'fast-glob';
 import { join, resolve } from 'node:path';

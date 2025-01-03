@@ -1,5 +1,5 @@
-import debug from 'debug';
 import * as ts from 'typescript';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 
 import type { ParseSettings } from '../parseSettings';
 import type { ASTAndDefiniteProgram } from './shared';
@@ -7,7 +7,7 @@ import type { ASTAndDefiniteProgram } from './shared';
 import { getScriptKind } from './getScriptKind';
 import { createDefaultCompilerOptionsFromExtra } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
+const log = debugForFile(__filename);
 
 /**
  * @returns Returns a new source file and program corresponding to the linted code

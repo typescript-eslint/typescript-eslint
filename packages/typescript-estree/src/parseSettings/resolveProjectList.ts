@@ -1,4 +1,4 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
@@ -15,9 +15,7 @@ import {
   ExpiringCache,
 } from './ExpiringCache';
 
-const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:resolveProjectList',
-);
+const log = debugForFile(__filename);
 
 let RESOLUTION_CACHE: ExpiringCache<
   string,

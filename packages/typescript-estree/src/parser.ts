@@ -1,6 +1,6 @@
 import type * as ts from 'typescript';
 
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import type {
@@ -29,7 +29,7 @@ import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
 
-const log = debug('typescript-eslint:typescript-estree:parser');
+const log = debugForFile(__filename);
 
 /**
  * Cache existing programs for the single run use-case.

@@ -1,4 +1,4 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import * as path from 'node:path';
 import * as ts from 'typescript';
 
@@ -8,7 +8,7 @@ import type { ASTAndDefiniteProgram } from './shared';
 import { getParsedConfigFile } from './getParsedConfigFile';
 import { getAstFromProgram } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
+const log = debugForFile(__filename);
 
 function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,

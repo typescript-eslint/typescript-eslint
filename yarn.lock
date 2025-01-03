@@ -5675,6 +5675,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript-eslint/debug-for-file@workspace:*, @typescript-eslint/debug-for-file@workspace:^, @typescript-eslint/debug-for-file@workspace:packages/debug-for-file":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/debug-for-file@workspace:packages/debug-for-file"
+  dependencies:
+    "@jest/types": 29.6.3
+    find-up: 5.0.0
+    jest: 29.7.0
+    prettier: ^3.2.5
+    rimraf: "*"
+    typescript: "*"
+  languageName: unknown
+  linkType: soft
+
 "@typescript-eslint/eslint-plugin-internal@workspace:^, @typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
@@ -5753,11 +5766,11 @@ __metadata:
   dependencies:
     "@jest/types": 29.6.3
     "@types/glob": "*"
+    "@typescript-eslint/debug-for-file": "workspace:*"
     "@typescript-eslint/scope-manager": 8.19.0
     "@typescript-eslint/types": 8.19.0
     "@typescript-eslint/typescript-estree": 8.19.0
     "@typescript-eslint/visitor-keys": 8.19.0
-    debug: ^4.3.4
     downlevel-dts: "*"
     glob: "*"
     jest: 29.7.0
@@ -5837,7 +5850,6 @@ __metadata:
     "@typescript-eslint/typescript-estree": 8.19.0
     "@typescript-eslint/utils": 8.19.0
     ajv: ^6.12.6
-    debug: ^4.3.4
     downlevel-dts: "*"
     jest: 29.7.0
     prettier: ^3.2.5
@@ -5896,6 +5908,7 @@ __metadata:
     "@types/semver": ^7.5.8
     "@types/tmp": ^0.2.6
     "@types/yargs": ^17.0.32
+    "@typescript-eslint/debug-for-file": "workspace:^"
     "@typescript-eslint/eslint-plugin": "workspace:^"
     "@typescript-eslint/eslint-plugin-internal": "workspace:^"
     "@typescript-eslint/scope-manager": "workspace:^"
@@ -5947,9 +5960,9 @@ __metadata:
   resolution: "@typescript-eslint/typescript-estree@workspace:packages/typescript-estree"
   dependencies:
     "@jest/types": 29.6.3
+    "@typescript-eslint/debug-for-file": "workspace:*"
     "@typescript-eslint/types": 8.19.0
     "@typescript-eslint/visitor-keys": 8.19.0
-    debug: ^4.3.4
     fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
@@ -8605,7 +8618,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4, debug@npm:^4.3.5, debug@npm:^4.3.6, debug@npm:^4.3.7":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.5, debug@npm:^4.3.6, debug@npm:^4.3.7":
   version: 4.4.0
   resolution: "debug@npm:4.4.0"
   dependencies:
@@ -10448,6 +10461,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-up@npm:5.0.0, find-up@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "find-up@npm:5.0.0"
+  dependencies:
+    locate-path: ^6.0.0
+    path-exists: ^4.0.0
+  checksum: 07955e357348f34660bde7920783204ff5a26ac2cafcaa28bace494027158a97b9f56faaf2d89a6106211a8174db650dd9f503f9c0d526b1202d5554a00b9095
+  languageName: node
+  linkType: hard
+
 "find-up@npm:^3.0.0":
   version: 3.0.0
   resolution: "find-up@npm:3.0.0"
@@ -10464,16 +10487,6 @@ __metadata:
     locate-path: ^5.0.0
     path-exists: ^4.0.0
   checksum: 4c172680e8f8c1f78839486e14a43ef82e9decd0e74145f40707cc42e7420506d5ec92d9a11c22bd2c48fb0c384ea05dd30e10dd152fefeec6f2f75282a8b844
-  languageName: node
-  linkType: hard
-
-"find-up@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "find-up@npm:5.0.0"
-  dependencies:
-    locate-path: ^6.0.0
-    path-exists: ^4.0.0
-  checksum: 07955e357348f34660bde7920783204ff5a26ac2cafcaa28bace494027158a97b9f56faaf2d89a6106211a8174db650dd9f503f9c0d526b1202d5554a00b9095
   languageName: node
   linkType: hard
 

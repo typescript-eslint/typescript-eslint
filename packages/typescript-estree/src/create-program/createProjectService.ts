@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import debug from 'debug';
 
 import type { ProjectServiceOptions } from '../parser-options';
@@ -10,7 +11,7 @@ import { validateDefaultProjectForFilesGlob } from './validateDefaultProjectForF
 
 const DEFAULT_PROJECT_MATCHED_FILES_THRESHOLD = 8;
 
-const log = debug('typescript-eslint:typescript-estree:createProjectService');
+const log = debugForFile(__filename);
 const logTsserverErr = debug(
   'typescript-eslint:typescript-estree:tsserver:err',
 );

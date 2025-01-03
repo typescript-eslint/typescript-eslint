@@ -1,10 +1,10 @@
 {
-  "name": "@typescript-eslint/parser",
+  "name": "@typescript-eslint/debug-for-file",
   "version": "8.19.0",
-  "description": "An ESLint custom parser which leverages TypeScript ESTree",
+  "description": "A `debug()` wrapper used internally in this project to ensure consistent log namespaces.",
   "files": [
     "dist",
-    "_ts4.3",
+    "package.json",
     "README.md",
     "LICENSE"
   ],
@@ -22,48 +22,27 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/parser"
+    "directory": "packages/debug-for-file"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
-  "homepage": "https://typescript-eslint.io/packages/parser",
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
-  "keywords": [
-    "ast",
-    "ecmascript",
-    "javascript",
-    "typescript",
-    "parser",
-    "syntax",
-    "eslint"
-  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "eslint": "^8.57.0 || ^9.0.0",
-    "typescript": ">=4.8.4 <5.8.0"
-  },
   "dependencies": {
-    "@typescript-eslint/debug-for-file": "workspace:*",
-    "@typescript-eslint/scope-manager": "8.19.0",
-    "@typescript-eslint/types": "8.19.0",
-    "@typescript-eslint/typescript-estree": "8.19.0",
-    "@typescript-eslint/visitor-keys": "8.19.0"
+    "find-up": "5.0.0"
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
-    "@types/glob": "*",
-    "downlevel-dts": "*",
-    "glob": "*",
     "jest": "29.7.0",
     "prettier": "^3.2.5",
     "rimraf": "*",
@@ -72,12 +51,5 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<4.7": {
-      "*": [
-        "_ts4.3/*"
-      ]
-    }
   }
 }

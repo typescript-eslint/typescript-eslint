@@ -1,0 +1,12 @@
+{
+  "name": "debug-for-file",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "type": "library",
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    }
+  }
+}

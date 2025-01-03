@@ -1,10 +1,10 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { isTypeFlagSet } from './typeFlagUtils';
 
-const log = debug('typescript-eslint:eslint-plugin:utils:types');
+const log = debugForFile(__filename);
 
 /**
  * Checks if the given type is (or accepts) nullable

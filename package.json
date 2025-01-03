@@ -80,6 +80,7 @@
     "@types/semver": "^7.5.8",
     "@types/tmp": "^0.2.6",
     "@types/yargs": "^17.0.32",
+    "@typescript-eslint/debug-for-file": "workspace:^",
     "@typescript-eslint/eslint-plugin": "workspace:^",
     "@typescript-eslint/eslint-plugin-internal": "workspace:^",
     "@typescript-eslint/scope-manager": "workspace:^",

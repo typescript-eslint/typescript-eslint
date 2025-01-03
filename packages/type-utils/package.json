@@ -48,7 +48,6 @@
   "dependencies": {
     "@typescript-eslint/typescript-estree": "8.19.0",
     "@typescript-eslint/utils": "8.19.0",
-    "debug": "^4.3.4",
     "ts-api-utils": "^2.0.0"
   },
   "peerDependencies": {

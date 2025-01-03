@@ -1,4 +1,4 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import { minimatch } from 'minimatch';
 import path from 'node:path';
 import util from 'node:util';
@@ -19,9 +19,7 @@ import { DEFAULT_PROJECT_FILES_ERROR_EXPLANATION } from './create-program/valida
 
 const RELOAD_THROTTLE_MS = 250;
 
-const log = debug(
-  'typescript-eslint:typescript-estree:useProgramFromProjectService',
-);
+const log = debugForFile(__filename);
 
 const serviceFileExtensions = new WeakMap<ts.server.ProjectService, string[]>();
 

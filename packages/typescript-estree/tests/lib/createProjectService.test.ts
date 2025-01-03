@@ -1,3 +1,4 @@
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import debug from 'debug';
 import * as ts from 'typescript';
 

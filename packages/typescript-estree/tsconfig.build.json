@@ -9,6 +9,7 @@
   },
   "include": ["src", "typings"],
   "references": [
+    { "path": "../debug-for-file/tsconfig.build.json" },
     { "path": "../types/tsconfig.build.json" },
     { "path": "../visitor-keys/tsconfig.build.json" }
   ]

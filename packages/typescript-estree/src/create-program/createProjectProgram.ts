@@ -1,6 +1,6 @@
 import type * as ts from 'typescript';
 
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 
 import type { ParseSettings } from '../parseSettings';
 import type { ASTAndDefiniteProgram } from './shared';
@@ -9,7 +9,7 @@ import { firstDefined } from '../node-utils';
 import { createProjectProgramError } from './createProjectProgramError';
 import { getAstFromProgram } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
+const log = debugForFile(__filename);
 
 /**
  * @param parseSettings Internal settings for parsing the file

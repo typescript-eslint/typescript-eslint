@@ -1,4 +1,4 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
@@ -7,7 +7,7 @@ import type { ASTAndNoProgram } from './shared';
 import { isSourceFile } from '../source-files';
 import { getScriptKind } from './getScriptKind';
 
-const log = debug('typescript-eslint:typescript-estree:createSourceFile');
+const log = debugForFile(__filename);
 
 function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
   log(

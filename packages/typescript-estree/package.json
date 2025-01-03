@@ -54,9 +54,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@typescript-eslint/debug-for-file": "workspace:*",
     "@typescript-eslint/types": "8.19.0",
     "@typescript-eslint/visitor-keys": "8.19.0",
-    "debug": "^4.3.4",
     "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",
     "minimatch": "^9.0.4",

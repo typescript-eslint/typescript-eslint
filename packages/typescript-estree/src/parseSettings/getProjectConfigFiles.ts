@@ -1,11 +1,11 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 import type { TSESTreeOptions } from '../parser-options';
 import type { ParseSettings } from './index';
 
-const log = debug('typescript-eslint:typescript-estree:getProjectConfigFiles');
+const log = debugForFile(__filename);
 
 /**
  * Checks for a matching TSConfig to a file including its parent directories,

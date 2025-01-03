@@ -1,4 +1,4 @@
-import debug from 'debug';
+import { debugForFile } from '@typescript-eslint/debug-for-file';
 import fs from 'node:fs';
 import * as ts from 'typescript';
 
@@ -14,7 +14,7 @@ import {
   getCanonicalFileName,
 } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:createWatchProgram');
+const log = debugForFile(__filename);
 
 /**
  * Maps tsconfig paths to their corresponding file contents and resulting watches
