@@ -76,6 +76,6 @@ export default (
     '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
   languageOptions: {
-    parserOptions: { project: false, program: null, projectService: false },
+    parserOptions: { program: null, project: false, projectService: false },
   },
 });

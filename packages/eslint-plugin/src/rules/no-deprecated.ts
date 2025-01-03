@@ -312,9 +312,17 @@ export default createRule({
         const property = services
           .getTypeAtLocation(node.parent.parent)
           .getProperty(node.name);
-        const symbol = services.getSymbolAtLocation(node);
-        return getJsDocDeprecation(property) ?? getJsDocDeprecation(symbol);
+        const propertySymbol = services.getSymbolAtLocation(node);
+        const valueSymbol = checker.getShorthandAssignmentValueSymbol(
+          propertySymbol?.valueDeclaration,
+        );
+        return (
+          getJsDocDeprecation(property) ??
+          getJsDocDeprecation(propertySymbol) ??
+          getJsDocDeprecation(valueSymbol)
+        );
       }
+
       return searchForDeprecationInAliasesChain(
         services.getSymbolAtLocation(node),
         true,

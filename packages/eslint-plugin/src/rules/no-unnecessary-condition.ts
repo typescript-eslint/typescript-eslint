@@ -42,13 +42,6 @@ const getValueOfLiteralType = (
   return type.value;
 };
 
-const isFalsyBigInt = (type: ts.Type): boolean => {
-  return (
-    tsutils.isLiteralType(type) &&
-    valueIsPseudoBigInt(type.value) &&
-    !getValueOfLiteralType(type)
-  );
-};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   (type.isLiteral() && !!getValueOfLiteralType(type));
@@ -71,13 +64,7 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(
-        type =>
-          !tsutils.isFalsyType(type) &&
-          // below is a workaround for ts-api-utils bug
-          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
-          !isFalsyBigInt(type),
-      ),
+      intersectionParts.every(type => !tsutils.isFalsyType(type)),
     );
 
 // Nullish utilities
@@ -98,10 +85,7 @@ function toStaticValue(
   | undefined {
   // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
-    // Using `type.intrinsicName` instead of `type.value` because `type.value`
-    // is `undefined`, contrary to what the type guard tells us.
-    // See https://github.com/JoshuaKGoldberg/ts-api-utils/issues/528
-    return { value: type.intrinsicName === 'true' };
+    return { value: tsutils.isTrueLiteralType(type) };
   }
   if (type.flags === ts.TypeFlags.Undefined) {
     return { value: undefined };
