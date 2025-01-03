@@ -100,11 +100,11 @@ function configWithoutAssumptions(configs: unknown[]): ConfigArray {
    validate the types. */
   const flattened = configs.flat(Infinity);
   return flattened.flatMap((configWithExtends, configIndex) => {
-    if (
-      !configWithExtends ||
-      typeof configWithExtends !== 'object' ||
-      !('extends' in configWithExtends)
-    ) {
+    const isObject = (
+      value: unknown,
+      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    ): value is {} => !!value && typeof value === 'object';
+    if (!isObject(configWithExtends) || !('extends' in configWithExtends)) {
       // `configWithExtends` could be anything, but we'll assume it's a `Config` object for TS purposes.
       return configWithExtends as Config;
     }
@@ -116,35 +116,25 @@ function configWithoutAssumptions(configs: unknown[]): ConfigArray {
     > = configWithExtends;
     const { name } = config;
     const nameIsString = typeof name === 'string';
-    const configError = (message: string) =>
+    const extendsError = (message: string) =>
       new TypeError(
-        `Config ${
+        `tseslint.config(): Config ${
           nameIsString ? `"${name}"` : '(unnamed)'
         }: Key "extends": ${message} at user-defined index ${configIndex}.`,
       );
     if (!Array.isArray(extendsArr)) {
-      throw configError('Expected value to be an array');
-    }
-    const extendsArrFlattened: unknown[] = extendsArr.flat(Infinity);
-
-    const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
-      (acc, extension, extensionIndex) => {
-        if (extension == null) {
-          acc.push(extensionIndex);
-        }
-        return acc;
-      },
-      [],
-    );
-    if (undefinedExtensions.length) {
-      throw configError(
-        `Undefined extensions at the following indices: ${undefinedExtensions.join(', ')}`,
-      );
+      throw extendsError('Expected value to be an array');
     }
 
     return [
-      ...(extendsArrFlattened as { name?: unknown }[]).map(extension => {
-        const mergedName = [nameIsString && name, extension.name]
+      ...extendsArr.flat(Infinity).map(extension => {
+        if (!isObject(extension)) {
+          throw extendsError('Expected array to only contain objects');
+        }
+        const mergedName = [
+          nameIsString && name,
+          'name' in extension && extension.name,
+        ]
           .filter(Boolean)
           .join('__');
         return {
