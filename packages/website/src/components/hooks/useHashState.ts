@@ -190,7 +190,7 @@ const writeStateToLocalStorage = (newState: ConfigModel): void => {
   window.localStorage.setItem('config', JSON.stringify(config));
 };
 
-function useHashState(
+export function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
   const history = useHistory();
@@ -229,5 +229,3 @@ function useHashState(
 
   return [state, updateState];
 }
-
-export default useHashState;

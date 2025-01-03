@@ -266,7 +266,7 @@ async function main(): Promise<void> {
 
   // generate and write a barrel file
   const barrelImports = []; // use a separate way so everything is in the same order
-  const barrelCode = ['', `const lib = {`];
+  const barrelCode = ['', `export const lib = {`];
   for (const lib of libMap.keys()) {
     const name = sanitize(lib);
     if (name === 'lib') {
@@ -280,8 +280,6 @@ async function main(): Promise<void> {
   barrelCode.unshift(...barrelImports);
   barrelCode.push('} as const;');
 
-  barrelCode.push('', 'export { lib };');
-
   const formattedBarrelCode = await formatCode(barrelCode);
 
   fs.writeFileSync(BARREL_PATH, formattedBarrelCode);
@@ -290,9 +288,7 @@ async function main(): Promise<void> {
   // generate a string union type for the lib names
 
   const libUnionCode = [
-    `type Lib = ${[...libMap.keys()].map(k => `'${k}'`).join(' | ')};`,
-    '',
-    'export { Lib };',
+    `export type Lib = ${[...libMap.keys()].map(k => `'${k}'`).join(' | ')};`,
   ];
   const formattedLibUnionCode = await formatCode(libUnionCode);
 

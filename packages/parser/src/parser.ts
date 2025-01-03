@@ -80,14 +80,14 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   }
 }
 
-function parse(
+export function parse(
   code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
-function parseForESLint(
+export function parseForESLint(
   code: string | ts.SourceFile,
   parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
@@ -187,7 +187,5 @@ function parseForESLint(
 
   return { ast, scopeManager, services, visitorKeys };
 }
-
-export { parse, parseForESLint };
 
 export type { ParserOptions } from '@typescript-eslint/types';

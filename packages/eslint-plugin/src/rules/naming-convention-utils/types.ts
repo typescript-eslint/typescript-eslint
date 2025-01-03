@@ -16,12 +16,12 @@ import type {
   UnderscoreOptionsString,
 } from './enums';
 
-interface MatchRegex {
+export interface MatchRegex {
   match: boolean;
   regex: string;
 }
 
-interface Selector {
+export interface Selector {
   custom?: MatchRegex;
   filter?: string | MatchRegex;
   // format options
@@ -38,12 +38,12 @@ interface Selector {
   types?: TypeModifiersString[];
 }
 
-interface NormalizedMatchRegex {
+export interface NormalizedMatchRegex {
   match: boolean;
   regex: RegExp;
 }
 
-interface NormalizedSelector {
+export interface NormalizedSelector {
   custom: NormalizedMatchRegex | null;
   filter: NormalizedMatchRegex | null;
   // format options
@@ -60,17 +60,9 @@ interface NormalizedSelector {
   types: TypeModifiers[] | null;
 }
 
-type ValidatorFunction = (
+export type ValidatorFunction = (
   node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
   modifiers?: Set<Modifiers>,
 ) => void;
-type ParsedOptions = Record<SelectorsString, ValidatorFunction>;
-type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
-
-export type {
-  Context,
-  NormalizedSelector,
-  ParsedOptions,
-  Selector,
-  ValidatorFunction,
-};
+export type ParsedOptions = Record<SelectorsString, ValidatorFunction>;
+export type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;

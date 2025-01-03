@@ -2,7 +2,7 @@ import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 
-function getSpecificNode<
+export function getSpecificNode<
   Selector extends AST_NODE_TYPES,
   Node extends Extract<TSESTree.Node, { type: Selector }>,
 >(
@@ -10,7 +10,7 @@ function getSpecificNode<
   selector: Selector,
   cb?: (node: Node) => boolean | null | undefined,
 ): Node;
-function getSpecificNode<
+export function getSpecificNode<
   Selector extends AST_NODE_TYPES,
   ReturnType extends TSESTree.Node,
 >(
@@ -21,7 +21,7 @@ function getSpecificNode<
   ) => ReturnType | null | undefined,
 ): ReturnType;
 
-function getSpecificNode(
+export function getSpecificNode(
   ast: TSESTree.Node,
   selector: AST_NODE_TYPES,
   cb?: (node: TSESTree.Node) => boolean | TSESTree.Node | null | undefined,
@@ -49,5 +49,3 @@ function getSpecificNode(
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return node!;
 }
-
-export { getSpecificNode };

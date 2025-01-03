@@ -7,7 +7,7 @@ import { FunctionNameDefinition } from '../definition';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class FunctionExpressionNameScope extends ScopeBase<
+export class FunctionExpressionNameScope extends ScopeBase<
   ScopeType.functionExpressionName,
   TSESTree.FunctionExpression,
   Scope
@@ -34,5 +34,3 @@ class FunctionExpressionNameScope extends ScopeBase<
     this.functionExpressionScope = true;
   }
 }
-
-export { FunctionExpressionNameScope };

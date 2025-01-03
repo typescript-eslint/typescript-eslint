@@ -53,7 +53,7 @@ const parsedFilesSeenHash = new Map<CanonicalPath, string>();
  * Clear all of the parser caches.
  * This should only be used in testing to ensure the parser is clean between tests.
  */
-function clearWatchCaches(): void {
+export function clearWatchCaches(): void {
   knownWatchProgramMap.clear();
   fileWatchCallbackTrackingMap.clear();
   folderWatchCallbackTrackingMap.clear();
@@ -125,7 +125,7 @@ function updateCachedFileList(
  * @param parseSettings Internal settings for parsing the file
  * @returns The programs corresponding to the supplied tsconfig paths
  */
-function getWatchProgramsForProjects(
+export function getWatchProgramsForProjects(
   parseSettings: ParseSettings,
 ): ts.Program[] {
   const filePath = getCanonicalFileName(parseSettings.filePath);
@@ -489,5 +489,3 @@ function maybeInvalidateProgram(
   );
   return null;
 }
-
-export { clearWatchCaches, getWatchProgramsForProjects };

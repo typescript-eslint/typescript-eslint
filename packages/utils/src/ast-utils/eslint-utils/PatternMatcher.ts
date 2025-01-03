@@ -49,9 +49,7 @@ interface PatternMatcher {
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#patternmatcher-class}
  */
-const PatternMatcher = eslintUtils.PatternMatcher as new (
+export const PatternMatcher = eslintUtils.PatternMatcher as new (
   pattern: RegExp,
   options?: { escaped?: boolean },
 ) => PatternMatcher;
-
-export { PatternMatcher };

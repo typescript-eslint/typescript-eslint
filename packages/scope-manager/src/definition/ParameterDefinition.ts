@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class ParameterDefinition extends DefinitionBase<
+export class ParameterDefinition extends DefinitionBase<
   DefinitionType.Parameter,
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
@@ -34,5 +34,3 @@ class ParameterDefinition extends DefinitionBase<
     this.rest = rest;
   }
 }
-
-export { ParameterDefinition };

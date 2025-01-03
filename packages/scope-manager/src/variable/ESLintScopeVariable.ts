@@ -4,9 +4,9 @@ import { VariableBase } from './VariableBase';
 
 /**
  * ESLint defines global variables using the eslint-scope Variable class
- * This is declared her for consumers to use
+ * This is declared here for consumers to use
  */
-class ESLintScopeVariable extends VariableBase {
+export class ESLintScopeVariable extends VariableBase {
   /**
    * Written to by ESLint.
    * If this key exists, this variable is a global variable added by ESLint.
@@ -35,5 +35,3 @@ class ESLintScopeVariable extends VariableBase {
    */
   public eslintExplicitGlobalComments?: TSESTree.Comment[];
 }
-
-export { ESLintScopeVariable };

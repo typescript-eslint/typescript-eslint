@@ -6,7 +6,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class FunctionTypeScope extends ScopeBase<
+export class FunctionTypeScope extends ScopeBase<
   ScopeType.functionType,
   | TSESTree.TSCallSignatureDeclaration
   | TSESTree.TSConstructorType
@@ -23,5 +23,3 @@ class FunctionTypeScope extends ScopeBase<
     super(scopeManager, ScopeType.functionType, upperScope, block, false);
   }
 }
-
-export { FunctionTypeScope };

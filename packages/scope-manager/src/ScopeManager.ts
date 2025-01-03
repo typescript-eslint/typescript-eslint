@@ -35,7 +35,7 @@ interface ScopeManagerOptions {
 /**
  * @see https://eslint.org/docs/latest/developer-guide/scope-manager-interface#scopemanager-interface
  */
-class ScopeManager {
+export class ScopeManager {
   readonly #options: ScopeManagerOptions;
 
   public currentScope: Scope | null;
@@ -271,5 +271,3 @@ class ScopeManager {
     return scope;
   }
 }
-
-export { ScopeManager };

@@ -15,7 +15,7 @@ class DefinitionInstance extends DefinitionBase<
   isTypeDefinition = false;
   isVariableDefinition = false;
 }
-const serializer = createSerializer(
+export const serializer = createSerializer(
   DefinitionBase,
   [
     //
@@ -24,5 +24,3 @@ const serializer = createSerializer(
   ],
   DefinitionInstance,
 );
-
-export { serializer };

@@ -109,7 +109,7 @@ import { webworker_asynciterable } from './webworker.asynciterable';
 import { webworker_importscripts } from './webworker.importscripts';
 import { webworker_iterable } from './webworker.iterable';
 
-const lib = {
+export const lib = {
   decorators,
   'decorators.legacy': decorators_legacy,
   dom,
@@ -216,5 +216,3 @@ const lib = {
   'webworker.importscripts': webworker_importscripts,
   'webworker.iterable': webworker_iterable,
 } as const;
-
-export { lib };

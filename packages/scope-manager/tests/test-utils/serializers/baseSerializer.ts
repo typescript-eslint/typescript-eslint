@@ -2,18 +2,18 @@ import type { NewPlugin } from 'pretty-format';
 
 type ConstructorSignature = new (...args: never) => unknown;
 
-function createSerializer<Constructor extends ConstructorSignature>(
+export function createSerializer<Constructor extends ConstructorSignature>(
   type: Constructor,
   keys: (keyof InstanceType<Constructor>)[],
 ): NewPlugin;
 // A hack of signature to enable this to work with abstract classes
-function createSerializer<Constructor extends ConstructorSignature>(
+export function createSerializer<Constructor extends ConstructorSignature>(
   abstractConstructor: unknown,
   keys: (keyof InstanceType<Constructor>)[],
   instanceConstructorThatsNeverUsed: Constructor,
 ): NewPlugin;
 
-function createSerializer<Constructor extends ConstructorSignature>(
+export function createSerializer<Constructor extends ConstructorSignature>(
   type: Constructor,
   keys: (keyof InstanceType<Constructor>)[],
 ): NewPlugin {
@@ -81,5 +81,3 @@ function createSerializer<Constructor extends ConstructorSignature>(
     },
   };
 }
-
-export { createSerializer };

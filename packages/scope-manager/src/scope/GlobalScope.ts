@@ -13,7 +13,7 @@ import { ImplicitLibVariable } from '../variable';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class GlobalScope extends ScopeBase<
+export class GlobalScope extends ScopeBase<
   ScopeType.global,
   TSESTree.Program,
   /**
@@ -78,5 +78,3 @@ class GlobalScope extends ScopeBase<
     );
   }
 }
-
-export { GlobalScope };
