@@ -137,13 +137,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
     {
-      code: `
-const x = [] as string[];
-const x = ['a'] as string[];
-const x = [] as Array<string>;
-const x = ['a'] as Array<string>;
-const x = [Math.random() ? 'a' : 'b'] as 'a'[];
-      `,
+      code: 'const x = [] as string[];',
       options: [
         {
           assertionStyle: 'as',
@@ -151,13 +145,15 @@ const x = [Math.random() ? 'a' : 'b'] as 'a'[];
       ],
     },
     {
-      code: `
-const x = <string[]>[];
-const x = <string[]>['a'];
-const x = <Array<string>>[];
-const x = <Array<string>>['a'];
-const x = <'a'[]>[Math.random() ? 'a' : 'b'];
-      `,
+      code: "const x = ['a'] as Array<string>;",
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'const x = <string[]>[];',
       options: [
         {
           assertionStyle: 'angle-bracket',
@@ -165,18 +161,15 @@ const x = <'a'[]>[Math.random() ? 'a' : 'b'];
       ],
     },
     {
-      code: `
-print([5] as Foo);
-new print([5] as Foo);
-function foo() {
-  throw [5] as Foo;
-}
-function b(x = [5] as Foo.Bar) {}
-function c(x = [5] as Foo) {}
-print?.([5] as Foo);
-print?.call([5] as Foo);
-print\`\${[5] as Foo}\`;
-      `,
+      code: 'const x = <Array<string>>[];',
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print([5] as Foo);',
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -186,15 +179,104 @@ print\`\${[5] as Foo}\`;
     },
     {
       code: `
-print(<Foo>[5]);
-new print(<Foo>[5]);
+function foo() {
+  throw [5] as Foo;
+}
+      `,
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'function b(x = [5] as Foo.Bar) {}',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print?.([5] as Foo);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print?.call([5] as Foo);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print`${[5] as Foo}`;',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: `
 function foo() {
   throw <Foo>[5];
 }
-print?.(<Foo>[5]);
-print?.call(<Foo>[5]);
-print\`\${<Foo>[5]}\`;
       `,
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'function b(x = <Foo.Bar>[5]) {}',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print?.(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print?.call(<Foo>[5]);',
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'allow-as-parameter',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print`${<Foo>[5]}`;',
       options: [
         {
           arrayLiteralTypeAssertions: 'allow-as-parameter',
@@ -906,6 +988,56 @@ const bs = (x <<= y) as any;
       ],
     },
     {
+      code: `
+function foo() {
+  throw [5] as Foo;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `
+function foo() {
+  throw [5] satisfies Foo;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: 'print`${[5] as Foo}`;',
+      errors: [
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: 'print`${[5] satisfies Foo}`;',
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
       code: 'new print(<Foo>[5]);',
       errors: [
         {
@@ -936,6 +1068,56 @@ const bs = (x <<= y) as any;
               data: { cast: 'Foo.Bar' },
               messageId: 'replaceArrayTypeAssertionWithSatisfies',
               output: `function b(x = [5] satisfies Foo.Bar) {}`,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  throw <Foo>[5];
+}
+      `,
+      errors: [
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: `
+function foo() {
+  throw [5] satisfies Foo;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          arrayLiteralTypeAssertions: 'never',
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    },
+    {
+      code: 'print`${<Foo>[5]}`;',
+      errors: [
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggestions: [
+            {
+              data: { cast: 'Foo' },
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
+              output: 'print`${[5] satisfies Foo}`;',
             },
           ],
         },
