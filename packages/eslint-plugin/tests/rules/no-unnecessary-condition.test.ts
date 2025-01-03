@@ -143,6 +143,24 @@ function test<T>(t: T | []) {
   return t ? 'yes' : 'no';
 }
     `,
+    `
+function test<T>(arg: T, key: keyof T) {
+  if (arg[key]?.toString()) {
+  }
+}
+    `,
+    `
+function test<T>(arg: T, key: keyof T) {
+  if (arg?.toString()) {
+  }
+}
+    `,
+    `
+function test<T>(arg: T | { value: string }) {
+  if (arg?.value) {
+  }
+}
+    `,
 
     // Boolean expressions
     `
