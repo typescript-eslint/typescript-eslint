@@ -247,4 +247,16 @@ describe('config helper', () => {
       { rules: { rule: 'error' } },
     ]);
   });
+
+  it.each([undefined, null])(
+    'passes invalid arguments through unchanged',
+    config => {
+      expect(
+        plugin.config(
+          // @ts-expect-error purposely testing invalid values
+          config,
+        ),
+      ).toStrictEqual([config]);
+    },
+  );
 });
