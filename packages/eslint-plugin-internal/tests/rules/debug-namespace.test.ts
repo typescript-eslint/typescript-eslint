@@ -38,6 +38,10 @@ ruleTester.run('debug-namespace', rule, {
       filename: 'typescript-eslint/packages/example/file.ts',
     },
     {
+      code: 'const log = debug(123);',
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
+    {
       code: "const log = debug('...');",
       filename: 'external.ts',
     },
