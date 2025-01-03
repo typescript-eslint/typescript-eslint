@@ -1151,5 +1151,32 @@ const a = '';
 const b: string | undefined = (a ? undefined : a);
       `,
     },
+    {
+      code: `
+enum MyEnum {
+  Value1,
+}
+
+declare const myEnum: MyEnum.Value1;
+
+const myEnumCast = myEnum as MyEnum.Value1;
+      `,
+      errors: [
+        {
+          column: 20,
+          line: 8,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum MyEnum {
+  Value1,
+}
+
+declare const myEnum: MyEnum.Value1;
+
+const myEnumCast = myEnum;
+      `,
+    },
   ],
 });

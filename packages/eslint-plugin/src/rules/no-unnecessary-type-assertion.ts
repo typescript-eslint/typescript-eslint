@@ -226,7 +226,8 @@ export default createRule<Options, MessageIds>({
 
         const wouldSameTypeBeInferred = castType.isLiteral()
           ? isImplicitlyNarrowedConstDeclaration(node)
-          : !isConstAssertion(node.typeAnnotation);
+          : checker.isTypeAssignableTo(castType, uncastType) &&
+            !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
