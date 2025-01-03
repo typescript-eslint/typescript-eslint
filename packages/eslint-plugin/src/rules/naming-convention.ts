@@ -789,5 +789,3 @@ function requiresQuoting(
       : `${node.value}`;
   return _requiresQuoting(name, target);
 }
-
-export type { MessageIds, Options };
