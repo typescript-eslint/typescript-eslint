@@ -55,6 +55,11 @@ ruleTester.run('no-array-delete', rule, {
       declare const test: never;
       delete test[0];
     `,
+    `
+      function f<T>(input: T) {
+        delete input[0];
+      }
+    `,
   ],
 
   invalid: [
