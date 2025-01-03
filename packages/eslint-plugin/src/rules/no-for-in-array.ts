@@ -1,10 +1,10 @@
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isTypeArrayTypeOrUnionOfArrayTypes,
+  isBuiltinSymbolLike,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
@@ -32,10 +32,7 @@ export default createRule({
 
         const type = getConstrainedTypeAtLocation(services, node.right);
 
-        if (
-          isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
-          (type.flags & ts.TypeFlags.StringLike) !== 0
-        ) {
+        if (isArray(checker, type) || isArrayLike(services.program, type)) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forInViolation',
@@ -45,3 +42,32 @@ export default createRule({
     };
   },
 });
+
+function isArrayLike(program: ts.Program, type: ts.Type): boolean {
+  return isTypeRecurser(type, t =>
+    isBuiltinSymbolLike(program, t, [
+      'IArguments',
+      'HTMLCollection',
+      'RegExpExecArray',
+      'NodeList',
+    ]),
+  );
+}
+
+function isArray(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return isTypeRecurser(
+    type,
+    t => checker.isArrayType(t) || checker.isTupleType(t),
+  );
+}
+
+function isTypeRecurser(
+  type: ts.Type,
+  predicate: (t: ts.Type) => boolean,
+): boolean {
+  if (type.isUnionOrIntersection()) {
+    return type.types.some(t => isTypeRecurser(t, predicate));
+  }
+
+  return predicate(type);
+}
