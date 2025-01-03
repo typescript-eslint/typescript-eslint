@@ -1,23 +1,25 @@
 import type * as mdast from 'mdast';
-import type { fromMarkdown as FromMarkdown } from 'mdast-util-from-markdown' with { 'resolution-mode': 'import' };
-import type { mdxFromMarkdown as MdxFromMarkdown } from 'mdast-util-mdx' with { 'resolution-mode': 'import' };
-import type { mdxjs as Mdxjs } from 'micromark-extension-mdxjs' with { 'resolution-mode': 'import' };
-import type * as UnistUtilVisit from 'unist-util-visit' with { 'resolution-mode': 'import' };
 
 import { parseForESLint } from '@typescript-eslint/parser';
 import * as tseslintParser from '@typescript-eslint/parser';
 import { Linter } from '@typescript-eslint/utils/ts-eslint';
-import 'jest-specific-snapshot';
 import { marked } from 'marked';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { mdxFromMarkdown } from 'mdast-util-mdx';
+import { mdxjs } from 'micromark-extension-mdxjs';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { titleCase } from 'title-case';
+import * as unistUtilVisit from 'unist-util-visit';
+import { it, describe, expect } from 'vitest';
 
-import rules from '../src/rules';
-import { areOptionsValid } from './areOptionsValid';
-import { getFixturesRootDir } from './RuleTester';
+import rules from '../src/rules/index.js';
+import { areOptionsValid } from './areOptionsValid.js';
+import { getFixturesRootDir } from './RuleTester.js';
 
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
 
@@ -108,21 +110,6 @@ const eslintOutputSnapshotFolder = path.resolve(
 fs.mkdirSync(eslintOutputSnapshotFolder, { recursive: true });
 
 describe('Validating rule docs', () => {
-  let fromMarkdown: typeof FromMarkdown;
-  let mdxjs: typeof Mdxjs;
-  let mdxFromMarkdown: typeof MdxFromMarkdown;
-  let unistUtilVisit: typeof UnistUtilVisit;
-  beforeAll(async () => {
-    // dynamic import('...') is transpiled to the require('...') call,
-    // but all modules imported below are ESM only, so we cannot require() them
-    // eslint-disable-next-line @typescript-eslint/no-implied-eval
-    const dynamicImport = new Function('module', 'return import(module)');
-    ({ fromMarkdown } = await dynamicImport('mdast-util-from-markdown'));
-    ({ mdxjs } = await dynamicImport('micromark-extension-mdxjs'));
-    ({ mdxFromMarkdown } = await dynamicImport('mdast-util-mdx'));
-    unistUtilVisit = await dynamicImport('unist-util-visit');
-  });
-
   const oldStylisticRules = [
     'block-spacing.md',
     'brace-style.md',
@@ -221,7 +208,7 @@ describe('Validating rule docs', () => {
       const filePath = path.join(docsRoot, `${ruleName}.mdx`);
       const { fullText, tokens } = parseMarkdownFile(filePath);
 
-      test(`${ruleName}.mdx must start with frontmatter description`, () => {
+      it(`${ruleName}.mdx must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
           raw: '---\n',
           type: 'hr',
@@ -235,7 +222,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
+      it(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
         expect(tokens[4]).toMatchObject({
           text: [
             `🛑 This file is source code, not the primary documentation location! 🛑`,
@@ -247,7 +234,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`headings must be title-cased`, () => {
+      it(`headings must be title-cased`, () => {
         // Get all H2 headings objects as the other levels are variable by design.
         const headings = tokens.filter(tokenIsH2);
 
@@ -269,7 +256,7 @@ describe('Validating rule docs', () => {
         ...requiredHeadings,
       ]);
 
-      test('important headings must be h2s', () => {
+      it('important headings must be h2s', () => {
         for (const heading of headings) {
           if (importantHeadings.has(heading.raw.replaceAll('#', '').trim())) {
             expect(heading.depth).toBe(2);
@@ -278,7 +265,7 @@ describe('Validating rule docs', () => {
       });
 
       if (!rules[ruleName as keyof typeof rules].meta.docs?.extendsBaseRule) {
-        test('must include required headings', () => {
+        it('must include required headings', () => {
           const headingTexts = new Set(
             tokens.filter(tokenIsH2).map(token => token.text),
           );
@@ -304,62 +291,62 @@ describe('Validating rule docs', () => {
         Array.isArray(schema) &&
         !rule.meta.docs?.extendsBaseRule
       ) {
-        describe('rule options', () => {
-          const headingsAfterOptions = headings.slice(
-            headings.findIndex(header => header.text === 'Options'),
-          );
-
-          for (const schemaItem of schema) {
-            if (schemaItem.type === 'object') {
-              for (const property of Object.keys(
-                schemaItem.properties as object,
-              )) {
-                test(property, () => {
-                  const correspondingHeadingIndex =
-                    headingsAfterOptions.findIndex(heading =>
-                      heading.text.includes(`\`${property}\``),
-                    );
-
-                  if (correspondingHeadingIndex === -1) {
-                    throw new Error(
-                      `At least one header should include \`${property}\`.`,
-                    );
-                  }
-
-                  if (rulesWithComplexOptionHeadings.has(ruleName)) {
-                    return;
-                  }
-
-                  const relevantChildren = tokens.slice(
-                    tokens.indexOf(
-                      headingsAfterOptions[correspondingHeadingIndex],
-                    ),
-                    tokens.indexOf(
-                      headingsAfterOptions[correspondingHeadingIndex + 1],
-                    ),
-                  );
-
-                  for (const rawTab of [
-                    `<TabItem value="✅ Correct">`,
-                    `<TabItem value="❌ Incorrect">`,
-                  ]) {
-                    if (
-                      !relevantChildren.some(
-                        child =>
-                          child.type === 'html' && child.raw.includes(rawTab),
-                      )
-                    ) {
-                      throw new Error(`Missing option example tab: ${rawTab}`);
-                    }
-                  }
-                });
-              }
-            }
+        const schemaProps = schema.flatMap(schemaItem => {
+          if (schemaItem.type === 'object') {
+            return Object.keys(schemaItem.properties as object).map(prop => [
+              prop,
+            ]);
           }
+          return [];
         });
+
+        if (schemaProps.length > 0) {
+          describe('rule options', () => {
+            const headingsAfterOptions = headings.slice(
+              headings.findIndex(header => header.text === 'Options'),
+            );
+
+            it.for(schemaProps)('%s', ([property]) => {
+              const correspondingHeadingIndex = headingsAfterOptions.findIndex(
+                heading => heading.text.includes(`\`${property}\``),
+              );
+
+              if (correspondingHeadingIndex === -1) {
+                throw new Error(
+                  `At least one header should include \`${property}\`.`,
+                );
+              }
+
+              if (rulesWithComplexOptionHeadings.has(ruleName)) {
+                return;
+              }
+
+              const relevantChildren = tokens.slice(
+                tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex]),
+                tokens.indexOf(
+                  headingsAfterOptions[correspondingHeadingIndex + 1],
+                ),
+              );
+
+              for (const rawTab of [
+                `<TabItem value="✅ Correct">`,
+                `<TabItem value="❌ Incorrect">`,
+              ]) {
+                if (
+                  !relevantChildren.some(
+                    child =>
+                      child.type === 'html' && child.raw.includes(rawTab),
+                  )
+                ) {
+                  throw new Error(`Missing option example tab: ${rawTab}`);
+                }
+              }
+            });
+          });
+        }
       }
 
-      test('must include only valid code samples', () => {
+      it('must include only valid code samples', () => {
         for (const token of tokens) {
           if (token.type !== 'code') {
             continue;
@@ -385,7 +372,7 @@ describe('Validating rule docs', () => {
         }
       });
 
-      test('code examples ESLint output', () => {
+      it('code examples ESLint output', async () => {
         // TypeScript can't infer type arguments unless we provide them explicitly
         linter.defineRule<
           keyof (typeof rule)['meta']['messages'],
@@ -396,6 +383,11 @@ describe('Validating rule docs', () => {
           extensions: [mdxjs()],
           mdastExtensions: [mdxFromMarkdown()],
         });
+
+        const tokensToLint: [
+          token: mdast.Code,
+          shouldContainLintErrors: boolean | 'skip-check',
+        ][] = [];
 
         unistUtilVisit.visit(tree, node => {
           if (node.type === 'mdxJsxFlowElement') {
@@ -408,15 +400,15 @@ describe('Validating rule docs', () => {
                 attr =>
                   attr.type === 'mdxJsxAttribute' && attr.name === 'value',
               );
-              lintCodeBlock(
+              tokensToLint.push([
                 code,
                 valueAttr && typeof valueAttr.value === 'string'
                   ? valueAttr.value.startsWith('❌ Incorrect') ||
-                      (valueAttr.value.startsWith('✅ Correct')
-                        ? false
-                        : 'skip-check')
+                    (valueAttr.value.startsWith('✅ Correct')
+                      ? false
+                      : 'skip-check')
                   : 'skip-check',
-              );
+              ]);
             });
 
             return unistUtilVisit.SKIP;
@@ -424,7 +416,7 @@ describe('Validating rule docs', () => {
 
           if (node.type === 'code') {
             if (node.meta?.includes('showPlaygroundButton')) {
-              lintCodeBlock(node, 'skip-check');
+              tokensToLint.push([node, 'skip-check']);
             }
 
             return unistUtilVisit.SKIP;
@@ -433,13 +425,28 @@ describe('Validating rule docs', () => {
           return unistUtilVisit.CONTINUE;
         });
 
+        const snapshotContents: string[] = [];
+
+        for (const [token, shouldContainLintErrors] of tokensToLint) {
+          const snapshotContent = lintCodeBlock(token, shouldContainLintErrors);
+          if (snapshotContent) {
+            snapshotContents.push(snapshotContent);
+          }
+        }
+
+        if (snapshotContents.length > 0) {
+          await expect(snapshotContents.join('\n')).toMatchFileSnapshot(
+            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
+          );
+        }
+
         function lintCodeBlock(
           token: mdast.Code,
           shouldContainLintErrors: boolean | 'skip-check',
-        ): void {
+        ): string | null {
           const lang = token.lang?.trim();
           if (!lang || !/^tsx?\b/i.test(lang)) {
-            return;
+            return null;
           }
 
           const optionRegex = /option='(?<option>.*?)'/;
@@ -514,21 +521,17 @@ ${token.value}`,
             testCaption.push(`Options: ${option}`);
           }
 
-          expect(
-            `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
-              token.value,
-              messages,
-            )}`,
-          ).toMatchSpecificSnapshot(
-            path.join(eslintOutputSnapshotFolder, `${ruleName}.shot`),
-          );
+          return `${testCaption.filter(Boolean).join('\n')}\n\n${renderLintResults(
+            token.value,
+            messages,
+          )}`;
         }
       });
     });
   }
 });
 
-test('There should be no obsolete ESLint output snapshots', () => {
+it('There should be no obsolete ESLint output snapshots', () => {
   const files = fs.readdirSync(eslintOutputSnapshotFolder);
   const names = new Set(Object.keys(rules).map(k => `${k}.shot`));
 

@@ -1,34 +1,25 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs await-thenable.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 await 'value';
-~~~~~~~~~~~~~ Unexpected \`await\` of a non-Promise (non-"Thenable") value.
+~~~~~~~~~~~~~ Unexpected `await` of a non-Promise (non-"Thenable") value.
 
 const createValue = () => 'value';
 await createValue();
-~~~~~~~~~~~~~~~~~~~ Unexpected \`await\` of a non-Promise (non-"Thenable") value.
-"
-`;
+~~~~~~~~~~~~~~~~~~~ Unexpected `await` of a non-Promise (non-"Thenable") value.
 
-exports[`Validating rule docs await-thenable.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 await Promise.resolve('value');
 
 const createValue = async () => 'value';
 await createValue();
-"
-`;
 
-exports[`Validating rule docs await-thenable.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 
 async function syncIterable() {
   const arrayOfValues = [1, 2, 3];
   for await (const value of arrayOfValues) {
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not async iterable.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected `for await...of` of a value that is not async iterable.
     console.log(value);
   }
 }
@@ -40,15 +31,12 @@ async function syncIterableOfPromises() {
     Promise.resolve(3),
   ];
   for await (const promisedValue of arrayOfPromises) {
-  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected \`for await...of\` of a value that is not async iterable.
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Unexpected `for await...of` of a value that is not async iterable.
     console.log(promisedValue);
   }
 }
-"
-`;
 
-exports[`Validating rule docs await-thenable.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 
 async function syncIterable() {
   const arrayOfValues = [1, 2, 3];
@@ -79,11 +67,8 @@ async function validUseOfForAwaitOnAsyncIterable() {
     console.log(promisedValue);
   }
 }
-"
-`;
 
-exports[`Validating rule docs await-thenable.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 
 function makeSyncDisposable(): Disposable {
   return {
@@ -95,13 +80,10 @@ function makeSyncDisposable(): Disposable {
 
 async function shouldNotAwait() {
   await using resource = makeSyncDisposable();
-                         ~~~~~~~~~~~~~~~~~~~~ Unexpected \`await using\` of a value that is not async disposable.
+                         ~~~~~~~~~~~~~~~~~~~~ Unexpected `await using` of a value that is not async disposable.
 }
-"
-`;
 
-exports[`Validating rule docs await-thenable.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 
 function makeSyncDisposable(): Disposable {
   return {
@@ -126,5 +108,3 @@ function makeAsyncDisposable(): AsyncDisposable {
 async function shouldAwait() {
   await using resource = makeAsyncDisposable();
 }
-"
-`;

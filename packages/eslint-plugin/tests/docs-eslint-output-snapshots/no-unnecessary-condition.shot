@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 function head<T>(items: T[]) {
   // items can never be nullable, so this is unnecessary
@@ -30,11 +27,8 @@ function bar<T>(arg: string) {
   [3, 4],
 ].filter(t => t); // number[] is always truthy
               ~ Unnecessary conditional, value is always truthy.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function head<T>(items: T[]) {
   // Necessary, since items.length might be 0
@@ -55,20 +49,14 @@ function bar(arg?: string | null) {
 }
 
 [0, 1, 2, 3].filter(t => t); // number can be truthy or falsy
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 3`] = `
-"Options: { "allowConstantLoopConditions": true }
+Options: { "allowConstantLoopConditions": true }
 
 while (true) {}
 for (; true; ) {}
 do {} while (true);
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 4`] = `
-"Options: { "checkTypePredicates": true }
+Options: { "checkTypePredicates": true }
 
 function assert(condition: unknown): asserts condition {
   if (!condition) {
@@ -102,5 +90,3 @@ function assertIsString(value: unknown): asserts value is string {
 
 assertIsString(s); // Unnecessary; s is always a string.
                ~ Unnecessary conditional, expression already has the type being checked by the assertion function.
-"
-`;

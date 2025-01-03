@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs prefer-enum-initializers.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 enum Status {
   Open = 1,
@@ -22,11 +19,8 @@ enum Color {
   Green = 'Green',
   Blue = 'Blue',
 }
-"
-`;
 
-exports[`Validating rule docs prefer-enum-initializers.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 enum Status {
   Open = 'Open',
@@ -43,5 +37,3 @@ enum Color {
   Green = 'Green',
   Blue = 'Blue',
 }
-"
-`;

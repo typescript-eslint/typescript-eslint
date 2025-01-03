@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-invalid-void-type.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 type PossibleValues = string | number | void;
                                         ~~~~ void is not valid as a constituent in a union type
@@ -25,11 +22,8 @@ class MyClass {
   private readonly propName: void;
                              ~~~~ void is only valid as a return type or generic type argument.
 }
-"
-`;
 
-exports[`Validating rule docs no-invalid-void-type.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 type NoOp = () => void;
 
@@ -40,11 +34,8 @@ let trulyUndefined = void 0;
 async function promiseMeSomething(): Promise<void> {}
 
 type stillVoid = void | never;
-"
-`;
 
-exports[`Validating rule docs no-invalid-void-type.mdx code examples ESLint output 3`] = `
-"Options: { "allowInGenericTypeArguments": false }
+Options: { "allowInGenericTypeArguments": false }
 
 logAndReturn<void>(undefined);
              ~~~~ void is only valid as a return type.
@@ -55,11 +46,8 @@ let voidPromise: Promise<void> = new Promise<void>(() => {});
 let voidMap: Map<string, void> = new Map<string, void>();
                          ~~~~ void is only valid as a return type.
                                                  ~~~~ void is only valid as a return type.
-"
-`;
 
-exports[`Validating rule docs no-invalid-void-type.mdx code examples ESLint output 4`] = `
-"Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
+Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
 
 logAndReturn<void>(undefined);
              ~~~~ void is only valid as a return type or generic type argument.
@@ -70,19 +58,13 @@ type NotAllowedVoid2 = Tx<void>;
                           ~~~~ Tx may not have void as a type argument.
 type NotAllowedVoid3 = Promise<void>;
                                ~~~~ Promise may not have void as a type argument.
-"
-`;
 
-exports[`Validating rule docs no-invalid-void-type.mdx code examples ESLint output 5`] = `
-"Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
+Options: { "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }
 
 type AllowedVoid = Ex.Mx.Tx<void>;
 type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
-"
-`;
 
-exports[`Validating rule docs no-invalid-void-type.mdx code examples ESLint output 6`] = `
-"Options: { "allowAsThisParameter": false }
+Options: { "allowAsThisParameter": false }
 
 function doThing(this: void) {}
                        ~~~~ void is only valid as a return type or generic type argument.
@@ -92,5 +74,3 @@ class Example {
   callback(this: void) {}
                  ~~~~ void is only valid as a return type or generic type argument.
 }
-"
-`;

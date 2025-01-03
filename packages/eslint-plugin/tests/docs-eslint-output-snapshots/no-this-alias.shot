@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 const self = this;
       ~~~~ Unexpected aliasing of 'this' to local variable.
@@ -9,20 +6,14 @@ const self = this;
 setTimeout(function () {
   self.doWork();
 });
-"
-`;
 
-exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 setTimeout(() => {
   this.doWork();
 });
-"
-`;
 
-exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "allowDestructuring": false }
 
 class ComponentLike {
@@ -37,11 +28,8 @@ class ComponentLike {
     console.log(state);
   }
 }
-"
-`;
 
-exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "allowDestructuring": false }
 
 class ComponentLike {
@@ -53,11 +41,8 @@ class ComponentLike {
     console.log(this.state);
   }
 }
-"
-`;
 
-exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "allowedNames": ["self"] }
 
 class Example {
@@ -66,11 +51,8 @@ class Example {
           ~~~~ Unexpected aliasing of 'this' to local variable.
   }
 }
-"
-`;
 
-exports[`Validating rule docs no-this-alias.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "allowedNames": ["self"] }
 
 class Example {
@@ -78,5 +60,3 @@ class Example {
     const self = this;
   }
 }
-"
-`;

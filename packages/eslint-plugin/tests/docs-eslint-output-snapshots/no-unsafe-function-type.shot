@@ -1,27 +1,21 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-unsafe-function-type.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 let noParametersOrReturn: Function;
-                          ~~~~~~~~ The \`Function\` type accepts any function-like value.
+                          ~~~~~~~~ The `Function` type accepts any function-like value.
                                    Prefer explicitly defining any function parameters and return type.
 noParametersOrReturn = () => {};
 
 let stringToNumber: Function;
-                    ~~~~~~~~ The \`Function\` type accepts any function-like value.
+                    ~~~~~~~~ The `Function` type accepts any function-like value.
                              Prefer explicitly defining any function parameters and return type.
 stringToNumber = (text: string) => text.length;
 
 let identity: Function;
-              ~~~~~~~~ The \`Function\` type accepts any function-like value.
+              ~~~~~~~~ The `Function` type accepts any function-like value.
                        Prefer explicitly defining any function parameters and return type.
 identity = value => value;
-"
-`;
 
-exports[`Validating rule docs no-unsafe-function-type.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 let noParametersOrReturn: () => void;
 noParametersOrReturn = () => {};
@@ -31,5 +25,3 @@ stringToNumber = text => text.length;
 
 let identity: <T>(value: T) => T;
 identity = value => value;
-"
-`;
