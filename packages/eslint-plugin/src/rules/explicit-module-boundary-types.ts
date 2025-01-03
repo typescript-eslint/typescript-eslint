@@ -18,7 +18,7 @@ import {
   isTypedFunctionExpression,
 } from '../util/explicitReturnTypeUtils';
 
-type Options = [
+export type Options = [
   {
     allowArgumentsExplicitlyTypedAsAny?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
@@ -27,7 +27,7 @@ type Options = [
     allowTypedFunctionExpressions?: boolean;
   },
 ];
-type MessageIds =
+export type MessageIds =
   | 'anyTypedArg'
   | 'anyTypedArgUnnamed'
   | 'missingArgType'

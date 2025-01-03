@@ -4,13 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowDeclarations?: boolean;
     allowDefinitionFiles?: boolean;
   },
 ];
-type MessageIds = 'moduleSyntaxIsPreferred';
+export type MessageIds = 'moduleSyntaxIsPreferred';
 
 export default createRule<Options, MessageIds>({
   name: 'no-namespace',

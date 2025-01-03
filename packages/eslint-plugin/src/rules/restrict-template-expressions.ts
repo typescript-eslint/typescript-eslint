@@ -56,7 +56,7 @@ const optionTesters = (
   option: `allow${type}` as const,
   tester,
 }));
-type Options = [
+export type Options = [
   {
     allow?: TypeOrValueSpecifier[];
   } & Partial<Record<(typeof optionTesters)[number]['option'], boolean>>,

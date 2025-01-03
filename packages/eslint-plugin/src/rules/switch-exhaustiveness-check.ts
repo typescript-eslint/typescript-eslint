@@ -23,7 +23,7 @@ interface SwitchMetadata {
   readonly symbolName: string | undefined;
 }
 
-type Options = [
+export type Options = [
   {
     /**
      * If `true`, allow `default` cases on switch statements with exhaustive
@@ -54,7 +54,7 @@ type Options = [
   },
 ];
 
-type MessageIds =
+export type MessageIds =
   | 'addMissingCases'
   | 'dangerousDefaultCase'
   | 'switchIsNotExhaustive';
