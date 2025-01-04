@@ -11,14 +11,9 @@ import {
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
-  getValueOfLiteralType,
-  isAlwaysNullish,
   isArrayMethodCallWithPredicate,
   isIdentifier,
   isNullableType,
-  isPossiblyFalsy,
-  isPossiblyNullish,
-  isPossiblyTruthy,
   isTypeAnyType,
   isTypeFlagSet,
   isTypeUnknownType,
@@ -30,7 +25,59 @@ import {
   findTypeGuardAssertedArgument,
 } from '../util/assertionFunctionUtils';
 
+// Truthiness utilities
 // #region
+const valueIsPseudoBigInt = (
+  value: number | string | ts.PseudoBigInt,
+): value is ts.PseudoBigInt => {
+  return typeof value === 'object';
+};
+
+const getValueOfLiteralType = (
+  type: ts.LiteralType,
+): bigint | number | string => {
+  if (valueIsPseudoBigInt(type.value)) {
+    return pseudoBigIntToBigInt(type.value);
+  }
+  return type.value;
+};
+
+const isTruthyLiteral = (type: ts.Type): boolean =>
+  tsutils.isTrueLiteralType(type) ||
+  (type.isLiteral() && !!getValueOfLiteralType(type));
+
+const isPossiblyFalsy = (type: ts.Type): boolean =>
+  tsutils
+    .unionTypeParts(type)
+    // Intersections like `string & {}` can also be possibly falsy,
+    // requiring us to look into the intersection.
+    .flatMap(type => tsutils.intersectionTypeParts(type))
+    // PossiblyFalsy flag includes literal values, so exclude ones that
+    // are definitely truthy
+    .filter(t => !isTruthyLiteral(t))
+    .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
+
+const isPossiblyTruthy = (type: ts.Type): boolean =>
+  tsutils
+    .unionTypeParts(type)
+    .map(type => tsutils.intersectionTypeParts(type))
+    .some(intersectionParts =>
+      // It is possible to define intersections that are always falsy,
+      // like `"" & { __brand: string }`.
+      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+    );
+
+// Nullish utilities
+const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
+const isNullishType = (type: ts.Type): boolean =>
+  isTypeFlagSet(type, nullishFlag);
+
+const isPossiblyNullish = (type: ts.Type): boolean =>
+  tsutils.unionTypeParts(type).some(isNullishType);
+
+const isAlwaysNullish = (type: ts.Type): boolean =>
+  tsutils.unionTypeParts(type).every(isNullishType);
+
 function toStaticValue(
   type: ts.Type,
 ):
@@ -51,6 +98,10 @@ function toStaticValue(
   }
 
   return undefined;
+}
+
+function pseudoBigIntToBigInt(value: ts.PseudoBigInt): bigint {
+  return BigInt((value.negative ? '-' : '') + value.base10Value);
 }
 
 const BOOL_OPERATORS = new Set([
@@ -100,6 +151,7 @@ function booleanComparison(
       return left >= right;
   }
 }
+
 // #endregion
 
 export type Options = [
