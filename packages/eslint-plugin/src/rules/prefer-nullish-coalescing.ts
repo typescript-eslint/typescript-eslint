@@ -12,6 +12,7 @@ import {
   isLogicalOrOperator,
   isNodeEqual,
   isNullLiteral,
+  isPossiblyFalsy,
   isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
@@ -346,8 +347,12 @@ export default createRule<Options, MessageIds>({
         let identifier: TSESTree.Node | undefined;
         let hasUndefinedCheck = false;
         let hasNullCheck = false;
+        let hasTruthinessCheck = false;
 
         if (!operator) {
+          hasUndefinedCheck = true;
+          hasNullCheck = true;
+          hasTruthinessCheck = true;
           if (
             node.test.type === AST_NODE_TYPES.Identifier &&
             isNodeEqual(node.test, node.consequent)
@@ -390,10 +395,8 @@ export default createRule<Options, MessageIds>({
         }
 
         const isFixable = ((): boolean => {
-          const implicitEquality = !operator || operator === '!';
-
           // it is fixable if we check for both null and undefined, or not if neither
-          if (!implicitEquality && hasUndefinedCheck === hasNullCheck) {
+          if (!hasTruthinessCheck && hasUndefinedCheck === hasNullCheck) {
             return hasUndefinedCheck;
           }
 
@@ -410,9 +413,9 @@ export default createRule<Options, MessageIds>({
             return false;
           }
 
-          if (implicitEquality) {
-            const nullishFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
-            return (flags & ~nullishFlags & ts.TypeFlags.PossiblyFalsy) === 0;
+          if (hasTruthinessCheck) {
+            const nonNullishType = checker.getNonNullableType(type);
+            return !isPossiblyFalsy(nonNullishType);
           }
 
           const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
