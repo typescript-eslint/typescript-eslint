@@ -57,23 +57,70 @@ ruleTester.run('prefer-reduce-type-parameter', rule, {
         return a.concat(1);
       }, [] as number[]);
     `,
+    `
+      ['a', 'b'].reduce(
+        (accum, name) => ({
+          ...accum,
+          [name]: true,
+        }),
+        {} as Record<'a' | 'b', boolean>,
+      );
+    `,
+    // Object literal may only specify known properties, and 'c' does not exist in
+    // type 'Record<"a" | "b", boolean>'.
+    `
+      ['a', 'b'].reduce(
+        (accum, name) => ({
+          ...accum,
+          [name]: true,
+        }),
+        { a: true, b: false, c: true } as Record<'a' | 'b', boolean>,
+      );
+    `,
+    // '{}' is assignable to the constraint of type 'T', but 'T' could be
+    // instantiated with a different subtype of constraint 'Record<string, boolean>'.
+    `
+      function f<T extends Record<string, boolean>>() {
+        ['a', 'b'].reduce(
+          (accum, name) => ({
+            ...accum,
+            [name]: true,
+          }),
+          {} as T,
+        );
+      }
+    `,
+    `
+      function f<T>() {
+        ['a', 'b'].reduce(
+          (accum, name) => ({
+            ...accum,
+            [name]: true,
+          }),
+          {} as T,
+        );
+      }
+    `,
+    `
+      ['a', 'b'].reduce((accum, name) => \`\${accum} | hello \${name}!\`);
+    `,
   ],
   invalid: [
     {
       code: `
 declare const arr: string[];
-arr.reduce<string>(acc => acc, arr.shift() as string);
+arr.reduce<string | undefined>(acc => acc, arr.shift() as string | undefined);
       `,
       errors: [
         {
-          column: 32,
+          column: 44,
           line: 3,
           messageId: 'preferTypeParameter',
         },
       ],
       output: `
 declare const arr: string[];
-arr.reduce<string>(acc => acc, arr.shift());
+arr.reduce<string | undefined>(acc => acc, arr.shift());
       `,
     },
     {
@@ -273,6 +320,64 @@ tuple.reduce((a, s) => a.concat(s * 2), [] as number[]);
       output: `
 declare const tuple: [number, number, number] & number[];
 tuple.reduce<number[]>((a, s) => a.concat(s * 2), []);
+      `,
+    },
+    {
+      code: `
+['a', 'b'].reduce(
+  (accum, name) => ({
+    ...accum,
+    [name]: true,
+  }),
+  {} as Record<string, boolean>,
+);
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 7,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: `
+['a', 'b'].reduce<Record<string, boolean>>(
+  (accum, name) => ({
+    ...accum,
+    [name]: true,
+  }),
+  {},
+);
+      `,
+    },
+    {
+      code: `
+function f<T extends Record<string, boolean>>(t: T) {
+  ['a', 'b'].reduce(
+    (accum, name) => ({
+      ...accum,
+      [name]: true,
+    }),
+    t as Record<string, boolean | number>,
+  );
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 8,
+          messageId: 'preferTypeParameter',
+        },
+      ],
+      output: `
+function f<T extends Record<string, boolean>>(t: T) {
+  ['a', 'b'].reduce<Record<string, boolean | number>>(
+    (accum, name) => ({
+      ...accum,
+      [name]: true,
+    }),
+    t,
+  );
+}
       `,
     },
   ],

@@ -4,6 +4,7 @@ import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import * as parser from '@typescript-eslint/parser';
 import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 
+import type { InvalidTestCase, ValidTestCase } from '../src';
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 
 import { RuleTester } from '../src/RuleTester';
@@ -1546,5 +1547,151 @@ describe('RuleTester - multipass fixer', () => {
         });
       }).toThrow('Outputs do not match.');
     });
+  });
+});
+
+describe('RuleTester - run types', () => {
+  beforeAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  const ruleTester = new RuleTester();
+  const ruleModule: RuleModule<
+    'customErrorBar' | 'customErrorFoo',
+    [{ flag: 'bar' | 'foo' }?]
+  > = {
+    create(context) {
+      const [{ flag } = {}] = context.options;
+      return {
+        Identifier(node) {
+          if (node.name === 'foo' && flag === 'foo') {
+            context.report({ messageId: 'customErrorFoo', node });
+          }
+          if (node.name === 'bar' && flag === 'bar') {
+            context.report({ messageId: 'customErrorBar', node });
+          }
+        },
+      };
+    },
+    defaultOptions: [],
+    meta: {
+      messages: {
+        customErrorBar: 'Error custom Bar',
+        customErrorFoo: 'Error custom Foo',
+      },
+      schema: [
+        {
+          additionalProperties: false,
+          properties: {
+            flag: { enum: ['foo', 'bar'], type: 'string' },
+          },
+          type: 'object',
+        },
+      ],
+      type: 'suggestion',
+    },
+  };
+
+  describe('infer from `rule` parameter', () => {
+    it('should correctly infer `options` or `messageIds` types from the `rule` paramter', () => {
+      expect(() =>
+        ruleTester.run('my-rule', ruleModule, {
+          invalid: [],
+          valid: [{ code: 'test', options: [{ flag: 'bar' }] }],
+        }),
+      ).not.toThrow();
+
+      expect(() =>
+        ruleTester.run('my-rule', ruleModule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'customErrorFoo' }],
+              options: [{ flag: 'foo' }],
+            },
+            {
+              code: 'bar',
+              errors: [{ messageId: 'customErrorBar' }],
+              options: [{ flag: 'bar' }],
+            },
+          ],
+          valid: [],
+        }),
+      ).not.toThrow();
+    });
+
+    it('should throw both runtime and type error when `options` or `messageId` are not assignable to rule inferred types', () => {
+      expect(() =>
+        ruleTester.run('my-rule', ruleModule, {
+          invalid: [
+            {
+              code: 'foo',
+              errors: [{ messageId: 'customErrorFoo' }],
+              // @ts-expect-error - `flags` is specified inside options
+              options: [{ flags: 'foo' }],
+            },
+            {
+              code: 'bar',
+              options: [{ flag: 'bar' }],
+              // @ts-expect-error - `customErrorBaz` is not assignable to `customErrorFoo` | `customErrorBar`
+              errors: [{ messageId: 'customErrorBaz' }],
+            },
+          ],
+          valid: [
+            // @ts-expect-error - `bar2` is not assignable to `foo` | `bar`
+            { code: 'test', options: [{ flag: 'bar2' }] },
+          ],
+        }),
+      ).toThrow();
+    });
+  });
+
+  it('should not infer types from functions and if the signature is not compatible should report a type error', () => {
+    function generateValidTestCase(): ValidTestCase<[{ flag: 'foo' }]> {
+      return { code: 'valid' };
+    }
+    function generateIncompatibleValidTestCase(): ValidTestCase<unknown[]> {
+      return { code: 'validIncompatible' };
+    }
+
+    function generateInvalidTestCase(): InvalidTestCase<
+      'customErrorBar',
+      [{ flag: 'bar' }]
+    > {
+      return {
+        code: 'bar',
+        errors: [{ messageId: 'customErrorBar' }],
+        options: [{ flag: 'bar' }],
+      };
+    }
+    function generateIncompatibleInvalidTestCase(): InvalidTestCase<
+      'customErrorBar' | 'customErrorBaz',
+      unknown[]
+    > {
+      return {
+        code: 'let bar',
+        errors: [{ messageId: 'customErrorBar' }],
+        options: [{ flag: 'bar' }],
+      };
+    }
+
+    expect(() =>
+      ruleTester.run('my-rule', ruleModule, {
+        invalid: [
+          generateInvalidTestCase(),
+
+          // @ts-expect-error the InvalidTestCase returned by this function
+          // is not assignable to the one of the rule
+          generateIncompatibleInvalidTestCase(),
+        ],
+        valid: [
+          generateValidTestCase(),
+
+          // @ts-expect-error the ValidTestCase returned by this function
+          // is not assignable to the one of the rule
+          generateIncompatibleValidTestCase(),
+        ],
+      }),
+    ).not.toThrow();
   });
 });

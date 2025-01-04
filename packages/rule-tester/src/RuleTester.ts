@@ -2,7 +2,7 @@
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/lib/rule-tester/rule-tester.js
 
 import type * as ParserType from '@typescript-eslint/parser';
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree, TSUtils } from '@typescript-eslint/utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
@@ -209,7 +209,7 @@ export class RuleTester extends TestFramework {
     // path. For any other path, which would just be a plain
     // file name (`foo.ts`), don't change the base path.
     if (
-      filename !== undefined &&
+      filename != null &&
       (filename.startsWith('/') || filename.startsWith('..'))
     ) {
       basePath = path.parse(
@@ -482,7 +482,7 @@ export class RuleTester extends TestFramework {
   run<MessageIds extends string, Options extends readonly unknown[]>(
     ruleName: string,
     rule: RuleModule<MessageIds, Options>,
-    test: RunTests<MessageIds, Options>,
+    test: RunTests<TSUtils.NoInfer<MessageIds>, TSUtils.NoInfer<Options>>,
   ): void {
     const constructor = this.constructor as typeof RuleTester;
 
@@ -537,7 +537,7 @@ export class RuleTester extends TestFramework {
     const normalizedTests = this.#normalizeTests(test);
 
     function getTestMethod(
-      test: ValidTestCase<Options>,
+      test: ValidTestCase<TSUtils.NoInfer<Options>>,
     ): 'it' | 'itOnly' | 'itSkip' {
       if (test.skip) {
         return 'itSkip';
@@ -594,7 +594,8 @@ export class RuleTester extends TestFramework {
                 this.#testInvalidTemplate(
                   ruleName,
                   rule,
-                  invalid,
+                  // no need to pass no infer type parameter down to private methods
+                  invalid as InvalidTestCase<MessageIds, Options>,
                   seenInvalidTestCases,
                 );
               } finally {
@@ -1010,7 +1011,7 @@ export class RuleTester extends TestFramework {
           // Just an error message.
           assertMessageMatches(message.message, error);
           assert.ok(
-            message.suggestions === undefined,
+            message.suggestions == null,
             `Error at index ${i} has suggestions. Please convert the test error into an object and specify 'suggestions' property on it to test suggestions.`,
           );
         } else if (typeof error === 'object' && error != null) {
@@ -1145,7 +1146,7 @@ export class RuleTester extends TestFramework {
             const expectsSuggestions = Array.isArray(error.suggestions)
               ? error.suggestions.length > 0
               : Boolean(error.suggestions);
-            const hasSuggestions = message.suggestions !== undefined;
+            const hasSuggestions = message.suggestions != null;
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const messageSuggestions = message.suggestions!;
 

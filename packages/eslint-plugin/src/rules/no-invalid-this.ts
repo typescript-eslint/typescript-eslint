@@ -15,10 +15,13 @@ const baseRule = getESLintCoreRule('no-invalid-this');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [{ capIsConstructor: true }];
+
 export default createRule<Options, MessageIds>({
   name: 'no-invalid-this',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description:
         'Disallow `this` keywords outside of classes or class-like objects',
@@ -28,7 +31,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  defaultOptions: [{ capIsConstructor: true }],
+  defaultOptions,
   create(context) {
     const rules = baseRule.create(context);
 

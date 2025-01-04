@@ -22,9 +22,9 @@ import tseslint from 'typescript-eslint';
 export default tseslint.config(
   eslint.configs.recommended,
   // Remove this line
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
   // Added lines start
-  ...tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -104,12 +104,12 @@ If you enabled the [`strict` shared config](../users/Shared_Configurations.mdx#s
 export default tseslint.config(
   eslint.configs.recommended,
   // Removed lines start
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
+  tseslint.configs.strict,
+  tseslint.configs.stylistic,
   // Removed lines end
   // Added lines start
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   // Added lines end
   // ...
 );
@@ -205,8 +205,8 @@ You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configur
 ```js title="eslint.config.mjs"
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.recommendedTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
+  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -218,7 +218,7 @@ export default tseslint.config(
   // Added lines start
   {
     files: ['**/*.js'],
-    ...tseslint.configs.disableTypeChecked,
+    extends: [tseslint.configs.disableTypeChecked],
   },
   // Added lines end
 );

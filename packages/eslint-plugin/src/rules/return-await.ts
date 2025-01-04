@@ -1,17 +1,16 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  Awaitable,
   createRule,
   getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
-  isTypeAnyType,
-  isTypeUnknownType,
+  needsToBeAwaited,
   nullThrows,
 } from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
@@ -38,7 +37,6 @@ export default createRule({
     type: 'problem',
     docs: {
       description: 'Enforce consistent awaiting of returned promises',
-      extendsBaseRule: 'no-return-await',
       recommended: {
         strict: ['error-handling-correctness-only'],
       },
@@ -304,14 +302,13 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tsutils.isThenableType(checker, expression, type);
+      const certainty = needsToBeAwaited(checker, expression, type);
 
       // handle awaited _non_thenables
 
-      if (!isThenable) {
+      if (certainty !== Awaitable.Always) {
         if (isAwait) {
-          // any/unknown could be thenable; do not enforce whether they are `await`ed.
-          if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+          if (certainty === Awaitable.May) {
             return;
           }
           context.report({

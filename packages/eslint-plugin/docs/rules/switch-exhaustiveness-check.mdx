@@ -78,6 +78,27 @@ switch (literal) {
 }
 ```
 
+### `defaultCaseCommentPattern`
+
+{/* insert option description */}
+
+Default: `/^no default$/iu`.
+
+It can sometimes be preferable to omit the default case for only some switch statements.
+For those situations, this rule can be given a pattern for a comment that's allowed to take the place of a `default:`.
+
+Examples of additional **correct** code with `{ defaultCaseCommentPattern: "^skip\\sdefault" }`:
+
+```ts option='{ "defaultCaseCommentPattern": "^skip default" }' showPlaygroundButton
+declare const value: 'a' | 'b';
+
+switch (value) {
+  case 'a':
+    break;
+  // skip default
+}
+```
+
 ## Examples
 
 When the switch doesn't have exhaustive cases, either filling them all out or adding a default (if you have `considerDefaultExhaustiveForUnions` enabled) will address the rule's complaint.

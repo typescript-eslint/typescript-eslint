@@ -264,7 +264,9 @@ export default createRule<Options, MessageIds>({
           node.id?.type === AST_NODE_TYPES.Identifier &&
           options.allowedNames.includes(node.id.name)
         );
-      } else if (
+      }
+
+      if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (node.type === AST_NODE_TYPES.Property && node.method) ||

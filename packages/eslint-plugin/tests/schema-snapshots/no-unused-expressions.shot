@@ -9,19 +9,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowShortCircuit": {
-        "default": false,
         "type": "boolean"
       },
       "allowTaggedTemplates": {
-        "default": false,
         "type": "boolean"
       },
       "allowTernary": {
-        "default": false,
         "type": "boolean"
       },
       "enforceForJSX": {
-        "default": false,
         "type": "boolean"
       }
     },

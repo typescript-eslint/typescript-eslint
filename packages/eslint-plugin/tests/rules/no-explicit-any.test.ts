@@ -1223,7 +1223,7 @@ const test = <T extends Partial<never>>() => {};
       {
         code,
         errors: testCase.errors.map(err => {
-          if (err.line === undefined) {
+          if (err.line == null) {
             return err;
           }
 
