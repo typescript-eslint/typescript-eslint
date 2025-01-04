@@ -125,6 +125,454 @@ x === null ? x : y;
 declare let x: string | null | unknown;
 x === null ? x : y;
       `,
+      `
+declare let x: string;
+x ? x : y;
+      `,
+      `
+declare let x: string;
+!x ? y : x;
+      `,
+      `
+declare let x: string | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object;
+x ? x : y;
+      `,
+      `
+declare let x: string | object;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: number;
+x ? x : y;
+      `,
+      `
+declare let x: number;
+!x ? y : x;
+      `,
+      `
+declare let x: number | null;
+x ? x : y;
+      `,
+      `
+declare let x: number | null;
+!x ? y : x;
+      `,
+      `
+declare let x: number | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: number | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: number | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint;
+x ? x : y;
+      `,
+      `
+declare let x: bigint;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | null;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | null;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean;
+x ? x : y;
+      `,
+      `
+declare let x: boolean;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | null;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | null;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any;
+x ? x : y;
+      `,
+      `
+declare let x: any;
+!x ? y : x;
+      `,
+      `
+declare let x: any | null;
+x ? x : y;
+      `,
+      `
+declare let x: any | null;
+!x ? y : x;
+      `,
+      `
+declare let x: any | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown;
+x ? x : y;
+      `,
+      `
+declare let x: unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: any | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: any | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any;
+x ? x : y;
+      `,
+      `
+declare let x: string | any;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | any | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | any | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any;
+x ? x : y;
+      `,
+      `
+declare let x: object | any;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | unknown | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | any | unknown | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | any | unknown | null | undefined;
+!x ? y : x;
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -786,6 +1234,126 @@ x === null ? y : x;
       `
 declare let x: string | null;
 null === x ? y : x;
+      `,
+      `
+declare let x: object;
+x ? x : y;
+      `,
+      `
+declare let x: object;
+!x ? y : x;
+      `,
+      `
+declare let x: object | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: Function;
+x ? x : y;
+      `,
+      `
+declare let x: Function;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | null;
+x ? x : y;
+      `,
+      `
+declare let x: Function | null;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: Function | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: Function | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string;
+x ? x : y;
+      `,
+      `
+declare let x: () => string;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | null;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | null;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | null | undefined;
+!x ? y : x;
       `,
     ].map(code => ({
       code,
@@ -2328,6 +2896,69 @@ if (+(a ?? b)) {
           ignoreConditionalTests: true,
         },
       ],
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox || getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ? defaultBox : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
     },
   ],
 });
