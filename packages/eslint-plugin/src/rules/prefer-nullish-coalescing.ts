@@ -19,7 +19,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-const isIdentifierOrMemberExpression = (type: TSESTree.AST_NODE_TYPES) =>
+const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
   [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
 
 export type Options = [
@@ -358,14 +358,14 @@ export default createRule<Options, MessageIds>({
           hasTruthinessCheck = true;
 
           if (
-            isIdentifierOrMemberExpression(node.test.type) &&
+            isIdentifierOrMemberExpressionType(node.test.type) &&
             isNodeEqual(node.test, node.consequent)
           ) {
             identifier = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
             node.test.operator === '!' &&
-            isIdentifierOrMemberExpression(node.test.argument.type) &&
+            isIdentifierOrMemberExpressionType(node.test.argument.type) &&
             isNodeEqual(node.test.argument, node.alternate)
           ) {
             identifier = node.test.argument;
