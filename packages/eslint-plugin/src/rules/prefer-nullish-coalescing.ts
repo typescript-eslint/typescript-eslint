@@ -366,8 +366,6 @@ export default createRule<Options, MessageIds>({
           ) {
             identifier = node.test.argument;
             operator = '!';
-          } else {
-            return;
           }
         } else {
           // we check that the test only contains null, undefined and the identifier
