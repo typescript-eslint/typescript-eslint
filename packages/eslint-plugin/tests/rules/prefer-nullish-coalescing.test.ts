@@ -301,6 +301,10 @@ x ? x : y;
 declare let x: unknown;
 !x ? y : x;
       `,
+      `
+declare let x: { n: string };
+x.n ? x.n : y;
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -2624,6 +2628,58 @@ if (+(a ?? b)) {
           ignoreConditionalTests: true,
         },
       ],
+    },
+    {
+      code: `
+declare const x: { n: object };
+declare const y: any;
+
+x.n ? x.n : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: { n: object };
+declare const y: any;
+
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+declare const x: { n: object };
+declare const y: any;
+
+!x.n ? y : x.n;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const x: { n: object };
+declare const y: any;
+
+x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
     },
     {
       code: `

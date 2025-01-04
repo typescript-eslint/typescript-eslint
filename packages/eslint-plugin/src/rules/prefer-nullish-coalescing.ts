@@ -19,6 +19,9 @@ import {
   NullThrowsReasons,
 } from '../util';
 
+const isIdentifierOrMemberExpression = (type: TSESTree.AST_NODE_TYPES) =>
+  [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
+
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
@@ -353,15 +356,16 @@ export default createRule<Options, MessageIds>({
           hasUndefinedCheck = true;
           hasNullCheck = true;
           hasTruthinessCheck = true;
+
           if (
-            node.test.type === AST_NODE_TYPES.Identifier &&
+            isIdentifierOrMemberExpression(node.test.type) &&
             isNodeEqual(node.test, node.consequent)
           ) {
             identifier = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
             node.test.operator === '!' &&
-            node.test.argument.type === AST_NODE_TYPES.Identifier &&
+            isIdentifierOrMemberExpression(node.test.argument.type) &&
             isNodeEqual(node.test.argument, node.alternate)
           ) {
             identifier = node.test.argument;
