@@ -446,8 +446,8 @@ export default createRule<Options, MessageIds>({
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '==' || operator === '!'
-                      ? [node.alternate, node.consequent]
-                      : [node.consequent, node.alternate];
+                      ? [identifier, node.consequent]
+                      : [identifier, node.alternate];
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
