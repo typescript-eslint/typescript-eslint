@@ -497,8 +497,8 @@ class Referencer extends Visitor {
     this.visit(node.value);
   }
 
-  protected JSXClosingElement(): void {
-    // should not be counted as a reference
+  protected JSXClosingElement(node: TSESTree.JSXClosingElement): void {
+    this.visit(node.name);
   }
 
   protected JSXFragment(node: TSESTree.JSXFragment): void {

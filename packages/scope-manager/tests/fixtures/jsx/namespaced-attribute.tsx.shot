@@ -186,6 +186,14 @@ ScopeManager {
       references: [
         Reference$6,
         Reference$7,
+        Reference$8 {
+          identifier: JSXIdentifier$11,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: null,
+        },
       ],
       set: Map {
         "arguments" => Variable$7,
