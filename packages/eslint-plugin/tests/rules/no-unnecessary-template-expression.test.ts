@@ -1,6 +1,10 @@
+import type { ParserServicesWithTypeInformation } from '@typescript-eslint/parser';
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+import type { TSESTree } from '@typescript-eslint/utils';
 
+import { parseForESLint } from '@typescript-eslint/parser';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-template-expression';
 import { getFixturesRootDir } from '../RuleTester';
@@ -972,6 +976,104 @@ describe('fixer should not change runtime value', () => {
   }
 });
 
+const invalidTypeCases: readonly InvalidTestCase<
+  'noUnnecessaryTemplateExpression',
+  []
+>[] = [
+  {
+    code: 'type Foo = `${1}`;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+    output: 'type Foo = `1`;',
+  },
+  {
+    code: 'type Foo = `${"foo"}`;',
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+    output: 'type Foo = "foo";',
+  },
+  {
+    code: `
+type Foo = 'A' | 'B';
+type Bar = \`\${Foo}\`;
+`,
+    errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+    output: `
+type Foo = 'A' | 'B';
+type Bar = Foo;
+`,
+  },
+  {
+    code: `
+type Foo = 'A' | 'B';
+type Bar = \`\${\`\${Foo}\`}\`;
+`,
+    errors: [
+      { messageId: 'noUnnecessaryTemplateExpression' },
+      { messageId: 'noUnnecessaryTemplateExpression' },
+    ],
+    output: [
+      `
+type Foo = 'A' | 'B';
+type Bar = \`\${Foo}\`;
+`,
+
+      `
+type Foo = 'A' | 'B';
+type Bar = Foo;
+`,
+    ],
+  },
+];
+
+describe('fixer should not change type', () => {
+  const options = {
+    filePath: path.join(rootPath, 'file.ts'),
+    project: './tsconfig.json',
+    tsconfigRootDir: rootPath,
+  };
+
+  for (const { code, output } of invalidTypeCases) {
+    if (!output) {
+      continue;
+    }
+
+    test(code, () => {
+      const { ast: inputAst, services: inputServices } = parseForESLint(
+        code,
+        options,
+      );
+
+      const lastOutput = Array.isArray(output) ? output.at(-1)! : output;
+      const { ast: outputAst, services: outputServices } = parseForESLint(
+        lastOutput,
+        options,
+      );
+
+      const inputDeclaration = inputAst.body.at(
+        -1,
+      ) as TSESTree.TSTypeAliasDeclaration;
+
+      const outputDeclaration = outputAst.body.at(
+        -1,
+      ) as TSESTree.TSTypeAliasDeclaration;
+
+      const inputType = (
+        inputServices as ParserServicesWithTypeInformation
+      ).getTypeAtLocation(inputDeclaration.id);
+
+      const outputType = (
+        outputServices as ParserServicesWithTypeInformation
+      ).getTypeAtLocation(outputDeclaration.id);
+
+      const inputChecker = inputServices.program!.getTypeChecker();
+      const outputChecker = outputServices.program!.getTypeChecker();
+
+      expect(inputChecker.typeToString(inputType)).toBe(
+        outputChecker.typeToString(outputType),
+      );
+    });
+  }
+});
+
 ruleTester.run('no-unnecessary-template-expression', rule, {
   valid: [
     "const string = 'a';",
@@ -1147,10 +1249,25 @@ this code has trailing whitespace: \${'    '}
         return \`\${input}\`;
       }
     `,
+    `
+type FooBarBaz = \`foo\${/* comment */ 'bar'}"baz"\`;
+    `,
+    `
+enum Foo {
+  A = 'A',
+  B = 'B',
+}
+type Foos = \`\${Foo}\`;
+    `,
+    `
+type Foo = 'A' | 'B';
+type Bar = \`foo\${Foo}foo\`;
+    `,
   ],
 
   invalid: [
     ...invalidCases,
+    ...invalidTypeCases,
     {
       code: `
         function func<T extends string>(arg: T) {
@@ -1263,6 +1380,24 @@ declare const nested: string, interpolation: string;
         },
       ],
       output: "true ? ('test' || '').trim() : undefined;",
+    },
+    {
+      code: "type Foo = `${'foo'}`;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: "type Foo = 'foo';",
+    },
+    {
+      code: "type FooBarBaz = `foo${'bar'}baz`;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: 'type FooBarBaz = `foobarbaz`;',
     },
   ],
 });
