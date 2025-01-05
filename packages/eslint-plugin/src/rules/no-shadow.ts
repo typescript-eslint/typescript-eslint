@@ -272,9 +272,8 @@ export default createRule<Options, MessageIds>({
           scope,
           firstDefinition.parent.source.value,
         ) &&
-        secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-        secondDefinition.node.parent.type ===
-          AST_NODE_TYPES.ExportNamedDeclaration
+        (secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
+          secondDefinition.node.type === AST_NODE_TYPES.TSTypeAliasDeclaration)
       );
     }
 
