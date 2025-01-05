@@ -224,16 +224,12 @@ export default createRule<Options, MessageIds>({
         const castType = services.getTypeAtLocation(node);
         const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
-        const isAssertionTypeTemplateLiteral =
-          node.typeAnnotation.type === AST_NODE_TYPES.TSTemplateLiteralType;
 
         const isAssertionTypeUnionStringlike =
           castType.isUnion() && getTypeName(checker, castType) === 'string';
 
         const wouldSameTypeBeInferred =
-          castType.isLiteral() ||
-          isAssertionTypeTemplateLiteral ||
-          isAssertionTypeUnionStringlike
+          castType.isLiteral() || isAssertionTypeUnionStringlike
             ? isImplicitlyNarrowedConstDeclaration(node)
             : !isConstAssertion(node.typeAnnotation);
 
