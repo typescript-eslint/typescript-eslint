@@ -4,13 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowDestructuring?: boolean;
     allowedNames?: string[];
   },
 ];
-type MessageIds = 'thisAssignment' | 'thisDestructure';
+export type MessageIds = 'thisAssignment' | 'thisDestructure';
 
 export default createRule<Options, MessageIds>({
   name: 'no-this-alias',

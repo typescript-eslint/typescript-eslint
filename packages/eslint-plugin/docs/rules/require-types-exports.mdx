@@ -1,0 +1,87 @@
+---
+description: 'Require exporting types that are used in exported entities.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/require-types-exports** for documentation.
+
+When exporting entities from a file, it is often useful to export also all the types that are used in their declarations.
+Doing so ensures consumers of the file can directly import and use those types when using those entities.
+
+Otherwise, consumers may have to use utility types like [`Parameters`](https://www.typescriptlang.org/docs/handbook/utility-types.html#parameterstype) or [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype) in order to extract the types from the entities.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+interface Fruit {
+  name: string;
+  color: string;
+}
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
+```
+
+```ts
+const fruits = {
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
+```
+
+```ts
+enum Color {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+
+export declare function getRandomColor(): Color;
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+export interface Fruit {
+  name: string;
+  color: string;
+}
+
+export const getFruitName = (fruit: Fruit) => fruit.name;
+```
+
+```ts
+export const fruits = {
+  apple: '🍏',
+  banana: '🍌',
+};
+
+export const getFruit = (key: keyof typeof fruits) => fruits[key];
+```
+
+```ts
+export enum Color {
+  Red = 'red',
+  Green = 'green',
+  Blue = 'blue',
+}
+
+export declare function getRandomColor(): Color;
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+If your files utilize many complex self-referential types that you don't want external consumers to reference, you may want to avoid this rule for those cases.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

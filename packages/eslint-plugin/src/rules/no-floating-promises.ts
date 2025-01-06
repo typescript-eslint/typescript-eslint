@@ -18,7 +18,7 @@ import {
   typeMatchesSomeSpecifier,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
@@ -28,7 +28,7 @@ type Options = [
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
   | 'floatingFixAwait'
   | 'floatingFixVoid'

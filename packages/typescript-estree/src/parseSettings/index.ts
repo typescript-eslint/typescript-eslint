@@ -5,7 +5,7 @@ import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
 
-type DebugModule = 'eslint' | 'typescript' | 'typescript-eslint';
+export type DebugModule = 'eslint' | 'typescript' | 'typescript-eslint';
 
 // Workaround to support new TS version features for consumers on old TS versions
 declare module 'typescript' {

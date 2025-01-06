@@ -5,7 +5,7 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferExpectErrorComment';
+export type MessageIds = 'preferExpectErrorComment';
 
 export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',

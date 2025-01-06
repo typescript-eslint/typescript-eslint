@@ -296,7 +296,7 @@ export function getOperatorPrecedenceForNode(
   }
 }
 
-type TSESTreeOperatorKind =
+export type TSESTreeOperatorKind =
   | ValueOf<TSESTree.BinaryOperatorToText>
   | ValueOf<TSESTree.PunctuatorTokenToText>;
 

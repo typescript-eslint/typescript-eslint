@@ -2,7 +2,7 @@ import type { InvalidTestCase } from './InvalidTestCase';
 import type { RuleTesterConfig } from './RuleTesterConfig';
 import type { ValidTestCase } from './ValidTestCase';
 
-type Mutable<T> = {
+export type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 export type TesterConfigWithDefaults = Mutable<

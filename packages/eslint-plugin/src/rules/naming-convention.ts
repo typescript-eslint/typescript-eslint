@@ -21,7 +21,7 @@ import {
 } from '../util';
 import { Modifiers, parseOptions, SCHEMA } from './naming-convention-utils';
 
-type MessageIds =
+export type MessageIds =
   | 'doesNotMatchFormat'
   | 'doesNotMatchFormatTrimmed'
   | 'missingAffix'
@@ -32,7 +32,7 @@ type MessageIds =
 // Note that this intentionally does not strictly type the modifiers/types properties.
 // This is because doing so creates a huge headache, as the rule's code doesn't need to care.
 // The JSON Schema strictly types these properties, so we know the user won't input invalid config.
-type Options = Selector[];
+export type Options = Selector[];
 
 // This essentially mirrors ESLint's `camelcase` rule
 // note that that rule ignores leading and trailing underscores and only checks those in the middle of a variable name
@@ -789,5 +789,3 @@ function requiresQuoting(
       : `${node.value}`;
   return _requiresQuoting(name, target);
 }
-
-export type { MessageIds, Options };

@@ -11,7 +11,7 @@ const isAtLeast50 = typescriptVersionIsAtLeast['5.0'];
 
 const SyntaxKind = ts.SyntaxKind;
 
-type LogicalOperatorKind =
+export type LogicalOperatorKind =
   | ts.SyntaxKind.AmpersandAmpersandToken
   | ts.SyntaxKind.BarBarToken
   | ts.SyntaxKind.QuestionQuestionToken;
@@ -31,7 +31,7 @@ interface TokenToText
   [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
-type AssignmentOperatorKind = keyof TSESTree.AssignmentOperatorToText;
+export type AssignmentOperatorKind = keyof TSESTree.AssignmentOperatorToText;
 const ASSIGNMENT_OPERATORS: ReadonlySet<AssignmentOperatorKind> = new Set([
   ts.SyntaxKind.AmpersandAmpersandEqualsToken,
   ts.SyntaxKind.AmpersandEqualsToken,
@@ -51,7 +51,7 @@ const ASSIGNMENT_OPERATORS: ReadonlySet<AssignmentOperatorKind> = new Set([
   ts.SyntaxKind.SlashEqualsToken,
 ]);
 
-type BinaryOperatorKind = keyof TSESTree.BinaryOperatorToText;
+export type BinaryOperatorKind = keyof TSESTree.BinaryOperatorToText;
 const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
   SyntaxKind.AmpersandAmpersandToken,
   SyntaxKind.AmpersandToken,
@@ -79,7 +79,7 @@ const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
   SyntaxKind.SlashToken,
 ]);
 
-type DeclarationKind = TSESTree.VariableDeclaration['kind'];
+export type DeclarationKind = TSESTree.VariableDeclaration['kind'];
 
 /**
  * Returns true if the given ts.Token is the assignment operator
@@ -107,9 +107,8 @@ export function isESTreeBinaryOperator(
   return (BINARY_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(operator.kind);
 }
 
-type TokenForTokenKind<T extends ts.SyntaxKind> = T extends keyof TokenToText
-  ? TokenToText[T]
-  : string | undefined;
+export type TokenForTokenKind<T extends ts.SyntaxKind> =
+  T extends keyof TokenToText ? TokenToText[T] : string | undefined;
 /**
  * Returns the string form of the given TSToken SyntaxKind
  */

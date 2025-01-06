@@ -11,7 +11,7 @@ import {
   isTypeAnyType,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'unsafeCall'
   | 'unsafeCallThis'
   | 'unsafeNew'

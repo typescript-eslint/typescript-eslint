@@ -9,7 +9,7 @@ import {
   getStaticMemberAccessValue,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     enforceForClassFields?: boolean;
     exceptMethods?: string[];
@@ -17,7 +17,7 @@ type Options = [
     ignoreOverrideMethods?: boolean;
   },
 ];
-type MessageIds = 'missingThis';
+export type MessageIds = 'missingThis';
 
 export default createRule<Options, MessageIds>({
   name: 'class-methods-use-this',

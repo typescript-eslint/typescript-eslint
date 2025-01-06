@@ -4,7 +4,7 @@ import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 
 import { hasOwnProperty } from './hasOwnProperty';
 
-type LintMessage = Linter.LintMessage | Linter.LintSuggestion;
+export type LintMessage = Linter.LintMessage | Linter.LintSuggestion;
 type LintMessageWithFix = LintMessage & Required<Pick<LintMessage, 'fix'>>;
 
 const BOM = '\uFEFF';

@@ -16,7 +16,7 @@ import {
 // Rule Definition
 //------------------------------------------------------------------------------
 
-interface Config {
+export interface Config {
   ignoreStatic: boolean;
 }
 
