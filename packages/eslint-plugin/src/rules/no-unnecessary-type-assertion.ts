@@ -2,7 +2,11 @@ import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { ReportFixFunction } from '@typescript-eslint/utils/ts-eslint';
 
-import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  ASTUtils,
+} from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -208,6 +212,53 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function isFreshLiteralFreeExpression(node: TSESTree.Expression): boolean {
+      if (
+        node.type === AST_NODE_TYPES.TemplateLiteral ||
+        node.type === AST_NODE_TYPES.Literal
+      ) {
+        return false;
+      }
+
+      if (node.type === AST_NODE_TYPES.Identifier) {
+        // It seems fresh literals have a slightly different type at their
+        // definition rather than their reference.
+        const scope = context.sourceCode.getScope(node);
+        const superVar = ASTUtils.findVariable(scope, node.name);
+
+        if (superVar) {
+          const definition = superVar.defs.at(0);
+
+          if (definition) {
+            return !isFreshLiteralType(
+              services.getTypeAtLocation(definition.node),
+            );
+          }
+        }
+      }
+
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
+        return (
+          isFreshLiteralFreeExpression(node.alternate) &&
+          isFreshLiteralFreeExpression(node.consequent)
+        );
+      }
+
+      return true;
+    }
+
+    function wouldSameLiteralTypeBeInferred(
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+    ): boolean {
+      // Literal widening only happens to literal types that originate from
+      // expressions, not types.
+      if (isFreshLiteralFreeExpression(node.expression)) {
+        return true;
+      }
+
+      return isImplicitlyNarrowedConstDeclaration(node);
+    }
+
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -224,8 +275,13 @@ export default createRule<Options, MessageIds>({
         const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
-        const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isImplicitlyNarrowedConstDeclaration(node)
+        const isLiteral =
+          castType.isLiteral() ||
+          (tsutils.isUnionType(castType) &&
+            tsutils.unionTypeParts(castType).every(part => part.isLiteral()));
+
+        const wouldSameTypeBeInferred = isLiteral
+          ? wouldSameLiteralTypeBeInferred(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
@@ -387,3 +443,8 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+// https://github.com/microsoft/TypeScript/blob/21c1a61b49082915f93e3327dad0d73205cf4273/src/compiler/checker.ts/#L19679-L19681
+function isFreshLiteralType(type: ts.Type) {
+  return tsutils.isFreshableType(type) && type.freshType === type;
+}
