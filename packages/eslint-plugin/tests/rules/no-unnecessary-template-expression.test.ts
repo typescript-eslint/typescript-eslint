@@ -1,14 +1,9 @@
-import type { ParserServicesWithTypeInformation } from '@typescript-eslint/parser';
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
-import type { TSESTree } from '@typescript-eslint/utils';
 
-import { parseForESLint } from '@typescript-eslint/parser';
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import path from 'node:path';
 
 import rule from '../../src/rules/no-unnecessary-template-expression';
 import { getFixturesRootDir } from '../RuleTester';
-import { TypeFormatFlags } from 'typescript';
 
 const rootPath = getFixturesRootDir();
 
