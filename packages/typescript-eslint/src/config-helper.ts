@@ -80,7 +80,7 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
  *
  * export default tseslint.config(
  *   eslint.configs.recommended,
- *   ...tseslint.configs.recommended,
+ *   tseslint.configs.recommended,
  *   {
  *     rules: {
  *       '@typescript-eslint/array-type': 'error',
