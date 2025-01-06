@@ -1,0 +1,46 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.build.tsbuildinfo",
+    "emitDeclarationOnly": false,
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowJs": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "resolveJsonModule": true,
+    "paths": {
+      "@site/*": ["./*"]
+    },
+    "lib": ["DOM", "ES2023"],
+    "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
+  },
+  "include": [
+    "src",
+    "tests",
+    "tools",
+    "plugins",
+    "typings",
+    "sidebars/*.js",
+    "./*.mts",
+    "./*.ts",
+    "data/*.json"
+  ],
+  "references": [
+    { "path": "../website-eslint/tsconfig.build.json" },
+    { "path": "../rule-tester/tsconfig.build.json" },
+    { "path": "../type-utils/tsconfig.build.json" },
+    { "path": "../rule-schema-to-typescript-types/tsconfig.build.json" },
+    { "path": "../utils/tsconfig.build.json" },
+    { "path": "../eslint-plugin/tsconfig.build.json" },
+    { "path": "../visitor-keys/tsconfig.build.json" },
+    { "path": "../ast-spec/tsconfig.build.json" },
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../typescript-estree/tsconfig.build.json" },
+    { "path": "../scope-manager/tsconfig.build.json" },
+    { "path": "../parser/tsconfig.build.json" }
+  ]
+}

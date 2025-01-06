@@ -22,7 +22,7 @@
     "serve": "docusaurus serve",
     "start": "npx nx start",
     "swizzle": "docusaurus swizzle",
-    "typecheck": "tsc -b ./tsconfig.json"
+    "_typecheck": "npx nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",
