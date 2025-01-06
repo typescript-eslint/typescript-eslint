@@ -13,7 +13,6 @@ import {
   getDeclaration,
   getModifiers,
   getParserServices,
-  getTypeName,
   isNullableType,
   isTypeFlagSet,
   nullThrows,
@@ -225,13 +224,9 @@ export default createRule<Options, MessageIds>({
         const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
-        const isAssertionTypeUnionStringlike =
-          castType.isUnion() && getTypeName(checker, castType) === 'string';
-
-        const wouldSameTypeBeInferred =
-          castType.isLiteral() || isAssertionTypeUnionStringlike
-            ? isImplicitlyNarrowedConstDeclaration(node)
-            : !isConstAssertion(node.typeAnnotation);
+        const wouldSameTypeBeInferred = castType.isLiteral()
+          ? isImplicitlyNarrowedConstDeclaration(node)
+          : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
