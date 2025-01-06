@@ -1148,6 +1148,40 @@ var x = 1;
     },
     {
       code: `
+type S = 10;
+
+class T {
+  readonly a = 'a' as const;
+  readonly b = 3 as 3;
+  readonly c = 10 as S;
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+        {
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+        {
+          line: 7,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type S = 10;
+
+class T {
+  readonly a = 'a';
+  readonly b = 3;
+  readonly c = 10;
+}
+      `,
+    },
+    {
+      code: `
 const a = '';
 const b: string | undefined = (a ? undefined : a)!;
       `,
