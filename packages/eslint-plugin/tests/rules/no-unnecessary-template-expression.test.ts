@@ -1099,6 +1099,11 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
 this code has trailing whitespace: \${'    '}
     \`;
     `,
+    `
+\`
+this code has trailing whitespace: \${\`    \`}
+    \`;
+    `,
     noFormat`
 \`this code has trailing whitespace with a windows \\\r new line: \${' '}\r\n\`;
     `,
@@ -1165,6 +1170,9 @@ type Bar = \`foo\${Foo}foo\`;
 type Foo =
   \`trailing position interpolated empty string also makes whitespace clear    \${''}
 \`;
+    `,
+    noFormat`
+type Foo = \`this code has trailing whitespace with a windows \\\r new line: \${\` \`}\r\n\`;
     `,
     "type Foo = `${'foo' | 'bar' | null}`;",
 
