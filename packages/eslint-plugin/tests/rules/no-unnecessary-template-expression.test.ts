@@ -1172,6 +1172,13 @@ type Foo =
 type StringOrNumber = string | number;
 type Foo = \`\${StringOrNumber}\`;
     `,
+    `
+enum Foo {
+  A = 1,
+  B = 2,
+}
+type Bar = \`\${Foo.A}\`;
+    `,
   ],
 
   invalid: [
@@ -1367,6 +1374,27 @@ type Bar = Foo;
         },
       ],
       output: "type FooBar = 'foo' | 'bar';",
+    },
+    {
+      code: `
+enum Foo {
+  A = 'A',
+  B = 'B',
+}
+type Bar = \`\${Foo.A}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+enum Foo {
+  A = 'A',
+  B = 'B',
+}
+type Bar = Foo.A;
+      `,
     },
     {
       code: `
