@@ -263,6 +263,13 @@ export default createRule<[], MessageId>({
         return true;
       }
 
+      if (
+        interpolation.type === AST_NODE_TYPES.TSNullKeyword ||
+        interpolation.type === AST_NODE_TYPES.TSUndefinedKeyword
+      ) {
+        return true;
+      }
+
       const templateLiteral = getTemplateLiteral(interpolation);
       if (templateLiteral) {
         // allow trailing whitespace literal

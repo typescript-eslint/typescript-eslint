@@ -1295,6 +1295,16 @@ declare const nested: string, interpolation: string;
       output: 'type Foo = `1`;',
     },
     {
+      code: 'type Foo = `${null}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `null`;',
+    },
+    {
+      code: 'type Foo = `${undefined}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `undefined`;',
+    },
+    {
       code: "type Foo = `${'foo'}`;",
       errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
       output: "type Foo = 'foo';",
