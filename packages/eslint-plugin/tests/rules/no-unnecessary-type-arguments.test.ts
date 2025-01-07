@@ -179,6 +179,21 @@ namespace Foo {
 }
 class Bar extends Foo<string> {}
     `,
+    {
+      code: `
+function Button<T>() {
+  return <div></div>;
+}
+const button = <Button<string>></Button>;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
   ],
   invalid: [
     {
@@ -558,6 +573,33 @@ namespace Foo {
   export class Bar {}
 }
 class Bar extends Foo {}
+      `,
+    },
+    {
+      code: `
+function Button<T = string>() {
+  return <div></div>;
+}
+const button = <Button<string>></Button>;
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryTypeParameter',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      output: `
+function Button<T = string>() {
+  return <div></div>;
+}
+const button = <Button></Button>;
       `,
     },
   ],

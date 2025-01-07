@@ -142,7 +142,8 @@ function getTypeParametersFromNode(
   if (
     ts.isCallExpression(tsNode) ||
     ts.isNewExpression(tsNode) ||
-    ts.isTaggedTemplateExpression(tsNode)
+    ts.isTaggedTemplateExpression(tsNode) ||
+    ts.isJsxOpeningElement(tsNode)
   ) {
     return getTypeParametersFromCall(node, tsNode, checker);
   }
@@ -189,7 +190,11 @@ function getTypeParametersFromType(
 
 function getTypeParametersFromCall(
   node: TSESTree.TSTypeParameterInstantiation,
-  tsNode: ts.CallExpression | ts.NewExpression | ts.TaggedTemplateExpression,
+  tsNode:
+    | ts.CallExpression
+    | ts.JsxOpeningElement
+    | ts.NewExpression
+    | ts.TaggedTemplateExpression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const sig = checker.getResolvedSignature(tsNode);
