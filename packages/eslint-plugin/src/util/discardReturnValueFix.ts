@@ -1,9 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { nullThrows } from '.';
-import { getRangeWithParens } from './getRangeWithParens';
 
 const ASI_PREVENTING_TOKENS = new Set(['-', '+', '`', '<', '(', '[']);
 
@@ -35,31 +34,6 @@ export function isFinalReturn(returnNode: TSESTree.ReturnStatement): boolean {
     return false;
   }
   return true;
-}
-
-/**
- * Removes the value from a return statement and leaves only the return keyword.
- */
-export function removeValueLeaveReturnFix(
-  fixer: TSESLint.RuleFixer,
-  sourceCode: Readonly<TSESLint.SourceCode>,
-  returnNode: TSESTree.ReturnStatement,
-): TSESLint.RuleFix {
-  const returnToken = ESLintUtils.nullThrows(
-    sourceCode.getFirstToken(returnNode, {
-      filter: token => token.value === 'return',
-    }),
-    ESLintUtils.NullThrowsReasons.MissingToken(
-      'return keyword',
-      returnNode.type,
-    ),
-  );
-  const argumentNode = nullThrows(
-    returnNode.argument,
-    'missing return argument',
-  );
-  const argRange = getRangeWithParens(argumentNode, sourceCode);
-  return fixer.removeRange([returnToken.range[1], argRange[1]]);
 }
 
 /**
