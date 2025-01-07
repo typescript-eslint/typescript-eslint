@@ -55,7 +55,6 @@ ruleTester.run('no-array-delete', rule, {
       declare const test: never;
       delete test[0];
     `,
-    // Shouldn't ever happen but to ensure we require member expressions
     `
       delete console.log();
     `,
