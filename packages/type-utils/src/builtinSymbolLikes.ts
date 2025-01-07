@@ -118,6 +118,19 @@ export function isBuiltinTypeAliasLike(
   });
 }
 
+/**
+ * Checks if the given type is an instance of a built-in type whose name matches
+ * the given predicate, i.e., it either is that type or extends it.
+ *
+ * This will return false if the type is _potentially_ an instance of the given
+ * type but might not be, e.g., if it's a union type where only some of the
+ * members are instances of a built-in type matching the predicate, this returns
+ * false.
+ *
+ * @param program The program the type is defined in
+ * @param type
+ * @param symbolName the name or names of the symbol to match
+ */
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
