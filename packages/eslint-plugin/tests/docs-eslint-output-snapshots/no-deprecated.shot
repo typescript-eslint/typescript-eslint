@@ -46,7 +46,7 @@ const url2 = new URL('/foo', 'http://www.example.com');
 
 exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 5`] = `
 "Incorrect
-Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"HTMLFrameElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 /** @deprecated */
 declare function apiV2(): Promise<string>;
@@ -54,15 +54,15 @@ declare function apiV2(): Promise<string>;
 await apiV2();
       ~~~~~ \`apiV2\` is deprecated.
 
-function foo(
-  element: HTMLFrameSetElement, // HTMLFrameSetElement is deprecated (not specified in the option)
-) {}
+// \`unescape\` has been deprecated since ES5.
+unescape('...');
+~~~~~~~~ \`unescape\` is deprecated. A legacy feature for browser compatibility
 "
 `;
 
 exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 6`] = `
 "Correct
-Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"HTMLFrameElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}
+Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"},{"from":"package","name":"Bar","package":"bar-lib"}]}
 
 import { Bar } from 'bar-lib';
 /** @deprecated */
@@ -70,8 +70,7 @@ declare function apiV1(): Promise<string>;
 
 await apiV1();
 
-function foo(
-  element: HTMLFrameElement, // HTMLFrameElement is deprecated (specified in the option)
-) {}
+// \`escape\` has been deprecated since ES5.
+escape('...');
 "
 `;

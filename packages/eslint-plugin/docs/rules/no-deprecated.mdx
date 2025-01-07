@@ -65,8 +65,6 @@ const url2 = new URL('/foo', 'http://www.example.com');
 
 {/* insert option description */}
 
-Whether to allow the use of deprecated types or values.
-
 This option takes the shared [`TypeOrValueSpecifier` format](/packages/type-utils/type-or-value-specifier).
 
 Examples of code for this rule with:
@@ -75,7 +73,7 @@ Examples of code for this rule with:
 {
   "allow": [
     { "from": "file", "name": "apiV1" },
-    { "from": "lib", "name": "HTMLFrameElement" },
+    { "from": "lib", "name": "escape" },
     { "from": "package", "name": "Bar", "package": "bar-lib" }
   ]
 }
@@ -84,31 +82,29 @@ Examples of code for this rule with:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"HTMLFrameElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 /** @deprecated */
 declare function apiV2(): Promise<string>;
 
 await apiV2();
 
-function foo(
-  element: HTMLFrameSetElement, // HTMLFrameSetElement is deprecated (not specified in the option)
-) {}
+// `unescape` has been deprecated since ES5.
+unescape('...');
 ```
 
 </TabItem>
 
 <TabItem value="✅ Correct">
 
-```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"HTMLFrameElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Bar } from 'bar-lib';
 /** @deprecated */
 declare function apiV1(): Promise<string>;
 
 await apiV1();
 
-function foo(
-  element: HTMLFrameElement, // HTMLFrameElement is deprecated (specified in the option)
-) {}
+// `escape` has been deprecated since ES5.
+escape('...');
 ```
 
 </TabItem>
