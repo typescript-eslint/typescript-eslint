@@ -1375,5 +1375,55 @@ foo(a);
 function foo<T>(a: T) {}
       `,
     },
+    {
+      code: `
+const state: 'expired' | 'pending' = 'pending';
+
+function main() {
+  return {
+    type: state as 'expired' | 'pending',
+  };
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const state: 'expired' | 'pending' = 'pending';
+
+function main() {
+  return {
+    type: state,
+  };
+}
+      `,
+    },
+    {
+      code: `
+const state: 'expired' | 'pending' = 'pending';
+
+class Example {
+  type = state as 'expired' | 'pending';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const state: 'expired' | 'pending' = 'pending';
+
+class Example {
+  type = state;
+}
+      `,
+    },
   ],
 });
