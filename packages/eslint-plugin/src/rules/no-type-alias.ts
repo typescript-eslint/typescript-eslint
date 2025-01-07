@@ -11,7 +11,7 @@ type Values =
   | 'in-unions-and-intersections'
   | 'never';
 
-type Options = [
+export type Options = [
   {
     allowAliases?: Values;
     allowCallbacks?: 'always' | 'never';
@@ -23,7 +23,7 @@ type Options = [
     allowTupleTypes?: Values;
   },
 ];
-type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
+export type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
   | AST_NODE_TYPES.TSIntersectionType

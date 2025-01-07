@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowConstructorOnly?: boolean;
     allowEmpty?: boolean;
@@ -12,7 +12,7 @@ type Options = [
     allowWithDecorator?: boolean;
   },
 ];
-type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
+export type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
 export default createRule<Options, MessageIds>({
   name: 'no-extraneous-class',
