@@ -148,14 +148,16 @@ Each of the following rules reports on a specific use of `any`.
 * [`@typescript-eslint/no-unsafe-call`](/rules/no-unsafe-call) reports on calling an `any` typed value like a function:
 
   ```ts
-  const person = {
-    name: '(anonymous)',
+  const callbacks = {
+    name: (value: string) => console.log(value);
   };
 
   function setNameFromData(raw: string) {
-    person.name = JSON.parse(raw);
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // eslint(@typescript-eslint/no-unsafe-argument):
+    const callback = JSON.parse(raw);
+
+    callback();
+    // ~~~~~~~
+    // eslint(@typescript-eslint/no-unsafe-call):
     // Unsafe assignment of an `any` value.
   }
   ```
