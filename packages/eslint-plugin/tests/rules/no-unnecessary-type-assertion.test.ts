@@ -422,6 +422,46 @@ foo(a as 1);
 
 function foo<T>(a: T) {}
     `,
+    'let a = b as 1;',
+    `
+const a = Math.random() > 0.5 ? 'foo' : 'bar';
+
+let c = a as 'bar' | 'foo';
+    `,
+    `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+const data = {
+  x: Foo.Bar as Foo.Bar,
+};
+    `,
+    `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+const a = Foo.Bar;
+
+const data = {
+  x: a as Foo.Bar,
+};
+    `,
+    `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+const a = Foo;
+
+const data = {
+  x: a.Bar as Foo.Bar,
+};
+    `,
   ],
 
   invalid: [
@@ -1423,6 +1463,40 @@ const state: 'expired' | 'pending' = 'pending';
 class Example {
   type = state;
 }
+      `,
+    },
+
+    {
+      code: `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+declare const a: Foo.Bar;
+
+const data = {
+  x: a as Foo.Bar,
+};
+      `,
+      errors: [
+        {
+          column: 6,
+          line: 10,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+declare const a: Foo.Bar;
+
+const data = {
+  x: a,
+};
       `,
     },
   ],

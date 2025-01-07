@@ -212,39 +212,56 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
-    function isFreshLiteralFreeExpression(node: TSESTree.Expression): boolean {
+    function doesExpressionHaveFreshLiterals(
+      node: TSESTree.Expression,
+    ): boolean {
+      // Actual literals don't seem to have the type of a "fresh literal"
       if (
         node.type === AST_NODE_TYPES.TemplateLiteral ||
         node.type === AST_NODE_TYPES.Literal
       ) {
-        return false;
+        return true;
       }
 
       if (node.type === AST_NODE_TYPES.Identifier) {
-        // It seems fresh literals have a slightly different type at their
+        // It seems "fresh literals" have a slightly different type at their
         // definition rather than their reference.
         const scope = context.sourceCode.getScope(node);
         const superVar = ASTUtils.findVariable(scope, node.name);
 
-        if (superVar) {
-          const definition = superVar.defs.at(0);
-
-          if (definition) {
-            return !isFreshLiteralType(
-              services.getTypeAtLocation(definition.node),
-            );
-          }
+        if (superVar == null) {
+          return true;
         }
+
+        const definition = superVar.defs[0];
+        const typeAtDefinition = services.getTypeAtLocation(definition.node);
+
+        if (tsutils.isUnionType(typeAtDefinition)) {
+          return tsutils
+            .unionTypeParts(typeAtDefinition)
+            .some(part => isFreshLiteralType(part));
+        }
+
+        return isFreshLiteralType(typeAtDefinition);
       }
 
       if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         return (
-          isFreshLiteralFreeExpression(node.alternate) &&
-          isFreshLiteralFreeExpression(node.consequent)
+          doesExpressionHaveFreshLiterals(node.alternate) ||
+          doesExpressionHaveFreshLiterals(node.consequent)
         );
       }
 
-      return true;
+      if (
+        tsutils.isTypeFlagSet(
+          services.getTypeAtLocation(node),
+          ts.TypeFlags.EnumLiteral | ts.TypeFlags.UniqueESSymbol,
+        )
+      ) {
+        return true;
+      }
+
+      return false;
     }
 
     function wouldSameLiteralTypeBeInferred(
@@ -252,7 +269,7 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       // Literal widening only happens to literal types that originate from
       // expressions, not types.
-      if (isFreshLiteralFreeExpression(node.expression)) {
+      if (!doesExpressionHaveFreshLiterals(node.expression)) {
         return true;
       }
 
