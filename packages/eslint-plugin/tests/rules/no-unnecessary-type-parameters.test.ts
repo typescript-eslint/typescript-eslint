@@ -459,7 +459,12 @@ const f = <T,>(
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: [unknown]) => null;',
+            },
+          ],
         },
       ],
     },
@@ -469,7 +474,12 @@ const f = <T,>(
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'const func = (param: unknown[]) => null;',
+            },
+          ],
         },
       ],
     },
@@ -1281,7 +1291,13 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyArray(): readonly unknown[];',
+            },
+          ],
         },
       ],
     },
@@ -1291,7 +1307,13 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyTuple(): readonly [unknown];',
+            },
+          ],
         },
       ],
     },
@@ -1301,7 +1323,13 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function makeReadonlyTupleNullish(): readonly [unknown | null];',
+            },
+          ],
         },
       ],
     },
@@ -1311,7 +1339,12 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function takeArray(input: unknown[]): void;',
+            },
+          ],
         },
       ],
     },
@@ -1321,7 +1354,13 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeArrayNullish(input: (unknown | null)[]): void;',
+            },
+          ],
         },
       ],
     },
@@ -1331,7 +1370,12 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: 'declare function takeTuple(input: [unknown]): void;',
+            },
+          ],
         },
       ],
     },
@@ -1341,7 +1385,13 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output:
+                'declare function takeTupleMultiUnrelated(input: [unknown, number]): void;',
+            },
+          ],
         },
       ],
     },
@@ -1355,7 +1405,16 @@ function foo(_: unknown): <T>(input: T) => T {
         {
           data: { descriptor: 'function', name: 'T', uses: 'used only once' },
           messageId: 'sole',
-          // TODO: suggestions
+          suggestions: [
+            {
+              messageId: 'replaceUsagesWithConstraint',
+              output: `
+        declare function takeTupleMultiUnrelatedNullish(
+          input: [unknown | null, null],
+        ): void;
+      `,
+            },
+          ],
         },
       ],
     },
