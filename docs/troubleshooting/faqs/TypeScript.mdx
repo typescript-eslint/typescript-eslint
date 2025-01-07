@@ -64,7 +64,7 @@ Several TypeScript options impact how imports and exports are handled in your pr
 - [`allowSyntheticDefaultImports`](https://www.typescriptlang.org/tsconfig/#allowSyntheticDefaultImports)
 
 Additionally, whether one is authoring ES Modules or CommonJs impacts `import`/`export`/`require` semantics.
-Therefore, some of our rules may not apply at all or may need special configuration in projects using these options.
+Some of our rules may not apply or may need special configuration in projects using these options.
 
 For example, the default behavior of [no-require-imports](/rules/no-require-imports) prohibits CommonJS `require` syntax entirely, but `verbatimModuleSyntax` requires it when authoring CommonJS modules.
 Therefore, you'll need to configure the rule to permit `import x = require('foo')` syntax.
