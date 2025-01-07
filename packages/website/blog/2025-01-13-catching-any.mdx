@@ -140,7 +140,7 @@ Each of the following rules reports on a specific use of `any`.
   function setNameFromData(raw: string) {
     person.name = JSON.parse(raw);
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // eslint(@typescript-eslint/no-unsafe-argument):
+    // eslint(@typescript-eslint/no-unsafe-assignment):
     // Unsafe assignment of an `any` value.
   }
   ```
@@ -234,7 +234,7 @@ process('New York City');
 </TabItem>
 </Tabs>
 
-One the types for `@example/package` are fixed to no longer produce a type error, the comment directive will itself produce a type error asking to delete itself.
+Once the types for `@example/package` are fixed to no longer produce a type error, the comment directive will itself produce a type error asking to delete itself.
 
 ### ESLint Comments Plugin
 
@@ -257,7 +257,7 @@ That comment should ideally include an explanation and link to the pending task,
 <TabItem value="❌ Incorrect">
 
 ```ts
-import { data } from '@example/package';
+import { process } from '@example/package';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 process('New York City');
@@ -267,7 +267,7 @@ process('New York City');
 <TabItem value="✅ Correct">
 
 ```ts
-import { data } from '@example/package';
+import { process } from '@example/package';
 
 // Pending GH-1234: will soon not be any.
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -277,7 +277,7 @@ process('New York City');
 </TabItem>
 </Tabs>
 
-One the types for `@example/package` are fixed to no longer produce an `any`, running ESLint with [`reportUnusedDisableDirectives`](https://eslint.org/docs/latest/use/configure/rules#report-unused-eslint-disable-comments) option will produce a lint report asking to remove the comment directive.
+Once the types for `@example/package` are fixed to no longer produce an `any`, running ESLint with [`reportUnusedDisableDirectives`](https://eslint.org/docs/latest/use/configure/rules#report-unused-eslint-disable-comments) option will produce a lint report asking to remove the comment directive.
 
 ### `ts-reset`
 
