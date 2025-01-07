@@ -1,3 +1,67 @@
+## 8.19.1 (2025-01-06)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle literal types ([#10523](https://github.com/typescript-eslint/typescript-eslint/pull/10523))
+- **eslint-plugin:** [no-deprecated] doesn't report on shorthand property in an object expression ([#10550](https://github.com/typescript-eslint/typescript-eslint/pull/10550))
+- **eslint-plugin:** [strict-boolean-expressions] remove remaining (unsafe) autofixes ([#10548](https://github.com/typescript-eslint/typescript-eslint/pull/10548))
+- **eslint-plugin:** [no-shadow] report correctly on parameters of functions declared with the `declare` keyword ([#10543](https://github.com/typescript-eslint/typescript-eslint/pull/10543))
+- **eslint-plugin:** [no-base-to-string] check array generic type ([#10437](https://github.com/typescript-eslint/typescript-eslint/pull/10437))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger
+- mdm317
+- Ronen Amiel
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.19.0 (2024-12-30)
+
+### 🚀 Features
+
+- **eslint-plugin:** [strict-boolean-expressions] check array predicate functions' return statements ([#10106](https://github.com/typescript-eslint/typescript-eslint/pull/10106))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [member-ordering] ignore method overloading ([#10536](https://github.com/typescript-eslint/typescript-eslint/pull/10536))
+- **eslint-plugin:** [consistent-indexed-object-style] don't report on indirect circular references ([#10537](https://github.com/typescript-eslint/typescript-eslint/pull/10537))
+- **eslint-plugin:** [array-type] autofix with conditional types needs parentheses ([#10522](https://github.com/typescript-eslint/typescript-eslint/pull/10522))
+- **eslint-plugin:** add getConstraintInfo to handle generic constraints better ([#10496](https://github.com/typescript-eslint/typescript-eslint/pull/10496))
+
+### ❤️ Thank You
+
+- Karl Werner
+- Kirk Waiblinger @kirkwaiblinger
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.18.2 (2024-12-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-condition] handle noUncheckedIndexedAccess true ([#10514](https://github.com/typescript-eslint/typescript-eslint/pull/10514))
+- **eslint-plugin:** [consistent-type-assertions] allow default assertionStyle option ([#10512](https://github.com/typescript-eslint/typescript-eslint/pull/10512))
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle type/value context ([#10503](https://github.com/typescript-eslint/typescript-eslint/pull/10503))
+- **eslint-plugin:** [no-unsafe-type-assertion] fix for unsafe assertion to a constrained type parameter ([#10461](https://github.com/typescript-eslint/typescript-eslint/pull/10461))
+- **eslint-plugin:** [consistent-indexed-object-style] use a suggestion over an auto-fix if can't reliably determine that produced index signature is valid ([#10490](https://github.com/typescript-eslint/typescript-eslint/pull/10490))
+- **eslint-plugin:** [no-unnecessary-condition] don't flag values of an unconstrained or valid type parameter ([#10473](https://github.com/typescript-eslint/typescript-eslint/pull/10473))
+- **eslint-plugin:** [prefer-reduce-type-parameter] don't report cases in which the fix results in a type error ([#10494](https://github.com/typescript-eslint/typescript-eslint/pull/10494))
+- **eslint-plugin:** [no-deprecated] not reporting usages of deprecated declared constants as object value ([#10498](https://github.com/typescript-eslint/typescript-eslint/pull/10498))
+
+### ❤️ Thank You
+
+- Luke Deen Taylor @controversial
+- Ronen Amiel
+- Scott O'Hara
+- YeonJuan @yeonjuan
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.18.1 (2024-12-16)
 
 ### 🩹 Fixes

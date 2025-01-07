@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
@@ -41,13 +42,6 @@ const getValueOfLiteralType = (
   return type.value;
 };
 
-const isFalsyBigInt = (type: ts.Type): boolean => {
-  return (
-    tsutils.isLiteralType(type) &&
-    valueIsPseudoBigInt(type.value) &&
-    !getValueOfLiteralType(type)
-  );
-};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   (type.isLiteral() && !!getValueOfLiteralType(type));
@@ -70,13 +64,7 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(
-        type =>
-          !tsutils.isFalsyType(type) &&
-          // below is a workaround for ts-api-utils bug
-          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
-          !isFalsyBigInt(type),
-      ),
+      intersectionParts.every(type => !tsutils.isFalsyType(type)),
     );
 
 // Nullish utilities
@@ -97,10 +85,7 @@ function toStaticValue(
   | undefined {
   // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
-    // Using `type.intrinsicName` instead of `type.value` because `type.value`
-    // is `undefined`, contrary to what the type guard tells us.
-    // See https://github.com/JoshuaKGoldberg/ts-api-utils/issues/528
-    return { value: type.intrinsicName === 'true' };
+    return { value: tsutils.isTrueLiteralType(type) };
   }
   if (type.flags === ts.TypeFlags.Undefined) {
     return { value: undefined };
@@ -272,6 +257,10 @@ export default createRule<Options, MessageId>({
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
+    );
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      compilerOptions,
+      'noUncheckedIndexedAccess',
     );
 
     if (
@@ -649,16 +638,7 @@ export default createRule<Options, MessageId>({
           .getCallSignaturesOfType(
             getConstrainedTypeAtLocation(services, callback),
           )
-          .map(sig => sig.getReturnType())
-          .map(t => {
-            // TODO: use `getConstraintTypeInfoAtLocation` once it's merged
-            // https://github.com/typescript-eslint/typescript-eslint/pull/10496
-            if (tsutils.isTypeParameter(t)) {
-              return checker.getBaseConstraintOfType(t);
-            }
-
-            return t;
-          });
+          .map(sig => sig.getReturnType());
 
         if (returnTypes.length === 0) {
           // Not a callable function, e.g. `any`
@@ -669,16 +649,21 @@ export default createRule<Options, MessageId>({
         let hasTruthyReturnTypes = false;
 
         for (const type of returnTypes) {
+          const { constraintType } = getConstraintInfo(checker, type);
           // Predicate is always necessary if it involves `any` or `unknown`
-          if (!type || isTypeAnyType(type) || isTypeUnknownType(type)) {
+          if (
+            !constraintType ||
+            isTypeAnyType(constraintType) ||
+            isTypeUnknownType(constraintType)
+          ) {
             return;
           }
 
-          if (isPossiblyFalsy(type)) {
+          if (isPossiblyFalsy(constraintType)) {
             hasFalsyReturnTypes = true;
           }
 
-          if (isPossiblyTruthy(type)) {
+          if (isPossiblyTruthy(constraintType)) {
             hasTruthyReturnTypes = true;
           }
 
@@ -787,11 +772,15 @@ export default createRule<Options, MessageId>({
           }
           const indexInfo = checker.getIndexInfosOfType(type);
 
-          return indexInfo.some(
-            info =>
-              getTypeName(checker, info.keyType) === 'string' &&
-              isNullableType(info.type),
-          );
+          return indexInfo.some(info => {
+            const isStringTypeName =
+              getTypeName(checker, info.keyType) === 'string';
+
+            return (
+              isStringTypeName &&
+              (isNoUncheckedIndexedAccess || isNullableType(info.type))
+            );
+          });
         });
         return !isOwnNullable && isNullableType(prevType);
       }

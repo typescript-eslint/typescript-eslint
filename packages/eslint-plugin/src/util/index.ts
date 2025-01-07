@@ -6,6 +6,7 @@ export * from './collectUnusedVariables';
 export * from './createRule';
 export * from './discardReturnValueFix';
 export * from './getBaseTypesOfClassMember';
+export * from './getConstraintInfo';
 export * from './getFixOrSuggest';
 export * from './getFunctionHeadLoc';
 export * from './getNameFromExpression';
@@ -32,6 +33,7 @@ export * from './walkStatements';
 
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
+
 const {
   applyDefault,
   deepMerge,

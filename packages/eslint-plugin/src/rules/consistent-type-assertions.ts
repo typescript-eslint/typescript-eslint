@@ -82,7 +82,6 @@ export default createRule<Options, MessageIds>({
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
             },
-            required: ['assertionStyle'],
           },
         ],
       },

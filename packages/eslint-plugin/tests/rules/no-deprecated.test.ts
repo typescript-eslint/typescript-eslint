@@ -312,6 +312,10 @@ ruleTester.run('no-deprecated', rule, {
       }
       <foo bar={1} />;
     `,
+    `
+      declare const test: string;
+      const bar = { test };
+    `,
   ],
   invalid: [
     {
@@ -707,6 +711,25 @@ ruleTester.run('no-deprecated', rule, {
           endColumn: 23,
           endLine: 7,
           line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        /** @deprecated */
+        declare const test: string;
+        const bar = {
+          test,
+        };
+      `,
+      errors: [
+        {
+          column: 11,
+          data: { name: 'test' },
+          endColumn: 15,
+          endLine: 5,
+          line: 5,
           messageId: 'deprecated',
         },
       ],

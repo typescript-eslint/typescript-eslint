@@ -33,7 +33,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "string"
           }
         },
-        "required": ["assertionStyle"],
         "type": "object"
       }
     ]
@@ -46,7 +45,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | {
       /** The expected assertion style to enforce. */
-      assertionStyle:
+      assertionStyle: /** The expected assertion style to enforce. */
+      'never';
+    }
+  | {
+      /** The expected assertion style to enforce. */
+      assertionStyle?:
         | 'as'
         /** The expected assertion style to enforce. */
         | 'angle-bracket';
@@ -56,11 +60,6 @@ type Options = [
         | 'never'
         /** Whether to always prefer type declarations for object literals used as variable initializers, rather than type assertions. */
         | 'allow';
-    }
-  | {
-      /** The expected assertion style to enforce. */
-      assertionStyle: /** The expected assertion style to enforce. */
-      'never';
     },
 ];
 "
