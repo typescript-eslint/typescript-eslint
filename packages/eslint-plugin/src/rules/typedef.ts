@@ -15,11 +15,11 @@ const enum OptionKeys {
   VariableDeclarationIgnoreFunction = 'variableDeclarationIgnoreFunction',
 }
 
-export type Options = Partial<Record<OptionKeys, boolean>>;
+export type Options = [Partial<Record<OptionKeys, boolean>>];
 
 export type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
-export default createRule<[Options], MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'typedef',
   meta: {
     type: 'suggestion',

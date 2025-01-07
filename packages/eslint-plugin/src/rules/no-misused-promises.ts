@@ -32,7 +32,7 @@ interface ChecksVoidReturnOptions {
   variables?: boolean;
 }
 
-type MessageId =
+export type MessageId =
   | 'conditional'
   | 'predicate'
   | 'spread'

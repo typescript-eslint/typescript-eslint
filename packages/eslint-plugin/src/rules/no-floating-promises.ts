@@ -28,7 +28,7 @@ export type Options = [
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
   | 'floatingFixAwait'
   | 'floatingFixVoid'
