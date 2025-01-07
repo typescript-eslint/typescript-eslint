@@ -483,6 +483,34 @@ function foo<T>(x: T) {
 declare const u: unknown;
 String(u);
     `,
+    `
+type Value = boolean | Value[];
+
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = (boolean | Value)[];
+
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = [Value];
+
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = [Value | number];
+
+declare const v: Value;
+
+String(v);
+    `,
   ],
   invalid: [
     {
@@ -1808,6 +1836,36 @@ foo.toString();
             name: "foo([{ foo: 'foo' }, 'bar'])",
           },
           messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+type Value =
+  | boolean
+  | number
+  | string
+  | Date
+  | Struct
+  | Uint8Array
+  | Value[]
+  | undefined;
+
+interface Struct {
+  [key: string]: Value;
+}
+
+function foo(v: Value) {
+  return \`Hi \${v}\`;
+}
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'v',
+          },
+          messageId: 'baseToString',
         },
       ],
     },
