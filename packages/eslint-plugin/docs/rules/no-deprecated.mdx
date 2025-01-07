@@ -73,8 +73,7 @@ Examples of code for this rule with:
 {
   "allow": [
     { "from": "file", "name": "apiV1" },
-    { "from": "lib", "name": "escape" },
-    { "from": "package", "name": "Bar", "package": "bar-lib" }
+    { "from": "lib", "name": "escape" }
   ]
 }
 ```
@@ -82,7 +81,7 @@ Examples of code for this rule with:
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}'
 /** @deprecated */
 declare function apiV2(): Promise<string>;
 
@@ -96,7 +95,7 @@ unescape('...');
 
 <TabItem value="✅ Correct">
 
-```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
+```ts option='{"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}'
 import { Bar } from 'bar-lib';
 /** @deprecated */
 declare function apiV1(): Promise<string>;
