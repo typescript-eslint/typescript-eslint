@@ -33,6 +33,7 @@ export type Options = [
       destructuredArrayIgnorePattern?: string;
       ignoreClassWithStaticInitBlock?: boolean;
       ignoreRestSiblings?: boolean;
+      ignoreOnlyAsType?: boolean;
       reportUsedIgnorePattern?: boolean;
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
@@ -47,6 +48,7 @@ interface TranslatedOptions {
   destructuredArrayIgnorePattern?: RegExp;
   ignoreClassWithStaticInitBlock: boolean;
   ignoreRestSiblings: boolean;
+  ignoreOnlyAsType: boolean;
   reportUsedIgnorePattern: boolean;
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
@@ -120,6 +122,10 @@ export default createRule<Options, MessageIds>({
                 description:
                   'Whether to ignore sibling properties in `...` destructurings.',
               },
+              ignoreOnlyAsType: {
+                type: 'boolean',
+                description: 'Whether to ignore variables only used as type.',
+              },
               reportUsedIgnorePattern: {
                 type: 'boolean',
                 description:
@@ -152,6 +158,7 @@ export default createRule<Options, MessageIds>({
         caughtErrors: 'all',
         ignoreClassWithStaticInitBlock: false,
         ignoreRestSiblings: false,
+        ignoreOnlyAsType: true,
         reportUsedIgnorePattern: false,
         vars: 'all',
       };
@@ -163,6 +170,8 @@ export default createRule<Options, MessageIds>({
         options.args = firstOption.args ?? options.args;
         options.ignoreRestSiblings =
           firstOption.ignoreRestSiblings ?? options.ignoreRestSiblings;
+        options.ignoreOnlyAsType =
+          firstOption.ignoreOnlyAsType ?? options.ignoreOnlyAsType;
         options.caughtErrors = firstOption.caughtErrors ?? options.caughtErrors;
         options.ignoreClassWithStaticInitBlock =
           firstOption.ignoreClassWithStaticInitBlock ??
@@ -607,6 +616,10 @@ export default createRule<Options, MessageIds>({
             const usedOnlyAsType = unusedVar.references.some(ref =>
               referenceContainsTypeQuery(ref.identifier),
             );
+
+            if (usedOnlyAsType && options.ignoreOnlyAsType) {
+              continue;
+            }
 
             const isImportUsedOnlyAsType =
               usedOnlyAsType &&
