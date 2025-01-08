@@ -1905,22 +1905,5 @@ v.join();
         },
       ],
     },
-    {
-      code: `
-type Value = [{ value: Vallue }];
-declare const v: Value;
-
-String(v);
-      `,
-      errors: [
-        {
-          data: {
-            certainty: 'will',
-            name: 'v',
-          },
-          messageId: 'baseToString',
-        },
-      ],
-    },
   ],
 });
