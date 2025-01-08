@@ -15,7 +15,8 @@ import {
 } from '../util';
 import { rangeToLoc } from '../util/rangeToLoc';
 
-type MessageId = 'noUnnecessaryTemplateExpression';
+export type MessageId = 'noUnnecessaryTemplateExpression';
+
 type TemplateLiteralTypeOrValue =
   | TSESTree.TemplateLiteral
   | TSESTree.TSTemplateLiteralType;

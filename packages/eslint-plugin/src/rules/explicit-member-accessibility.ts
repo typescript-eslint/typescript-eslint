@@ -31,9 +31,9 @@ interface Config {
   };
 }
 
-type Options = [Config];
+export type Options = [Config];
 
-type MessageIds =
+export type MessageIds =
   | 'addExplicitAccessibility'
   | 'missingAccessibility'
   | 'unwantedPublicAccessibility';

@@ -1,3 +1,22 @@
+## 8.19.1 (2025-01-06)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-base-to-string] check array generic type ([#10437](https://github.com/typescript-eslint/typescript-eslint/pull/10437))
+- **eslint-plugin:** [no-shadow] report correctly on parameters of functions declared with the `declare` keyword ([#10543](https://github.com/typescript-eslint/typescript-eslint/pull/10543))
+- **eslint-plugin:** [strict-boolean-expressions] remove remaining (unsafe) autofixes ([#10548](https://github.com/typescript-eslint/typescript-eslint/pull/10548))
+- **eslint-plugin:** [no-deprecated] doesn't report on shorthand property in an object expression ([#10550](https://github.com/typescript-eslint/typescript-eslint/pull/10550))
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle literal types ([#10523](https://github.com/typescript-eslint/typescript-eslint/pull/10523))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger
+- mdm317
+- Ronen Amiel
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.19.0 (2024-12-30)
 
 ### 🚀 Features
