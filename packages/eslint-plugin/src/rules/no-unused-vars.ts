@@ -117,14 +117,14 @@ export default createRule<Options, MessageIds>({
                 description:
                   'Whether to ignore classes with at least one static initialization block.',
               },
+              ignoreOnlyAsType: {
+                type: 'boolean',
+                description: 'Whether to ignore variables only used as type.',
+              },
               ignoreRestSiblings: {
                 type: 'boolean',
                 description:
                   'Whether to ignore sibling properties in `...` destructurings.',
-              },
-              ignoreOnlyAsType: {
-                type: 'boolean',
-                description: 'Whether to ignore variables only used as type.',
               },
               reportUsedIgnorePattern: {
                 type: 'boolean',
@@ -157,8 +157,8 @@ export default createRule<Options, MessageIds>({
         args: 'after-used',
         caughtErrors: 'all',
         ignoreClassWithStaticInitBlock: false,
+        ignoreOnlyAsType: false,
         ignoreRestSiblings: false,
-        ignoreOnlyAsType: true,
         reportUsedIgnorePattern: false,
         vars: 'all',
       };
