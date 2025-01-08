@@ -496,7 +496,13 @@ declare const v: Value;
 String(v);
     `,
     `
-type Value = [Value, Value];
+type Value = Value[];
+declare const v: Value;
+
+String(v);
+    `,
+    `
+type Value = [Value];
 declare const v: Value;
 
 String(v);
