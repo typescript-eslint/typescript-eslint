@@ -484,31 +484,25 @@ declare const u: unknown;
 String(u);
     `,
     `
-type Value = boolean | Value[];
-
+type Value = string | Value[];
 declare const v: Value;
 
 String(v);
     `,
     `
-type Value = (boolean | Value)[];
-
+type Value = (string | Value)[];
 declare const v: Value;
 
 String(v);
     `,
     `
-type Value = [Value];
-
+type Value = [Value, Value];
 declare const v: Value;
 
 String(v);
     `,
     `
-type Value = [Value | number];
-
-declare const v: Value;
-
+declare const v: ('foo' | 'bar')[][];
 String(v);
     `,
   ],
@@ -1841,28 +1835,81 @@ foo.toString();
     },
     {
       code: `
-type Value =
-  | boolean
-  | number
-  | string
-  | Date
-  | Struct
-  | Uint8Array
-  | Value[]
-  | undefined;
+type Value = { foo: string } | Value[];
+declare const v: Value;
 
-interface Struct {
-  [key: string]: Value;
-}
-
-function foo(v: Value) {
-  return \`Hi \${v}\`;
-}
+String(v);
       `,
       errors: [
         {
           data: {
             certainty: 'may',
+            name: 'v',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Value = ({ foo: string } | Value)[];
+declare const v: Value;
+
+String(v);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'may',
+            name: 'v',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+type Value = [{ foo: string }, Value];
+declare const v: Value;
+
+String(v);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'v',
+          },
+          messageId: 'baseToString',
+        },
+      ],
+    },
+    {
+      code: `
+declare const v: { foo: string }[][];
+v.join();
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
+            name: 'v',
+          },
+          messageId: 'baseArrayJoin',
+        },
+      ],
+    },
+    {
+      code: `
+type Value = [{ value: Vallue }];
+declare const v: Value;
+
+String(v);
+      `,
+      errors: [
+        {
+          data: {
+            certainty: 'will',
             name: 'v',
           },
           messageId: 'baseToString',
