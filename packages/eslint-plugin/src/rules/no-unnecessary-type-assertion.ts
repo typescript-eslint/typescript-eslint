@@ -264,18 +264,6 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
-    function wouldSameLiteralTypeBeInferred(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-    ): boolean {
-      // Literal widening only happens to literal types that originate from
-      // expressions, not types.
-      if (!doesExpressionHaveFreshLiterals(node.expression)) {
-        return true;
-      }
-
-      return isImplicitlyNarrowedConstDeclaration(node);
-    }
-
     return {
       'TSAsExpression, TSTypeAssertion'(
         node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
@@ -292,13 +280,12 @@ export default createRule<Options, MessageIds>({
         const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
-        const isLiteral =
-          castType.isLiteral() ||
-          (tsutils.isUnionType(castType) &&
-            tsutils.unionTypeParts(castType).every(part => part.isLiteral()));
+        const hasFreshLiterals = doesExpressionHaveFreshLiterals(
+          node.expression,
+        );
 
-        const wouldSameTypeBeInferred = isLiteral
-          ? wouldSameLiteralTypeBeInferred(node)
+        const wouldSameTypeBeInferred = hasFreshLiterals
+          ? isImplicitlyNarrowedConstDeclaration(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {

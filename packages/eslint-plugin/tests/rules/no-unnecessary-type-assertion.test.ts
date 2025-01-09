@@ -462,6 +462,13 @@ const data = {
   x: a.Bar as Foo.Bar,
 };
     `,
+    `
+class Foo {
+  hey?: string;
+}
+
+let b = (Math.random() > 0.5 ? new Foo() : '1') as '1' | Foo;
+    `,
   ],
 
   invalid: [
@@ -1465,7 +1472,6 @@ class Example {
 }
       `,
     },
-
     {
       code: `
 enum Foo {
@@ -1497,6 +1503,29 @@ declare const a: Foo.Bar;
 const data = {
   x: a,
 };
+      `,
+    },
+    {
+      code: `
+class Foo {
+  hey?: string;
+}
+
+const b = (Math.random() > 0.5 ? new Foo() : '1') as '1' | Foo;
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class Foo {
+  hey?: string;
+}
+
+const b = (Math.random() > 0.5 ? new Foo() : '1');
       `,
     },
   ],
