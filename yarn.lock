@@ -8917,11 +8917,11 @@ __metadata:
   linkType: hard
 
 "docusaurus-plugin-typedoc@npm:^1.0.5":
-  version: 1.1.1
-  resolution: "docusaurus-plugin-typedoc@npm:1.1.1"
+  version: 1.2.0
+  resolution: "docusaurus-plugin-typedoc@npm:1.2.0"
   peerDependencies:
-    typedoc-plugin-markdown: ">=4.3.0"
-  checksum: 115b0f421bcb11c5f7ba9b36dfcb1cf43ebf1efc5af740109bd79ce474a8b73bc76b26f366e544d2241d81d8cc7cad490e1ef61ceb76e68f26f57dee99ca519b
+    typedoc-plugin-markdown: ">=4.4.0"
+  checksum: 7c1177529c9b7b1c765a193da05170bfe17ab548d66b864a101506799a7a7c3588486003c27dcc04eb3e646931076777135fe2e75d9073a17df30d8ff21f45ca
   languageName: node
   linkType: hard
 
@@ -19438,11 +19438,11 @@ __metadata:
   linkType: hard
 
 "typedoc-plugin-markdown@npm:^4.2.10":
-  version: 4.3.1
-  resolution: "typedoc-plugin-markdown@npm:4.3.1"
+  version: 4.4.1
+  resolution: "typedoc-plugin-markdown@npm:4.4.1"
   peerDependencies:
     typedoc: 0.27.x
-  checksum: ef461e35e09bc2782fae26f9ba4d8aa4218d25220fa3a3570a3f6c1eab0434f0f6e21ddad604181f0636c72a960cf11425da327bd549f8271b202587d7d88e13
+  checksum: ea77a31cb26dc0033bf4b9d627208d9cecae837f19db25c434f19518ee4f6510ac0d042723baa32906503b101b5d5e11531109054f16d10014606ddc1e4c3463
   languageName: node
   linkType: hard
 

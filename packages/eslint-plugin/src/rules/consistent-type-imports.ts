@@ -19,7 +19,7 @@ import {
 type Prefer = 'no-type-imports' | 'type-imports';
 type FixStyle = 'inline-type-imports' | 'separate-type-imports';
 
-type Options = [
+export type Options = [
   {
     disallowTypeAnnotations?: boolean;
     fixStyle?: FixStyle;
@@ -45,7 +45,7 @@ interface ReportValueImport {
   valueSpecifiers: TSESTree.ImportClause[];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'avoidImportType'
   | 'noImportTypeAnnotations'
   | 'someImportsAreOnlyTypes'

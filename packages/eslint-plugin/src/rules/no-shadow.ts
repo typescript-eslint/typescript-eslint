@@ -6,8 +6,8 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 import { isTypeImport } from '../util/isTypeImport';
 
-type MessageIds = 'noShadow' | 'noShadowGlobal';
-type Options = [
+export type MessageIds = 'noShadow' | 'noShadowGlobal';
+export type Options = [
   {
     allow?: string[];
     builtinGlobals?: boolean;
