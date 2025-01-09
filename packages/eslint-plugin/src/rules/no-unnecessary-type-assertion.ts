@@ -233,7 +233,12 @@ export default createRule<Options, MessageIds>({
           return true;
         }
 
-        const definition = superVar.defs[0];
+        const definition = superVar.defs.at(0);
+
+        if (definition == null) {
+          return true;
+        }
+
         const typeAtDefinition = services.getTypeAtLocation(definition.node);
 
         if (tsutils.isUnionType(typeAtDefinition)) {
