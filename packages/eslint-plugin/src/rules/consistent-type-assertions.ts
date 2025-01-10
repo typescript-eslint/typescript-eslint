@@ -35,6 +35,10 @@ type OptUnion =
     };
 export type Options = readonly [OptUnion];
 
+type AsExpressionOrTypeAssertion =
+  | TSESTree.TSAsExpression
+  | TSESTree.TSTypeAssertion;
+
 export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
@@ -122,7 +126,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function reportIncorrectAssertionType(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      node: AsExpressionOrTypeAssertion,
     ): void {
       const messageId = options.assertionStyle;
 
@@ -209,7 +213,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function getSuggestions(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      node: AsExpressionOrTypeAssertion,
       annotationMessageId: MessageIds,
       satisfiesMessageId: MessageIds,
     ): TSESLint.ReportSuggestionArray<MessageIds> {
@@ -251,9 +255,7 @@ export default createRule<Options, MessageIds>({
       return suggestions;
     }
 
-    function isAsParameter(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
-    ): boolean {
+    function isAsParameter(node: AsExpressionOrTypeAssertion): boolean {
       return (
         node.parent.type === AST_NODE_TYPES.NewExpression ||
         node.parent.type === AST_NODE_TYPES.CallExpression ||
@@ -266,7 +268,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkExpressionForObjectAssertion(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      node: AsExpressionOrTypeAssertion,
     ): void {
       if (
         options.assertionStyle === 'never' ||
@@ -278,14 +280,7 @@ export default createRule<Options, MessageIds>({
 
       if (
         options.objectLiteralTypeAssertions === 'allow-as-parameter' &&
-        (node.parent.type === AST_NODE_TYPES.NewExpression ||
-          node.parent.type === AST_NODE_TYPES.CallExpression ||
-          node.parent.type === AST_NODE_TYPES.ThrowStatement ||
-          node.parent.type === AST_NODE_TYPES.AssignmentPattern ||
-          node.parent.type === AST_NODE_TYPES.JSXExpressionContainer ||
-          (node.parent.type === AST_NODE_TYPES.TemplateLiteral &&
-            node.parent.parent.type ===
-              AST_NODE_TYPES.TaggedTemplateExpression))
+        isAsParameter(node)
       ) {
         return;
       }
@@ -306,7 +301,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkExpressionForArrayAssertion(
-      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
+      node: AsExpressionOrTypeAssertion,
     ): void {
       if (
         options.assertionStyle === 'never' ||
