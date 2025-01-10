@@ -143,7 +143,8 @@ function getTypeParametersFromNode(
     ts.isCallExpression(tsNode) ||
     ts.isNewExpression(tsNode) ||
     ts.isTaggedTemplateExpression(tsNode) ||
-    ts.isJsxOpeningElement(tsNode)
+    ts.isJsxOpeningElement(tsNode) ||
+    ts.isJsxSelfClosingElement(tsNode)
   ) {
     return getTypeParametersFromCall(node, tsNode, checker);
   }
@@ -193,6 +194,7 @@ function getTypeParametersFromCall(
   tsNode:
     | ts.CallExpression
     | ts.JsxOpeningElement
+    | ts.JsxSelfClosingElement
     | ts.NewExpression
     | ts.TaggedTemplateExpression,
   checker: ts.TypeChecker,
