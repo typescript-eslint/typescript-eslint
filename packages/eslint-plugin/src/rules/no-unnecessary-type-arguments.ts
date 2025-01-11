@@ -22,7 +22,7 @@ type ParameterCapableTSNode =
   | ts.TypeQueryNode
   | ts.TypeReferenceNode;
 
-type MessageIds = 'unnecessaryTypeParameter';
+export type MessageIds = 'unnecessaryTypeParameter';
 
 export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
