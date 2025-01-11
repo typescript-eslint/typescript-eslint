@@ -89,32 +89,6 @@ This style of code isn't super common - which means having this option set to `t
 
 When this option is `false` unsafe cases will have suggestion fixers provided instead of auto-fixers - meaning you can manually apply the fix using your IDE tooling.
 
-### `allowIfStatements`
-
-{/* insert option description */}
-
-Examples of code for this rule with `{ allowIfStatements: true }`:
-
-<Tabs>
-
-<TabItem value="❌ Incorrect">
-
-```ts option='{ "allowIfStatements": true }'
-if (foo) {
-  foo.bar();
-}
-```
-
-</TabItem>
-<TabItem value="✅ Correct">
-
-```ts option='{ "allowIfStatements": false }'
-foo?.bar();
-```
-
-</TabItem>
-</Tabs>
-
 ### `checkAny`
 
 {/* insert option description */}
@@ -286,6 +260,32 @@ thing && thing.toString();
 declare const thing: bigint;
 
 thing && thing.toString();
+```
+
+</TabItem>
+</Tabs>
+
+### `ignoreIfStatements`
+
+{/* insert option description */}
+
+Examples of code for this rule with `{ ignoreIfStatements: false }`:
+
+<Tabs>
+
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreIfStatements": false }'
+if (foo) {
+  foo.bar();
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts option='{ "ignoreIfStatements": true }'
+foo?.bar();
 ```
 
 </TabItem>

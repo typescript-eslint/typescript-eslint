@@ -72,27 +72,6 @@ acceptsBoolean(foo?.bar);
 
 exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 4`] = `
 "Incorrect
-Options: { "allowIfStatements": true }
-
-if (foo) {
-~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
-  foo.bar();
-~~~~~~~~~~~~
-}
-~
-"
-`;
-
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 5`] = `
-"Correct
-Options: { "allowIfStatements": false }
-
-foo?.bar();
-"
-`;
-
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 6`] = `
-"Incorrect
 Options: { "checkAny": true }
 
 declare const thing: any;
@@ -102,7 +81,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 7`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 5`] = `
 "Correct
 Options: { "checkAny": false }
 
@@ -112,7 +91,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 8`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 6`] = `
 "Incorrect
 Options: { "checkUnknown": true }
 
@@ -123,7 +102,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 9`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 7`] = `
 "Correct
 Options: { "checkUnknown": false }
 
@@ -133,7 +112,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 10`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 8`] = `
 "Incorrect
 Options: { "checkString": true }
 
@@ -144,7 +123,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 11`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 9`] = `
 "Correct
 Options: { "checkString": false }
 
@@ -154,7 +133,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 12`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 10`] = `
 "Incorrect
 Options: { "checkNumber": true }
 
@@ -165,7 +144,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 13`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 11`] = `
 "Correct
 Options: { "checkNumber": false }
 
@@ -175,7 +154,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 14`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 12`] = `
 "Incorrect
 Options: { "checkBoolean": true }
 
@@ -186,7 +165,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 15`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 13`] = `
 "Correct
 Options: { "checkBoolean": false }
 
@@ -196,7 +175,7 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 16`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 14`] = `
 "Incorrect
 Options: { "checkBigInt": true }
 
@@ -207,13 +186,34 @@ thing && thing.toString();
 "
 `;
 
-exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 17`] = `
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 15`] = `
 "Correct
 Options: { "checkBigInt": false }
 
 declare const thing: bigint;
 
 thing && thing.toString();
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 16`] = `
+"Incorrect
+Options: { "ignoreIfStatements": false }
+
+if (foo) {
+~~~~~~~~~~ Prefer using an optional chain expression instead, as it's more concise and easier to read.
+  foo.bar();
+~~~~~~~~~~~~
+}
+~
+"
+`;
+
+exports[`Validating rule docs prefer-optional-chain.mdx code examples ESLint output 17`] = `
+"Correct
+Options: { "ignoreIfStatements": true }
+
+foo?.bar();
 "
 `;
 

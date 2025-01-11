@@ -8,10 +8,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
-      "allowIfStatements": {
-        "description": "Whether to ignore \`if\` statements with a single expression in the consequent.",
-        "type": "boolean"
-      },
       "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": {
         "description": "Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.",
         "type": "boolean"
@@ -40,6 +36,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Check operands that are typed as \`unknown\` when inspecting \\"loose boolean\\" operands.",
         "type": "boolean"
       },
+      "ignoreIfStatements": {
+        "description": "Whether to ignore \`if\` statements with a single expression in the consequent.",
+        "type": "boolean"
+      },
       "requireNullish": {
         "description": "Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting \\"loose boolean\\" operands.",
         "type": "boolean"
@@ -54,8 +54,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore \`if\` statements with a single expression in the consequent. */
-    allowIfStatements?: boolean;
     /** Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build. */
     allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
     /** Check operands that are typed as \`any\` when inspecting "loose boolean" operands. */
@@ -70,6 +68,8 @@ type Options = [
     checkString?: boolean;
     /** Check operands that are typed as \`unknown\` when inspecting "loose boolean" operands. */
     checkUnknown?: boolean;
+    /** Whether to ignore \`if\` statements with a single expression in the consequent. */
+    ignoreIfStatements?: boolean;
     /** Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting "loose boolean" operands. */
     requireNullish?: boolean;
   },

@@ -48,11 +48,6 @@ export default createRule<
         type: 'object',
         additionalProperties: false,
         properties: {
-          allowIfStatements: {
-            type: 'boolean',
-            description:
-              'Whether to ignore `if` statements with a single expression in the consequent.',
-          },
           allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
             type: 'boolean',
             description:
@@ -88,6 +83,11 @@ export default createRule<
             description:
               'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
           },
+          ignoreIfStatements: {
+            type: 'boolean',
+            description:
+              'Whether to ignore `if` statements with a single expression in the consequent.',
+          },
           requireNullish: {
             type: 'boolean',
             description:
@@ -99,7 +99,6 @@ export default createRule<
   },
   defaultOptions: [
     {
-      allowIfStatements: false,
       allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
       checkAny: true,
       checkBigInt: true,
@@ -107,6 +106,7 @@ export default createRule<
       checkNumber: true,
       checkString: true,
       checkUnknown: true,
+      ignoreIfStatements: false,
       requireNullish: false,
     },
   ],
@@ -120,7 +120,7 @@ export default createRule<
       'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]'(
         node: TSESTree.IfStatement,
       ): void {
-        if (!options.allowIfStatements || node.alternate) {
+        if (options.ignoreIfStatements || node.alternate) {
           return;
         }
         const ifBodyStatement =

@@ -680,7 +680,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar();
@@ -695,7 +695,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar()
@@ -707,7 +707,7 @@ describe('if block with a single statment matches part of the condition', () => 
           if (foo) foo.bar();
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar();
@@ -720,7 +720,7 @@ describe('if block with a single statment matches part of the condition', () => 
           if (foo) foo.bar()
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar()
@@ -734,7 +734,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.();
@@ -749,7 +749,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           declare const bar: 'bar';
@@ -765,7 +765,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: { bar?: { baz: () => void } };
           declare const bar: 'bar';
@@ -780,7 +780,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: { bar: { baz: () => undefined | { bazz: () => void } } };
           foo.bar.baz()?.bazz();
@@ -794,7 +794,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: { bar: { baz: () => undefined | { bazz: () => void } } };
           foo?.bar?.baz?.bazz();
@@ -807,7 +807,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           foo?.bar.baz?.();
         `,
@@ -825,7 +825,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           // before expression
@@ -871,7 +871,7 @@ describe('if block with a single statment matches part of the condition', () => 
             ],
           },
         ],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
 
       {
@@ -882,7 +882,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           /* sneaky */
@@ -897,7 +897,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar();
@@ -914,7 +914,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar();
@@ -930,7 +930,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true, requireNullish: true }],
+        options: [{ ignoreIfStatements: false, requireNullish: true }],
         output: `
           declare const foo: undefined | { bar?: { baz?: { bazz: () => void } } };
           foo?.bar?.baz?.bazz();
@@ -944,7 +944,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar;
@@ -958,7 +958,7 @@ describe('if block with a single statment matches part of the condition', () => 
           }
         `,
         errors: [{ messageId: 'preferOptionalChain' }],
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
         output: `
           declare const foo: undefined | { bar: { baz: unknown } };
           foo?.bar?.baz;
@@ -973,7 +973,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
           }
         `,
-        options: [{ allowIfStatements: false }],
+        options: [{ ignoreIfStatements: true }],
       },
       {
         code: `
@@ -983,7 +983,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.baz();
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -994,7 +994,7 @@ describe('if block with a single statment matches part of the condition', () => 
             // do something else
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -1003,7 +1003,7 @@ describe('if block with a single statment matches part of the condition', () => 
             x.a();
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -1012,7 +1012,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -1021,7 +1021,7 @@ describe('if block with a single statment matches part of the condition', () => 
             typeof window === 'undefined' && foo.bar();
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -1030,7 +1030,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar() && typeof window === 'undefined';
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -1041,7 +1041,7 @@ describe('if block with a single statment matches part of the condition', () => 
             }
           }
         `,
-        options: [{ allowIfStatements: true }],
+        options: [{ ignoreIfStatements: false }],
       },
       {
         code: `
@@ -1050,7 +1050,7 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar();
           }
         `,
-        options: [{ allowIfStatements: true, requireNullish: true }],
+        options: [{ ignoreIfStatements: false, requireNullish: true }],
       },
     ],
   });
