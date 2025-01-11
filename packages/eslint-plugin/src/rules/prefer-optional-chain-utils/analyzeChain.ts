@@ -246,17 +246,13 @@ function getReportRange(
 }
 
 function getReportDescriptor(
-  context: RuleContext<
-    PreferOptionalChainMessageIds,
-    [PreferOptionalChainOptions]
-  >,
+  sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
   node: TSESTree.Node,
   operator: '&&' | '||',
   options: PreferOptionalChainOptions,
   chain: ValidOperand[],
 ): ReportDescriptor<PreferOptionalChainMessageIds> {
-  const sourceCode = context.sourceCode;
   const lastOperand = chain[chain.length - 1];
 
   let useSuggestionFixer: boolean;
@@ -638,7 +634,7 @@ export function analyzeChain(
         options,
         subChainFlat.slice(0, -1).map(({ node }) => node),
         getReportDescriptor(
-          context,
+          context.sourceCode,
           parserServices,
           node,
           operator,
