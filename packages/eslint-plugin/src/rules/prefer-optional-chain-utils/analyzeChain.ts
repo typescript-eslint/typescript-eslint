@@ -421,9 +421,31 @@ function getReportDescriptor(
     const nodeBeforeTheComment = chainEndedWithSemicolon
       ? lastOperand.node.parent
       : lastOperand.node;
+
     const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
     const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
-    if (commentsBefore.length || commentsAfter.length) {
+    const tokenAfterNodeTest = sourceCode.getTokenAfter(node.test);
+    const tokenBeforeNodeTest = sourceCode.getTokenBefore(node.test);
+    const tokenAfterAfterNodeTest =
+      tokenAfterNodeTest && sourceCode.getTokenAfter(tokenAfterNodeTest);
+    const commentsBeforeNodeTest = tokenBeforeNodeTest
+      ? sourceCode.getCommentsBefore(tokenBeforeNodeTest)
+      : []; // if /* this */ (foo)
+    const beforeNodeTestComments = sourceCode.getCommentsBefore(node.test); // if (/* this */ foo)
+    const afterNodeTestComments1 = sourceCode.getCommentsAfter(node.test); // if (foo /* this */)
+    const afterNodeTestComments2 = tokenAfterAfterNodeTest
+      ? sourceCode.getCommentsBefore(tokenAfterAfterNodeTest)
+      : []; // if (foo) /* this */
+
+    const commentsToReloacte = [
+      ...commentsBeforeNodeTest,
+      ...beforeNodeTestComments,
+      ...afterNodeTestComments1,
+      ...afterNodeTestComments2,
+    ];
+
+    if (commentsToReloacte.length) {
+      commentsBefore.unshift(...commentsToReloacte);
       useSuggestionFixer = true;
       const indentationCount = node.loc.start.column;
       const indentation = ' '.repeat(indentationCount);
@@ -442,6 +464,24 @@ function getReportDescriptor(
       if (commentsAfter.length > 0) {
         const commentsText = getTextFromCommentsArray(commentsAfter);
         newCode = `${newCode}\n${indentation}${commentsText}`;
+      }
+    } else if (commentsBefore.length || commentsAfter.length) {
+      const indentationCount = node.loc.start.column;
+      const indentation = ' '.repeat(indentationCount);
+      function getTextFromCommentsArray(comments: TSESTree.Comment[]): string {
+        return sourceCode
+          .getText()
+          .slice(comments[0].range[0], comments[comments.length - 1].range[1]);
+      }
+      if (commentsBefore.length > 0) {
+        const commentsTextBeforeWithoutIndent =
+          getTextFromCommentsArray(commentsBefore);
+        newCode = `${commentsTextBeforeWithoutIndent}\n${indentation}${newCode}`;
+      }
+      if (commentsAfter.length > 0) {
+        const commentsTextAfterWithoutIndent =
+          getTextFromCommentsArray(commentsAfter);
+        newCode = `${newCode}\n${indentation}${commentsTextAfterWithoutIndent}`;
       }
     }
   }

@@ -824,34 +824,26 @@ describe('if block with a single statment matches part of the condition', () => 
             // after expression
           }
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
           declare const foo: undefined | { bar: () => void };
           // before expression
-          /** multi
+            /** multi
             line */
-          // single-line
+            // single-line
           foo?.bar();
           /* after semicolon */
-          // after expression
+            // after expression
         `,
-              },
-            ],
-          },
-        ],
-        options: [{ allowIfStatements: true }],
       },
       {
+        // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
         code: `
           declare const foo: undefined | { bar: () => void };
-          if (foo) {
+          if /* sneaky1 */ (/* sneaky2 */ foo /* sneaky3 */) /* sneaky4 */ {
             // comment1
-            // comment2
+            /* comment2 */
             foo.bar();
           }
         `,
@@ -863,8 +855,12 @@ describe('if block with a single statment matches part of the condition', () => 
                 messageId: 'optionalChainSuggest',
                 output: `
           declare const foo: undefined | { bar: () => void };
+          /* sneaky1 */
+          /* sneaky2 */
+          /* sneaky3 */
+          /* sneaky4 */
           // comment1
-          // comment2
+          /* comment2 */
           foo?.bar();
         `,
               },
@@ -880,22 +876,13 @@ describe('if block with a single statment matches part of the condition', () => 
             foo.bar(); // comment
           }
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar();
           // comment
         `,
-              },
-            ],
-          },
-        ],
-        options: [{ allowIfStatements: true }],
       },
       {
         code: `
@@ -906,23 +893,14 @@ describe('if block with a single statment matches part of the condition', () => 
             // comment 2
           }
         `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: [
-              {
-                messageId: 'optionalChainSuggest',
-                output: `
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
           declare const foo: undefined | { bar: () => void };
           foo?.bar();
           // comment 1
-          // comment 2
+            // comment 2
         `,
-              },
-            ],
-          },
-        ],
-        options: [{ allowIfStatements: true }],
       },
       {
         code: `
