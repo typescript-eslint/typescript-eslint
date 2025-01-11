@@ -51,7 +51,7 @@ export default createRule<
           allowIfStatements: {
             type: 'boolean',
             description:
-              'Allow autofix to optional chain on if statements with a single call expression in the consequent.',
+              'Whether to ignore `if` statements with a single expression in the consequent.',
           },
           allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
             type: 'boolean',
