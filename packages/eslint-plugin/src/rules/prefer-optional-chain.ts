@@ -176,9 +176,6 @@ export default createRule<
             currentChain.push(operand);
           }
         } else {
-          if (ifBodyExpression.type !== AST_NODE_TYPES.CallExpression) {
-            return;
-          }
           currentChain.push({
             node: ifBodyExpression,
             type: OperandValidity.Valid,
