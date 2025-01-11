@@ -1,10 +1,10 @@
-import type * as ts from 'typescript';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  isBuiltinSymbolLike,
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
@@ -32,7 +32,7 @@ export default createRule({
 
         const type = getConstrainedTypeAtLocation(services, node.right);
 
-        if (isArray(checker, type) || isArrayLike(services.program, type)) {
+        if (isArrayLike(checker, type)) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),
             messageId: 'forInViolation',
@@ -43,21 +43,23 @@ export default createRule({
   },
 });
 
-function isArrayLike(program: ts.Program, type: ts.Type): boolean {
-  return isTypeRecurser(type, t =>
-    isBuiltinSymbolLike(program, t, [
-      'IArguments',
-      'HTMLCollection',
-      'RegExpExecArray',
-      'NodeList',
-    ]),
+function isArrayLike(checker: ts.TypeChecker, type: ts.Type): boolean {
+  return isTypeRecurser(
+    type,
+    t => t.getNumberIndexType() != null && hasArrayishLength(checker, t),
   );
 }
 
-function isArray(checker: ts.TypeChecker, type: ts.Type): boolean {
-  return isTypeRecurser(
-    type,
-    t => checker.isArrayType(t) || checker.isTupleType(t),
+function hasArrayishLength(checker: ts.TypeChecker, type: ts.Type): boolean {
+  const lengthProperty = type.getProperty('length');
+
+  if (lengthProperty == null) {
+    return false;
+  }
+
+  return tsutils.isTypeFlagSet(
+    checker.getTypeOfSymbol(lengthProperty),
+    ts.TypeFlags.NumberLike,
   );
 }
 

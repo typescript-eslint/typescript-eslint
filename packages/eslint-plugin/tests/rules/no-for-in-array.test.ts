@@ -33,6 +33,15 @@ declare const nullish: null | undefined;
 for (const k in nullish) {
 }
     `,
+    `
+declare const obj: {
+  [key: number]: number;
+};
+
+for (const key in obj) {
+  console.log(key);
+}
+    `,
   ],
 
   invalid: [
@@ -415,6 +424,27 @@ for (const key in array) {
           endColumn: 25,
           endLine: 6,
           line: 6,
+          messageId: 'forInViolation',
+        },
+      ],
+    },
+    {
+      code: `
+declare const obj: {
+  [key: number]: number;
+  length: 1;
+};
+
+for (const key in obj) {
+  console.log(key);
+}
+      `,
+      errors: [
+        {
+          column: 1,
+          endColumn: 23,
+          endLine: 7,
+          line: 7,
           messageId: 'forInViolation',
         },
       ],
