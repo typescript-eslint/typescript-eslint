@@ -154,9 +154,15 @@ function booleanComparison(
 
 // #endregion
 
+type LegacyAllowConstantLoopConditions = boolean;
+
+type AllowConstantLoopConditions = 'always' | 'never' | 'neverExceptWhileTrue';
+
 export type Options = [
   {
-    allowConstantLoopConditions?: boolean;
+    allowConstantLoopConditions?:
+      | AllowConstantLoopConditions
+      | LegacyAllowConstantLoopConditions;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     checkTypePredicates?: boolean;
   },
@@ -215,9 +221,17 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           allowConstantLoopConditions: {
-            type: 'boolean',
-            description:
-              'Whether to ignore constant loop conditions, such as `while (true)`.',
+            oneOf: [
+              {
+                type: 'boolean',
+                description:
+                  'Whether to ignore constant loop conditions, such as `while (true)`.',
+              },
+              {
+                type: 'string',
+                enum: ['always', 'never', 'neverExceptWhileTrue'],
+              },
+            ],
           },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
@@ -235,7 +249,7 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      allowConstantLoopConditions: false,
+      allowConstantLoopConditions: 'always',
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       checkTypePredicates: false,
     },
@@ -262,6 +276,13 @@ export default createRule<Options, MessageId>({
       compilerOptions,
       'noUncheckedIndexedAccess',
     );
+
+    const allowConstantLoopConditionsOption =
+      normalizeAllowConstantLoopConditions(
+        // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        allowConstantLoopConditions!,
+      );
 
     if (
       !isStrictNullChecks &&
@@ -539,6 +560,26 @@ export default createRule<Options, MessageId>({
       checkNode(node.left);
     }
 
+    function checkIfWhileLoopIsNecessaryConditional(
+      node: TSESTree.WhileStatement,
+    ): void {
+      /**
+       * Allow:
+       *   while (true) {}
+       *   for (;true;) {}
+       *   do {} while (true)
+       */
+      if (
+        allowConstantLoopConditionsOption === 'neverExceptWhileTrue' &&
+        node.test.type === AST_NODE_TYPES.Literal &&
+        node.test.value === true
+      ) {
+        return;
+      }
+
+      checkIfLoopIsNecessaryConditional(node);
+    }
+
     /**
      * Checks that a testable expression of a loop is necessarily conditional, reports otherwise.
      */
@@ -553,14 +594,8 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      /**
-       * Allow:
-       *   while (true) {}
-       *   for (;true;) {}
-       *   do {} while (true)
-       */
       if (
-        allowConstantLoopConditions &&
+        allowConstantLoopConditionsOption === 'always' &&
         tsutils.isTrueLiteralType(
           getConstrainedTypeAtLocation(services, node.test),
         )
@@ -916,7 +951,23 @@ export default createRule<Options, MessageId>({
           );
         }
       },
-      WhileStatement: checkIfLoopIsNecessaryConditional,
+      WhileStatement: checkIfWhileLoopIsNecessaryConditional,
     };
   },
 });
+
+function normalizeAllowConstantLoopConditions(
+  allowConstantLoopConditions:
+    | AllowConstantLoopConditions
+    | LegacyAllowConstantLoopConditions,
+): AllowConstantLoopConditions {
+  if (allowConstantLoopConditions === true) {
+    return 'always';
+  }
+
+  if (allowConstantLoopConditions === false) {
+    return 'never';
+  }
+
+  return allowConstantLoopConditions;
+}
