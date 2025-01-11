@@ -9,7 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowIfStatements": {
-        "description": "Whether to ignore `if` statements with a single expression in the consequent.",
+        "description": "Whether to ignore \`if\` statements with a single expression in the consequent.",
         "type": "boolean"
       },
       "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": {
@@ -54,7 +54,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore `if` statements with a single expression in the consequent. */
+    /** Whether to ignore \`if\` statements with a single expression in the consequent. */
     allowIfStatements?: boolean;
     /** Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build. */
     allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
