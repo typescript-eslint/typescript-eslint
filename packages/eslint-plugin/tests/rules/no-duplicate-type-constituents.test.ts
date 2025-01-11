@@ -598,13 +598,6 @@ type T = A | (A | A);
           },
           messageId: 'duplicate',
         },
-        {
-          data: {
-            previous: 'A',
-            type: 'Union',
-          },
-          messageId: 'duplicate',
-        },
       ],
       output: `
 type A = 'A';
@@ -642,6 +635,72 @@ type C = 'C';
 type D = 'D';
 type F = (A | B)   | ((C | D) & (A | B))  ;
       `,
+    },
+    {
+      code: 'type A = (number | string) | number | string;',
+      errors: [
+        {
+          data: {
+            previous: 'number',
+            type: 'Union',
+          },
+          messageId: 'duplicate',
+        },
+        {
+          data: {
+            previous: 'string',
+            type: 'Union',
+          },
+          messageId: 'duplicate',
+        },
+      ],
+      output: 'type A = (number | string)    ;',
+    },
+    {
+      code: 'type A = (number | (string | null)) | (string | (null | number));',
+      errors: [
+        {
+          data: {
+            previous: 'number | (string | null)',
+            type: 'Union',
+          },
+          messageId: 'duplicate',
+        },
+      ],
+      output: 'type A = (number | (string | null))  ;',
+    },
+    {
+      code: 'type A = (number & string) & number & string;',
+      errors: [
+        {
+          data: {
+            previous: 'number',
+            type: 'Intersection',
+          },
+          messageId: 'duplicate',
+        },
+        {
+          data: {
+            previous: 'string',
+            type: 'Intersection',
+          },
+          messageId: 'duplicate',
+        },
+      ],
+      output: 'type A = (number & string)    ;',
+    },
+    {
+      code: 'type A = number & string & (number & string);',
+      errors: [
+        {
+          data: {
+            previous: 'number & string',
+            type: 'Intersection',
+          },
+          messageId: 'duplicate',
+        },
+      ],
+      output: 'type A = number & string  ;',
     },
     {
       code: `
@@ -767,6 +826,16 @@ type T = Record<string, A  >;
       code: 'type fn = (a?: string | undefined) => void;',
       errors: [{ messageId: 'unnecessary' }],
       output: 'type fn = (a?: string  ) => void;',
+    },
+    {
+      code: 'type fn = (a?: string | (undefined | number)) => void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'type fn = (a?: string | (  number)) => void;',
+    },
+    {
+      code: 'type fn = (a?: (undefined | number) | string) => void;',
+      errors: [{ messageId: 'unnecessary' }],
+      output: 'type fn = (a?: (  number) | string) => void;',
     },
     {
       code: `
