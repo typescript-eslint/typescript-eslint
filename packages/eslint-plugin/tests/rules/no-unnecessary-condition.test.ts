@@ -2016,6 +2016,13 @@ while ((shouldRun = true)) {}
       options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
     },
     {
+      code: `
+while (false) {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
       code: noFormat`
 let foo = { bar: true };
 foo?.bar;
