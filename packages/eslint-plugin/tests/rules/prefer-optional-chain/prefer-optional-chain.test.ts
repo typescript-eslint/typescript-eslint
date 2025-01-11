@@ -845,6 +845,8 @@ describe('if block with a single statment matches part of the condition', () => 
             // comment1
             /* comment2 */
             foo.bar();
+            // comment3
+            /* comment4 */
           }
         `,
         errors: [
@@ -862,12 +864,30 @@ describe('if block with a single statment matches part of the condition', () => 
           // comment1
           /* comment2 */
           foo?.bar();
+          // comment3
+          /* comment4 */
         `,
               },
             ],
           },
         ],
         options: [{ allowIfStatements: true }],
+      },
+
+      {
+        // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+        code: `
+          declare const foo: undefined | { bar: () => void };
+          if (foo) /* sneaky */
+            foo.bar();
+        `,
+        errors: [{ messageId: 'preferOptionalChain' }],
+        options: [{ allowIfStatements: true }],
+        output: `
+          declare const foo: undefined | { bar: () => void };
+          /* sneaky */
+          foo?.bar();
+        `,
       },
       {
         code: `

@@ -429,9 +429,10 @@ function getReportDescriptor(
       : []; // if /* this */ (foo)
     const beforeNodeTestComments = sourceCode.getCommentsBefore(node.test); // if (/* this */ foo)
     const afterNodeTestComments1 = sourceCode.getCommentsAfter(node.test); // if (foo /* this */)
-    const afterNodeTestComments2 = tokenAfterAfterNodeTest
-      ? sourceCode.getCommentsBefore(tokenAfterAfterNodeTest)
-      : []; // if (foo) /* this */
+    const afterNodeTestComments2 =
+      tokenAfterAfterNodeTest?.type === AST_TOKEN_TYPES.Punctuator
+        ? sourceCode.getCommentsBefore(tokenAfterAfterNodeTest)
+        : []; // if (foo) /* this */
 
     const commentsToReloacte = [
       ...commentsBeforeNodeTest,
