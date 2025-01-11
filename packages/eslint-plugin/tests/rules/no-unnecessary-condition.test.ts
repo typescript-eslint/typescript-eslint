@@ -2007,6 +2007,15 @@ do {} while (true);
       options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
     },
     {
+      code: `
+let shouldRun = true;
+
+while ((shouldRun = true)) {}
+      `,
+      errors: [{ column: 9, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
       code: noFormat`
 let foo = { bar: true };
 foo?.bar;
