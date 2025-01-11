@@ -9,8 +9,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowConstantLoopConditions": {
-        "description": "Whether to ignore constant loop conditions, such as \`while (true)\`.",
-        "type": "boolean"
+        "oneOf": [
+          {
+            "description": "Whether to ignore constant loop conditions, such as \`while (true)\`.",
+            "type": "boolean"
+          },
+          {
+            "enum": ["always", "never", "neverExceptWhileTrue"],
+            "type": "string"
+          }
+        ]
       },
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
         "description": "Whether to not error when running with a tsconfig that has strictNullChecks turned.",
@@ -30,8 +38,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore constant loop conditions, such as \`while (true)\`. */
-    allowConstantLoopConditions?: boolean;
+    allowConstantLoopConditions?:
+      | 'always'
+      | 'never'
+      | 'neverExceptWhileTrue'
+      /** Whether to ignore constant loop conditions, such as \`while (true)\`. */
+      | boolean;
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     /** Whether to check the asserted argument of a type predicate function for unnecessary conditions */

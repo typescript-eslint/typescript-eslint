@@ -59,7 +59,7 @@ function bar(arg?: string | null) {
 `;
 
 exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 3`] = `
-"Options: { "allowConstantLoopConditions": true }
+"Options: { "allowConstantLoopConditions": "always" }
 
 while (true) {}
 for (; true; ) {}
@@ -68,6 +68,45 @@ do {} while (true);
 `;
 
 exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 4`] = `
+"Options: { "allowConstantLoopConditions": "never" }
+
+while (true) {
+       ~~~~ Unnecessary conditional, value is always truthy.
+  doSomething();
+}
+
+for (; true; ) {
+       ~~~~ Unnecessary conditional, value is always truthy.
+  doSomething();
+}
+
+do {
+  doSomething();
+} while (true);
+         ~~~~ Unnecessary conditional, value is always truthy.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 5`] = `
+"Options: { "allowConstantLoopConditions": "neverExceptWhileTrue" }
+
+while (true) {
+  doSomething();
+}
+
+for (; true; ) {
+       ~~~~ Unnecessary conditional, value is always truthy.
+  doSomething();
+}
+
+do {
+  doSomething();
+} while (true);
+         ~~~~ Unnecessary conditional, value is always truthy.
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 6`] = `
 "Options: { "checkTypePredicates": true }
 
 function assert(condition: unknown): asserts condition {

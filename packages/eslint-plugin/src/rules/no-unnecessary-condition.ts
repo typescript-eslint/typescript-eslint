@@ -221,11 +221,11 @@ export default createRule<Options, MessageId>({
         additionalProperties: false,
         properties: {
           allowConstantLoopConditions: {
+            description:
+              'Whether to ignore constant loop conditions, such as `while (true)`.',
             oneOf: [
               {
                 type: 'boolean',
-                description:
-                  'Whether to ignore constant loop conditions, such as `while (true)`.',
               },
               {
                 type: 'string',
@@ -249,7 +249,7 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
-      allowConstantLoopConditions: 'always',
+      allowConstantLoopConditions: 'never',
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       checkTypePredicates: false,
     },
@@ -563,12 +563,7 @@ export default createRule<Options, MessageId>({
     function checkIfWhileLoopIsNecessaryConditional(
       node: TSESTree.WhileStatement,
     ): void {
-      /**
-       * Allow:
-       *   while (true) {}
-       *   for (;true;) {}
-       *   do {} while (true)
-       */
+      // allow: `while (true) {}`
       if (
         allowConstantLoopConditionsOption === 'neverExceptWhileTrue' &&
         node.test.type === AST_NODE_TYPES.Literal &&
