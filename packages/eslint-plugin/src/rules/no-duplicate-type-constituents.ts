@@ -22,7 +22,7 @@ export type Options = [
 
 export type MessageIds = 'duplicate' | 'unnecessary';
 
-export type UnionOrIntersection = 'Intersection' | 'Union';
+type UnionOrIntersection = 'Intersection' | 'Union';
 
 const astIgnoreKeys = new Set(['loc', 'parent', 'range']);
 
