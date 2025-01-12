@@ -5,12 +5,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowSingleExtends?: boolean;
   },
 ];
-type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
+export type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
 export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',

@@ -11,14 +11,14 @@ import {
   isStrongPrecedenceNode,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'comparingNullableToFalse'
   | 'comparingNullableToTrueDirect'
   | 'comparingNullableToTrueNegated'
   | 'direct'
   | 'negated';
 
-type Options = [
+export type Options = [
   {
     allowComparingNullableBooleansToFalse?: boolean;
     allowComparingNullableBooleansToTrue?: boolean;

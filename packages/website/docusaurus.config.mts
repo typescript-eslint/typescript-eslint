@@ -184,7 +184,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
     title: 'typescript-eslint',
   },
   prism: {
-    additionalLanguages: ['ignore'],
+    additionalLanguages: ['bash', 'diff', 'ignore'],
     magicComments: [
       {
         block: { end: 'highlight-end', start: 'highlight-start' },
