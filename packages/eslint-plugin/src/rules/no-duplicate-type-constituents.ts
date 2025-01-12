@@ -24,11 +24,6 @@ export type MessageIds = 'duplicate' | 'unnecessary';
 
 export type UnionOrIntersection = 'Intersection' | 'Union';
 
-interface DuplicatedConstituentInfo {
-  duplicatedPrev: TSESTree.TypeNode;
-  constituentNode: TSESTree.TypeNode;
-}
-
 const astIgnoreKeys = new Set(['loc', 'parent', 'range']);
 
 const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
@@ -190,43 +185,27 @@ export default createRule<Options, MessageIds>({
       });
     }
 
-    function containsEveryDuplicatedConstituents(
-      node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
-      duplicationInfos: DuplicatedConstituentInfo[],
-    ): boolean {
-      const duplicatedConstituentNodes = duplicationInfos.map(
-        ({ constituentNode }) => constituentNode,
-      );
-      return (
-        node.types.length === duplicatedConstituentNodes.length &&
-        node.types.every(constituentNode =>
-          duplicatedConstituentNodes.includes(constituentNode),
-        )
-      );
-    }
-
-    function getDuplicateTypeNodes(
+    function checkDuplicateRecursively(
       unionOrIntersection: UnionOrIntersection,
       constituentNode: TSESTree.TypeNode,
       uniqueConstituents: TSESTree.TypeNode[],
       cachedTypeMap: Map<Type, TSESTree.TypeNode>,
       forEachNodeType?: (type: Type, node: TSESTree.TypeNode) => void,
-    ): DuplicatedConstituentInfo[] {
+    ): void {
       const type = parserServices.getTypeAtLocation(constituentNode);
       if (tsutils.isIntrinsicErrorType(type)) {
-        return [];
+        return;
       }
       const duplicatedPrev =
         uniqueConstituents.find(ele => isSameAstNode(ele, constituentNode)) ??
         cachedTypeMap.get(type);
 
       if (duplicatedPrev) {
-        return [
-          {
-            constituentNode,
-            duplicatedPrev,
-          },
-        ];
+        report('duplicate', constituentNode, {
+          type: unionOrIntersection,
+          previous: sourceCode.getText(duplicatedPrev),
+        });
+        return;
       }
 
       forEachNodeType?.(type, constituentNode);
@@ -239,28 +218,16 @@ export default createRule<Options, MessageIds>({
         (unionOrIntersection === 'Intersection' &&
           constituentNode.type === AST_NODE_TYPES.TSIntersectionType)
       ) {
-        const result: DuplicatedConstituentInfo[] = [];
         for (const constituent of constituentNode.types) {
-          const duplications = getDuplicateTypeNodes(
+          checkDuplicateRecursively(
             unionOrIntersection,
             constituent,
             uniqueConstituents,
             cachedTypeMap,
             forEachNodeType,
           );
-          result.push(...duplications);
         }
-        if (containsEveryDuplicatedConstituents(constituentNode, result)) {
-          return [
-            {
-              constituentNode,
-              duplicatedPrev: constituentNode,
-            },
-          ];
-        }
-        return result;
       }
-      return [];
     }
 
     function checkDuplicate(
@@ -279,18 +246,12 @@ export default createRule<Options, MessageIds>({
           : 'Union';
 
       for (const type of node.types) {
-        const duplicationInfos = getDuplicateTypeNodes(
+        checkDuplicateRecursively(
           unionOrIntersection,
           type,
           uniqueConstituents,
           cachedTypeMap,
           forEachNodeType,
-        );
-        duplicationInfos.forEach(({ constituentNode, duplicatedPrev }) =>
-          report('duplicate', constituentNode, {
-            type: unionOrIntersection,
-            previous: sourceCode.getText(duplicatedPrev),
-          }),
         );
       }
     }

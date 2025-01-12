@@ -637,6 +637,41 @@ type F = (A | B)   | ((C | D) & (A | B))  ;
       `,
     },
     {
+      code: `
+type A = 'A';
+type B = 'B';
+type C = (A | B) | A | B | (A | B);
+      `,
+      errors: [
+        {
+          data: {
+            previous: 'A',
+            type: 'Union',
+          },
+          messageId: 'duplicate',
+        },
+        {
+          data: {
+            previous: 'B',
+            type: 'Union',
+          },
+          messageId: 'duplicate',
+        },
+        {
+          data: {
+            previous: 'A | B',
+            type: 'Union',
+          },
+          messageId: 'duplicate',
+        },
+      ],
+      output: `
+type A = 'A';
+type B = 'B';
+type C = (A | B)      ;
+      `,
+    },
+    {
       code: 'type A = (number | string) | number | string;',
       errors: [
         {
@@ -694,13 +729,23 @@ type F = (A | B)   | ((C | D) & (A | B))  ;
       errors: [
         {
           data: {
-            previous: 'number & string',
+            previous: 'number',
+            type: 'Intersection',
+          },
+          messageId: 'duplicate',
+        },
+        {
+          data: {
+            previous: 'string',
             type: 'Intersection',
           },
           messageId: 'duplicate',
         },
       ],
-      output: 'type A = number & string  ;',
+      output: [
+        'type A = number & string & (  string);',
+        'type A = number & string    ;',
+      ],
     },
     {
       code: `
