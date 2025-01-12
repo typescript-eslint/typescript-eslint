@@ -520,8 +520,12 @@ export default createRule<Options, MessageIds>({
       const inner = getNameRange(variable);
       const outer = getNameRange(scopeVar);
 
-      if (!inner || !outer || inner[1] >= outer[0] || !outerDef) {
+      if (!inner || !outer || inner[1] >= outer[0]) {
         return false;
+      }
+
+      if (!outerDef) {
+        return true;
       }
 
       if (options.hoist === 'functions') {
