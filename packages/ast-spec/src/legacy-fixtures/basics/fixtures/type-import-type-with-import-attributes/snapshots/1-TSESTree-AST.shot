@@ -19,91 +19,82 @@ Program {
           end: { column: 6, line: 3 },
         },
       },
-      typeAnnotation: TSTypeQuery {
-        type: "TSTypeQuery",
-        exprName: TSImportType {
-          type: "TSImportType",
-          argument: TSLiteralType {
-            type: "TSLiteralType",
-            literal: Literal {
-              type: "Literal",
-              raw: ""A"",
-              value: "A",
+      typeAnnotation: TSImportType {
+        type: "TSImportType",
+        argument: TSLiteralType {
+          type: "TSLiteralType",
+          literal: Literal {
+            type: "Literal",
+            raw: ""A"",
+            value: "A",
 
-              range: [96, 99],
-              loc: {
-                start: { column: 23, line: 3 },
-                end: { column: 26, line: 3 },
-              },
-            },
-
-            range: [96, 99],
+            range: [89, 92],
             loc: {
-              start: { column: 23, line: 3 },
-              end: { column: 26, line: 3 },
+              start: { column: 16, line: 3 },
+              end: { column: 19, line: 3 },
             },
           },
-          attributes: [
-            ImportAttribute {
-              type: "ImportAttribute",
-              key: Identifier {
-                type: "Identifier",
-                decorators: [],
-                name: "type",
-                optional: false,
 
-                range: [111, 115],
-                loc: {
-                  start: { column: 38, line: 3 },
-                  end: { column: 42, line: 3 },
-                },
-              },
-              value: Literal {
-                type: "Literal",
-                raw: ""json"",
-                value: "json",
-
-                range: [117, 123],
-                loc: {
-                  start: { column: 44, line: 3 },
-                  end: { column: 50, line: 3 },
-                },
-              },
-
-              range: [111, 123],
-              loc: {
-                start: { column: 38, line: 3 },
-                end: { column: 50, line: 3 },
-              },
-            },
-          ],
-          qualifier: null,
-          typeArguments: null,
-
-          range: [89, 128],
+          range: [89, 92],
           loc: {
             start: { column: 16, line: 3 },
-            end: { column: 55, line: 3 },
+            end: { column: 19, line: 3 },
           },
         },
+        attributes: [
+          ImportAttribute {
+            type: "ImportAttribute",
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "type",
+              optional: false,
 
-        range: [82, 128],
+              range: [104, 108],
+              loc: {
+                start: { column: 31, line: 3 },
+                end: { column: 35, line: 3 },
+              },
+            },
+            value: Literal {
+              type: "Literal",
+              raw: ""json"",
+              value: "json",
+
+              range: [110, 116],
+              loc: {
+                start: { column: 37, line: 3 },
+                end: { column: 43, line: 3 },
+              },
+            },
+
+            range: [104, 116],
+            loc: {
+              start: { column: 31, line: 3 },
+              end: { column: 43, line: 3 },
+            },
+          },
+        ],
+        qualifier: null,
+        typeArguments: null,
+
+        range: [82, 121],
         loc: {
           start: { column: 9, line: 3 },
-          end: { column: 55, line: 3 },
+          end: { column: 48, line: 3 },
         },
       },
 
-      range: [73, 129],
+      range: [73, 122],
       loc: {
         start: { column: 0, line: 3 },
-        end: { column: 56, line: 3 },
+        end: { column: 49, line: 3 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [73, 130],
+  range: [73, 123],
   loc: {
     start: { column: 0, line: 3 },
     end: { column: 0, line: 4 },
