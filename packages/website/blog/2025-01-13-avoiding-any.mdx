@@ -1,9 +1,9 @@
 ---
 authors: joshuakgoldberg
 description: How typescript-eslint expands on TypeScript's type safety to catch explicit and implicit `any`s.
-slug: catching-any
+slug: avoiding-any
 tags: [any, no-explicit-any, no-unsafe, noImplicitAny, typed linting]
-title: 'Catching `any`s with Linting and TypeScript'
+title: 'Avoiding `any`s with Linting and TypeScript'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -13,14 +13,22 @@ TypeScript's `any` type is, by design, the single most unsafe part of its type s
 The `any` type indicates a type that can be anything and can be used in place of any other type.
 Using `any` is unsafe because the type disables many of TypeScript's type-checking features and hampers its ability to provide developer assistance.
 
+typescript-eslint includes several lint rules that help prevent unsafe practices due to the `any` type.
+These rules flag uses of `any` or code patterns that sneakily introduce it.
+
+In this deep dive, we'll give you an overview of many ways to prevent `any`s from sneaking into your code.
+
+{/* truncate */}
+
+## `noImplicitAny` Isn't Enough
+
 TypeScript includes a [`noImplicitAny`](https://www.typescriptlang.org/tsconfig/#noImplicitAny) flag to report when a better type than `any` can't be inferred for a value.
 `noImplicitAny` is part of its family of [`strict` compiler options](https://www.typescriptlang.org/tsconfig/#strict) and is generally recommended for all projects.
 
 However, even with `noImplicitAny` enabled, the `any` type can easily sneak into codebases.
 Some built-in APIs such as `JSON.stringify` and types such as `Function` can introduce the `any` type without triggering `noImplicitAny`.
 
-typescript-eslint includes several lint rules that help prevent unsafe practices due to the `any` type.
-These rules flag uses of `any` or code patterns that sneakily introduce it.
+Enabling `noImplicitAny` is a great first step towards better project type safety, but it's not enough to prevent `any`s altogether.
 
 ## Banning Unsafe Types
 
