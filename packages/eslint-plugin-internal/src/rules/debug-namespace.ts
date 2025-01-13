@@ -20,7 +20,7 @@ function filePathToNamespace(filePath: string) {
 }
 
 export default createRule({
-  name: __filename,
+  name: 'debug-namespace',
   meta: {
     type: 'problem',
     docs: {
