@@ -84,12 +84,68 @@ function bar(arg?: string | null) {
 
 {/* insert option description */}
 
-Example of correct code for `{ allowConstantLoopConditions: true }`:
+#### `'never'` or `false`
 
-```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
-while (true) {}
-for (; true; ) {}
-do {} while (true);
+Disallow constant conditions in loops.
+
+Example of incorrect code for `{ allowConstantLoopConditions: 'never' }`:
+
+```ts option='{ "allowConstantLoopConditions": "never" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+```
+
+#### `'always'` or `true`
+
+Allow constant conditions in loops.
+
+Example of correct code for `{ allowConstantLoopConditions: 'always' }`:
+
+```ts option='{ "allowConstantLoopConditions": "always" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+```
+
+#### `'neverExceptWhileTrue'`
+
+Disallow constant conditions in all loops except `while` loops with expression `true`.
+
+Example of correct code for `{ allowConstantLoopConditions: 'neverExceptWhileTrue' }`:
+
+```ts option='{ "allowConstantLoopConditions": "neverExceptWhileTrue" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+```
+
+Example of incorrect code for `{ allowConstantLoopConditions: 'neverExceptWhileTrue' }`:
+
+```ts option='{ "allowConstantLoopConditions": "neverExceptWhileTrue" }' showPlaygroundButton
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
 ```
 
 ### `checkTypePredicates`

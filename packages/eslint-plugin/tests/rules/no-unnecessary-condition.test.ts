@@ -445,10 +445,44 @@ const x = b1 && b2;
     {
       code: `
 while (true) {}
+      `,
+      options: [{ allowConstantLoopConditions: true }],
+    },
+    {
+      code: `
 for (; true; ) {}
+      `,
+      options: [{ allowConstantLoopConditions: true }],
+    },
+    {
+      code: `
 do {} while (true);
       `,
       options: [{ allowConstantLoopConditions: true }],
+    },
+    {
+      code: `
+while (true) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'always' }],
+    },
+    {
+      code: `
+for (; true; ) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'always' }],
+    },
+    {
+      code: `
+do {} while (true);
+      `,
+      options: [{ allowConstantLoopConditions: 'always' }],
+    },
+    {
+      code: `
+while (true) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
     },
     `
 let variable = 'abc' as string | void;
@@ -1897,16 +1931,114 @@ function falsy() {}
     //     },
     {
       code: `
-while (true) {}
+declare const test: true;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: false }],
+    },
+    {
+      code: `
+declare const test: true;
+
+for (; test; ) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: false }],
+    },
+    {
+      code: `
+declare const test: true;
+
+do {} while (test);
+      `,
+      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: false }],
+    },
+    {
+      code: `
+declare const test: true;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'never' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+for (; test; ) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'never' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+do {} while (test);
+      `,
+      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'never' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+for (; test; ) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
+      code: `
+declare const test: true;
+
+do {} while (test);
+      `,
+      errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
+      code: `
 for (; true; ) {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
+      code: `
 do {} while (true);
       `,
-      errors: [
-        { column: 8, line: 2, messageId: 'alwaysTruthy' },
-        { column: 8, line: 3, messageId: 'alwaysTruthy' },
-        { column: 14, line: 4, messageId: 'alwaysTruthy' },
-      ],
-      options: [{ allowConstantLoopConditions: false }],
+      errors: [{ column: 14, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
+      code: `
+let shouldRun = true;
+
+while ((shouldRun = true)) {}
+      `,
+      errors: [{ column: 9, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+    },
+    {
+      code: `
+while (false) {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
+      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
     },
     {
       code: noFormat`
