@@ -3093,6 +3093,7 @@ export class Converter {
           type: AST_NODE_TYPES.TSImportType,
           range,
           argument: this.convertChild(node.argument),
+          attributes: this.convertImportAttributes(node.attributes),
           qualifier: this.convertChild(node.qualifier),
           typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(

@@ -65,6 +65,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
                     end: { column: 20, line: 3 },
                   },
                 },
+-               attributes: Array [],
 +               options: null,
                 qualifier: Identifier {
                   type: 'Identifier',
