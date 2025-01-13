@@ -96,6 +96,8 @@ interface ParserOptions {
   experimentalDecorators?: boolean;
   extraFileExtensions?: string[];
   filePath?: string;
+  // use isolatedDeclarations without specifying parserOptions.project
+  isolatedDeclarations?: boolean;
   jsDocParsingMode?: JSDocParsingMode;
   jsxFragmentName?: string | null;
   // scope-manager specific
