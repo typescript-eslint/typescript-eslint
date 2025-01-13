@@ -7,7 +7,9 @@ import type { ASTAndDefiniteProgram } from './shared';
 import { getScriptKind } from './getScriptKind';
 import { createDefaultCompilerOptionsFromExtra } from './shared';
 
-const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:createIsolatedProgram',
+);
 
 /**
  * @returns Returns a new source file and program corresponding to the linted code

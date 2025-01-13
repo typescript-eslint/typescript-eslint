@@ -7,7 +7,9 @@ import type { ASTAndNoProgram } from './shared';
 import { isSourceFile } from '../source-files';
 import { getScriptKind } from './getScriptKind';
 
-const log = debug('typescript-eslint:typescript-estree:createSourceFile');
+const log = debug(
+  'typescript-eslint:typescript-estree:create-program:createSourceFile',
+);
 
 function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
   log(
