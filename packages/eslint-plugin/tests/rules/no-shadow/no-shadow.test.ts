@@ -415,94 +415,10 @@ declare module 'baz' {
     },
     {
       code: `
-import type { Foo } from 'bar';
-
-declare module 'bar' {
-  export type Foo = string;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import type { Foo } from 'bar';
-
-declare module 'bar' {
-  interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
 import { type Foo } from 'bar';
 
 declare module 'baz' {
   export interface Foo {
-    x: string;
-  }
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { type Foo } from 'bar';
-
-declare module 'bar' {
-  export type Foo = string;
-}
-      `,
-      errors: [
-        {
-          data: {
-            name: 'Foo',
-            shadowedColumn: 15,
-            shadowedLine: 2,
-          },
-          messageId: 'noShadow',
-          type: AST_NODE_TYPES.Identifier,
-        },
-      ],
-    },
-    {
-      code: `
-import { type Foo } from 'bar';
-
-declare module 'bar' {
-  interface Foo {
     x: string;
   }
 }
@@ -1027,5 +943,45 @@ const person = {
       options: [{ ignoreOnInitialization: true }],
     },
     { code: 'const [x = y => y] = [].map(y => y);' },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+    },
+    {
+      code: `
+import type { Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  export type Foo = string;
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
   ],
 });
