@@ -1143,6 +1143,11 @@ this code has trailing whitespace: \${'    '}
   // intentional comment after
 }\`;
     `,
+    `
+      function getTpl<T>(input: T) {
+        return \`\${input}\`;
+      }
+    `,
   ],
 
   invalid: [

@@ -6,7 +6,7 @@
     "additionalProperties": false,
     "properties": {
       "allow": {
-        "description": "Type specifiers that can be allowed.",
+        "description": "An array of type specifiers that are known to be safe to spread.",
         "items": {
           "oneOf": [
             {
@@ -110,7 +110,7 @@
 
 type Options = [
   {
-    /** Type specifiers that can be allowed. */
+    /** An array of type specifiers that are known to be safe to spread. */
     allow?: (
       | {
           from: 'file';

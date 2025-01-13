@@ -15,7 +15,7 @@ import {
 } from '../util';
 import { getForStatementHeadLoc } from '../util/getForStatementHeadLoc';
 
-type MessageId =
+export type MessageId =
   | 'await'
   | 'awaitUsingOfNonAsyncDisposable'
   | 'convertToOrdinaryFor'
