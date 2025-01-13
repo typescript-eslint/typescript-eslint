@@ -166,6 +166,23 @@ foo['key_baz'];
         },
       },
     },
+    {
+      code: `
+type Key = Lowercase<string>;
+type Foo = {
+  BAR: boolean;
+  [key: Lowercase<string>]: number;
+};
+declare const foo: Foo;
+foo['bar'];
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
   ],
   invalid: [
     {
