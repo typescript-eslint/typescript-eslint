@@ -358,6 +358,117 @@ if (Math.random()) {
 x!;
       `,
     },
+    "let a = (Date.now() % 2 ? 'a' : 'b') as 'a' | 'b';",
+    `
+      const state: 'expired' | 'pending' = 'pending';
+
+      function main() {
+        return {
+          type: \`\${state}Request\` as \`\${typeof state}Request\`,
+        };
+      }
+    `,
+    `
+let conditionFreshCasted = (Math.random() > 0.5 ? 'foo' : 'bar') as
+  | 'foo'
+  | 'bar';
+    `,
+    `
+let a = (Math.random() > 0.5 ? 'foo' : 'bar') as 'foo' | 'bar';
+    `,
+    `
+let a = (Math.random() > 0.5 ? 1 : 2) as 1 | 2;
+    `,
+    `
+declare const foo: 'foo';
+const bar = 'bar';
+
+let a = (Math.random() > 0.5 ? foo : bar) as bar | foo;
+    `,
+    `
+const foo = 'foo';
+let a = foo as 'foo';
+    `,
+    `
+const foo = 'foo';
+function f() {
+  return foo as 'foo';
+}
+    `,
+    `
+const foo = 'foo';
+const a = {
+  foo: foo as 'foo',
+};
+    `,
+    `
+function f() {
+  return 'foo';
+}
+
+let callCasted = f() as 'foo';
+    `,
+    `
+const obj = {
+  foo: 'foo',
+};
+
+let s = obj.foo as 'foo';
+    `,
+    `
+const a = 1;
+
+foo(a as 1);
+
+function foo<T>(a: T) {}
+    `,
+    'let a = b as 1;',
+    `
+const a = Math.random() > 0.5 ? 'foo' : 'bar';
+
+let c = a as 'bar' | 'foo';
+    `,
+    `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+const data = {
+  x: Foo.Bar as Foo.Bar,
+};
+    `,
+    `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+const a = Foo.Bar;
+
+const data = {
+  x: a as Foo.Bar,
+};
+    `,
+    `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+const a = Foo;
+
+const data = {
+  x: a.Bar as Foo.Bar,
+};
+    `,
+    `
+class Foo {
+  hey?: string;
+}
+
+let b = (Math.random() > 0.5 ? new Foo() : '1') as '1' | Foo;
+    `,
   ],
 
   invalid: [
@@ -1149,6 +1260,272 @@ const b: string | undefined = (a ? undefined : a)!;
       output: `
 const a = '';
 const b: string | undefined = (a ? undefined : a);
+      `,
+    },
+    {
+      code: "const a = (Date.now() % 2 ? 'a' : 'b') as 'a' | 'b';",
+      errors: [
+        {
+          column: 11,
+          line: 1,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `const a = (Date.now() % 2 ? 'a' : 'b');`,
+    },
+    {
+      code: `
+declare const foo: 'foo';
+declare const bar: 'bar';
+
+let a = (Math.random() > 0.5 ? foo : bar) as 'bar' | 'foo';
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const foo: 'foo';
+declare const bar: 'bar';
+
+let a = (Math.random() > 0.5 ? foo : bar);
+      `,
+    },
+    {
+      code: `
+declare const foo: 'foo';
+let a = foo as 'foo';
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const foo: 'foo';
+let a = foo;
+      `,
+    },
+    {
+      code: `
+declare const foo: 'foo';
+function f() {
+  return foo as 'foo';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const foo: 'foo';
+function f() {
+  return foo;
+}
+      `,
+    },
+    {
+      code: `
+declare const foo: 'foo';
+const a = {
+  foo: foo as 'foo',
+};
+      `,
+      errors: [
+        {
+          column: 8,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const foo: 'foo';
+const a = {
+  foo: foo,
+};
+      `,
+    },
+    {
+      code: `
+function f(): 'foo' {
+  return 'foo';
+}
+
+let callCasted = f() as 'foo';
+      `,
+      errors: [
+        {
+          column: 18,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+function f(): 'foo' {
+  return 'foo';
+}
+
+let callCasted = f();
+      `,
+    },
+    {
+      code: `
+const obj = {
+  foo: 'foo' as const,
+};
+
+let s = obj.foo as 'foo';
+      `,
+      errors: [
+        {
+          column: 9,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const obj = {
+  foo: 'foo' as const,
+};
+
+let s = obj.foo;
+      `,
+    },
+    {
+      code: `
+declare const a: 1;
+
+foo(a as 1);
+
+function foo<T>(a: T) {}
+      `,
+      errors: [
+        {
+          column: 5,
+          line: 4,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+declare const a: 1;
+
+foo(a);
+
+function foo<T>(a: T) {}
+      `,
+    },
+    {
+      code: `
+const state: 'expired' | 'pending' = 'pending';
+
+function main() {
+  return {
+    type: state as 'expired' | 'pending',
+  };
+}
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const state: 'expired' | 'pending' = 'pending';
+
+function main() {
+  return {
+    type: state,
+  };
+}
+      `,
+    },
+    {
+      code: `
+const state: 'expired' | 'pending' = 'pending';
+
+class Example {
+  type = state as 'expired' | 'pending';
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+const state: 'expired' | 'pending' = 'pending';
+
+class Example {
+  type = state;
+}
+      `,
+    },
+    {
+      code: `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+declare const a: Foo.Bar;
+
+const data = {
+  x: a as Foo.Bar,
+};
+      `,
+      errors: [
+        {
+          column: 6,
+          line: 10,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum Foo {
+  Bar,
+  Bazz,
+}
+
+declare const a: Foo.Bar;
+
+const data = {
+  x: a,
+};
+      `,
+    },
+    {
+      code: `
+class Foo {
+  hey?: string;
+}
+
+const b = (Math.random() > 0.5 ? new Foo() : '1') as '1' | Foo;
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 6,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class Foo {
+  hey?: string;
+}
+
+const b = (Math.random() > 0.5 ? new Foo() : '1');
       `,
     },
   ],
