@@ -998,7 +998,7 @@ export class RuleTester extends TestFramework {
       if (ruleName === 'debug-namespace' && messages[0]) {
         assert.equal(
           JSON.stringify([ruleName]),
-          JSON.stringify(messages.map(m => m.ruleId)),
+          JSON.stringify(messages.map(m => m.message)),
         );
       }
 
