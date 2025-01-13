@@ -28,7 +28,7 @@ export * from './getConstraintInfo';
 // this is done for convenience - saves migrating all of the old rules
 export * from '@typescript-eslint/type-utils';
 
-const {
+export const {
   applyDefault,
   deepMerge,
   getParserServices,
@@ -40,12 +40,3 @@ export type InferMessageIdsTypeFromRule<T> =
   ESLintUtils.InferMessageIdsTypeFromRule<T>;
 export type InferOptionsTypeFromRule<T> =
   ESLintUtils.InferOptionsTypeFromRule<T>;
-
-export {
-  applyDefault,
-  deepMerge,
-  getParserServices,
-  isObjectNotArray,
-  nullThrows,
-  NullThrowsReasons,
-};
