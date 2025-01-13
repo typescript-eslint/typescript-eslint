@@ -994,9 +994,12 @@ export class RuleTester extends TestFramework {
           util.inspect(messages),
         ),
       );
-      // console.log('rulename', ruleName);
+
       if (ruleName === 'debug-namespace' && messages[0]) {
-        assert.equal(ruleName, messages[0].ruleId);
+        assert.equal(
+          JSON.stringify([ruleName]),
+          JSON.stringify(messages.map(m => m.ruleId)),
+        );
       }
 
       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
