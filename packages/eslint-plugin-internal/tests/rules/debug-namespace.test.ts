@@ -17,10 +17,40 @@ ruleTester.run('debug-namespace', rule, {
         },
       ],
       filename: 'typescript-eslint/packages/example/file.ts',
-      output: `const log = debug('typescript-eslint:example:file');`,
+      output: "const log = debug('typescript-eslint:example:file');",
+    },
+    {
+      code: "const log = debug('not:correct');",
+      errors: [
+        {
+          column: 19,
+          endColumn: 32,
+          line: 1,
+          messageId: 'mismatched',
+        },
+      ],
+      filename: '/Users/example/typescript-eslint/packages/example/file.ts',
+      output: "const log = debug('typescript-eslint:example:file');",
+    },
+    {
+      code: "const log = debug('not:correct');",
+      errors: [
+        {
+          column: 19,
+          endColumn: 32,
+          line: 1,
+          messageId: 'mismatched',
+        },
+      ],
+      filename: 'C:\\Code\\typescript-eslint\\packages\\example\\file.ts',
+      output: "const log = debug('typescript-eslint:example:file');",
     },
   ],
   valid: [
+    {
+      code: "const log = debug('typescript-eslint:example:file');",
+      filename: 'typescript-eslint/packages/example/file.ts',
+    },
     {
       code: "const logCustom = debug('typescript-eslint:example:file');",
       filename: 'typescript-eslint/packages/example/file.ts',
@@ -40,10 +70,6 @@ ruleTester.run('debug-namespace', rule, {
     {
       code: 'const log = debug(123);',
       filename: 'typescript-eslint/packages/example/file.ts',
-    },
-    {
-      code: "const log = debug('...');",
-      filename: 'external.ts',
     },
   ],
 });

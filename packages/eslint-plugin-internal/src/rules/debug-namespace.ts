@@ -5,19 +5,18 @@ import { getStaticValue } from '@typescript-eslint/utils/ast-utils';
 import { createRule } from '../util';
 
 function filePathToNamespace(filePath: string) {
-  const matched =
-    /typescript-eslint[\\/]+packages[\\/]+([a-z-]+)[\\/]+(.+)/.exec(filePath);
-  if (!matched) {
-    return;
-  }
-  const [, packageName, relativeFilePath] = matched;
+  const relativePath = filePath
+    .split(/packages[\\/]+/)
+    .slice(1)
+    .join('');
 
-  const relativeFilePathProcessed = relativeFilePath
-    .replace(/^(?:dist|lib|src)\//, '')
+  const relativeNamespace = relativePath
+    .replace(/^[\\/]/, '')
+    .replace(/(?:dist|lib|src)\//, '')
     .replace(/\.\w+$/, '')
     .replaceAll(/[^a-z0-9-]+/gi, ':');
 
-  return `typescript-eslint:${packageName}:${relativeFilePathProcessed}`;
+  return `typescript-eslint:${relativeNamespace}`;
 }
 
 export default createRule({
