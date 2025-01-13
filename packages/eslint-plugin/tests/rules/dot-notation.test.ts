@@ -162,6 +162,25 @@ foo['key_baz'];
       languageOptions: {
         parserOptions: {
           project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
+    {
+      code: `
+type Key = Lowercase<string>;
+type Foo = {
+  BAR: boolean;
+  [key: Lowercase<string>]: number;
+};
+declare const foo: Foo;
+foo['bar'];
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          projectService: false,
           tsconfigRootDir: rootPath,
         },
       },
