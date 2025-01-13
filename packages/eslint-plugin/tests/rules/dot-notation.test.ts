@@ -150,6 +150,22 @@ console.log(x?.['priv_prop']);
       `,
       options: [{ allowProtectedClassPropertyAccess: true }],
     },
+    {
+      code: `
+type Foo = {
+  bar: boolean;
+  [key: \`key_\${string}\`]: number;
+};
+declare const foo: Foo;
+foo['key_baz'];
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
   ],
   invalid: [
     {

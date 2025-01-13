@@ -9,7 +9,12 @@ import type {
   InferOptionsTypeFromRule,
 } from '../util';
 
-import { createRule, getModifiers, getParserServices } from '../util';
+import {
+  createRule,
+  getModifiers,
+  getParserServices,
+  getTypeName,
+} from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('dot-notation');
@@ -82,7 +87,7 @@ export default createRule<Options, MessageIds>({
   create(context, [options]) {
     const rules = baseRule.create(context);
     const services = getParserServices(context);
-
+    const checker = services.program.getTypeChecker();
     const allowPrivateClassPropertyAccess =
       options.allowPrivateClassPropertyAccess;
     const allowProtectedClassPropertyAccess =
@@ -125,12 +130,16 @@ export default createRule<Options, MessageIds>({
           ) {
             return;
           }
+
           if (propertySymbol == null && allowIndexSignaturePropertyAccess) {
             const objectType = services.getTypeAtLocation(node.object);
-            const indexType = objectType
-              .getNonNullableType()
-              .getStringIndexType();
-            if (indexType != null) {
+            const indexType = objectType.getNonNullableType();
+            const indexInfos = checker.getIndexInfosOfType(indexType);
+            if (
+              indexInfos.some(
+                info => getTypeName(checker, info.keyType) === 'string',
+              )
+            ) {
               return;
             }
           }
