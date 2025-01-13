@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 class Foo {
   constructor(readonly name: string) {}
@@ -37,20 +34,14 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 class Foo {
   constructor(name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["readonly"] }
 
 class Foo {
@@ -82,11 +73,8 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 4`] = `
-"Correct
+Correct
 Options: { "allow": ["readonly"] }
 
 class Foo {
@@ -96,11 +84,8 @@ class Foo {
 class Foo {
   constructor(readonly name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 5`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["private"] }
 
 class Foo {
@@ -132,11 +117,8 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "allow": ["private"] }
 
 class Foo {
@@ -146,11 +128,8 @@ class Foo {
 class Foo {
   constructor(private name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 7`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["protected"] }
 
 class Foo {
@@ -182,11 +161,8 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 8`] = `
-"Correct
+Correct
 Options: { "allow": ["protected"] }
 
 class Foo {
@@ -196,11 +172,8 @@ class Foo {
 class Foo {
   constructor(protected name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 9`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["public"] }
 
 class Foo {
@@ -232,11 +205,8 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 10`] = `
-"Correct
+Correct
 Options: { "allow": ["public"] }
 
 class Foo {
@@ -246,11 +216,8 @@ class Foo {
 class Foo {
   constructor(public name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 11`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["private readonly"] }
 
 class Foo {
@@ -282,11 +249,8 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 12`] = `
-"Correct
+Correct
 Options: { "allow": ["private readonly"] }
 
 class Foo {
@@ -296,11 +260,8 @@ class Foo {
 class Foo {
   constructor(private readonly name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 13`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["protected readonly"] }
 
 class Foo {
@@ -332,11 +293,8 @@ class Foo {
   constructor(public readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 14`] = `
-"Correct
+Correct
 Options: { "allow": ["protected readonly"] }
 
 class Foo {
@@ -346,11 +304,8 @@ class Foo {
 class Foo {
   constructor(protected readonly name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 15`] = `
-"Incorrect
+Incorrect
 Options: { "allow": ["public readonly"] }
 
 class Foo {
@@ -382,11 +337,8 @@ class Foo {
   constructor(protected readonly name: string) {}
               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Property name should be declared as a class property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 16`] = `
-"Correct
+Correct
 Options: { "allow": ["public readonly"] }
 
 class Foo {
@@ -396,11 +348,8 @@ class Foo {
 class Foo {
   constructor(public readonly name: string) {}
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 17`] = `
-"Incorrect
+Incorrect
 Options: { "prefer": "parameter-property" }
 
 class Foo {
@@ -426,11 +375,8 @@ class Foo {
   name: string;
   ~~~~~~~~~~~~~ Property name should be declared as a parameter property.
 }
-"
-`;
 
-exports[`Validating rule docs parameter-properties.mdx code examples ESLint output 18`] = `
-"Correct
+Correct
 Options: { "prefer": "parameter-property" }
 
 class Foo {
@@ -454,5 +400,3 @@ class Foo {
     this.logicInConstructor = logicInConstructor;
   }
 }
-"
-`;

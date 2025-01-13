@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 declare const promise: Promise<number>;
 const spreadPromise = { ...promise };
@@ -13,16 +10,13 @@ const getObjectSpread = { ...getObject };
 
 declare const map: Map<string, number>;
 const mapSpread = { ...map };
-                    ~~~~~~ Using the spread operator on a Map in an object will result in an empty object. Did you mean to use \`Object.fromEntries(map)\` instead?
+                    ~~~~~~ Using the spread operator on a Map in an object will result in an empty object. Did you mean to use `Object.fromEntries(map)` instead?
 
 declare const userName: string;
 const characters = [...userName];
-                    ~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`.split('')\` instead.
-"
-`;
+                    ~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer `.split('')` instead.
 
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 2`] = `
-"Incorrect
+Incorrect
 
 declare class Box {
   value: number;
@@ -32,11 +26,8 @@ const boxSpread = { ...Box };
 
 declare const instance: Box;
 const instanceSpread = { ...box };
-"
-`;
 
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 3`] = `
-"Correct
+Correct
 
 declare const promise: Promise<number>;
 const spreadPromise = { ...(await promise) };
@@ -49,22 +40,16 @@ const mapObject = Object.fromEntries(map);
 
 declare const userName: string;
 const characters = userName.split('');
-"
-`;
 
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 4`] = `
-"Incorrect
+Incorrect
 Options: {"allow":[{ "from": "file", "name": "BrandedString" }]}
 
 declare const unbrandedString: string;
 
 const spreadUnbrandedString = [...unbrandedString];
-                               ~~~~~~~~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer \`.split('')\` instead.
-"
-`;
+                               ~~~~~~~~~~~~~~~~~~ Using the spread operator on a string can cause unexpected behavior. Prefer `.split('')` instead.
 
-exports[`Validating rule docs no-misused-spread.mdx code examples ESLint output 5`] = `
-"Correct
+Correct
 Options: {"allow":[{ "from": "file", "name": "BrandedString" }]}
 
 type BrandedString = string & { __brand: 'safe' };
@@ -72,5 +57,3 @@ type BrandedString = string & { __brand: 'safe' };
 declare const brandedString: BrandedString;
 
 const spreadBrandedString = [...brandedString];
-"
-`;
