@@ -210,7 +210,7 @@ export class RuleTester extends TestFramework {
     // file name (`foo.ts`), don't change the base path.
     if (
       filename != null &&
-      (filename.startsWith('/') || filename.startsWith('..'))
+      (path.isAbsolute(filename) || filename.startsWith('..'))
     ) {
       basePath = path.parse(
         path.resolve(basePath ?? process.cwd(), filename),
@@ -354,6 +354,7 @@ export class RuleTester extends TestFramework {
       if (languageOptions.parser === parser) {
         throw new Error(DUPLICATE_PARSER_ERROR_MESSAGE);
       }
+      console.log(getFilename(test.filename, languageOptions.parserOptions));
       return {
         ...test,
         filename: getFilename(test.filename, languageOptions.parserOptions),
