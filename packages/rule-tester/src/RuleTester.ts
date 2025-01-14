@@ -1001,6 +1001,10 @@ export class RuleTester extends TestFramework {
 
       const hasMessageOfThisRule = messages.some(m => m.ruleId === ruleName);
 
+      if (!hasMessageOfThisRule) {
+        assert('', JSON.stringify(messages));
+      }
+
       // console.log({ messages });
       for (let i = 0, l = item.errors.length; i < l; i++) {
         const error = item.errors[i];
