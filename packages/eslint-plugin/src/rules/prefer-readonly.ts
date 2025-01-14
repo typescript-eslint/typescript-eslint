@@ -270,6 +270,19 @@ export default createRule<Options, MessageIds>({
               return null;
             }
 
+            if (nameNode.type !== AST_NODE_TYPES.Identifier) {
+              return null;
+            }
+
+            const hasConstructorModifications =
+              finalizedClassScope.memberHasConstructorModifications(
+                nameNode.name,
+              );
+
+            if (!hasConstructorModifications) {
+              return null;
+            }
+
             const violatingType = services.getTypeAtLocation(esNode);
             const initializerType = services.getTypeAtLocation(esNode.value);
 
@@ -356,6 +369,8 @@ class ClassScope {
   private readonly classType: ts.Type;
   private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
   private readonly memberVariableModifications = new Set<string>();
+  private readonly memberVariableWithConstructorModifications =
+    new Set<string>();
   private readonly privateModifiableMembers = new Map<
     string,
     ParameterOrPropertyDeclaration
@@ -426,6 +441,7 @@ class ClassScope {
       relationOfModifierTypeToClass === TypeToClassRelation.Instance &&
       this.constructorScopeDepth === DIRECTLY_INSIDE_CONSTRUCTOR
     ) {
+      this.memberVariableWithConstructorModifications.add(node.name.text);
       return;
     }
 
@@ -532,5 +548,9 @@ class ClassScope {
     }
 
     return TypeToClassRelation.Instance;
+  }
+
+  public memberHasConstructorModifications(name: string) {
+    return this.memberVariableWithConstructorModifications.has(name);
   }
 }

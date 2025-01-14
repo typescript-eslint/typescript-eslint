@@ -764,7 +764,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableStatic {
-          private static readonly incorrectlyModifiableStatic: number = 7;
+          private static readonly incorrectlyModifiableStatic = 7;
         }
       `,
     },
@@ -788,7 +788,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableStatic {
-          static readonly #incorrectlyModifiableStatic: number = 7;
+          static readonly #incorrectlyModifiableStatic = 7;
         }
       `,
     },
@@ -876,11 +876,11 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableInline {
-          private readonly incorrectlyModifiableInline: number = 7;
+          private readonly incorrectlyModifiableInline = 7;
 
           public createConfusingChildClass() {
             return class {
-              private readonly incorrectlyModifiableInline: number = 7;
+              private readonly incorrectlyModifiableInline = 7;
             };
           }
         }
@@ -922,11 +922,11 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableInline {
-          readonly #incorrectlyModifiableInline: number = 7;
+          readonly #incorrectlyModifiableInline = 7;
 
           public createConfusingChildClass() {
             return class {
-              readonly #incorrectlyModifiableInline: number = 7;
+              readonly #incorrectlyModifiableInline = 7;
             };
           }
         }
@@ -988,7 +988,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiableDelayed {
-          readonly #incorrectlyModifiableDelayed: number = 7;
+          readonly #incorrectlyModifiableDelayed = 7;
 
           public constructor() {
             this.#incorrectlyModifiableDelayed = 7;
@@ -1026,7 +1026,7 @@ class Foo {
       ],
       output: `
         class TestChildClassExpressionModifiable {
-          private readonly childClassExpressionModifiable: number = 7;
+          private readonly childClassExpressionModifiable = 7;
 
           public createConfusingChildClass() {
             return class {
@@ -1070,7 +1070,7 @@ class Foo {
       ],
       output: `
         class TestChildClassExpressionModifiable {
-          readonly #childClassExpressionModifiable: number = 7;
+          readonly #childClassExpressionModifiable = 7;
 
           public createConfusingChildClass() {
             return class {
@@ -1109,7 +1109,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostMinus {
-          private readonly incorrectlyModifiablePostMinus: number = 7;
+          private readonly incorrectlyModifiablePostMinus = 7;
 
           public mutate() {
             this.incorrectlyModifiablePostMinus - 1;
@@ -1141,7 +1141,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostMinus {
-          readonly #incorrectlyModifiablePostMinus: number = 7;
+          readonly #incorrectlyModifiablePostMinus = 7;
 
           public mutate() {
             this.#incorrectlyModifiablePostMinus - 1;
@@ -1174,7 +1174,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostPlus {
-          private readonly incorrectlyModifiablePostPlus: number = 7;
+          private readonly incorrectlyModifiablePostPlus = 7;
 
           public mutate() {
             this.incorrectlyModifiablePostPlus + 1;
@@ -1207,7 +1207,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePostPlus {
-          readonly #incorrectlyModifiablePostPlus: number = 7;
+          readonly #incorrectlyModifiablePostPlus = 7;
 
           public mutate() {
             this.#incorrectlyModifiablePostPlus + 1;
@@ -1239,7 +1239,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePreMinus {
-          private readonly incorrectlyModifiablePreMinus: number = 7;
+          private readonly incorrectlyModifiablePreMinus = 7;
 
           public mutate() {
             -this.incorrectlyModifiablePreMinus;
@@ -1272,7 +1272,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePreMinus {
-          readonly #incorrectlyModifiablePreMinus: number = 7;
+          readonly #incorrectlyModifiablePreMinus = 7;
 
           public mutate() {
             -this.#incorrectlyModifiablePreMinus;
@@ -1305,7 +1305,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePrePlus {
-          private readonly incorrectlyModifiablePrePlus: number = 7;
+          private readonly incorrectlyModifiablePrePlus = 7;
 
           public mutate() {
             +this.incorrectlyModifiablePrePlus;
@@ -1338,7 +1338,7 @@ class Foo {
       ],
       output: `
         class TestIncorrectlyModifiablePrePlus {
-          readonly #incorrectlyModifiablePrePlus: number = 7;
+          readonly #incorrectlyModifiablePrePlus = 7;
 
           public mutate() {
             +this.#incorrectlyModifiablePrePlus;
@@ -1375,7 +1375,7 @@ class Foo {
       ],
       output: `
         class TestOverlappingClassVariable {
-          private readonly overlappingClassVariable: number = 7;
+          private readonly overlappingClassVariable = 7;
 
           public workWithSimilarClass(other: SimilarClass) {
             other.overlappingClassVariable = 7;
@@ -2337,6 +2337,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       code: `
         class Test {
           private prop = 'hello';
+
+          constructor() {
+            this.prop = 'world';
+          }
         }
       `,
       errors: [
@@ -2354,6 +2358,70 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       output: `
         class Test {
           private readonly prop: string = 'hello';
+
+          constructor() {
+            this.prop = 'world';
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = 'hello';
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = 'hello';
+        }
+      `,
+    },
+    {
+      code: `
+        declare const hello: 'hello';
+
+        class Test {
+          private prop = hello;
+
+          constructor() {
+            this.prop = 'world';
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 5,
+          line: 5,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        declare const hello: 'hello';
+
+        class Test {
+          private readonly prop = hello;
+
+          constructor() {
+            this.prop = 'world';
+          }
         }
       `,
     },
@@ -2389,6 +2457,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       code: `
         class Test {
           private prop = 10;
+
+          constructor() {
+            this.prop = 11;
+          }
         }
       `,
       errors: [
@@ -2406,6 +2478,34 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       output: `
         class Test {
           private readonly prop: number = 10;
+
+          constructor() {
+            this.prop = 11;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = 10;
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = 10;
         }
       `,
     },
@@ -2415,6 +2515,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private prop = hello;
+
+          constructor() {
+            this.prop = 11;
+          }
         }
       `,
       errors: [
@@ -2434,6 +2538,42 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private readonly prop = hello;
+
+          constructor() {
+            this.prop = 11;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = true;
+
+          constructor() {
+            this.prop = false;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop: boolean = true;
+
+          constructor() {
+            this.prop = false;
+          }
         }
       `,
     },
@@ -2457,7 +2597,7 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       ],
       output: `
         class Test {
-          private readonly prop: boolean = true;
+          private readonly prop = true;
         }
       `,
     },
@@ -2467,6 +2607,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private prop = hello;
+
+          constructor() {
+            this.prop = false;
+          }
         }
       `,
       errors: [
@@ -2486,6 +2630,52 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private readonly prop = hello;
+
+          constructor() {
+            this.prop = false;
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        class Test {
+          private prop = Foo.Bar;
+
+          constructor() {
+            this.prop = Foo.Bazz;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 8,
+          line: 8,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        class Test {
+          private readonly prop: Foo = Foo.Bar;
+
+          constructor() {
+            this.prop = Foo.Bazz;
+          }
         }
       `,
     },
@@ -2519,7 +2709,53 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
         }
 
         class Test {
-          private readonly prop: Foo = Foo.Bar;
+          private readonly prop = Foo.Bar;
+        }
+      `,
+    },
+    {
+      code: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const foo = Foo.Bar;
+
+        class Test {
+          private prop = foo;
+
+          constructor() {
+            this.prop = foo;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 10,
+          line: 10,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        enum Foo {
+          Bar,
+          Bazz,
+        }
+
+        const foo = Foo.Bar;
+
+        class Test {
+          private readonly prop: Foo = foo;
+
+          constructor() {
+            this.prop = foo;
+          }
         }
       `,
     },
@@ -2557,7 +2793,7 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
         const foo = Foo.Bar;
 
         class Test {
-          private readonly prop: Foo = foo;
+          private readonly prop = foo;
         }
       `,
     },
@@ -2613,6 +2849,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           class Test {
             private prop = bar;
+
+            constructor() {
+              this.prop = bar;
+            }
           }
         }
       `,
@@ -2641,6 +2881,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           class Test {
             private readonly prop = bar;
+
+            constructor() {
+              this.prop = bar;
+            }
           }
         }
       `,
@@ -2659,6 +2903,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           class Test {
             private prop = bar;
+
+            constructor() {
+              this.prop = bar;
+            }
           }
         }
       `,
@@ -2687,6 +2935,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
           class Test {
             private readonly prop = bar;
+
+            constructor() {
+              this.prop = bar;
+            }
           }
         }
       `,
@@ -2706,6 +2958,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private prop = bar;
+
+          constructor() {
+            this.prop = bar;
+          }
         }
       `,
       errors: [
@@ -2734,6 +2990,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private readonly prop = bar;
+
+          constructor() {
+            this.prop = bar;
+          }
         }
       `,
     },
@@ -2764,6 +3024,38 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
     {
       code: `
         class Test {
+          private prop = { foo: 'bar' };
+
+          constructor() {
+            this.prop = { foo: 'bazz' };
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = { foo: 'bar' };
+
+          constructor() {
+            this.prop = { foo: 'bazz' };
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
           private prop = [1, 2, 'three'];
         }
       `,
@@ -2782,6 +3074,38 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       output: `
         class Test {
           private readonly prop = [1, 2, 'three'];
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = [1, 2, 'three'];
+
+          constructor() {
+            this.prop = [1, 2, 'four'];
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = [1, 2, 'three'];
+
+          constructor() {
+            this.prop = [1, 2, 'four'];
+          }
         }
       `,
     },
@@ -2983,6 +3307,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private prop = hello;
+
+          constructor() {
+            this.prop = 10;
+          }
         }
       `,
       errors: [
@@ -3002,6 +3330,10 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
 
         class Test {
           private readonly prop = hello;
+
+          constructor() {
+            this.prop = 10;
+          }
         }
       `,
     },
@@ -3026,6 +3358,38 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
       output: `
         class Test {
           private readonly prop = null;
+        }
+      `,
+    },
+    {
+      code: `
+        class Test {
+          private prop = null;
+
+          constructor() {
+            this.prop = null;
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
+      output: `
+        class Test {
+          private readonly prop = null;
+
+          constructor() {
+            this.prop = null;
+          }
         }
       `,
     },
