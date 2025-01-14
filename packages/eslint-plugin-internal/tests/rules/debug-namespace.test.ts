@@ -42,7 +42,7 @@ ruleTester.run('debug-namespace', rule, {
           messageId: 'mismatched',
         },
       ],
-      filename: 'C:\\Code\\typescript-eslint\\packages\\example\\file.ts',
+      filename: 'C:/Code/typescript-eslint/packages/example/file.ts',
       output: "const log = debug('typescript-eslint:example:file');",
     },
   ],
