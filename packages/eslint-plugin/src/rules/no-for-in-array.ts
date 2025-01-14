@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
@@ -30,11 +30,15 @@ export default createRule({
         const services = getParserServices(context);
         const checker = services.program.getTypeChecker();
 
-        const type = getConstrainedTypeAtLocation(services, node.right);
+        const { constraintType } = getConstraintInfo(
+          checker,
+          services.getTypeAtLocation(node.right),
+        );
 
         if (
-          isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
-          (type.flags & ts.TypeFlags.StringLike) !== 0
+          constraintType != null &&
+          (isTypeArrayTypeOrUnionOfArrayTypes(constraintType, checker) ||
+            (constraintType.flags & ts.TypeFlags.StringLike) !== 0)
         ) {
           context.report({
             loc: getForStatementHeadLoc(context.sourceCode, node),

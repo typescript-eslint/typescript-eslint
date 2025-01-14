@@ -25,6 +25,13 @@ for (const x in { a: 1, b: 2, c: 3 }) {
   console.log(x);
 }
     `,
+    `
+function f<T>(input: T) {
+  for (const x in input) {
+    console.log(x);
+  }
+}
+    `,
   ],
 
   invalid: [
