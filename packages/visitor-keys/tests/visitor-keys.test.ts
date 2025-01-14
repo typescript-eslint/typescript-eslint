@@ -1,6 +1,8 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import { visitorKeys } from '../src';
+import { additionalKeys } from '../src/visitor-keys';
+import { KEYS as eslintVisitorKeys } from 'eslint-visitor-keys';
 
 const types = new Set(Object.keys(AST_NODE_TYPES));
 const keys = new Set(Object.keys(visitorKeys));
@@ -31,6 +33,16 @@ describe('Every visitor key should have an ast node type defined', () => {
 
     it(key, () => {
       expect(types.has(key)).toBeTruthy();
+    });
+  }
+});
+
+describe('No redundant additional keys', () => {
+  for (const [node, keys] of Object.entries(additionalKeys)) {
+    it(node, () => {
+      const eslintKeys = eslintVisitorKeys[node] || [];
+      const redundant = keys.filter(key => eslintKeys.includes(key));
+      expect(redundant).toEqual([]);
     });
   }
 });
