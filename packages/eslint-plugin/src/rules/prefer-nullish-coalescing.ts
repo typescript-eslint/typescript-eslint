@@ -12,11 +12,15 @@ import {
   isLogicalOrOperator,
   isNodeEqual,
   isNullLiteral,
+  isPossiblyFalsy,
   isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+
+const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
+  [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
 
 export type Options = [
   {
@@ -285,7 +289,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        let operator: '!=' | '!==' | '==' | '===' | undefined;
+        let operator: '!' | '!=' | '!==' | '==' | '===' | undefined;
         let nodesInsideTestExpression: TSESTree.Node[] = [];
         if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
           nodesInsideTestExpression = [node.test.left, node.test.right];
@@ -343,32 +347,48 @@ export default createRule<Options, MessageIds>({
           }
         }
 
-        if (!operator) {
-          return;
-        }
-
         let identifier: TSESTree.Node | undefined;
         let hasUndefinedCheck = false;
         let hasNullCheck = false;
+        let hasTruthinessCheck = false;
 
-        // we check that the test only contains null, undefined and the identifier
-        for (const testNode of nodesInsideTestExpression) {
-          if (isNullLiteral(testNode)) {
-            hasNullCheck = true;
-          } else if (isUndefinedIdentifier(testNode)) {
-            hasUndefinedCheck = true;
-          } else if (
-            (operator === '!==' || operator === '!=') &&
-            isNodeEqual(testNode, node.consequent)
+        if (!operator) {
+          hasUndefinedCheck = true;
+          hasNullCheck = true;
+          hasTruthinessCheck = true;
+
+          if (
+            isIdentifierOrMemberExpressionType(node.test.type) &&
+            isNodeEqual(node.test, node.consequent)
           ) {
-            identifier = testNode;
+            identifier = node.test;
           } else if (
-            (operator === '===' || operator === '==') &&
-            isNodeEqual(testNode, node.alternate)
+            node.test.type === AST_NODE_TYPES.UnaryExpression &&
+            node.test.operator === '!' &&
+            isIdentifierOrMemberExpressionType(node.test.argument.type) &&
+            isNodeEqual(node.test.argument, node.alternate)
           ) {
-            identifier = testNode;
-          } else {
-            return;
+            identifier = node.test.argument;
+            operator = '!';
+          }
+        } else {
+          // we check that the test only contains null, undefined and the identifier
+          for (const testNode of nodesInsideTestExpression) {
+            if (isNullLiteral(testNode)) {
+              hasNullCheck = true;
+            } else if (isUndefinedIdentifier(testNode)) {
+              hasUndefinedCheck = true;
+            } else if (
+              (operator === '!==' || operator === '!=') &&
+              isNodeEqual(testNode, node.consequent)
+            ) {
+              identifier = testNode;
+            } else if (
+              (operator === '===' || operator === '==') &&
+              isNodeEqual(testNode, node.alternate)
+            ) {
+              identifier = testNode;
+            }
           }
         }
 
@@ -378,7 +398,7 @@ export default createRule<Options, MessageIds>({
 
         const isFixable = ((): boolean => {
           // it is fixable if we check for both null and undefined, or not if neither
-          if (hasUndefinedCheck === hasNullCheck) {
+          if (!hasTruthinessCheck && hasUndefinedCheck === hasNullCheck) {
             return hasUndefinedCheck;
           }
 
@@ -393,6 +413,11 @@ export default createRule<Options, MessageIds>({
 
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return false;
+          }
+
+          if (hasTruthinessCheck) {
+            const nonNullishType = checker.getNonNullableType(type);
+            return !isPossiblyFalsy(nonNullishType);
           }
 
           const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
@@ -420,9 +445,9 @@ export default createRule<Options, MessageIds>({
                 data: { equals: '' },
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
-                    operator === '===' || operator === '=='
-                      ? [node.alternate, node.consequent]
-                      : [node.consequent, node.alternate];
+                    operator === '===' || operator === '==' || operator === '!'
+                      ? [identifier, node.consequent]
+                      : [identifier, node.alternate];
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
