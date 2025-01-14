@@ -132,13 +132,9 @@ type AdditionalKeys = {
  */
 
 const SharedVisitorKeys = (() => {
-  const FunctionType = ['typeParameters', 'params', 'returnType'] as const;
-  const AnonymousFunction = [...FunctionType, 'body'] as const;
-  const AbstractPropertyDefinition = [
-    'decorators',
-    'key',
-    'typeAnnotation',
-  ] as const;
+  const FunctionType = ['typeParameters', 'returnType'] as const;
+  const AnonymousFunction = [...FunctionType] as const;
+  const AbstractPropertyDefinition = ['decorators', 'typeAnnotation'] as const;
 
   return {
     AbstractPropertyDefinition: ['decorators', 'key', 'typeAnnotation'],
@@ -146,47 +142,44 @@ const SharedVisitorKeys = (() => {
     AsExpression: ['expression', 'typeAnnotation'],
     ClassDeclaration: [
       'decorators',
-      'id',
       'typeParameters',
-      'superClass',
       'superTypeArguments',
       'implements',
-      'body',
     ],
-    Function: ['id', ...AnonymousFunction],
+    Function: [...AnonymousFunction],
     FunctionType,
-    PropertyDefinition: [...AbstractPropertyDefinition, 'value'],
+    PropertyDefinition: [...AbstractPropertyDefinition],
   } as const;
 })();
 
-const additionalKeys: AdditionalKeys = {
+export const additionalKeys: AdditionalKeys = {
   AccessorProperty: SharedVisitorKeys.PropertyDefinition,
-  ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
+  ArrayPattern: ['decorators', 'typeAnnotation'],
   ArrowFunctionExpression: SharedVisitorKeys.AnonymousFunction,
-  AssignmentPattern: ['decorators', 'left', 'right', 'typeAnnotation'],
-  CallExpression: ['callee', 'typeArguments', 'arguments'],
+  AssignmentPattern: ['decorators', 'typeAnnotation'],
+  CallExpression: ['typeArguments'],
   ClassDeclaration: SharedVisitorKeys.ClassDeclaration,
   ClassExpression: SharedVisitorKeys.ClassDeclaration,
   Decorator: ['expression'],
-  ExportAllDeclaration: ['exported', 'source', 'assertions'],
-  ExportNamedDeclaration: ['declaration', 'specifiers', 'source', 'assertions'],
+  ExportAllDeclaration: ['assertions'],
+  ExportNamedDeclaration: ['assertions'],
   FunctionDeclaration: SharedVisitorKeys.Function,
   FunctionExpression: SharedVisitorKeys.Function,
   Identifier: ['decorators', 'typeAnnotation'],
-  ImportAttribute: ['key', 'value'],
-  ImportDeclaration: ['specifiers', 'source', 'assertions'],
-  ImportExpression: ['source', 'options'],
+  ImportAttribute: [],
+  ImportDeclaration: ['assertions'],
+  ImportExpression: [],
   JSXClosingFragment: [],
-  JSXOpeningElement: ['name', 'typeArguments', 'attributes'],
+  JSXOpeningElement: ['typeArguments'],
   JSXOpeningFragment: [],
-  JSXSpreadChild: ['expression'],
-  MethodDefinition: ['decorators', 'key', 'value'],
-  NewExpression: ['callee', 'typeArguments', 'arguments'],
-  ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
+  JSXSpreadChild: [],
+  MethodDefinition: ['decorators'],
+  NewExpression: ['typeArguments'],
+  ObjectPattern: ['decorators', 'typeAnnotation'],
   PropertyDefinition: SharedVisitorKeys.PropertyDefinition,
-  RestElement: ['decorators', 'argument', 'typeAnnotation'],
-  StaticBlock: ['body'],
-  TaggedTemplateExpression: ['tag', 'typeArguments', 'quasi'],
+  RestElement: ['decorators', 'typeAnnotation'],
+  StaticBlock: [],
+  TaggedTemplateExpression: ['typeArguments'],
   TSAbstractAccessorProperty: SharedVisitorKeys.AbstractPropertyDefinition,
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
