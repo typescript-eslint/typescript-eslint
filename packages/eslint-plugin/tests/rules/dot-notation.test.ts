@@ -419,5 +419,22 @@ const x = new X();
 x.prop = 'hello';
       `,
     },
+    {
+      code: `
+type Foo = {
+  bar: boolean;
+  [key: \`key_\${string}\`]: number;
+};
+foo['key_baz'];
+      `,
+      errors: [{ messageId: 'useDot' }],
+      output: `
+type Foo = {
+  bar: boolean;
+  [key: \`key_\${string}\`]: number;
+};
+foo.key_baz;
+      `,
+    },
   ],
 });
