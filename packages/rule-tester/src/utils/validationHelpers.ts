@@ -145,8 +145,14 @@ export function wrapParser(
   }
 
   return {
-    parse(...args): TSESTree.Program {
-      const ast = parser.parse(...args) as TSESTree.Program;
+    parse(code, options): TSESTree.Program {
+      const ast = parser.parse(
+        code,
+        options && {
+          ...options,
+          filePath,
+        },
+      ) as TSESTree.Program;
 
       defineStartEndAsErrorInTree(ast);
       return ast;
