@@ -81,8 +81,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1, named "my-config-2", contains undefined ' +
-        'extensions at the following indices: 0, 2',
+      'tseslint.config(): Config "my-config-2": Key "extends": Expected array to only contain objects at user-defined index 1.',
     );
   });
 
@@ -107,8 +106,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'Your config at index 1 (anonymous) contains undefined extensions at ' +
-        'the following indices: 0, 2',
+      'tseslint.config(): Config (unnamed): Key "extends": Expected array to only contain objects at user-defined index 1.',
     );
   });
 
@@ -247,4 +245,16 @@ describe('config helper', () => {
       { rules: { rule: 'error' } },
     ]);
   });
+
+  it.each([undefined, null])(
+    'passes invalid arguments through unchanged',
+    config => {
+      expect(
+        plugin.config(
+          // @ts-expect-error purposely testing invalid values
+          config,
+        ),
+      ).toStrictEqual([config]);
+    },
+  );
 });

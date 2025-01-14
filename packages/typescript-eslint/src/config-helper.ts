@@ -68,6 +68,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
 
 // exported so that users that make configs with tsconfig `declaration: true` can name the type
 export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
+type Config = TSESLint.FlatConfig.Config;
 
 /**
  * Utility function to make it easy to strictly type your "Flat" config file
@@ -89,56 +90,66 @@ export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
  * );
  * ```
  */
-export function config(
+export const config = (
   ...configs: InfiniteDepthConfigWithExtends[]
-): ConfigArray {
-  const flattened =
-    // @ts-expect-error -- intentionally an infinite type
-    configs.flat(Infinity) as ConfigWithExtends[];
+): ConfigArray => configWithoutAssumptions(configs);
+function configWithoutAssumptions(configs: unknown[]): ConfigArray {
+  /* We intentionally temporarily change the type to `unknown`, to ensure that we make no assumptions about the types of
+  the arguments passed to this function at runtime. If any argument is an unexpected type, we should not cause a
+  `TypeError`, and instead, we should silently return the unexpected argument unchanged, because ESLint will later
+   validate the types. */
+  const flattened = configs.flat(Infinity);
   return flattened.flatMap((configWithExtends, configIndex) => {
-    const { extends: extendsArr, ...config } = configWithExtends;
-    if (extendsArr == null || extendsArr.length === 0) {
-      return config;
+    const isObject = (
+      value: unknown,
+      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    ): value is {} => !!value && typeof value === 'object';
+    if (!isObject(configWithExtends) || !('extends' in configWithExtends)) {
+      // `configWithExtends` could be anything, but we'll assume it's a `Config` object for TS purposes.
+      return configWithExtends as Config;
     }
-    const extendsArrFlattened = extendsArr.flat(
-      Infinity,
-    ) as ConfigWithExtends[];
-
-    const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
-      (acc, extension, extensionIndex) => {
-        const maybeExtension = extension as
-          | TSESLint.FlatConfig.Config
-          | undefined;
-        if (maybeExtension == null) {
-          acc.push(extensionIndex);
-        }
-        return acc;
-      },
-      [],
-    );
-    if (undefinedExtensions.length) {
-      const configName =
-        configWithExtends.name != null
-          ? `, named "${configWithExtends.name}",`
-          : ' (anonymous)';
-      const extensionIndices = undefinedExtensions.join(', ');
-      throw new Error(
-        `Your config at index ${configIndex}${configName} contains undefined` +
-          ` extensions at the following indices: ${extensionIndices}.`,
+    const {
+      extends: extendsArr,
+      ...config
+    }: { extends: unknown } & Partial<
+      Record<'files' | 'ignores' | 'name', unknown>
+    > = configWithExtends;
+    const { name } = config;
+    const nameIsString = typeof name === 'string';
+    const extendsError = (expected: string) =>
+      new TypeError(
+        `tseslint.config(): Config ${
+          nameIsString ? `"${name}"` : '(unnamed)'
+        }: Key "extends": Expected ${expected} at user-defined index ${configIndex}.`,
       );
+    if (!Array.isArray(extendsArr)) {
+      throw extendsError('value to be an array');
     }
 
     return [
-      ...extendsArrFlattened.map(extension => {
-        const name = [config.name, extension.name].filter(Boolean).join('__');
+      ...extendsArr.flat(Infinity).map(extension => {
+        if (!isObject(extension)) {
+          throw extendsError('array to only contain objects');
+        }
+        const mergedName = [
+          nameIsString && name,
+          'name' in extension && extension.name,
+        ]
+          .filter(Boolean)
+          .join('__');
         return {
-          ...extension,
-          ...(config.files && { files: config.files }),
-          ...(config.ignores && { ignores: config.ignores }),
-          ...(name && { name }),
+          // `extension` could be any object, but we'll assume it's a `Config` object for TS purposes.
+          ...(extension as Config),
+          ...Object.fromEntries(
+            Object.entries(config).filter(([key]) =>
+              ['files', 'ignores'].includes(key),
+            ),
+          ),
+          ...(mergedName && { name: mergedName }),
         };
       }),
-      config,
+      // `config` could be any object, but we'll assume it's a `Config` object for TS purposes.
+      config as Config,
     ];
   });
 }
