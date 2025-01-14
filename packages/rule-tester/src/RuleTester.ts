@@ -715,7 +715,10 @@ export class RuleTester extends TestFramework {
 
     config.languageOptions ??= {};
     config.languageOptions.parser ??= defaultParser;
-    config.languageOptions.parser = wrapParser(config.languageOptions.parser);
+    config.languageOptions.parser = wrapParser(
+      config.languageOptions.parser,
+      filename,
+    );
 
     const schema = getRuleOptionsSchema(rule);
 

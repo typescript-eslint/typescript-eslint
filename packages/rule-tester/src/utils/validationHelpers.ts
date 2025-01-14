@@ -81,6 +81,7 @@ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
  */
 export function wrapParser(
   parser: Parser.LooseParserModule,
+  filePath: string | undefined,
 ): Parser.LooseParserModule {
   /**
    * Define `start`/`end` properties of all nodes of the given AST as throwing error.
@@ -125,8 +126,14 @@ export function wrapParser(
 
   if ('parseForESLint' in parser) {
     return {
-      parseForESLint(...args): Parser.ParseResult {
-        const parsed = parser.parseForESLint(...args) as Parser.ParseResult;
+      parseForESLint(code, options): Parser.ParseResult {
+        const parsed = parser.parseForESLint(
+          code,
+          options && {
+            ...options,
+            filePath,
+          },
+        ) as Parser.ParseResult;
 
         defineStartEndAsErrorInTree(parsed.ast, parsed.visitorKeys);
         return parsed;
