@@ -234,13 +234,15 @@ function isParenlessArrowFunction(
   );
 }
 
-type NodeWithKey =
+export type NodeWithKey =
   | TSESTree.MemberExpression
   | TSESTree.MethodDefinition
   | TSESTree.Property
   | TSESTree.PropertyDefinition
   | TSESTree.TSAbstractMethodDefinition
-  | TSESTree.TSAbstractPropertyDefinition;
+  | TSESTree.TSAbstractPropertyDefinition
+  | TSESTree.TSMethodSignature
+  | TSESTree.TSPropertySignature;
 
 /**
  * Gets a member being accessed or declared if its value can be determined statically, and
