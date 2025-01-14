@@ -7,7 +7,7 @@ const ruleTester = new RuleTester();
 ruleTester.run('debug-namespace', rule, {
   invalid: [
     {
-      code: "const log = debug('not:correct');",
+      code: "const log = debug('not:correct0');",
       errors: [
         {
           column: 19,
@@ -20,7 +20,7 @@ ruleTester.run('debug-namespace', rule, {
       output: "const log = debug('typescript-eslint:example:file');",
     },
     {
-      code: "const log = debug('not:correct');",
+      code: "const log = debug('not:correct1');",
       errors: [
         {
           column: 19,
@@ -33,7 +33,7 @@ ruleTester.run('debug-namespace', rule, {
       output: "const log = debug('typescript-eslint:example:file');",
     },
     {
-      code: "const log = debug('not:correct');",
+      code: "const log = debug('not:correct2');",
       errors: [
         {
           column: 19,
