@@ -10,6 +10,11 @@ interface ImplicitLibVariableOptions {
   readonly writeable?: boolean;
 }
 
+interface LibDefinition {
+  libs: readonly LibDefinition[];
+  variables: readonly [string, ImplicitLibVariableOptions][];
+}
+
 /**
  * An variable implicitly defined by the TS Lib
  */
@@ -43,4 +48,8 @@ class ImplicitLibVariable extends ESLintScopeVariable implements Variable {
   }
 }
 
-export { ImplicitLibVariable, type ImplicitLibVariableOptions };
+export {
+  ImplicitLibVariable,
+  type ImplicitLibVariableOptions,
+  type LibDefinition,
+};

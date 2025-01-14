@@ -3,19 +3,22 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE, TYPE_VALUE } from './base-config';
 
-export const es2015_collection = {
-  Map: TYPE_VALUE,
-  MapConstructor: TYPE,
-  ReadonlyMap: TYPE,
-  ReadonlySet: TYPE,
-  Set: TYPE_VALUE,
-  SetConstructor: TYPE,
-  WeakMap: TYPE_VALUE,
-  WeakMapConstructor: TYPE,
-  WeakSet: TYPE_VALUE,
-  WeakSetConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2015_collection: LibDefinition = {
+  libs: [],
+  variables: [
+    ['Map', TYPE_VALUE],
+    ['MapConstructor', TYPE],
+    ['ReadonlyMap', TYPE],
+    ['WeakMap', TYPE_VALUE],
+    ['WeakMapConstructor', TYPE],
+    ['Set', TYPE_VALUE],
+    ['SetConstructor', TYPE],
+    ['ReadonlySet', TYPE],
+    ['WeakSet', TYPE_VALUE],
+    ['WeakSetConstructor', TYPE],
+  ],
+};

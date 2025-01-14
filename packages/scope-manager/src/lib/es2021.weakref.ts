@@ -3,15 +3,17 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-import type { ImplicitLibVariableOptions } from '../variable';
+import type { LibDefinition } from '../variable';
 
 import { TYPE, TYPE_VALUE } from './base-config';
 import { es2015_symbol_wellknown } from './es2015.symbol.wellknown';
 
-export const es2021_weakref = {
-  ...es2015_symbol_wellknown,
-  FinalizationRegistry: TYPE_VALUE,
-  FinalizationRegistryConstructor: TYPE,
-  WeakRef: TYPE_VALUE,
-  WeakRefConstructor: TYPE,
-} as Record<string, ImplicitLibVariableOptions>;
+export const es2021_weakref: LibDefinition = {
+  libs: [es2015_symbol_wellknown],
+  variables: [
+    ['WeakRef', TYPE_VALUE],
+    ['WeakRefConstructor', TYPE],
+    ['FinalizationRegistry', TYPE_VALUE],
+    ['FinalizationRegistryConstructor', TYPE],
+  ],
+};
