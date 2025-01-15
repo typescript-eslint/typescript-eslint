@@ -176,6 +176,14 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isReadonlyClassProperty({
+      parent,
+    }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion) {
+      return (
+        parent.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly
+      );
+    }
+
     function isTypeUnchanged(uncast: ts.Type, cast: ts.Type): boolean {
       if (uncast === cast) {
         return true;
@@ -225,7 +233,8 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isImplicitlyNarrowedConstDeclaration(node)
+          ? isImplicitlyNarrowedConstDeclaration(node) ||
+            isReadonlyClassProperty(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
