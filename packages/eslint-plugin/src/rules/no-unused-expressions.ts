@@ -10,8 +10,8 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-unused-expressions');
 
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 
 const defaultOptions: Options = [
   {

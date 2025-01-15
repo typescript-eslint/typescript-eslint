@@ -13,19 +13,18 @@ import {
   getDeclaration,
   getModifiers,
   getParserServices,
-  getTypeName,
   isNullableType,
   isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     typesToIgnore?: string[];
   },
 ];
-type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
+export type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
@@ -233,14 +232,10 @@ export default createRule<Options, MessageIds>({
         const uncastType = services.getTypeAtLocation(node.expression);
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
-        const isAssertionTypeUnionStringlike =
-          castType.isUnion() && getTypeName(checker, castType) === 'string';
-
-        const wouldSameTypeBeInferred =
-          castType.isLiteral() || isAssertionTypeUnionStringlike
-            ? isImplicitlyNarrowedConstDeclaration(node) ||
-              isReadonlyClassProperty(node)
-            : !isConstAssertion(node.typeAnnotation);
+        const wouldSameTypeBeInferred = castType.isLiteral()
+          ? isImplicitlyNarrowedConstDeclaration(node) ||
+            isReadonlyClassProperty(node)
+          : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
           context.report({
