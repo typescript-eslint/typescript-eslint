@@ -133,6 +133,32 @@ ruleTester.run('no-misused-spread', rule, {
 
       const o = { ...promiseLike };
     `,
+    {
+      code: `
+        const obj = { a: 1, b: 2 };
+        const o = <div {...x} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        declare const obj: { a: number; b: number } | any;
+        const o = <div {...x} />;
+      `,
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
 
     {
       code: `
@@ -1492,6 +1518,155 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noClassInstanceSpreadInObject',
         },
       ],
+    },
+
+    {
+      code: `
+        const o = <div {...[1, 2, 3]} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 38,
+          line: 2,
+          messageId: 'noArraySpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        class A {}
+
+        const o = <div {...A} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 30,
+          line: 4,
+          messageId: 'noClassDeclarationSpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        const o = <div {...new Date()} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 39,
+          line: 2,
+          messageId: 'noClassInstanceSpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        function f() {}
+
+        const o = <div {...f} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 30,
+          line: 4,
+          messageId: 'noFunctionSpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        const o = <div {...new Set([1, 2, 3])} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 47,
+          line: 2,
+          messageId: 'noIterableSpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        declare const map: Map<string, number>;
+
+        const o = <div {...map} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 32,
+          line: 4,
+          messageId: 'noMapSpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+    },
+    {
+      code: `
+        const promise = new Promise(() => {});
+
+        const o = <div {...promise} />;
+      `,
+      errors: [
+        {
+          column: 24,
+          endColumn: 36,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+        },
+      ],
+      languageOptions: {
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
     },
   ],
 });

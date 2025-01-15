@@ -99,7 +99,9 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function checkObjectSpread(node: TSESTree.SpreadElement): void {
+    function checkObjectSpread(
+      node: TSESTree.JSXSpreadAttribute | TSESTree.SpreadElement,
+    ): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
       if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
@@ -175,6 +177,7 @@ export default createRule<Options, MessageIds>({
     return {
       'ArrayExpression > SpreadElement': checkArrayOrCallSpread,
       'CallExpression > SpreadElement': checkArrayOrCallSpread,
+      JSXSpreadAttribute: checkObjectSpread,
       'ObjectExpression > SpreadElement': checkObjectSpread,
     };
   },
