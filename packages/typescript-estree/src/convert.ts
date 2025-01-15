@@ -3189,7 +3189,7 @@ export class Converter {
               };
             }
 
-            if (!(node.flags & ts.NodeFlags.Namespace)) {
+            if (ts.isStringLiteral(node.name)) {
               const body: TSESTree.TSModuleBlock | null = this.convertChild(
                 node.body,
               );
@@ -3258,7 +3258,8 @@ export class Converter {
               declare: false,
               global: false,
               id: name,
-              kind: 'namespace',
+              kind:
+                node.flags & ts.NodeFlags.Namespace ? 'namespace' : 'module',
             };
           })(),
         });
@@ -3585,8 +3586,7 @@ export class Converter {
     result: T,
   ): T | TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration {
     const isNamespaceNode =
-      ts.isModuleDeclaration(node) &&
-      Boolean(node.flags & ts.NodeFlags.Namespace);
+      ts.isModuleDeclaration(node) && !ts.isStringLiteral(node.name);
 
     const modifiers = isNamespaceNode
       ? getNamespaceModifiers(node)
