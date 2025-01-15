@@ -38,7 +38,7 @@ function hasValidType(type: unknown): type is string {
   return typeof type === 'string';
 }
 
-const serializer: NewPlugin = {
+export const serializer: NewPlugin = {
   serialize(
     node: Record<string, unknown> & TSESTree.Node,
     config,
@@ -91,5 +91,3 @@ const serializer: NewPlugin = {
     return isObject(val) && hasValidType(val.type);
   },
 };
-
-export { serializer };

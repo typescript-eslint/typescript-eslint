@@ -3,7 +3,7 @@ import { VariableBase } from './VariableBase';
 /**
  * A Variable represents a locally scoped identifier. These include arguments to functions.
  */
-class Variable extends VariableBase {
+export class Variable extends VariableBase {
   /**
    * `true` if the variable is valid in a type context, false otherwise
    * @public
@@ -30,5 +30,3 @@ class Variable extends VariableBase {
     return this.defs.some(def => def.isVariableDefinition);
   }
 }
-
-export { Variable };
