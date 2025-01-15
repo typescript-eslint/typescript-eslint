@@ -64,6 +64,7 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
     case AST_NODE_TYPES.TSTypeOperator:
     case AST_NODE_TYPES.TSInferType:
     case AST_NODE_TYPES.TSConstructorType:
+    case AST_NODE_TYPES.TSConditionalType:
       return true;
     case AST_NODE_TYPES.Identifier:
       return node.name === 'ReadonlyArray';
@@ -73,13 +74,13 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
 }
 
 export type OptionString = 'array' | 'array-simple' | 'generic';
-type Options = [
+export type Options = [
   {
     default: OptionString;
     readonly?: OptionString;
   },
 ];
-type MessageIds =
+export type MessageIds =
   | 'errorStringArray'
   | 'errorStringArrayReadonly'
   | 'errorStringArraySimple'

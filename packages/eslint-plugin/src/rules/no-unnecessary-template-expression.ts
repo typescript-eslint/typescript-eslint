@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getMovedNodeCode,
   getParserServices,
   isTypeFlagSet,
@@ -15,7 +15,7 @@ import {
 } from '../util';
 import { rangeToLoc } from '../util/rangeToLoc';
 
-type MessageId = 'noUnnecessaryTemplateExpression';
+export type MessageId = 'noUnnecessaryTemplateExpression';
 
 const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 
@@ -51,21 +51,29 @@ export default createRule<[], MessageId>({
     function isUnderlyingTypeString(
       expression: TSESTree.Expression,
     ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
-      const type = getConstrainedTypeAtLocation(services, expression);
+      const checker = services.program.getTypeChecker();
+      const { constraintType } = getConstraintInfo(
+        checker,
+        services.getTypeAtLocation(expression),
+      );
+
+      if (constraintType == null) {
+        return false;
+      }
 
       const isString = (t: ts.Type): boolean => {
         return isTypeFlagSet(t, ts.TypeFlags.StringLike);
       };
 
-      if (type.isUnion()) {
-        return type.types.every(isString);
+      if (constraintType.isUnion()) {
+        return constraintType.types.every(isString);
       }
 
-      if (type.isIntersection()) {
-        return type.types.some(isString);
+      if (constraintType.isIntersection()) {
+        return constraintType.types.some(isString);
       }
 
-      return isString(type);
+      return isString(constraintType);
     }
 
     function isLiteral(

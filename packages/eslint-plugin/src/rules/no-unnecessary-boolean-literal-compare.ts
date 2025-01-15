@@ -6,19 +6,19 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   isStrongPrecedenceNode,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'comparingNullableToFalse'
   | 'comparingNullableToTrueDirect'
   | 'comparingNullableToTrueNegated'
   | 'direct'
   | 'negated';
 
-type Options = [
+export type Options = [
   {
     allowComparingNullableBooleansToFalse?: boolean;
     allowComparingNullableBooleansToTrue?: boolean;
@@ -85,6 +85,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -94,19 +95,23 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = getConstrainedTypeAtLocation(
-        services,
-        comparison.expression,
+      const { constraintType, isTypeParameter } = getConstraintInfo(
+        checker,
+        services.getTypeAtLocation(comparison.expression),
       );
 
-      if (isBooleanType(expressionType)) {
+      if (isTypeParameter && constraintType == null) {
+        return undefined;
+      }
+
+      if (isBooleanType(constraintType)) {
         return {
           ...comparison,
           expressionIsNullableBoolean: false,
         };
       }
 
-      if (isNullableBoolean(expressionType)) {
+      if (isNullableBoolean(constraintType)) {
         return {
           ...comparison,
           expressionIsNullableBoolean: true,
