@@ -27,14 +27,14 @@ import { ReferenceFlag } from './Reference';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
-interface ReferencerOptions extends VisitorOptions {
+export interface ReferencerOptions extends VisitorOptions {
   jsxFragmentName: string | null;
   jsxPragma: string | null;
   lib: Lib[];
 }
 
 // Referencing variables and creating bindings.
-class Referencer extends Visitor {
+export class Referencer extends Visitor {
   #hasReferencedJsxFactory = false;
   #hasReferencedJsxFragmentFactory = false;
   #jsxFragmentName: string | null;
@@ -819,5 +819,3 @@ class Referencer extends Visitor {
     return left;
   }
 }
-
-export { Referencer, type ReferencerOptions };

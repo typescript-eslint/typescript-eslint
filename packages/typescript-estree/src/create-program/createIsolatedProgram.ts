@@ -14,7 +14,7 @@ const log = debug(
 /**
  * @returns Returns a new source file and program corresponding to the linted code
  */
-function createIsolatedProgram(
+export function createIsolatedProgram(
   parseSettings: ParseSettings,
 ): ASTAndDefiniteProgram {
   log(
@@ -85,5 +85,3 @@ function createIsolatedProgram(
 
   return { ast, program };
 }
-
-export { createIsolatedProgram };

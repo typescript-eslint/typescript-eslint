@@ -1,4 +1,4 @@
-enum ScopeType {
+export enum ScopeType {
   block = 'block',
   catch = 'catch',
   class = 'class',
@@ -18,5 +18,3 @@ enum ScopeType {
   type = 'type',
   with = 'with',
 }
-
-export { ScopeType };
