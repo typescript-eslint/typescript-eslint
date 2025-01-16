@@ -217,7 +217,7 @@ ESLint includes its own inline comment directives separate from TypeScript's.
 `// eslint-disable`, `// eslint-disable-next-line`, and other inline ESLint config comments can suppress lint rules — including those mentioned in this post.
 Suppressing ESLint rules can also be necessary in cases where the rule and/or TypeScript's type system have misunderstand your code.
 
-If you absolutely must use ESLint comment directives, we recommend utilizing [`@eslint-community/eslint-plugin-eslint-comments`](https://eslint-community.github.io/eslint-plugin-eslint-comments).
+If you must use ESLint comment directives, we recommend utilizing [`@eslint-community/eslint-plugin-eslint-comments`](https://eslint-community.github.io/eslint-plugin-eslint-comments).
 The plugin's [recommended preset](https://eslint-community.github.io/eslint-plugin-eslint-comments/#%F0%9F%93%96-usage) enables rules that enforce best practices around ESLint comment directives, including:
 
 - [`@eslint-community/eslint-comments/disable-enable-pair`](https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/disable-enable-pair.html): to prevent accidentally disabling rules for the rest of a file, rather than on specific lines
