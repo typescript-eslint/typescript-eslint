@@ -16,7 +16,7 @@ Using `any` is unsafe because the type disables many of TypeScript's type-checki
 typescript-eslint includes several lint rules that help prevent unsafe practices due to the `any` type.
 These rules flag uses of `any` or code patterns that sneakily introduce it.
 
-In this deep dive, we'll show you several handy ways to prevent `any`s from sneaking into your code.
+In this blog post, we'll show you several handy ways to prevent `any`s from sneaking into your code.
 
 {/* truncate */}
 
@@ -95,7 +95,7 @@ Instead of `Function`, it would have been more type safe to give `getFriend` the
 
 ### Enforcing `unknown` for Caught Exceptions
 
-There is no way to indicate what types functions may throw in TypeScript, due to the highly dynamic nature of JavaScript.
+There is no way to indicate what types functions may throw in TypeScript, due to the highly dynamic nature of JavaScript[^no-throws].
 Therefore, TypeScript treats all caught values as `any` by default.
 TypeScript's [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables) changes `catch` block variables to have the more appropriate `unknown` type but no compiler option equivalent exists for `Promise` rejections' `.catch()` method.
 
