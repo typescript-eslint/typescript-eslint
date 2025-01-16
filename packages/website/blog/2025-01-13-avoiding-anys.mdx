@@ -122,7 +122,7 @@ Had the `error` been given a `: unknown` type, TypeScript would be able to repor
 
 Once an `any` type exists in code, it is "infectious": it can turn the types of values based on it into more `any`s.
 
-typescript-eslint includes a collection of rules that flag code patterns which spread or are generally made less safe due to an `any`.
+typescript-eslint includes a collection of rules that flag code patterns which make use of `any`'s unsafe, viral nature.
 Each of the following rules reports on a specific use of `any`.
 
 - [`@typescript-eslint/no-unsafe-argument`](/rules/no-unsafe-argument) reports on passing an `any` typed value to a function call:
@@ -204,19 +204,19 @@ We highly recommend using them alongside TypeScript's `noImplicitAny` compiler o
 The `any` type is not the only way to bypass TypeScript's type system.
 Developers are also able to use inline TypeScript directives: `// @ts-expect-error` and `// @ts-ignore`.
 Those inline comment directives cause TypeScript to ignore type errors on a line.
-Disabling TypeScript on a per-line basis can sometimes be necessary in rare cases, but is always unsafe and almost never the right choice.
+Disabling TypeScript on a per-line basis can sometimes be necessary in rare cases, but is always unsafe and should not be part of your standard toolkit.
 
 :::tip
-`// @ts-expect-error` and `// @ts-ignore` are almost the same, except `// @ts-expect-error` will produce a new type error if its line doesn't already have one.
+`// @ts-expect-error` and `// @ts-ignore` are almost the same, except `// @ts-expect-error` will produce a new error if there isn't any existing error for it to suppress.
 It's generally preferable to use `// @ts-expect-error` over `// @ts-ignore`.
 :::
 
 [`@typescript-eslint/ban-comment`](/rules/ban-ts-comment) can be used to report on cases where developers use TypeScript comment directives.
 By default, the rule:
 
-- Always reports on `@ts-ignore` and `@ts-nocheck` comment directives
-- Reports on `@ts-expect-error` directives that don't have an explanatory comment description
-- Requires explanatory comment descriptions contain at least 3 characters
+- Prohibits all `@ts-ignore` and `@ts-nocheck` comment directives
+- Prohibits `@ts-expect-error` directives unless they have an explanatory comment description
+- Requires explanatory comment descriptions to contain at least 3 characters
 
 For example, suppose `"@example/package"` exports a `process` function that should take in a `string` but whose types incorrectly indicate take in a `number`.
 A `// @ts-expect-error` comment could be used to tell TypeScript to ignore the line:
@@ -225,7 +225,7 @@ A `// @ts-expect-error` comment could be used to tell TypeScript to ignore the l
 <TabItem value="❌ Incorrect">
 
 ```ts
-import { process } from '@example/package';
+import { processString } from '@example/package';
 
 // @ts-ignore
 process('New York City');
@@ -250,7 +250,7 @@ Once the types for `@example/package` are fixed to no longer produce a type erro
 
 ESLint includes its own inline comment directives separate from TypeScript's.
 `// eslint-disable`, `// eslint-disable-next-line`, and other inline ESLint config comments can suppress lint rules — including those mentioned in this post.
-Suppressing ESLint rules can also occasionally be necessary in cases where the rule and/or TypeScript's type system have misunderstand your code.
+Suppressing ESLint rules can also be necessary in cases where the rule and/or TypeScript's type system have misunderstand your code.
 
 If you absolutely must use ESLint comment directives, we recommend utilizing [`@eslint-community/eslint-plugin-eslint-comments`](https://eslint-community.github.io/eslint-plugin-eslint-comments).
 The plugin's [recommended preset](https://eslint-community.github.io/eslint-plugin-eslint-comments/#%F0%9F%93%96-usage) enables rules that enforce best practices around ESLint comment directives, including:
@@ -259,7 +259,7 @@ The plugin's [recommended preset](https://eslint-community.github.io/eslint-plug
 - [`@eslint-community/eslint-comments/no-unlimited-disable`](https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/no-unlimited-disable.html): to prevent accidentally disabling all ESLint rules, rather than specific ones
 - [`@eslint-community/eslint-comments/require-description`](https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/require-description.html): to require comments explaining why directives are necessary
 
-For example, suppose the type of an imported `process` is temporarily `any` pending some soon-to-be-completed task.
+For example, suppose the type of an imported variable is temporarily `any` pending some soon-to-be-completed refactoring.
 It might be reasonable to include an ESLint disable comment to suppress a lint rule reporting on the `any`.
 That comment should ideally include an explanation and link to the pending task, so developers know it's not normal to disable lint rules without good reason:
 
