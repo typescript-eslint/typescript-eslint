@@ -6,7 +6,7 @@ import path from 'node:path';
 
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
 
-import { typeMatchesSomeSpecifier, typeOrValueSpecifiersSchema } from '../src';
+import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
@@ -122,7 +122,7 @@ describe('TypeOrValueSpecifier', () => {
     ])("doesn't match a malformed package specifier: %s", runTestNegative);
   });
 
-  describe('typeMatchesSomeSpecifier', () => {
+  describe('typeMatchesSpecifier', () => {
     function runTests(
       code: string,
       specifier: TypeOrValueSpecifier,
@@ -143,9 +143,9 @@ describe('TypeOrValueSpecifier', () => {
               .id,
           ),
         );
-      expect(
-        typeMatchesSomeSpecifier(type, [specifier], services.program!),
-      ).toBe(expected);
+      expect(typeMatchesSpecifier(type, specifier, services.program!)).toBe(
+        expected,
+      );
     }
 
     function runTestPositive(

@@ -170,6 +170,15 @@ export function typeMatchesSpecifier(
   if (tsutils.isIntrinsicErrorType(type)) {
     return false;
   }
+  if (tsutils.isIntersectionType(type)) {
+    const somePartMatches = tsutils
+      .intersectionTypeParts(type)
+      .some(part => typeMatchesSpecifier(part, specifier, program));
+
+    if (somePartMatches) {
+      return true;
+    }
+  }
   if (typeof specifier === 'string') {
     return specifierNameMatches(type, specifier);
   }
@@ -200,18 +209,5 @@ export const typeMatchesSomeSpecifier = (
   type: ts.Type,
   specifiers: TypeOrValueSpecifier[] = [],
   program: ts.Program,
-): boolean => {
-  if (
-    specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program))
-  ) {
-    return true;
-  }
-
-  if (tsutils.isIntersectionType(type)) {
-    return tsutils
-      .intersectionTypeParts(type)
-      .some(part => typeMatchesSomeSpecifier(part, specifiers, program));
-  }
-
-  return false;
-};
+): boolean =>
+  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
