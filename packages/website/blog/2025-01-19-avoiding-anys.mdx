@@ -159,7 +159,7 @@ export function parseShapeFromData(raw: string): Shape {
 
 Had the `parseShapeFromData` function included checks on the type of the `shape` value or used a schema validation library such as [Zod](https://zod.dev), it would be informed at runtime if its `raw` string didn't create the expected `Shape`.
 
-Put together, the `@typescript-eslint/no-unusafe-*` rules provide a comprehensive suite of checks that can flag most accidental uses of `any` across a codebase.
+Put together, the `@typescript-eslint/no-unusafe-*` rules around `any` safety provide a comprehensive suite of checks that can flag most accidental uses of `any` across a codebase.
 We highly recommend using them alongside TypeScript's `noImplicitAny` compiler option.
 
 ## Additional Helpers
