@@ -25,7 +25,8 @@ In this deep dive, we'll give you an overview of many ways to prevent `any`s fro
 TypeScript includes a [`noImplicitAny`](https://www.typescriptlang.org/tsconfig/#noImplicitAny) flag to report when a better type than `any` can't be inferred for a value.
 `noImplicitAny` is part of its family of [`strict` compiler options](https://www.typescriptlang.org/tsconfig/#strict) and is generally recommended for all projects.
 
-However, even with `noImplicitAny` enabled, the `any` type can easily sneak into codebases.
+However, even with `noImplicitAny` enabled, the `any` type can easily be introduced into codebases.
+`noImplicitAny` doesn't prevent developers from explicitly writing the `any` type in type type annotations.
 Some built-in APIs such as `JSON.stringify` and types such as `Function` can introduce the `any` type without triggering `noImplicitAny`.
 
 Enabling `noImplicitAny` is a great first step towards better project type safety, but it's not enough to prevent `any`s altogether.
@@ -94,11 +95,11 @@ Instead of `Function`, it would have been more type safe to give `getFriend` the
 
 ### Enforcing `unknown` for Caught Exceptions
 
-There is no `throws` keyword or other way to enforce types of exceptions in TypeScript[^no-throws], so their types can only be declared as `any` or `unknown`.
-Caught exceptions in `catch` blocks and `Promise` rejections are, by default, typed as `any` in TypeScript.
-TypeScript's [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables) changes `catch` block exceptions to `unknown`, but no compiler option equivalent exists for `Promise` rejections.
+There is no way to indicate what types functions may throw in TypeScript, due to the highly dynamic nature of JavaScript.
+Therefore, TypeScript treats all caught values as `any` by default.
+TypeScript's [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables) changes `catch` block variables to have the more appropriate `unknown` type but no compiler option equivalent exists for `Promise` rejections' `.catch()` method.
 
-[`@typescript-eslint/use-unknown-in-catch-callback-variable`](/rules/use-unknown-in-catch-callback-variable) enforces always using the unknown type for the parameter of a Promise rejection callback.
+[`@typescript-eslint/use-unknown-in-catch-callback-variable`](/rules/use-unknown-in-catch-callback-variable) enforces always using the `unknown` type for the parameter of a Promise rejection callback.
 
 For example, given the following code, TypeScript would not report a type error, but the lint rule would report:
 
@@ -125,74 +126,38 @@ Once an `any` type exists in code, it is "infectious": it can turn the types of 
 typescript-eslint includes a collection of rules that flag code patterns which make use of `any`'s unsafe, viral nature.
 Each of the following rules reports on a specific use of `any`.
 
-- [`@typescript-eslint/no-unsafe-argument`](/rules/no-unsafe-argument) reports on passing an `any` typed value to a function call:
+- [`@typescript-eslint/no-unsafe-argument`](/rules/no-unsafe-argument) reports on passing an `any` typed value to a function call
+- [`@typescript-eslint/no-unsafe-assignment`](/rules/no-unsafe-assignment) reports on assigning an `any` typed value to a property or variable
+- [`@typescript-eslint/no-unsafe-call`](/rules/no-unsafe-call) reports on calling an `any` typed value like a function
+- [`@typescript-eslint/no-unsafe-member-access`](/rules/no-unsafe-member-access) reports on accessing members of any value typed as `any`
+- [`@typescript-eslint/no-unsafe-return`](/rules/no-unsafe-return) reports on returning a value typed as `any` from a function
 
-  ```ts
-  declare function greet(friend: string): void;
+For example, this `parseData` function violates several of those lint rules by creating a `shape` value of type `any` and not validating its type before using it:
 
-  function greetFromData(raw: string) {
-    greet(JSON.parse(raw));
-    //    ~~~~~~~~~~~~~~~
-    // eslint(@typescript-eslint/no-unsafe-argument):
-    // Unsafe argument of type `any` assigned to a parameter of type `string`.
-  }
-  ```
+```ts
+export interface Shape {
+  label: string;
+  value: number;
+}
 
-* [`@typescript-eslint/no-unsafe-assignment`](/rules/no-unsafe-assignment) reports on assigning an `any` typed value to a property or variable:
+export function parseShapeFromData(raw: string): Shape {
+  const shape = JSON.parse(raw);
+  //    ~~~~~~~~~~~~~~~~~~~~~~~
+  // eslint(@typescript-eslint/no-unsafe-assignment):
+  // Unsafe assignment of an `any` value.
 
-  ```ts
-  const person = {
-    name: '(anonymous)',
-  };
+  console.log('Making a shape with value:', shape.value);
+  //                                              ~~~~~
+  // eslint(@typescript-eslint/no-unsafe-member-access):
+  // Unsafe member access .value of an `any` value.
 
-  function setNameFromData(raw: string) {
-    person.name = JSON.parse(raw);
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // eslint(@typescript-eslint/no-unsafe-assignment):
-    // Unsafe assignment of an `any` value.
-  }
-  ```
+  return shape;
+  // eslint(@typescript-eslint/no-unsafe-return):
+  // Unsafe return of an `any` value.
+}
+```
 
-* [`@typescript-eslint/no-unsafe-call`](/rules/no-unsafe-call) reports on calling an `any` typed value like a function:
-
-  ```ts
-  const callbacks = {
-    name: (value: string) => console.log(value);
-  };
-
-  function setNameFromData(raw: string) {
-    const callback = JSON.parse(raw);
-
-    callback();
-    // ~~~~~~~
-    // eslint(@typescript-eslint/no-unsafe-call):
-    // Unsafe assignment of an `any` value.
-  }
-  ```
-
-* [`@typescript-eslint/no-unsafe-member-access`](/rules/no-unsafe-member-access) reports on accessing members of any value typed as `any`:
-
-  ```ts
-  function setNameOnData(raw: string) {
-    const data = JSON.parse(raw);
-
-    data.name = 'Colin';
-    //   ~~~~
-    // eslint(@typescript-eslint/no-unsafe-member-access):
-    // Unsafe member access .name on an `any` value.
-  }
-  ```
-
-* [`@typescript-eslint/no-unsafe-return`](/rules/no-unsafe-return) reports on returning a value typed as `any` from a function:
-
-  ```ts
-  function returnData(raw: string) {
-    return JSON.parse(raw);
-    // ~~~~~~~~~~~~~~~~~~~~
-    // eslint(@typescript-eslint/no-unsafe-return):
-    // Unsafe return of a value of type `any`.
-  }
-  ```
+Had the `parseShapeFromData` function included checks on the type of the `shape` value or used a schema validation library such as [Zod](https://zod.dev), it would be informed at runtime if its `raw` string didn't create the expected `Shape`.
 
 Put together, the `@typescript-eslint/no-unusafe-*` rules provide a comprehensive suite of checks that can flag most accidental uses of `any` across a codebase.
 We highly recommend using them alongside TypeScript's `noImplicitAny` compiler option.
@@ -218,7 +183,7 @@ By default, the rule:
 - Prohibits `@ts-expect-error` directives unless they have an explanatory comment description
 - Requires explanatory comment descriptions to contain at least 3 characters
 
-For example, suppose `"@example/package"` exports a `process` function that should take in a `string` but whose types incorrectly indicate take in a `number`.
+For example, suppose `"@example/package"` exports a `processString` function that should take in a `string` but whose types incorrectly indicate take in a `number`.
 A `// @ts-expect-error` comment could be used to tell TypeScript to ignore the line:
 
 <Tabs>
@@ -228,17 +193,17 @@ A `// @ts-expect-error` comment could be used to tell TypeScript to ignore the l
 import { processString } from '@example/package';
 
 // @ts-ignore
-process('New York City');
+processString('New York City');
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-import { process } from '@example/package';
+import { processString } from '@example/package';
 
-// @ts-expect-error -- Pending updating the process types. See GH-1234.
-process('New York City');
+// @ts-expect-error -- Pending updating the processString types. See GH-1234.
+processString('New York City');
 ```
 
 </TabItem>
