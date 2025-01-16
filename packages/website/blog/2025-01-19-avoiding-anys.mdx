@@ -11,12 +11,12 @@ import TabItem from '@theme/TabItem';
 
 TypeScript's `any` type is, by design, the single most unsafe part of its type system.
 The `any` type indicates a type that can be anything and can be used in place of any other type.
-Using `any` is unsafe because the type disables many of TypeScript's type-checking features and hampers its ability to provide developer assistance.
+Using `any` is unsafe because the type disables many of TypeScript's type-checking features and hampers TypeScript's ability to provide developer assistance.
 
-typescript-eslint includes several lint rules that help prevent unsafe practices due to the `any` type.
+typescript-eslint includes several lint rules that help prevent unsafe practices around the `any` type.
 These rules flag uses of `any` or code patterns that sneakily introduce it.
 
-In this blog post, we'll show you several handy ways to prevent `any`s from sneaking into your code.
+In this blog post, we'll show you those lint rules and several other handy ways to prevent `any`s from sneaking into your code.
 
 {/* truncate */}
 
