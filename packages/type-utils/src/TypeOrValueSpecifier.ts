@@ -200,5 +200,18 @@ export const typeMatchesSomeSpecifier = (
   type: ts.Type,
   specifiers: TypeOrValueSpecifier[] = [],
   program: ts.Program,
-): boolean =>
-  specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+): boolean => {
+  if (
+    specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program))
+  ) {
+    return true;
+  }
+
+  if (tsutils.isIntersectionType(type)) {
+    return tsutils
+      .intersectionTypeParts(type)
+      .some(part => typeMatchesSomeSpecifier(part, specifiers, program));
+  }
+
+  return false;
+};
