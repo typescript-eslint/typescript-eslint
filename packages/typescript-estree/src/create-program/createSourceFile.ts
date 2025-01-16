@@ -11,7 +11,7 @@ const log = debug(
   'typescript-eslint:typescript-estree:create-program:createSourceFile',
 );
 
-function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
+export function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
   log(
     'Getting AST without type information in %s mode for: %s',
     parseSettings.jsx ? 'TSX' : 'TS',
@@ -33,11 +33,9 @@ function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
       );
 }
 
-function createNoProgram(parseSettings: ParseSettings): ASTAndNoProgram {
+export function createNoProgram(parseSettings: ParseSettings): ASTAndNoProgram {
   return {
     ast: createSourceFile(parseSettings),
     program: null,
   };
 }
-
-export { createNoProgram, createSourceFile };

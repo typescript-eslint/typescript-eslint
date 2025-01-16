@@ -6,7 +6,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class MappedTypeScope extends ScopeBase<
+export class MappedTypeScope extends ScopeBase<
   ScopeType.mappedType,
   TSESTree.TSMappedType,
   Scope
@@ -19,5 +19,3 @@ class MappedTypeScope extends ScopeBase<
     super(scopeManager, ScopeType.mappedType, upperScope, block, false);
   }
 }
-
-export { MappedTypeScope };
