@@ -327,6 +327,30 @@ new A();
     },
     {
       code: `
+/** @deprecated */
+const deprecatedValue = 45;
+const bar = deprecatedValue;
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'deprecatedValue' }],
+        },
+      ],
+    },
+    {
+      code: `
+/** @deprecated */
+const deprecatedValue = 45;
+const bar = deprecatedValue;
+      `,
+      options: [
+        {
+          allow: ['deprecatedValue'],
+        },
+      ],
+    },
+    {
+      code: `
 import { exists } from 'fs';
 exists('/foo');
       `,
