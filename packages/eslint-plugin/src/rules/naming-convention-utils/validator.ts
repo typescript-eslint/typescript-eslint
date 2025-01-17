@@ -22,7 +22,7 @@ import {
   selectorTypeToMessageString,
 } from './shared';
 
-function createValidator(
+export function createValidator(
   type: SelectorsString,
   context: Context,
   allConfigs: NormalizedSelector[],
@@ -495,5 +495,3 @@ function isAllTypesMatch(
 
   return cb(type);
 }
-
-export { createValidator };

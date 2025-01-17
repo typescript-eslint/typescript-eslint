@@ -1,4 +1,4 @@
-enum DefinitionType {
+export enum DefinitionType {
   CatchClause = 'CatchClause',
   ClassName = 'ClassName',
   FunctionName = 'FunctionName',
@@ -11,5 +11,3 @@ enum DefinitionType {
   Type = 'Type',
   Variable = 'Variable',
 }
-
-export { DefinitionType };

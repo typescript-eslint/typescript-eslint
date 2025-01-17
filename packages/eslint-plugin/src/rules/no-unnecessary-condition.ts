@@ -304,6 +304,19 @@ export default createRule<Options, MessageId>({
       );
     }
 
+    // Conditional is always necessary if it involves:
+    //    `any` or `unknown` or a naked type variable
+    function isConditionalAlwaysNecessary(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .some(
+          part =>
+            isTypeAnyType(part) ||
+            isTypeUnknownType(part) ||
+            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+        );
+    }
+
     function isNullableMemberExpression(
       node: TSESTree.MemberExpression,
     ): boolean {
@@ -370,18 +383,7 @@ export default createRule<Options, MessageId>({
 
       const type = getConstrainedTypeAtLocation(services, expression);
 
-      // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type variable
-      if (
-        tsutils
-          .unionTypeParts(type)
-          .some(
-            part =>
-              isTypeAnyType(part) ||
-              isTypeUnknownType(part) ||
-              isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
-          )
-      ) {
+      if (isConditionalAlwaysNecessary(type)) {
         return;
       }
       let messageId: MessageId | null = null;
@@ -813,7 +815,7 @@ export default createRule<Options, MessageId>({
             : true;
 
       return (
-        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        isConditionalAlwaysNecessary(type) ||
         (isOwnNullable && isNullableType(type))
       );
     }
