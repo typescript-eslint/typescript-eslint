@@ -162,12 +162,17 @@ class T {
   c = 10 as S;
 }
     `,
-    `
+    {
+      code: `
+const foo = 'foo';
+
 class T {
   readonly a = 'a';
   readonly b = 3;
+  readonly test = \`\${foo}\` as const;
 }
-    `,
+      `,
+    },
     `
       declare const y: number | null;
       console.log(y!);

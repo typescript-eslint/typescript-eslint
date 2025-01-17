@@ -156,15 +156,19 @@ export default createRule<Options, MessageIds>({
       );
     }
 
+    function isTemplateLiteralWithExpressions(expression: TSESTree.Expression) {
+      return (
+        expression.type === AST_NODE_TYPES.TemplateLiteral &&
+        expression.expressions.length !== 0
+      );
+    }
+
     function isImplicitlyNarrowedConstDeclaration({
       expression,
       parent,
     }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion): boolean {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const maybeDeclarationNode = parent.parent!;
-      const isTemplateLiteralWithExpressions =
-        expression.type === AST_NODE_TYPES.TemplateLiteral &&
-        expression.expressions.length !== 0;
       return (
         maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
         maybeDeclarationNode.kind === 'const' &&
@@ -172,7 +176,7 @@ export default createRule<Options, MessageIds>({
          * Even on `const` variable declarations, template literals with expressions can sometimes be widened without a type assertion.
          * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
          */
-        !isTemplateLiteralWithExpressions
+        !isTemplateLiteralWithExpressions(expression)
       );
     }
 
@@ -234,7 +238,8 @@ export default createRule<Options, MessageIds>({
 
         const wouldSameTypeBeInferred = castType.isLiteral()
           ? isImplicitlyNarrowedConstDeclaration(node) ||
-            isReadonlyClassProperty(node)
+            (isReadonlyClassProperty(node) &&
+              !isTemplateLiteralWithExpressions(node.expression))
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
