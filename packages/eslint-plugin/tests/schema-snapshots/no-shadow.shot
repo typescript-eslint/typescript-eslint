@@ -21,7 +21,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "hoist": {
         "description": "Whether to report shadowing before outer functions or variables are defined.",
-        "enum": ["all", "functions", "never"],
+        "enum": ["all", "functions", "functions-and-types", "never", "types"],
         "type": "string"
       },
       "ignoreFunctionTypeParameterNameValueShadow": {
@@ -53,7 +53,9 @@ type Options = [
     /** Whether to report shadowing before outer functions or variables are defined. */
     hoist?:
       | 'functions'
+      | 'functions-and-types'
       | 'never'
+      | 'types'
       /** Whether to report shadowing before outer functions or variables are defined. */
       | 'all';
     /** Whether to ignore function parameters named the same as a variable. */

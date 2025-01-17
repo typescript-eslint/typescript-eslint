@@ -12,7 +12,7 @@ import { VisitorBase } from './VisitorBase';
 interface VisitPatternOptions extends PatternVisitorOptions {
   processRightHandNodes?: boolean;
 }
-class Visitor extends VisitorBase {
+export class Visitor extends VisitorBase {
   readonly #options: VisitorOptions;
   constructor(optionsOrVisitor: Visitor | VisitorOptions) {
     super(
@@ -43,7 +43,5 @@ class Visitor extends VisitorBase {
     }
   }
 }
-
-export { Visitor };
 
 export { VisitorBase, type VisitorOptions } from './VisitorBase';

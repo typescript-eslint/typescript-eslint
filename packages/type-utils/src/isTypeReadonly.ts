@@ -331,7 +331,7 @@ function isTypeReadonlyRecurser(
 /**
  * Checks if the given type is readonly
  */
-function isTypeReadonly(
+export function isTypeReadonly(
   program: ts.Program,
   type: ts.Type,
   options: ReadonlynessOptions = readonlynessOptionsDefaults,
@@ -341,5 +341,3 @@ function isTypeReadonly(
     Readonlyness.Readonly
   );
 }
-
-export { isTypeReadonly };

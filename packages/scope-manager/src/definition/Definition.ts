@@ -10,7 +10,7 @@ import type { TSModuleNameDefinition } from './TSModuleNameDefinition';
 import type { TypeDefinition } from './TypeDefinition';
 import type { VariableDefinition } from './VariableDefinition';
 
-type Definition =
+export type Definition =
   | CatchClauseDefinition
   | ClassNameDefinition
   | FunctionNameDefinition
@@ -22,5 +22,3 @@ type Definition =
   | TSModuleNameDefinition
   | TypeDefinition
   | VariableDefinition;
-
-export type { Definition };
