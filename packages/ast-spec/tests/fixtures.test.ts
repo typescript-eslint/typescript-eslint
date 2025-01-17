@@ -26,6 +26,7 @@ const SRC_DIR = path.resolve(PACKAGE_ROOT, 'src');
 const ONLY = [].join(path.sep);
 
 const fixturesWithASTDifferences = new Set<string>();
+const fixturesWithASTDifferencesBabel8 = new Set<string>();
 const fixturesWithTokenDifferences = new Set<string>();
 const fixturesConfiguredToExpectBabelToNotSupport = new Map<string, string>();
 enum ErrorLabel {
@@ -92,6 +93,8 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
           alignment: {
             ast: (i: number) =>
               path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
+            astBabel8: (i: number) =>
+              path.join(snapshotPath, `${i}-AST-Alignment-AST-Babel-8.shot`),
             tokens: (i: number) =>
               path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
           },
@@ -272,6 +275,33 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
               fixturesWithTokenDifferences.add(fixture.relative);
             }
           });
+
+          it('AST Alignment - AST (Babel 8)', () => {
+            const babel8Parsed = parseBabel(fixture, contents, 8);
+            if (babel8Parsed.type === ParserResponseType.Error) {
+              // Babel 7 and 8 are reporting different errors
+              return;
+            }
+
+            expectSuccessResponse(tsestreeParsed);
+            expectSuccessResponse(babel8Parsed);
+            expectSuccessResponse(babelParsed);
+
+            const diffResult = snapshotDiff(
+              'TSESTree',
+              tsestreeParsed.ast,
+              'Babel',
+              babel8Parsed.ast,
+            );
+            expect(diffResult).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.alignment.astBabel8!(
+                snapshotCounter++,
+              ),
+            );
+            if (diffHasChanges(diffResult)) {
+              fixturesWithASTDifferencesBabel8.add(fixture.relative);
+            }
+          });
         }
 
         it('Should parse with no errors', () => {
@@ -341,6 +371,13 @@ describe('AST Fixtures', () => {
   it('List fixtures with AST differences', () => {
     expect([...fixturesWithASTDifferences].sort()).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-ast.shot'),
+    );
+  });
+  it('List fixtures with AST differences (Babel 8)', () => {
+    expect(
+      [...fixturesWithASTDifferencesBabel8].sort(),
+    ).toMatchSpecificSnapshot(
+      path.resolve(__dirname, 'fixtures-with-differences-ast-babel-8.shot'),
     );
   });
   it('List fixtures with Token differences', () => {
