@@ -1,6 +1,8 @@
+import type { TSESTree } from '@typescript-eslint/types';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as tsutils from 'ts-api-utils';
 
 import { specifierNameMatches } from './typeOrValueSpecifiers/specifierNameMatches';
@@ -202,3 +204,24 @@ export const typeMatchesSomeSpecifier = (
   program: ts.Program,
 ): boolean =>
   specifiers.some(specifier => typeMatchesSpecifier(type, specifier, program));
+
+export function valueMatchesSpecifier(
+  node: TSESTree.Node,
+  specifier: TypeOrValueSpecifier,
+): boolean {
+  if (node.type !== AST_NODE_TYPES.Identifier) {
+    return false;
+  }
+
+  if (typeof specifier === 'string') {
+    return node.name === specifier;
+  }
+
+  return node.name === specifier.name;
+}
+
+export const valueMatchesSomeSpecifier = (
+  node: TSESTree.Node,
+  specifiers: TypeOrValueSpecifier[] = [],
+): boolean =>
+  specifiers.some(specifier => valueMatchesSpecifier(node, specifier));
