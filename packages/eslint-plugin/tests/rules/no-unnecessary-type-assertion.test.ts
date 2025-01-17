@@ -154,6 +154,21 @@ class Foo {
 }
     `,
     `
+type S = 10;
+
+class T {
+  a = 'a' as const;
+  b = 3 as 3;
+  c = 10 as S;
+}
+    `,
+    `
+class T {
+  readonly a = 'a';
+  readonly b = 3;
+}
+    `,
+    `
       declare const y: number | null;
       console.log(y!);
     `,
