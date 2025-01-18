@@ -51,16 +51,15 @@
     "@typescript-eslint/visitor-keys": "8.25.0"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
     "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "8.25.0",
+    "@vitest/coverage-v8": "^3.0.7",
     "glob": "*",
-    "jest": "29.7.0",
-    "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "^3.2.5",
     "pretty-format": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.0.7"
   },
   "funding": {
     "type": "opencollective",
