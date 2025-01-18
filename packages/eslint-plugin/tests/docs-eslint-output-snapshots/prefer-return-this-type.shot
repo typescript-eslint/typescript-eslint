@@ -1,26 +1,24 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs prefer-return-this-type.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > prefer-return-this-type.mdx > code examples ESLint output`]
+Incorrect
 
 class Foo {
   f1(): Foo {
-        ~~~ Use \`this\` type instead.
+        ~~~ Use `this` type instead.
     return this;
   }
   f2 = (): Foo => {
-           ~~~ Use \`this\` type instead.
+           ~~~ Use `this` type instead.
     return this;
   };
   f3(): Foo | undefined {
     return Math.random() > 0.5 ? this : undefined;
   }
 }
-"
-`;
 
-exports[`Validating rule docs prefer-return-this-type.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > prefer-return-this-type.mdx > code examples ESLint output`]
+Correct
 
 class Foo {
   f1(): this {
@@ -43,5 +41,3 @@ class Derived extends Base {
     return this;
   }
 }
-"
-`;

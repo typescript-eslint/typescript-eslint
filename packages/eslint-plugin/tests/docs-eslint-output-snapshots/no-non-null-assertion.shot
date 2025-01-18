@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-non-null-assertion.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-non-null-assertion.mdx > code examples ESLint output`]
+Incorrect
 
 interface Example {
   property?: string;
@@ -10,11 +10,9 @@ interface Example {
 declare const example: Example;
 const includesBaz = example.property!.includes('baz');
                     ~~~~~~~~~~~~~~~~~ Forbidden non-null assertion.
-"
-`;
 
-exports[`Validating rule docs no-non-null-assertion.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-non-null-assertion.mdx > code examples ESLint output`]
+Correct
 
 interface Example {
   property?: string;
@@ -22,5 +20,3 @@ interface Example {
 
 declare const example: Example;
 const includesBaz = example.property?.includes('baz') ?? false;
-"
-`;

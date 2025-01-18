@@ -12,9 +12,8 @@
     "tools/**/*.mts",
     "eslint.config.js",
     "eslint.config.mjs",
-    "jest.config.base.js",
-    "jest.config.js",
-    "jest.preset.js",
+    "vitest.config.base.mts",
+    "vitest.config.mts",
     "knip.ts",
     ".github/**/*.js"
   ]
