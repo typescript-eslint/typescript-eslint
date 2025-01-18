@@ -2,7 +2,8 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": false,
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["vitest/globals", "vitest/importMeta"]
   },
   "include": ["src", "typings", "tests", "tools"],
   "exclude": ["tests/fixtures/**/*"],
