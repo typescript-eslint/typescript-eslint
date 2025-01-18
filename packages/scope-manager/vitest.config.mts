@@ -1,14 +1,21 @@
-'use strict';
+import { defineConfig, mergeConfig } from 'vitest/config';
+import { vitestBaseConfig } from '../../vitest.config.base.mjs';
+import packageJson from './package.json' with { type: 'json' };
 
-// @ts-check
+const vitestConfig = mergeConfig(
+  vitestBaseConfig,
 
-const baseConfig = require('../../jest.config.base.js');
+  defineConfig({
+    test: {
+      dir: 'tests',
+      name: packageJson.name,
+      root: import.meta.dirname,
 
-/** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
-  ...baseConfig,
-  setupFilesAfterEnv: [
-    ...baseConfig.setupFilesAfterEnv,
-    './tests/test-utils/serializers/index.ts',
-  ],
-};
+      reporters: [['verbose']],
+
+      setupFiles: ['./tests/test-utils/serializers/index.ts'],
+    },
+  }),
+);
+
+export default vitestConfig;

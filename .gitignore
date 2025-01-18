@@ -99,3 +99,6 @@ packages/**/.yarn
 
 .nx/cache
 .nx/workspace-data
+
+.vitest-reports
+tsconfig.vitest-temp.json
