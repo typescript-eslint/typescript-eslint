@@ -8,7 +8,7 @@ import { ClassNameDefinition, ParameterDefinition } from '../definition';
 import { TypeVisitor } from './TypeVisitor';
 import { Visitor } from './Visitor';
 
-class ClassVisitor extends Visitor {
+export class ClassVisitor extends Visitor {
   readonly #classNode: TSESTree.ClassDeclaration | TSESTree.ClassExpression;
   readonly #referencer: Referencer;
 
@@ -373,5 +373,3 @@ function getLiteralMethodKeyName(
   }
   return null;
 }
-
-export { ClassVisitor };

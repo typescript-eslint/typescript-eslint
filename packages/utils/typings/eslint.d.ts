@@ -6,15 +6,11 @@ instead of the ones declared within this package
 */
 
 declare module 'eslint' {
-  const Linter: unknown;
-  const RuleTester: unknown;
-  const SourceCode: unknown;
-
-  export { Linter, RuleTester, SourceCode };
+  export const Linter: unknown;
+  export const RuleTester: unknown;
+  export const SourceCode: unknown;
 }
 declare module 'eslint/use-at-your-own-risk' {
-  const FlatESLint: unknown;
-  const LegacyESLint: unknown;
-
-  export { FlatESLint, LegacyESLint };
+  export const FlatESLint: unknown;
+  export const LegacyESLint: unknown;
 }

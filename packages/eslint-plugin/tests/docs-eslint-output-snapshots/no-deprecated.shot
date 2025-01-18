@@ -43,3 +43,34 @@ exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 4`] 
 const url2 = new URL('/foo', 'http://www.example.com');
 "
 `;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}
+
+/** @deprecated */
+declare function apiV2(): Promise<string>;
+
+await apiV2();
+      ~~~~~ \`apiV2\` is deprecated.
+
+// \`unescape\` has been deprecated since ES5.
+unescape('...');
+~~~~~~~~ \`unescape\` is deprecated. A legacy feature for browser compatibility
+"
+`;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 6`] = `
+"Correct
+Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}
+
+import { Bar } from 'bar-lib';
+/** @deprecated */
+declare function apiV1(): Promise<string>;
+
+await apiV1();
+
+// \`escape\` has been deprecated since ES5.
+escape('...');
+"
+`;
