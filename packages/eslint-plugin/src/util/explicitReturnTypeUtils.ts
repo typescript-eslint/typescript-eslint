@@ -9,10 +9,10 @@ import {
 import { isConstructor, isSetter, isTypeAssertion } from './astUtils';
 import { getFunctionHeadLoc } from './getFunctionHeadLoc';
 
-type FunctionExpression =
+export type FunctionExpression =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionExpression;
-type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
+export type FunctionNode = FunctionExpression | TSESTree.FunctionDeclaration;
 
 export interface FunctionInfo<T extends FunctionNode> {
   node: T;
@@ -153,7 +153,7 @@ function isPropertyOfObjectWithType(
  * function fn() { return function() { ... } }
  * ```
  */
-function doesImmediatelyReturnFunctionExpression({
+export function doesImmediatelyReturnFunctionExpression({
   node,
   returns,
 }: FunctionInfo<FunctionNode>): boolean {
@@ -206,7 +206,7 @@ interface Options {
 /**
  * True when the provided function expression is typed.
  */
-function isTypedFunctionExpression(
+export function isTypedFunctionExpression(
   node: FunctionExpression,
   options: Options,
 ): boolean {
@@ -230,7 +230,7 @@ function isTypedFunctionExpression(
  * Check whether the function expression return type is either typed or valid
  * with the provided options.
  */
-function isValidFunctionExpressionReturnType(
+export function isValidFunctionExpressionReturnType(
   node: FunctionExpression,
   options: Options,
 ): boolean {
@@ -292,7 +292,7 @@ function isValidFunctionReturnType(
 /**
  * Checks if a function declaration/expression has a return type.
  */
-function checkFunctionReturnType(
+export function checkFunctionReturnType(
   { node, returns }: FunctionInfo<FunctionNode>,
   options: Options,
   sourceCode: TSESLint.SourceCode,
@@ -308,7 +308,7 @@ function checkFunctionReturnType(
 /**
  * Checks if a function declaration/expression has a return type.
  */
-function checkFunctionExpressionReturnType(
+export function checkFunctionExpressionReturnType(
   info: FunctionInfo<FunctionExpression>,
   options: Options,
   sourceCode: TSESLint.SourceCode,
@@ -324,7 +324,7 @@ function checkFunctionExpressionReturnType(
 /**
  * Check whether any ancestor of the provided function has a valid return type.
  */
-function ancestorHasReturnType(node: FunctionNode): boolean {
+export function ancestorHasReturnType(node: FunctionNode): boolean {
   let ancestor: TSESTree.Node | undefined = node.parent;
 
   if (ancestor.type === AST_NODE_TYPES.Property) {
@@ -366,14 +366,3 @@ function ancestorHasReturnType(node: FunctionNode): boolean {
 
   return false;
 }
-
-export {
-  ancestorHasReturnType,
-  checkFunctionExpressionReturnType,
-  checkFunctionReturnType,
-  doesImmediatelyReturnFunctionExpression,
-  type FunctionExpression,
-  type FunctionNode,
-  isTypedFunctionExpression,
-  isValidFunctionExpressionReturnType,
-};

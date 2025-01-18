@@ -25,7 +25,8 @@ const boxSpread = { ...Box };
                     ~~~~~~ Using the spread operator on class declarations will spread only their static properties, and will lose their class prototype.
 
 declare const instance: Box;
-const instanceSpread = { ...box };
+const instanceSpread = { ...instance };
+                         ~~~~~~~~~~~ Using the spread operator on class instances will lose their class prototype.
 
 Correct
 

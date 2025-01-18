@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class ImplicitGlobalVariableDefinition extends DefinitionBase<
+export class ImplicitGlobalVariableDefinition extends DefinitionBase<
   DefinitionType.ImplicitGlobalVariable,
   TSESTree.Node,
   null,
@@ -19,5 +19,3 @@ class ImplicitGlobalVariableDefinition extends DefinitionBase<
     super(DefinitionType.ImplicitGlobalVariable, name, node, null);
   }
 }
-
-export { ImplicitGlobalVariableDefinition };
