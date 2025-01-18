@@ -72,18 +72,15 @@
     "ts-api-utils": "^2.0.1"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
     "@types/marked": "^5.0.2",
     "@types/mdast": "^4.0.3",
     "@types/natural-compare": "*",
     "@typescript-eslint/rule-schema-to-typescript-types": "8.26.0",
     "@typescript-eslint/rule-tester": "8.26.0",
+    "@vitest/coverage-v8": "^3.0.7",
     "ajv": "^6.12.6",
-    "cross-env": "^7.0.3",
     "cross-fetch": "*",
     "eslint": "*",
-    "jest": "29.7.0",
-    "jest-specific-snapshot": "^8.0.0",
     "json-schema": "*",
     "markdown-table": "^3.0.3",
     "marked": "^5.1.2",
@@ -95,7 +92,8 @@
     "title-case": "^3.0.3",
     "tsx": "*",
     "typescript": "*",
-    "unist-util-visit": "^5.0.0"
+    "unist-util-visit": "^5.0.0",
+    "vitest": "^3.0.7"
   },
   "peerDependencies": {
     "@typescript-eslint/parser": "^8.0.0 || ^8.0.0-alpha.0",
