@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`type-declaration type-query 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -93,4 +90,3 @@ ScopeManager {
     },
   ],
 }
-`;
