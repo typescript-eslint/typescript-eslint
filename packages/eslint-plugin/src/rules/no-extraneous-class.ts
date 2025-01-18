@@ -123,7 +123,8 @@ export default createRule<Options, MessageIds>({
             onlyConstructor = false;
             if (
               ((prop.type === AST_NODE_TYPES.PropertyDefinition ||
-                prop.type === AST_NODE_TYPES.MethodDefinition) &&
+                prop.type === AST_NODE_TYPES.MethodDefinition ||
+                prop.type === AST_NODE_TYPES.AccessorProperty) &&
                 !prop.static) ||
               prop.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
               prop.type === AST_NODE_TYPES.TSAbstractMethodDefinition // `static abstract` methods and properties are currently not supported. See: https://github.com/microsoft/TypeScript/issues/34516

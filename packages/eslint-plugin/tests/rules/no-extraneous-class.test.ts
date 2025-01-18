@@ -98,6 +98,19 @@ abstract class Foo {
   abstract method(): string;
 }
     `,
+    `
+class Foo {
+  accessor prop = 1;
+}
+    `,
+    `
+class Foo {
+  accessor prop: string;
+  static bar() {
+    return false
+  }
+}
+    `,
   ],
 
   invalid: [
