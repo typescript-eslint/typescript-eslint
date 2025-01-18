@@ -53,12 +53,14 @@
     "@jest/types": "29.6.3",
     "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "8.22.0",
+    "@vitest/coverage-v8": "^3.0.4",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "^3.2.5",
     "pretty-format": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.0.4"
   },
   "funding": {
     "type": "opencollective",
