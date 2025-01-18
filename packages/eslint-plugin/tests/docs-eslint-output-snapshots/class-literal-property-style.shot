@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > class-literal-property-style.mdx > code examples ESLint output`]
+Incorrect
 Options: "fields"
 
 class Mx {
@@ -15,11 +15,9 @@ class Mx {
     return 'hello world';
   }
 }
-"
-`;
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > class-literal-property-style.mdx > code examples ESLint output`]
+Correct
 Options: "fields"
 
 class Mx {
@@ -31,29 +29,25 @@ class Mx {
   private readonly ['myField3'] = 'hello world';
 
   public get myField4() {
-    return \`hello from \${window.location.href}\`;
+    return `hello from ${window.location.href}`;
   }
 }
-"
-`;
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > class-literal-property-style.mdx > code examples ESLint output`]
+Incorrect
 Options: "getters"
 
 class Mx {
   readonly myField1 = 1;
            ~~~~~~~~ Literals should be exposed using getters.
-  readonly myField2 = \`hello world\`;
+  readonly myField2 = `hello world`;
            ~~~~~~~~ Literals should be exposed using getters.
   private readonly myField3 = 'hello world';
                    ~~~~~~~~ Literals should be exposed using getters.
 }
-"
-`;
 
-exports[`Validating rule docs class-literal-property-style.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > class-literal-property-style.mdx > code examples ESLint output`]
+Correct
 Options: "getters"
 
 class Mx {
@@ -71,5 +65,3 @@ class Mx {
     return 'hello world';
   }
 }
-"
-`;

@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-inferrable-types 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-inferrable-types > no-inferrable-types`]
 # SCHEMA:
 
 [
@@ -32,5 +31,4 @@ type Options = [
     ignoreProperties?: boolean;
   },
 ];
-"
-`;
+

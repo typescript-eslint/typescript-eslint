@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-redundant-type-constituents.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-redundant-type-constituents.mdx > code examples ESLint output`]
+Incorrect
 
 type UnionAny = any | 'foo';
                 ~~~ 'any' overrides all other types in this union type.
@@ -30,11 +30,9 @@ type IntersectionNumberLiteral = number & 1;
                                  ~~~~~~ number is overridden by the 1 in this intersection type.
 type IntersectionStringLiteral = string & 'foo';
                                  ~~~~~~ string is overridden by the "foo" in this intersection type.
-"
-`;
 
-exports[`Validating rule docs no-redundant-type-constituents.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-redundant-type-constituents.mdx > code examples ESLint output`]
+Correct
 
 type UnionAny = any;
 type UnionUnknown = unknown;
@@ -51,5 +49,3 @@ type IntersectionNever = string;
 type IntersectionBooleanLiteral = false;
 type IntersectionNumberLiteral = 1;
 type IntersectionStringLiteral = 'foo';
-"
-`;

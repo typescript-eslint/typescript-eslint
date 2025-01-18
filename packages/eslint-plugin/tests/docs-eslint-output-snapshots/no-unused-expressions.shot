@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unused-expressions.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unused-expressions.mdx > code examples ESLint output`]
+Incorrect
 
 Set<number>;
 ~~~~~~~~~~~~ Expected an assignment or function call and instead saw an expression.
@@ -9,11 +9,9 @@ Set<number>;
 ~~~~~~~~~~~~ Expected an assignment or function call and instead saw an expression.
 window!;
 ~~~~~~~~ Expected an assignment or function call and instead saw an expression.
-"
-`;
 
-exports[`Validating rule docs no-unused-expressions.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-unused-expressions.mdx > code examples ESLint output`]
+Correct
 
 function getSet() {
   return Set;
@@ -28,5 +26,3 @@ getSet()!;
 namespace A {
   'use strict';
 }
-"
-`;

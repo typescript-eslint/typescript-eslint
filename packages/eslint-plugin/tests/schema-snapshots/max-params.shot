@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes max-params 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > max-params > max-params`]
 # SCHEMA:
 
 [
@@ -9,7 +8,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "countVoidThis": {
-        "description": "Whether to count a \`this\` declaration when the type is \`void\`.",
+        "description": "Whether to count a `this` declaration when the type is `void`.",
         "type": "boolean"
       },
       "max": {
@@ -32,7 +31,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to count a \`this\` declaration when the type is \`void\`. */
+    /** Whether to count a `this` declaration when the type is `void`. */
     countVoidThis?: boolean;
     /** A maximum number of parameters in function definitions. */
     max?: number;
@@ -40,5 +39,4 @@ type Options = [
     maximum?: number;
   },
 ];
-"
-`;
+
