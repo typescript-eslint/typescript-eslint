@@ -105,9 +105,9 @@ class Foo {
     `,
     `
 class Foo {
-  accessor prop: string;
+  accessor prop = 'bar';
   static bar() {
-    return false
+    return false;
   }
 }
     `,
@@ -224,6 +224,14 @@ abstract class Foo {
 }
       `,
       errors: [onlyConstructor],
+    },
+    {
+      code: `
+class Foo {
+  static accessor prop: string;
+}
+      `,
+      errors: [onlyStatic],
     },
   ],
 });
