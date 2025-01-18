@@ -1,7 +1,7 @@
 import { describeFilePath } from '../../src/create-program/describeFilePath';
 
-describe('describeFilePath', () => {
-  describe.each(['./repos/repo', '/repos/repo', '~/repos/repo'])(
+describe(describeFilePath, () => {
+  describe.each(['./repos/repo', '/repos/repo', '~/repos/repo'] as const)(
     'tsconfigRootDir %s',
     tsconfigRootDir => {
       test.each([
@@ -33,7 +33,7 @@ describe('describeFilePath', () => {
         'C:/file.ts',
         'file.ts',
         'nested/file.ts',
-      ])('filePath %s', filePath => {
+      ] as const)('filePath %s', filePath => {
         expect(
           describeFilePath(filePath, tsconfigRootDir).replaceAll('\\', '/'),
         ).toMatchSnapshot();
