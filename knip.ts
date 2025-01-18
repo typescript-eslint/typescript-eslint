@@ -17,7 +17,11 @@ export default {
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
-      ignore: ['tools/scripts/typings/typescript.d.ts', 'typings/*.d.ts'],
+      ignore: [
+        'jest.config.base.js',
+        'tools/scripts/typings/typescript.d.ts',
+        'typings/*.d.ts',
+      ],
       ignoreDependencies: [
         '@babel/code-frame',
         '@babel/core',
@@ -66,6 +70,13 @@ export default {
     },
     'packages/scope-manager': {
       ignore: ['tests/fixtures/**'],
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          '**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)',
+          'tests/test-utils/serializers/index.ts',
+        ],
+      },
     },
     'packages/type-utils': {
       ignore: ['tests/fixtures/**', 'typings/typescript.d.ts'],
