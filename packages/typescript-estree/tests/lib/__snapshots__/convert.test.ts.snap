@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`convert deeplyCopy should convert array of nodes 1`] = `
+exports[`convert > deeplyCopy > should convert array of nodes 1`] = `
 {
   "ambientModuleNames": undefined,
   "amdDependencies": [],
@@ -200,7 +200,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
 }
 `;
 
-exports[`convert deeplyCopy should convert node correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node correctly 1`] = `
 {
   "body": [
     {
@@ -498,7 +498,7 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
 }
 `;
 
-exports[`convert deeplyCopy should convert node with decorators correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node with decorators correctly 1`] = `
 {
   "decorators": [
     {
@@ -584,7 +584,7 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
 }
 `;
 
-exports[`convert deeplyCopy should convert node with type arguments correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node with type arguments correctly 1`] = `
 {
   "arguments": [],
   "emitNode": undefined,
@@ -687,7 +687,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
 }
 `;
 
-exports[`convert deeplyCopy should convert node with type parameters correctly 1`] = `
+exports[`convert > deeplyCopy > should convert node with type parameters correctly 1`] = `
 {
   "emitNode": undefined,
   "id": 0,

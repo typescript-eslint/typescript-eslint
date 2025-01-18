@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -297,7 +297,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .js file - with JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -594,7 +594,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .js file - without JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .js file - without JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -781,7 +781,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .js file - without JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .js file - without JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -968,7 +968,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .json file - without JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .json file - without JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -1191,7 +1191,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - with JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -1488,7 +1488,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - with JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -1785,7 +1785,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .jsx file - without JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - without JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -1972,7 +1972,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .jsx file - without JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .jsx file - without JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -2159,7 +2159,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .ts file - without JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .ts file - without JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -2346,7 +2346,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .ts file - without JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .ts file - without JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -2533,7 +2533,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - with JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -2830,7 +2830,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - with JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -3127,7 +3127,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .tsx file - without JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - without JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -3314,7 +3314,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .tsx file - without JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .tsx file - without JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -3501,7 +3501,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .vue file - with JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .vue file - with JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
@@ -3798,7 +3798,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .vue file - without JSX content - parserOptions.jsx = false 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .vue file - without JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
     "body": [
@@ -3985,7 +3985,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
 }
 `;
 
-exports[`parseAndGenerateServices isolated parsing should parse .vue file - without JSX content - parserOptions.jsx = true 1`] = `
+exports[`parseAndGenerateServices > isolated parsing > should parse .vue file - without JSX content - parserOptions.jsx = true 1`] = `
 {
   "ast": {
     "body": [
