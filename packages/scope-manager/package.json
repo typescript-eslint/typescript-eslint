@@ -52,12 +52,12 @@
   },
   "devDependencies": {
     "@typescript-eslint/typescript-estree": "8.31.0",
-    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/coverage-v8": "^3.1.2",
     "glob": "*",
     "prettier": "^3.2.5",
     "pretty-format": "*",
     "typescript": "*",
-    "vitest": "^3.1.1"
+    "vitest": "^3.1.2"
   },
   "funding": {
     "type": "opencollective",
