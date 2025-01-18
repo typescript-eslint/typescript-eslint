@@ -100,7 +100,7 @@ abstract class Foo {
     `,
     `
 class Foo {
-  accessor prop = 1;
+  accessor prop: string;
 }
     `,
     `
