@@ -1,11 +1,11 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-misused-new.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-misused-new.mdx > code examples ESLint output`]
+Incorrect
 
 declare class C {
   new(): C;
-  ~~~~~~~~~ Class cannot have method named \`new\`.
+  ~~~~~~~~~ Class cannot have method named `new`.
 }
 
 interface I {
@@ -14,11 +14,9 @@ interface I {
   constructor(): void;
   ~~~~~~~~~~~~~~~~~~~~ Interfaces cannot be constructed, only classes.
 }
-"
-`;
 
-exports[`Validating rule docs no-misused-new.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-misused-new.mdx > code examples ESLint output`]
+Correct
 
 declare class C {
   constructor();
@@ -27,5 +25,3 @@ declare class C {
 interface I {
   new (): C;
 }
-"
-`;

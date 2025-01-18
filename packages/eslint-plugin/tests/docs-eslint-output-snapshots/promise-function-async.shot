@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > promise-function-async.mdx > code examples ESLint output`]
+Incorrect
 
 const arrowFunctionReturnsPromise = () => Promise.resolve('value');
                                        ~~ Functions that return promises must be async.
@@ -15,11 +15,9 @@ function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Functions that return promises must be async.
   return p ? 'value' : Promise.resolve('value');
 }
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > promise-function-async.mdx > code examples ESLint output`]
+Correct
 
 const arrowFunctionReturnsPromise = async () => Promise.resolve('value');
 
@@ -37,43 +35,33 @@ function functionReturnsUnionWithPromiseExplicitly(
 async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
   return p ? 'value' : Promise.resolve('value');
 }
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > promise-function-async.mdx > code examples ESLint output`]
+Incorrect
 Options: { "allowAny": false }
 
 const returnsAny = () => ({}) as any;
                       ~~ Functions that return promises must be async.
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > promise-function-async.mdx > code examples ESLint output`]
+Correct
 Options: { "allowAny": false }
 
 const returnsAny = async () => ({}) as any;
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 5`] = `
-"Incorrect
+exports[`Validating rule docs > promise-function-async.mdx > code examples ESLint output`]
+Incorrect
 Options: { "allowedPromiseNames": ["Bluebird"] }
 
 class Bluebird {}
 
 const returnsBluebird = () => new Bluebird(() => {});
                            ~~ Functions that return promises must be async.
-"
-`;
 
-exports[`Validating rule docs promise-function-async.mdx code examples ESLint output 6`] = `
-"Correct
+exports[`Validating rule docs > promise-function-async.mdx > code examples ESLint output`]
+Correct
 Options: { "allowedPromiseNames": ["Bluebird"] }
 
 class Bluebird {}
 
 const returnsBluebird = async () => new Bluebird(() => {});
-"
-`;

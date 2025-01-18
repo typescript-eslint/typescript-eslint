@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs require-await.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > require-await.mdx > code examples ESLint output`]
+Incorrect
 
 async function returnNumber() {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~ Async function 'returnNumber' has no 'await' expression.
@@ -15,11 +15,9 @@ async function* asyncGenerator() {
 
 const num = returnNumber();
 const callAsyncGenerator = () => asyncGenerator();
-"
-`;
 
-exports[`Validating rule docs require-await.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > require-await.mdx > code examples ESLint output`]
+Correct
 
 function returnNumber() {
   return 1;
@@ -31,5 +29,3 @@ function* syncGenerator() {
 
 const num = returnNumber();
 const callSyncGenerator = () => syncGenerator();
-"
-`;

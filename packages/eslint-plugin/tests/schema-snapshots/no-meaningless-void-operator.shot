@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-meaningless-void-operator 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-meaningless-void-operator > no-meaningless-void-operator`]
 # SCHEMA:
 
 [
@@ -10,7 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "checkNever": {
         "default": false,
-        "description": "Whether to suggest removing \`void\` when the argument has type \`never\`.",
+        "description": "Whether to suggest removing `void` when the argument has type `never`.",
         "type": "boolean"
       }
     },
@@ -23,9 +22,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to suggest removing \`void\` when the argument has type \`never\`. */
+    /** Whether to suggest removing `void` when the argument has type `never`. */
     checkNever?: boolean;
   },
 ];
-"
-`;
+

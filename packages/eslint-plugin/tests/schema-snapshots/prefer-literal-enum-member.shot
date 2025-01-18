@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-literal-enum-member 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > prefer-literal-enum-member > prefer-literal-enum-member`]
 # SCHEMA:
 
 [
@@ -26,5 +25,4 @@ type Options = [
     allowBitwiseExpressions?: boolean;
   },
 ];
-"
-`;
+

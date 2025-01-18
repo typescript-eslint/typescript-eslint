@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs default-param-last.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > default-param-last.mdx > code examples ESLint output`]
+Incorrect
 
 function f(a = 0, b: number) {}
            ~~~~~ Default parameters should be last.
@@ -23,11 +23,9 @@ class Foo {
     private b: number,
   ) {}
 }
-"
-`;
 
-exports[`Validating rule docs default-param-last.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > default-param-last.mdx > code examples ESLint output`]
+Correct
 
 function f(a = 0) {}
 function f(a: number, b = 0) {}
@@ -46,5 +44,3 @@ class Foo {
     private b?: number,
   ) {}
 }
-"
-`;

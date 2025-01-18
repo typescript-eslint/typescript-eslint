@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes ban-ts-comment 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > ban-ts-comment > ban-ts-comment`]
 # SCHEMA:
 
 [
@@ -33,7 +32,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "minimumDescriptionLength": {
         "default": 3,
-        "description": "A minimum character length for descriptions when \`allow-with-description\` is enabled.",
+        "description": "A minimum character length for descriptions when `allow-with-description` is enabled.",
         "type": "number"
       },
       "ts-check": {
@@ -69,9 +68,8 @@ type Options = [
     'ts-expect-error'?: DirectiveConfigSchema;
     'ts-ignore'?: DirectiveConfigSchema;
     'ts-nocheck'?: DirectiveConfigSchema;
-    /** A minimum character length for descriptions when \`allow-with-description\` is enabled. */
+    /** A minimum character length for descriptions when `allow-with-description` is enabled. */
     minimumDescriptionLength?: number;
   },
 ];
-"
-`;
+

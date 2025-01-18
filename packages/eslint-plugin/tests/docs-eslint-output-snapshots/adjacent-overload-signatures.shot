@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs adjacent-overload-signatures.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > adjacent-overload-signatures.mdx > code examples ESLint output`]
+Incorrect
 
 declare namespace Foo {
   export function foo(s: string): void;
@@ -40,11 +40,9 @@ export function foo(n: number): void;
 export function bar(): void;
 export function foo(sn: string | number): void;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
-"
-`;
 
-exports[`Validating rule docs adjacent-overload-signatures.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > adjacent-overload-signatures.mdx > code examples ESLint output`]
+Correct
 
 declare namespace Foo {
   export function foo(s: string): void;
@@ -78,5 +76,3 @@ export function bar(): void;
 export function foo(s: string): void;
 export function foo(n: number): void;
 export function foo(sn: string | number): void;
-"
-`;

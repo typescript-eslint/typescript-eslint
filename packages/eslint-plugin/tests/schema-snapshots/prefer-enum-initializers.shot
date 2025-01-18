@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-enum-initializers 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > prefer-enum-initializers > prefer-enum-initializers`]
 # SCHEMA:
 
 []
@@ -10,5 +9,4 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 /** No options declared */
-type Options = [];"
-`;
+type Options = [];

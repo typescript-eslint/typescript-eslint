@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > consistent-indexed-object-style.mdx > code examples ESLint output`]
+Incorrect
 Options: "record"
 
 interface IndexSignatureInterface {
@@ -24,28 +24,22 @@ type MappedType = {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 };
 ~
-"
-`;
 
-exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > consistent-indexed-object-style.mdx > code examples ESLint output`]
+Correct
 Options: "record"
 
 type RecordType = Record<string, unknown>;
-"
-`;
 
-exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 3`] = `
-"Incorrect
+exports[`Validating rule docs > consistent-indexed-object-style.mdx > code examples ESLint output`]
+Incorrect
 Options: "index-signature"
 
 type RecordType = Record<string, unknown>;
                   ~~~~~~~~~~~~~~~~~~~~~~~ An index signature is preferred over a record.
-"
-`;
 
-exports[`Validating rule docs consistent-indexed-object-style.mdx code examples ESLint output 4`] = `
-"Correct
+exports[`Validating rule docs > consistent-indexed-object-style.mdx > code examples ESLint output`]
+Correct
 Options: "index-signature"
 
 interface IndexSignatureInterface {
@@ -59,5 +53,3 @@ type IndexSignatureType = {
 type MappedType = {
   [key in string]: unknown;
 };
-"
-`;

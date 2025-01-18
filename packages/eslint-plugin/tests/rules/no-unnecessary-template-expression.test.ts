@@ -959,17 +959,15 @@ this code has trailing position template expression but it isn\\'t whitespace
 ];
 
 describe('fixer should not change runtime value', () => {
-  for (const { code, output } of invalidCases) {
+  test.for(invalidCases)('$code', ({ code, output }, { expect }) => {
     if (!output) {
-      continue;
+      return;
     }
 
-    test(code, () => {
-      expect(eval(code)).toEqual(
-        eval(Array.isArray(output) ? output.at(-1)! : output),
-      );
-    });
-  }
+    expect(eval(code)).toEqual(
+      eval(Array.isArray(output) ? output.at(-1)! : output),
+    );
+  });
 });
 
 ruleTester.run('no-unnecessary-template-expression', rule, {

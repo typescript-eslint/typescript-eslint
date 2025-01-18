@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unnecessary-condition 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-unnecessary-condition > no-unnecessary-condition`]
 # SCHEMA:
 
 [
@@ -9,7 +8,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowConstantLoopConditions": {
-        "description": "Whether to ignore constant loop conditions, such as \`while (true)\`.",
+        "description": "Whether to ignore constant loop conditions, such as `while (true)`.",
         "oneOf": [
           {
             "type": "boolean"
@@ -38,12 +37,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore constant loop conditions, such as \`while (true)\`. */
+    /** Whether to ignore constant loop conditions, such as `while (true)`. */
     allowConstantLoopConditions?:
       | 'always'
       | 'never'
       | 'only-allowed-literals'
-      /** Whether to ignore constant loop conditions, such as \`while (true)\`. */
+      /** Whether to ignore constant loop conditions, such as `while (true)`. */
       | boolean;
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
@@ -51,5 +50,4 @@ type Options = [
     checkTypePredicates?: boolean;
   },
 ];
-"
-`;
+

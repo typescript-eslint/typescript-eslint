@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Incorrect
 
 function head<T>(items: T[]) {
   // items can never be nullable, so this is unnecessary
@@ -30,11 +30,9 @@ function bar<T>(arg: string) {
   [3, 4],
 ].filter(t => t); // number[] is always truthy
               ~ Unnecessary conditional, value is always truthy.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Correct
 
 function head<T>(items: T[]) {
   // Necessary, since items.length might be 0
@@ -55,11 +53,9 @@ function bar(arg?: string | null) {
 }
 
 [0, 1, 2, 3].filter(t => t); // number can be truthy or falsy
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 3`] = `
-"Options: { "allowConstantLoopConditions": "never" }
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Options: { "allowConstantLoopConditions": "never" }
 
 while (true) {
        ~~~~ Unnecessary conditional, value is always truthy.
@@ -75,11 +71,9 @@ do {
   // ...
 } while (true);
          ~~~~ Unnecessary conditional, value is always truthy.
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 4`] = `
-"Options: { "allowConstantLoopConditions": "always" }
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Options: { "allowConstantLoopConditions": "always" }
 
 while (true) {
   // ...
@@ -92,23 +86,19 @@ for (; true; ) {
 do {
   // ...
 } while (true);
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 5`] = `
-"Options: { "allowConstantLoopConditions": "only-allowed-literals" }
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Options: { "allowConstantLoopConditions": "only-allowed-literals" }
 
 while (true) {
   // ...
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 6`] = `
-"Options: { "allowConstantLoopConditions": "only-allowed-literals" }
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Options: { "allowConstantLoopConditions": "only-allowed-literals" }
 
-// \`alwaysTrue\` has the type of \`true\` (which isn't allowed)
-// as only the literal value of \`true\` is allowed.
+// `alwaysTrue` has the type of `true` (which isn't allowed)
+// as only the literal value of `true` is allowed.
 
 declare const alwaysTrue: true;
 
@@ -117,8 +107,8 @@ while (alwaysTrue) {
   // ...
 }
 
-// not even a variable that references the value of \`true\` is allowed, only
-// the literal value of \`true\` used directly.
+// not even a variable that references the value of `true` is allowed, only
+// the literal value of `true` used directly.
 
 const thisIsTrue = true;
 
@@ -126,11 +116,9 @@ while (thisIsTrue) {
        ~~~~~~~~~~ Unnecessary conditional, value is always truthy.
   // ...
 }
-"
-`;
 
-exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 7`] = `
-"Options: { "checkTypePredicates": true }
+exports[`Validating rule docs > no-unnecessary-condition.mdx > code examples ESLint output`]
+Options: { "checkTypePredicates": true }
 
 function assert(condition: unknown): asserts condition {
   if (!condition) {
@@ -164,5 +152,3 @@ function assertIsString(value: unknown): asserts value is string {
 
 assertIsString(s); // Unnecessary; s is always a string.
                ~ Unnecessary conditional, expression already has the type being checked by the assertion function.
-"
-`;

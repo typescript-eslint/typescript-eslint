@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-unsafe-enum-comparison.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-unsafe-enum-comparison.mdx > code examples ESLint output`]
+Incorrect
 
 enum Fruit {
   Apple,
@@ -28,11 +28,9 @@ declare let anyString: string;
 // bad - comparison between enum and non-enum value
 anyString === Vegetable.Asparagus;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ The two values in this comparison do not have a shared enum type.
-"
-`;
 
-exports[`Validating rule docs no-unsafe-enum-comparison.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-unsafe-enum-comparison.mdx > code examples ESLint output`]
+Correct
 
 enum Fruit {
   Apple,
@@ -49,5 +47,3 @@ enum Vegetable {
 declare let vegetable: Vegetable;
 
 vegetable === Vegetable.Asparagus;
-"
-`;

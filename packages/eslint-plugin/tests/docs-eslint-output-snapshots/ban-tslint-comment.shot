@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs ban-tslint-comment.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > ban-tslint-comment.mdx > code examples ESLint output`]
+Incorrect
 
 /* tslint:disable */
 ~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "/* tslint:disable */"
@@ -17,14 +17,10 @@ someCode(); // tslint:disable-line
             ~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "// tslint:disable-line"
 // tslint:disable-next-line:rule1 rule2 rule3...
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ tslint comment detected: "// tslint:disable-next-line:rule1 rule2 rule3..."
-"
-`;
 
-exports[`Validating rule docs ban-tslint-comment.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > ban-tslint-comment.mdx > code examples ESLint output`]
+Correct
 
 // This is a comment that just happens to mention tslint
 /* This is a multiline comment that just happens to mention tslint */
 someCode(); // This is a comment that just happens to mention tslint
-"
-`;

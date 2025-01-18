@@ -1,6 +1,6 @@
 import type {
-  TSESTree,
   ParserServicesWithTypeInformation,
+  TSESTree,
 } from '@typescript-eslint/utils';
 
 import { parseForESLint } from '@typescript-eslint/parser';
@@ -23,7 +23,7 @@ function parseCodeForEslint(code: string): ReturnType<typeof parseForESLint> & {
   });
 }
 
-describe('getConstraintInfo', () => {
+describe(getConstraintInfo, () => {
   it('returns undefined for unconstrained generic', () => {
     const sourceCode = `
 function foo<T>(x: T);

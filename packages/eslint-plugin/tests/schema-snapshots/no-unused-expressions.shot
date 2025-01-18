@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-expressions 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-unused-expressions > no-unused-expressions`]
 # SCHEMA:
 
 [
@@ -36,5 +35,4 @@ type Options = [
     enforceForJSX?: boolean;
   },
 ];
-"
-`;
+

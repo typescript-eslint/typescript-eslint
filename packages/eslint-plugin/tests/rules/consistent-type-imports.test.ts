@@ -15,9 +15,11 @@ const PARSER_OPTION_COMBOS = [
     emitDecoratorMetadata: false,
     experimentalDecorators: true,
   },
-];
-for (const parserOptions of PARSER_OPTION_COMBOS) {
-  describe(`experimentalDecorators: ${parserOptions.experimentalDecorators} + emitDecoratorMetadata: ${parserOptions.emitDecoratorMetadata}`, () => {
+] as const;
+
+describe.for(PARSER_OPTION_COMBOS)(
+  'experimentalDecorators: $experimentalDecorators + emitDecoratorMetadata: $emitDecoratorMetadata',
+  parserOptions => {
     const ruleTester = new RuleTester({
       languageOptions: { parserOptions },
     });
@@ -1945,8 +1947,8 @@ function test(foo: Foo) {}
         },
       ],
     });
-  });
-}
+  },
+);
 
 // the special ignored config case
 describe('experimentalDecorators: true + emitDecoratorMetadata: true', () => {

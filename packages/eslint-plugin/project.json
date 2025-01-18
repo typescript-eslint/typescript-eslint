@@ -1,8 +1,9 @@
 {
   "name": "eslint-plugin",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/eslint-plugin",
+  "sourceRoot": "packages/eslint-plugin/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",

@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes class-literal-property-style 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > class-literal-property-style > class-literal-property-style`]
 # SCHEMA:
 
 [
@@ -21,5 +20,4 @@ type Options = [
   /** Which literal class member syntax to prefer. */
   | 'fields',
 ];
-"
-`;
+

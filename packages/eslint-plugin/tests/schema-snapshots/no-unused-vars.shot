@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-vars 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-unused-vars > no-unused-vars`]
 # SCHEMA:
 
 [
@@ -41,7 +40,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "boolean"
           },
           "ignoreRestSiblings": {
-            "description": "Whether to ignore sibling properties in \`...\` destructurings.",
+            "description": "Whether to ignore sibling properties in `...` destructurings.",
             "type": "boolean"
           },
           "reportUsedIgnorePattern": {
@@ -90,7 +89,7 @@ type Options = [
       destructuredArrayIgnorePattern?: string;
       /** Whether to ignore classes with at least one static initialization block. */
       ignoreClassWithStaticInitBlock?: boolean;
-      /** Whether to ignore sibling properties in \`...\` destructurings. */
+      /** Whether to ignore sibling properties in `...` destructurings. */
       ignoreRestSiblings?: boolean;
       /** Whether to report variables that match any of the valid ignore pattern options if they have been used. */
       reportUsedIgnorePattern?: boolean;
@@ -103,5 +102,4 @@ type Options = [
       varsIgnorePattern?: string;
     },
 ];
-"
-`;
+

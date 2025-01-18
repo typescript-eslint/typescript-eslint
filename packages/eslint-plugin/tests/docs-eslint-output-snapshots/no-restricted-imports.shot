@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-restricted-imports.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-restricted-imports.mdx > code examples ESLint output`]
+Incorrect
 Options: {"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}
 
 import foo from 'import-foo';
@@ -13,11 +13,9 @@ import baz from 'import-baz';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 'import-baz' import is restricted from being used. Please use import-quux instead.
 export { Baz } from 'import-baz';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 'import-baz' import is restricted from being used. Please use import-quux instead.
-"
-`;
 
-exports[`Validating rule docs no-restricted-imports.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-restricted-imports.mdx > code examples ESLint output`]
+Correct
 Options: {"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}
 
 import { foo } from 'other-module';
@@ -27,5 +25,3 @@ export type { Foo } from 'import-foo';
 
 import type baz from 'import-baz';
 export type { Baz } from 'import-baz';
-"
-`;

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-redeclare.mdx code examples ESLint output 1`] = `
-"Options: { "ignoreDeclarationMerge": true }
+exports[`Validating rule docs > no-redeclare.mdx > code examples ESLint output`]
+Options: { "ignoreDeclarationMerge": true }
 
 interface A {
   prop1: 1;
@@ -22,16 +22,12 @@ namespace Bar {}
 
 function Baz() {}
 namespace Baz {}
-"
-`;
 
-exports[`Validating rule docs no-redeclare.mdx code examples ESLint output 2`] = `
-"Options: { "ignoreDeclarationMerge": true }
+exports[`Validating rule docs > no-redeclare.mdx > code examples ESLint output`]
+Options: { "ignoreDeclarationMerge": true }
 
 type something = string;
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Definition for rule '@typescript-eslint/no-redeclare' was not found.
 const something = 2;
       ~~~~~~~~~ 'something' is already defined.
-"
-`;

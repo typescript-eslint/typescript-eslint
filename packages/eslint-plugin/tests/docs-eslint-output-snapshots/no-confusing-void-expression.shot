@@ -1,29 +1,27 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > no-confusing-void-expression.mdx > code examples ESLint output`]
+Incorrect
 
-// somebody forgot that \`alert\` doesn't return anything
+// somebody forgot that `alert` doesn't return anything
 const response = alert('Are you sure?');
 console.log(alert('Are you sure?'));
 
 // it's not obvious whether the chained promise will contain the response (fixable)
 promise.then(value => window.postMessage(value));
 
-// it looks like we are returning the result of \`console.error\` (fixable)
+// it looks like we are returning the result of `console.error` (fixable)
 function doSomething() {
   if (!somethingToDo) {
     return console.error('Nothing to do!');
-           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning a void expression from a function is forbidden. Please move it before the \`return\` statement.
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Returning a void expression from a function is forbidden. Please move it before the `return` statement.
   }
 
   console.log('Doing a thing...');
 }
-"
-`;
 
-exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > no-confusing-void-expression.mdx > code examples ESLint output`]
+Correct
 
 // just a regular void function in a statement position
 alert('Hello, world!');
@@ -32,7 +30,7 @@ alert('Hello, world!');
 const response = confirm('Are you sure?');
 console.log(confirm('Are you sure?'));
 
-// now it's obvious that \`postMessage\` doesn't return any response
+// now it's obvious that `postMessage` doesn't return any response
 promise.then(value => {
   window.postMessage(value);
 });
@@ -51,18 +49,14 @@ function doSomething() {
 cond && console.log('true');
 cond || console.error('false');
 cond ? console.log('true') : console.error('false');
-"
-`;
 
-exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 3`] = `
-"Options: { "ignoreArrowShorthand": true }
+exports[`Validating rule docs > no-confusing-void-expression.mdx > code examples ESLint output`]
+Options: { "ignoreArrowShorthand": true }
 
 promise.then(value => window.postMessage(value));
-"
-`;
 
-exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 4`] = `
-"Options: { "ignoreVoidOperator": true }
+exports[`Validating rule docs > no-confusing-void-expression.mdx > code examples ESLint output`]
+Options: { "ignoreVoidOperator": true }
 
 // now it's obvious that we don't expect any response
 promise.then(value => void window.postMessage(value));
@@ -76,13 +70,11 @@ function doSomething() {
   console.log('Doing a thing...');
 }
 
-// we are sure that we want to always log \`undefined\`
+// we are sure that we want to always log `undefined`
 console.log(void alert('Hello, world!'));
-"
-`;
 
-exports[`Validating rule docs no-confusing-void-expression.mdx code examples ESLint output 5`] = `
-"Options: { "ignoreVoidReturningFunctions": true }
+exports[`Validating rule docs > no-confusing-void-expression.mdx > code examples ESLint output`]
+Options: { "ignoreVoidReturningFunctions": true }
 
 function foo(): void {
   return console.log();
@@ -93,5 +85,3 @@ function onError(callback: () => void): void {
 }
 
 onError(() => console.log('oops'));
-"
-`;
