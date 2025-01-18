@@ -964,7 +964,7 @@ describe('fixer should not change runtime value', () => {
       continue;
     }
 
-    test(code, () => {
+    it(code, () => {
       expect(eval(code)).toEqual(
         eval(Array.isArray(output) ? output.at(-1)! : output),
       );

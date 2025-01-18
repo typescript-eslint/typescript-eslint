@@ -221,7 +221,7 @@ describe('Validating rule docs', () => {
       const filePath = path.join(docsRoot, `${ruleName}.mdx`);
       const { fullText, tokens } = parseMarkdownFile(filePath);
 
-      test(`${ruleName}.mdx must start with frontmatter description`, () => {
+      it(`${ruleName}.mdx must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
           raw: '---\n',
           type: 'hr',
@@ -235,7 +235,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
+      it(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
         expect(tokens[4]).toMatchObject({
           text: [
             `🛑 This file is source code, not the primary documentation location! 🛑`,
@@ -247,7 +247,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`headings must be title-cased`, () => {
+      it(`headings must be title-cased`, () => {
         // Get all H2 headings objects as the other levels are variable by design.
         const headings = tokens.filter(tokenIsH2);
 
@@ -269,7 +269,7 @@ describe('Validating rule docs', () => {
         ...requiredHeadings,
       ]);
 
-      test('important headings must be h2s', () => {
+      it('important headings must be h2s', () => {
         for (const heading of headings) {
           if (importantHeadings.has(heading.raw.replaceAll('#', '').trim())) {
             expect(heading.depth).toBe(2);
@@ -278,7 +278,7 @@ describe('Validating rule docs', () => {
       });
 
       if (!rules[ruleName as keyof typeof rules].meta.docs?.extendsBaseRule) {
-        test('must include required headings', () => {
+        it('must include required headings', () => {
           const headingTexts = new Set(
             tokens.filter(tokenIsH2).map(token => token.text),
           );
@@ -314,7 +314,7 @@ describe('Validating rule docs', () => {
               for (const property of Object.keys(
                 schemaItem.properties as object,
               )) {
-                test(property, () => {
+                it(property, () => {
                   const correspondingHeadingIndex =
                     headingsAfterOptions.findIndex(heading =>
                       heading.text.includes(`\`${property}\``),
@@ -359,7 +359,7 @@ describe('Validating rule docs', () => {
         });
       }
 
-      test('must include only valid code samples', () => {
+      it('must include only valid code samples', () => {
         for (const token of tokens) {
           if (token.type !== 'code') {
             continue;
@@ -385,7 +385,7 @@ describe('Validating rule docs', () => {
         }
       });
 
-      test('code examples ESLint output', () => {
+      it('code examples ESLint output', () => {
         // TypeScript can't infer type arguments unless we provide them explicitly
         linter.defineRule<
           keyof (typeof rule)['meta']['messages'],
@@ -528,7 +528,7 @@ ${token.value}`,
   }
 });
 
-test('There should be no obsolete ESLint output snapshots', () => {
+it('There should be no obsolete ESLint output snapshots', () => {
   const files = fs.readdirSync(eslintOutputSnapshotFolder);
   const names = new Set(Object.keys(rules).map(k => `${k}.shot`));
 

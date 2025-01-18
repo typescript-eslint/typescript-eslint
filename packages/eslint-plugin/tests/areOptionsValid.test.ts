@@ -17,16 +17,16 @@ const exampleRule = createRule<['value-a' | 'value-b'], never>({
   name: 'my-example-rule',
 });
 
-test('returns true for valid options', () => {
+it('returns true for valid options', () => {
   expect(areOptionsValid(exampleRule, ['value-a'])).toBe(true);
 });
 
 describe('returns false for invalid options', () => {
-  test('bad enum value', () => {
+  it('bad enum value', () => {
     expect(areOptionsValid(exampleRule, ['value-c'])).toBe(false);
   });
 
-  test('bad type', () => {
+  it('bad type', () => {
     expect(areOptionsValid(exampleRule, [true])).toBe(false);
   });
 });
