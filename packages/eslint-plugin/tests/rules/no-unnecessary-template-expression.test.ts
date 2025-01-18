@@ -1,7 +1,6 @@
 import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
 
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import { test, describe, expect } from 'vitest';
 
 import rule from '../../src/rules/no-unnecessary-template-expression';
 import { getFixturesRootDir } from '../RuleTester';

@@ -6,7 +6,6 @@ import type {
 import { parseForESLint } from '@typescript-eslint/parser';
 import path from 'node:path';
 import * as tsutils from 'ts-api-utils';
-import { it, describe, expect } from 'vitest';
 
 import { getConstraintInfo } from '../../src/util/getConstraintInfo';
 

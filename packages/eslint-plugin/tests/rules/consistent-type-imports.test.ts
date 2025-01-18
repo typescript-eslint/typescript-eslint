@@ -1,5 +1,4 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
-import { describe } from 'vitest';
 
 import rule from '../../src/rules/consistent-type-imports';
 

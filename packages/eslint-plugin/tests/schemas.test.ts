@@ -2,7 +2,6 @@ import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
-import { it, describe, expect } from 'vitest';
 
 import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';

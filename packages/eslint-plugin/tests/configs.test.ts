@@ -1,7 +1,5 @@
 import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 
-import { it, describe, expect } from 'vitest';
-
 import plugin from '../src/index';
 import rules from '../src/rules';
 

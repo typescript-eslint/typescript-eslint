@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import { it, describe, expect } from 'vitest';
 
 import rules from '../../src/rules';
 
