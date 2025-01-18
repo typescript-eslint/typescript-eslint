@@ -420,17 +420,19 @@ function getReportDescriptor(
 
     const commentsBefore = sourceCode.getCommentsBefore(chain[1].node);
     const commentsAfter = sourceCode.getCommentsAfter(nodeBeforeTheComment);
-    const tokenAfterNodeTest = sourceCode.getTokenAfter(node.test);
-    const tokenBeforeNodeTest = sourceCode.getTokenBefore(node.test);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const tokenAfterNodeTest = sourceCode.getTokenAfter(node.test)!; // if (foo) /* this */, there is always a token here
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const tokenBeforeNodeTest = sourceCode.getTokenBefore(node.test)!; // if /* this */ (foo), there is always a token here
     const tokenAfterAfterNodeTest =
-      tokenAfterNodeTest && sourceCode.getTokenAfter(tokenAfterNodeTest);
-    const commentsBeforeNodeTest = tokenBeforeNodeTest
-      ? sourceCode.getCommentsBefore(tokenBeforeNodeTest)
-      : []; // if /* this */ (foo)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      sourceCode.getTokenAfter(tokenAfterNodeTest)!; // if (foo) /* this */, there is always a token here
+    const commentsBeforeNodeTest =
+      sourceCode.getCommentsBefore(tokenBeforeNodeTest); // if /* this */ (foo)
     const beforeNodeTestComments = sourceCode.getCommentsBefore(node.test); // if (/* this */ foo)
     const afterNodeTestComments1 = sourceCode.getCommentsAfter(node.test); // if (foo /* this */)
     const afterNodeTestComments2 =
-      tokenAfterAfterNodeTest?.type === AST_TOKEN_TYPES.Punctuator
+      tokenAfterAfterNodeTest.type === AST_TOKEN_TYPES.Punctuator
         ? sourceCode.getCommentsBefore(tokenAfterAfterNodeTest)
         : []; // if (foo) /* this */
 
