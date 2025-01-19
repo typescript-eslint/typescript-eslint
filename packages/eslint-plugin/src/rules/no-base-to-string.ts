@@ -93,9 +93,8 @@ export default createRule<Options, MessageIds>({
     function checkExpressionForArrayJoin(
       node: TSESTree.Node,
       type: ts.Type,
-      visited: Set<ts.Type>,
     ): void {
-      const certainty = collectJoinCertainty(type, visited);
+      const certainty = collectJoinCertainty(type, new Set());
 
       if (certainty === Usefulness.Always) {
         return;
@@ -319,7 +318,7 @@ export default createRule<Options, MessageIds>({
       ): void {
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
-        checkExpressionForArrayJoin(memberExpr.object, type, new Set());
+        checkExpressionForArrayJoin(memberExpr.object, type);
       },
       'CallExpression > MemberExpression.callee > Identifier[name = /^(toLocaleString|toString)$/].property'(
         node: TSESTree.Expression,
