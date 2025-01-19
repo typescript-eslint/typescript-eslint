@@ -1,16 +1,16 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
+  Awaitable,
   createRule,
+  getFixOrSuggest,
   getParserServices,
   isAwaitExpression,
   isAwaitKeyword,
-  isTypeAnyType,
-  isTypeUnknownType,
+  needsToBeAwaited,
   nullThrows,
 } from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
@@ -37,13 +37,13 @@ export default createRule({
     type: 'problem',
     docs: {
       description: 'Enforce consistent awaiting of returned promises',
-      extendsBaseRule: 'no-return-await',
       recommended: {
         strict: ['error-handling-correctness-only'],
       },
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    // eslint-disable-next-line eslint-plugin/require-meta-has-suggestions -- suggestions are exposed through a helper.
     hasSuggestions: true,
     messages: {
       disallowedPromiseAwait:
@@ -302,14 +302,13 @@ export default createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tsutils.isThenableType(checker, expression, type);
+      const certainty = needsToBeAwaited(checker, expression, type);
 
       // handle awaited _non_thenables
 
-      if (!isThenable) {
+      if (certainty !== Awaitable.Always) {
         if (isAwait) {
-          // any/unknown could be thenable; do not enforce whether they are `await`ed.
-          if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+          if (certainty === Awaitable.May) {
             return;
           }
           context.report({
@@ -340,14 +339,17 @@ export default createRule({
             context.report({
               node,
               messageId: 'requiredPromiseAwait',
-              ...fixOrSuggest(useAutoFix, {
-                messageId: 'requiredPromiseAwaitSuggestion',
-                fix: fixer =>
-                  insertAwait(
-                    fixer,
-                    node,
-                    isHigherPrecedenceThanAwait(expression),
-                  ),
+              ...getFixOrSuggest({
+                fixOrSuggest: useAutoFix ? 'fix' : 'suggest',
+                suggestion: {
+                  messageId: 'requiredPromiseAwaitSuggestion',
+                  fix: fixer =>
+                    insertAwait(
+                      fixer,
+                      node,
+                      isHigherPrecedenceThanAwait(expression),
+                    ),
+                },
               }),
             });
           }
@@ -359,9 +361,12 @@ export default createRule({
             context.report({
               node,
               messageId: 'disallowedPromiseAwait',
-              ...fixOrSuggest(useAutoFix, {
-                messageId: 'disallowedPromiseAwaitSuggestion',
-                fix: fixer => removeAwait(fixer, node),
+              ...getFixOrSuggest({
+                fixOrSuggest: useAutoFix ? 'fix' : 'suggest',
+                suggestion: {
+                  messageId: 'disallowedPromiseAwaitSuggestion',
+                  fix: fixer => removeAwait(fixer, node),
+                },
               }),
             });
           }
@@ -445,13 +450,4 @@ function getConfiguration(option: Option): RuleConfiguration {
         ordinaryContext: 'no-await',
       };
   }
-}
-
-function fixOrSuggest<MessageId extends string>(
-  useFix: boolean,
-  suggestion: TSESLint.SuggestionReportDescriptor<MessageId>,
-):
-  | { fix: TSESLint.ReportFixFunction }
-  | { suggest: TSESLint.SuggestionReportDescriptor<MessageId>[] } {
-  return useFix ? { fix: suggestion.fix } : { suggest: [suggestion] };
 }

@@ -6,6 +6,7 @@ import * as ts from 'typescript';
 
 import {
   createRule,
+  getFunctionHeadLoc,
   getParserServices,
   isArrayMethodCallWithPredicate,
   isFunction,
@@ -14,7 +15,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     checksConditionals?: boolean;
     checksSpreads?: boolean;
@@ -31,7 +32,7 @@ interface ChecksVoidReturnOptions {
   variables?: boolean;
 }
 
-type MessageId =
+export type MessageId =
   | 'conditional'
   | 'predicate'
   | 'spread'
@@ -398,7 +399,7 @@ export default createRule<Options, MessageId>({
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (
-        tsNode.initializer === undefined ||
+        tsNode.initializer == null ||
         node.init == null ||
         node.id.typeAnnotation == null
       ) {
@@ -428,7 +429,7 @@ export default createRule<Options, MessageId>({
       if (ts.isPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
-          contextualType !== undefined &&
+          contextualType != null &&
           isVoidReturningFunctionType(
             checker,
             tsNode.initializer,
@@ -436,15 +437,30 @@ export default createRule<Options, MessageId>({
           ) &&
           returnsThenable(checker, tsNode.initializer)
         ) {
-          context.report({
-            node: node.value,
-            messageId: 'voidReturnProperty',
-          });
+          if (isFunction(node.value)) {
+            const functionNode = node.value;
+            if (functionNode.returnType) {
+              context.report({
+                node: functionNode.returnType.typeAnnotation,
+                messageId: 'voidReturnProperty',
+              });
+            } else {
+              context.report({
+                loc: getFunctionHeadLoc(functionNode, context.sourceCode),
+                messageId: 'voidReturnProperty',
+              });
+            }
+          } else {
+            context.report({
+              node: node.value,
+              messageId: 'voidReturnProperty',
+            });
+          }
         }
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.name);
         if (
-          contextualType !== undefined &&
+          contextualType != null &&
           isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
           returnsThenable(checker, tsNode.name)
         ) {
@@ -473,14 +489,14 @@ export default createRule<Options, MessageId>({
           return;
         }
         const objType = checker.getContextualType(obj);
-        if (objType === undefined) {
+        if (objType == null) {
           return;
         }
         const propertySymbol = checker.getPropertyOfType(
           objType,
           tsNode.name.text,
         );
-        if (propertySymbol === undefined) {
+        if (propertySymbol == null) {
           return;
         }
 
@@ -490,10 +506,19 @@ export default createRule<Options, MessageId>({
         );
 
         if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
-          context.report({
-            node: node.value,
-            messageId: 'voidReturnProperty',
-          });
+          const functionNode = node.value as TSESTree.FunctionExpression;
+
+          if (functionNode.returnType) {
+            context.report({
+              node: functionNode.returnType.typeAnnotation,
+              messageId: 'voidReturnProperty',
+            });
+          } else {
+            context.report({
+              loc: getFunctionHeadLoc(functionNode, context.sourceCode),
+              messageId: 'voidReturnProperty',
+            });
+          }
         }
         return;
       }
@@ -501,7 +526,7 @@ export default createRule<Options, MessageId>({
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.expression === undefined || node.argument == null) {
+      if (tsNode.expression == null || node.argument == null) {
         return;
       }
 
@@ -513,6 +538,7 @@ export default createRule<Options, MessageId>({
         }
         return nullThrows(current, NullThrowsReasons.MissingParent);
       })();
+
       if (
         functionNode.returnType &&
         !isPossiblyFunctionType(functionNode.returnType)
@@ -522,7 +548,7 @@ export default createRule<Options, MessageId>({
 
       const contextualType = checker.getContextualType(tsNode.expression);
       if (
-        contextualType !== undefined &&
+        contextualType != null &&
         isVoidReturningFunctionType(
           checker,
           tsNode.expression,
@@ -552,7 +578,7 @@ export default createRule<Options, MessageId>({
 
       for (const nodeMember of tsNode.members) {
         const memberName = nodeMember.name?.getText();
-        if (memberName === undefined) {
+        if (memberName == null) {
           // Call/construct/index signatures don't have names. TS allows call signatures to mismatch,
           // and construct signatures can't be async.
           // TODO - Once we're able to use `checker.isTypeAssignableTo` (v8), we can check an index
@@ -591,7 +617,7 @@ export default createRule<Options, MessageId>({
       memberName: string,
     ): void {
       const heritageMember = getMemberIfExists(heritageType, memberName);
-      if (heritageMember === undefined) {
+      if (heritageMember == null) {
         return;
       }
       const memberType = checker.getTypeOfSymbolAtLocation(
@@ -623,7 +649,7 @@ export default createRule<Options, MessageId>({
       );
       const contextualType = checker.getContextualType(expressionContainer);
       if (
-        contextualType !== undefined &&
+        contextualType != null &&
         isVoidReturningFunctionType(
           checker,
           expressionContainer,
@@ -681,7 +707,7 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 
     // If one of the alternates has no then property, it is not thenable in all
     // cases.
-    if (thenProp === undefined) {
+    if (thenProp == null) {
       return false;
     }
 

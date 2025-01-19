@@ -22,6 +22,7 @@ export = {
     '@typescript-eslint/no-implied-eval': 'error',
     '@typescript-eslint/no-meaningless-void-operator': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-misused-spread': 'error',
     '@typescript-eslint/no-mixed-enums': 'error',
     '@typescript-eslint/no-redundant-type-constituents': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
@@ -43,6 +44,7 @@ export = {
     '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
+    '@typescript-eslint/related-getter-setter-pairs': 'error',
     'require-await': 'off',
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/restrict-plus-operands': [
@@ -60,10 +62,10 @@ export = {
       {
         allowAny: false,
         allowBoolean: false,
+        allowNever: false,
         allowNullish: false,
         allowNumber: false,
         allowRegExp: false,
-        allowNever: false,
       },
     ],
     'no-return-await': 'off',

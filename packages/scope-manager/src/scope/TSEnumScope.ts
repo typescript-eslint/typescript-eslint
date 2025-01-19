@@ -6,7 +6,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class TSEnumScope extends ScopeBase<
+export class TSEnumScope extends ScopeBase<
   ScopeType.tsEnum,
   TSESTree.TSEnumDeclaration,
   Scope
@@ -19,5 +19,3 @@ class TSEnumScope extends ScopeBase<
     super(scopeManager, ScopeType.tsEnum, upperScope, block, false);
   }
 }
-
-export { TSEnumScope };

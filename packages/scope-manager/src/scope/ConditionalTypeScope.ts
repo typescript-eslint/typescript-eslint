@@ -6,7 +6,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class ConditionalTypeScope extends ScopeBase<
+export class ConditionalTypeScope extends ScopeBase<
   ScopeType.conditionalType,
   TSESTree.TSConditionalType,
   Scope
@@ -19,5 +19,3 @@ class ConditionalTypeScope extends ScopeBase<
     super(scopeManager, ScopeType.conditionalType, upperScope, block, false);
   }
 }
-
-export { ConditionalTypeScope };

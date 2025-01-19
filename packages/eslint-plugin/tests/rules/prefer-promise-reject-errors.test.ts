@@ -25,6 +25,20 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
         },
       ],
     },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: false }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      options: [{ allowThrowingAny: false, allowThrowingUnknown: true }],
+    },
     'Promise.reject(new Error());',
     'Promise.reject(new TypeError());',
     "Promise.reject(new Error('foo'));",
@@ -281,6 +295,20 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
         foo.reject(t);
       }
     `,
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
+    },
   ],
   invalid: [
     {
@@ -1462,6 +1490,56 @@ function fun<T extends number>(t: T): void {
           endColumn: 16,
           endLine: 4,
           line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      options: [{ allowThrowingAny: false, allowThrowingUnknown: true }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: false }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      errors: [
+        {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
         },

@@ -5,15 +5,17 @@ import * as ts from 'typescript';
 
 import {
   createRule,
-  getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getMovedNodeCode,
   getParserServices,
   isTypeFlagSet,
   isUndefinedIdentifier,
+  nullThrows,
+  NullThrowsReasons,
 } from '../util';
 import { rangeToLoc } from '../util/rangeToLoc';
 
-type MessageId = 'noUnnecessaryTemplateExpression';
+export type MessageId = 'noUnnecessaryTemplateExpression';
 
 const evenNumOfBackslashesRegExp = /(?<!(?:[^\\]|^)(?:\\\\)*\\)/;
 
@@ -47,21 +49,29 @@ export default createRule<[], MessageId>({
     function isUnderlyingTypeString(
       expression: TSESTree.Expression,
     ): expression is TSESTree.Identifier | TSESTree.StringLiteral {
-      const type = getConstrainedTypeAtLocation(services, expression);
+      const checker = services.program.getTypeChecker();
+      const { constraintType } = getConstraintInfo(
+        checker,
+        services.getTypeAtLocation(expression),
+      );
+
+      if (constraintType == null) {
+        return false;
+      }
 
       const isString = (t: ts.Type): boolean => {
         return isTypeFlagSet(t, ts.TypeFlags.StringLike);
       };
 
-      if (type.isUnion()) {
-        return type.types.every(isString);
+      if (constraintType.isUnion()) {
+        return constraintType.types.every(isString);
       }
 
-      if (type.isIntersection()) {
-        return type.types.some(isString);
+      if (constraintType.isIntersection()) {
+        return constraintType.types.some(isString);
       }
 
-      return isString(type);
+      return isString(constraintType);
     }
 
     function isLiteral(
@@ -90,6 +100,22 @@ export default createRule<[], MessageId>({
       );
     }
 
+    function hasCommentsBetweenQuasi(
+      startQuasi: TSESTree.TemplateElement,
+      endQuasi: TSESTree.TemplateElement,
+    ): boolean {
+      const startToken = nullThrows(
+        context.sourceCode.getTokenByRangeStart(startQuasi.range[0]),
+        NullThrowsReasons.MissingToken('`${', 'opening template literal'),
+      );
+      const endToken = nullThrows(
+        context.sourceCode.getTokenByRangeStart(endQuasi.range[0]),
+        NullThrowsReasons.MissingToken('}', 'closing template literal'),
+      );
+
+      return context.sourceCode.commentsExistBetween(startToken, endToken);
+    }
+
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
@@ -104,6 +130,10 @@ export default createRule<[], MessageId>({
           isUnderlyingTypeString(node.expressions[0]);
 
         if (hasSingleStringVariable) {
+          if (hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])) {
+            return;
+          }
+
           context.report({
             loc: rangeToLoc(context.sourceCode, [
               node.expressions[0].range[0] - 2,
@@ -124,27 +154,63 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const fixableExpressions = node.expressions
-          .filter(
-            expression =>
-              isLiteral(expression) ||
-              isTemplateLiteral(expression) ||
+        const fixableExpressionsReversed = node.expressions
+          .map((expression, index) => ({
+            expression,
+            nextQuasi: node.quasis[index + 1],
+            prevQuasi: node.quasis[index],
+          }))
+          .filter(({ expression, nextQuasi, prevQuasi }) => {
+            if (
               isUndefinedIdentifier(expression) ||
               isInfinityIdentifier(expression) ||
-              isNaNIdentifier(expression),
-          )
+              isNaNIdentifier(expression)
+            ) {
+              return true;
+            }
+
+            // allow expressions that include comments
+            if (hasCommentsBetweenQuasi(prevQuasi, nextQuasi)) {
+              return false;
+            }
+
+            if (isLiteral(expression)) {
+              // allow trailing whitespace literal
+              if (startsWithNewLine(nextQuasi.value.raw)) {
+                return !(
+                  typeof expression.value === 'string' &&
+                  isWhitespace(expression.value)
+                );
+              }
+              return true;
+            }
+
+            if (isTemplateLiteral(expression)) {
+              // allow trailing whitespace literal
+              if (startsWithNewLine(nextQuasi.value.raw)) {
+                return !(
+                  expression.quasis.length === 1 &&
+                  isWhitespace(expression.quasis[0].value.raw)
+                );
+              }
+              return true;
+            }
+
+            return false;
+          })
           .reverse();
 
         let nextCharacterIsOpeningCurlyBrace = false;
 
-        for (const expression of fixableExpressions) {
+        for (const {
+          expression,
+          nextQuasi,
+          prevQuasi,
+        } of fixableExpressionsReversed) {
           const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
             [];
-          const index = node.expressions.indexOf(expression);
-          const prevQuasi = node.quasis[index];
-          const nextQuasi = node.quasis[index + 1];
 
-          if (nextQuasi.value.raw.length !== 0) {
+          if (nextQuasi.value.raw !== '') {
             nextCharacterIsOpeningCurlyBrace =
               nextQuasi.value.raw.startsWith('{');
           }
@@ -269,3 +335,19 @@ export default createRule<[], MessageId>({
     };
   },
 });
+
+function isWhitespace(x: string): boolean {
+  // allow empty string too since we went to allow
+  // `      ${''}
+  // `;
+  //
+  // in addition to
+  // `${'        '}
+  // `;
+  //
+  return /^\s*$/.test(x);
+}
+
+function startsWithNewLine(x: string): boolean {
+  return x.startsWith('\n') || x.startsWith('\r\n');
+}

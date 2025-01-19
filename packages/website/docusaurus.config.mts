@@ -3,10 +3,11 @@ import type { Options as PluginRedirectOptions } from '@docusaurus/plugin-client
 import type { Options as PluginContentDocsOptions } from '@docusaurus/plugin-content-docs';
 import type { Options as PluginPwaOptions } from '@docusaurus/plugin-pwa';
 import type { Options as PresetClassicOptions } from '@docusaurus/preset-classic';
-import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import type { UserThemeConfig as ThemeCommonConfig } from '@docusaurus/theme-common';
 import type { UserThemeConfig as AlgoliaThemeConfig } from '@docusaurus/theme-search-algolia';
 import type { Config } from '@docusaurus/types';
+
+import npm2yarnPlugin from '@docusaurus/remark-plugin-npm2yarn';
 import { version } from '@typescript-eslint/parser/package.json';
 
 import { blogFooter } from './plugins/blog-footer';
@@ -25,15 +26,15 @@ const presetClassicOptions: PresetClassicOptions = {
     remarkPlugins,
   },
   docs: {
+    beforeDefaultRemarkPlugins: [generatedRuleDocs],
+    breadcrumbs: false,
+    editUrl: `${githubUrl}/edit/main/packages/website/`,
+    exclude: ['TEMPLATE.md'],
     id: 'rules-docs',
     path: '../eslint-plugin/docs/rules',
-    sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
-    routeBasePath: 'rules',
-    editUrl: `${githubUrl}/edit/main/packages/website/`,
-    beforeDefaultRemarkPlugins: [generatedRuleDocs],
     remarkPlugins,
-    exclude: ['TEMPLATE.md'],
-    breadcrumbs: false,
+    routeBasePath: 'rules',
+    sidebarPath: require.resolve('./sidebars/sidebar.rules.js'),
   },
   pages: {
     remarkPlugins,
@@ -44,161 +45,167 @@ const presetClassicOptions: PresetClassicOptions = {
 };
 
 const pluginContentDocsOptions: PluginContentDocsOptions = {
+  breadcrumbs: false,
+  editUrl: `${githubUrl}/edit/main/packages/website/`,
   id: 'base-docs',
   path: '../../docs',
+  remarkPlugins,
   routeBasePath: '/',
   sidebarPath: require.resolve('./sidebars/sidebar.base.js'),
-  editUrl: `${githubUrl}/edit/main/packages/website/`,
-  remarkPlugins,
-  breadcrumbs: false,
 };
 
 const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
   algolia: {
-    appId: 'N1HUB2TU6A',
     apiKey: '74d42ed10d0f7b327d74d774570035c7',
+    appId: 'N1HUB2TU6A',
     indexName: 'typescript-eslint',
   },
   colorMode: {
     respectPrefersColorScheme: true,
   },
-  metadata: [
-    { name: 'msapplication-TileColor', content: '#443fd4' },
-    { name: 'theme-color', content: '#443fd4' },
-    { name: 'twitter:image:alt', content: 'Typescript-eslint logo' },
-  ],
+  footer: {
+    copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
+    links: [
+      {
+        items: [
+          {
+            className: 'image-link bluesky-link social-link-icon',
+            href: 'https://bsky.app/profile/typescript-eslint.io',
+            label: 'Bluesky',
+            rel: 'me noopener',
+          },
+          {
+            className: 'image-link discord-link social-link-icon',
+            href: 'https://discord.gg/FSxKq8Tdyg',
+            label: 'Discord',
+            rel: 'noopener',
+          },
+          {
+            className: 'image-link mastodon-link social-link-icon',
+            href: 'https://fosstodon.org/@tseslint',
+            label: 'Mastodon',
+            rel: 'me noopener',
+          },
+          {
+            className: 'image-link stack-overflow-link social-link-icon',
+            href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
+            label: 'Stack Overflow',
+          },
+          {
+            className: 'image-link twitter-link social-link-icon',
+            href: 'https://twitter.com/tseslint',
+            label: 'Twitter',
+            rel: 'me noopener',
+          },
+        ],
+        title: 'Community',
+      },
+      {
+        items: [
+          {
+            className: 'github-link image-link social-link-icon',
+            href: githubUrl,
+            label: 'GitHub',
+            rel: 'me noopener',
+          },
+          {
+            className: 'bug-report-link image-link social-link-icon',
+            href: `${githubUrl}/issues/new/choose`,
+            label: 'Report issue',
+          },
+          {
+            className: 'open-collective-link image-link social-link-icon',
+            href: 'https://opencollective.com/typescript-eslint/contribute',
+            label: 'Open Collective',
+          },
+        ],
+        title: 'More',
+      },
+    ],
+    logo: {
+      alt: 'Deploys by Netlify',
+      href: 'https://www.netlify.com',
+      src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
+    },
+  },
   image: 'img/logo-twitter-card.png',
+  metadata: [
+    { content: '#443fd4', name: 'msapplication-TileColor' },
+    { content: '#443fd4', name: 'theme-color' },
+    { content: 'Typescript-eslint logo', name: 'twitter:image:alt' },
+  ],
   navbar: {
-    title: 'typescript-eslint',
+    items: [
+      {
+        label: 'Docs',
+        position: 'left',
+        to: 'getting-started/',
+      },
+      {
+        label: 'Rules',
+        position: 'left',
+        to: 'rules/',
+      },
+      {
+        label: 'Blog',
+        position: 'left',
+        to: 'blog/',
+      },
+      {
+        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
+        label: `v${version}`,
+        position: 'right',
+      },
+      {
+        activeBasePath: 'play',
+        label: 'Playground',
+        position: 'right',
+        to: 'play',
+      },
+      {
+        'aria-label': 'GitHub repository',
+        className: 'github-link image-link header-image-link',
+        href: githubUrl,
+        position: 'right',
+      },
+      {
+        'aria-label': 'Discord',
+        className: 'discord-link image-link header-image-link',
+        href: 'https://discord.com/invite/FSxKq8Tdyg',
+        position: 'right',
+      },
+    ],
     logo: {
       alt: '',
       height: '32px',
       src: 'img/logo.svg',
       width: '32px',
     },
-    items: [
-      {
-        to: 'getting-started/',
-        label: 'Docs',
-        position: 'left',
-      },
-      {
-        to: 'rules/',
-        label: 'Rules',
-        position: 'left',
-      },
-      {
-        to: 'blog/',
-        label: 'Blog',
-        position: 'left',
-      },
-      {
-        position: 'right',
-        href: `https://github.com/typescript-eslint/typescript-eslint/releases/tag/v${version}`,
-        label: `v${version}`,
-      },
-      {
-        to: 'play',
-        activeBasePath: 'play',
-        position: 'right',
-        label: 'Playground',
-      },
-      {
-        href: githubUrl,
-        position: 'right',
-        className: 'github-link image-link header-image-link',
-        'aria-label': 'GitHub repository',
-      },
-      {
-        href: 'https://discord.com/invite/FSxKq8Tdyg',
-        position: 'right',
-        className: 'discord-link image-link header-image-link',
-        'aria-label': 'Discord',
-      },
-    ],
-  },
-  footer: {
-    logo: {
-      alt: 'Deploys by Netlify',
-      src: 'https://www.netlify.com/img/global/badges/netlify-dark.svg',
-      href: 'https://www.netlify.com',
-    },
-    links: [
-      {
-        title: 'Community',
-        items: [
-          {
-            label: 'Discord',
-            href: 'https://discord.gg/FSxKq8Tdyg',
-            rel: 'noopener',
-            className: 'image-link discord-link social-link-icon',
-          },
-          {
-            label: 'Mastodon',
-            href: 'https://fosstodon.org/@tseslint',
-            rel: 'me noopener',
-            className: 'image-link mastodon-link social-link-icon',
-          },
-          {
-            label: 'Stack Overflow',
-            href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
-            className: 'image-link stack-overflow-link social-link-icon',
-          },
-          {
-            label: 'Twitter',
-            href: 'https://twitter.com/tseslint',
-            rel: 'me noopener',
-            className: 'image-link twitter-link social-link-icon',
-          },
-        ],
-      },
-      {
-        title: 'More',
-        items: [
-          {
-            label: 'GitHub',
-            href: githubUrl,
-            rel: 'me noopener',
-            className: 'github-link image-link social-link-icon',
-          },
-          {
-            label: 'Report issue',
-            href: `${githubUrl}/issues/new/choose`,
-            className: 'bug-report-link image-link social-link-icon',
-          },
-          {
-            label: 'Open Collective',
-            href: 'https://opencollective.com/typescript-eslint/contribute',
-            className: 'open-collective-link image-link social-link-icon',
-          },
-        ],
-      },
-    ],
-    copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
+    title: 'typescript-eslint',
   },
   prism: {
+    additionalLanguages: ['bash', 'diff', 'ignore'],
+    magicComments: [
+      {
+        block: { end: 'highlight-end', start: 'highlight-start' },
+        className: 'theme-code-block-highlighted-line',
+        line: 'highlight-next-line',
+      },
+      {
+        block: { end: 'Removed lines end', start: 'Removed lines start' },
+        className: 'code-block-removed-line',
+        line: 'Remove this line',
+      },
+      {
+        block: { end: 'Added lines end', start: 'Added lines start' },
+        className: 'code-block-added-line',
+        line: 'Add this line',
+      },
+    ],
     theme: {
       plain: {},
       styles: [],
     },
-    additionalLanguages: ['ignore'],
-    magicComments: [
-      {
-        className: 'theme-code-block-highlighted-line',
-        line: 'highlight-next-line',
-        block: { start: 'highlight-start', end: 'highlight-end' },
-      },
-      {
-        className: 'code-block-removed-line',
-        line: 'Remove this line',
-        block: { start: 'Removed lines start', end: 'Removed lines end' },
-      },
-      {
-        className: 'code-block-added-line',
-        line: 'Add this line',
-        block: { start: 'Added lines start', end: 'Added lines end' },
-      },
-    ],
   },
   tableOfContents: {
     maxHeadingLevel: 4,
@@ -325,25 +332,23 @@ const redirects: PluginRedirectOptions = {
 };
 
 const config: Config = {
-  title: 'typescript-eslint',
+  baseUrl: '/',
   tagline:
     'The tooling that enables ESLint and Prettier to support TypeScript.',
+  title: 'typescript-eslint',
   url: 'https://typescript-eslint.io',
-  baseUrl: '/',
 
   // See https://github.com/typescript-eslint/typescript-eslint/pull/8209#discussion_r1444033533
-  onBrokenAnchors: 'ignore',
-
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'throw',
-  favicon: 'img/favicon.ico',
-  organizationName: 'typescript-eslint',
-  projectName: 'typescript-eslint',
   clientModules: [require.resolve('./src/clientModules.js')],
-  presets: [['classic', presetClassicOptions]],
+
   customFields: {
     rules: rulesMeta,
   },
+  favicon: 'img/favicon.ico',
+  onBrokenAnchors: 'ignore',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'throw',
+  organizationName: 'typescript-eslint',
   plugins: [
     ...['ast-spec', 'type-utils'].map(packageName => [
       'docusaurus-plugin-typedoc',
@@ -372,29 +377,31 @@ const config: Config = {
     ['@docusaurus/plugin-pwa', pluginPwaOptions],
     ['@docusaurus/plugin-client-redirects', redirects],
   ],
+  presets: [['classic', presetClassicOptions]],
+  projectName: 'typescript-eslint',
   themeConfig,
   // Misleading API name, but these are just <link> tags
   stylesheets: [
     {
+      href: '/img/favicon/apple-touch-icon.png',
       rel: 'apple-touch-icon',
       sizes: '180x180',
-      href: '/img/favicon/apple-touch-icon.png',
     },
     {
-      rel: 'icon',
-      type: 'image/png',
-      sizes: '32x32',
       href: '/img/favicon/favicon-32x32.png',
-    },
-    {
       rel: 'icon',
+      sizes: '32x32',
       type: 'image/png',
-      sizes: '16x16',
-      href: '/img/favicon/favicon-16x16.png',
     },
     {
-      rel: 'manifest',
+      href: '/img/favicon/favicon-16x16.png',
+      rel: 'icon',
+      sizes: '16x16',
+      type: 'image/png',
+    },
+    {
       href: '/img/favicon/site.webmanifest',
+      rel: 'manifest',
     },
     {
       color: '#2656c7',

@@ -2,7 +2,7 @@ import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
-type VisitorKeys = Record<string, readonly string[] | undefined>;
+export type VisitorKeys = Record<string, readonly string[] | undefined>;
 
 type GetNodeTypeKeys<T extends AST_NODE_TYPES> = Exclude<
   keyof Extract<TSESTree.Node, { type: T }>,
@@ -175,7 +175,7 @@ const additionalKeys: AdditionalKeys = {
   Identifier: ['decorators', 'typeAnnotation'],
   ImportAttribute: ['key', 'value'],
   ImportDeclaration: ['specifiers', 'source', 'assertions'],
-  ImportExpression: ['source', 'attributes'],
+  ImportExpression: ['source', 'options'],
   JSXClosingFragment: [],
   JSXOpeningElement: ['name', 'typeArguments', 'attributes'],
   JSXOpeningFragment: [],
@@ -268,6 +268,5 @@ const additionalKeys: AdditionalKeys = {
   TSVoidKeyword: [],
 };
 
-const visitorKeys: VisitorKeys = eslintVisitorKeys.unionWith(additionalKeys);
-
-export { visitorKeys, type VisitorKeys };
+export const visitorKeys: VisitorKeys =
+  eslintVisitorKeys.unionWith(additionalKeys);

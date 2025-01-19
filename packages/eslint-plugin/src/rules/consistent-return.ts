@@ -13,18 +13,20 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('consistent-return');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
 
+const defaultOptions: Options = [{ treatUndefinedAsUnspecified: false }];
 export default createRule<Options, MessageIds>({
   name: 'consistent-return',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description:
         'Require `return` statements to either always or never specify values',
@@ -35,7 +37,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  defaultOptions: [{ treatUndefinedAsUnspecified: false }],
+  defaultOptions,
   create(context, [options]) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();

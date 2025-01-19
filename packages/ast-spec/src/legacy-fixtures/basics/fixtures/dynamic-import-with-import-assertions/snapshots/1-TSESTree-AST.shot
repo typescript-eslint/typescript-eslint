@@ -8,7 +8,7 @@ Program {
       type: "ExpressionStatement",
       expression: ImportExpression {
         type: "ImportExpression",
-        attributes: ObjectExpression {
+        options: ObjectExpression {
           type: "ObjectExpression",
           properties: [
             Property {

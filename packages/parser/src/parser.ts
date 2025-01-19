@@ -71,6 +71,8 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
       return ['es2022.full'];
     case ScriptTarget.ES2023:
       return ['es2023.full'];
+    case ScriptTarget.ES2024:
+      return ['es2024.full'];
     case ScriptTarget.ESNext:
       return ['esnext.full'];
     default:
@@ -78,14 +80,14 @@ function getLib(compilerOptions: ts.CompilerOptions): Lib[] {
   }
 }
 
-function parse(
+export function parse(
   code: string | ts.SourceFile,
   options?: ParserOptions,
 ): ParseForESLintResult['ast'] {
   return parseForESLint(code, options).ast;
 }
 
-function parseForESLint(
+export function parseForESLint(
   code: string | ts.SourceFile,
   parserOptions?: ParserOptions | null,
 ): ParseForESLintResult {
@@ -149,6 +151,7 @@ function parseForESLint(
       log('Resolved libs from program: %o', analyzeOptions.lib);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxPragma === undefined &&
       compilerOptions.jsxFactory != null
     ) {
@@ -158,6 +161,7 @@ function parseForESLint(
       log('Resolved jsxPragma from program: %s', analyzeOptions.jsxPragma);
     }
     if (
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       analyzeOptions.jsxFragmentName === undefined &&
       compilerOptions.jsxFragmentFactory != null
     ) {
@@ -183,7 +187,5 @@ function parseForESLint(
 
   return { ast, scopeManager, services, visitorKeys };
 }
-
-export { parse, parseForESLint };
 
 export type { ParserOptions } from '@typescript-eslint/types';

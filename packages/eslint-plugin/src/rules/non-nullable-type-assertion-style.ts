@@ -16,7 +16,7 @@ export default createRule({
   meta: {
     type: 'suggestion',
     docs: {
-      description: 'Enforce non-null assertions over explicit type casts',
+      description: 'Enforce non-null assertions over explicit type assertions',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
@@ -48,7 +48,9 @@ export default createRule({
       if (type.flags & ts.TypeFlags.TypeParameter) {
         const constraint = type.getConstraint();
         return constraint == null || couldBeNullish(constraint);
-      } else if (tsutils.isUnionType(type)) {
+      }
+
+      if (tsutils.isUnionType(type)) {
         for (const part of type.types) {
           if (couldBeNullish(part)) {
             return true;

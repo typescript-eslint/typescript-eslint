@@ -583,6 +583,34 @@ if (((a = b), b || c)) {
         },
       ],
     },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | undefined;
+let b: string | undefined;
+
+if (!!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
   ],
   invalid: [
     ...nullishTypeTest((nullish, type, equals) => ({
@@ -2266,7 +2294,38 @@ if (f(a ?? b)) {
       ],
       options: [
         {
-          ignoreBooleanCoercion: true,
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+declare const a: string | undefined;
+declare const b: string;
+
+if (+(a || b)) {
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare const a: string | undefined;
+declare const b: string;
+
+if (+(a ?? b)) {
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignoreConditionalTests: true,
         },
       ],
     },

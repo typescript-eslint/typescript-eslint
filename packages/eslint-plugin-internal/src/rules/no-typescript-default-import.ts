@@ -22,13 +22,13 @@ export default createRule({
         "Enforce that packages rules don't do `import ts from 'typescript';`",
     },
     fixable: 'code',
-    schema: [],
     messages: {
       noTSDefaultImport: [
         "Do not use the default import for typescript. Doing so will cause the package's type definitions to do the same.",
         "This causes errors for consumers if they don't use the allowSyntheticDefaultImports compiler option.",
       ].join('\n'),
     },
+    schema: [],
   },
   defaultOptions: [],
   create(context) {

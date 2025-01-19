@@ -18,7 +18,7 @@ import {
   isTypedFunctionExpression,
 } from '../util/explicitReturnTypeUtils';
 
-type Options = [
+export type Options = [
   {
     allowArgumentsExplicitlyTypedAsAny?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
@@ -27,7 +27,7 @@ type Options = [
     allowTypedFunctionExpressions?: boolean;
   },
 ];
-type MessageIds =
+export type MessageIds =
   | 'anyTypedArg'
   | 'anyTypedArgUnnamed'
   | 'missingArgType'
@@ -264,7 +264,9 @@ export default createRule<Options, MessageIds>({
           node.id?.type === AST_NODE_TYPES.Identifier &&
           options.allowedNames.includes(node.id.name)
         );
-      } else if (
+      }
+
+      if (
         node.type === AST_NODE_TYPES.MethodDefinition ||
         node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
         (node.type === AST_NODE_TYPES.Property && node.method) ||

@@ -12,13 +12,14 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-dupe-class-members');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 export default createRule<Options, MessageIds>({
   name: 'no-dupe-class-members',
   meta: {
     type: 'problem',
+    // defaultOptions, -- base rule does not use defaultOptions
     docs: {
       description: 'Disallow duplicate class members',
       extendsBaseRule: true,

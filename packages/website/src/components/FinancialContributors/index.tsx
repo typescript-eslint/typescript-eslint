@@ -17,44 +17,44 @@ export function FinancialContributors(): React.JSX.Element {
         <Sponsors
           className={styles.tierSponsorArea}
           includeName
+          sponsors={sponsors.slice(0, 6)}
           tier="platinum-sponsor"
           title="Platinum Sponsors"
-          sponsors={sponsors.slice(0, 6)}
         />
         <Sponsors
           className={styles.tierSupporterArea}
+          sponsors={sponsors.slice(6, 16)}
           tier="gold-supporter"
           title="Gold Supporters"
-          sponsors={sponsors.slice(6, 16)}
         />
         <Sponsors
           className={styles.tierOtherArea}
+          sponsors={sponsors.slice(16, 34)}
           tier="silver-supporter"
           title="Silver Supporters"
-          sponsors={sponsors.slice(16, 34)}
         />
       </div>
       <div className={styles.linksArea}>
         <Link
           className={clsx('button button--primary', styles.become)}
-          to="https://opencollective.com/typescript-eslint/contribute"
           target="_blank"
+          to="https://opencollective.com/typescript-eslint/contribute"
         >
           Become a financial sponsor
         </Link>
         <div className={styles.linksMore}>
           <Link
             className="button button--info button--outline"
-            to="https://opencollective.com/typescript-eslint"
             target="_blank"
+            to="https://opencollective.com/typescript-eslint"
           >
             See all financial sponsors
           </Link>
           <Link
             className="button button--info button--outline"
+            target="_blank"
             title="Sponsorship docs"
             to="https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/SPONSORSHIPS.md"
-            target="_blank"
           >
             Docs
           </Link>

@@ -13,8 +13,14 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-empty-function');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+
+const defaultOptions: Options = [
+  {
+    allow: [],
+  },
+];
 
 const schema = deepMerge(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
@@ -54,6 +60,7 @@ export default createRule<Options, MessageIds>({
   name: 'no-empty-function',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Disallow empty functions',
       extendsBaseRule: true,
@@ -63,11 +70,7 @@ export default createRule<Options, MessageIds>({
     messages: baseRule.meta.messages,
     schema: [schema],
   },
-  defaultOptions: [
-    {
-      allow: [],
-    },
-  ],
+  defaultOptions,
   create(context, [{ allow = [] }]) {
     const rules = baseRule.create(context);
 

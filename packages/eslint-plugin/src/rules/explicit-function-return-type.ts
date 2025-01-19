@@ -11,7 +11,7 @@ import {
   isValidFunctionExpressionReturnType,
 } from '../util/explicitReturnTypeUtils';
 
-type Options = [
+export type Options = [
   {
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
@@ -23,7 +23,7 @@ type Options = [
     allowTypedFunctionExpressions?: boolean;
   },
 ];
-type MessageIds = 'missingReturnType';
+export type MessageIds = 'missingReturnType';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression

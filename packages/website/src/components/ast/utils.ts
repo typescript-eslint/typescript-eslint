@@ -29,36 +29,41 @@ export function getNodeType(value: unknown): ParentNodeType {
   if (Boolean(value) && isRecord(value)) {
     if (isESNode(value)) {
       return 'esNode';
-    } else if ('$id' in value && 'childScopes' in value && 'type' in value) {
+    }
+    if ('$id' in value && 'childScopes' in value && 'type' in value) {
       return 'scope';
-    } else if (
+    }
+    if (
       'scopes' in value &&
       'nodeToScope' in value &&
       'declaredVariables' in value
     ) {
       return 'scopeManager';
-    } else if (
-      'references' in value &&
-      'identifiers' in value &&
-      'name' in value
-    ) {
+    }
+    if ('references' in value && 'identifiers' in value && 'name' in value) {
       return 'scopeVariable';
-    } else if ('$id' in value && 'type' in value && 'node' in value) {
+    }
+    if ('$id' in value && 'type' in value && 'node' in value) {
       return 'scopeDefinition';
-    } else if (
+    }
+    if (
       '$id' in value &&
       'resolved' in value &&
       'identifier' in value &&
       'from' in value
     ) {
       return 'scopeReference';
-    } else if ('kind' in value && 'pos' in value && 'flags' in value) {
+    }
+    if ('kind' in value && 'pos' in value && 'flags' in value) {
       return 'tsNode';
-    } else if ('getSymbol' in value) {
+    }
+    if ('getSymbol' in value) {
       return 'tsType';
-    } else if ('getDeclarations' in value && value.getDeclarations != null) {
+    }
+    if ('getDeclarations' in value && value.getDeclarations != null) {
       return 'tsSymbol';
-    } else if ('getParameters' in value && value.getParameters != null) {
+    }
+    if ('getParameters' in value && value.getParameters != null) {
       return 'tsSignature';
     }
   }
@@ -137,7 +142,8 @@ export function getTooltipLabel(
       case 'tsType':
         if (propName === 'flags') {
           return tsEnumFlagToString('TypeFlags', value);
-        } else if (propName === 'objectFlags') {
+        }
+        if (propName === 'objectFlags') {
           return tsEnumFlagToString('ObjectFlags', value);
         }
         break;
@@ -208,6 +214,7 @@ export function filterProperties(
   showTokens?: boolean,
 ): boolean {
   if (
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- I don't know whether this is safe to fix
     value === undefined ||
     typeof value === 'function' ||
     key.startsWith('_')

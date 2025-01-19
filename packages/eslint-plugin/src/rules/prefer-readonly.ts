@@ -15,8 +15,8 @@ import {
   getParameterPropertyHeadLoc,
 } from '../util/getMemberHeadLoc';
 
-type MessageIds = 'preferReadonly';
-type Options = [
+export type MessageIds = 'preferReadonly';
+export type Options = [
   {
     onlyInlineLambdas?: boolean;
   },
@@ -336,7 +336,7 @@ class ClassScope {
 
     if (
       this.onlyInlineLambdas &&
-      node.initializer !== undefined &&
+      node.initializer != null &&
       !ts.isArrowFunction(node.initializer)
     ) {
       return;

@@ -18,7 +18,7 @@ import {
   typeMatchesSomeSpecifier,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowForKnownSafeCalls?: TypeOrValueSpecifier[];
     allowForKnownSafePromises?: TypeOrValueSpecifier[];
@@ -28,7 +28,7 @@ type Options = [
   },
 ];
 
-type MessageId =
+export type MessageId =
   | 'floating'
   | 'floatingFixAwait'
   | 'floatingFixVoid'
@@ -375,7 +375,9 @@ export default createRule<Options, MessageId>({
 
         // All other cases are unhandled.
         return { isUnhandled: true };
-      } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
+      }
+
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
         // ternary. Check them directly.
         const alternateResult = isUnhandledPromise(checker, node.alternate);
@@ -383,7 +385,9 @@ export default createRule<Options, MessageId>({
           return alternateResult;
         }
         return isUnhandledPromise(checker, node.consequent);
-      } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+      }
+
+      if (node.type === AST_NODE_TYPES.LogicalExpression) {
         const leftResult = isUnhandledPromise(checker, node.left);
         if (leftResult.isUnhandled) {
           return leftResult;
@@ -453,7 +457,7 @@ export default createRule<Options, MessageId>({
       //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
       for (const ty of typeParts) {
         const then = ty.getProperty('then');
-        if (then === undefined) {
+        if (then == null) {
           continue;
         }
 

@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-type Lib =
+export type Lib =
   | 'decorators'
   | 'decorators.legacy'
   | 'dom'
@@ -27,6 +27,7 @@ type Lib =
   | 'es2016.full'
   | 'es2016.intl'
   | 'es2017'
+  | 'es2017.arraybuffer'
   | 'es2017.date'
   | 'es2017.full'
   | 'es2017.intl'
@@ -71,13 +72,21 @@ type Lib =
   | 'es2022.intl'
   | 'es2022.object'
   | 'es2022.regexp'
-  | 'es2022.sharedmemory'
   | 'es2022.string'
   | 'es2023'
   | 'es2023.array'
   | 'es2023.collection'
   | 'es2023.full'
   | 'es2023.intl'
+  | 'es2024'
+  | 'es2024.arraybuffer'
+  | 'es2024.collection'
+  | 'es2024.full'
+  | 'es2024.object'
+  | 'es2024.promise'
+  | 'es2024.regexp'
+  | 'es2024.sharedmemory'
+  | 'es2024.string'
   | 'esnext'
   | 'esnext.array'
   | 'esnext.asynciterable'
@@ -100,5 +109,3 @@ type Lib =
   | 'webworker.asynciterable'
   | 'webworker.importscripts'
   | 'webworker.iterable';
-
-export { Lib };
