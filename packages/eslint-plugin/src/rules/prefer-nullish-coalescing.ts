@@ -418,8 +418,8 @@ export default createRule<Options, MessageIds>({
             identifierOrMemberExpressionNode,
           );
           const type = checker.getTypeAtLocation(tsNode);
-
           const flags = getTypeFlags(type);
+
           // it is fixable if we check for both null and undefined, or not if neither
           if (
             hasUndefinedCheckWithoutTruthinessCheck ===
