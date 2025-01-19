@@ -232,21 +232,21 @@ That comment should ideally include an explanation and link to the pending task,
 <TabItem value="❌ Incorrect">
 
 ```ts
-import { process } from '@example/package';
+import { processString } from '@example/package';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-process('New York City');
+processString('New York City');
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts
-import { process } from '@example/package';
+import { processString } from '@example/package';
 
 // Pending GH-1234: will soon not be any.
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-process('New York City');
+processString('New York City');
 ```
 
 </TabItem>
