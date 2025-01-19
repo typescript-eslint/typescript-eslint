@@ -3,7 +3,7 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib repo
 
-type Lib =
+export type Lib =
   | 'decorators'
   | 'decorators.legacy'
   | 'dom'
@@ -109,5 +109,3 @@ type Lib =
   | 'webworker.asynciterable'
   | 'webworker.importscripts'
   | 'webworker.iterable';
-
-export { Lib };

@@ -11,7 +11,7 @@ import { ScopeManager } from './ScopeManager';
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
 //////////////////////////////////////////////////////////
 
-interface AnalyzeOptions {
+export interface AnalyzeOptions {
   /**
    * Known visitor keys.
    */
@@ -80,7 +80,7 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
 /**
  * Takes an AST and returns the analyzed scopes.
  */
-function analyze(
+export function analyze(
   tree: TSESTree.Node,
   providedOptions?: AnalyzeOptions,
 ): ScopeManager {
@@ -112,5 +112,3 @@ function analyze(
 
   return scopeManager;
 }
-
-export { analyze, type AnalyzeOptions };

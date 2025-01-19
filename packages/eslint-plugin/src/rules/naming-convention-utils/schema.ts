@@ -185,7 +185,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
   };
 }
 
-const SCHEMA: JSONSchema.JSONSchema4 = {
+export const SCHEMA: JSONSchema.JSONSchema4 = {
   $defs: $DEFS,
   additionalItems: false,
   items: {
@@ -329,5 +329,3 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
   },
   type: 'array',
 };
-
-export { SCHEMA };
