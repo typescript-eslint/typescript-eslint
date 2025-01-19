@@ -21,41 +21,6 @@ import {
 const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
   [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
 
-function ignore(
-  type: ts.Type,
-  ignorePrimitives: Options[0]['ignorePrimitives'],
-): boolean {
-  if (!isPossiblyNullish(type)) {
-    return true;
-  }
-  const ignorableFlags = [
-    /* eslint-disable @typescript-eslint/no-non-null-assertion */
-    (ignorePrimitives === true || ignorePrimitives!.bigint) &&
-      ts.TypeFlags.BigIntLike,
-    (ignorePrimitives === true || ignorePrimitives!.boolean) &&
-      ts.TypeFlags.BooleanLike,
-    (ignorePrimitives === true || ignorePrimitives!.number) &&
-      ts.TypeFlags.NumberLike,
-    (ignorePrimitives === true || ignorePrimitives!.string) &&
-      ts.TypeFlags.StringLike,
-    /* eslint-enable @typescript-eslint/no-non-null-assertion */
-  ]
-    .filter((flag): flag is number => typeof flag === 'number')
-    .reduce((previous, flag) => previous | flag, 0);
-  if (
-    type.flags !== ts.TypeFlags.Null &&
-    type.flags !== ts.TypeFlags.Undefined &&
-    (type as ts.UnionOrIntersectionType).types.some(t =>
-      tsutils
-        .intersectionTypeParts(t)
-        .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-    )
-  ) {
-    return true;
-  }
-  return false;
-}
-
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
@@ -217,18 +182,51 @@ export default createRule<Options, MessageIds>({
       });
     }
 
-    // todo: rename to something more specific?
-    function checkAssignmentOrLogicalExpression(
+    function isNotPossiblyNullishOrIgnorePrimitive(
+      node: TSESTree.Node,
+      ignorePrimitives: Options[0]['ignorePrimitives'],
+    ): boolean {
+      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const type = checker.getTypeAtLocation(tsNode);
+
+      if (!isPossiblyNullish(type)) {
+        return true;
+      }
+
+      const ignorableFlags = [
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
+        (ignorePrimitives === true || ignorePrimitives!.bigint) &&
+          ts.TypeFlags.BigIntLike,
+        (ignorePrimitives === true || ignorePrimitives!.boolean) &&
+          ts.TypeFlags.BooleanLike,
+        (ignorePrimitives === true || ignorePrimitives!.number) &&
+          ts.TypeFlags.NumberLike,
+        (ignorePrimitives === true || ignorePrimitives!.string) &&
+          ts.TypeFlags.StringLike,
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
+      ]
+        .filter((flag): flag is number => typeof flag === 'number')
+        .reduce((previous, flag) => previous | flag, 0);
+      if (
+        type.flags !== ts.TypeFlags.Null &&
+        type.flags !== ts.TypeFlags.Undefined &&
+        (type as ts.UnionOrIntersectionType).types.some(t =>
+          tsutils
+            .intersectionTypeParts(t)
+            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+        )
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+
+    function checkAndFixWithPreferNullishOverOr(
       node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
       description: string,
       equals: string,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode.left);
-      if (ignore(type, ignorePrimitives)) {
-        return;
-      }
-
       if (ignoreConditionalTests === true && isConditionalTest(node)) {
         return;
       }
@@ -289,7 +287,13 @@ export default createRule<Options, MessageIds>({
       'AssignmentExpression[operator = "||="]'(
         node: TSESTree.AssignmentExpression,
       ): void {
-        checkAssignmentOrLogicalExpression(node, 'assignment', '=');
+        if (
+          isNotPossiblyNullishOrIgnorePrimitive(node.left, ignorePrimitives)
+        ) {
+          return;
+        }
+
+        checkAndFixWithPreferNullishOverOr(node, 'assignment', '=');
       },
       ConditionalExpression(node: TSESTree.ConditionalExpression): void {
         if (ignoreTernaryTests) {
@@ -354,70 +358,74 @@ export default createRule<Options, MessageIds>({
           }
         }
 
-        let identifierOrMemberExpresion: TSESTree.Node | undefined;
-        let hasUndefinedCheck = false;
-        let hasNullCheck = false;
+        let identifierOrMemberExpressionNode: TSESTree.Node | undefined;
         let hasTruthinessCheck = false;
+        let hasNullCheckWithoutTruthinessCheck = false;
+        let hasUndefinedCheckWithoutTruthinessCheck = false;
 
         if (!operator) {
-          hasUndefinedCheck = true;
-          hasNullCheck = true;
           hasTruthinessCheck = true;
 
           if (
             isIdentifierOrMemberExpressionType(node.test.type) &&
             isNodeEqual(node.test, node.consequent)
           ) {
-            identifierOrMemberExpresion = node.test;
+            identifierOrMemberExpressionNode = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
             node.test.operator === '!' &&
             isIdentifierOrMemberExpressionType(node.test.argument.type) &&
             isNodeEqual(node.test.argument, node.alternate)
           ) {
-            identifierOrMemberExpresion = node.test.argument;
+            identifierOrMemberExpressionNode = node.test.argument;
             operator = '!';
           }
         } else {
           // we check that the test only contains null, undefined and the identifier
           for (const testNode of nodesInsideTestExpression) {
             if (isNullLiteral(testNode)) {
-              hasNullCheck = true;
+              hasNullCheckWithoutTruthinessCheck = true;
             } else if (isUndefinedIdentifier(testNode)) {
-              hasUndefinedCheck = true;
+              hasUndefinedCheckWithoutTruthinessCheck = true;
             } else if (
               (operator === '!==' || operator === '!=') &&
               isNodeEqual(testNode, node.consequent)
             ) {
-              identifierOrMemberExpresion = testNode;
+              identifierOrMemberExpressionNode = testNode;
             } else if (
               (operator === '===' || operator === '==') &&
               isNodeEqual(testNode, node.alternate)
             ) {
-              identifierOrMemberExpresion = testNode;
+              identifierOrMemberExpressionNode = testNode;
             }
           }
         }
 
-        if (!identifierOrMemberExpresion) {
+        if (!identifierOrMemberExpressionNode) {
           return;
         }
 
-        const isFixable = ((): boolean => {
+        const isFixableWithPreferNullishOverTernary = ((): boolean => {
+          // x ? x : y and !x ? y : x patterns
+          if (hasTruthinessCheck) {
+            return !isNotPossiblyNullishOrIgnorePrimitive(
+              identifierOrMemberExpressionNode,
+              ignorePrimitives,
+            );
+          }
+
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-            identifierOrMemberExpresion,
+            identifierOrMemberExpressionNode,
           );
           const type = checker.getTypeAtLocation(tsNode);
 
-          // x ? x : y and !x ? y : x patterns
-          if (hasTruthinessCheck) {
-            return !ignore(type, ignorePrimitives);
-          }
-
           const flags = getTypeFlags(type);
           // it is fixable if we check for both null and undefined, or not if neither
-          if (hasUndefinedCheck === hasNullCheck) {
-            return hasUndefinedCheck;
+          if (
+            hasUndefinedCheckWithoutTruthinessCheck ===
+            hasNullCheckWithoutTruthinessCheck
+          ) {
+            return hasUndefinedCheckWithoutTruthinessCheck;
           }
 
           // it is fixable if we loosely check for either null or undefined
@@ -432,17 +440,17 @@ export default createRule<Options, MessageIds>({
           const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
 
           // it is fixable if we check for undefined and the type is not nullable
-          if (hasUndefinedCheck && !hasNullType) {
+          if (hasUndefinedCheckWithoutTruthinessCheck && !hasNullType) {
             return true;
           }
 
           const hasUndefinedType = (flags & ts.TypeFlags.Undefined) !== 0;
 
           // it is fixable if we check for null and the type can't be undefined
-          return hasNullCheck && !hasUndefinedType;
+          return hasNullCheckWithoutTruthinessCheck && !hasUndefinedType;
         })();
 
-        if (isFixable) {
+        if (isFixableWithPreferNullishOverTernary) {
           context.report({
             node,
             messageId: 'preferNullishOverTernary',
@@ -455,8 +463,8 @@ export default createRule<Options, MessageIds>({
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '==' || operator === '!'
-                      ? [identifierOrMemberExpresion, node.consequent]
-                      : [identifierOrMemberExpresion, node.alternate];
+                      ? [identifierOrMemberExpressionNode, node.consequent]
+                      : [identifierOrMemberExpressionNode, node.alternate];
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
@@ -474,13 +482,19 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.LogicalExpression,
       ): void {
         if (
+          isNotPossiblyNullishOrIgnorePrimitive(node.left, ignorePrimitives)
+        ) {
+          return;
+        }
+
+        if (
           ignoreBooleanCoercion === true &&
           isBooleanConstructorContext(node, context)
         ) {
           return;
         }
 
-        checkAssignmentOrLogicalExpression(node, 'or', '');
+        checkAndFixWithPreferNullishOverOr(node, 'or', '');
       },
     };
   },
