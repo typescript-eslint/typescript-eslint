@@ -42,13 +42,9 @@ foo === undefined ? 'a string' : foo;
 
 const foo: string | null = 'bar';
 foo !== null ? foo : 'a string';
+foo ? foo : 'a string';
 foo === null ? 'a string' : foo;
-
-const foo: object | null = { value: 'bar' };
-foo !== null ? foo : { value: 'a string' };
-foo === null ? { value: 'a string' } : foo;
-foo ? foo : { value: 'a string' };
-!foo ? { value: 'a string' } : foo;
+!foo ? 'a string' : foo;
 ```
 
 Correct code for `ignoreTernaryTests: false`:
@@ -67,12 +63,8 @@ foo ?? 'a string';
 const foo: string | null = 'bar';
 foo ?? 'a string';
 foo ?? 'a string';
-
-const foo: object | null = { value: 'bar' };
-foo ?? { value: 'a string' };
-foo ?? { value: 'a string' };
-foo ?? { value: 'a string' };
-foo ?? { value: 'a string' };
+foo ?? 'a string';
+foo ?? 'a string';
 ```
 
 ### `ignoreConditionalTests`

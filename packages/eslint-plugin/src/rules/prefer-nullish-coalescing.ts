@@ -12,7 +12,6 @@ import {
   isLogicalOrOperator,
   isNodeEqual,
   isNullLiteral,
-  isPossiblyFalsy,
   isPossiblyNullish,
   isUndefinedIdentifier,
   nullThrows,
@@ -21,6 +20,41 @@ import {
 
 const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
   [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
+
+function ignore(
+  type: ts.Type,
+  ignorePrimitives: Options[0]['ignorePrimitives'],
+): boolean {
+  if (!isPossiblyNullish(type)) {
+    return true;
+  }
+  const ignorableFlags = [
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
+    (ignorePrimitives === true || ignorePrimitives!.bigint) &&
+      ts.TypeFlags.BigIntLike,
+    (ignorePrimitives === true || ignorePrimitives!.boolean) &&
+      ts.TypeFlags.BooleanLike,
+    (ignorePrimitives === true || ignorePrimitives!.number) &&
+      ts.TypeFlags.NumberLike,
+    (ignorePrimitives === true || ignorePrimitives!.string) &&
+      ts.TypeFlags.StringLike,
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
+  ]
+    .filter((flag): flag is number => typeof flag === 'number')
+    .reduce((previous, flag) => previous | flag, 0);
+  if (
+    type.flags !== ts.TypeFlags.Null &&
+    type.flags !== ts.TypeFlags.Undefined &&
+    (type as ts.UnionOrIntersectionType).types.some(t =>
+      tsutils
+        .intersectionTypeParts(t)
+        .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
 
 export type Options = [
   {
@@ -191,7 +225,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const type = checker.getTypeAtLocation(tsNode.left);
-      if (!isPossiblyNullish(type)) {
+      if (ignore(type, ignorePrimitives)) {
         return;
       }
 
@@ -205,33 +239,6 @@ export default createRule<Options, MessageIds>({
       ) {
         return;
       }
-
-      // https://github.com/typescript-eslint/typescript-eslint/issues/5439
-      /* eslint-disable @typescript-eslint/no-non-null-assertion */
-      const ignorableFlags = [
-        (ignorePrimitives === true || ignorePrimitives!.bigint) &&
-          ts.TypeFlags.BigIntLike,
-        (ignorePrimitives === true || ignorePrimitives!.boolean) &&
-          ts.TypeFlags.BooleanLike,
-        (ignorePrimitives === true || ignorePrimitives!.number) &&
-          ts.TypeFlags.NumberLike,
-        (ignorePrimitives === true || ignorePrimitives!.string) &&
-          ts.TypeFlags.StringLike,
-      ]
-        .filter((flag): flag is number => typeof flag === 'number')
-        .reduce((previous, flag) => previous | flag, 0);
-      if (
-        type.flags !== ts.TypeFlags.Null &&
-        type.flags !== ts.TypeFlags.Undefined &&
-        (type as ts.UnionOrIntersectionType).types.some(t =>
-          tsutils
-            .intersectionTypeParts(t)
-            .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
-        )
-      ) {
-        return;
-      }
-      /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
       const barBarOperator = nullThrows(
         context.sourceCode.getTokenAfter(
@@ -397,8 +404,19 @@ export default createRule<Options, MessageIds>({
         }
 
         const isFixable = ((): boolean => {
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+            identifierOrMemberExpresion,
+          );
+          const type = checker.getTypeAtLocation(tsNode);
+
+          // x ? x : y and !x ? y : x patterns
+          if (hasTruthinessCheck) {
+            return !ignore(type, ignorePrimitives);
+          }
+
+          const flags = getTypeFlags(type);
           // it is fixable if we check for both null and undefined, or not if neither
-          if (!hasTruthinessCheck && hasUndefinedCheck === hasNullCheck) {
+          if (hasUndefinedCheck === hasNullCheck) {
             return hasUndefinedCheck;
           }
 
@@ -407,19 +425,8 @@ export default createRule<Options, MessageIds>({
             return true;
           }
 
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-            identifierOrMemberExpresion,
-          );
-          const type = checker.getTypeAtLocation(tsNode);
-          const flags = getTypeFlags(type);
-
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return false;
-          }
-
-          if (hasTruthinessCheck) {
-            const nonNullishType = checker.getNonNullableType(type);
-            return isPossiblyNullish(type) && !isPossiblyFalsy(nonNullishType);
           }
 
           const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
