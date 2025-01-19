@@ -14,7 +14,6 @@ import {
   isNullLiteral,
   isPossiblyFalsy,
   isPossiblyNullish,
-  isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
