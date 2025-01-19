@@ -302,6 +302,62 @@ declare let x: unknown;
 !x ? y : x;
       `,
       `
+declare let x: object;
+x ? x : y;
+      `,
+      `
+declare let x: object;
+!x ? y : x;
+      `,
+      `
+declare let x: string[];
+x ? x : y;
+      `,
+      `
+declare let x: string[];
+!x ? y : x;
+      `,
+      `
+declare let x: Function;
+x ? x : y;
+      `,
+      `
+declare let x: Function;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string;
+x ? x : y;
+      `,
+      `
+declare let x: () => string;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null | undefined;
+!x ? y : x;
+      `,
+      `
 declare let x: { n: string };
 x.n ? x.n : y;
       `,
@@ -476,6 +532,62 @@ x.n ? x.n : y;
       `
 declare let x: { n: unknown };
 !x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: object };
+x ? x : y;
+      `,
+      `
+declare let x: { n: object };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: string[] };
+x ? x : y;
+      `,
+      `
+declare let x: { n: string[] };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: Function };
+x ? x : y;
+      `,
+      `
+declare let x: { n: Function };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string | null };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string | null };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string | undefined };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string | undefined };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string | null | undefined };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string | null | undefined };
+!x ? y : x;
       `,
     ].map(code => ({
       code,
@@ -1140,14 +1252,6 @@ declare let x: string | null;
 null === x ? y : x;
       `,
       `
-declare let x: string[];
-x ? x : y;
-      `,
-      `
-declare let x: string[];
-!x ? y : x;
-      `,
-      `
 declare let x: string[] | null;
 x ? x : y;
       `,
@@ -1169,14 +1273,6 @@ x ? x : y;
       `,
       `
 declare let x: string[] | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: object;
-x ? x : y;
-      `,
-      `
-declare let x: object;
 !x ? y : x;
       `,
       `
@@ -1204,14 +1300,6 @@ declare let x: object | null | undefined;
 !x ? y : x;
       `,
       `
-declare let x: Function;
-x ? x : y;
-      `,
-      `
-declare let x: Function;
-!x ? y : x;
-      `,
-      `
 declare let x: Function | null;
 x ? x : y;
       `,
@@ -1233,38 +1321,6 @@ x ? x : y;
       `,
       `
 declare let x: Function | null | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string;
-x ? x : y;
-      `,
-      `
-declare let x: () => string;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | null;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | null;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | undefined;
-!x ? y : x;
-      `,
-      `
-declare let x: () => string | null | undefined;
-x ? x : y;
-      `,
-      `
-declare let x: () => string | null | undefined;
 !x ? y : x;
       `,
       `
@@ -2835,58 +2891,6 @@ if (+(a ?? b)) {
     },
     {
       code: `
-declare const x: { n: object };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: object };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: object };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: object };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
 declare const x: { n: object | null };
 declare const y: any;
 
@@ -3030,58 +3034,6 @@ declare const y: any;
               messageId: 'suggestNullish',
               output: `
 declare const x: { n: object | null | undefined };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: string[] };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: string[] };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: string[] };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: string[] };
 declare const y: any;
 
 x.n ?? y;
@@ -3251,58 +3203,6 @@ x.n ?? y;
     },
     {
       code: `
-declare const x: { n: Function };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: Function };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: Function };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: Function };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
 declare const x: { n: Function | null };
 declare const y: any;
 
@@ -3446,214 +3346,6 @@ declare const y: any;
               messageId: 'suggestNullish',
               output: `
 declare const x: { n: Function | null | undefined };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string | null };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string | null };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string | null };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string | null };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string | undefined };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string | undefined };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string | undefined };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string | undefined };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string | null | undefined };
-declare const y: any;
-
-x.n ? x.n : y;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string | null | undefined };
-declare const y: any;
-
-x.n ?? y;
-      `,
-            },
-          ],
-        },
-      ],
-      options: [{ ignoreTernaryTests: false }],
-      output: null,
-    },
-    {
-      code: `
-declare const x: { n: () => string | null | undefined };
-declare const y: any;
-
-!x.n ? y : x.n;
-      `,
-      errors: [
-        {
-          messageId: 'preferNullishOverTernary',
-          suggestions: [
-            {
-              messageId: 'suggestNullish',
-              output: `
-declare const x: { n: () => string | null | undefined };
 declare const y: any;
 
 x.n ?? y;

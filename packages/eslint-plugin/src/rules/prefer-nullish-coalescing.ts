@@ -13,6 +13,7 @@ import {
   isNodeEqual,
   isNullLiteral,
   isPossiblyFalsy,
+  isPossiblyNullish,
   isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
@@ -347,7 +348,7 @@ export default createRule<Options, MessageIds>({
           }
         }
 
-        let identifier: TSESTree.Node | undefined;
+        let identifierOrMemberExpresion: TSESTree.Node | undefined;
         let hasUndefinedCheck = false;
         let hasNullCheck = false;
         let hasTruthinessCheck = false;
@@ -361,14 +362,14 @@ export default createRule<Options, MessageIds>({
             isIdentifierOrMemberExpressionType(node.test.type) &&
             isNodeEqual(node.test, node.consequent)
           ) {
-            identifier = node.test;
+            identifierOrMemberExpresion = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
             node.test.operator === '!' &&
             isIdentifierOrMemberExpressionType(node.test.argument.type) &&
             isNodeEqual(node.test.argument, node.alternate)
           ) {
-            identifier = node.test.argument;
+            identifierOrMemberExpresion = node.test.argument;
             operator = '!';
           }
         } else {
@@ -382,17 +383,17 @@ export default createRule<Options, MessageIds>({
               (operator === '!==' || operator === '!=') &&
               isNodeEqual(testNode, node.consequent)
             ) {
-              identifier = testNode;
+              identifierOrMemberExpresion = testNode;
             } else if (
               (operator === '===' || operator === '==') &&
               isNodeEqual(testNode, node.alternate)
             ) {
-              identifier = testNode;
+              identifierOrMemberExpresion = testNode;
             }
           }
         }
 
-        if (!identifier) {
+        if (!identifierOrMemberExpresion) {
           return;
         }
 
@@ -407,7 +408,9 @@ export default createRule<Options, MessageIds>({
             return true;
           }
 
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(identifier);
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+            identifierOrMemberExpresion,
+          );
           const type = checker.getTypeAtLocation(tsNode);
           const flags = getTypeFlags(type);
 
@@ -417,7 +420,7 @@ export default createRule<Options, MessageIds>({
 
           if (hasTruthinessCheck) {
             const nonNullishType = checker.getNonNullableType(type);
-            return !isPossiblyFalsy(nonNullishType);
+            return isPossiblyNullish(type) && !isPossiblyFalsy(nonNullishType);
           }
 
           const hasNullType = (flags & ts.TypeFlags.Null) !== 0;
@@ -446,8 +449,8 @@ export default createRule<Options, MessageIds>({
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '==' || operator === '!'
-                      ? [identifier, node.consequent]
-                      : [identifier, node.alternate];
+                      ? [identifierOrMemberExpresion, node.consequent]
+                      : [identifierOrMemberExpresion, node.alternate];
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
