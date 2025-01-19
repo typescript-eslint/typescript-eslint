@@ -289,6 +289,26 @@ export class Referencer extends Visitor {
     }
   }
 
+  protected visitJSXElement(
+    node: TSESTree.JSXClosingElement | TSESTree.JSXOpeningElement,
+  ): void {
+    if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
+      if (
+        node.name.name[0].toUpperCase() === node.name.name[0] ||
+        node.name.name === 'this'
+      ) {
+        // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
+        // not a variable by JSX transforms:
+        // <div /> => React.createElement("div", null)
+
+        // the only case we want to visit a lower-cased component has its name as "this",
+        this.visit(node.name);
+      }
+    } else {
+      this.visit(node.name);
+    }
+  }
+
   protected visitProperty(node: TSESTree.Property): void {
     if (node.computed) {
       this.visit(node.key);
@@ -497,8 +517,8 @@ export class Referencer extends Visitor {
     this.visit(node.value);
   }
 
-  protected JSXClosingElement(): void {
-    // should not be counted as a reference
+  protected JSXClosingElement(node: TSESTree.JSXClosingElement): void {
+    this.visitJSXElement(node);
   }
 
   protected JSXFragment(node: TSESTree.JSXFragment): void {
@@ -522,21 +542,7 @@ export class Referencer extends Visitor {
   }
   protected JSXOpeningElement(node: TSESTree.JSXOpeningElement): void {
     this.referenceJsxPragma();
-    if (node.name.type === AST_NODE_TYPES.JSXIdentifier) {
-      if (
-        node.name.name[0].toUpperCase() === node.name.name[0] ||
-        node.name.name === 'this'
-      ) {
-        // lower cased component names are always treated as "intrinsic" names, and are converted to a string,
-        // not a variable by JSX transforms:
-        // <div /> => React.createElement("div", null)
-
-        // the only case we want to visit a lower-cased component has its name as "this",
-        this.visit(node.name);
-      }
-    } else {
-      this.visit(node.name);
-    }
+    this.visitJSXElement(node);
     this.visitType(node.typeArguments);
     for (const attr of node.attributes) {
       this.visit(attr);
