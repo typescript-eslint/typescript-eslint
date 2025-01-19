@@ -192,7 +192,7 @@ export default createRule<Options, MessageIds>({
     ): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const type = checker.getTypeAtLocation(tsNode.left);
-      if (!isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)) {
+      if (!isPossiblyNullish(type)) {
         return;
       }
 
