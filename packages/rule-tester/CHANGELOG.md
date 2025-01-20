@@ -1,3 +1,15 @@
+## 8.21.0 (2025-01-20)
+
+### 🩹 Fixes
+
+- **eslint-plugin-internal:** [debug-namespace] on windows ([#10661](https://github.com/typescript-eslint/typescript-eslint/pull/10661))
+
+### ❤️ Thank You
+
+- Arya Emami @aryaemami59
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.20.0 (2025-01-13)
 
 ### 🚀 Features
