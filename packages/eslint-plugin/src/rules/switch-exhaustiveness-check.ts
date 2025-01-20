@@ -23,7 +23,7 @@ interface SwitchMetadata {
   readonly symbolName: string | undefined;
 }
 
-type Options = [
+export type Options = [
   {
     /**
      * If `true`, allow `default` cases on switch statements with exhaustive
@@ -54,7 +54,7 @@ type Options = [
   },
 ];
 
-type MessageIds =
+export type MessageIds =
   | 'addMissingCases'
   | 'dangerousDefaultCase'
   | 'switchIsNotExhaustive';
@@ -353,7 +353,7 @@ export default createRule<Options, MessageIds>({
 
       if (
         missingLiteralBranchTypes.length === 0 &&
-        defaultCase !== undefined &&
+        defaultCase != null &&
         !containsNonLiteralType
       ) {
         context.report({
@@ -373,7 +373,7 @@ export default createRule<Options, MessageIds>({
 
       const { containsNonLiteralType, defaultCase } = switchMetadata;
 
-      if (containsNonLiteralType && defaultCase === undefined) {
+      if (containsNonLiteralType && defaultCase == null) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',

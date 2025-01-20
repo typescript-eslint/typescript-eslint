@@ -18,12 +18,12 @@ enum Usefulness {
   Sometimes = 'may',
 }
 
-type Options = [
+export type Options = [
   {
     ignoredTypeNames?: string[];
   },
 ];
-type MessageIds = 'baseArrayJoin' | 'baseToString';
+export type MessageIds = 'baseArrayJoin' | 'baseToString';
 
 export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
@@ -74,6 +74,7 @@ export default createRule<Options, MessageIds>({
       }
       const certainty = collectToStringCertainty(
         type ?? services.getTypeAtLocation(node),
+        new Set(),
       );
       if (certainty === Usefulness.Always) {
         return;
@@ -93,7 +94,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.Node,
       type: ts.Type,
     ): void {
-      const certainty = collectJoinCertainty(type);
+      const certainty = collectJoinCertainty(type, new Set());
 
       if (certainty === Usefulness.Always) {
         return;
@@ -140,46 +141,76 @@ export default createRule<Options, MessageIds>({
       return Usefulness.Never;
     }
 
-    function collectJoinCertainty(type: ts.Type): Usefulness {
-      if (tsutils.isUnionType(type)) {
-        return collectUnionTypeCertainty(type, collectJoinCertainty);
+    function collectTupleCertainty(
+      type: ts.TypeReference,
+      visited: Set<ts.Type>,
+    ): Usefulness {
+      const typeArgs = checker.getTypeArguments(type);
+      const certainties = typeArgs.map(t =>
+        collectToStringCertainty(t, visited),
+      );
+      if (certainties.some(certainty => certainty === Usefulness.Never)) {
+        return Usefulness.Never;
       }
 
-      if (tsutils.isIntersectionType(type)) {
-        return collectIntersectionTypeCertainty(type, collectJoinCertainty);
-      }
-
-      if (checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
-        const certainties = typeArgs.map(t => collectToStringCertainty(t));
-        if (certainties.some(certainty => certainty === Usefulness.Never)) {
-          return Usefulness.Never;
-        }
-
-        if (certainties.some(certainty => certainty === Usefulness.Sometimes)) {
-          return Usefulness.Sometimes;
-        }
-
-        return Usefulness.Always;
-      }
-
-      if (checker.isArrayType(type)) {
-        const elemType = nullThrows(
-          type.getNumberIndexType(),
-          'array should have number index type',
-        );
-        return collectToStringCertainty(elemType);
+      if (certainties.some(certainty => certainty === Usefulness.Sometimes)) {
+        return Usefulness.Sometimes;
       }
 
       return Usefulness.Always;
     }
 
-    function collectToStringCertainty(type: ts.Type): Usefulness {
-      // https://github.com/JoshuaKGoldberg/ts-api-utils/issues/382
-      if ((tsutils.isTypeParameter as (t: ts.Type) => boolean)(type)) {
+    function collectArrayCertainty(
+      type: ts.Type,
+      visited: Set<ts.Type>,
+    ): Usefulness {
+      const elemType = nullThrows(
+        type.getNumberIndexType(),
+        'array should have number index type',
+      );
+      return collectToStringCertainty(elemType, visited);
+    }
+
+    function collectJoinCertainty(
+      type: ts.Type,
+      visited: Set<ts.Type>,
+    ): Usefulness {
+      if (tsutils.isUnionType(type)) {
+        return collectUnionTypeCertainty(type, t =>
+          collectJoinCertainty(t, visited),
+        );
+      }
+
+      if (tsutils.isIntersectionType(type)) {
+        return collectIntersectionTypeCertainty(type, t =>
+          collectJoinCertainty(t, visited),
+        );
+      }
+
+      if (checker.isTupleType(type)) {
+        return collectTupleCertainty(type, visited);
+      }
+
+      if (checker.isArrayType(type)) {
+        return collectArrayCertainty(type, visited);
+      }
+
+      return Usefulness.Always;
+    }
+
+    function collectToStringCertainty(
+      type: ts.Type,
+      visited: Set<ts.Type>,
+    ): Usefulness {
+      if (visited.has(type)) {
+        // don't report if this is a self referencing array or tuple type
+        return Usefulness.Always;
+      }
+
+      if (tsutils.isTypeParameter(type)) {
         const constraint = type.getConstraint();
         if (constraint) {
-          return collectToStringCertainty(constraint);
+          return collectToStringCertainty(constraint, visited);
         }
         // unconstrained generic means `unknown`
         return Usefulness.Always;
@@ -198,11 +229,23 @@ export default createRule<Options, MessageIds>({
       }
 
       if (type.isIntersection()) {
-        return collectIntersectionTypeCertainty(type, collectToStringCertainty);
+        return collectIntersectionTypeCertainty(type, t =>
+          collectToStringCertainty(t, visited),
+        );
       }
 
       if (type.isUnion()) {
-        return collectUnionTypeCertainty(type, collectToStringCertainty);
+        return collectUnionTypeCertainty(type, t =>
+          collectToStringCertainty(t, visited),
+        );
+      }
+
+      if (checker.isTupleType(type)) {
+        return collectTupleCertainty(type, new Set([...visited, type]));
+      }
+
+      if (checker.isArrayType(type)) {
+        return collectArrayCertainty(type, new Set([...visited, type]));
       }
 
       const toString =

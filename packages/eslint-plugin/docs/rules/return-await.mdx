@@ -9,14 +9,23 @@ import TabItem from '@theme/TabItem';
 >
 > See **https://typescript-eslint.io/rules/return-await** for documentation.
 
-This rule builds on top of the [`eslint/no-return-await`](https://eslint.org/docs/rules/no-return-await) rule.
-It expands upon the base rule to add support for optionally requiring `return await` in certain cases.
-
-The extended rule is named `return-await` instead of `no-return-await` because the extended rule can enforce the positive or the negative. Additionally, while the core rule is now deprecated, the extended rule is still useful in many contexts:
+In `async` functions, it is valid to return a promise-wrapped value or a value directly, both of which ultimately produce a promise with the same fulfillment value. Returning a value rather than a promise-wrapped value can have several subtle benefits:
 
 - Returning an awaited promise [improves stack trace information](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await#improving_stack_trace).
-- When the `return` statement is in `try...catch`, awaiting the promise also allows the promise's rejection to be caught instead of leaving the error to the caller.
+- When the `return` statement is in `try...catch`, awaiting the promise allows the promise's rejection to be caught instead of leaving the error to the caller.
 - Contrary to popular belief, `return await promise;` is [at least as fast as directly returning the promise](https://github.com/tc39/proposal-faster-promise-adoption).
+
+This rule enforces consistent handling of whether to await promises before returning them.
+
+:::info
+
+This rule used to be considered an extension of the (now-deprecated) ESLint core rule [`no-return-await`](https://eslint.org/docs/latest/rules/no-return-await#options).
+Without type information, the only situations that could be flagged by `no-return-await` were of neutral-to-negative value, which eventually led to its deprecation.
+In contrast, with access to type information, `@typescript-eslint/return-await` delivers enough positive value to earn it a spot in our strict preset.
+
+If you previously used `no-return-await`, this rule's `in-try-catch` option has the closest behavior to the `no-return-await` rule.
+
+:::
 
 ## Options
 
@@ -326,3 +335,5 @@ async function validNever3() {
 
 </TabItem>
 </Tabs>
+
+{/* Intentionally Omitted: When Not To Use It */}

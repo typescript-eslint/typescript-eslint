@@ -7,6 +7,7 @@ import * as ts from 'typescript';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getConstraintInfo,
   getParserServices,
   getTypeName,
   getTypeOfPropertyOfName,
@@ -41,13 +42,6 @@ const getValueOfLiteralType = (
   return type.value;
 };
 
-const isFalsyBigInt = (type: ts.Type): boolean => {
-  return (
-    tsutils.isLiteralType(type) &&
-    valueIsPseudoBigInt(type.value) &&
-    !getValueOfLiteralType(type)
-  );
-};
 const isTruthyLiteral = (type: ts.Type): boolean =>
   tsutils.isTrueLiteralType(type) ||
   (type.isLiteral() && !!getValueOfLiteralType(type));
@@ -70,13 +64,7 @@ const isPossiblyTruthy = (type: ts.Type): boolean =>
     .some(intersectionParts =>
       // It is possible to define intersections that are always falsy,
       // like `"" & { __brand: string }`.
-      intersectionParts.every(
-        type =>
-          !tsutils.isFalsyType(type) &&
-          // below is a workaround for ts-api-utils bug
-          // see https://github.com/JoshuaKGoldberg/ts-api-utils/issues/544
-          !isFalsyBigInt(type),
-      ),
+      intersectionParts.every(type => !tsutils.isFalsyType(type)),
     );
 
 // Nullish utilities
@@ -97,10 +85,7 @@ function toStaticValue(
   | undefined {
   // type.isLiteral() only covers numbers/bigints and strings, hence the rest of the branches.
   if (tsutils.isBooleanLiteralType(type)) {
-    // Using `type.intrinsicName` instead of `type.value` because `type.value`
-    // is `undefined`, contrary to what the type guard tells us.
-    // See https://github.com/JoshuaKGoldberg/ts-api-utils/issues/528
-    return { value: type.intrinsicName === 'true' };
+    return { value: tsutils.isTrueLiteralType(type) };
   }
   if (type.flags === ts.TypeFlags.Undefined) {
     return { value: undefined };
@@ -183,7 +168,7 @@ export type MessageId =
   | 'alwaysNullish'
   | 'alwaysTruthy'
   | 'alwaysTruthyFunc'
-  | 'literalBooleanExpression'
+  | 'comparisonBetweenLiteralTypes'
   | 'never'
   | 'neverNullish'
   | 'neverOptionalChain'
@@ -211,8 +196,8 @@ export default createRule<Options, MessageId>({
       alwaysTruthy: 'Unnecessary conditional, value is always truthy.',
       alwaysTruthyFunc:
         'This callback should return a conditional, but return is always truthy.',
-      literalBooleanExpression:
-        'Unnecessary conditional, comparison is always {{trueOrFalse}}. Both sides of the comparison always have a literal type.',
+      comparisonBetweenLiteralTypes:
+        'Unnecessary conditional, comparison is always {{trueOrFalse}}, since `{{left}} {{operator}} {{right}}` is {{trueOrFalse}}.',
       never: 'Unnecessary conditional, value is `never`.',
       neverNullish:
         'Unnecessary conditional, expected left-hand side of `??` operator to be possibly null or undefined.',
@@ -273,6 +258,10 @@ export default createRule<Options, MessageId>({
       compilerOptions,
       'strictNullChecks',
     );
+    const isNoUncheckedIndexedAccess = tsutils.isCompilerOptionEnabled(
+      compilerOptions,
+      'noUncheckedIndexedAccess',
+    );
 
     if (
       !isStrictNullChecks &&
@@ -313,6 +302,19 @@ export default createRule<Options, MessageId>({
             // Exception: literal index into a tuple - will have a sound type
             node.property.type !== AST_NODE_TYPES.Literal))
       );
+    }
+
+    // Conditional is always necessary if it involves:
+    //    `any` or `unknown` or a naked type variable
+    function isConditionalAlwaysNecessary(type: ts.Type): boolean {
+      return tsutils
+        .unionTypeParts(type)
+        .some(
+          part =>
+            isTypeAnyType(part) ||
+            isTypeUnknownType(part) ||
+            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+        );
     }
 
     function isNullableMemberExpression(
@@ -381,18 +383,7 @@ export default createRule<Options, MessageId>({
 
       const type = getConstrainedTypeAtLocation(services, expression);
 
-      // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type variable
-      if (
-        tsutils
-          .unionTypeParts(type)
-          .some(
-            part =>
-              isTypeAnyType(part) ||
-              isTypeUnknownType(part) ||
-              isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
-          )
-      ) {
+      if (isConditionalAlwaysNecessary(type)) {
         return;
       }
       let messageId: MessageId | null = null;
@@ -489,8 +480,11 @@ export default createRule<Options, MessageId>({
 
         context.report({
           node,
-          messageId: 'literalBooleanExpression',
+          messageId: 'comparisonBetweenLiteralTypes',
           data: {
+            left: checker.typeToString(leftType),
+            operator,
+            right: checker.typeToString(rightType),
             trueOrFalse: conditionIsTrue ? 'true' : 'false',
           },
         });
@@ -647,21 +641,48 @@ export default createRule<Options, MessageId>({
             getConstrainedTypeAtLocation(services, callback),
           )
           .map(sig => sig.getReturnType());
-        /* istanbul ignore if */ if (returnTypes.length === 0) {
-          // Not a callable function
+
+        if (returnTypes.length === 0) {
+          // Not a callable function, e.g. `any`
           return;
         }
-        // Predicate is always necessary if it involves `any` or `unknown`
-        if (returnTypes.some(t => isTypeAnyType(t) || isTypeUnknownType(t))) {
-          return;
+
+        let hasFalsyReturnTypes = false;
+        let hasTruthyReturnTypes = false;
+
+        for (const type of returnTypes) {
+          const { constraintType } = getConstraintInfo(checker, type);
+          // Predicate is always necessary if it involves `any` or `unknown`
+          if (
+            !constraintType ||
+            isTypeAnyType(constraintType) ||
+            isTypeUnknownType(constraintType)
+          ) {
+            return;
+          }
+
+          if (isPossiblyFalsy(constraintType)) {
+            hasFalsyReturnTypes = true;
+          }
+
+          if (isPossiblyTruthy(constraintType)) {
+            hasTruthyReturnTypes = true;
+          }
+
+          // bail early if both a possibly-truthy and a possibly-falsy have been detected
+          if (hasFalsyReturnTypes && hasTruthyReturnTypes) {
+            return;
+          }
         }
-        if (!returnTypes.some(isPossiblyFalsy)) {
+
+        if (!hasFalsyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
         }
-        if (!returnTypes.some(isPossiblyTruthy)) {
+
+        if (!hasTruthyReturnTypes) {
           return context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
@@ -751,8 +772,17 @@ export default createRule<Options, MessageId>({
           if (propType) {
             return isNullableType(propType);
           }
+          const indexInfo = checker.getIndexInfosOfType(type);
 
-          return !!checker.getIndexInfoOfType(type, ts.IndexKind.String);
+          return indexInfo.some(info => {
+            const isStringTypeName =
+              getTypeName(checker, info.keyType) === 'string';
+
+            return (
+              isStringTypeName &&
+              (isNoUncheckedIndexedAccess || isNullableType(info.type))
+            );
+          });
         });
         return !isOwnNullable && isNullableType(prevType);
       }
@@ -785,7 +815,7 @@ export default createRule<Options, MessageId>({
             : true;
 
       return (
-        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        isConditionalAlwaysNecessary(type) ||
         (isOwnNullable && isNullableType(type))
       );
     }

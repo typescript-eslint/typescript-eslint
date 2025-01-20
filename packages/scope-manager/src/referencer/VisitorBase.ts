@@ -3,7 +3,7 @@ import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
-interface VisitorOptions {
+export interface VisitorOptions {
   childVisitorKeys?: VisitorKeys | null;
   visitChildrenEvenIfSelectorExists?: boolean;
 }
@@ -19,7 +19,7 @@ type NodeVisitor = Partial<
   Record<AST_NODE_TYPES, (node: TSESTree.Node) => void>
 >;
 
-abstract class VisitorBase {
+export abstract class VisitorBase {
   readonly #childVisitorKeys: VisitorKeys;
   readonly #visitChildrenEvenIfSelectorExists: boolean;
   constructor(options: VisitorOptions) {
@@ -84,7 +84,5 @@ abstract class VisitorBase {
     this.visitChildren(node);
   }
 }
-
-export { VisitorBase, type VisitorOptions };
 
 export type { VisitorKeys } from '@typescript-eslint/visitor-keys';

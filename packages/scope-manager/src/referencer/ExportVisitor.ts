@@ -6,12 +6,12 @@ import type { Referencer } from './Referencer';
 
 import { Visitor } from './Visitor';
 
-type ExportNode =
+export type ExportNode =
   | TSESTree.ExportAllDeclaration
   | TSESTree.ExportDefaultDeclaration
   | TSESTree.ExportNamedDeclaration;
 
-class ExportVisitor extends Visitor {
+export class ExportVisitor extends Visitor {
   readonly #exportNode: ExportNode;
   readonly #referencer: Referencer;
 
@@ -85,5 +85,3 @@ class ExportVisitor extends Visitor {
     }
   }
 }
-
-export { ExportVisitor };

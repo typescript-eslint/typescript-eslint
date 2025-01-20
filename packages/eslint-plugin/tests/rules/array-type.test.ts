@@ -1955,6 +1955,41 @@ interface FooInterface {
       options: [{ default: 'array-simple' }],
       output: 'declare function foo<E extends readonly string[]>(extra: E): E;',
     },
+    {
+      code: 'type Conditional<T> = Array<T extends string ? string : number>;',
+      errors: [
+        {
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          messageId: 'errorStringArray',
+        },
+      ],
+      options: [{ default: 'array' }],
+      output: 'type Conditional<T> = (T extends string ? string : number)[];',
+    },
+    {
+      code: 'type Conditional<T> = (T extends string ? string : number)[];',
+      errors: [
+        {
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          messageId: 'errorStringGenericSimple',
+        },
+      ],
+      options: [{ default: 'array-simple' }],
+      output:
+        'type Conditional<T> = Array<T extends string ? string : number>;',
+    },
+    {
+      code: 'type Conditional<T> = (T extends string ? string : number)[];',
+      errors: [
+        {
+          data: { className: 'Array', readonlyPrefix: '', type: 'T' },
+          messageId: 'errorStringGeneric',
+        },
+      ],
+      options: [{ default: 'generic' }],
+      output:
+        'type Conditional<T> = Array<T extends string ? string : number>;',
+    },
   ],
 });
 

@@ -294,13 +294,17 @@ function bar(items: string[]) {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-let myString = 'foo';
+declare const myString: 'foo';
 const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/8737
     `
-let myString = 'foo';
+declare const myString: 'foo';
 const templateLiteral = <const>\`\${myString}-somethingElse\`;
+    `,
+    `
+const myString = 'foo';
+const templateLiteral = \`\${myString}-somethingElse\` as const;
     `,
     'let a = `a` as const;',
     {

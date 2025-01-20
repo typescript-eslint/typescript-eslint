@@ -23,9 +23,7 @@ const versions = [
 ] as const;
 type Versions = typeof versions extends ArrayLike<infer U> ? U : never;
 
-const typescriptVersionIsAtLeast = {} as Record<Versions, boolean>;
+export const typescriptVersionIsAtLeast = {} as Record<Versions, boolean>;
 for (const version of versions) {
   typescriptVersionIsAtLeast[version] = semverCheck(version);
 }
-
-export { typescriptVersionIsAtLeast };
