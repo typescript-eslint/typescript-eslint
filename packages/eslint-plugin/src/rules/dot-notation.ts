@@ -9,12 +9,7 @@ import type {
   InferOptionsTypeFromRule,
 } from '../util';
 
-import {
-  createRule,
-  getModifiers,
-  getParserServices,
-  getTypeName,
-} from '../util';
+import { createRule, getModifiers, getParserServices } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('dot-notation');
@@ -131,12 +126,13 @@ export default createRule<Options, MessageIds>({
             return;
           }
           if (propertySymbol == null && allowIndexSignaturePropertyAccess) {
-            const objectType = services.getTypeAtLocation(node.object);
-            const indexType = objectType.getNonNullableType();
-            const indexInfos = checker.getIndexInfosOfType(indexType);
+            const objectType = services
+              .getTypeAtLocation(node.object)
+              .getNonNullableType();
+            const indexInfos = checker.getIndexInfosOfType(objectType);
             if (
               indexInfos.some(
-                info => getTypeName(checker, info.keyType) === 'string',
+                info => info.keyType.flags & ts.TypeFlags.StringLike,
               )
             ) {
               return;
