@@ -102,7 +102,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
   }
 });
 
-it('There should be no old snapshots for rules that have been deleted', () => {
+test('There should be no old snapshots for rules that have been deleted', () => {
   const files = fs.readdirSync(snapshotFolder);
   const names = new Set(
     Object.keys(rules)
@@ -189,7 +189,7 @@ describe('Rule schemas should validate options correctly', () => {
   };
 
   for (const [ruleName, rule] of Object.entries(rules)) {
-    it(`${ruleName} must accept valid options`, () => {
+    test(`${ruleName} must accept valid options`, () => {
       if (
         !areOptionsValid(
           rule,
@@ -200,7 +200,7 @@ describe('Rule schemas should validate options correctly', () => {
       }
     });
 
-    it(`${ruleName} rejects arbitrary options`, () => {
+    test(`${ruleName} rejects arbitrary options`, () => {
       if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
         throw new Error(`Options succeeded validation for arbitrary options`);
       }
