@@ -97,7 +97,7 @@ Instead of `Function`, it would have been more type safe to give `getFriend` the
 
 There is no way to indicate what types functions may throw in TypeScript, due to the highly dynamic nature of JavaScript[^no-throws].
 Therefore, TypeScript treats all caught values as `any` by default.
-TypeScript's [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables) changes `catch` block variables to have the more appropriate `unknown` type but no compiler option equivalent exists for `Promise` rejections' `.catch()` method.
+TypeScript's [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables) changes `catch` block variables to have the more appropriate `unknown` type, but no compiler option equivalent exists for `Promise` rejections' `.catch()` method.
 
 [`@typescript-eslint/use-unknown-in-catch-callback-variable`](/rules/use-unknown-in-catch-callback-variable) enforces always using the `unknown` type for the parameter of a Promise rejection callback.
 
