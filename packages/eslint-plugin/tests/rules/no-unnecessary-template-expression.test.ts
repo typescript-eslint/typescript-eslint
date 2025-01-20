@@ -976,6 +976,9 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
   valid: [
     "const string = 'a';",
     'const string = `a`;',
+    'const string = `NaN: ${/* comment */ NaN}`;',
+    'const string = `undefined: ${/* comment */ undefined}`;',
+    'const string = `Infinity: ${Infinity /* comment */}`;',
     `
       declare const string: 'a';
       \`\${string}b\`;

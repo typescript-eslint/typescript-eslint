@@ -57,35 +57,25 @@ export default createRule<[], MessageId>({
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
-    function isUnderlyingTypeString(node: TSESTree.Node): boolean {
-      const checker = services.program.getTypeChecker();
-      const { constraintType } = getConstraintInfo(
-        checker,
-        services.getTypeAtLocation(node),
-      );
-
-      if (constraintType == null) {
-        return false;
-      }
-
-      const isString = (t: ts.Type): boolean => {
-        return isTypeFlagSet(t, ts.TypeFlags.StringLike);
-      };
-
-      if (constraintType.isUnion()) {
-        return constraintType.types.every(isString);
-      }
-
-      if (constraintType.isIntersection()) {
-        return constraintType.types.some(isString);
-      }
-
-      return isString(constraintType);
+    function isStringLike(type: ts.Type): boolean {
+      return isTypeFlagSet(type, ts.TypeFlags.StringLike);
     }
 
-    function isEnumType(node: TSESTree.TypeNode): boolean {
-      const type = services.getTypeAtLocation(node);
+    function isUnderlyingTypeString(type: ts.Type): boolean {
+      if (type.isUnion()) {
+        return type.types.every(isStringLike);
+      }
+
+      if (type.isIntersection()) {
+        return type.types.some(isStringLike);
+      }
+
+      return isStringLike(type);
+    }
+
+    function isEnumType(type: ts.Type): boolean {
       const symbol = type.getSymbol();
 
       return !!(
@@ -138,7 +128,7 @@ export default createRule<[], MessageId>({
       return context.sourceCode.commentsExistBetween(startToken, endToken);
     }
 
-    function hasSingleInterpolation(
+    function isTrivialInterpolation(
       node: TSESTree.TemplateLiteral | TSESTree.TSTemplateLiteralType,
     ) {
       return (
@@ -160,13 +150,11 @@ export default createRule<[], MessageId>({
     function getInterpolationInfos(
       node: TemplateLiteralTypeOrValue,
     ): InterpolationInfo[] {
-      return getInterpolations(node)
-        .map((interpolation, index) => ({
-          interpolation,
-          nextQuasi: node.quasis[index + 1],
-          prevQuasi: node.quasis[index],
-        }))
-        .reverse();
+      return getInterpolations(node).map((interpolation, index) => ({
+        interpolation,
+        nextQuasi: node.quasis[index + 1],
+        prevQuasi: node.quasis[index],
+      }));
     }
 
     function getLiteral(
@@ -207,16 +195,17 @@ export default createRule<[], MessageId>({
       });
     }
 
-    function isUnncessaryInterpolation({
+    function isUnncessaryValueInterpolation({
       interpolation,
       nextQuasi,
       prevQuasi,
     }: InterpolationInfo): boolean {
-      if (isFixableIdentifier(interpolation)) {
-        return true;
-      }
       if (hasCommentsBetweenQuasi(prevQuasi, nextQuasi)) {
         return false;
+      }
+
+      if (isFixableIdentifier(interpolation)) {
+        return true;
       }
 
       if (isLiteral(interpolation)) {
@@ -244,7 +233,7 @@ export default createRule<[], MessageId>({
       return false;
     }
 
-    function isUnncessaryTypeInterpolatione({
+    function isUnncessaryTypeInterpolation({
       interpolation,
       nextQuasi,
       prevQuasi,
@@ -286,10 +275,13 @@ export default createRule<[], MessageId>({
       return false;
     }
 
-    function report(infos: InterpolationInfo[]): void {
+    function getReportDescriptors(
+      infos: InterpolationInfo[],
+    ): TSESLint.ReportDescriptor<MessageId>[] {
       let nextCharacterIsOpeningCurlyBrace = false;
-
-      for (const { interpolation, nextQuasi, prevQuasi } of infos) {
+      const reportDescriptors: TSESLint.ReportDescriptor<MessageId>[] = [];
+      const reversedInfos = [...infos].reverse();
+      for (const { interpolation, nextQuasi, prevQuasi } of reversedInfos) {
         const fixers: ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix[])[] =
           [];
 
@@ -408,8 +400,7 @@ export default createRule<[], MessageId>({
 
         const warnLocStart = prevQuasi.range[1] - 2;
         const warnLocEnd = nextQuasi.range[0] + 1;
-
-        context.report({
+        reportDescriptors.push({
           loc: rangeToLoc(context.sourceCode, [warnLocStart, warnLocEnd]),
           messageId: 'noUnnecessaryTemplateExpression',
           fix(fixer): TSESLint.RuleFix[] {
@@ -423,6 +414,7 @@ export default createRule<[], MessageId>({
           },
         });
       }
+      return reportDescriptors;
     }
 
     return {
@@ -431,35 +423,54 @@ export default createRule<[], MessageId>({
           return;
         }
         if (
-          hasSingleInterpolation(node) &&
-          !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1]) &&
-          isUnderlyingTypeString(node.expressions[0])
+          isTrivialInterpolation(node) &&
+          !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])
         ) {
-          reportSingleInterpolation(node);
-          return;
+          const { constraintType } = getConstraintInfo(
+            checker,
+            services.getTypeAtLocation(node.expressions[0]),
+          );
+          if (constraintType && isUnderlyingTypeString(constraintType)) {
+            reportSingleInterpolation(node);
+            return;
+          }
         }
 
         const infos = getInterpolationInfos(node).filter(
-          isUnncessaryInterpolation,
+          isUnncessaryValueInterpolation,
         );
 
-        report(infos);
+        for (const reportDescriptor of getReportDescriptors(infos)) {
+          context.report(reportDescriptor);
+        }
       },
       TSTemplateLiteralType(node: TSESTree.TSTemplateLiteralType): void {
         if (
-          hasSingleInterpolation(node) &&
-          !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1]) &&
-          isUnderlyingTypeString(node.types[0]) &&
-          !isEnumType(node.types[0])
+          isTrivialInterpolation(node) &&
+          !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])
         ) {
-          reportSingleInterpolation(node);
-          return;
+          const { constraintType } = getConstraintInfo(
+            checker,
+            services.getTypeAtLocation(node.types[0]),
+          );
+
+          if (
+            constraintType &&
+            isUnderlyingTypeString(constraintType) &&
+            !isEnumType(constraintType)
+          ) {
+            reportSingleInterpolation(node);
+            return;
+          }
         }
+
         const infos = getInterpolationInfos(node).filter(
-          isUnncessaryTypeInterpolatione,
+          isUnncessaryTypeInterpolation,
         );
 
-        report(infos);
+        for (const reportDescriptor of getReportDescriptors(infos)) {
+          context.report(reportDescriptor);
+        }
       },
     };
   },
