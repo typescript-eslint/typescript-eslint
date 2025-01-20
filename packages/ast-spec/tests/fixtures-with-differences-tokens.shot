@@ -86,7 +86,6 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "legacy-fixtures/basics/fixtures/type-assertion-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-guard-in-interface/fixture.ts",
-  "legacy-fixtures/basics/fixtures/type-import-type-with-import-attributes/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-parameters-comments-heritage/fixture.ts",
   "legacy-fixtures/basics/fixtures/typed-keyword-null/fixture.ts",
   "legacy-fixtures/basics/fixtures/typed-this/fixture.ts",
@@ -141,5 +140,6 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "special/TSTypeParameter/fixtures/interface-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
 ]
 `;

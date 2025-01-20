@@ -354,7 +354,6 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "legacy-fixtures/basics/fixtures/type-guard-in-function/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-guard-in-interface/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-guard-in-method/fixture.ts",
-  "legacy-fixtures/basics/fixtures/type-import-type-with-import-attributes/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-import-type-with-type-parameters-in-type-reference/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-import-type/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-parameters-comments-heritage/fixture.ts",
@@ -522,5 +521,6 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "statement/ForInStatement/fixtures/expr-init/fixture.ts",
   "statement/ForOfStatement/fixtures/expr-init/fixture.ts",
   "statement/ForOfStatement/fixtures/using-declaration/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
 ]
 `;

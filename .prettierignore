@@ -26,7 +26,7 @@ packages/ast-spec/src/special/ExportSpecifier/fixtures/value-export-specifier/fi
 
 # TODO - remove this once prettier supports it
 # https://github.com/prettier/prettier/issues/16072
-packages/ast-spec/src/legacy-fixtures/basics/fixtures/type-import-type-with-import-attributes/fixture.ts
+packages/ast-spec/src/type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts
 
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md

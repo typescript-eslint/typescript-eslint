@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures basics type-import-type-with-import-attributes TSESTree - AST 1`] = `
+exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [

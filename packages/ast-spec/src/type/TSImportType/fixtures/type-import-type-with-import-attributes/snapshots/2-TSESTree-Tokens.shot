@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures basics type-import-type-with-import-attributes Babel - Tokens 1`] = `
+exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes TSESTree - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -82,8 +82,8 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-import-attrib
       end: { column: 22, line: 3 },
     },
   },
-  Identifier {
-    type: "Identifier",
+  Keyword {
+    type: "Keyword",
     value: "with",
 
     range: [96, 100],
