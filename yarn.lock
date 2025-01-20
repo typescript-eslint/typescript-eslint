@@ -5816,6 +5816,7 @@ __metadata:
     "@jest/types": 29.6.3
     "@typescript-eslint/type-utils": 8.21.0
     "@typescript-eslint/utils": 8.21.0
+    jest: 29.7.0
     natural-compare: ^1.4.0
     prettier: ^3.2.5
     typescript: "*"
@@ -5837,6 +5838,7 @@ __metadata:
     eslint-visitor-keys: ^4.2.0
     espree: ^10.3.0
     esprima: ^4.0.1
+    jest: 29.7.0
     json-stable-stringify-without-jsonify: ^1.0.1
     lodash.merge: 4.6.2
     mocha: ^10.4.0

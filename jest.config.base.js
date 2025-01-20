@@ -6,7 +6,7 @@ const path = require('node:path');
 // @ts-check
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
-  collectCoverage: true,
+  collectCoverage: process.env.COLLECT_COVERAGE === 'true',
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   coverageReporters: ['lcov'],
   moduleFileExtensions: [

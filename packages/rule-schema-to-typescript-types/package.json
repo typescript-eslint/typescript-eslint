@@ -30,7 +30,7 @@
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "npx jest --coverage",
+    "test": "jest",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
+    "jest": "29.7.0",
     "typescript": "*"
   },
   "funding": {
