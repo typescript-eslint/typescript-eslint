@@ -1,3 +1,28 @@
+## 8.21.0 (2025-01-20)
+
+### 🚀 Features
+
+- **ast-spec:** support import attributes in `TSImportType` ([#10640](https://github.com/typescript-eslint/typescript-eslint/pull/10640))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle type args on jsx ([#10630](https://github.com/typescript-eslint/typescript-eslint/pull/10630))
+- **eslint-plugin:** check JSX spread elements for misused spread usage ([#10653](https://github.com/typescript-eslint/typescript-eslint/pull/10653))
+- **eslint-plugin:** [no-for-in-array] report on any type which may be an array or array-like ([#10535](https://github.com/typescript-eslint/typescript-eslint/pull/10535))
+- **eslint-plugin:** [no-base-to-string] don't crash for recursive array or tuple types ([#10633](https://github.com/typescript-eslint/typescript-eslint/pull/10633))
+- **eslint-plugin:** [no-duplicate-enum-values] handle template literal ([#10675](https://github.com/typescript-eslint/typescript-eslint/pull/10675))
+- **eslint-plugin-internal:** [debug-namespace] on windows ([#10661](https://github.com/typescript-eslint/typescript-eslint/pull/10661))
+- **rule-tester:** handle window root path ([#10654](https://github.com/typescript-eslint/typescript-eslint/pull/10654))
+- **scope-manager:** add a reference for JSX closing element if it exists ([#10614](https://github.com/typescript-eslint/typescript-eslint/pull/10614))
+
+### ❤️ Thank You
+
+- Arya Emami @aryaemami59
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.20.0 (2025-01-13)
 
 ### 🚀 Features

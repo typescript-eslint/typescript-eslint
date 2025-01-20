@@ -1,3 +1,15 @@
+## 8.21.0 (2025-01-20)
+
+### 🩹 Fixes
+
+- **scope-manager:** add a reference for JSX closing element if it exists ([#10614](https://github.com/typescript-eslint/typescript-eslint/pull/10614))
+
+### ❤️ Thank You
+
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.20.0 (2025-01-13)
 
 This was a version bump only for scope-manager to align it with other projects, there were no code changes.
