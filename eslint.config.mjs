@@ -387,6 +387,7 @@ export default tseslint.config(
   // define the jest globals for all test files
   {
     files: ['packages/*/tests/**/*.{ts,tsx,cts,mts}'],
+    ignores: ['packages/eslint-plugin/**/*'],
     languageOptions: {
       globals: {
         ...jestPlugin.environments.globals.globals,
@@ -412,6 +413,18 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-return': 'off',
+    },
+  },
+  {
+    files: [
+      'packages/*/tests/**/*.test.{ts,tsx,cts,mts}',
+      'packages/*/tests/**/test.{ts,tsx,cts,mts}',
+      'packages/parser/tests/**/*.{ts,tsx,cts,mts}',
+      'packages/integration-tests/tools/integration-test-base.ts',
+      'packages/integration-tests/tools/pack-packages.ts',
+    ],
+    ignores: ['packages/eslint-plugin/**/*'],
+    rules: {
       'jest/no-alias-methods': 'error',
       'jest/no-deprecated-functions': 'error',
       'jest/no-disabled-tests': 'error',
