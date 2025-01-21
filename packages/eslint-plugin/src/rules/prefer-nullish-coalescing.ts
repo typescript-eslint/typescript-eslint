@@ -21,6 +21,14 @@ import {
 const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
   [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
 
+const isAssignmentOrLogicalExpression = (
+  node: TSESTree.Node,
+): node is TSESTree.AssignmentExpression | TSESTree.LogicalExpression =>
+  [
+    AST_NODE_TYPES.AssignmentExpression,
+    AST_NODE_TYPES.LogicalExpression,
+  ].includes(node.type);
+
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
@@ -222,12 +230,35 @@ export default createRule<Options, MessageIds>({
       return false;
     }
 
+    function isEligibleForPreferNullish(
+      node: TSESTree.Node,
+      ignorePrimitives: Options[0]['ignorePrimitives'],
+    ): boolean {
+      const mainNode = isAssignmentOrLogicalExpression(node) ? node.left : node;
+      if (isNotPossiblyNullishOrIgnorePrimitive(mainNode, ignorePrimitives)) {
+        return false;
+      }
+
+      if (ignoreConditionalTests === true && isConditionalTest(node)) {
+        return false;
+      }
+
+      if (
+        ignoreBooleanCoercion === true &&
+        isBooleanConstructorContext(node, context)
+      ) {
+        return false;
+      }
+
+      return true;
+    }
+
     function checkAndFixWithPreferNullishOverOr(
       node: TSESTree.AssignmentExpression | TSESTree.LogicalExpression,
       description: string,
       equals: string,
     ): void {
-      if (ignoreConditionalTests === true && isConditionalTest(node)) {
+      if (!isEligibleForPreferNullish(node, ignorePrimitives)) {
         return;
       }
 
@@ -287,12 +318,6 @@ export default createRule<Options, MessageIds>({
       'AssignmentExpression[operator = "||="]'(
         node: TSESTree.AssignmentExpression,
       ): void {
-        if (
-          isNotPossiblyNullishOrIgnorePrimitive(node.left, ignorePrimitives)
-        ) {
-          return;
-        }
-
         checkAndFixWithPreferNullishOverOr(node, 'assignment', '=');
       },
       ConditionalExpression(node: TSESTree.ConditionalExpression): void {
@@ -358,7 +383,7 @@ export default createRule<Options, MessageIds>({
           }
         }
 
-        let identifierOrMemberExpressionNode: TSESTree.Node | undefined;
+        let identifierOrMemberExpression: TSESTree.Node | undefined;
         let hasTruthinessCheck = false;
         let hasNullCheckWithoutTruthinessCheck = false;
         let hasUndefinedCheckWithoutTruthinessCheck = false;
@@ -370,14 +395,14 @@ export default createRule<Options, MessageIds>({
             isIdentifierOrMemberExpressionType(node.test.type) &&
             isNodeEqual(node.test, node.consequent)
           ) {
-            identifierOrMemberExpressionNode = node.test;
+            identifierOrMemberExpression = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
             node.test.operator === '!' &&
             isIdentifierOrMemberExpressionType(node.test.argument.type) &&
             isNodeEqual(node.test.argument, node.alternate)
           ) {
-            identifierOrMemberExpressionNode = node.test.argument;
+            identifierOrMemberExpression = node.test.argument;
             operator = '!';
           }
         } else {
@@ -391,31 +416,31 @@ export default createRule<Options, MessageIds>({
               (operator === '!==' || operator === '!=') &&
               isNodeEqual(testNode, node.consequent)
             ) {
-              identifierOrMemberExpressionNode = testNode;
+              identifierOrMemberExpression = testNode;
             } else if (
               (operator === '===' || operator === '==') &&
               isNodeEqual(testNode, node.alternate)
             ) {
-              identifierOrMemberExpressionNode = testNode;
+              identifierOrMemberExpression = testNode;
             }
           }
         }
 
-        if (!identifierOrMemberExpressionNode) {
+        if (!identifierOrMemberExpression) {
           return;
         }
 
         const isFixableWithPreferNullishOverTernary = ((): boolean => {
           // x ? x : y and !x ? y : x patterns
           if (hasTruthinessCheck) {
-            return !isNotPossiblyNullishOrIgnorePrimitive(
-              identifierOrMemberExpressionNode,
+            return isEligibleForPreferNullish(
+              identifierOrMemberExpression,
               ignorePrimitives,
             );
           }
 
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-            identifierOrMemberExpressionNode,
+            identifierOrMemberExpression,
           );
           const type = checker.getTypeAtLocation(tsNode);
           const flags = getTypeFlags(type);
@@ -463,8 +488,8 @@ export default createRule<Options, MessageIds>({
                 fix(fixer: TSESLint.RuleFixer): TSESLint.RuleFix {
                   const [left, right] =
                     operator === '===' || operator === '==' || operator === '!'
-                      ? [identifierOrMemberExpressionNode, node.consequent]
-                      : [identifierOrMemberExpressionNode, node.alternate];
+                      ? [identifierOrMemberExpression, node.consequent]
+                      : [identifierOrMemberExpression, node.alternate];
                   return fixer.replaceText(
                     node,
                     `${getTextWithParentheses(context.sourceCode, left)} ?? ${getTextWithParentheses(
@@ -481,19 +506,6 @@ export default createRule<Options, MessageIds>({
       'LogicalExpression[operator = "||"]'(
         node: TSESTree.LogicalExpression,
       ): void {
-        if (
-          isNotPossiblyNullishOrIgnorePrimitive(node.left, ignorePrimitives)
-        ) {
-          return;
-        }
-
-        if (
-          ignoreBooleanCoercion === true &&
-          isBooleanConstructorContext(node, context)
-        ) {
-          return;
-        }
-
         checkAndFixWithPreferNullishOverOr(node, 'or', '');
       },
     };
@@ -501,6 +513,10 @@ export default createRule<Options, MessageIds>({
 });
 
 function isConditionalTest(node: TSESTree.Node): boolean {
+  if (isIdentifierOrMemberExpressionType(node.type)) {
+    return false;
+  }
+
   const parent = node.parent;
   if (parent == null) {
     return false;
