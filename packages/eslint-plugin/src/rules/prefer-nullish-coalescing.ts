@@ -190,15 +190,13 @@ export default createRule<Options, MessageIds>({
       });
     }
 
-    function isNotPossiblyNullishOrIgnorePrimitive(
-      node: TSESTree.Node,
-      ignorePrimitives: Options[0]['ignorePrimitives'],
-    ): boolean {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode);
-
+    /**
+     * Checks whether a type tested for truthiness is eligible for conversion to
+     * a nullishness check, taking into account the rule's configuration.
+     */
+    function isTypeEligibleForPreferNullish(type: ts.Type): boolean {
       if (!isPossiblyNullish(type)) {
-        return true;
+        return false;
       }
 
       const ignorableFlags = [
@@ -224,18 +222,35 @@ export default createRule<Options, MessageIds>({
             .some(t => tsutils.isTypeFlagSet(t, ignorableFlags)),
         )
       ) {
-        return true;
+        return false;
       }
 
-      return false;
+      return true;
     }
 
-    function isEligibleForPreferNullish(
-      node: TSESTree.Node,
-      ignorePrimitives: Options[0]['ignorePrimitives'],
-    ): boolean {
-      const mainNode = isAssignmentOrLogicalExpression(node) ? node.left : node;
-      if (isNotPossiblyNullishOrIgnorePrimitive(mainNode, ignorePrimitives)) {
+    /**
+     * Determines whether a control flow construct that uses the truthiness of
+     * a test expression is eligible for conversion to the nullish coalescing
+     * operator, taking into account (both dependent on the rule's configuration):
+     * 1. Whether the construct is in a permitted syntactic context
+     * 2. Whether the type of the test expression is deemed eligible for
+     *    conversion
+     *
+     * @param node The overall node to be converted (e.g. `a || b` or `a ? a : b`)
+     * @param testNode The node being tested (i.e. `a`)
+     */
+    function isTruthinessCheckEligibleForPreferNullish({
+      node,
+      testNode,
+    }: {
+      node:
+        | TSESTree.AssignmentExpression
+        | TSESTree.ConditionalExpression
+        | TSESTree.LogicalExpression;
+      testNode: TSESTree.Node;
+    }): boolean {
+      const testType = parserServices.getTypeAtLocation(testNode);
+      if (!isTypeEligibleForPreferNullish(testType)) {
         return false;
       }
 
@@ -258,7 +273,12 @@ export default createRule<Options, MessageIds>({
       description: string,
       equals: string,
     ): void {
-      if (!isEligibleForPreferNullish(node, ignorePrimitives)) {
+      if (
+        !isTruthinessCheckEligibleForPreferNullish({
+          node,
+          testNode: node.left,
+        })
+      ) {
         return;
       }
 
@@ -433,10 +453,10 @@ export default createRule<Options, MessageIds>({
         const isFixableWithPreferNullishOverTernary = ((): boolean => {
           // x ? x : y and !x ? y : x patterns
           if (hasTruthinessCheck) {
-            return isEligibleForPreferNullish(
-              identifierOrMemberExpression,
-              ignorePrimitives,
-            );
+            return isTruthinessCheckEligibleForPreferNullish({
+              node,
+              testNode: identifierOrMemberExpression,
+            });
           }
 
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
@@ -518,10 +538,6 @@ function isConditionalTest(node: TSESTree.Node): boolean {
     return false;
   }
 
-  if (isIdentifierOrMemberExpressionType(node.type)) {
-    return isConditionalTest(parent);
-  }
-
   if (parent.type === AST_NODE_TYPES.LogicalExpression) {
     return isConditionalTest(parent);
   }
@@ -570,10 +586,6 @@ function isBooleanConstructorContext(
   const parent = node.parent;
   if (parent == null) {
     return false;
-  }
-
-  if (isIdentifierOrMemberExpressionType(node.type)) {
-    return isBooleanConstructorContext(parent, context);
   }
 
   if (parent.type === AST_NODE_TYPES.LogicalExpression) {
