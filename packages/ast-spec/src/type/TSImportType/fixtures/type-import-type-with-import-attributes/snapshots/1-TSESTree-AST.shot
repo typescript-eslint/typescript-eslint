@@ -41,50 +41,80 @@ Program {
             end: { column: 19, line: 3 },
           },
         },
-        options: TSAssertClause {
-          type: "TSAssertClause",
-          elements: [
-            ImportAttribute {
-              type: "ImportAttribute",
+        options: ObjectExpression {
+          type: "ObjectExpression",
+          properties: [
+            Property {
+              type: "Property",
               key: Identifier {
                 type: "Identifier",
-                decorators: [],
-                name: "type",
-                optional: false,
+                name: "with",
 
-                range: [104, 108],
+                range: [82, 121],
                 loc: {
-                  start: { column: 31, line: 3 },
-                  end: { column: 35, line: 3 },
+                  start: { column: 9, line: 3 },
+                  end: { column: 48, line: 3 },
                 },
               },
-              value: Literal {
-                type: "Literal",
-                raw: ""json"",
-                value: "json",
+              value: TSAssertClause {
+                type: "TSAssertClause",
+                elements: [
+                  ImportAttribute {
+                    type: "ImportAttribute",
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "type",
+                      optional: false,
 
-                range: [110, 116],
+                      range: [104, 108],
+                      loc: {
+                        start: { column: 31, line: 3 },
+                        end: { column: 35, line: 3 },
+                      },
+                    },
+                    value: Literal {
+                      type: "Literal",
+                      raw: ""json"",
+                      value: "json",
+
+                      range: [110, 116],
+                      loc: {
+                        start: { column: 37, line: 3 },
+                        end: { column: 43, line: 3 },
+                      },
+                    },
+
+                    range: [104, 116],
+                    loc: {
+                      start: { column: 31, line: 3 },
+                      end: { column: 43, line: 3 },
+                    },
+                  },
+                ],
+                id: 0,
+                multiLine: false,
+                token: 118,
+
+                range: [102, 118],
                 loc: {
-                  start: { column: 37, line: 3 },
-                  end: { column: 43, line: 3 },
+                  start: { column: 29, line: 3 },
+                  end: { column: 45, line: 3 },
                 },
               },
 
-              range: [104, 116],
+              range: [82, 121],
               loc: {
-                start: { column: 31, line: 3 },
-                end: { column: 43, line: 3 },
+                start: { column: 9, line: 3 },
+                end: { column: 48, line: 3 },
               },
             },
           ],
-          id: 0,
-          multiLine: false,
-          token: 118,
 
-          range: [102, 118],
+          range: [82, 121],
           loc: {
-            start: { column: 29, line: 3 },
-            end: { column: 45, line: 3 },
+            start: { column: 9, line: 3 },
+            end: { column: 48, line: 3 },
           },
         },
         qualifier: null,

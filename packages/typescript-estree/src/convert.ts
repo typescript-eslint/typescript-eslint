@@ -40,6 +40,7 @@ import {
   unescapeStringLiteralText,
 } from './node-utils';
 import { AST_NODE_TYPES } from './ts-estree';
+import { importAttribute } from '@babel/types';
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -3089,11 +3090,38 @@ export class Converter {
           const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
           range[0] = token.getStart(this.ast);
         }
+
+        let options = null;
+        if (node.attributes) {
+           const value = this.createNode<TSESTree.ObjectExpression>(node.attributes, {
+            type: AST_NODE_TYPES.ObjectExpression,
+            properties: node.attributes.elements.map(importAttribute => this.createNode<TSESTree.Property>(importAttribute, {
+              type: AST_NODE_TYPES.Property,
+              key: this.convertChild(importAttribute.name),
+              value: this.convertChild(importAttribute.value),
+            }))
+          });
+
+          options = this.createNode<TSESTree.ObjectExpression>(node, {
+            type: AST_NODE_TYPES.ObjectExpression,
+            properties: [
+              this.createNode<TSESTree.Property>(node, {
+                type: AST_NODE_TYPES.Property,
+                key: this.createNode<TSESTree.Identifier>(node, {
+                  type: AST_NODE_TYPES.Identifier,
+                  name: 'with',
+                }),
+                value,
+              })
+            ],
+          });
+        }
+
         const result = this.createNode<TSESTree.TSImportType>(node, {
           type: AST_NODE_TYPES.TSImportType,
           range,
           argument: this.convertChild(node.argument),
-          options: node.attributes ? this.convertChild(node.attributes) : null,
+          options,
           qualifier: this.convertChild(node.qualifier),
           typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(

@@ -49,37 +49,30 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
               end: { column: 19, line: 3 },
             },
           },
--         options: TSAssertClause {
--           type: 'TSAssertClause',
--           elements: Array [
--             ImportAttribute {
--               type: 'ImportAttribute',
-+         options: ObjectExpression {
-+           type: 'ObjectExpression',
-+           properties: Array [
-+             Property {
-+               type: 'Property',
+          options: ObjectExpression {
+            type: 'ObjectExpression',
+            properties: Array [
+              Property {
+                type: 'Property',
 +               computed: false,
                 key: Identifier {
                   type: 'Identifier',
--                 decorators: Array [],
--                 name: 'type',
--                 optional: false,
-+                 name: 'with',
+                  name: 'with',
 
--                 range: [104, 108],
+-                 range: [82, 121],
 +                 range: [96, 100],
                   loc: {
--                   start: { column: 31, line: 3 },
--                   end: { column: 35, line: 3 },
+-                   start: { column: 9, line: 3 },
+-                   end: { column: 48, line: 3 },
 +                   start: { column: 23, line: 3 },
 +                   end: { column: 27, line: 3 },
                   },
                 },
--               value: Literal {
--                 type: 'Literal',
--                 raw: '"json"',
--                 value: 'json',
+-               value: TSAssertClause {
+-                 type: 'TSAssertClause',
+-                 elements: Array [
+-                   ImportAttribute {
+-                     type: 'ImportAttribute',
 +               kind: 'init',
 +               method: false,
 +               shorthand: false,
@@ -89,68 +82,67 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
 +                   Property {
 +                     type: 'Property',
 +                     computed: false,
-+                     key: Identifier {
-+                       type: 'Identifier',
-+                       name: 'type',
-+
-+                       range: [104, 108],
-+                       loc: {
-+                         start: { column: 31, line: 3 },
-+                         end: { column: 35, line: 3 },
-+                       },
-+                     },
+                      key: Identifier {
+                        type: 'Identifier',
+-                       decorators: Array [],
+                        name: 'type',
+-                       optional: false,
+
+                        range: [104, 108],
+                        loc: {
+                          start: { column: 31, line: 3 },
+                          end: { column: 35, line: 3 },
+                        },
+                      },
 +                     kind: 'init',
 +                     method: false,
 +                     shorthand: false,
-+                     value: Literal {
-+                       type: 'Literal',
-+                       raw: '"json"',
-+                       value: 'json',
-+
-+                       range: [110, 116],
-+                       loc: {
-+                         start: { column: 37, line: 3 },
-+                         end: { column: 43, line: 3 },
-+                       },
-+                     },
+                      value: Literal {
+                        type: 'Literal',
+                        raw: '"json"',
+                        value: 'json',
 
--                 range: [110, 116],
-+                     range: [104, 116],
-+                     loc: {
-+                       start: { column: 31, line: 3 },
-+                       end: { column: 43, line: 3 },
-+                     },
-+                   },
-+                 ],
-+
-+                 range: [102, 118],
+                        range: [110, 116],
+                        loc: {
+                          start: { column: 37, line: 3 },
+                          end: { column: 43, line: 3 },
+                        },
+                      },
+
+                      range: [104, 116],
+                      loc: {
+                        start: { column: 31, line: 3 },
+                        end: { column: 43, line: 3 },
+                      },
+                    },
+                  ],
+-                 id: 0,
+-                 multiLine: false,
+-                 token: 118,
+
+                  range: [102, 118],
                   loc: {
--                   start: { column: 37, line: 3 },
--                   end: { column: 43, line: 3 },
-+                   start: { column: 29, line: 3 },
-+                   end: { column: 45, line: 3 },
+                    start: { column: 29, line: 3 },
+                    end: { column: 45, line: 3 },
                   },
                 },
 
--               range: [104, 116],
+-               range: [82, 121],
 +               range: [96, 118],
                 loc: {
--                 start: { column: 31, line: 3 },
--                 end: { column: 43, line: 3 },
+-                 start: { column: 9, line: 3 },
+-                 end: { column: 48, line: 3 },
 +                 start: { column: 23, line: 3 },
 +                 end: { column: 45, line: 3 },
                 },
               },
             ],
--           id: 0,
--           multiLine: false,
--           token: 118,
 
--           range: [102, 118],
+-           range: [82, 121],
 +           range: [94, 120],
             loc: {
--             start: { column: 29, line: 3 },
--             end: { column: 45, line: 3 },
+-             start: { column: 9, line: 3 },
+-             end: { column: 48, line: 3 },
 +             start: { column: 21, line: 3 },
 +             end: { column: 47, line: 3 },
             },
