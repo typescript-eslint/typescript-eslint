@@ -57,7 +57,9 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'with',
+-                 optional: false,
 
                   range: [96, 100],
                   loc: {
@@ -67,6 +69,7 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
                 },
                 kind: 'init',
                 method: false,
+-               optional: false,
                 shorthand: false,
                 value: ObjectExpression {
                   type: 'ObjectExpression',
@@ -88,6 +91,7 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
                       },
                       kind: 'init',
                       method: false,
+-                     optional: false,
                       shorthand: false,
                       value: Literal {
                         type: 'Literal',

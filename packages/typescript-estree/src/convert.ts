@@ -808,7 +808,6 @@ export class Converter {
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
-      // @ts-expect-error -- TypeScript@<5.1 doesn't have ts.JsxNamespacedName
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         range,
@@ -3097,12 +3096,13 @@ export class Converter {
             type: AST_NODE_TYPES.ObjectExpression,
             properties: node.attributes.elements.map(importAttribute => this.createNode<TSESTree.Property>(importAttribute, {
               type: AST_NODE_TYPES.Property,
+              key: this.convertChild(importAttribute.name),
+              value: this.convertChild(importAttribute.value),
               computed: false,
               kind: 'init',
               method: false,
               shorthand: false,
-              key: this.convertChild(importAttribute.name),
-              value: this.convertChild(importAttribute.value),
+              optional: false,
             }))
           });
 
@@ -3117,17 +3117,21 @@ export class Converter {
             properties: [
               this.createNode<TSESTree.Property>(node, {
                 type: AST_NODE_TYPES.Property,
+                key: this.createNode<TSESTree.Identifier>(node, {
+                  type: AST_NODE_TYPES.Identifier,
+                  name: 'with',
+                  range: getRange(withToken, this.ast),
+                  decorators: [],
+                  optional: false,
+                  typeAnnotation: undefined,
+                }),
+                value,
+                range: [withToken.pos, node.attributes.end],
                 computed: false,
                 kind: 'init',
                 method: false,
                 shorthand: false,
-                range: [withToken.pos, node.attributes.end],
-                key: this.createNode<TSESTree.Identifier>(node, {
-                  type: AST_NODE_TYPES.Identifier,
-                  name: 'with',
-                  range: [withToken.end - 4, withToken.end],
-                }),
-                value,
+                optional: false,
               })
             ],
           });
@@ -3496,7 +3500,7 @@ export class Converter {
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
     // The 'parent' property will be added later if specified
-    node: Omit<TSESTreeToTSNode<T>, 'parent'>,
+    node: ts.Node,
     data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
