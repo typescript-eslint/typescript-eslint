@@ -3106,6 +3106,10 @@ export class Converter {
             }))
           });
 
+          const commaToken = findNextToken(node.argument, node, this.ast);
+          const openBraceToken = findNextToken(commaToken, node, this.ast);
+          const withToken = findNextToken(openBraceToken, node, this.ast);
+
           options = this.createNode<TSESTree.ObjectExpression>(node, {
             type: AST_NODE_TYPES.ObjectExpression,
             properties: [
