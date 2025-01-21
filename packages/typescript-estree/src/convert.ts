@@ -3498,7 +3498,6 @@ export class Converter {
   }
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
-    // The 'parent' property will be added later if specified
     node: ts.Node,
     data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
