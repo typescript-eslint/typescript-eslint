@@ -21,14 +21,6 @@ import {
 const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
   [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
 
-const isAssignmentOrLogicalExpression = (
-  node: TSESTree.Node,
-): node is TSESTree.AssignmentExpression | TSESTree.LogicalExpression =>
-  [
-    AST_NODE_TYPES.AssignmentExpression,
-    AST_NODE_TYPES.LogicalExpression,
-  ].includes(node.type);
-
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
