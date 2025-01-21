@@ -3098,13 +3098,13 @@ export class Converter {
               properties: node.attributes.elements.map(importAttribute =>
                 this.createNode<TSESTree.Property>(importAttribute, {
                   type: AST_NODE_TYPES.Property,
-                  key: this.convertChild(importAttribute.name),
-                  value: this.convertChild(importAttribute.value),
                   computed: false,
+                  key: this.convertChild(importAttribute.name),
                   kind: 'init',
                   method: false,
-                  shorthand: false,
                   optional: false,
+                  shorthand: false,
+                  value: this.convertChild(importAttribute.value),
                 }),
               ),
             },
@@ -3125,21 +3125,21 @@ export class Converter {
             properties: [
               this.createNode<TSESTree.Property>(node, {
                 type: AST_NODE_TYPES.Property,
+                range: [withToken.pos, node.attributes.end],
+                computed: false,
                 key: this.createNode<TSESTree.Identifier>(node, {
                   type: AST_NODE_TYPES.Identifier,
-                  name: 'with',
                   range: getRange(withToken, this.ast),
                   decorators: [],
+                  name: 'with',
                   optional: false,
                   typeAnnotation: undefined,
                 }),
-                value,
-                range: [withToken.pos, node.attributes.end],
-                computed: false,
                 kind: 'init',
                 method: false,
-                shorthand: false,
                 optional: false,
+                shorthand: false,
+                value,
               }),
             ],
           });
