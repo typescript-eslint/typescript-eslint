@@ -3091,23 +3091,32 @@ export class Converter {
 
         let options = null;
         if (node.attributes) {
-          const value = this.createNode<TSESTree.ObjectExpression>(node.attributes, {
-            type: AST_NODE_TYPES.ObjectExpression,
-            properties: node.attributes.elements.map(importAttribute => this.createNode<TSESTree.Property>(importAttribute, {
-              type: AST_NODE_TYPES.Property,
-              key: this.convertChild(importAttribute.name),
-              value: this.convertChild(importAttribute.value),
-              computed: false,
-              kind: 'init',
-              method: false,
-              shorthand: false,
-              optional: false,
-            }))
-          });
+          const value = this.createNode<TSESTree.ObjectExpression>(
+            node.attributes,
+            {
+              type: AST_NODE_TYPES.ObjectExpression,
+              properties: node.attributes.elements.map(importAttribute =>
+                this.createNode<TSESTree.Property>(importAttribute, {
+                  type: AST_NODE_TYPES.Property,
+                  key: this.convertChild(importAttribute.name),
+                  value: this.convertChild(importAttribute.value),
+                  computed: false,
+                  kind: 'init',
+                  method: false,
+                  shorthand: false,
+                  optional: false,
+                }),
+              ),
+            },
+          );
 
           const commaToken = findNextToken(node.argument, node, this.ast)!;
           const openBraceToken = findNextToken(commaToken, node, this.ast)!;
-          const closeBraceToken = findNextToken(node.attributes, node, this.ast)!;
+          const closeBraceToken = findNextToken(
+            node.attributes,
+            node,
+            this.ast,
+          )!;
           const withToken = findNextToken(openBraceToken, node, this.ast)!;
 
           options = this.createNode<TSESTree.ObjectExpression>(node, {
@@ -3131,7 +3140,7 @@ export class Converter {
                 method: false,
                 shorthand: false,
                 optional: false,
-              })
+              }),
             ],
           });
         }
