@@ -464,7 +464,7 @@ do {} while (true);
       code: `
 while (true) {}
       `,
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     `
 let variable = 'abc' as string | void;
@@ -1972,7 +1972,7 @@ declare const test: true;
 while (test) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: `
@@ -1981,7 +1981,7 @@ declare const test: true;
 for (; test; ) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: `
@@ -1990,21 +1990,21 @@ declare const test: true;
 do {} while (test);
       `,
       errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: `
 for (; true; ) {}
       `,
       errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: `
 do {} while (true);
       `,
       errors: [{ column: 14, line: 2, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: `
@@ -2013,14 +2013,14 @@ let shouldRun = true;
 while ((shouldRun = true)) {}
       `,
       errors: [{ column: 9, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: `
 while (false) {}
       `,
       errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
-      options: [{ allowConstantLoopConditions: 'neverExceptWhileTrue' }],
+      options: [{ allowConstantLoopConditions: 'only-true' }],
     },
     {
       code: noFormat`

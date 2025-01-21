@@ -124,21 +124,21 @@ do {
 } while (true);
 ```
 
-#### `'neverExceptWhileTrue'`
+#### `'only-true'`
 
 Disallow constant conditions in all loops except `while` loops with expression `true`.
 
-Example of correct code for `{ allowConstantLoopConditions: 'neverExceptWhileTrue' }`:
+Example of correct code for `{ allowConstantLoopConditions: 'only-true' }`:
 
-```ts option='{ "allowConstantLoopConditions": "neverExceptWhileTrue" }' showPlaygroundButton
+```ts option='{ "allowConstantLoopConditions": "only-true" }' showPlaygroundButton
 while (true) {
   // ...
 }
 ```
 
-Example of incorrect code for `{ allowConstantLoopConditions: 'neverExceptWhileTrue' }`:
+Example of incorrect code for `{ allowConstantLoopConditions: 'only-true' }`:
 
-```ts option='{ "allowConstantLoopConditions": "neverExceptWhileTrue" }' showPlaygroundButton
+```ts option='{ "allowConstantLoopConditions": "only-true" }' showPlaygroundButton
 for (; true; ) {
   // ...
 }

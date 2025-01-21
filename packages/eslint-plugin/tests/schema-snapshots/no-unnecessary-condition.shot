@@ -15,7 +15,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "boolean"
           },
           {
-            "enum": ["always", "never", "neverExceptWhileTrue"],
+            "enum": ["always", "never", "only-true"],
             "type": "string"
           }
         ]
@@ -42,7 +42,7 @@ type Options = [
     allowConstantLoopConditions?:
       | 'always'
       | 'never'
-      | 'neverExceptWhileTrue'
+      | 'only-true'
       /** Whether to ignore constant loop conditions, such as \`while (true)\`. */
       | boolean;
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */

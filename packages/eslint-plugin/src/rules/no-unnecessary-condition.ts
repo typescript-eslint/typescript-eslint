@@ -156,7 +156,7 @@ function booleanComparison(
 
 type LegacyAllowConstantLoopConditions = boolean;
 
-type AllowConstantLoopConditions = 'always' | 'never' | 'neverExceptWhileTrue';
+type AllowConstantLoopConditions = 'always' | 'never' | 'only-true';
 
 export type Options = [
   {
@@ -229,7 +229,7 @@ export default createRule<Options, MessageId>({
               },
               {
                 type: 'string',
-                enum: ['always', 'never', 'neverExceptWhileTrue'],
+                enum: ['always', 'never', 'only-true'],
               },
             ],
           },
@@ -565,7 +565,7 @@ export default createRule<Options, MessageId>({
     ): void {
       // allow: `while (true) {}`
       if (
-        allowConstantLoopConditionsOption === 'neverExceptWhileTrue' &&
+        allowConstantLoopConditionsOption === 'only-true' &&
         node.test.type === AST_NODE_TYPES.Literal &&
         node.test.value === true
       ) {
