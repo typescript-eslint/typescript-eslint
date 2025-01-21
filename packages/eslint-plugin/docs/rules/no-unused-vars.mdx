@@ -103,7 +103,7 @@ const schema = z.object({
   value: z.number(),
 });
 
-export type Box = z.infer<typeof box>;
+export type Box = z.infer<typeof schema>;
 ```
 
 Instead, it's often cleaner and less code to write out the types directly:
