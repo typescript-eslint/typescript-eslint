@@ -46,6 +46,7 @@ Program {
           properties: [
             Property {
               type: "Property",
+              computed: false,
               key: Identifier {
                 type: "Identifier",
                 name: "with",
@@ -56,11 +57,15 @@ Program {
                   end: { column: 48, line: 3 },
                 },
               },
+              kind: "init",
+              method: false,
+              shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
                 properties: [
                   Property {
                     type: "Property",
+                    computed: false,
                     key: Identifier {
                       type: "Identifier",
                       decorators: [],
@@ -73,6 +78,9 @@ Program {
                         end: { column: 35, line: 3 },
                       },
                     },
+                    kind: "init",
+                    method: false,
+                    shorthand: false,
                     value: Literal {
                       type: "Literal",
                       raw: ""json"",
