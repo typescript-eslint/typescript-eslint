@@ -163,28 +163,25 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function isImplicitlyNarrowedConstDeclaration({
+    function isImplicitlyNarrowedLiteralDeclaration({
       expression,
       parent,
     }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion): boolean {
+      /**
+       * Even on `const` variable declarations, template literals with expressions can sometimes be widened without a type assertion.
+       * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
+       */
+      if (isTemplateLiteralWithExpressions(expression)) {
+        return false;
+      }
+
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const maybeDeclarationNode = parent.parent!;
-      return (
-        maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
-        maybeDeclarationNode.kind === 'const' &&
-        /**
-         * Even on `const` variable declarations, template literals with expressions can sometimes be widened without a type assertion.
-         * @see https://github.com/typescript-eslint/typescript-eslint/issues/8737
-         */
-        !isTemplateLiteralWithExpressions(expression)
-      );
-    }
 
-    function isReadonlyClassProperty({
-      parent,
-    }: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion) {
       return (
-        parent.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly
+        (maybeDeclarationNode.type === AST_NODE_TYPES.VariableDeclaration &&
+          maybeDeclarationNode.kind === 'const') ||
+        (parent.type === AST_NODE_TYPES.PropertyDefinition && parent.readonly)
       );
     }
 
@@ -237,9 +234,7 @@ export default createRule<Options, MessageIds>({
         const typeIsUnchanged = isTypeUnchanged(uncastType, castType);
 
         const wouldSameTypeBeInferred = castType.isLiteral()
-          ? isImplicitlyNarrowedConstDeclaration(node) ||
-            (isReadonlyClassProperty(node) &&
-              !isTemplateLiteralWithExpressions(node.expression))
+          ? isImplicitlyNarrowedLiteralDeclaration(node)
           : !isConstAssertion(node.typeAnnotation);
 
         if (typeIsUnchanged && wouldSameTypeBeInferred) {
