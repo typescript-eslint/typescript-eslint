@@ -1158,12 +1158,46 @@ var x = 1;
     },
     {
       code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = 'a';
+}
+      `,
+    },
+    {
+      code: `
+class T {
+  readonly a = 3 as 3;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = 3;
+}
+      `,
+    },
+    {
+      code: `
 type S = 10;
 
 class T {
-  readonly a = 'a' as const;
-  readonly b = 3 as 3;
-  readonly c = 10 as S;
+  readonly a = 10 as S;
 }
       `,
       errors: [
@@ -1171,22 +1205,12 @@ class T {
           line: 5,
           messageId: 'unnecessaryAssertion',
         },
-        {
-          line: 6,
-          messageId: 'unnecessaryAssertion',
-        },
-        {
-          line: 7,
-          messageId: 'unnecessaryAssertion',
-        },
       ],
       output: `
 type S = 10;
 
 class T {
-  readonly a = 'a';
-  readonly b = 3;
-  readonly c = 10;
+  readonly a = 10;
 }
       `,
     },
