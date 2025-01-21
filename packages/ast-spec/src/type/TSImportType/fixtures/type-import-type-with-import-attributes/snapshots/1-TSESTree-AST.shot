@@ -56,11 +56,11 @@ Program {
                   end: { column: 48, line: 3 },
                 },
               },
-              value: TSAssertClause {
-                type: "TSAssertClause",
-                elements: [
-                  ImportAttribute {
-                    type: "ImportAttribute",
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: [
+                  Property {
+                    type: "Property",
                     key: Identifier {
                       type: "Identifier",
                       decorators: [],
@@ -92,9 +92,6 @@ Program {
                     },
                   },
                 ],
-                id: 0,
-                multiLine: false,
-                token: 118,
 
                 range: [102, 118],
                 loc: {

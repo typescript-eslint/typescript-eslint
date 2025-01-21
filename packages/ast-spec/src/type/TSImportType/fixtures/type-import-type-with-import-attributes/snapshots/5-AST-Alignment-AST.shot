@@ -68,19 +68,14 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
 +                   end: { column: 27, line: 3 },
                   },
                 },
--               value: TSAssertClause {
--                 type: 'TSAssertClause',
--                 elements: Array [
--                   ImportAttribute {
--                     type: 'ImportAttribute',
 +               kind: 'init',
 +               method: false,
 +               shorthand: false,
-+               value: ObjectExpression {
-+                 type: 'ObjectExpression',
-+                 properties: Array [
-+                   Property {
-+                     type: 'Property',
+                value: ObjectExpression {
+                  type: 'ObjectExpression',
+                  properties: Array [
+                    Property {
+                      type: 'Property',
 +                     computed: false,
                       key: Identifier {
                         type: 'Identifier',
@@ -116,9 +111,6 @@ exports[`AST Fixtures type TSImportType type-import-type-with-import-attributes 
                       },
                     },
                   ],
--                 id: 0,
--                 multiLine: false,
--                 token: 118,
 
                   range: [102, 118],
                   loc: {

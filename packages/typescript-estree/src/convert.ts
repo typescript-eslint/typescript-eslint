@@ -3093,7 +3093,7 @@ export class Converter {
 
         let options = null;
         if (node.attributes) {
-           const value = this.createNode<TSESTree.ObjectExpression>(node.attributes, {
+          const value = this.createNode<TSESTree.ObjectExpression>(node.attributes, {
             type: AST_NODE_TYPES.ObjectExpression,
             properties: node.attributes.elements.map(importAttribute => this.createNode<TSESTree.Property>(importAttribute, {
               type: AST_NODE_TYPES.Property,
