@@ -1054,6 +1054,75 @@ const test = Boolean(((a = b), b || c));
     },
     {
       code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ? a : b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(!a ? b : a);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean((a ? a : b) || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(c || (!a ? b : a));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(!a ? b || c : a);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
 let a: string | boolean | undefined;
 let b: string | boolean | undefined;
 let c: string | boolean | undefined;

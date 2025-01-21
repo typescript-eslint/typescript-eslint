@@ -570,13 +570,18 @@ function isBooleanConstructorContext(
     return false;
   }
 
-  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
+  if (
+    parent.type === AST_NODE_TYPES.LogicalExpression ||
+    parent.type === AST_NODE_TYPES.UnaryExpression
+  ) {
     return isBooleanConstructorContext(parent, context);
   }
 
   if (
     parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    (parent.consequent === node || parent.alternate === node)
+    (parent.test === node ||
+      parent.consequent === node ||
+      parent.alternate === node)
   ) {
     return isBooleanConstructorContext(parent, context);
   }
