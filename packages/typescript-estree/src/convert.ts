@@ -40,7 +40,6 @@ import {
   unescapeStringLiteralText,
 } from './node-utils';
 import { AST_NODE_TYPES } from './ts-estree';
-import { importAttribute } from '@babel/types';
 
 const SyntaxKind = ts.SyntaxKind;
 
