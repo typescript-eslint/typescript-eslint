@@ -3106,12 +3106,14 @@ export class Converter {
             }))
           });
 
-          const commaToken = findNextToken(node.argument, node, this.ast);
-          const openBraceToken = findNextToken(commaToken, node, this.ast);
-          const withToken = findNextToken(openBraceToken, node, this.ast);
+          const commaToken = findNextToken(node.argument, node, this.ast)!;
+          const openBraceToken = findNextToken(commaToken, node, this.ast)!;
+          const closeBraceToken = findNextToken(node.attributes, node, this.ast)!;
+          const withToken = findNextToken(openBraceToken, node, this.ast)!;
 
           options = this.createNode<TSESTree.ObjectExpression>(node, {
             type: AST_NODE_TYPES.ObjectExpression,
+            range: [openBraceToken.pos, closeBraceToken.end],
             properties: [
               this.createNode<TSESTree.Property>(node, {
                 type: AST_NODE_TYPES.Property,
@@ -3119,9 +3121,11 @@ export class Converter {
                 kind: 'init',
                 method: false,
                 shorthand: false,
+                range: [withToken.pos, node.attributes.end],
                 key: this.createNode<TSESTree.Identifier>(node, {
                   type: AST_NODE_TYPES.Identifier,
                   name: 'with',
+                  range: [withToken.end - 4, withToken.end],
                 }),
                 value,
               })
