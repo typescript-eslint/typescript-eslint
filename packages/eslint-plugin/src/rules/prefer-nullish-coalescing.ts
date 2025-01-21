@@ -513,13 +513,13 @@ export default createRule<Options, MessageIds>({
 });
 
 function isConditionalTest(node: TSESTree.Node): boolean {
-  if (isIdentifierOrMemberExpressionType(node.type)) {
-    return false;
-  }
-
   const parent = node.parent;
   if (parent == null) {
     return false;
+  }
+
+  if (isIdentifierOrMemberExpressionType(node.type)) {
+    return isConditionalTest(parent);
   }
 
   if (parent.type === AST_NODE_TYPES.LogicalExpression) {
@@ -528,7 +528,9 @@ function isConditionalTest(node: TSESTree.Node): boolean {
 
   if (
     parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    (parent.consequent === node || parent.alternate === node)
+    (parent.consequent === node ||
+      parent.alternate === node ||
+      node.type === AST_NODE_TYPES.UnaryExpression)
   ) {
     return isConditionalTest(parent);
   }
@@ -570,18 +572,19 @@ function isBooleanConstructorContext(
     return false;
   }
 
-  if (
-    parent.type === AST_NODE_TYPES.LogicalExpression ||
-    parent.type === AST_NODE_TYPES.UnaryExpression
-  ) {
+  if (isIdentifierOrMemberExpressionType(node.type)) {
+    return isBooleanConstructorContext(parent, context);
+  }
+
+  if (parent.type === AST_NODE_TYPES.LogicalExpression) {
     return isBooleanConstructorContext(parent, context);
   }
 
   if (
     parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    (parent.test === node ||
-      parent.consequent === node ||
-      parent.alternate === node)
+    (parent.consequent === node ||
+      parent.alternate === node ||
+      node.type === AST_NODE_TYPES.UnaryExpression)
   ) {
     return isBooleanConstructorContext(parent, context);
   }

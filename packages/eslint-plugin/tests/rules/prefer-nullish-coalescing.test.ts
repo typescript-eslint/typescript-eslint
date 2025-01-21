@@ -1069,7 +1069,6 @@ const x = Boolean(a ? a : b);
       code: `
 let a: string | boolean | undefined;
 let b: string | boolean | undefined;
-let c: string | boolean | undefined;
 
 const test = Boolean(!a ? b : a);
       `,
@@ -1100,20 +1099,6 @@ let b: string | boolean | undefined;
 let c: string | boolean | undefined;
 
 const test = Boolean(c || (!a ? b : a));
-      `,
-      options: [
-        {
-          ignoreBooleanCoercion: true,
-        },
-      ],
-    },
-    {
-      code: `
-let a: string | boolean | undefined;
-let b: string | boolean | undefined;
-let c: string | boolean | undefined;
-
-const test = Boolean(!a ? b || c : a);
       `,
       options: [
         {
@@ -1246,6 +1231,64 @@ let a: string | undefined;
 let b: string | undefined;
 
 if (!!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+if (a ? a : b) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+if (!a ? b : a) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if ((a ? a : b) || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (c || (!a ? b : a)) {
 }
       `,
       options: [
