@@ -3118,18 +3118,19 @@ export class Converter {
             this.ast,
           )!;
           const withToken = findNextToken(openBraceToken, node, this.ast)!;
+          const withTokenRange = getRange(withToken, this.ast);
 
           options = this.createNode<TSESTree.ObjectExpression>(node, {
             type: AST_NODE_TYPES.ObjectExpression,
-            range: [openBraceToken.pos, closeBraceToken.end],
+            range: [openBraceToken.getStart(this.ast), closeBraceToken.end],
             properties: [
               this.createNode<TSESTree.Property>(node, {
                 type: AST_NODE_TYPES.Property,
-                range: [withToken.pos, node.attributes.end],
+                range: [withTokenRange[0], node.attributes.end],
                 computed: false,
                 key: this.createNode<TSESTree.Identifier>(node, {
                   type: AST_NODE_TYPES.Identifier,
-                  range: getRange(withToken, this.ast),
+                  range: withTokenRange,
                   decorators: [],
                   name: 'with',
                   optional: false,

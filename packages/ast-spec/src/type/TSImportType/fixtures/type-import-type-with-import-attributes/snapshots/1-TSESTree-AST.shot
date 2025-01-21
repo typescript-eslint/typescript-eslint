@@ -112,17 +112,17 @@ Program {
                 },
               },
 
-              range: [95, 118],
+              range: [96, 118],
               loc: {
-                start: { column: 22, line: 3 },
+                start: { column: 23, line: 3 },
                 end: { column: 45, line: 3 },
               },
             },
           ],
 
-          range: [93, 120],
+          range: [94, 120],
           loc: {
-            start: { column: 20, line: 3 },
+            start: { column: 21, line: 3 },
             end: { column: 47, line: 3 },
           },
         },
