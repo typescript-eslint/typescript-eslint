@@ -75,4 +75,5 @@ Known rules that conflict with or require special configuration to be used with 
 - [no-namespace](/rules/no-namespace#when-not-to-use-it): some reports should be ignored
 - [no-require-imports](/rules/no-require-imports): requires [configuring its `allowAsImport` option](/rules/no-require-imports#allowasimport)
 
-Similar customizations to your setup may be necessary for related TS options.
+If you are using the [`importsNotUsedAsValues`](https://www.typescriptlang.org/tsconfig/#importsNotUsedAsValues), [`isolatedModules`](https://www.typescriptlang.org/tsconfig/#isolatedModules), and/or [`preserveValueImports`](https://www.typescriptlang.org/tsconfig/#preserveValueImports) TSConfig options, you may need to additionally configure those lint rules as well.
+See the rules' documentation for more information.
