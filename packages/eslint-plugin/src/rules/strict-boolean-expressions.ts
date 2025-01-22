@@ -332,7 +332,10 @@ export default createRule<Options, MessageId>({
           return type;
         });
 
-      if (returnTypes.every(returnType => isBooleanType(returnType))) {
+      if (
+        returnTypes.every(returnType => isBooleanType(returnType)) ||
+        options.allowNullableBoolean
+      ) {
         return;
       }
 
