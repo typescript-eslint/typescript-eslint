@@ -290,7 +290,8 @@ export default createRule<Options, MessageIds>({
           missingBranchType,
           ts.TypeFlags.ESSymbolLike,
         )
-          ? missingBranchName!
+          ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            missingBranchName!
           : typeToString(missingBranchType);
 
         if (
