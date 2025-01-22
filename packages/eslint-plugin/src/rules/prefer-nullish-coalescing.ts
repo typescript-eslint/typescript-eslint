@@ -18,8 +18,10 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-const isIdentifierOrMemberExpressionType = (type: TSESTree.AST_NODE_TYPES) =>
-  [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(type);
+const isIdentifierOrMemberExpression = isNodeOfTypes([
+  AST_NODE_TYPES.Identifier,
+  AST_NODE_TYPES.MemberExpression,
+] as const);
 
 export type Options = [
   {
