@@ -283,7 +283,7 @@ import type { foo } from 'import2/private/bar';
             },
             {
               allowTypeImports: true,
-              group: ['import2/private/*'],
+              group: ['import/private/*'],
               message: 'usage of import2 private modules not allowed.',
             },
           ],
@@ -300,13 +300,28 @@ import type { foo } from 'import2/private/bar';
           patterns: [
             {
               allowTypeImports: true,
-              regex: 'import1/.*',
               message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/.*',
             },
             {
               allowTypeImports: true,
-              regex: 'import2/.*',
               message: 'usage of import2 private modules not allowed.',
+              regex: 'import2/.*',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { foo } from 'import1/private';",
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              caseSensitive: true,
+              message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/[A-Z]+',
             },
           ],
         },
@@ -757,8 +772,29 @@ import type { foo } from 'import2/private/bar';
           patterns: [
             {
               allowTypeImports: true,
-              regex: 'import1/.*',
               message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/.*',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { foo } from 'import1/private-package';",
+      errors: [
+        {
+          messageId: 'patternWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              caseSensitive: true,
+              message: 'usage of import1 private modules not allowed.',
+              regex: 'import1/private-[a-z]*',
             },
           ],
         },
