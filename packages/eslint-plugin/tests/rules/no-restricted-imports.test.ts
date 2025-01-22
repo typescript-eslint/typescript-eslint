@@ -283,7 +283,7 @@ import type { foo } from 'import2/private/bar';
             },
             {
               allowTypeImports: true,
-              group: ['import/private/*'],
+              group: ['import2/private/*'],
               message: 'usage of import2 private modules not allowed.',
             },
           ],
