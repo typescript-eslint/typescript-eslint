@@ -114,6 +114,13 @@ if (x) {
       `,
       options: [{ allowNullableBoolean: true }],
     },
+    {
+      code: `
+        const a: (undefined | boolean | null)[] = [true, undefined, null];
+        a.some(x => x);
+      `,
+      options: [{ allowNullableBoolean: true }],
+    },
 
     // nullable string in boolean context
     {
