@@ -11,6 +11,7 @@ import {
   getTypeFlags,
   isLogicalOrOperator,
   isNodeEqual,
+  isNodeOfTypes,
   isNullLiteral,
   isPossiblyNullish,
   isUndefinedIdentifier,
@@ -406,14 +407,14 @@ export default createRule<Options, MessageIds>({
           hasTruthinessCheck = true;
 
           if (
-            isIdentifierOrMemberExpressionType(node.test.type) &&
+            isIdentifierOrMemberExpression(node.test) &&
             isNodeEqual(node.test, node.consequent)
           ) {
             identifierOrMemberExpression = node.test;
           } else if (
             node.test.type === AST_NODE_TYPES.UnaryExpression &&
             node.test.operator === '!' &&
-            isIdentifierOrMemberExpressionType(node.test.argument.type) &&
+            isIdentifierOrMemberExpression(node.test.argument) &&
             isNodeEqual(node.test.argument, node.alternate)
           ) {
             identifierOrMemberExpression = node.test.argument;
@@ -538,9 +539,7 @@ function isConditionalTest(node: TSESTree.Node): boolean {
 
   if (
     parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    (parent.consequent === node ||
-      parent.alternate === node ||
-      node.type === AST_NODE_TYPES.UnaryExpression)
+    (parent.consequent === node || parent.alternate === node)
   ) {
     return isConditionalTest(parent);
   }
@@ -588,9 +587,7 @@ function isBooleanConstructorContext(
 
   if (
     parent.type === AST_NODE_TYPES.ConditionalExpression &&
-    (parent.consequent === node ||
-      parent.alternate === node ||
-      node.type === AST_NODE_TYPES.UnaryExpression)
+    (parent.consequent === node || parent.alternate === node)
   ) {
     return isBooleanConstructorContext(parent, context);
   }

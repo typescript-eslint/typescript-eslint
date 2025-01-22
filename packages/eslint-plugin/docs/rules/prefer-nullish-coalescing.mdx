@@ -16,6 +16,7 @@ This rule reports when you may consider replacing:
 
 - An `||` operator with `??`
 - An `||=` operator with `??=`
+- Ternary expressions (`?:`) that are equivalent to `||` or `??` with `??`
 
 :::caution
 This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
