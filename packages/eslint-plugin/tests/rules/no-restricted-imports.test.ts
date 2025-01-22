@@ -291,6 +291,28 @@ import type { foo } from 'import2/private/bar';
       ],
     },
     {
+      code: `
+import type { foo } from 'import1/private/bar';
+import type { foo } from 'import2/private/bar';
+      `,
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              regex: 'import1/.*',
+              message: 'usage of import1 private modules not allowed.',
+            },
+            {
+              allowTypeImports: true,
+              regex: 'import2/.*',
+              message: 'usage of import2 private modules not allowed.',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "import { type Bar } from 'import-foo';",
       options: [
         {
@@ -716,6 +738,26 @@ import type { foo } from 'import2/private/bar';
             {
               allowTypeImports: true,
               group: ['import1/private/*'],
+              message: 'usage of import1 private modules not allowed.',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { foo } from 'import1/private/bar';",
+      errors: [
+        {
+          messageId: 'patternWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+      ],
+      options: [
+        {
+          patterns: [
+            {
+              allowTypeImports: true,
+              regex: 'import1/.*',
               message: 'usage of import1 private modules not allowed.',
             },
           ],
