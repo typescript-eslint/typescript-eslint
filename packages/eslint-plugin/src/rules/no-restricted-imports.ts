@@ -274,13 +274,14 @@ export default createRule<Options, MessageIds>({
         restrictedPattern.allowTypeImports
       ) {
         // Following how ignore is configured in the base rule
-        restrictedPattern.group &&
+        if (restrictedPattern.group) {
           allowedImportTypeMatchers.push(
             ignore({
               allowRelativePaths: true,
               ignoreCase: !restrictedPattern.caseSensitive,
             }).add(restrictedPattern.group),
           );
+        }
         if (restrictedPattern.regex) {
           allowedImportTypeRegexMatchers.push(
             new RegExp(
