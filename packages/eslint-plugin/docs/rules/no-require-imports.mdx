@@ -13,12 +13,6 @@ Depending on your TSConfig settings and whether you're authoring ES Modules or C
 
 This rule enforces that you use the newer ES Module `import` syntax over CommonJS `require()`.
 
-:::info
-We do not have a rule to enforce the use of `require()` over `import`.
-Consider using TypeScript's [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax) option if you are in a situation where it would be beneficial to use `require()`.
-We recommend you still use this rule with `allowAsImport` enabled in order to enforce usage of `import ... = require(...)` rather than bare `require()`s, which are not statically analyzed.
-:::
-
 ## Examples
 
 <Tabs>
@@ -50,7 +44,7 @@ import * as lib3 from 'lib3';
 
 These strings will be compiled into regular expressions with the `u` flag and be used to test against the imported path. A common use case is to allow importing `package.json`. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled. You can also use it to allow importing any JSON if your environment doesn't support JSON modules, or use it for other cases where `import` statements cannot work.
 
-With `{allow: ['/package\\.json$']}`:
+With `{ allow: ['/package\\.json$'] }`:
 
 <Tabs>
 <TabItem value="❌ Incorrect">
@@ -97,6 +91,16 @@ import foo from 'foo';
 
 </TabItem>
 </Tabs>
+
+## Usage with CommonJS
+
+While this rule is primarily intended to promote ES Module syntax, it still makes sense to enable this rule when authoring CommonJS modules.
+
+If you prefer to use TS's ES Module syntax, which is transformed to `require()` calls during transpilation when outputting CommonJS, you can simply use the rule's default behavior.
+
+If, instead, you prefer to use `require()` syntax, we recommend you use this rule with [`allowAsImport`](#allowAsImport) enabled.
+That way, you still enforce usage of `import ... = require(...)` rather than bare `require()` calls, which are not statically analyzed by TS.
+We don't directly a way to _prohibit_ ES Module syntax from being used; consider instead using TypeScript's [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax) option if you find yourself in a situation where you would want this.
 
 ## When Not To Use It
 
