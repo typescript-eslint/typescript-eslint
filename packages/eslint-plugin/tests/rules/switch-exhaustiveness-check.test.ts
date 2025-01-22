@@ -2964,12 +2964,12 @@ switch (literal) {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
+          column: 17,
           data: {
             missingBranches: 'A.B.D',
           },
           line: 9,
-          column: 17,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
@@ -3005,12 +3005,12 @@ switch (literal) {
       `,
       errors: [
         {
-          messageId: 'switchIsNotExhaustive',
+          column: 17,
           data: {
             missingBranches: 'A.B.D',
           },
           line: 4,
-          column: 17,
+          messageId: 'switchIsNotExhaustive',
           suggestions: [
             {
               messageId: 'addMissingCases',
