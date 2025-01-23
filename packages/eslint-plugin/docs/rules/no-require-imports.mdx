@@ -96,7 +96,7 @@ import foo from 'foo';
 
 While this rule is primarily intended to promote ES Module syntax, it still makes sense to enable this rule when authoring CommonJS modules.
 
-If you prefer to use TypeScript's ES Module syntax, which is transformed to `require()` calls during transpilation when outputting CommonJS, you can simply use the rule's default behavior.
+If you prefer to use TypeScript's built-in `import ... from ...` ES Module syntax, which is transformed to `require()` calls during transpilation when outputting CommonJS, you can use the rule's default behavior.
 
 If, instead, you prefer to use `require()` syntax, we recommend you use this rule with [`allowAsImport`](#allowAsImport) enabled.
 That way, you still enforce usage of `import ... = require(...)` rather than bare `require()` calls, which are not statically analyzed by TypeScript.
