@@ -1332,7 +1332,15 @@ declare const nested: string, interpolation: string;
 type Foo = 'A' | 'B';
 type Bar = \`\${Foo}\`;
       `,
-      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
       output: `
 type Foo = 'A' | 'B';
 type Bar = Foo;
@@ -1344,8 +1352,20 @@ type Foo = 'A' | 'B';
 type Bar = \`\${\`\${Foo}\`}\`;
       `,
       errors: [
-        { messageId: 'noUnnecessaryTemplateExpression' },
-        { messageId: 'noUnnecessaryTemplateExpression' },
+        {
+          column: 13,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
       ],
       output: [
         `
@@ -1396,6 +1416,10 @@ type Bar = \`\${Foo.A}\`;
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 21,
+          endLine: 6,
+          line: 6,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],
@@ -1415,6 +1439,10 @@ function foo<T extends string>() {
       `,
       errors: [
         {
+          column: 13,
+          endColumn: 17,
+          endLine: 3,
+          line: 3,
           messageId: 'noUnnecessaryTemplateExpression',
         },
       ],

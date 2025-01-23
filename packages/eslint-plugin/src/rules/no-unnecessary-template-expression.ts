@@ -1,6 +1,6 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import {
@@ -8,6 +8,7 @@ import {
   getConstraintInfo,
   getMovedNodeCode,
   getParserServices,
+  isNodeOfType,
   isTypeFlagSet,
   isUndefinedIdentifier,
   nullThrows,
@@ -84,9 +85,7 @@ export default createRule<[], MessageId>({
       );
     }
 
-    function isLiteral(node: TSESTree.Node): node is TSESTree.Literal {
-      return node.type === AST_NODE_TYPES.Literal;
-    }
+    const isLiteral = isNodeOfType(TSESTree.AST_NODE_TYPES.Literal);
 
     function isTemplateLiteral(
       node: TSESTree.Node,
