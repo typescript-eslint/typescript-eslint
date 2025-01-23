@@ -1429,6 +1429,26 @@ declare module 'bar' {
 import { type Foo } from 'bar';
 
 declare module 'bar' {
+  export interface Foo {
+    x: string;
+  }
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
+  type Foo = string;
+}
+      `,
+    },
+    {
+      code: `
+import { type Foo } from 'bar';
+
+declare module 'bar' {
   interface Foo {
     x: string;
   }
