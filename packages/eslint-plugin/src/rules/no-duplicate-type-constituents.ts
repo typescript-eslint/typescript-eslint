@@ -196,14 +196,14 @@ export default createRule<Options, MessageIds>({
       if (tsutils.isIntrinsicErrorType(type)) {
         return;
       }
-      const duplicatedPrev =
+      const duplicatedPrevious =
         uniqueConstituents.find(ele => isSameAstNode(ele, constituentNode)) ??
         cachedTypeMap.get(type);
 
-      if (duplicatedPrev) {
+      if (duplicatedPrevious) {
         report('duplicate', constituentNode, {
           type: unionOrIntersection,
-          previous: sourceCode.getText(duplicatedPrev),
+          previous: sourceCode.getText(duplicatedPrevious),
         });
         return;
       }
