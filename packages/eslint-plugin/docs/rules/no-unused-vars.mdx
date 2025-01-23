@@ -12,7 +12,11 @@ import TabItem from '@theme/TabItem';
 This rule extends the base [`eslint/no-unused-vars`](https://eslint.org/docs/rules/no-unused-vars) rule.
 It adds support for TypeScript features, such as types.
 
-## Benefits Over TypeScript
+## Options
+
+## FAQs
+
+### What benefits does this rule have over TypeScript?
 
 TypeScript provides [`noUnusedLocals`](https://www.typescriptlang.org/tsconfig#noUnusedLocals) and [`noUnusedParameters`](https://www.typescriptlang.org/tsconfig#noUnusedParameters) compiler options that can report errors on unused local variables or parameters, respectively.
 Those compiler options can be convenient to use if you don't want to set up ESLint and typescript-eslint.
@@ -52,3 +56,66 @@ Also see similar rules provided by ESLint:
 
 - [`no-unused-private-class-members`](https://eslint.org/docs/latest/rules/no-unused-private-class-members)
 - [`no-unused-labels`](https://eslint.org/docs/latest/rules/no-unused-labels)
+
+### Why does this rule report variables used only for types?
+
+This rule does not count type-only uses when determining whether a variable is used.
+Declaring variables only to use them for types adds code and runtime complexity.
+The variables are never actually used at runtime.
+They can be misleading to readers of the code.
+
+<Tabs>
+
+<TabItem value="typeof Variables">
+
+For example, if a variable is only used for `typeof`, this rule will report:
+
+```ts
+const box = {
+  //  ~~~
+  //  'box' is assigned a value but only used as a type.
+  value: 123,
+};
+
+export type Box = typeof box;
+```
+
+Instead, it's often cleaner and less code to write out the types directly:
+
+```ts
+export interface Box {
+  value: number;
+}
+```
+
+</TabItem>
+
+<TabItem value="Zod Schemas">
+
+For example, if a Zod schema variable is only used for `typeof`, this rule will report:
+
+```ts
+import { z } from 'zod';
+
+const schema = z.object({
+  //  ~~~~~~
+  //  'schema' is assigned a value but only used as a type.
+  value: z.number(),
+});
+
+export type Box = z.infer<typeof schema>;
+```
+
+Instead, it's often cleaner and less code to write out the types directly:
+
+```ts
+export interface Box {
+  value: number;
+}
+```
+
+</TabItem>
+
+</Tabs>
+
+If you find yourself writing runtime values only for types, consider refactoring your code to declare types directly.
