@@ -36,6 +36,16 @@ export default createRule({
       );
     }
 
+    function isStaticTemplateLiteral(
+      node: TSESTree.Expression,
+    ): node is TSESTree.TemplateLiteral {
+      return (
+        node.type === AST_NODE_TYPES.TemplateLiteral &&
+        node.expressions.length === 0 &&
+        node.quasis.length === 1
+      );
+    }
+
     return {
       TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
         const enumMembers = node.body.members;
@@ -51,6 +61,8 @@ export default createRule({
             value = String(member.initializer.value);
           } else if (isNumberLiteral(member.initializer)) {
             value = Number(member.initializer.value);
+          } else if (isStaticTemplateLiteral(member.initializer)) {
+            value = member.initializer.quasis[0].value.cooked;
           }
 
           if (value == null) {

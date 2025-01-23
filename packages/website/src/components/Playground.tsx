@@ -21,7 +21,7 @@ import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
 import { ESQueryFilter } from './ESQueryFilter';
-import useHashState from './hooks/useHashState';
+import { useHashState } from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
 import { defaultConfig, detailTabs } from './options';
