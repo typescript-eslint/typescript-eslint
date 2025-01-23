@@ -111,6 +111,16 @@ class Foo {
   }
 }
     `,
+    `
+abstract class Foo {
+  accessor prop: string;
+}
+    `,
+    `
+abstract class Foo {
+  abstract accessor prop: string;
+}
+    `,
   ],
 
   invalid: [
@@ -228,6 +238,14 @@ abstract class Foo {
     {
       code: `
 class Foo {
+  static accessor prop: string;
+}
+      `,
+      errors: [onlyStatic],
+    },
+    {
+      code: `
+abstract class Foo {
   static accessor prop: string;
 }
       `,
