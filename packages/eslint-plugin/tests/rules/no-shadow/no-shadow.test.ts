@@ -465,6 +465,364 @@ let y;
     },
     {
       code: `
+let x = foo((x, y) => {});
+let y;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'x',
+            shadowedColumn: 5,
+            shadowedLine: 2,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'types' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'all' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 11,
+            shadowedLine: 3,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+    {
+      code: `
+{
+  interface A {}
+}
+type A = 1;
+      `,
+      errors: [
+        {
+          data: {
+            name: 'A',
+            shadowedColumn: 6,
+            shadowedLine: 5,
+          },
+          messageId: 'noShadow',
+          type: AST_NODE_TYPES.Identifier,
+        },
+      ],
+      options: [{ hoist: 'functions-and-types' }],
+    },
+
+    {
+      code: `
 function foo<T extends (...args: any[]) => any>(fn: T, args: any[]) {}
       `,
       errors: [
@@ -943,6 +1301,100 @@ const person = {
       options: [{ ignoreOnInitialization: true }],
     },
     { code: 'const [x = y => y] = [].map(y => y);' },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+    {
+      code: `
+{
+  interface Foo<A> {}
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'never' }],
+    },
+
+    {
+      code: `
+type Foo<A> = 1;
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+interface Foo<A> {}
+interface A {}
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+type Foo<A> = 1;
+interface A {}
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+{
+  type A = 1;
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
+    {
+      code: `
+{
+  interface Foo<A> {}
+}
+type A = 1;
+      `,
+      options: [{ hoist: 'functions' }],
+    },
     {
       code: `
 import type { Foo } from 'bar';

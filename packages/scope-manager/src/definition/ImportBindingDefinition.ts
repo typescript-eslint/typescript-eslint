@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class ImportBindingDefinition extends DefinitionBase<
+export class ImportBindingDefinition extends DefinitionBase<
   DefinitionType.ImportBinding,
   | TSESTree.ImportDefaultSpecifier
   | TSESTree.ImportNamespaceSpecifier
@@ -36,5 +36,3 @@ class ImportBindingDefinition extends DefinitionBase<
     super(DefinitionType.ImportBinding, name, node, decl);
   }
 }
-
-export { ImportBindingDefinition };

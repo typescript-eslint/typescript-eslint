@@ -6,12 +6,12 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import { createRule } from '../util';
 import { isTypeImport } from '../util/isTypeImport';
 
-type MessageIds = 'noShadow' | 'noShadowGlobal';
-type Options = [
+export type MessageIds = 'noShadow' | 'noShadowGlobal';
+export type Options = [
   {
     allow?: string[];
     builtinGlobals?: boolean;
-    hoist?: 'all' | 'functions' | 'never';
+    hoist?: 'all' | 'functions' | 'functions-and-types' | 'never' | 'types';
     ignoreFunctionTypeParameterNameValueShadow?: boolean;
     ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
@@ -26,6 +26,13 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSDeclareFunction,
   AST_NODE_TYPES.TSConstructSignatureDeclaration,
   AST_NODE_TYPES.TSConstructorType,
+]);
+
+const functionsHoistedNodes = new Set([AST_NODE_TYPES.FunctionDeclaration]);
+
+const typesHoistedNodes = new Set([
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 
 export default createRule<Options, MessageIds>({
@@ -63,7 +70,7 @@ export default createRule<Options, MessageIds>({
             type: 'string',
             description:
               'Whether to report shadowing before outer functions or variables are defined.',
-            enum: ['all', 'functions', 'never'],
+            enum: ['all', 'functions', 'functions-and-types', 'never', 'types'],
           },
           ignoreFunctionTypeParameterNameValueShadow: {
             type: 'boolean',
@@ -88,7 +95,7 @@ export default createRule<Options, MessageIds>({
     {
       allow: [],
       builtinGlobals: false,
-      hoist: 'functions',
+      hoist: 'functions-and-types',
       ignoreFunctionTypeParameterNameValueShadow: true,
       ignoreOnInitialization: false,
       ignoreTypeValueShadow: true,
@@ -512,15 +519,30 @@ export default createRule<Options, MessageIds>({
       const inner = getNameRange(variable);
       const outer = getNameRange(scopeVar);
 
-      return !!(
-        inner &&
-        outer &&
-        inner[1] < outer[0] &&
-        // Excepts FunctionDeclaration if is {"hoist":"function"}.
-        (options.hoist !== 'functions' ||
-          !outerDef ||
-          outerDef.node.type !== AST_NODE_TYPES.FunctionDeclaration)
-      );
+      if (!inner || !outer || inner[1] >= outer[0]) {
+        return false;
+      }
+
+      if (!outerDef) {
+        return true;
+      }
+
+      if (options.hoist === 'functions') {
+        return !functionsHoistedNodes.has(outerDef.node.type);
+      }
+
+      if (options.hoist === 'types') {
+        return !typesHoistedNodes.has(outerDef.node.type);
+      }
+
+      if (options.hoist === 'functions-and-types') {
+        return (
+          !functionsHoistedNodes.has(outerDef.node.type) &&
+          !typesHoistedNodes.has(outerDef.node.type)
+        );
+      }
+
+      return true;
     }
 
     /**

@@ -3,8 +3,8 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-type Options = [];
-type MessageIds = 'unaryMinus';
+export type Options = [];
+export type MessageIds = 'unaryMinus';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-unsafe-unary-minus',
