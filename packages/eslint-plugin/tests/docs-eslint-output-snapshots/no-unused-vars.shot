@@ -29,13 +29,13 @@ exports[`Validating rule docs no-unused-vars.mdx code examples ESLint output 3`]
 import { z } from 'zod';
 
 const schema = z.object({
-      ~~~~~~ 'schema' is assigned a value but never used.
+      ~~~~~~ 'schema' is assigned a value but only used as a type.
   //  ~~~~~~
   //  'schema' is assigned a value but only used as a type.
   value: z.number(),
 });
 
-export type Box = z.infer<typeof box>;
+export type Box = z.infer<typeof schema>;
 "
 `;
 
