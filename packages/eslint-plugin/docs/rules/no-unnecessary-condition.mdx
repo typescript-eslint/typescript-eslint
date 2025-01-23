@@ -124,21 +124,23 @@ do {
 } while (true);
 ```
 
-#### `'only-true'`
+#### `'only-allowed-literals'`
 
-Disallow constant conditions in all loops except `while` loops with expression `true`.
+Disallow constant conditions in all loops except `while` loops with certain literal expressions.
 
-Example of correct code for `{ allowConstantLoopConditions: 'only-true' }`:
+Specifically, `true`, `false`, `0`, and `1` are allowed despite always being truthy or falsy, as these are common patterns and are not likely to represent developer errors.
 
-```ts option='{ "allowConstantLoopConditions": "only-true" }' showPlaygroundButton
+Example of correct code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
+
+```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
 while (true) {
   // ...
 }
 ```
 
-Example of incorrect code for `{ allowConstantLoopConditions: 'only-true' }`:
+Example of incorrect code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
 
-```ts option='{ "allowConstantLoopConditions": "only-true" }' showPlaygroundButton
+```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
 for (; true; ) {
   // ...
 }

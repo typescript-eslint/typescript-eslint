@@ -464,7 +464,25 @@ do {} while (true);
       code: `
 while (true) {}
       `,
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (1) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (false) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while (0) {}
+      `,
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     `
 let variable = 'abc' as string | void;
@@ -1972,7 +1990,16 @@ declare const test: true;
 while (test) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+declare const test: 1;
+
+while (test) {}
+      `,
+      errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
@@ -1981,7 +2008,7 @@ declare const test: true;
 for (; test; ) {}
       `,
       errors: [{ column: 8, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
@@ -1990,21 +2017,28 @@ declare const test: true;
 do {} while (test);
       `,
       errors: [{ column: 14, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
 for (; true; ) {}
       `,
       errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
-do {} while (true);
+for (; 0; ) {}
       `,
-      errors: [{ column: 14, line: 2, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+do {} while (0);
+      `,
+      errors: [{ column: 14, line: 2, messageId: 'alwaysFalsy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
@@ -2013,14 +2047,21 @@ let shouldRun = true;
 while ((shouldRun = true)) {}
       `,
       errors: [{ column: 9, line: 4, messageId: 'alwaysTruthy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: `
-while (false) {}
+while (2) {}
       `,
-      errors: [{ column: 8, line: 2, messageId: 'alwaysFalsy' }],
-      options: [{ allowConstantLoopConditions: 'only-true' }],
+      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
+    },
+    {
+      code: `
+while ('truthy') {}
+      `,
+      errors: [{ column: 8, line: 2, messageId: 'alwaysTruthy' }],
+      options: [{ allowConstantLoopConditions: 'only-allowed-literals' }],
     },
     {
       code: noFormat`

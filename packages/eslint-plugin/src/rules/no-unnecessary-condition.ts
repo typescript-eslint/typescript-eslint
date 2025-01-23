@@ -156,7 +156,14 @@ function booleanComparison(
 
 type LegacyAllowConstantLoopConditions = boolean;
 
-type AllowConstantLoopConditions = 'always' | 'never' | 'only-true';
+type AllowConstantLoopConditions = 'always' | 'never' | 'only-allowed-literals';
+
+const constantLoopConditionsAllowedLiterals = new Set<unknown>([
+  true,
+  false,
+  1,
+  0,
+]);
 
 export type Options = [
   {
@@ -229,7 +236,7 @@ export default createRule<Options, MessageId>({
               },
               {
                 type: 'string',
-                enum: ['always', 'never', 'only-true'],
+                enum: ['always', 'never', 'only-allowed-literals'],
               },
             ],
           },
@@ -563,11 +570,10 @@ export default createRule<Options, MessageId>({
     function checkIfWhileLoopIsNecessaryConditional(
       node: TSESTree.WhileStatement,
     ): void {
-      // allow: `while (true) {}`
       if (
-        allowConstantLoopConditionsOption === 'only-true' &&
+        allowConstantLoopConditionsOption === 'only-allowed-literals' &&
         node.test.type === AST_NODE_TYPES.Literal &&
-        node.test.value === true
+        constantLoopConditionsAllowedLiterals.has(node.test.value)
       ) {
         return;
       }
