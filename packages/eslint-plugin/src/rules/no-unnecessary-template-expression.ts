@@ -76,6 +76,9 @@ export default createRule<[], MessageId>({
       return isStringLike(type);
     }
 
+    /**
+     * Checks for whole enum types, i.e. `MyEnum`, and not their values, i.e. `MyEnum.A`
+     */
     function isEnumType(type: ts.Type): boolean {
       const symbol = type.getSymbol();
 
