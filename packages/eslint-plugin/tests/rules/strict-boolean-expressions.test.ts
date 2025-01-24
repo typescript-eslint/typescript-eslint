@@ -703,6 +703,27 @@ declare function f(x: string | null): boolean;
       output: null,
     },
     {
+      code: `
+        declare const array: string[];
+        array.some(x => x);
+      `,
+      errors: [
+        {
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+        declare const array: string[];
+        array.some((x): boolean => x);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableBoolean: true, allowString: false }],
+    },
+    {
       code: noFormat`
 declare const foo: true & { __BRAND: 'Foo' };
 if (('' && foo) || (0 && void 0)) { }

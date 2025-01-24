@@ -331,11 +331,18 @@ export default createRule<Options, MessageId>({
 
           return type;
         });
+      const flattenTypes = [
+        ...new Set(returnTypes.flatMap(type => tsutils.unionTypeParts(type))),
+      ];
+      const types = inspectVariantTypes(flattenTypes);
 
-      if (
-        returnTypes.every(returnType => isBooleanType(returnType)) ||
-        options.allowNullableBoolean
-      ) {
+      const is = hasExactTypes.bind(null, types);
+
+      if (is('boolean') || is('truthy boolean')) {
+        return;
+      }
+
+      if (is('nullish', 'boolean') && options.allowNullableBoolean) {
         return;
       }
 
@@ -437,9 +444,7 @@ export default createRule<Options, MessageId>({
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
-      const is = (...wantedTypes: readonly VariantType[]): boolean =>
-        types.size === wantedTypes.length &&
-        wantedTypes.every(type => types.has(type));
+      const is = hasExactTypes.bind(null, types);
 
       // boolean
       if (is('boolean') || is('truthy boolean')) {
@@ -1108,6 +1113,16 @@ export default createRule<Options, MessageId>({
       }
 
       return variantTypes;
+    }
+
+    function hasExactTypes(
+      types: Set<VariantType>,
+      ...wantedTypes: readonly VariantType[]
+    ): boolean {
+      return (
+        types.size === wantedTypes.length &&
+        wantedTypes.every(type => types.has(type))
+      );
     }
   },
 });
