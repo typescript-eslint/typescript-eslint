@@ -24,7 +24,7 @@ interface NodeWithModifiers {
 }
 
 interface PropertiesInfo {
-  excludeSet: Set<string | symbol>;
+  excludeSet: Set<number | string | symbol>;
   properties: TSESTree.PropertyDefinition[];
 }
 
