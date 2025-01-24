@@ -3,7 +3,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, isDefinitionFile } from '../util';
 import { isTypeImport } from '../util/isTypeImport';
 
 export type MessageIds = 'noShadow' | 'noShadowGlobal';
@@ -568,6 +568,28 @@ export default createRule<Options, MessageIds>({
     }
 
     /**
+     * Checks if the initialization of a variable has the declare modifier in a
+     * definition file.
+     * @param variable The variable to check.
+     * @returns Whether or not the initialization of a variable has the declare
+     * modifier in a definition file.
+     */
+    function isDeclareInDTSFile(variable: TSESLint.Scope.Variable): boolean {
+      const fileName = context.filename;
+      if (!isDefinitionFile(fileName)) {
+        return false;
+      }
+      return variable.defs.some(def => {
+        return (
+          (def.type === DefinitionType.Variable && def.parent.declare) ||
+          (def.type === DefinitionType.ClassName && def.node.declare) ||
+          (def.type === DefinitionType.TSEnumName && def.node.declare) ||
+          (def.type === DefinitionType.TSModuleName && def.node.declare)
+        );
+      });
+    }
+
+    /**
      * Checks the current context for shadowed variables.
      * @param scope Fixme
      */
@@ -602,6 +624,11 @@ export default createRule<Options, MessageIds>({
 
         // ignore configured allowed names
         if (isAllowed(variable)) {
+          continue;
+        }
+
+        // ignore variables with the declare keyword in .d.ts files
+        if (isDeclareInDTSFile(variable)) {
           continue;
         }
 
