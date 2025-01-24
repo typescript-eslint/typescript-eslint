@@ -7,7 +7,7 @@
  * - disables rules from eslint:recommended which are already handled by TypeScript.
  * - enables rules that make sense due to TS's typechecking / transpilation.
  */
-export default (
+const config = (
   style: 'glob' | 'minimatch',
 ): {
   files: string[];
@@ -22,13 +22,16 @@ export default (
   rules: {
     'constructor-super': 'off', // ts(2335) & ts(2377)
     'getter-return': 'off', // ts(2378)
+    'no-class-assign': 'off', // ts(2629)
     'no-const-assign': 'off', // ts(2588)
     'no-dupe-args': 'off', // ts(2300)
     'no-dupe-class-members': 'off', // ts(2393) & ts(2300)
     'no-dupe-keys': 'off', // ts(1117)
     'no-func-assign': 'off', // ts(2630)
     'no-import-assign': 'off', // ts(2632) & ts(2540)
+    // TODO - remove this once we no longer support ESLint v8
     'no-new-symbol': 'off', // ts(7009)
+    'no-new-native-nonconstructor': 'off', // ts(7009)
     'no-obj-calls': 'off', // ts(2349)
     'no-redeclare': 'off', // ts(2451)
     'no-setter-return': 'off', // ts(2408)
@@ -42,3 +45,5 @@ export default (
     'prefer-spread': 'error', // ts transpiles spread to apply, so no need for manual apply
   },
 });
+
+export = config;

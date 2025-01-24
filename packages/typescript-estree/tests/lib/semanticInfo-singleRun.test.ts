@@ -1,7 +1,6 @@
-import glob = require('glob');
-import * as path from 'path';
+import * as glob from 'glob';
+import * as path from 'node:path';
 
-import { getCanonicalFileName } from '../../src/create-program/shared';
 import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {
   clearParseAndGenerateServicesCalls,
@@ -10,6 +9,9 @@ import {
 } from '../../src/parser';
 
 const mockProgram = {
+  getCompilerOptions(): unknown {
+    return {};
+  },
   getSourceFile(): void {
     return;
   },
@@ -21,7 +23,7 @@ const mockProgram = {
 jest.mock('../../src/ast-converter', () => {
   return {
     astConverter(): unknown {
-      return { estree: {}, astMaps: {} };
+      return { astMaps: {}, estree: {} };
     },
   };
 });
@@ -83,15 +85,15 @@ const code = 'const foo = 5;';
 // File will not be found in the first Program, but will be in the second
 const tsconfigs = ['./non-matching-tsconfig.json', './tsconfig.json'];
 const options = {
+  allowAutomaticSingleRunInference: true,
   filePath: testFiles[0],
-  tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   loggerFn: false,
   project: tsconfigs,
-  allowAutomaticSingleRunInference: true,
+  tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
 } as const;
 
 const resolvedProject = (p: string): string =>
-  getCanonicalFileName(path.resolve(path.join(process.cwd(), FIXTURES_DIR), p));
+  path.resolve(path.join(process.cwd(), FIXTURES_DIR), p);
 
 describe('semanticInfo - singleRun', () => {
   beforeEach(() => {
@@ -135,7 +137,7 @@ describe('semanticInfo - singleRun', () => {
     process.env.CI = originalEnvCI;
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it('should lazily create the required program out of the provided "parserOptions.project" one time when TSESTREE_SINGLE_RUN=true', () => {
       /**
        * Single run because of explicit environment variable TSESTREE_SINGLE_RUN

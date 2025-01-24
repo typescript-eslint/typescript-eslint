@@ -16,61 +16,53 @@ import type {
   UnderscoreOptionsString,
 } from './enums';
 
-interface MatchRegex {
-  regex: string;
+export interface MatchRegex {
   match: boolean;
+  regex: string;
 }
 
-interface Selector {
+export interface Selector {
+  custom?: MatchRegex;
+  filter?: string | MatchRegex;
   // format options
   format: PredefinedFormatsString[] | null;
-  custom?: MatchRegex;
   leadingUnderscore?: UnderscoreOptionsString;
-  trailingUnderscore?: UnderscoreOptionsString;
+  modifiers?: ModifiersString[];
   prefix?: string[];
-  suffix?: string[];
   // selector options
   selector:
     | IndividualAndMetaSelectorsString
     | IndividualAndMetaSelectorsString[];
-  modifiers?: ModifiersString[];
+  suffix?: string[];
+  trailingUnderscore?: UnderscoreOptionsString;
   types?: TypeModifiersString[];
-  filter?: MatchRegex | string;
 }
 
-interface NormalizedMatchRegex {
-  regex: RegExp;
+export interface NormalizedMatchRegex {
   match: boolean;
+  regex: RegExp;
 }
 
-interface NormalizedSelector {
+export interface NormalizedSelector {
+  custom: NormalizedMatchRegex | null;
+  filter: NormalizedMatchRegex | null;
   // format options
   format: PredefinedFormats[] | null;
-  custom: NormalizedMatchRegex | null;
   leadingUnderscore: UnderscoreOptions | null;
-  trailingUnderscore: UnderscoreOptions | null;
-  prefix: string[] | null;
-  suffix: string[] | null;
-  // selector options
-  selector: MetaSelectors | Selectors;
   modifiers: Modifiers[] | null;
-  types: TypeModifiers[] | null;
-  filter: NormalizedMatchRegex | null;
   // calculated ordering weight based on modifiers
   modifierWeight: number;
+  prefix: string[] | null;
+  // selector options
+  selector: MetaSelectors | Selectors;
+  suffix: string[] | null;
+  trailingUnderscore: UnderscoreOptions | null;
+  types: TypeModifiers[] | null;
 }
 
-type ValidatorFunction = (
+export type ValidatorFunction = (
   node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
   modifiers?: Set<Modifiers>,
 ) => void;
-type ParsedOptions = Record<SelectorsString, ValidatorFunction>;
-type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;
-
-export type {
-  Context,
-  NormalizedSelector,
-  ParsedOptions,
-  Selector,
-  ValidatorFunction,
-};
+export type ParsedOptions = Record<SelectorsString, ValidatorFunction>;
+export type Context = Readonly<TSESLint.RuleContext<MessageIds, Options>>;

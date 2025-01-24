@@ -8,12 +8,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
+      "caseSensitive": {
+        "description": "Whether to sort using case sensitive string comparisons.",
+        "type": "boolean"
+      },
       "checkIntersections": {
-        "description": "Whether to check intersection types.",
+        "description": "Whether to check intersection types (\`&\`).",
         "type": "boolean"
       },
       "checkUnions": {
-        "description": "Whether to check union types.",
+        "description": "Whether to check union types (\`|\`).",
         "type": "boolean"
       },
       "groupOrder": {
@@ -47,9 +51,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to check intersection types. */
+    /** Whether to sort using case sensitive string comparisons. */
+    caseSensitive?: boolean;
+    /** Whether to check intersection types (\`&\`). */
     checkIntersections?: boolean;
-    /** Whether to check union types. */
+    /** Whether to check union types (\`|\`). */
     checkUnions?: boolean;
     /** Ordering of the groups. */
     groupOrder?: (

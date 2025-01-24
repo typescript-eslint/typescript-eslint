@@ -18,13 +18,13 @@ function diffStrings(
     expand: false,
     // we want to show the entire file in the diff
     // that way you don't have to try and figure out what lines map to which sections
-    contextLines: Number.MAX_SAFE_INTEGER,
     aAnnotation: valueAName,
-    bAnnotation: valueBName,
     aColor: identity,
+    bAnnotation: valueBName,
     bColor: identity,
     changeColor: identity,
     commonColor: identity,
+    contextLines: Number.MAX_SAFE_INTEGER,
     patchColor: identity,
   });
 }
@@ -57,7 +57,7 @@ export function snapshotDiff(
     throw new Error('Unexpected null when diffing snapshots.');
   }
 
-  return 'Snapshot Diff:\n' + difference;
+  return `Snapshot Diff:\n${difference}`;
 }
 
 // https://github.com/facebook/jest/blob/a293b75310cfc209713df1d34d243eb258995316/packages/jest-diff/src/constants.ts#L8

@@ -1,10 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
@@ -13,20 +15,23 @@ const baseRule = getESLintCoreRule('no-invalid-this');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const defaultOptions: Options = [{ capIsConstructor: true }];
+
 export default createRule<Options, MessageIds>({
   name: 'no-invalid-this',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description:
         'Disallow `this` keywords outside of classes or class-like objects',
       extendsBaseRule: true,
     },
-    messages: baseRule.meta.messages,
     hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
-  defaultOptions: [{ capIsConstructor: true }],
+  defaultOptions,
   create(context) {
     const rules = baseRule.create(context);
 
@@ -48,10 +53,10 @@ export default createRule<Options, MessageIds>({
 
     return {
       ...rules,
-      PropertyDefinition(): void {
+      AccessorProperty(): void {
         thisIsValidStack.push(true);
       },
-      'PropertyDefinition:exit'(): void {
+      'AccessorProperty:exit'(): void {
         thisIsValidStack.pop();
       },
       FunctionDeclaration(node: TSESTree.FunctionDeclaration): void {
@@ -74,6 +79,12 @@ export default createRule<Options, MessageIds>({
         );
       },
       'FunctionExpression:exit'(): void {
+        thisIsValidStack.pop();
+      },
+      PropertyDefinition(): void {
+        thisIsValidStack.push(true);
+      },
+      'PropertyDefinition:exit'(): void {
         thisIsValidStack.pop();
       },
       ThisExpression(node: TSESTree.ThisExpression): void {

@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type Options = [
+export type Options = [
   {
     ignoreParameters?: boolean;
     ignoreProperties?: boolean;
   },
 ];
-type MessageIds = 'noInferrableType';
+export type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',
@@ -29,15 +30,17 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           ignoreParameters: {
             type: 'boolean',
+            description: 'Whether to ignore function parameters.',
           },
           ignoreProperties: {
             type: 'boolean',
+            description: 'Whether to ignore class properties.',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -97,8 +100,8 @@ export default createRule<Options, MessageIds>({
     const keywordMap = {
       [AST_NODE_TYPES.TSBigIntKeyword]: 'bigint',
       [AST_NODE_TYPES.TSBooleanKeyword]: 'boolean',
-      [AST_NODE_TYPES.TSNumberKeyword]: 'number',
       [AST_NODE_TYPES.TSNullKeyword]: 'null',
+      [AST_NODE_TYPES.TSNumberKeyword]: 'number',
       [AST_NODE_TYPES.TSStringKeyword]: 'string',
       [AST_NODE_TYPES.TSSymbolKeyword]: 'symbol',
       [AST_NODE_TYPES.TSUndefinedKeyword]: 'undefined',
@@ -120,8 +123,7 @@ export default createRule<Options, MessageIds>({
 
           return (
             isFunctionCall(unwrappedInit, 'BigInt') ||
-            (unwrappedInit.type === AST_NODE_TYPES.Literal &&
-              'bigint' in unwrappedInit)
+            unwrappedInit.type === AST_NODE_TYPES.Literal
           );
         }
 
@@ -223,7 +225,12 @@ export default createRule<Options, MessageIds>({
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
-            yield fixer.remove(context.sourceCode.getTokenBefore(typeNode)!);
+            yield fixer.remove(
+              nullThrows(
+                context.sourceCode.getTokenBefore(typeNode),
+                NullThrowsReasons.MissingToken('token before', 'type node'),
+              ),
+            );
           }
           yield fixer.remove(typeNode);
         },
@@ -271,11 +278,11 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      VariableDeclarator: inferrableVariableVisitor,
-      FunctionExpression: inferrableParameterVisitor,
-      FunctionDeclaration: inferrableParameterVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
+      FunctionDeclaration: inferrableParameterVisitor,
+      FunctionExpression: inferrableParameterVisitor,
       PropertyDefinition: inferrablePropertyVisitor,
+      VariableDeclarator: inferrableVariableVisitor,
     };
   },
 });

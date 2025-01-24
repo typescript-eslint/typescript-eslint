@@ -1,12 +1,22 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, typeIsOrHasBaseType } from '../util';
+import {
+  createRule,
+  getParserServices,
+  nullThrows,
+  typeIsOrHasBaseType,
+} from '../util';
+import {
+  getMemberHeadLoc,
+  getParameterPropertyHeadLoc,
+} from '../util/getMemberHeadLoc';
 
-type MessageIds = 'preferReadonly';
-type Options = [
+export type MessageIds = 'preferReadonly';
+export type Options = [
   {
     onlyInlineLambdas?: boolean;
   },
@@ -22,6 +32,7 @@ const functionScopeBoundaries = [
 export default createRule<Options, MessageIds>({
   name: 'prefer-readonly',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
@@ -34,16 +45,17 @@ export default createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'object',
         additionalProperties: false,
         properties: {
           onlyInlineLambdas: {
             type: 'boolean',
+            description:
+              'Whether to restrict checking only to members immediately assigned a lambda value.',
           },
         },
-        type: 'object',
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
@@ -155,15 +167,6 @@ export default createRule<Options, MessageIds>({
     function getEsNodesFromViolatingNode(
       violatingNode: ParameterOrPropertyDeclaration,
     ): { esNode: TSESTree.Node; nameNode: TSESTree.Node } {
-      if (
-        ts.isParameterPropertyDeclaration(violatingNode, violatingNode.parent)
-      ) {
-        return {
-          esNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
-          nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
-        };
-      }
-
       return {
         esNode: services.tsNodeToESTreeNodeMap.get(violatingNode),
         nameNode: services.tsNodeToESTreeNodeMap.get(violatingNode.name),
@@ -171,6 +174,19 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      [`${functionScopeBoundaries}:exit`](
+        node:
+          | TSESTree.ArrowFunctionExpression
+          | TSESTree.FunctionDeclaration
+          | TSESTree.FunctionExpression
+          | TSESTree.MethodDefinition,
+      ): void {
+        if (ASTUtils.isConstructor(node)) {
+          classScopeStack[classScopeStack.length - 1].exitConstructor();
+        } else if (isFunctionScopeBoundaryInStack(node)) {
+          classScopeStack[classScopeStack.length - 1].exitNonConstructor();
+        }
+      },
       'ClassDeclaration, ClassExpression'(
         node: TSESTree.ClassDeclaration | TSESTree.ClassExpression,
       ): void {
@@ -183,31 +199,44 @@ export default createRule<Options, MessageIds>({
         );
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
-        const finalizedClassScope = classScopeStack.pop()!;
+        const finalizedClassScope = nullThrows(
+          classScopeStack.pop(),
+          'Stack should exist on class exit',
+        );
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
             getEsNodesFromViolatingNode(violatingNode);
+
+          const reportNodeOrLoc:
+            | { loc: TSESTree.SourceLocation }
+            | { node: TSESTree.Node } = (() => {
+            switch (esNode.type) {
+              case AST_NODE_TYPES.MethodDefinition:
+              case AST_NODE_TYPES.PropertyDefinition:
+              case AST_NODE_TYPES.TSAbstractMethodDefinition:
+                return { loc: getMemberHeadLoc(context.sourceCode, esNode) };
+              case AST_NODE_TYPES.TSParameterProperty:
+                return {
+                  loc: getParameterPropertyHeadLoc(
+                    context.sourceCode,
+                    esNode,
+                    (nameNode as TSESTree.Identifier).name,
+                  ),
+                };
+              default:
+                return { node: esNode };
+            }
+          })();
+
           context.report({
+            ...reportNodeOrLoc,
+            messageId: 'preferReadonly',
             data: {
               name: context.sourceCode.getText(nameNode),
             },
             fix: fixer => fixer.insertTextBefore(nameNode, 'readonly '),
-            messageId: 'preferReadonly',
-            node: esNode,
           });
-        }
-      },
-      MemberExpression(node): void {
-        if (classScopeStack.length !== 0 && !node.computed) {
-          const tsNode = services.esTreeNodeToTSNodeMap.get(
-            node,
-          ) as ts.PropertyAccessExpression;
-          handlePropertyAccessExpression(
-            tsNode,
-            tsNode.parent,
-            classScopeStack[classScopeStack.length - 1],
-          );
         }
       },
       [functionScopeBoundaries](
@@ -225,17 +254,16 @@ export default createRule<Options, MessageIds>({
           classScopeStack[classScopeStack.length - 1].enterNonConstructor();
         }
       },
-      [`${functionScopeBoundaries}:exit`](
-        node:
-          | TSESTree.ArrowFunctionExpression
-          | TSESTree.FunctionDeclaration
-          | TSESTree.FunctionExpression
-          | TSESTree.MethodDefinition,
-      ): void {
-        if (ASTUtils.isConstructor(node)) {
-          classScopeStack[classScopeStack.length - 1].exitConstructor();
-        } else if (isFunctionScopeBoundaryInStack(node)) {
-          classScopeStack[classScopeStack.length - 1].exitNonConstructor();
+      MemberExpression(node): void {
+        if (classScopeStack.length !== 0 && !node.computed) {
+          const tsNode = services.esTreeNodeToTSNodeMap.get(
+            node,
+          ) as ts.PropertyAccessExpression;
+          handlePropertyAccessExpression(
+            tsNode,
+            tsNode.parent,
+            classScopeStack[classScopeStack.length - 1],
+          );
         }
       },
     };
@@ -257,20 +285,20 @@ enum TypeToClassRelation {
 }
 
 class ClassScope {
+  private readonly classType: ts.Type;
+  private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
+  private readonly memberVariableModifications = new Set<string>();
   private readonly privateModifiableMembers = new Map<
     string,
     ParameterOrPropertyDeclaration
   >();
+
   private readonly privateModifiableStatics = new Map<
     string,
     ParameterOrPropertyDeclaration
   >();
-  private readonly memberVariableModifications = new Set<string>();
+
   private readonly staticVariableModifications = new Set<string>();
-
-  private readonly classType: ts.Type;
-
-  private constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
 
   public constructor(
     private readonly checker: ts.TypeChecker,
@@ -308,7 +336,7 @@ class ClassScope {
 
     if (
       this.onlyInlineLambdas &&
-      node.initializer !== undefined &&
+      node.initializer != null &&
       !ts.isArrowFunction(node.initializer)
     ) {
       return;
@@ -318,50 +346,6 @@ class ClassScope {
       ? this.privateModifiableStatics
       : this.privateModifiableMembers
     ).set(node.name.getText(), node);
-  }
-
-  public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
-    if (type.isIntersection()) {
-      let result: TypeToClassRelation = TypeToClassRelation.None;
-      for (const subType of type.types) {
-        const subTypeResult = this.getTypeToClassRelation(subType);
-        switch (subTypeResult) {
-          case TypeToClassRelation.Class:
-            if (result === TypeToClassRelation.Instance) {
-              return TypeToClassRelation.ClassAndInstance;
-            }
-            result = TypeToClassRelation.Class;
-            break;
-          case TypeToClassRelation.Instance:
-            if (result === TypeToClassRelation.Class) {
-              return TypeToClassRelation.ClassAndInstance;
-            }
-            result = TypeToClassRelation.Instance;
-            break;
-        }
-      }
-      return result;
-    }
-    if (type.isUnion()) {
-      // any union of class/instance and something else will prevent access to
-      // private members, so we assume that union consists only of classes
-      // or class instances, because otherwise tsc will report an error
-      return this.getTypeToClassRelation(type.types[0]);
-    }
-
-    if (!type.getSymbol() || !typeIsOrHasBaseType(type, this.classType)) {
-      return TypeToClassRelation.None;
-    }
-
-    const typeIsClass =
-      tsutils.isObjectType(type) &&
-      tsutils.isObjectFlagSet(type, ts.ObjectFlags.Anonymous);
-
-    if (typeIsClass) {
-      return TypeToClassRelation.Class;
-    }
-
-    return TypeToClassRelation.Instance;
   }
 
   public addVariableModification(node: ts.PropertyAccessExpression): void {
@@ -407,14 +391,14 @@ class ClassScope {
     }
   }
 
-  public exitConstructor(): void {
-    this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
-  }
-
   public enterNonConstructor(): void {
     if (this.constructorScopeDepth !== OUTSIDE_CONSTRUCTOR) {
       this.constructorScopeDepth += 1;
     }
+  }
+
+  public exitConstructor(): void {
+    this.constructorScopeDepth = OUTSIDE_CONSTRUCTOR;
   }
 
   public exitNonConstructor(): void {
@@ -433,8 +417,52 @@ class ClassScope {
     });
 
     return [
-      ...Array.from(this.privateModifiableMembers.values()),
-      ...Array.from(this.privateModifiableStatics.values()),
+      ...this.privateModifiableMembers.values(),
+      ...this.privateModifiableStatics.values(),
     ];
+  }
+
+  public getTypeToClassRelation(type: ts.Type): TypeToClassRelation {
+    if (type.isIntersection()) {
+      let result: TypeToClassRelation = TypeToClassRelation.None;
+      for (const subType of type.types) {
+        const subTypeResult = this.getTypeToClassRelation(subType);
+        switch (subTypeResult) {
+          case TypeToClassRelation.Class:
+            if (result === TypeToClassRelation.Instance) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Class;
+            break;
+          case TypeToClassRelation.Instance:
+            if (result === TypeToClassRelation.Class) {
+              return TypeToClassRelation.ClassAndInstance;
+            }
+            result = TypeToClassRelation.Instance;
+            break;
+        }
+      }
+      return result;
+    }
+    if (type.isUnion()) {
+      // any union of class/instance and something else will prevent access to
+      // private members, so we assume that union consists only of classes
+      // or class instances, because otherwise tsc will report an error
+      return this.getTypeToClassRelation(type.types[0]);
+    }
+
+    if (!type.getSymbol() || !typeIsOrHasBaseType(type, this.classType)) {
+      return TypeToClassRelation.None;
+    }
+
+    const typeIsClass =
+      tsutils.isObjectType(type) &&
+      tsutils.isObjectFlagSet(type, ts.ObjectFlags.Anonymous);
+
+    if (typeIsClass) {
+      return TypeToClassRelation.Class;
+    }
+
+    return TypeToClassRelation.Instance;
   }
 }

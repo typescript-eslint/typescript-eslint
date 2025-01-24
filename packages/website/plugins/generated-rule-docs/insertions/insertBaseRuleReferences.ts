@@ -1,8 +1,8 @@
-import type * as mdast from 'mdast';
-import type * as unist from 'unist';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
 
 import type { RuleDocsPage } from '../RuleDocsPage';
-import { convertToPlaygroundHash, getEslintrcString } from '../utils';
+
+import { convertToPlaygroundHash, getRulesString } from '../../utils/rules';
 
 export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =
@@ -10,58 +10,90 @@ export function insertBaseRuleReferences(page: RuleDocsPage): string {
       ? page.rule.meta.docs.extendsBaseRule
       : page.file.stem;
 
-  page.spliceChildren(page.headingIndices.options + 1, 0, {
-    children: [
-      {
-        value: 'See ',
-        type: 'text',
-      },
-      {
-        children: [
-          {
-            type: 'inlineCode',
-            value: `eslint/${extendsBaseRuleName}`,
-          },
-          {
-            type: 'text',
-            value: ' options',
-          },
-        ],
-        type: 'link',
-        url: `https://eslint.org/docs/rules/${extendsBaseRuleName}#options`,
-      },
-      {
-        type: 'text',
-        value: '.',
-      },
-    ],
-    type: 'paragraph',
-  } as mdast.Paragraph);
-
-  const eslintrc = getEslintrcString(
-    extendsBaseRuleName,
-    page.file.stem,
-    false,
+  page.spliceChildren(
+    page.headingIndices.options + 1,
+    0,
+    `See [\`eslint/${extendsBaseRuleName}\`'s options](https://eslint.org/docs/rules/${extendsBaseRuleName}#options).`,
   );
+
+  const eslintrc = `{
+  "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, false)}
+}`;
   const eslintrcHash = convertToPlaygroundHash(eslintrc);
 
   page.spliceChildren(
     page.headingIndices.howToUse + 1,
     0,
     {
-      lang: 'js',
-      type: 'code',
-      meta: 'title=".eslintrc.cjs"',
-      value: `module.exports = ${getEslintrcString(
-        extendsBaseRuleName,
-        page.file.stem,
-        true,
-      )};`,
-    } as mdast.Code,
+      children: [
+        {
+          attributes: [
+            {
+              name: 'value',
+              type: 'mdxJsxAttribute',
+              value: 'Flat Config',
+            },
+          ],
+          children: [
+            {
+              lang: 'js',
+              meta: 'title="eslint.config.mjs"',
+              type: 'code',
+              value: `export default tseslint.config({
+  rules: ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
+});`,
+            },
+          ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
+        },
+        {
+          attributes: [
+            {
+              name: 'value',
+              type: 'mdxJsxAttribute',
+              value: 'Legacy Config',
+            },
+          ],
+          children: [
+            {
+              lang: 'js',
+              meta: 'title=".eslintrc.cjs"',
+              type: 'code',
+              value: `module.exports = {
+  "rules": ${getRulesString(extendsBaseRuleName, page.file.stem, true)}
+};`,
+            },
+          ],
+          name: 'TabItem',
+          type: 'mdxJsxFlowElement',
+        },
+      ],
+      name: 'Tabs',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
     {
-      value: `<try-in-playground eslintrcHash="${eslintrcHash}">Try this rule in the playground ↗</try-in-playground>`,
-      type: 'jsx',
-    } as unist.Node,
+      attributes: [
+        {
+          name: 'eslintrcHash',
+          type: 'mdxJsxAttribute',
+          value: eslintrcHash,
+        },
+      ],
+      children: [
+        {
+          children: [
+            {
+              type: 'text',
+              value: 'Try this rule in the playground ↗',
+            },
+          ],
+          type: 'paragraph',
+        },
+      ],
+      name: 'TryInPlayground',
+      type: 'mdxJsxFlowElement',
+    } as MdxJsxFlowElement,
   );
 
   return eslintrc;

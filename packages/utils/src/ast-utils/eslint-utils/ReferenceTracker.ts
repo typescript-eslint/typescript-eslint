@@ -13,16 +13,6 @@ const ReferenceTrackerESM: unique symbol = eslintUtils.ReferenceTracker.ESM;
 interface ReferenceTracker {
   /**
    * Iterate the references that the given `traceMap` determined.
-   * This method starts to search from global variables.
-   *
-   * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#tracker-iterateglobalreferences}
-   */
-  iterateGlobalReferences<T>(
-    traceMap: ReferenceTracker.TraceMap<T>,
-  ): IterableIterator<ReferenceTracker.FoundReference<T>>;
-
-  /**
-   * Iterate the references that the given `traceMap` determined.
    * This method starts to search from `require()` expression.
    *
    * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#tracker-iteratecjsreferences}
@@ -40,28 +30,39 @@ interface ReferenceTracker {
   iterateEsmReferences<T>(
     traceMap: ReferenceTracker.TraceMap<T>,
   ): IterableIterator<ReferenceTracker.FoundReference<T>>;
+
+  /**
+   * Iterate the references that the given `traceMap` determined.
+   * This method starts to search from global variables.
+   *
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#tracker-iterateglobalreferences}
+   */
+  iterateGlobalReferences<T>(
+    traceMap: ReferenceTracker.TraceMap<T>,
+  ): IterableIterator<ReferenceTracker.FoundReference<T>>;
 }
 interface ReferenceTrackerStatic {
+  readonly CALL: typeof ReferenceTrackerCALL;
+  readonly CONSTRUCT: typeof ReferenceTrackerCONSTRUCT;
+  readonly ESM: typeof ReferenceTrackerESM;
+
   new (
     globalScope: TSESLint.Scope.Scope,
     options?: {
+      /**
+       * The name list of Global Object. Optional. Default is `["global", "globalThis", "self", "window"]`.
+       */
+      globalObjectNames?: readonly string[];
       /**
        * The mode which determines how the `tracker.iterateEsmReferences()` method scans CommonJS modules.
        * If this is `"strict"`, the method binds CommonJS modules to the default export. Otherwise, the method binds
        * CommonJS modules to both the default export and named exports. Optional. Default is `"strict"`.
        */
       mode?: 'legacy' | 'strict';
-      /**
-       * The name list of Global Object. Optional. Default is `["global", "globalThis", "self", "window"]`.
-       */
-      globalObjectNames?: readonly string[];
     },
   ): ReferenceTracker;
 
   readonly READ: typeof ReferenceTrackerREAD;
-  readonly CALL: typeof ReferenceTrackerCALL;
-  readonly CONSTRUCT: typeof ReferenceTrackerCONSTRUCT;
-  readonly ESM: typeof ReferenceTrackerESM;
 }
 
 namespace ReferenceTracker {
@@ -73,18 +74,18 @@ namespace ReferenceTracker {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
   export interface TraceMapElement<T> {
-    [ReferenceTrackerREAD]?: T;
+    [key: string]: TraceMapElement<T>;
     [ReferenceTrackerCALL]?: T;
     [ReferenceTrackerCONSTRUCT]?: T;
     [ReferenceTrackerESM]?: true;
-    [key: string]: TraceMapElement<T>;
+    [ReferenceTrackerREAD]?: T;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface FoundReference<T = any> {
+    info: T;
     node: TSESTree.Node;
     path: readonly string[];
     type: ReferenceType;
-    info: T;
   }
 }
 
@@ -93,6 +94,5 @@ namespace ReferenceTracker {
  *
  * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#referencetracker-class}
  */
-const ReferenceTracker = eslintUtils.ReferenceTracker as ReferenceTrackerStatic;
-
-export { ReferenceTracker };
+export const ReferenceTracker =
+  eslintUtils.ReferenceTracker as ReferenceTrackerStatic;

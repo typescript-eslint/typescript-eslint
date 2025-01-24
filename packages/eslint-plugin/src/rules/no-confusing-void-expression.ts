@@ -1,7 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
+
+import type { MakeRequired } from '../util';
 
 import {
   createRule,
@@ -13,11 +16,13 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { getParentFunctionNode } from '../util/getParentFunctionNode';
 
 export type Options = [
   {
     ignoreArrowShorthand?: boolean;
     ignoreVoidOperator?: boolean;
+    ignoreVoidReturningFunctions?: boolean;
   },
 ];
 
@@ -34,20 +39,19 @@ export type MessageId =
 export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
   meta: {
+    type: 'problem',
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       invalidVoidExpr:
         'Placing a void expression inside another expression is forbidden. ' +
         'Move it to its own statement instead.',
-      invalidVoidExprWrapVoid:
-        'Void expressions used inside another expression ' +
-        'must be moved to its own statement ' +
-        'or marked explicitly with the `void` operator.',
       invalidVoidExprArrow:
         'Returning a void expression from an arrow function shorthand is forbidden. ' +
         'Please add braces to the arrow function.',
@@ -63,25 +67,48 @@ export default createRule<Options, MessageId>({
       invalidVoidExprReturnWrapVoid:
         'Void expressions returned from a function ' +
         'must be marked explicitly with the `void` operator.',
+      invalidVoidExprWrapVoid:
+        'Void expressions used inside another expression ' +
+        'must be moved to its own statement ' +
+        'or marked explicitly with the `void` operator.',
       voidExprWrapVoid: 'Mark with an explicit `void` operator.',
     },
     schema: [
       {
         type: 'object',
-        properties: {
-          ignoreArrowShorthand: { type: 'boolean' },
-          ignoreVoidOperator: { type: 'boolean' },
-        },
         additionalProperties: false,
+        properties: {
+          ignoreArrowShorthand: {
+            type: 'boolean',
+            description:
+              'Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces.',
+          },
+          ignoreVoidOperator: {
+            type: 'boolean',
+            description:
+              'Whether to ignore returns that start with the `void` operator.',
+          },
+          ignoreVoidReturningFunctions: {
+            type: 'boolean',
+            description:
+              'Whether to ignore returns from functions with explicit `void` return types and functions with contextual `void` return types.',
+          },
+        },
       },
     ],
-    type: 'problem',
-    fixable: 'code',
-    hasSuggestions: true,
   },
-  defaultOptions: [{ ignoreArrowShorthand: false, ignoreVoidOperator: false }],
+  defaultOptions: [
+    {
+      ignoreArrowShorthand: false,
+      ignoreVoidOperator: false,
+      ignoreVoidReturningFunctions: false,
+    },
+  ],
 
   create(context, [options]) {
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
+
     return {
       'AwaitExpression, CallExpression, TaggedTemplateExpression'(
         node:
@@ -89,7 +116,6 @@ export default createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const services = getParserServices(context);
         const type = getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
@@ -110,6 +136,14 @@ export default createRule<Options, MessageId>({
 
         if (invalidAncestor.type === AST_NODE_TYPES.ArrowFunctionExpression) {
           // handle arrow function shorthand
+
+          if (options.ignoreVoidReturningFunctions) {
+            const returnsVoid = isVoidReturningFunctionNode(invalidAncestor);
+
+            if (returnsVoid) {
+              return;
+            }
+          }
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
@@ -133,14 +167,26 @@ export default createRule<Options, MessageId>({
               const arrowBodyText = context.sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
               if (isParenthesized(arrowBody, context.sourceCode)) {
-                const bodyOpeningParen = context.sourceCode.getTokenBefore(
-                  arrowBody,
-                  isOpeningParenToken,
-                )!;
-                const bodyClosingParen = context.sourceCode.getTokenAfter(
-                  arrowBody,
-                  isClosingParenToken,
-                )!;
+                const bodyOpeningParen = nullThrows(
+                  context.sourceCode.getTokenBefore(
+                    arrowBody,
+                    isOpeningParenToken,
+                  ),
+                  NullThrowsReasons.MissingToken(
+                    'opening parenthesis',
+                    'arrow body',
+                  ),
+                );
+                const bodyClosingParen = nullThrows(
+                  context.sourceCode.getTokenAfter(
+                    arrowBody,
+                    isClosingParenToken,
+                  ),
+                  NullThrowsReasons.MissingToken(
+                    'closing parenthesis',
+                    'arrow body',
+                  ),
+                );
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
                   newArrowBodyText,
@@ -154,6 +200,18 @@ export default createRule<Options, MessageId>({
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
           // handle return statement
 
+          if (options.ignoreVoidReturningFunctions) {
+            const functionNode = getParentFunctionNode(invalidAncestor);
+
+            if (functionNode) {
+              const returnsVoid = isVoidReturningFunctionNode(functionNode);
+
+              if (returnsVoid) {
+                return;
+              }
+            }
+          }
+
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
             return context.report({
@@ -163,25 +221,23 @@ export default createRule<Options, MessageId>({
             });
           }
 
-          const returnStmt = invalidAncestor;
-
-          if (isFinalReturn(returnStmt)) {
+          if (isFinalReturn(invalidAncestor)) {
             // remove the `return` keyword
             return context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
-                if (!canFix(returnStmt)) {
+                if (!canFix(invalidAncestor)) {
                   return null;
                 }
-                const returnValue = returnStmt.argument!;
+                const returnValue = invalidAncestor.argument;
                 const returnValueText = context.sourceCode.getText(returnValue);
                 let newReturnStmtText = `${returnValueText};`;
                 if (isPreventingASI(returnValue)) {
                   // put a semicolon at the beginning of the line
                   newReturnStmtText = `;${newReturnStmtText}`;
                 }
-                return fixer.replaceText(returnStmt, newReturnStmtText);
+                return fixer.replaceText(invalidAncestor, newReturnStmtText);
               },
             });
           }
@@ -191,19 +247,21 @@ export default createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
-              const returnValue = returnStmt.argument!;
+              const returnValue = invalidAncestor.argument;
               const returnValueText = context.sourceCode.getText(returnValue);
               let newReturnStmtText = `${returnValueText}; return;`;
               if (isPreventingASI(returnValue)) {
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
-              if (returnStmt.parent.type !== AST_NODE_TYPES.BlockStatement) {
+              if (
+                invalidAncestor.parent.type !== AST_NODE_TYPES.BlockStatement
+              ) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;
               }
-              return fixer.replaceText(returnStmt, newReturnStmtText);
+              return fixer.replaceText(invalidAncestor, newReturnStmtText);
             },
           });
         }
@@ -225,6 +283,15 @@ export default createRule<Options, MessageId>({
       },
     };
 
+    type ReturnStatementWithArgument = MakeRequired<
+      TSESTree.ReturnStatement,
+      'argument'
+    >;
+
+    type InvalidAncestor =
+      | Exclude<TSESTree.Node, TSESTree.ReturnStatement>
+      | ReturnStatementWithArgument;
+
     /**
      * Inspects the void expression's ancestors and finds closest invalid one.
      * By default anything other than an ExpressionStatement is invalid.
@@ -233,12 +300,13 @@ export default createRule<Options, MessageId>({
      * @param node The void expression node to check.
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
-    function findInvalidAncestor(node: TSESTree.Node): TSESTree.Node | null {
+    function findInvalidAncestor(node: TSESTree.Node): InvalidAncestor | null {
       const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
-      if (parent.type === AST_NODE_TYPES.SequenceExpression) {
-        if (node !== parent.expressions[parent.expressions.length - 1]) {
-          return null;
-        }
+      if (
+        parent.type === AST_NODE_TYPES.SequenceExpression &&
+        node !== parent.expressions[parent.expressions.length - 1]
+      ) {
+        return null;
       }
 
       if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
@@ -247,38 +315,41 @@ export default createRule<Options, MessageId>({
         return null;
       }
 
-      if (parent.type === AST_NODE_TYPES.LogicalExpression) {
-        if (parent.right === node) {
-          // e.g. `x && console.log(x)`
-          // this is valid only if the next ancestor is valid
-          return findInvalidAncestor(parent);
-        }
+      if (
+        parent.type === AST_NODE_TYPES.LogicalExpression &&
+        parent.right === node
+      ) {
+        // e.g. `x && console.log(x)`
+        // this is valid only if the next ancestor is valid
+        return findInvalidAncestor(parent);
       }
 
-      if (parent.type === AST_NODE_TYPES.ConditionalExpression) {
-        if (parent.consequent === node || parent.alternate === node) {
-          // e.g. `cond ? console.log(true) : console.log(false)`
-          // this is valid only if the next ancestor is valid
-          return findInvalidAncestor(parent);
-        }
+      if (
+        parent.type === AST_NODE_TYPES.ConditionalExpression &&
+        (parent.consequent === node || parent.alternate === node)
+      ) {
+        // e.g. `cond ? console.log(true) : console.log(false)`
+        // this is valid only if the next ancestor is valid
+        return findInvalidAncestor(parent);
       }
 
-      if (parent.type === AST_NODE_TYPES.ArrowFunctionExpression) {
+      if (
+        parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
         // e.g. `() => console.log("foo")`
         // this is valid with an appropriate option
-        if (options.ignoreArrowShorthand) {
-          return null;
-        }
+        options.ignoreArrowShorthand
+      ) {
+        return null;
       }
 
-      if (parent.type === AST_NODE_TYPES.UnaryExpression) {
-        if (parent.operator === 'void') {
-          // e.g. `void console.log("foo")`
-          // this is valid with an appropriate option
-          if (options.ignoreVoidOperator) {
-            return null;
-          }
-        }
+      if (
+        parent.type === AST_NODE_TYPES.UnaryExpression &&
+        parent.operator === 'void' &&
+        // e.g. `void console.log("foo")`
+        // this is valid with an appropriate option
+        options.ignoreVoidOperator
+      ) {
+        return null;
       }
 
       if (parent.type === AST_NODE_TYPES.ChainExpression) {
@@ -286,8 +357,9 @@ export default createRule<Options, MessageId>({
         return findInvalidAncestor(parent);
       }
 
-      // any other parent is invalid
-      return parent;
+      // Any other parent is invalid.
+      // We can assume a return statement will have an argument.
+      return parent as InvalidAncestor;
     }
 
     /** Checks whether the return statement is the last statement in a function body. */
@@ -306,9 +378,9 @@ export default createRule<Options, MessageId>({
       );
       if (
         ![
+          AST_NODE_TYPES.ArrowFunctionExpression,
           AST_NODE_TYPES.FunctionDeclaration,
           AST_NODE_TYPES.FunctionExpression,
-          AST_NODE_TYPES.ArrowFunctionExpression,
         ].includes(blockParent.type)
       ) {
         // e.g. `if (cond) { return; }`
@@ -341,17 +413,63 @@ export default createRule<Options, MessageId>({
     }
 
     function canFix(
-      node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
+      node: ReturnStatementWithArgument | TSESTree.ArrowFunctionExpression,
     ): boolean {
-      const services = getParserServices(context);
-
       const targetNode =
         node.type === AST_NODE_TYPES.ReturnStatement
-          ? node.argument!
+          ? node.argument
           : node.body;
 
       const type = getConstrainedTypeAtLocation(services, targetNode);
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
+    }
+
+    function isFunctionReturnTypeIncludesVoid(functionType: ts.Type): boolean {
+      const callSignatures = tsutils.getCallSignaturesOfType(functionType);
+
+      return callSignatures.some(signature => {
+        const returnType = signature.getReturnType();
+
+        return tsutils
+          .unionTypeParts(returnType)
+          .some(tsutils.isIntrinsicVoidType);
+      });
+    }
+
+    function isVoidReturningFunctionNode(
+      functionNode:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
+    ): boolean {
+      // Game plan:
+      //   - If the function node has a type annotation, check if it includes `void`.
+      //     - If it does then the function is safe to return `void` expressions in.
+      //   - Otherwise, check if the function is a function-expression or an arrow-function.
+      //   -   If it is, get its contextual type and bail if we cannot.
+      //   - Return based on whether the contextual type includes `void` or not
+
+      const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
+
+      if (functionTSNode.type) {
+        const returnType = checker.getTypeFromTypeNode(functionTSNode.type);
+
+        return tsutils
+          .unionTypeParts(returnType)
+          .some(tsutils.isIntrinsicVoidType);
+      }
+
+      if (ts.isExpression(functionTSNode)) {
+        const functionType = checker.getContextualType(functionTSNode);
+
+        if (functionType) {
+          return tsutils
+            .unionTypeParts(functionType)
+            .some(isFunctionReturnTypeIncludesVoid);
+        }
+      }
+
+      return false;
     }
   },
 });

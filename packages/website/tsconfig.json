@@ -1,14 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "ES2023"],
     "noEmit": true,
-    "noImplicitAny": false,
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
@@ -23,6 +22,7 @@
     "plugins",
     "typings",
     "sidebars/*.js",
+    "./*.mts",
     "./*.ts"
   ]
 }

@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class ParameterDefinition extends DefinitionBase<
+export class ParameterDefinition extends DefinitionBase<
   DefinitionType.Parameter,
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
@@ -21,7 +21,10 @@ class ParameterDefinition extends DefinitionBase<
   /**
    * Whether the parameter definition is a part of a rest parameter.
    */
+  public readonly isTypeDefinition = false;
+  public readonly isVariableDefinition = true;
   public readonly rest: boolean;
+
   constructor(
     name: TSESTree.BindingName,
     node: ParameterDefinition['node'],
@@ -30,9 +33,4 @@ class ParameterDefinition extends DefinitionBase<
     super(DefinitionType.Parameter, name, node, null);
     this.rest = rest;
   }
-
-  public readonly isTypeDefinition = false;
-  public readonly isVariableDefinition = true;
 }
-
-export { ParameterDefinition };

@@ -1,4 +1,5 @@
 import type { ParentNodeType } from './types';
+
 import { filterProperties, isESNode, isRecord, isTSNode } from './utils';
 
 function isInRange(offset: number, value: object): boolean {
@@ -20,7 +21,8 @@ function isIterable(key: string, value: unknown): boolean {
 function getRangeFromNode(value: object): [number, number] | null {
   if (isESNode(value)) {
     return value.range;
-  } else if (isTSNode(value)) {
+  }
+  if (isTSNode(value)) {
     return [value.pos, value.end];
   }
   return null;
@@ -53,13 +55,15 @@ function findInObject(
       for (let index = 0; index < child.length; ++index) {
         const arrayChild: unknown = child[index];
         // typescript array like elements have other iterable items
-        if (typeof index === 'number' && isRecord(arrayChild)) {
-          if (isInRange(cursorPosition, arrayChild)) {
-            return {
-              key: [name, String(index)],
-              value: arrayChild,
-            };
-          }
+        if (
+          typeof index === 'number' &&
+          isRecord(arrayChild) &&
+          isInRange(cursorPosition, arrayChild)
+        ) {
+          return {
+            key: [name, String(index)],
+            value: arrayChild,
+          };
         }
       }
     }
@@ -70,7 +74,7 @@ function findInObject(
 export function findSelectionPath(
   node: object,
   cursorPosition: number,
-): { path: string[]; node: object | null } {
+): { node: object | null; path: string[] } {
   const nodePath = ['ast'];
   const visited = new Set<unknown>();
   let currentNode: unknown = node;
@@ -86,8 +90,8 @@ export function findSelectionPath(
       currentNode = result.value;
       nodePath.push(...result.key);
     } else {
-      return { path: nodePath, node: currentNode };
+      return { node: currentNode, path: nodePath };
     }
   }
-  return { path: nodePath, node: null };
+  return { node: null, path: nodePath };
 }

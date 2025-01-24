@@ -1,20 +1,21 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import type { ConfigModel } from '../types';
+import type { ConfigOptionsType } from './ConfigEditor';
+
 import { ensureObject, parseJSONObject, toJson } from '../lib/json';
 import { getTypescriptOptions } from '../lib/jsonSchema';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel } from '../types';
-import type { ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
 
 interface ConfigTypeScriptProps {
-  readonly onChange: (config: Partial<ConfigModel>) => void;
-  readonly config?: string;
   readonly className?: string;
+  readonly config?: string;
+  readonly onChange: (config: Partial<ConfigModel>) => void;
 }
 
 function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
-  const { config, onChange: onChangeProp, className } = props;
+  const { className, config, onChange: onChangeProp } = props;
 
   const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
     () => ({}),
@@ -34,23 +35,23 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
     return Object.values(
       getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
         (group, item) => {
-          const category = item.category!.message;
+          const category = item.category.message;
           group[category] ??= {
-            heading: category,
             fields: [],
+            heading: category,
           };
           if (item.type === 'boolean') {
             group[category].fields.push({
               key: item.name,
+              label: item.description.message,
               type: 'boolean',
-              label: item.description!.message,
             });
           } else if (item.type instanceof Map) {
             group[category].fields.push({
+              enum: ['', ...item.type.keys()],
               key: item.name,
+              label: item.description.message,
               type: 'string',
-              label: item.description!.message,
-              enum: ['', ...Array.from<string>(item.type.keys())],
             });
           }
           return group;
@@ -73,9 +74,9 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
   return (
     <ConfigEditor
       className={className}
+      onChange={onChange}
       options={options}
       values={configObject}
-      onChange={onChange}
     />
   );
 }

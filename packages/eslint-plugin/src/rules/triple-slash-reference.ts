@@ -1,16 +1,17 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     lib?: 'always' | 'never';
     path?: 'always' | 'never';
     types?: 'always' | 'never' | 'prefer-import';
   },
 ];
-type MessageIds = 'tripleSlashReference';
+export type MessageIds = 'tripleSlashReference';
 
 export default createRule<Options, MessageIds>({
   name: 'triple-slash-reference',
@@ -28,21 +29,27 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           lib: {
             type: 'string',
+            description:
+              'What to enforce for `/// <reference lib="..." />` references.',
             enum: ['always', 'never'],
           },
           path: {
             type: 'string',
+            description:
+              'What to enforce for `/// <reference path="..." />` references.',
             enum: ['always', 'never'],
           },
           types: {
             type: 'string',
+            description:
+              'What to enforce for `/// <reference types="..." />` references.',
             enum: ['always', 'never', 'prefer-import'],
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -78,15 +85,6 @@ export default createRule<Options, MessageIds>({
       ImportDeclaration(node): void {
         if (programNode) {
           hasMatchingReference(node.source);
-        }
-      },
-      TSImportEqualsDeclaration(node): void {
-        if (programNode) {
-          const reference = node.moduleReference;
-
-          if (reference.type === AST_NODE_TYPES.TSExternalModuleReference) {
-            hasMatchingReference(reference.expression as TSESTree.Literal);
-          }
         }
       },
       Program(node): void {
@@ -125,6 +123,15 @@ export default createRule<Options, MessageIds>({
             }
           }
         });
+      },
+      TSImportEqualsDeclaration(node): void {
+        if (programNode) {
+          const reference = node.moduleReference;
+
+          if (reference.type === AST_NODE_TYPES.TSExternalModuleReference) {
+            hasMatchingReference(reference.expression as TSESTree.Literal);
+          }
+        }
       },
     };
   },

@@ -1,4 +1,8 @@
+// This rule was feature-frozen before we enabled no-property-in-node.
+/* eslint-disable eslint-plugin/no-property-in-node */
+
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
@@ -17,7 +21,6 @@ export type MessageIds =
 type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
-  | ReadonlyType
   | 'accessor'
   | 'call-signature'
   | 'constructor'
@@ -26,15 +29,16 @@ type MemberKind =
   | 'method'
   | 'set'
   | 'signature'
-  | 'static-initialization';
+  | 'static-initialization'
+  | ReadonlyType;
 
 type DecoratedMemberKind =
-  | Exclude<ReadonlyType, 'readonly-signature'>
   | 'accessor'
   | 'field'
   | 'get'
   | 'method'
-  | 'set';
+  | 'set'
+  | Exclude<ReadonlyType, 'readonly-signature'>;
 
 type NonCallableMemberKind = Exclude<
   MemberKind,
@@ -43,10 +47,9 @@ type NonCallableMemberKind = Exclude<
 
 type MemberScope = 'abstract' | 'instance' | 'static';
 
-type Accessibility = TSESTree.Accessibility | '#private';
+type Accessibility = '#private' | TSESTree.Accessibility;
 
 type BaseMemberType =
-  | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
       'readonly-signature' | 'signature' | 'static-initialization'
@@ -54,34 +57,35 @@ type BaseMemberType =
   | `${Accessibility}-${MemberScope}-${NonCallableMemberKind}`
   | `${Accessibility}-decorated-${DecoratedMemberKind}`
   | `${MemberScope}-${NonCallableMemberKind}`
-  | `decorated-${DecoratedMemberKind}`;
+  | `decorated-${DecoratedMemberKind}`
+  | MemberKind;
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
 type AlphabeticalOrder =
-  | 'alphabetically-case-insensitive'
   | 'alphabetically'
-  | 'natural-case-insensitive'
-  | 'natural';
+  | 'alphabetically-case-insensitive'
+  | 'natural'
+  | 'natural-case-insensitive';
 
-type Order = AlphabeticalOrder | 'as-written';
+type Order = 'as-written' | AlphabeticalOrder;
 
 interface SortedOrderConfig {
-  memberTypes?: MemberType[] | 'never';
+  memberTypes?: 'never' | MemberType[];
   optionalityOrder?: OptionalityOrder;
   order?: Order;
 }
 
-type OrderConfig = MemberType[] | SortedOrderConfig | 'never';
+type OrderConfig = 'never' | MemberType[] | SortedOrderConfig;
 type Member = TSESTree.ClassElement | TSESTree.TypeElement;
 
 type OptionalityOrder = 'optional-first' | 'required-first';
 
 export type Options = [
   {
-    default?: OrderConfig;
     classes?: OrderConfig;
     classExpressions?: OrderConfig;
+    default?: OrderConfig;
     interfaces?: OrderConfig;
     typeLiterals?: OrderConfig;
   },
@@ -111,18 +115,18 @@ const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
 
 const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
   type: 'object',
+  additionalProperties: false,
   properties: {
     memberTypes: {
       oneOf: [arrayConfig(memberTypes), neverConfig],
     },
-    order: {
-      $ref: '#/items/0/$defs/orderOptions',
-    },
     optionalityOrder: {
       $ref: '#/items/0/$defs/optionalityOrderOptions',
     },
+    order: {
+      $ref: '#/items/0/$defs/orderOptions',
+    },
   },
-  additionalProperties: false,
 });
 
 export const defaultOrder: MemberType[] = [
@@ -296,38 +300,36 @@ export const defaultOrder: MemberType[] = [
   'method',
 ];
 
-const allMemberTypes = Array.from(
-  (
-    [
-      'readonly-signature',
-      'signature',
-      'readonly-field',
-      'field',
-      'method',
-      'call-signature',
-      'constructor',
-      'accessor',
-      'get',
-      'set',
-      'static-initialization',
-    ] as const
-  ).reduce<Set<MemberType>>((all, type) => {
-    all.add(type);
+const allMemberTypes = [
+  ...new Set(
+    (
+      [
+        'readonly-signature',
+        'signature',
+        'readonly-field',
+        'field',
+        'method',
+        'call-signature',
+        'constructor',
+        'accessor',
+        'get',
+        'set',
+        'static-initialization',
+      ] as const
+    ).flatMap(type => [
+      type,
 
-    (['public', 'protected', 'private', '#private'] as const).forEach(
-      accessibility => {
-        if (
+      ...(['public', 'protected', 'private', '#private'] as const)
+        .flatMap<MemberType>(accessibility => [
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'static-initialization' &&
           type !== 'call-signature' &&
           !(type === 'constructor' && accessibility === '#private')
-        ) {
-          all.add(`${accessibility}-${type}`); // e.g. `public-field`
-        }
+            ? `${accessibility}-${type}` // e.g. `public-field`
+            : [],
 
-        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
-        if (
+          // Only class instance fields, methods, accessors, get and set can have decorators attached to them
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
@@ -335,36 +337,36 @@ const allMemberTypes = Array.from(
             type === 'accessor' ||
             type === 'get' ||
             type === 'set')
-        ) {
-          all.add(`${accessibility}-decorated-${type}`);
-          all.add(`decorated-${type}`);
-        }
+            ? [`${accessibility}-decorated-${type}`, `decorated-${type}`]
+            : [],
 
-        if (
           type !== 'constructor' &&
           type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'call-signature'
-        ) {
-          // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
-          if (accessibility === '#private' || accessibility === 'private') {
-            (['static', 'instance'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          } else {
-            (['static', 'instance', 'abstract'] as const).forEach(scope => {
-              all.add(`${scope}-${type}`);
-              all.add(`${accessibility}-${scope}-${type}`);
-            });
-          }
-        }
-      },
-    );
-
-    return all;
-  }, new Set<MemberType>()),
-);
+            ? (
+                [
+                  'static',
+                  'instance',
+                  // There is no `static-constructor` or `instance-constructor` or `abstract-constructor`
+                  ...(accessibility === '#private' ||
+                  accessibility === 'private'
+                    ? []
+                    : (['abstract'] as const)),
+                ] as const
+              ).flatMap(
+                scope =>
+                  [
+                    `${scope}-${type}`,
+                    `${accessibility}-${scope}-${type}`,
+                  ] as const,
+              )
+            : [],
+        ])
+        .flat(),
+    ]),
+  ),
+];
 
 const functionExpressions = [
   AST_NODE_TYPES.FunctionExpression,
@@ -380,15 +382,16 @@ function getNodeType(node: Member): MemberKind | null {
   switch (node.type) {
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
-      return node.kind;
     case AST_NODE_TYPES.TSMethodSignature:
-      return 'method';
+      return node.kind;
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return 'call-signature';
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
+    case AST_NODE_TYPES.TSAbstractAccessorProperty:
     case AST_NODE_TYPES.AccessorProperty:
       return 'accessor';
     case AST_NODE_TYPES.PropertyDefinition:
@@ -397,8 +400,6 @@ function getNodeType(node: Member): MemberKind | null {
         : node.readonly
           ? 'readonly-field'
           : 'field';
-    case AST_NODE_TYPES.TSPropertySignature:
-      return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
       return node.readonly ? 'readonly-signature' : 'signature';
     case AST_NODE_TYPES.StaticBlock:
@@ -413,9 +414,11 @@ function getNodeType(node: Member): MemberKind | null {
  */
 function getMemberRawName(
   member:
+    | TSESTree.AccessorProperty
     | TSESTree.MethodDefinition
     | TSESTree.Property
     | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractAccessorProperty
     | TSESTree.TSAbstractMethodDefinition
     | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.TSMethodSignature
@@ -445,7 +448,9 @@ function getMemberName(
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
+    case AST_NODE_TYPES.TSAbstractAccessorProperty:
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.AccessorProperty:
     case AST_NODE_TYPES.PropertyDefinition:
       return getMemberRawName(node, sourceCode);
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
@@ -477,7 +482,9 @@ function isMemberOptional(node: Member): boolean {
   switch (node.type) {
     case AST_NODE_TYPES.TSPropertySignature:
     case AST_NODE_TYPES.TSMethodSignature:
+    case AST_NODE_TYPES.TSAbstractAccessorProperty:
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
+    case AST_NODE_TYPES.AccessorProperty:
     case AST_NODE_TYPES.PropertyDefinition:
     case AST_NODE_TYPES.TSAbstractMethodDefinition:
     case AST_NODE_TYPES.MethodDefinition:
@@ -503,9 +510,10 @@ function getRankOrder(
   orderConfig: MemberType[],
 ): number {
   let rank = -1;
-  const stack = memberGroups.slice(); // Get a copy of the member groups
+  const stack = [...memberGroups]; // Get a copy of the member groups
 
   while (stack.length > 0 && rank === -1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const memberGroup = stack.shift()!;
     rank = orderConfig.findIndex(memberType =>
       Array.isArray(memberType)
@@ -540,12 +548,20 @@ function getRank(
 ): number {
   const type = getNodeType(node);
 
+  if (
+    node.type === AST_NODE_TYPES.MethodDefinition &&
+    node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression
+  ) {
+    return -1;
+  }
+
   if (type == null) {
     // shouldn't happen but just in case, put it on the end
     return orderConfig.length - 1;
   }
 
   const abstract =
+    node.type === AST_NODE_TYPES.TSAbstractAccessorProperty ||
     node.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
     node.type === AST_NODE_TYPES.TSAbstractMethodDefinition;
 
@@ -568,6 +584,7 @@ function getRank(
       (type === 'readonly-field' ||
         type === 'field' ||
         type === 'method' ||
+        type === 'accessor' ||
         type === 'get' ||
         type === 'set')
     ) {
@@ -615,6 +632,59 @@ function getRank(
 }
 
 /**
+ * Groups members into arrays of consecutive members with the same rank.
+ * If, for example, the memberSet parameter looks like the following...
+ * @example
+ * ```
+ * interface Foo {
+ *   [a: string]: number;
+ *
+ *   a: x;
+ *   B: x;
+ *   c: x;
+ *
+ *   c(): void;
+ *   B(): void;
+ *   a(): void;
+ *
+ *   (): Baz;
+ *
+ *   new (): Bar;
+ * }
+ * ```
+ * ...the resulting array will look like: [[a, B, c], [c, B, a]].
+ * @param memberSet The members to be grouped.
+ * @param memberType The configured order of member types.
+ * @param supportsModifiers It'll get passed to getRank().
+ * @returns The array of groups of members.
+ */
+function groupMembersByType(
+  members: Member[],
+  memberTypes: MemberType[],
+  supportsModifiers: boolean,
+): Member[][] {
+  const groupedMembers: Member[][] = [];
+  const memberRanks = members.map(member =>
+    getRank(member, memberTypes, supportsModifiers),
+  );
+  let previousRank: number | undefined = undefined;
+  members.forEach((member, index) => {
+    if (index === members.length - 1) {
+      return;
+    }
+    const rankOfCurrentMember = memberRanks[index];
+    const rankOfNextMember = memberRanks[index + 1];
+    if (rankOfCurrentMember === previousRank) {
+      groupedMembers.at(-1)?.push(member);
+    } else if (rankOfCurrentMember === rankOfNextMember) {
+      groupedMembers.push([member]);
+      previousRank = rankOfCurrentMember;
+    }
+  });
+  return groupedMembers;
+}
+
+/**
  * Gets the lowest possible rank(s) higher than target.
  * e.g. given the following order:
  *   ...
@@ -630,7 +700,7 @@ function getRank(
  * public-instance-method.
  * If a lowest possible rank is a member group, a comma separated list of ranks is returned.
  * @param ranks the existing ranks in the object.
- * @param target the target rank.
+ * @param target the minimum target rank to filter on.
  * @param order the current order to be validated.
  * @returns the name(s) of the lowest possible rank without dashes (-).
  */
@@ -649,7 +719,7 @@ function getLowestRank(
 
   const lowestRank = order[lowest];
   const lowestRanks = Array.isArray(lowestRank) ? lowestRank : [lowestRank];
-  return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
+  return lowestRanks.map(rank => rank.replaceAll('-', ' ')).join(', ');
 }
 
 export default createRule<Options, MessageIds>({
@@ -660,15 +730,24 @@ export default createRule<Options, MessageIds>({
       description: 'Require a consistent member declaration order',
     },
     messages: {
-      incorrectOrder:
-        'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
+      incorrectOrder:
+        'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
     },
     schema: [
       {
+        type: 'object',
         $defs: {
+          allItems: {
+            type: 'string',
+            enum: allMemberTypes as string[],
+          },
+          optionalityOrderOptions: {
+            type: 'string',
+            enum: ['optional-first', 'required-first'],
+          },
           orderOptions: {
             type: 'string',
             enum: [
@@ -678,14 +757,6 @@ export default createRule<Options, MessageIds>({
               'natural',
               'natural-case-insensitive',
             ],
-          },
-          optionalityOrderOptions: {
-            type: 'string',
-            enum: ['optional-first', 'required-first'],
-          },
-          allItems: {
-            type: 'string',
-            enum: allMemberTypes as string[],
           },
           typeItems: {
             type: 'string',
@@ -698,7 +769,7 @@ export default createRule<Options, MessageIds>({
               'constructor',
             ],
           },
-
+          // ajv is order-dependent; these configs must come last
           baseConfig: {
             oneOf: [
               neverConfig,
@@ -714,15 +785,15 @@ export default createRule<Options, MessageIds>({
             ],
           },
         },
-        type: 'object',
+        additionalProperties: false,
         properties: {
-          default: {
-            $ref: '#/items/0/$defs/baseConfig',
-          },
           classes: {
             $ref: '#/items/0/$defs/baseConfig',
           },
           classExpressions: {
+            $ref: '#/items/0/$defs/baseConfig',
+          },
+          default: {
             $ref: '#/items/0/$defs/baseConfig',
           },
           interfaces: {
@@ -732,7 +803,6 @@ export default createRule<Options, MessageIds>({
             $ref: '#/items/0/$defs/typesConfig',
           },
         },
-        additionalProperties: false,
       },
     ],
   },
@@ -823,8 +893,8 @@ export default createRule<Options, MessageIds>({
               node: member,
               messageId: 'incorrectOrder',
               data: {
-                member: name,
                 beforeMember: previousName,
+                member: name,
               },
             });
 
@@ -881,8 +951,8 @@ export default createRule<Options, MessageIds>({
 
       const report = (member: Member): void =>
         context.report({
-          messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
+          messageId: 'incorrectRequiredMembersOrder',
           data: {
             member: getMemberName(member, context.sourceCode),
             optionalOrRequired:
@@ -932,8 +1002,23 @@ export default createRule<Options, MessageIds>({
 
       // Standardize config
       let order: Order | undefined;
-      let memberTypes: MemberType[] | string | undefined;
+      let memberTypes: string | MemberType[] | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
+
+      /**
+       * It runs an alphabetic sort on the groups of the members of the class in the source code.
+       * @param memberSet The members in the class of the source code on which the grouping operation will be performed.
+       */
+      const checkAlphaSortForAllMembers = (memberSet: Member[]): undefined => {
+        const hasAlphaSort = !!(order && order !== 'as-written');
+        if (hasAlphaSort && Array.isArray(memberTypes)) {
+          groupMembersByType(memberSet, memberTypes, supportsModifiers).forEach(
+            members => {
+              checkAlphaSort(members, order as AlphabeticalOrder);
+            },
+          );
+        }
+      };
 
       // returns true if everything is good and false if an error was reported
       const checkOrder = (memberSet: Member[]): boolean => {
@@ -948,20 +1033,20 @@ export default createRule<Options, MessageIds>({
           );
 
           if (grouped == null) {
+            checkAlphaSortForAllMembers(members);
             return false;
           }
 
           if (hasAlphaSort) {
-            return !grouped.some(
-              groupMember =>
-                !checkAlphaSort(groupMember, order as AlphabeticalOrder),
+            grouped.map(groupMember =>
+              checkAlphaSort(groupMember, order as AlphabeticalOrder),
             );
           }
         } else if (hasAlphaSort) {
           return checkAlphaSort(memberSet, order as AlphabeticalOrder);
         }
 
-        return true;
+        return false;
       };
 
       if (Array.isArray(orderConfig)) {
@@ -993,6 +1078,8 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5439
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     return {
       ClassDeclaration(node): void {
         validateMembersOrder(
@@ -1000,6 +1087,11 @@ export default createRule<Options, MessageIds>({
           options.classes ?? options.default!,
           true,
         );
+      },
+      'ClassDeclaration, FunctionDeclaration'(node): void {
+        if ('superClass' in node) {
+          // ...
+        }
       },
       ClassExpression(node): void {
         validateMembersOrder(
@@ -1023,5 +1115,6 @@ export default createRule<Options, MessageIds>({
         );
       },
     };
+    /* eslint-enable @typescript-eslint/no-non-null-assertion */
   },
 });

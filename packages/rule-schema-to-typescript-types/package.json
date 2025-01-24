@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "7.1.0",
+  "version": "8.21.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -11,7 +11,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
+  "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
@@ -30,13 +31,17 @@
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
     "test": "npx jest --coverage",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "7.1.0",
-    "@typescript-eslint/utils": "7.1.0",
+    "@typescript-eslint/type-utils": "8.21.0",
+    "@typescript-eslint/utils": "8.21.0",
     "natural-compare": "^1.4.0",
-    "prettier": "^3.0.3"
+    "prettier": "^3.2.5"
+  },
+  "devDependencies": {
+    "@jest/types": "29.6.3",
+    "typescript": "*"
   },
   "funding": {
     "type": "opencollective",

@@ -1,8 +1,10 @@
 import * as tseslint from '@typescript-eslint/typescript-estree';
 
-import { analyze, AnalyzeOptions } from '../../src/analyze';
+import type { AnalyzeOptions } from '../../src/analyze';
 
-type SourceType = AnalyzeOptions['sourceType'];
+import { analyze } from '../../src/analyze';
+
+export type SourceType = AnalyzeOptions['sourceType'];
 
 const DEFAULT_PARSER_OPTIONS = {
   // the analyser requires ranges to work
@@ -13,7 +15,7 @@ const DEFAULT_ANALYZE_OPTIONS = {
   lib: [],
 };
 
-function parse(
+export function parse(
   code: string,
   sourceTypeOrParserOptions:
     | SourceType
@@ -29,17 +31,20 @@ function parse(
   });
 }
 
-interface ParseAndAnalyze {
+export interface ParseAndAnalyze {
   ast: ReturnType<typeof tseslint.parse>;
   scopeManager: ReturnType<typeof analyze>;
 }
-function parseAndAnalyze(code: string, sourceType: SourceType): ParseAndAnalyze;
-function parseAndAnalyze(
+export function parseAndAnalyze(
+  code: string,
+  sourceType: SourceType,
+): ParseAndAnalyze;
+export function parseAndAnalyze(
   code: string,
   analyzeOptions?: AnalyzeOptions,
   parserOptions?: tseslint.TSESTreeOptions,
 ): ParseAndAnalyze;
-function parseAndAnalyze(
+export function parseAndAnalyze(
   code: string,
   sourceTypeOrAnalyzeOption:
     | AnalyzeOptions
@@ -59,4 +64,4 @@ function parseAndAnalyze(
   return { ast, scopeManager };
 }
 
-export { parse, parseAndAnalyze, AnalyzeOptions };
+export type { AnalyzeOptions } from '../../src/analyze';

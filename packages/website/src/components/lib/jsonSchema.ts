@@ -4,8 +4,8 @@ import type * as ts from 'typescript';
 import type { CreateLinter } from '../linter/createLinter';
 
 const defaultRuleSchema: JSONSchema4 = {
-  type: ['string', 'number'],
   enum: ['off', 'warn', 'error', 0, 1, 2],
+  type: ['string', 'number'],
 };
 
 // https://github.com/microsoft/TypeScript/issues/17002
@@ -31,10 +31,10 @@ export function getRuleJsonSchemaWithErrorLevel(
       defaultRuleSchemaCopy.$defs = ruleSchema[0].$defs;
     }
     return {
-      type: 'array',
+      additionalItems: false,
       items: [defaultRuleSchemaCopy, ...ruleSchema],
       minItems: 1,
-      additionalItems: false,
+      type: 'array',
     };
   }
   if ('items' in ruleSchema) {
@@ -42,22 +42,22 @@ export function getRuleJsonSchemaWithErrorLevel(
     if (isArray(ruleSchema.items)) {
       return {
         ...ruleSchema,
-        type: 'array',
+        additionalItems: false,
         items: [defaultRuleSchema, ...ruleSchema.items],
         maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
         minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
-        additionalItems: false,
+        type: 'array',
       };
     }
     // example: naming-convention rule
     if (typeof ruleSchema.items === 'object') {
       return {
         ...ruleSchema,
-        type: 'array',
+        additionalItems: ruleSchema.items,
         items: [defaultRuleSchema],
         maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
         minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
-        additionalItems: ruleSchema.items,
+        type: 'array',
       };
     }
   }
@@ -84,10 +84,10 @@ export function getRuleJsonSchemaWithErrorLevel(
     console.error('unsupported rule schema', name, ruleSchema);
   }
   return {
-    type: 'array',
+    additionalItems: false,
     items: [defaultRuleSchema],
     minItems: 1,
-    additionalItems: false,
+    type: 'array',
   };
 }
 
@@ -103,40 +103,45 @@ export function getEslintJsonSchema(
 
   for (const [, item] of linter.rules) {
     properties[item.name] = {
-      description: `${item.description}\n ${item.url}`,
-      title: item.name.startsWith('@typescript') ? 'Rules' : 'Core rules',
       default: 'off',
+      description: `${item.description}\n ${item.url}`,
       oneOf: [defaultRuleSchema, { $ref: createRef(item.name) }],
+      title: item.name.startsWith('@typescript') ? 'Rules' : 'Core rules',
     };
   }
 
   return {
-    type: 'object',
     properties: {
       extends: {
         oneOf: [
           { type: 'string' },
           {
+            items: { enum: linter.configs, type: 'string' },
             type: 'array',
-            items: { type: 'string', enum: linter.configs },
             uniqueItems: true,
           },
         ],
       },
       rules: {
-        type: 'object',
-        properties: properties,
         additionalProperties: false,
+        properties,
+        type: 'object',
       },
     },
+    type: 'object',
   };
+}
+
+export interface DescribedOptionDeclaration extends ts.OptionDeclarations {
+  category: NonNullable<ts.OptionDeclarations['category']>;
+  description: NonNullable<ts.OptionDeclarations['description']>;
 }
 
 /**
  * Get all typescript options, except for the ones that are not supported by the playground
  * this function uses private API from typescript, and this might break in the future
  */
-export function getTypescriptOptions(): ts.OptionDeclarations[] {
+export function getTypescriptOptions(): DescribedOptionDeclaration[] {
   const allowedCategories = [
     'Command-line Options',
     'Projects',
@@ -156,12 +161,12 @@ export function getTypescriptOptions(): ts.OptionDeclarations[] {
   ];
 
   return window.ts.optionDeclarations.filter(
-    item =>
+    (item): item is DescribedOptionDeclaration =>
       (item.type === 'boolean' ||
         item.type === 'list' ||
         item.type instanceof Map) &&
-      item.description &&
-      item.category &&
+      !!item.description &&
+      !!item.category &&
       !allowedCategories.includes(item.category.message) &&
       !filteredNames.includes(item.name),
   );
@@ -171,38 +176,41 @@ export function getTypescriptOptions(): ts.OptionDeclarations[] {
  * Get the JSON schema for the typescript config
  */
 export function getTypescriptJsonSchema(): JSONSchema4 {
-  const properties = getTypescriptOptions().reduce((options, item) => {
-    if (item.type === 'boolean') {
-      options[item.name] = {
-        type: 'boolean',
-        description: item.description!.message,
-      };
-    } else if (item.type === 'list' && item.element?.type instanceof Map) {
-      options[item.name] = {
-        type: 'array',
-        items: {
+  const properties = Object.fromEntries(
+    getTypescriptOptions().flatMap(item => {
+      let value: JSONSchema4 | undefined;
+      if (item.type === 'boolean') {
+        value = {
+          description: item.description.message,
+          type: 'boolean',
+        };
+      } else if (item.type === 'list' && item.element?.type instanceof Map) {
+        value = {
+          description: item.description.message,
+          items: {
+            enum: [...item.element.type.keys()],
+            type: 'string',
+          },
+          type: 'array',
+        };
+      } else if (item.type instanceof Map) {
+        value = {
+          description: item.description.message,
+          enum: [...item.type.keys()],
           type: 'string',
-          enum: Array.from(item.element.type.keys()),
-        },
-        description: item.description!.message,
-      };
-    } else if (item.type instanceof Map) {
-      options[item.name] = {
-        type: 'string',
-        description: item.description!.message,
-        enum: Array.from(item.type.keys()),
-      };
-    }
-    return options;
-  }, {});
+        };
+      }
+      return value ? [[item.name, value] as const] : [];
+    }),
+  );
 
   return {
-    type: 'object',
     properties: {
       compilerOptions: {
+        properties,
         type: 'object',
-        properties: properties,
       },
     },
+    type: 'object',
   };
 }

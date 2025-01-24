@@ -1,9 +1,15 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, isNonNullAssertionPunctuator } from '../util';
+import {
+  createRule,
+  isNonNullAssertionPunctuator,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
-type MessageIds = 'noNonNull' | 'suggestOptionalChain';
+export type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
   name: 'no-non-null-assertion',
@@ -29,10 +35,13 @@ export default createRule<[], MessageIds>({
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
 
         // it always exists in non-null assertion
-        const nonNullOperator = context.sourceCode.getTokenAfter(
-          node.expression,
-          isNonNullAssertionPunctuator,
-        )!;
+        const nonNullOperator = nullThrows(
+          context.sourceCode.getTokenAfter(
+            node.expression,
+            isNonNullAssertionPunctuator,
+          ),
+          NullThrowsReasons.MissingToken('!', 'expression'),
+        );
 
         function replaceTokenWithOptional(): TSESLint.ReportFixFunction {
           return fixer => fixer.replaceText(nonNullOperator, '?.');
@@ -60,8 +69,10 @@ export default createRule<[], MessageIds>({
                 fix(fixer) {
                   // x!.y?.z
                   //   ^ punctuator
-                  const punctuator =
-                    context.sourceCode.getTokenAfter(nonNullOperator)!;
+                  const punctuator = nullThrows(
+                    context.sourceCode.getTokenAfter(nonNullOperator),
+                    NullThrowsReasons.MissingToken('.', '!'),
+                  );
                   return [
                     fixer.remove(nonNullOperator),
                     fixer.insertTextBefore(punctuator, '?'),
@@ -70,19 +81,11 @@ export default createRule<[], MessageIds>({
               });
             }
           } else {
-            if (node.parent.computed) {
-              // it is x!?.[y].z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            } else {
-              // it is x!?.y.z
-              suggest.push({
-                messageId: 'suggestOptionalChain',
-                fix: removeToken(),
-              });
-            }
+            // it is x!?.[y].z or  x!?.y.z
+            suggest.push({
+              messageId: 'suggestOptionalChain',
+              fix: removeToken(),
+            });
           }
         } else if (
           node.parent.type === AST_NODE_TYPES.CallExpression &&

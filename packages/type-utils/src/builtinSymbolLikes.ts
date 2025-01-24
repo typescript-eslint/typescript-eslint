@@ -1,20 +1,27 @@
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
 
 /**
- * class Foo extends Promise<number> {}
- * Foo.reject
- *  ^ PromiseLike
+ * @example
+ * ```ts
+ * class DerivedClass extends Promise<number> {}
+ * DerivedClass.reject
+ * // ^ PromiseLike
+ * ```
  */
 export function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
   return isBuiltinSymbolLike(program, type, 'Promise');
 }
 
 /**
- * const foo = Promise
- * foo.reject
- *  ^ PromiseConstructorLike
+ * @example
+ * ```ts
+ * const value = Promise
+ * value.reject
+ * // ^ PromiseConstructorLike
+ * ```
  */
 export function isPromiseConstructorLike(
   program: ts.Program,
@@ -24,17 +31,23 @@ export function isPromiseConstructorLike(
 }
 
 /**
+ * @example
+ * ```ts
  * class Foo extends Error {}
  * new Foo()
- *      ^ ErrorLike
+ * //   ^ ErrorLike
+ * ```
  */
 export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
   return isBuiltinSymbolLike(program, type, 'Error');
 }
 
 /**
+ * @example
+ * ```ts
  * type T = Readonly<Error>
- *      ^ ReadonlyErrorLike
+ * //   ^ ReadonlyErrorLike
+ * ```
  */
 export function isReadonlyErrorLike(
   program: ts.Program,
@@ -50,17 +63,20 @@ export function isReadonlyErrorLike(
 }
 
 /**
+ * @example
+ * ```ts
  * type T = Readonly<{ foo: 'bar' }>
- *      ^ ReadonlyTypeLike
+ * //   ^ ReadonlyTypeLike
+ * ```
  */
 export function isReadonlyTypeLike(
   program: ts.Program,
   type: ts.Type,
   predicate?: (
-    subType: ts.Type & {
+    subType: {
       aliasSymbol: ts.Symbol;
       aliasTypeArguments: readonly ts.Type[];
-    },
+    } & ts.Type,
   ) => boolean,
 ): boolean {
   return isBuiltinTypeAliasLike(program, type, subtype => {
@@ -73,10 +89,10 @@ export function isBuiltinTypeAliasLike(
   program: ts.Program,
   type: ts.Type,
   predicate: (
-    subType: ts.Type & {
+    subType: {
       aliasSymbol: ts.Symbol;
       aliasTypeArguments: readonly ts.Type[];
-    },
+    } & ts.Type,
   ) => boolean,
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subtype => {
@@ -89,10 +105,10 @@ export function isBuiltinTypeAliasLike(
     if (
       isSymbolFromDefaultLibrary(program, aliasSymbol) &&
       predicate(
-        subtype as ts.Type & {
+        subtype as {
           aliasSymbol: ts.Symbol;
           aliasTypeArguments: readonly ts.Type[];
-        },
+        } & ts.Type,
       )
     ) {
       return true;
@@ -105,7 +121,7 @@ export function isBuiltinTypeAliasLike(
 export function isBuiltinSymbolLike(
   program: ts.Program,
   type: ts.Type,
-  symbolName: string,
+  symbolName: string | string[],
 ): boolean {
   return isBuiltinSymbolLikeRecurser(program, type, subType => {
     const symbol = subType.getSymbol();
@@ -113,8 +129,12 @@ export function isBuiltinSymbolLike(
       return false;
     }
 
+    const actualSymbolName = symbol.getName();
+
     if (
-      symbol.getName() === symbolName &&
+      (Array.isArray(symbolName)
+        ? symbolName.some(name => actualSymbolName === name)
+        : actualSymbolName === symbolName) &&
       isSymbolFromDefaultLibrary(program, symbol)
     ) {
       return true;
@@ -138,6 +158,15 @@ export function isBuiltinSymbolLikeRecurser(
     return type.types.every(t =>
       isBuiltinSymbolLikeRecurser(program, t, predicate),
     );
+  }
+  if (tsutils.isTypeParameter(type)) {
+    const t = type.getConstraint();
+
+    if (t) {
+      return isBuiltinSymbolLikeRecurser(program, t, predicate);
+    }
+
+    return false;
   }
 
   const predicateResult = predicate(type);

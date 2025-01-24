@@ -1,5 +1,9 @@
-const { getJestProjects } = require('@nx/jest');
+'use strict';
 
-module.exports = {
-  projects: getJestProjects(),
-};
+// @ts-check
+const { getJestProjectsAsync } = require('@nx/jest');
+
+/** @type {import('@jest/types').Config.InitialOptions} */
+module.exports = async () => ({
+  projects: await getJestProjectsAsync(),
+});

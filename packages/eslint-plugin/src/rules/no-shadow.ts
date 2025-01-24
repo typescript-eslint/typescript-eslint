@@ -1,22 +1,20 @@
-import type {
-  Definition,
-  ImportBindingDefinition,
-} from '@typescript-eslint/scope-manager';
-import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
+import { isTypeImport } from '../util/isTypeImport';
 
-type MessageIds = 'noShadow' | 'noShadowGlobal';
-type Options = [
+export type MessageIds = 'noShadow' | 'noShadowGlobal';
+export type Options = [
   {
     allow?: string[];
     builtinGlobals?: boolean;
-    hoist?: 'all' | 'functions' | 'never';
+    hoist?: 'all' | 'functions' | 'functions-and-types' | 'never' | 'types';
+    ignoreFunctionTypeParameterNameValueShadow?: boolean;
     ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
-    ignoreFunctionTypeParameterNameValueShadow?: boolean;
   },
 ];
 
@@ -24,6 +22,17 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSCallSignatureDeclaration,
   AST_NODE_TYPES.TSFunctionType,
   AST_NODE_TYPES.TSMethodSignature,
+  AST_NODE_TYPES.TSEmptyBodyFunctionExpression,
+  AST_NODE_TYPES.TSDeclareFunction,
+  AST_NODE_TYPES.TSConstructSignatureDeclaration,
+  AST_NODE_TYPES.TSConstructorType,
+]);
+
+const functionsHoistedNodes = new Set([AST_NODE_TYPES.FunctionDeclaration]);
+
+const typesHoistedNodes = new Set([
+  AST_NODE_TYPES.TSInterfaceDeclaration,
+  AST_NODE_TYPES.TSTypeAliasDeclaration,
 ]);
 
 export default createRule<Options, MessageIds>({
@@ -35,50 +44,61 @@ export default createRule<Options, MessageIds>({
         'Disallow variable declarations from shadowing variables declared in the outer scope',
       extendsBaseRule: true,
     },
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          builtinGlobals: {
-            type: 'boolean',
-          },
-          hoist: {
-            type: 'string',
-            enum: ['all', 'functions', 'never'],
-          },
-          allow: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-          ignoreOnInitialization: {
-            type: 'boolean',
-          },
-          ignoreTypeValueShadow: {
-            type: 'boolean',
-          },
-          ignoreFunctionTypeParameterNameValueShadow: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
     messages: {
       noShadow:
         "'{{name}}' is already declared in the upper scope on line {{shadowedLine}} column {{shadowedColumn}}.",
       noShadowGlobal: "'{{name}}' is already a global variable.",
     },
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          allow: {
+            type: 'array',
+            description: 'Identifier names for which shadowing is allowed.',
+            items: {
+              type: 'string',
+            },
+          },
+          builtinGlobals: {
+            type: 'boolean',
+            description:
+              'Whether to report shadowing of built-in global variables.',
+          },
+          hoist: {
+            type: 'string',
+            description:
+              'Whether to report shadowing before outer functions or variables are defined.',
+            enum: ['all', 'functions', 'functions-and-types', 'never', 'types'],
+          },
+          ignoreFunctionTypeParameterNameValueShadow: {
+            type: 'boolean',
+            description:
+              'Whether to ignore function parameters named the same as a variable.',
+          },
+          ignoreOnInitialization: {
+            type: 'boolean',
+            description:
+              'Whether to ignore the variable initializers when the shadowed variable is presumably still unitialized.',
+          },
+          ignoreTypeValueShadow: {
+            type: 'boolean',
+            description:
+              'Whether to ignore types named the same as a variable.',
+          },
+        },
+      },
+    ],
   },
   defaultOptions: [
     {
       allow: [],
       builtinGlobals: false,
-      hoist: 'functions',
+      hoist: 'functions-and-types',
+      ignoreFunctionTypeParameterNameValueShadow: true,
       ignoreOnInitialization: false,
       ignoreTypeValueShadow: true,
-      ignoreFunctionTypeParameterNameValueShadow: true,
     },
   ],
   create(context, [options]) {
@@ -87,7 +107,7 @@ export default createRule<Options, MessageIds>({
      */
     function isGlobalAugmentation(scope: TSESLint.Scope.Scope): boolean {
       return (
-        (scope.type === ScopeType.tsModule && !!scope.block.global) ||
+        (scope.type === ScopeType.tsModule && scope.block.kind === 'global') ||
         (!!scope.upper && isGlobalAugmentation(scope.upper))
       );
     }
@@ -99,17 +119,6 @@ export default createRule<Options, MessageIds>({
       return (
         variable.defs[0].type === DefinitionType.Parameter &&
         variable.name === 'this'
-      );
-    }
-
-    function isTypeImport(
-      definition?: Definition,
-    ): definition is ImportBindingDefinition {
-      return (
-        definition?.type === DefinitionType.ImportBinding &&
-        (definition.parent.importKind === 'type' ||
-          (definition.node.type === AST_NODE_TYPES.ImportSpecifier &&
-            definition.node.importKind === 'type'))
       );
     }
 
@@ -282,6 +291,7 @@ export default createRule<Options, MessageIds>({
      * @returns Whether or not the variable name is allowed.
      */
     function isAllowed(variable: TSESLint.Scope.Variable): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return options.allow!.includes(variable.name);
     }
 
@@ -420,8 +430,8 @@ export default createRule<Options, MessageIds>({
             return true;
           }
           if (
-            (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
-              node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
+            (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
+              node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
             isInRange(node.parent.parent.right, location)
           ) {
             return true;
@@ -433,14 +443,14 @@ export default createRule<Options, MessageIds>({
           }
         } else if (
           [
-            AST_NODE_TYPES.FunctionDeclaration,
-            AST_NODE_TYPES.ClassDeclaration,
-            AST_NODE_TYPES.FunctionExpression,
-            AST_NODE_TYPES.ClassExpression,
             AST_NODE_TYPES.ArrowFunctionExpression,
             AST_NODE_TYPES.CatchClause,
-            AST_NODE_TYPES.ImportDeclaration,
+            AST_NODE_TYPES.ClassDeclaration,
+            AST_NODE_TYPES.ClassExpression,
             AST_NODE_TYPES.ExportNamedDeclaration,
+            AST_NODE_TYPES.FunctionDeclaration,
+            AST_NODE_TYPES.FunctionExpression,
+            AST_NODE_TYPES.ImportDeclaration,
           ].includes(node.type)
         ) {
           break;
@@ -510,15 +520,30 @@ export default createRule<Options, MessageIds>({
       const inner = getNameRange(variable);
       const outer = getNameRange(scopeVar);
 
-      return !!(
-        inner &&
-        outer &&
-        inner[1] < outer[0] &&
-        // Excepts FunctionDeclaration if is {"hoist":"function"}.
-        (options.hoist !== 'functions' ||
-          !outerDef ||
-          outerDef.node.type !== AST_NODE_TYPES.FunctionDeclaration)
-      );
+      if (!inner || !outer || inner[1] >= outer[0]) {
+        return false;
+      }
+
+      if (!outerDef) {
+        return true;
+      }
+
+      if (options.hoist === 'functions') {
+        return !functionsHoistedNodes.has(outerDef.node.type);
+      }
+
+      if (options.hoist === 'types') {
+        return !typesHoistedNodes.has(outerDef.node.type);
+      }
+
+      if (options.hoist === 'functions-and-types') {
+        return (
+          !functionsHoistedNodes.has(outerDef.node.type) &&
+          !typesHoistedNodes.has(outerDef.node.type)
+        );
+      }
+
+      return true;
     }
 
     /**
@@ -528,13 +553,13 @@ export default createRule<Options, MessageIds>({
      */
     function getDeclaredLocation(
       variable: TSESLint.Scope.Variable,
-    ): { global: false; line: number; column: number } | { global: true } {
+    ): { column: number; global: false; line: number } | { global: true } {
       const identifier = variable.identifiers.at(0);
       if (identifier) {
         return {
+          column: identifier.loc.start.column + 1,
           global: false,
           line: identifier.loc.start.line,
-          column: identifier.loc.start.column + 1,
         };
       }
       return {
@@ -635,8 +660,8 @@ export default createRule<Options, MessageIds>({
                   messageId: 'noShadow',
                   data: {
                     name: variable.name,
-                    shadowedLine: location.line,
                     shadowedColumn: location.column,
+                    shadowedLine: location.line,
                   },
                 }),
           });
@@ -647,9 +672,10 @@ export default createRule<Options, MessageIds>({
     return {
       'Program:exit'(node): void {
         const globalScope = context.sourceCode.getScope(node);
-        const stack = globalScope.childScopes.slice();
+        const stack = [...globalScope.childScopes];
 
         while (stack.length) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const scope = stack.pop()!;
 
           stack.push(...scope.childScopes);

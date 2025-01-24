@@ -1,17 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/types';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { Referencer } from './Referencer';
+
 import { Visitor } from './Visitor';
 
-type ExportNode =
+export type ExportNode =
   | TSESTree.ExportAllDeclaration
   | TSESTree.ExportDefaultDeclaration
   | TSESTree.ExportNamedDeclaration;
 
-class ExportVisitor extends Visitor {
-  readonly #referencer: Referencer;
+export class ExportVisitor extends Visitor {
   readonly #exportNode: ExportNode;
+  readonly #referencer: Referencer;
 
   constructor(node: ExportNode, referencer: Referencer) {
     super(referencer);
@@ -22,16 +24,6 @@ class ExportVisitor extends Visitor {
   static visit(referencer: Referencer, node: ExportNode): void {
     const exportReferencer = new ExportVisitor(node, referencer);
     exportReferencer.visit(node);
-  }
-
-  protected Identifier(node: TSESTree.Identifier): void {
-    if (this.#exportNode.exportKind === 'type') {
-      // export type { T };
-      // type exports can only reference types
-      this.#referencer.currentScope().referenceType(node);
-    } else {
-      this.#referencer.currentScope().referenceDualValueType(node);
-    }
   }
 
   protected ExportDefaultDeclaration(
@@ -68,7 +60,10 @@ class ExportVisitor extends Visitor {
   }
 
   protected ExportSpecifier(node: TSESTree.ExportSpecifier): void {
-    if (node.exportKind === 'type') {
+    if (
+      node.exportKind === 'type' &&
+      node.local.type === AST_NODE_TYPES.Identifier
+    ) {
       // export { type T };
       // type exports can only reference types
       //
@@ -79,6 +74,14 @@ class ExportVisitor extends Visitor {
       this.visit(node.local);
     }
   }
-}
 
-export { ExportVisitor };
+  protected Identifier(node: TSESTree.Identifier): void {
+    if (this.#exportNode.exportKind === 'type') {
+      // export type { T };
+      // type exports can only reference types
+      this.#referencer.currentScope().referenceType(node);
+    } else {
+      this.#referencer.currentScope().referenceDualValueType(node);
+    }
+  }
+}

@@ -1,1001 +1,20 @@
+/* eslint-disable @typescript-eslint/internal/plugin-test-formatting -- Prettier doesn't yet support TS 5.6 string literal module identifiers */
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../../src/rules/naming-convention';
 import { getFixturesRootDir } from '../../RuleTester';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 // only need parserOptions for the `type` option tests
 const rootDir = getFixturesRootDir();
 const parserOptions = {
-  tsconfigRootDir: rootDir,
   project: './tsconfig.json',
+  tsconfigRootDir: rootDir,
 };
 
 ruleTester.run('naming-convention', rule, {
-  valid: [
-    {
-      code: `
-        const child_process = require('child_process');
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-          filter: {
-            regex: 'child_process',
-            match: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-        declare const ANY_UPPER_CASE: any;
-        declare const ANY_UPPER_CASE: any | null;
-        declare const ANY_UPPER_CASE: any | null | undefined;
-
-        declare const string_camelCase: string;
-        declare const string_camelCase: string | null;
-        declare const string_camelCase: string | null | undefined;
-        declare const string_camelCase: 'a' | null | undefined;
-        declare const string_camelCase: string | 'a' | null | undefined;
-
-        declare const number_camelCase: number;
-        declare const number_camelCase: number | null;
-        declare const number_camelCase: number | null | undefined;
-        declare const number_camelCase: 1 | null | undefined;
-        declare const number_camelCase: number | 2 | null | undefined;
-
-        declare const boolean_camelCase: boolean;
-        declare const boolean_camelCase: boolean | null;
-        declare const boolean_camelCase: boolean | null | undefined;
-        declare const boolean_camelCase: true | null | undefined;
-        declare const boolean_camelCase: false | null | undefined;
-        declare const boolean_camelCase: true | false | null | undefined;
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'variable',
-          modifiers: ['const'],
-          format: ['UPPER_CASE'],
-          prefix: ['ANY_'],
-        },
-        {
-          selector: 'variable',
-          types: ['string'],
-          format: ['camelCase'],
-          prefix: ['string_'],
-        },
-        {
-          selector: 'variable',
-          types: ['number'],
-          format: ['camelCase'],
-          prefix: ['number_'],
-        },
-        {
-          selector: 'variable',
-          types: ['boolean'],
-          format: ['camelCase'],
-          prefix: ['boolean_'],
-        },
-      ],
-    },
-    {
-      code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface Foo {}
-        class Bar {}
-        function foo_function_bar() {}
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-          custom: {
-            regex: /^unused_\w/.source,
-            match: false,
-          },
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-          custom: {
-            regex: /^I[A-Z]/.source,
-            match: false,
-          },
-        },
-        {
-          selector: 'function',
-          format: ['snake_case'],
-          custom: {
-            regex: /_function_/.source,
-            match: true,
-          },
-          leadingUnderscore: 'allow',
-        },
-      ],
-    },
-    {
-      code: `
-        let foo = 'a';
-        const _foo = 1;
-        interface foo {}
-        class bar {}
-        function fooFunctionBar() {}
-        function _fooFunctionBar() {}
-      `,
-      options: [
-        {
-          selector: ['default', 'typeLike', 'function'],
-          format: ['camelCase'],
-          custom: {
-            regex: /^unused_\w/.source,
-            match: false,
-          },
-          leadingUnderscore: 'allow',
-        },
-      ],
-    },
-    {
-      code: `
-        const match = 'test'.match(/test/);
-        const [, key, value] = match;
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-        },
-      ],
-    },
-    // no format selector
-    {
-      code: 'const snake_case = 1;',
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'variable',
-          format: null,
-        },
-      ],
-    },
-    {
-      code: 'const snake_case = 1;',
-      options: [
-        {
-          selector: 'default',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'variable',
-          format: [],
-        },
-      ],
-    },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
-    {
-      code: `
-        const child_process = require('child_process');
-      `,
-      options: [
-        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
-        {
-          selector: 'variable',
-          format: ['snake_case'],
-          filter: 'child_process',
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          format: ['strictCamelCase'],
-          selector: 'default',
-          filter: {
-            regex: /-/.source,
-            match: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-        const foo = {
-          'Property-Name': 'asdf',
-        };
-      `,
-      options: [
-        {
-          format: ['strictCamelCase'],
-          selector: 'default',
-          filter: {
-            regex: /^(Property-Name)$/.source,
-            match: false,
-          },
-        },
-      ],
-    },
-    {
-      code: `
-        let isFoo = 1;
-        class foo {
-          shouldBoo: number;
-        }
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: ['variable', 'parameter', 'property', 'accessor'],
-          types: ['number'],
-          format: ['PascalCase'],
-          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo {
-          private readonly FooBoo: boolean;
-        }
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: ['property', 'accessor'],
-          types: ['boolean'],
-          modifiers: ['private', 'readonly'],
-          format: ['PascalCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo {
-          private fooBoo: number;
-        }
-      `,
-      options: [
-        {
-          selector: ['property', 'accessor'],
-          modifiers: ['private'],
-          format: ['camelCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        const isfooBar = 1;
-        function fun(goodfunFoo: number) {}
-        class foo {
-          private VanFooBar: number;
-        }
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: ['property', 'accessor'],
-          modifiers: ['private'],
-          format: ['StrictPascalCase'],
-          prefix: ['Van'],
-        },
-        {
-          selector: ['variable', 'parameter'],
-          types: ['number'],
-          format: ['camelCase'],
-          prefix: ['is', 'good'],
-        },
-      ],
-    },
-    {
-      code: `
-        class SomeClass {
-          static OtherConstant = 'hello';
-        }
-
-        export const { OtherConstant: otherConstant } = SomeClass;
-      `,
-      options: [
-        { selector: 'property', format: ['PascalCase'] },
-        { selector: 'variable', format: ['camelCase'] },
-      ],
-    },
-    // treat properties with function expressions as typeMethod
-    {
-      code: `
-        interface SOME_INTERFACE {
-          SomeMethod: () => void;
-
-          some_property: string;
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['UPPER_CASE'],
-        },
-        {
-          selector: 'typeMethod',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'typeProperty',
-          format: ['snake_case'],
-        },
-      ],
-    },
-    {
-      code: `
-        type Ignored = {
-          ignored_due_to_modifiers: string;
-          readonly FOO: string;
-        };
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'typeProperty',
-          modifiers: ['readonly'],
-          format: ['UPPER_CASE'],
-        },
-      ],
-    },
-    {
-      code: `
-        const camelCaseVar = 1;
-        enum camelCaseEnum {}
-        class camelCaseClass {}
-        function camelCaseFunction() {}
-        interface camelCaseInterface {}
-        type camelCaseType = {};
-        export const PascalCaseVar = 1;
-        export enum PascalCaseEnum {}
-        export class PascalCaseClass {}
-        export function PascalCaseFunction() {}
-        export interface PascalCaseInterface {}
-        export type PascalCaseType = {};
-      `,
-      options: [
-        { selector: 'default', format: ['camelCase'] },
-        {
-          selector: 'variable',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'function',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'class',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'interface',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'typeAlias',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'enum',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-      ],
-    },
-    {
-      code: `
-        const camelCaseVar = 1;
-        enum camelCaseEnum {}
-        class camelCaseClass {}
-        function camelCaseFunction() {}
-        interface camelCaseInterface {}
-        type camelCaseType = {};
-        const PascalCaseVar = 1;
-        enum PascalCaseEnum {}
-        class PascalCaseClass {}
-        function PascalCaseFunction() {}
-        interface PascalCaseInterface {}
-        type PascalCaseType = {};
-        export {
-          PascalCaseVar,
-          PascalCaseEnum,
-          PascalCaseClass,
-          PascalCaseFunction,
-          PascalCaseInterface,
-          PascalCaseType,
-        };
-      `,
-      options: [
-        { selector: 'default', format: ['camelCase'] },
-        {
-          selector: 'variable',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'function',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'class',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'interface',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'typeAlias',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-        {
-          selector: 'enum',
-          format: ['PascalCase'],
-          modifiers: ['exported'],
-        },
-      ],
-    },
-    {
-      code: `
-        {
-          const camelCaseVar = 1;
-          function camelCaseFunction() {}
-          declare function camelCaseDeclaredFunction() {};
-        }
-        const PascalCaseVar = 1;
-        function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {};
-      `,
-      options: [
-        { selector: 'default', format: ['camelCase'] },
-        {
-          selector: 'variable',
-          format: ['PascalCase'],
-          modifiers: ['global'],
-        },
-        {
-          selector: 'function',
-          format: ['PascalCase'],
-          modifiers: ['global'],
-        },
-      ],
-    },
-    {
-      code: `
-        const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
-        const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'variable',
-          format: ['snake_case'],
-          modifiers: ['destructured'],
-        },
-      ],
-    },
-    {
-      code: `
-        const { some_name1 } = {};
-        const { ignore: IgnoredDueToModifiers1 } = {};
-        const { some_name2 = 2 } = {};
-        const IgnoredDueToModifiers2 = 1;
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'variable',
-          format: null,
-          modifiers: ['destructured'],
-        },
-      ],
-    },
-    {
-      code: `
-        export function Foo(
-          { aName },
-          { anotherName = 1 },
-          { ignored: IgnoredDueToModifiers1 },
-          { ignored: IgnoredDueToModifiers1 = 2 },
-          IgnoredDueToModifiers2,
-        ) {}
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'parameter',
-          modifiers: ['destructured'],
-          format: ['camelCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          private static abstract readonly some_name;
-          IgnoredDueToModifiers = 1;
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'classProperty',
-          format: ['snake_case'],
-          modifiers: ['static', 'readonly'],
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          constructor(
-            private readonly some_name,
-            IgnoredDueToModifiers,
-          ) {}
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'parameterProperty',
-          format: ['snake_case'],
-          modifiers: ['readonly'],
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          private static abstract some_name() {}
-          IgnoredDueToModifiers() {}
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'classMethod',
-          format: ['snake_case'],
-          modifiers: ['abstract', 'static'],
-        },
-      ],
-    },
-    {
-      code: `
-        class Ignored {
-          private static get some_name() {}
-          get IgnoredDueToModifiers() {}
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'accessor',
-          format: ['snake_case'],
-          modifiers: ['private', 'static'],
-        },
-      ],
-    },
-    {
-      code: `
-        abstract class some_name {}
-        class IgnoredDueToModifier {}
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'class',
-          format: ['snake_case'],
-          modifiers: ['abstract'],
-        },
-      ],
-    },
-    {
-      code: `
-        const UnusedVar = 1;
-        function UnusedFunc(
-          // this line is intentionally broken out
-          UnusedParam: string,
-        ) {}
-        class UnusedClass {}
-        interface UnusedInterface {}
-        type UnusedType<
-          // this line is intentionally broken out
-          UnusedTypeParam,
-        > = {};
-
-        export const used_var = 1;
-        export function used_func(
-          // this line is intentionally broken out
-          used_param: string,
-        ) {
-          return used_param;
-        }
-        export class used_class {}
-        export interface used_interface {}
-        export type used_type<
-          // this line is intentionally broken out
-          used_typeparam,
-        > = used_typeparam;
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['snake_case'],
-        },
-        {
-          selector: 'default',
-          modifiers: ['unused'],
-          format: ['PascalCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['snake_case'],
-        },
-        {
-          selector: 'default',
-          format: null,
-          modifiers: ['requiresQuotes'],
-        },
-      ],
-    },
-    {
-      code: `
-        const ignored1 = {
-          'a a': 1,
-          'b b'() {},
-          get 'c c'() {
-            return 1;
-          },
-          set 'd d'(value: string) {},
-        };
-        class ignored2 {
-          'a a' = 1;
-          'b b'() {}
-          get 'c c'() {
-            return 1;
-          }
-          set 'd d'(value: string) {}
-        }
-        interface ignored3 {
-          'a a': 1;
-          'b b'(): void;
-        }
-        type ignored4 = {
-          'a a': 1;
-          'b b'(): void;
-        };
-        enum ignored5 {
-          'a a',
-        }
-      `,
-      options: [
-        {
-          selector: 'default',
-          format: ['snake_case'],
-        },
-        {
-          selector: [
-            'classProperty',
-            'objectLiteralProperty',
-            'typeProperty',
-            'classMethod',
-            'objectLiteralMethod',
-            'typeMethod',
-            'accessor',
-            'enumMember',
-          ],
-          format: null,
-          modifiers: ['requiresQuotes'],
-        },
-        // making sure the `requoresQuotes` modifier appropriately overrides this
-        {
-          selector: [
-            'classProperty',
-            'objectLiteralProperty',
-            'typeProperty',
-            'classMethod',
-            'objectLiteralMethod',
-            'typeMethod',
-            'accessor',
-            'enumMember',
-          ],
-          format: ['PascalCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = {
-          Foo: 42,
-          Bar() {
-            return 42;
-          },
-        };
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'property',
-          format: ['PascalCase'],
-        },
-        {
-          selector: 'method',
-          format: ['PascalCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        const obj = {
-          Bar() {
-            return 42;
-          },
-          async async_bar() {
-            return 42;
-          },
-        };
-        class foo {
-          public Bar() {
-            return 42;
-          }
-          public async async_bar() {
-            return 42;
-          }
-        }
-        abstract class foo {
-          public abstract Bar() {
-            return 42;
-          }
-          public abstract async async_bar() {
-            return 42;
-          }
-        }
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['method', 'objectLiteralMethod'],
-          format: ['snake_case'],
-          modifiers: ['async'],
-        },
-        {
-          selector: 'method',
-          format: ['PascalCase'],
-        },
-      ],
-    },
-    {
-      code: `
-        const async_bar1 = async () => {};
-        async function async_bar2() {}
-        const async_bar3 = async function async_bar4() {};
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'method',
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['variable'],
-          format: ['snake_case'],
-          modifiers: ['async'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo extends bar {
-          public someAttribute = 1;
-          public override some_attribute_override = 1;
-          public someMethod() {
-            return 42;
-          }
-          public override some_method_override2() {
-            return 42;
-          }
-        }
-        abstract class foo extends bar {
-          public abstract someAttribute: string;
-          public abstract override some_attribute_override: string;
-          public abstract someMethod(): string;
-          public abstract override some_method_override2(): string;
-        }
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['override'],
-          format: ['snake_case'],
-        },
-      ],
-    },
-    {
-      code: `
-        class foo {
-          private someAttribute = 1;
-          #some_attribute = 1;
-
-          private someMethod() {}
-          #some_method() {}
-        }
-      `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['#private'],
-          format: ['snake_case'],
-        },
-      ],
-    },
-    {
-      code: "import * as FooBar from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['default'],
-          format: ['camelCase'],
-        },
-      ],
-    },
-    {
-      code: "import fooBar from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['default'],
-          format: ['camelCase'],
-        },
-      ],
-    },
-    {
-      code: "import { default as fooBar } from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['default'],
-          format: ['camelCase'],
-        },
-      ],
-    },
-    {
-      code: "import { foo_bar } from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['default'],
-          format: ['camelCase'],
-        },
-      ],
-    },
-  ],
   invalid: [
     {
       // make sure we handle no options and apply defaults
@@ -1005,25 +24,25 @@ ruleTester.run('naming-convention', rule, {
     {
       // make sure we handle empty options and apply defaults
       code: 'const x_x = 1;',
-      options: [],
       errors: [{ messageId: 'doesNotMatchFormat' }],
+      options: [],
     },
     {
       code: `
         const child_process = require('child_process');
       `,
-      parserOptions,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
+      languageOptions: { parserOptions },
       options: [
         {
-          selector: 'default',
-          format: ['camelCase'],
           filter: {
-            regex: 'child_process',
             match: true,
+            regex: 'child_process',
           },
+          format: ['camelCase'],
+          selector: 'default',
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
@@ -1047,34 +66,34 @@ ruleTester.run('naming-convention', rule, {
         declare const boolean_camelCase15: false | null | undefined;
         declare const boolean_camelCase16: true | false | null | undefined;
       `,
+      errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      languageOptions: { parserOptions },
       options: [
         {
-          selector: 'variable',
-          modifiers: ['const'],
           format: ['UPPER_CASE'],
+          modifiers: ['const'],
           prefix: ['any_'],
+          selector: 'variable',
         },
         {
-          selector: 'variable',
-          types: ['string'],
           format: ['snake_case'],
           prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
         },
         {
-          selector: 'variable',
-          types: ['number'],
           format: ['snake_case'],
           prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
         },
         {
-          selector: 'variable',
-          types: ['boolean'],
           format: ['snake_case'],
           prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
         },
       ],
-      parserOptions,
-      errors: Array(19).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
@@ -1087,16 +106,16 @@ ruleTester.run('naming-convention', rule, {
           | null
           | undefined;
       `,
+      errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      languageOptions: { parserOptions },
       options: [
         {
-          selector: 'variable',
-          types: ['function'],
           format: ['snake_case'],
           prefix: ['function_'],
+          selector: 'variable',
+          types: ['function'],
         },
       ],
-      parserOptions,
-      errors: Array(4).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
@@ -1118,16 +137,16 @@ ruleTester.run('naming-convention', rule, {
           | null
           | undefined;
       `,
+      errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      languageOptions: { parserOptions },
       options: [
         {
-          selector: 'variable',
-          types: ['array'],
           format: ['snake_case'],
           prefix: ['array_'],
+          selector: 'variable',
+          types: ['array'],
         },
       ],
-      parserOptions,
-      errors: Array(8).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
@@ -1137,84 +156,84 @@ ruleTester.run('naming-convention', rule, {
         class IBar {}
         function fooBar() {}
       `,
-      options: [
-        {
-          selector: 'default',
-          format: ['snake_case'],
-          custom: {
-            regex: /^unused_\w/.source,
-            match: false,
-          },
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: 'typeLike',
-          format: ['PascalCase'],
-          custom: {
-            regex: /^I[A-Z]/.source,
-            match: false,
-          },
-        },
-        {
-          selector: 'function',
-          format: ['camelCase'],
-          custom: {
-            regex: /function/.source,
-            match: true,
-          },
-          leadingUnderscore: 'allow',
-        },
-      ],
       errors: [
         {
-          messageId: 'satisfyCustom',
-          line: 2,
           data: {
-            type: 'Variable',
             name: 'unused_foo',
             regex: '/^unused_\\w/u',
             regexMatch: 'not match',
+            type: 'Variable',
           },
+          line: 2,
+          messageId: 'satisfyCustom',
         },
         {
-          messageId: 'satisfyCustom',
-          line: 3,
           data: {
-            type: 'Variable',
             name: '_unused_foo',
             regex: '/^unused_\\w/u',
             regexMatch: 'not match',
+            type: 'Variable',
           },
+          line: 3,
+          messageId: 'satisfyCustom',
         },
         {
-          messageId: 'satisfyCustom',
-          line: 4,
           data: {
-            type: 'Interface',
             name: 'IFoo',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
+            type: 'Interface',
           },
+          line: 4,
+          messageId: 'satisfyCustom',
         },
         {
-          messageId: 'satisfyCustom',
-          line: 5,
           data: {
-            type: 'Class',
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
+            type: 'Class',
           },
+          line: 5,
+          messageId: 'satisfyCustom',
         },
         {
-          messageId: 'satisfyCustom',
-          line: 6,
           data: {
-            type: 'Function',
             name: 'fooBar',
             regex: '/function/u',
             regexMatch: 'match',
+            type: 'Function',
           },
+          line: 6,
+          messageId: 'satisfyCustom',
+        },
+      ],
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^unused_\w/.source,
+          },
+          format: ['snake_case'],
+          leadingUnderscore: 'allow',
+          selector: 'default',
+        },
+        {
+          custom: {
+            match: false,
+            regex: /^I[A-Z]/.source,
+          },
+          format: ['PascalCase'],
+          selector: 'typeLike',
+        },
+        {
+          custom: {
+            match: true,
+            regex: /function/.source,
+          },
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: 'function',
         },
       ],
     },
@@ -1226,69 +245,69 @@ ruleTester.run('naming-convention', rule, {
         interface IFoo {}
         class IBar {}
       `,
-      options: [
-        {
-          selector: ['variable', 'function'],
-          format: ['camelCase'],
-          leadingUnderscore: 'allow',
-        },
-        {
-          selector: ['class', 'interface'],
-          format: ['PascalCase'],
-          custom: {
-            regex: /^I[A-Z]/.source,
-            match: false,
-          },
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
-          line: 2,
           data: {
-            type: 'Variable',
-            name: 'unused_foo',
             formats: 'camelCase',
+            name: 'unused_foo',
+            type: 'Variable',
           },
+          line: 2,
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormatTrimmed',
-          line: 3,
           data: {
-            type: 'Variable',
+            formats: 'camelCase',
             name: '_unused_foo',
             processedName: 'unused_foo',
-            formats: 'camelCase',
+            type: 'Variable',
           },
+          line: 3,
+          messageId: 'doesNotMatchFormatTrimmed',
         },
         {
-          messageId: 'doesNotMatchFormat',
-          line: 4,
           data: {
-            type: 'Function',
+            formats: 'camelCase',
             name: 'foo_bar',
-            formats: 'camelCase',
+            type: 'Function',
           },
+          line: 4,
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'satisfyCustom',
-          line: 5,
           data: {
-            type: 'Interface',
             name: 'IFoo',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
+            type: 'Interface',
           },
+          line: 5,
+          messageId: 'satisfyCustom',
         },
         {
-          messageId: 'satisfyCustom',
-          line: 6,
           data: {
-            type: 'Class',
             name: 'IBar',
             regex: '/^I[A-Z]/u',
             regexMatch: 'not match',
+            type: 'Class',
           },
+          line: 6,
+          messageId: 'satisfyCustom',
+        },
+      ],
+      options: [
+        {
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: ['variable', 'function'],
+        },
+        {
+          custom: {
+            match: false,
+            regex: /^I[A-Z]/.source,
+          },
+          format: ['PascalCase'],
+          selector: ['class', 'interface'],
         },
       ],
     },
@@ -1298,25 +317,25 @@ ruleTester.run('naming-convention', rule, {
           'Property Name': 'asdf',
         };
       `,
-      options: [
-        {
-          format: ['strictCamelCase'],
-          selector: 'default',
-          filter: {
-            regex: /-/.source,
-            match: false,
-          },
-        },
-      ],
       errors: [
         {
+          data: {
+            formats: 'strictCamelCase',
+            name: 'Property Name',
+            type: 'Object Literal Property',
+          },
           line: 3,
           messageId: 'doesNotMatchFormat',
-          data: {
-            type: 'Object Literal Property',
-            name: 'Property Name',
-            formats: 'strictCamelCase',
+        },
+      ],
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: /-/.source,
           },
+          format: ['strictCamelCase'],
+          selector: 'default',
         },
       ],
     },
@@ -1328,16 +347,16 @@ ruleTester.run('naming-convention', rule, {
           Myfoo: string;
         }
       `,
+      errors: Array(3).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
+      languageOptions: { parserOptions },
       options: [
         {
-          selector: ['variable', 'property', 'parameter'],
-          types: ['string'],
           format: ['PascalCase'],
           prefix: ['my', 'My'],
+          selector: ['variable', 'property', 'parameter'],
+          types: ['string'],
         },
       ],
-      parserOptions,
-      errors: Array(3).fill({ messageId: 'doesNotMatchFormatTrimmed' }),
     },
     {
       code: `
@@ -1345,29 +364,29 @@ ruleTester.run('naming-convention', rule, {
           private readonly fooBar: boolean;
         }
       `,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
       options: [
         {
-          selector: ['property', 'accessor'],
-          modifiers: ['private', 'readonly'],
           format: ['PascalCase'],
+          modifiers: ['private', 'readonly'],
+          selector: ['property', 'accessor'],
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
         function my_foo_bar() {}
       `,
-      parserOptions,
+      errors: [{ messageId: 'doesNotMatchFormatTrimmed' }],
+      languageOptions: { parserOptions },
       options: [
         {
-          selector: ['variable', 'function'],
-          types: ['string'],
           format: ['PascalCase'],
           prefix: ['my', 'My'],
+          selector: ['variable', 'function'],
+          types: ['string'],
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormatTrimmed' }],
     },
     {
       code: `
@@ -1377,16 +396,16 @@ ruleTester.run('naming-convention', rule, {
 
         export const { otherConstant } = SomeClass;
       `,
-      parserOptions,
-      options: [
-        { selector: 'property', format: ['PascalCase'] },
-        { selector: 'variable', format: ['camelCase'] },
-      ],
       errors: [
         {
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        { format: ['PascalCase'], selector: 'property' },
+        { format: ['camelCase'], selector: 'variable' },
       ],
     },
     {
@@ -1395,14 +414,14 @@ ruleTester.run('naming-convention', rule, {
           Bar(Baz: string): void;
         }
       `,
-      parserOptions,
-      options: [{ selector: 'parameter', format: ['camelCase'] }],
       errors: [
         {
           line: 3,
           messageId: 'doesNotMatchFormat',
         },
       ],
+      languageOptions: { parserOptions },
+      options: [{ format: ['camelCase'], selector: 'parameter' }],
     },
     {
       code: `
@@ -1413,43 +432,43 @@ ruleTester.run('naming-convention', rule, {
         export interface PascalCaseInterface {}
         export type PascalCaseType = {};
       `,
+      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
         {
-          selector: 'default',
           format: ['snake_case'],
+          selector: 'default',
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'variable',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'function',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'class',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'interface',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'typeAlias',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
-          selector: 'enum',
           format: ['camelCase'],
           modifiers: ['exported'],
+          selector: 'enum',
         },
       ],
-      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: `
@@ -1468,61 +487,61 @@ ruleTester.run('naming-convention', rule, {
           PascalCaseType,
         };
       `,
+      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
-        { selector: 'default', format: ['snake_case'] },
+        { format: ['snake_case'], selector: 'default' },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'variable',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'function',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'class',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'interface',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
+          format: ['camelCase'],
+          modifiers: ['exported'],
           selector: 'typeAlias',
-          format: ['camelCase'],
-          modifiers: ['exported'],
         },
         {
-          selector: 'enum',
           format: ['camelCase'],
           modifiers: ['exported'],
+          selector: 'enum',
         },
       ],
-      errors: Array(6).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: `
         const PascalCaseVar = 1;
         function PascalCaseFunction() {}
-        declare function PascalCaseDeclaredFunction() {};
+        declare function PascalCaseDeclaredFunction();
       `,
+      errors: Array(3).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
-        { selector: 'default', format: ['snake_case'] },
+        { format: ['snake_case'], selector: 'default' },
         {
-          selector: 'variable',
           format: ['camelCase'],
           modifiers: ['global'],
+          selector: 'variable',
         },
         {
-          selector: 'function',
           format: ['camelCase'],
           modifiers: ['global'],
+          selector: 'function',
         },
       ],
-      errors: Array(3).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: `
@@ -1532,18 +551,18 @@ ruleTester.run('naming-convention', rule, {
         const { ignored: IgnoredDueToModifiers2 = 3 } = {};
         const IgnoredDueToModifiers3 = 1;
       `,
+      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'variable',
           format: ['UPPER_CASE'],
           modifiers: ['destructured'],
+          selector: 'variable',
         },
       ],
-      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: `
@@ -1555,18 +574,18 @@ ruleTester.run('naming-convention', rule, {
           IgnoredDueToModifiers2,
         ) {}
       `,
+      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'parameter',
-          modifiers: ['destructured'],
           format: ['UPPER_CASE'],
+          modifiers: ['destructured'],
+          selector: 'parameter',
         },
       ],
-      errors: Array(2).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: `
@@ -1575,18 +594,18 @@ ruleTester.run('naming-convention', rule, {
           IgnoredDueToModifiers = 1;
         }
       `,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'classProperty',
           format: ['UPPER_CASE'],
           modifiers: ['static', 'readonly'],
+          selector: 'classProperty',
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
@@ -1597,18 +616,18 @@ ruleTester.run('naming-convention', rule, {
           ) {}
         }
       `,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'parameterProperty',
           format: ['UPPER_CASE'],
           modifiers: ['readonly'],
+          selector: 'parameterProperty',
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
@@ -1617,18 +636,18 @@ ruleTester.run('naming-convention', rule, {
           IgnoredDueToModifiers() {}
         }
       `,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'classMethod',
           format: ['UPPER_CASE'],
           modifiers: ['abstract', 'static'],
+          selector: 'classMethod',
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
@@ -1637,36 +656,36 @@ ruleTester.run('naming-convention', rule, {
           get IgnoredDueToModifiers() {}
         }
       `,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'accessor',
           format: ['UPPER_CASE'],
           modifiers: ['private', 'static'],
+          selector: 'accessor',
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
         abstract class some_name {}
         class IgnoredDueToModifier {}
       `,
+      errors: [{ messageId: 'doesNotMatchFormat' }],
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'class',
           format: ['UPPER_CASE'],
           modifiers: ['abstract'],
+          selector: 'class',
         },
       ],
-      errors: [{ messageId: 'doesNotMatchFormat' }],
     },
     {
       code: `
@@ -1682,18 +701,18 @@ ruleTester.run('naming-convention', rule, {
           UnusedTypeParam,
         > = {};
       `,
+      errors: Array(7).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
         {
-          selector: 'default',
           format: ['PascalCase'],
+          selector: 'default',
         },
         {
-          selector: 'default',
-          modifiers: ['unused'],
           format: ['snake_case'],
+          modifiers: ['unused'],
+          selector: 'default',
         },
       ],
-      errors: Array(7).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: `
@@ -1725,18 +744,18 @@ ruleTester.run('naming-convention', rule, {
           'a a',
         }
       `,
+      errors: Array(13).fill({ messageId: 'doesNotMatchFormat' }),
       options: [
         {
-          selector: 'default',
           format: ['snake_case'],
+          selector: 'default',
         },
         {
-          selector: 'default',
           format: ['PascalCase'],
           modifiers: ['requiresQuotes'],
+          selector: 'default',
         },
       ],
-      errors: Array(13).fill({ messageId: 'doesNotMatchFormat' }),
     },
     {
       code: noFormat`
@@ -1785,54 +804,54 @@ ruleTester.run('naming-convention', rule, {
           public abstract async ASYNC_BAR(): number;
         }
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'method',
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['method', 'objectLiteralMethod'],
-          format: ['snake_case'],
-          modifiers: ['async'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
+            formats: 'snake_case',
             name: 'asyncBar',
-            formats: 'snake_case',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
+            formats: 'snake_case',
             name: 'AsyncBar2',
-            formats: 'snake_case',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
+            formats: 'snake_case',
             name: 'AsyncBar3',
-            formats: 'snake_case',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
-            name: 'ASYNC_BAR',
             formats: 'snake_case',
+            name: 'ASYNC_BAR',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
         },
       ],
     },
@@ -1859,46 +878,46 @@ ruleTester.run('naming-convention', rule, {
           },
         };
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: 'method',
-          format: ['PascalCase'],
-        },
-        {
-          selector: ['method', 'objectLiteralMethod'],
-          format: ['snake_case'],
-          modifiers: ['async'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Object Literal Method',
+            formats: 'snake_case',
             name: 'AsyncBar',
-            formats: 'snake_case',
+            type: 'Object Literal Method',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Object Literal Method',
+            formats: 'snake_case',
             name: 'AsyncBar2',
-            formats: 'snake_case',
+            type: 'Object Literal Method',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Object Literal Method',
-            name: 'AsyncBar3',
             formats: 'snake_case',
+            name: 'AsyncBar3',
+            type: 'Object Literal Method',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
         },
       ],
     },
@@ -1916,34 +935,34 @@ ruleTester.run('naming-convention', rule, {
         // ❌ error
         const asyncBar5 = async function async_bar6() {};
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'variableLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['variableLike'],
-          modifiers: ['async'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Variable',
-            name: 'AsyncBar1',
             formats: 'snake_case',
+            name: 'AsyncBar1',
+            type: 'Variable',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Variable',
-            name: 'asyncBar5',
             formats: 'snake_case',
+            name: 'asyncBar5',
+            type: 'Variable',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'variableLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['variableLike'],
         },
       ],
     },
@@ -1961,34 +980,34 @@ ruleTester.run('naming-convention', rule, {
         // ❌ error
         const async_bar3 = async function ASYNC_BAR4() {};
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'variableLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['variableLike'],
-          modifiers: ['async'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Function',
-            name: 'asyncBar2',
             formats: 'snake_case',
+            name: 'asyncBar2',
+            type: 'Function',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Function',
-            name: 'ASYNC_BAR4',
             formats: 'snake_case',
+            name: 'ASYNC_BAR4',
+            type: 'Function',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'variableLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['variableLike'],
         },
       ],
     },
@@ -2001,26 +1020,26 @@ ruleTester.run('naming-convention', rule, {
           public override someAttributeOverride = 1;
         }
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['override'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Property',
-            name: 'someAttributeOverride',
             formats: 'snake_case',
+            name: 'someAttributeOverride',
+            type: 'Class Property',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['override'],
+          selector: ['memberLike'],
         },
       ],
     },
@@ -2036,26 +1055,26 @@ ruleTester.run('naming-convention', rule, {
           }
         }
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['override'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
-            name: 'someMethodOverride',
             formats: 'snake_case',
+            name: 'someMethodOverride',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['override'],
+          selector: ['memberLike'],
         },
       ],
     },
@@ -2072,34 +1091,34 @@ ruleTester.run('naming-convention', rule, {
           public override set someSetterOverride(val: string);
         }
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['override'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Classic Accessor',
-            name: 'someGetterOverride',
             formats: 'snake_case',
+            name: 'someGetterOverride',
+            type: 'Classic Accessor',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Classic Accessor',
-            name: 'someSetterOverride',
             formats: 'snake_case',
+            name: 'someSetterOverride',
+            type: 'Classic Accessor',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['override'],
+          selector: ['memberLike'],
         },
       ],
     },
@@ -2114,34 +1133,34 @@ ruleTester.run('naming-convention', rule, {
           #second_private_field = 1;
         }
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['#private'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Property',
-            name: 'first_private_field',
             formats: 'camelCase',
+            name: 'first_private_field',
+            type: 'Class Property',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Property',
-            name: 'secondPrivateField',
             formats: 'snake_case',
+            name: 'secondPrivateField',
+            type: 'Class Property',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['#private'],
+          selector: ['memberLike'],
         },
       ],
     },
@@ -2156,109 +1175,1119 @@ ruleTester.run('naming-convention', rule, {
           #second_private_method() {}
         }
       `,
-      parserOptions,
-      options: [
-        {
-          selector: 'memberLike',
-          format: ['camelCase'],
-        },
-        {
-          selector: ['memberLike'],
-          modifiers: ['#private'],
-          format: ['snake_case'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
-            name: 'first_private_method',
             formats: 'camelCase',
+            name: 'first_private_method',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
         },
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Class Method',
-            name: 'secondPrivateMethod',
             formats: 'snake_case',
+            name: 'secondPrivateMethod',
+            type: 'Class Method',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['#private'],
+          selector: ['memberLike'],
         },
       ],
     },
     {
       code: "import * as fooBar from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['camelCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['namespace'],
-          format: ['PascalCase'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Import',
-            name: 'fooBar',
             formats: 'PascalCase',
+            name: 'fooBar',
+            type: 'Import',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['namespace'],
+          selector: ['import'],
         },
       ],
     },
     {
       code: "import FooBar from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['camelCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['namespace'],
-          format: ['PascalCase'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Import',
-            name: 'FooBar',
             formats: 'camelCase',
+            name: 'FooBar',
+            type: 'Import',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['namespace'],
+          selector: ['import'],
         },
       ],
     },
     {
       code: "import { default as foo_bar } from 'foo_bar';",
-      parserOptions,
-      options: [
-        {
-          selector: ['import'],
-          format: ['camelCase'],
-        },
-        {
-          selector: ['import'],
-          modifiers: ['namespace'],
-          format: ['PascalCase'],
-        },
-      ],
       errors: [
         {
-          messageId: 'doesNotMatchFormat',
           data: {
-            type: 'Import',
-            name: 'foo_bar',
             formats: 'camelCase',
+            name: 'foo_bar',
+            type: 'Import',
           },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['namespace'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: 'import { "🍎" as foo } from \'foo_bar\';',
+      errors: [
+        {
+          data: {
+            formats: 'PascalCase',
+            name: 'foo',
+            type: 'Import',
+          },
+          messageId: 'doesNotMatchFormat',
+        },
+      ],
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+      ],
+    },
+  ],
+  valid: [
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: 'child_process',
+          },
+          format: ['camelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        declare const ANY_UPPER_CASE: any;
+        declare const ANY_UPPER_CASE: any | null;
+        declare const ANY_UPPER_CASE: any | null | undefined;
+
+        declare const string_camelCase: string;
+        declare const string_camelCase: string | null;
+        declare const string_camelCase: string | null | undefined;
+        declare const string_camelCase: 'a' | null | undefined;
+        declare const string_camelCase: string | 'a' | null | undefined;
+
+        declare const number_camelCase: number;
+        declare const number_camelCase: number | null;
+        declare const number_camelCase: number | null | undefined;
+        declare const number_camelCase: 1 | null | undefined;
+        declare const number_camelCase: number | 2 | null | undefined;
+
+        declare const boolean_camelCase: boolean;
+        declare const boolean_camelCase: boolean | null;
+        declare const boolean_camelCase: boolean | null | undefined;
+        declare const boolean_camelCase: true | null | undefined;
+        declare const boolean_camelCase: false | null | undefined;
+        declare const boolean_camelCase: true | false | null | undefined;
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['const'],
+          prefix: ['ANY_'],
+          selector: 'variable',
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['string_'],
+          selector: 'variable',
+          types: ['string'],
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['number_'],
+          selector: 'variable',
+          types: ['number'],
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['boolean_'],
+          selector: 'variable',
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface Foo {}
+        class Bar {}
+        function foo_function_bar() {}
+      `,
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^unused_\w/.source,
+          },
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: 'default',
+        },
+        {
+          custom: {
+            match: false,
+            regex: /^I[A-Z]/.source,
+          },
+          format: ['PascalCase'],
+          selector: 'typeLike',
+        },
+        {
+          custom: {
+            match: true,
+            regex: /_function_/.source,
+          },
+          format: ['snake_case'],
+          leadingUnderscore: 'allow',
+          selector: 'function',
+        },
+      ],
+    },
+    {
+      code: `
+        let foo = 'a';
+        const _foo = 1;
+        interface foo {}
+        class bar {}
+        function fooFunctionBar() {}
+        function _fooFunctionBar() {}
+      `,
+      options: [
+        {
+          custom: {
+            match: false,
+            regex: /^unused_\w/.source,
+          },
+          format: ['camelCase'],
+          leadingUnderscore: 'allow',
+          selector: ['default', 'typeLike', 'function'],
+        },
+      ],
+    },
+    {
+      code: `
+        const match = 'test'.match(/test/);
+        const [, key, value] = match;
+      `,
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    // no format selector
+    {
+      code: 'const snake_case = 1;',
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: 'const snake_case = 1;',
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'default',
+        },
+        {
+          format: [],
+          selector: 'variable',
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/1478
+    {
+      code: `
+        const child_process = require('child_process');
+      `,
+      options: [
+        { format: ['camelCase', 'UPPER_CASE'], selector: 'variable' },
+        {
+          filter: 'child_process',
+          format: ['snake_case'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: /-/.source,
+          },
+          format: ['strictCamelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        const foo = {
+          'Property-Name': 'asdf',
+        };
+      `,
+      options: [
+        {
+          filter: {
+            match: false,
+            regex: /^(Property-Name)$/.source,
+          },
+          format: ['strictCamelCase'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        let isFoo = 1;
+        class foo {
+          shouldBoo: number;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
+          selector: ['variable', 'parameter', 'property', 'accessor'],
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private readonly FooBoo: boolean;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          modifiers: ['private', 'readonly'],
+          selector: ['property', 'accessor'],
+          types: ['boolean'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private fooBoo: number;
+        }
+      `,
+      options: [
+        {
+          format: ['camelCase'],
+          modifiers: ['private'],
+          selector: ['property', 'accessor'],
+        },
+      ],
+    },
+    {
+      code: `
+        const isfooBar = 1;
+        function fun(goodfunFoo: number) {}
+        class foo {
+          private VanFooBar: number;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['StrictPascalCase'],
+          modifiers: ['private'],
+          prefix: ['Van'],
+          selector: ['property', 'accessor'],
+        },
+        {
+          format: ['camelCase'],
+          prefix: ['is', 'good'],
+          selector: ['variable', 'parameter'],
+          types: ['number'],
+        },
+      ],
+    },
+    {
+      code: `
+        class SomeClass {
+          static OtherConstant = 'hello';
+        }
+
+        export const { OtherConstant: otherConstant } = SomeClass;
+      `,
+      options: [
+        { format: ['PascalCase'], selector: 'property' },
+        { format: ['camelCase'], selector: 'variable' },
+      ],
+    },
+    // treat properties with function expressions as typeMethod
+    {
+      code: `
+        interface SOME_INTERFACE {
+          SomeMethod: () => void;
+
+          some_property: string;
+        }
+      `,
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'typeMethod',
+        },
+        {
+          format: ['snake_case'],
+          selector: 'typeProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        type Ignored = {
+          ignored_due_to_modifiers: string;
+          readonly FOO: string;
+        };
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['UPPER_CASE'],
+          modifiers: ['readonly'],
+          selector: 'typeProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        const camelCaseVar = 1;
+        enum camelCaseEnum {}
+        class camelCaseClass {}
+        function camelCaseFunction() {}
+        interface camelCaseInterface {}
+        type camelCaseType = {};
+        export const PascalCaseVar = 1;
+        export enum PascalCaseEnum {}
+        export class PascalCaseClass {}
+        export function PascalCaseFunction() {}
+        export interface PascalCaseInterface {}
+        export type PascalCaseType = {};
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+        const camelCaseVar = 1;
+        enum camelCaseEnum {}
+        class camelCaseClass {}
+        function camelCaseFunction() {}
+        interface camelCaseInterface {}
+        type camelCaseType = {};
+        const PascalCaseVar = 1;
+        enum PascalCaseEnum {}
+        class PascalCaseClass {}
+        function PascalCaseFunction() {}
+        interface PascalCaseInterface {}
+        type PascalCaseType = {};
+        export {
+          PascalCaseVar,
+          PascalCaseEnum,
+          PascalCaseClass,
+          PascalCaseFunction,
+          PascalCaseInterface,
+          PascalCaseType,
+        };
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'variable',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'function',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'class',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'interface',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'typeAlias',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['exported'],
+          selector: 'enum',
+        },
+      ],
+    },
+    {
+      code: `
+        {
+          const camelCaseVar = 1;
+          function camelCaseFunction() {}
+          declare function camelCaseDeclaredFunction();
+        }
+        const PascalCaseVar = 1;
+        function PascalCaseFunction() {}
+        declare function PascalCaseDeclaredFunction();
+      `,
+      options: [
+        { format: ['camelCase'], selector: 'default' },
+        {
+          format: ['PascalCase'],
+          modifiers: ['global'],
+          selector: 'variable',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['global'],
+          selector: 'function',
+        },
+      ],
+    },
+    {
+      code: `
+        const { some_name1 } = {};
+        const { ignore: IgnoredDueToModifiers1 } = {};
+        const { some_name2 = 2 } = {};
+        const IgnoredDueToModifiers2 = 1;
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['destructured'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+        const { some_name1 } = {};
+        const { ignore: IgnoredDueToModifiers1 } = {};
+        const { some_name2 = 2 } = {};
+        const IgnoredDueToModifiers2 = 1;
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          modifiers: ['destructured'],
+          selector: 'variable',
+        },
+      ],
+    },
+    {
+      code: `
+        export function Foo(
+          { aName },
+          { anotherName = 1 },
+          { ignored: IgnoredDueToModifiers1 },
+          { ignored: IgnoredDueToModifiers1 = 2 },
+          IgnoredDueToModifiers2,
+        ) {}
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['destructured'],
+          selector: 'parameter',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract readonly some_name;
+          IgnoredDueToModifiers = 1;
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['static', 'readonly'],
+          selector: 'classProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          constructor(
+            private readonly some_name,
+            IgnoredDueToModifiers,
+          ) {}
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['readonly'],
+          selector: 'parameterProperty',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static abstract some_name() {}
+          IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['abstract', 'static'],
+          selector: 'classMethod',
+        },
+      ],
+    },
+    {
+      code: `
+        class Ignored {
+          private static get some_name() {}
+          get IgnoredDueToModifiers() {}
+        }
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['private', 'static'],
+          selector: 'accessor',
+        },
+      ],
+    },
+    {
+      code: `
+        abstract class some_name {}
+        class IgnoredDueToModifier {}
+      `,
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: 'default',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['abstract'],
+          selector: 'class',
+        },
+      ],
+    },
+    {
+      code: `
+        const UnusedVar = 1;
+        function UnusedFunc(
+          // this line is intentionally broken out
+          UnusedParam: string,
+        ) {}
+        class UnusedClass {}
+        interface UnusedInterface {}
+        type UnusedType<
+          // this line is intentionally broken out
+          UnusedTypeParam,
+        > = {};
+
+        export const used_var = 1;
+        export function used_func(
+          // this line is intentionally broken out
+          used_param: string,
+        ) {
+          return used_param;
+        }
+        export class used_class {}
+        export interface used_interface {}
+        export type used_type<
+          // this line is intentionally broken out
+          used_typeparam,
+        > = used_typeparam;
+      `,
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: ['PascalCase'],
+          modifiers: ['unused'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          modifiers: ['requiresQuotes'],
+          selector: 'default',
+        },
+      ],
+    },
+    {
+      code: `
+        const ignored1 = {
+          'a a': 1,
+          'b b'() {},
+          get 'c c'() {
+            return 1;
+          },
+          set 'd d'(value: string) {},
+        };
+        class ignored2 {
+          'a a' = 1;
+          'b b'() {}
+          get 'c c'() {
+            return 1;
+          }
+          set 'd d'(value: string) {}
+        }
+        interface ignored3 {
+          'a a': 1;
+          'b b'(): void;
+        }
+        type ignored4 = {
+          'a a': 1;
+          'b b'(): void;
+        };
+        enum ignored5 {
+          'a a',
+        }
+      `,
+      options: [
+        {
+          format: ['snake_case'],
+          selector: 'default',
+        },
+        {
+          format: null,
+          modifiers: ['requiresQuotes'],
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+        },
+        // making sure the `requoresQuotes` modifier appropriately overrides this
+        {
+          format: ['PascalCase'],
+          selector: [
+            'classProperty',
+            'objectLiteralProperty',
+            'typeProperty',
+            'classMethod',
+            'objectLiteralMethod',
+            'typeMethod',
+            'accessor',
+            'enumMember',
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        const obj = {
+          Foo: 42,
+          Bar() {
+            return 42;
+          },
+        };
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'property',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+      ],
+    },
+    {
+      code: `
+        const obj = {
+          Bar() {
+            return 42;
+          },
+          async async_bar() {
+            return 42;
+          },
+        };
+        class foo {
+          public Bar() {
+            return 42;
+          }
+          public async async_bar() {
+            return 42;
+          }
+        }
+        abstract class foo {
+          public abstract Bar() {
+            return 42;
+          }
+          public abstract async async_bar() {
+            return 42;
+          }
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['method', 'objectLiteralMethod'],
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+      ],
+    },
+    {
+      code: `
+        const async_bar1 = async () => {};
+        async function async_bar2() {}
+        const async_bar3 = async function async_bar4() {};
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['PascalCase'],
+          selector: 'method',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['async'],
+          selector: ['variable'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo extends bar {
+          public someAttribute = 1;
+          public override some_attribute_override = 1;
+          public someMethod() {
+            return 42;
+          }
+          public override some_method_override2() {
+            return 42;
+          }
+        }
+        abstract class foo extends bar {
+          public abstract someAttribute: string;
+          public abstract override some_attribute_override: string;
+          public abstract someMethod(): string;
+          public abstract override some_method_override2(): string;
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['override'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private someAttribute = 1;
+          #some_attribute = 1;
+
+          private someMethod() {}
+          #some_method() {}
+        }
+      `,
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['camelCase'],
+          selector: 'memberLike',
+        },
+        {
+          format: ['snake_case'],
+          modifiers: ['#private'],
+          selector: ['memberLike'],
+        },
+      ],
+    },
+    {
+      code: "import * as FooBar from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: "import fooBar from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: "import { default as fooBar } from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: "import { foo_bar } from 'foo_bar';",
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
+        },
+        {
+          format: ['camelCase'],
+          modifiers: ['default'],
+          selector: ['import'],
+        },
+      ],
+    },
+    {
+      code: 'import { "🍎" as Foo } from \'foo_bar\';',
+      languageOptions: { parserOptions },
+      options: [
+        {
+          format: ['PascalCase'],
+          selector: ['import'],
         },
       ],
     },

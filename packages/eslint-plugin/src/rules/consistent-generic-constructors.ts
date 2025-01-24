@@ -1,10 +1,11 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
-type Options = ['constructor' | 'type-annotation'];
+export type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+export type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -15,16 +16,17 @@ export default createRule<Options, MessageIds>({
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
       recommended: 'stylistic',
     },
+    fixable: 'code',
     messages: {
-      preferTypeAnnotation:
-        'The generic type arguments should be specified as part of the type annotation.',
       preferConstructor:
         'The generic type arguments should be specified as part of the constructor type arguments.',
+      preferTypeAnnotation:
+        'The generic type arguments should be specified as part of the type annotation.',
     },
-    fixable: 'code',
     schema: [
       {
         type: 'string',
+        description: 'Which constructor call syntax to prefer.',
         enum: ['type-annotation', 'constructor'],
       },
     ],
@@ -75,7 +77,7 @@ export default createRule<Options, MessageIds>({
         }
         if (mode === 'type-annotation') {
           if (!lhs && rhs.typeArguments) {
-            const { typeArguments, callee } = rhs;
+            const { callee, typeArguments } = rhs;
             const typeAnnotation =
               context.sourceCode.getText(callee) +
               context.sourceCode.getText(typeArguments);
@@ -94,13 +96,16 @@ export default createRule<Options, MessageIds>({
                   }
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
-                  return context.sourceCode.getTokenAfter(node.key)!;
+                  return nullThrows(
+                    context.sourceCode.getTokenAfter(node.key),
+                    NullThrowsReasons.MissingToken(']', 'key'),
+                  );
                 }
                 return [
                   fixer.remove(typeArguments),
                   fixer.insertTextAfter(
                     getIDToAttachAnnotation(),
-                    ': ' + typeAnnotation,
+                    `: ${typeAnnotation}`,
                   ),
                 ];
               },

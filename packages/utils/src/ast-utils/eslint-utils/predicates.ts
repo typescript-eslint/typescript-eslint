@@ -10,89 +10,65 @@ type IsNotSpecificTokenFunction<SpecificToken extends TSESTree.Token> = (
   token: TSESTree.Token,
 ) => token is Exclude<TSESTree.Token, SpecificToken>;
 
-type PunctuatorTokenWithValue<Value extends string> =
-  TSESTree.PunctuatorToken & { value: Value };
+type PunctuatorTokenWithValue<Value extends string> = {
+  value: Value;
+} & TSESTree.PunctuatorToken;
 type IsPunctuatorTokenWithValueFunction<Value extends string> =
   IsSpecificTokenFunction<PunctuatorTokenWithValue<Value>>;
 type IsNotPunctuatorTokenWithValueFunction<Value extends string> =
   IsNotSpecificTokenFunction<PunctuatorTokenWithValue<Value>>;
 
-const isArrowToken =
+export const isArrowToken =
   eslintUtils.isArrowToken as IsPunctuatorTokenWithValueFunction<'=>'>;
-const isNotArrowToken =
+export const isNotArrowToken =
   eslintUtils.isNotArrowToken as IsNotPunctuatorTokenWithValueFunction<'=>'>;
 
-const isClosingBraceToken =
+export const isClosingBraceToken =
   eslintUtils.isClosingBraceToken as IsPunctuatorTokenWithValueFunction<'}'>;
-const isNotClosingBraceToken =
+export const isNotClosingBraceToken =
   eslintUtils.isNotClosingBraceToken as IsNotPunctuatorTokenWithValueFunction<'}'>;
 
-const isClosingBracketToken =
+export const isClosingBracketToken =
   eslintUtils.isClosingBracketToken as IsPunctuatorTokenWithValueFunction<']'>;
-const isNotClosingBracketToken =
+export const isNotClosingBracketToken =
   eslintUtils.isNotClosingBracketToken as IsNotPunctuatorTokenWithValueFunction<']'>;
 
-const isClosingParenToken =
+export const isClosingParenToken =
   eslintUtils.isClosingParenToken as IsPunctuatorTokenWithValueFunction<')'>;
-const isNotClosingParenToken =
+export const isNotClosingParenToken =
   eslintUtils.isNotClosingParenToken as IsNotPunctuatorTokenWithValueFunction<')'>;
 
-const isColonToken =
+export const isColonToken =
   eslintUtils.isColonToken as IsPunctuatorTokenWithValueFunction<':'>;
-const isNotColonToken =
+export const isNotColonToken =
   eslintUtils.isNotColonToken as IsNotPunctuatorTokenWithValueFunction<':'>;
 
-const isCommaToken =
+export const isCommaToken =
   eslintUtils.isCommaToken as IsPunctuatorTokenWithValueFunction<','>;
-const isNotCommaToken =
+export const isNotCommaToken =
   eslintUtils.isNotCommaToken as IsNotPunctuatorTokenWithValueFunction<','>;
 
-const isCommentToken =
+export const isCommentToken =
   eslintUtils.isCommentToken as IsSpecificTokenFunction<TSESTree.Comment>;
-const isNotCommentToken =
+export const isNotCommentToken =
   eslintUtils.isNotCommentToken as IsNotSpecificTokenFunction<TSESTree.Comment>;
 
-const isOpeningBraceToken =
+export const isOpeningBraceToken =
   eslintUtils.isOpeningBraceToken as IsPunctuatorTokenWithValueFunction<'{'>;
-const isNotOpeningBraceToken =
+export const isNotOpeningBraceToken =
   eslintUtils.isNotOpeningBraceToken as IsNotPunctuatorTokenWithValueFunction<'{'>;
 
-const isOpeningBracketToken =
+export const isOpeningBracketToken =
   eslintUtils.isOpeningBracketToken as IsPunctuatorTokenWithValueFunction<'['>;
-const isNotOpeningBracketToken =
+export const isNotOpeningBracketToken =
   eslintUtils.isNotOpeningBracketToken as IsNotPunctuatorTokenWithValueFunction<'['>;
 
-const isOpeningParenToken =
+export const isOpeningParenToken =
   eslintUtils.isOpeningParenToken as IsPunctuatorTokenWithValueFunction<'('>;
-const isNotOpeningParenToken =
+export const isNotOpeningParenToken =
   eslintUtils.isNotOpeningParenToken as IsNotPunctuatorTokenWithValueFunction<'('>;
 
-const isSemicolonToken =
+export const isSemicolonToken =
   eslintUtils.isSemicolonToken as IsPunctuatorTokenWithValueFunction<';'>;
-const isNotSemicolonToken =
+export const isNotSemicolonToken =
   eslintUtils.isNotSemicolonToken as IsNotPunctuatorTokenWithValueFunction<';'>;
-
-export {
-  isArrowToken,
-  isClosingBraceToken,
-  isClosingBracketToken,
-  isClosingParenToken,
-  isColonToken,
-  isCommaToken,
-  isCommentToken,
-  isNotArrowToken,
-  isNotClosingBraceToken,
-  isNotClosingBracketToken,
-  isNotClosingParenToken,
-  isNotColonToken,
-  isNotCommaToken,
-  isNotCommentToken,
-  isNotOpeningBraceToken,
-  isNotOpeningBracketToken,
-  isNotOpeningParenToken,
-  isNotSemicolonToken,
-  isOpeningBraceToken,
-  isOpeningBracketToken,
-  isOpeningParenToken,
-  isSemicolonToken,
-};

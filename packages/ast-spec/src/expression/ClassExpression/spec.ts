@@ -5,5 +5,4 @@ export interface ClassExpression extends ClassBase {
   type: AST_NODE_TYPES.ClassExpression;
   abstract: false;
   declare: false;
-  decorators: [];
 }

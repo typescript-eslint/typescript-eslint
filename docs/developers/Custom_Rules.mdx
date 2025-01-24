@@ -10,11 +10,12 @@ You should be familiar with [ESLint's developer guide](https://eslint.org/docs/d
 :::
 
 As long as you are using `@typescript-eslint/parser` as the `parser` in your ESLint configuration, custom ESLint rules generally work the same way for JavaScript and TypeScript code.
-The main three changes to custom rules writing are:
+The main four changes to custom rules writing are:
 
 - [Utils Package](#utils-package): we recommend using `@typescript-eslint/utils` to create custom rules
 - [AST Extensions](#ast-extensions): targeting TypeScript-specific syntax in your rule selectors
 - [Typed Rules](#typed-rules): using the TypeScript type checker to inform rule logic
+- [Testing](#testing): using `@typescript-eslint/rule-tester`'s `RuleTester` instead of ESLint core's
 
 ## Utils Package
 
@@ -96,6 +97,32 @@ type Options = [
 // Type: RuleModule<MessageIds, Options, ...>
 export const rule = createRule<Options, MessageIds>({
   // ...
+});
+```
+
+#### Extra Rule Docs Types
+
+By default, rule `meta.docs` is allowed to contain only `description` and `url` as described in [ESLint's Custom Rules > Rule Structure docs](https://eslint.org/docs/latest/extend/custom-rules#rule-structure).
+Additional docs properties may be added as a type argument to `ESLintUtils.RuleCreator`:
+
+```ts
+interface MyPluginDocs {
+  recommended: boolean;
+}
+
+const createRule = ESLintUtils.RuleCreator<MyPluginDocs>(
+  name => `https://example.com/rule/${name}`,
+);
+
+createRule({
+  // ...
+  meta: {
+    docs: {
+      description: '...',
+      recommended: true,
+    },
+    // ...
+  },
 });
 ```
 
@@ -233,15 +260,13 @@ In that case, it is best to add an explicit type declaration.
 This rule snippet targets name nodes of both function and interface declarations:
 
 ```ts
-import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import { TSESTree } from '@typescript-eslint/utils';
 
 export const rule = createRule({
   create(context) {
     return {
       'FunctionDeclaration, TSInterfaceDeclaration'(
-        node:
-          | AST_NODE_TYPES.FunctionDeclaration
-          | AST_NODE_TYPES.TSInterfaceDeclaration,
+        node: TSESTree.FunctionDeclaration | TSESTree.TSInterfaceDeclaration,
       ) {
         if (/^[a-z]/.test(node.id.name)) {
           // ...
@@ -281,7 +306,6 @@ This rule bans for-of looping over an enum by using the TypeScript type checker 
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
-import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 export const rule = createRule({
@@ -292,10 +316,10 @@ export const rule = createRule({
         const services = ESLintUtils.getParserServices(context);
 
         // 2. Find the TS type for the ES node
-        const type = services.getTypeAtLocation(node);
+        const type = services.getTypeAtLocation(node.right);
 
-        // 3. Check the TS type using the TypeScript APIs
-        if (tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)) {
+        // 3. Check the TS type's backing symbol for being an enum
+        if (type.symbol.flags & ts.SymbolFlags.Enum) {
           context.report({
             messageId: 'loopOverEnum',
             node: node.right,
@@ -324,11 +348,15 @@ Rules can retrieve their full backing TypeScript type checker with `services.pro
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-:::caution
-We recommend against changing rule logic based solely on whether `services.program` exists.
+### Conditional Type Information
+
+We recommend _against_ changing rule logic based solely on whether `services.program` exists.
 In our experience, users are generally surprised when rules behave differently with or without type information.
 Additionally, if they misconfigure their ESLint config, they may not realize why the rule started behaving differently.
 Consider either gating type checking behind an explicit option for the rule or creating two versions of the rule instead.
+
+:::tip
+Documentation generators such as [`eslint-doc-generator`](https://github.com/bmish/eslint-doc-generator) can automatically indicate in a rule's docs whether it needs type information.
 :::
 
 ## Testing
@@ -340,15 +368,13 @@ Below is a quick-start guide. For more in-depth docs and examples [see the `@typ
 
 ### Testing Untyped Rules
 
-For rules that don't need type information, passing just the `parser` will do:
+For rules that don't need type information, no constructor parameters are necessary:
 
 ```ts
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from './my-rule';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('my-rule', rule, {
   valid: [
@@ -363,17 +389,20 @@ ruleTester.run('my-rule', rule, {
 ### Testing Typed Rules
 
 For rules that do need type information, `parserOptions` must be passed in as well.
-Tests must have at least an absolute `tsconfigRootDir` path provided as well as a relative `project` path from that directory:
+We recommend using `parserOptions.projectService` with options to allow a default project for each test file.
 
 ```ts
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from './my-typed-rule';
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
+  languageOptions: {
+    parserOptions: {
+      projectService: {
+        allowDefaultProject: ['*.ts*'],
+      },
+      tsconfigRootDir: __dirname,
+    },
   },
 });
 
@@ -387,12 +416,4 @@ ruleTester.run('my-typed-rule', rule, {
 });
 ```
 
-:::note
-For now, `RuleTester` requires the following physical files be present on disk for typed rules:
-
-- `tsconfig.json`: tsconfig used as the test "project"
-- One of the following two files:
-  - `file.ts`: blank test file used for normal TS tests
-  - `react.tsx`: blank test file used for tests with `parserOptions: { ecmaFeatures: { jsx: true } }`
-
-:::
+See [_Rule Tester_ > _Type-Aware Testing_](../packages/Rule_Tester.mdx#type-aware-testing) for more details.

@@ -1,55 +1,15 @@
 ---
-description: 'Require or disallow an empty line between class members.'
+displayed_sidebar: rulesSidebar
 ---
 
-> 🛑 This file is source code, not the primary documentation location! 🛑
->
-> See **https://typescript-eslint.io/rules/lines-between-class-members** for documentation.
+:::danger Deprecated
 
-This rule extends the base [`eslint/lines-between-class-members`](https://eslint.org/docs/rules/lines-between-class-members) rule.
-It adds support for ignoring overload methods in a class.
+This rule has been moved to the [ESLint stylistic plugin](https://eslint.style).
+See [#8072](https://github.com/typescript-eslint/typescript-eslint/issues/8072) and [#8074](https://github.com/typescript-eslint/typescript-eslint/issues/8074) for more information.
 
-## Options
+:::
 
-In addition to the options supported by the `lines-between-class-members` rule in ESLint core, the rule adds the following options:
+<!-- This doc file has been left on purpose to help direct people to the stylistic plugin.
 
-- Object option:
-
-  - `"exceptAfterOverload": true` (default) - Skip checking empty lines after overload class members
-  - `"exceptAfterOverload": false` - **do not** skip checking empty lines after overload class members
-
-- [See the other options allowed](https://github.com/eslint/eslint/blob/main/docs/rules/lines-between-class-members.md#options)
-
-### `exceptAfterOverload: true`
-
-Examples of **correct** code for the `{ "exceptAfterOverload": true }` option:
-
-```ts option='"always", { "exceptAfterOverload": true }' showPlaygroundButton
-class foo {
-  bar(a: string): void;
-  bar(a: string, b: string): void;
-  bar(a: string, b: string) {}
-
-  baz() {}
-
-  qux() {}
-}
-```
-
-### `exceptAfterOverload: false`
-
-Examples of **correct** code for the `{ "exceptAfterOverload": false }` option:
-
-```ts option='"always", { "exceptAfterOverload": false }' showPlaygroundButton
-class foo {
-  bar(a: string): void;
-
-  bar(a: string, b: string): void;
-
-  bar(a: string, b: string) {}
-
-  baz() {}
-
-  qux() {}
-}
-```
+Note that there is no actual way to get to this page in the normal navigation,
+so end-users will only be able to get to this page from the search bar. -->

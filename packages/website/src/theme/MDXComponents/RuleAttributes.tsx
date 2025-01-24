@@ -1,7 +1,14 @@
+import type { ESLintPluginDocs } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import type {
+  RuleRecommendation,
+  RuleRecommendationAcrossConfigs,
+} from '@typescript-eslint/utils/ts-eslint';
+
 import Link from '@docusaurus/Link';
-import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import React from 'react';
+
+import type { FeatureProps } from './Feature';
 
 import {
   FIXABLE_EMOJI,
@@ -10,7 +17,6 @@ import {
   STYLISTIC_CONFIG_EMOJI,
   SUGGESTIONS_EMOJI,
 } from '../../components/constants';
-import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
@@ -20,8 +26,32 @@ const recommendations = {
   stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
-const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
-  const recommendation = recommendations[docs.recommended!];
+type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> &
+  Required<Record<Key, NonNullable<Base[Key]>>>;
+
+type RecommendedRuleMetaDataDocs = MakeRequired<
+  ESLintPluginDocs,
+  'recommended'
+>;
+
+const isRecommendedDocs = (
+  docs: ESLintPluginDocs,
+): docs is RecommendedRuleMetaDataDocs => !!docs.recommended;
+
+const resolveRecommendation = (
+  recommended: RuleRecommendationAcrossConfigs<unknown[]>,
+): RuleRecommendation => {
+  return recommended.recommended === true ? 'recommended' : 'strict';
+};
+
+const getRecommendation = (docs: RecommendedRuleMetaDataDocs): string[] => {
+  const recommended = docs.recommended;
+  const recommendation =
+    recommendations[
+      typeof recommended === 'object'
+        ? resolveRecommendation(recommended)
+        : recommended
+    ];
 
   return docs.requiresTypeChecking
     ? [recommendation[0], `${recommendation[1]}-type-checked`]
@@ -37,7 +67,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
 
   const features: FeatureProps[] = [];
 
-  if (rule.docs.recommended) {
+  if (isRecommendedDocs(rule.docs)) {
     const [emoji, recommendation] = getRecommendation(rule.docs);
     features.push({
       children: (

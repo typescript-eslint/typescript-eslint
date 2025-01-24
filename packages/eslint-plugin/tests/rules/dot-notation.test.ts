@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/dot-notation';
 import { getFixturesRootDir } from '../RuleTester';
@@ -6,11 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -25,7 +25,6 @@ function q(str: string): string {
 ruleTester.run('dot-notation', rule, {
   valid: [
     //  baseRule
-
     'a.b;',
     'a.b.c;',
     "a['12'];",
@@ -52,19 +51,28 @@ ruleTester.run('dot-notation', rule, {
       code: "a['lots_of_snake_case'];",
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
     },
-    { code: 'a[`time${range}`];', parserOptions: { ecmaVersion: 6 } },
+    {
+      code: 'a[`time${range}`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
     {
       code: 'a[`while`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       options: [{ allowKeywords: false }],
-      parserOptions: { ecmaVersion: 6 },
     },
-    { code: 'a[`time range`];', parserOptions: { ecmaVersion: 6 } },
+    {
+      code: 'a[`time range`];',
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
+    },
     'a.true;',
     'a.null;',
     'a[undefined];',
     'a[void 0];',
     'a[b()];',
-    { code: 'a[/(?<zero>0)/];', parserOptions: { ecmaVersion: 2018 } },
+    {
+      code: 'a[/(?<zero>0)/];',
+      languageOptions: { parserOptions: { ecmaVersion: 2018 } },
+    },
 
     {
       code: `
@@ -117,8 +125,30 @@ let dingus: Dingus | undefined;
 dingus?.nested.property;
 dingus?.nested['hello'];
       `,
+      languageOptions: { parserOptions: { ecmaVersion: 2020 } },
       options: [{ allowIndexSignaturePropertyAccess: true }],
-      parserOptions: { ecmaVersion: 2020 },
+    },
+    {
+      code: `
+class X {
+  private priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['priv_prop']);
+      `,
+      options: [{ allowPrivateClassPropertyAccess: true }],
+    },
+    {
+      code: `
+class X {
+  protected priv_prop = 123;
+}
+
+let x: X | undefined;
+console.log(x?.['priv_prop']);
+      `,
+      options: [{ allowProtectedClassPropertyAccess: true }],
     },
   ],
   invalid: [
@@ -131,6 +161,7 @@ class X {
 const x = new X();
 x['priv_prop'] = 123;
       `,
+      errors: [{ messageId: 'useDot' }],
       options: [{ allowPrivateClassPropertyAccess: false }],
       output: `
 class X {
@@ -140,7 +171,6 @@ class X {
 const x = new X();
 x.priv_prop = 123;
       `,
-      errors: [{ messageId: 'useDot' }],
     },
     {
       code: `
@@ -151,6 +181,7 @@ class X {
 const x = new X();
 x['pub_prop'] = 123;
       `,
+      errors: [{ messageId: 'useDot' }],
       output: `
 class X {
   public pub_prop = 123;
@@ -159,7 +190,6 @@ class X {
 const x = new X();
 x.pub_prop = 123;
       `,
-      errors: [{ messageId: 'useDot' }],
     },
     //  baseRule
 
@@ -171,63 +201,69 @@ x.pub_prop = 123;
     // },
     {
       code: "a['true'];",
+      errors: [{ data: { key: q('true') }, messageId: 'useDot' }],
       output: 'a.true;',
-      errors: [{ messageId: 'useDot', data: { key: q('true') } }],
     },
     {
       code: "a['time'];",
+      errors: [{ data: { key: '"time"' }, messageId: 'useDot' }],
+      languageOptions: { parserOptions: { ecmaVersion: 6 } },
       output: 'a.time;',
-      parserOptions: { ecmaVersion: 6 },
-      errors: [{ messageId: 'useDot', data: { key: '"time"' } }],
     },
     {
       code: 'a[null];',
+      errors: [{ data: { key: 'null' }, messageId: 'useDot' }],
       output: 'a.null;',
-      errors: [{ messageId: 'useDot', data: { key: 'null' } }],
     },
     {
       code: 'a[true];',
+      errors: [{ data: { key: 'true' }, messageId: 'useDot' }],
       output: 'a.true;',
-      errors: [{ messageId: 'useDot', data: { key: 'true' } }],
     },
     {
       code: 'a[false];',
+      errors: [{ data: { key: 'false' }, messageId: 'useDot' }],
       output: 'a.false;',
-      errors: [{ messageId: 'useDot', data: { key: 'false' } }],
     },
     {
       code: "a['b'];",
+      errors: [{ data: { key: q('b') }, messageId: 'useDot' }],
       output: 'a.b;',
-      errors: [{ messageId: 'useDot', data: { key: q('b') } }],
     },
     {
       code: "a.b['c'];",
+      errors: [{ data: { key: q('c') }, messageId: 'useDot' }],
       output: 'a.b.c;',
-      errors: [{ messageId: 'useDot', data: { key: q('c') } }],
     },
     {
       code: "a['_dangle'];",
-      output: 'a._dangle;',
+      errors: [{ data: { key: q('_dangle') }, messageId: 'useDot' }],
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
-      errors: [{ messageId: 'useDot', data: { key: q('_dangle') } }],
+      output: 'a._dangle;',
     },
     {
       code: "a['SHOUT_CASE'];",
-      output: 'a.SHOUT_CASE;',
+      errors: [{ data: { key: q('SHOUT_CASE') }, messageId: 'useDot' }],
       options: [{ allowPattern: '^[a-z]+(_[a-z]+)+$' }],
-      errors: [{ messageId: 'useDot', data: { key: q('SHOUT_CASE') } }],
+      output: 'a.SHOUT_CASE;',
     },
     {
-      code: 'a\n' + "  ['SHOUT_CASE'];",
-      output: 'a\n' + '  .SHOUT_CASE;',
+      code: noFormat`
+a
+  ['SHOUT_CASE'];
+      `,
       errors: [
         {
-          messageId: 'useDot',
-          data: { key: q('SHOUT_CASE') },
-          line: 2,
           column: 4,
+          data: { key: q('SHOUT_CASE') },
+          line: 3,
+          messageId: 'useDot',
         },
       ],
+      output: `
+a
+  .SHOUT_CASE;
+      `,
     },
     {
       code:
@@ -236,69 +272,75 @@ x.pub_prop = 123;
         '    ["catch"](function(){})\n' +
         '    .then(function(){})\n' +
         '    ["catch"](function(){});',
+      errors: [
+        {
+          column: 6,
+          data: { key: q('catch') },
+          line: 3,
+          messageId: 'useDot',
+        },
+        {
+          column: 6,
+          data: { key: q('catch') },
+          line: 5,
+          messageId: 'useDot',
+        },
+      ],
       output:
         'getResource()\n' +
         '    .then(function(){})\n' +
         '    .catch(function(){})\n' +
         '    .then(function(){})\n' +
         '    .catch(function(){});',
-      errors: [
-        {
-          messageId: 'useDot',
-          data: { key: q('catch') },
-          line: 3,
-          column: 6,
-        },
-        {
-          messageId: 'useDot',
-          data: { key: q('catch') },
-          line: 5,
-          column: 6,
-        },
-      ],
     },
     {
-      code: 'foo\n' + '  .while;',
-      output: 'foo\n' + '  ["while"];',
+      code: noFormat`
+foo
+  .while;
+      `,
+      errors: [{ data: { key: 'while' }, messageId: 'useBrackets' }],
       options: [{ allowKeywords: false }],
-      errors: [{ messageId: 'useBrackets', data: { key: 'while' } }],
+      output: `
+foo
+  ["while"];
+      `,
     },
     {
       code: "foo[/* comment */ 'bar'];",
+      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
       output: null, // Not fixed due to comment
-      errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
       code: "foo['bar' /* comment */];",
+      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
       output: null, // Not fixed due to comment
-      errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
       code: "foo['bar'];",
+      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
       output: 'foo.bar;',
-      errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
       code: 'foo./* comment */ while;',
-      output: null, // Not fixed due to comment
+      errors: [{ data: { key: 'while' }, messageId: 'useBrackets' }],
       options: [{ allowKeywords: false }],
-      errors: [{ messageId: 'useBrackets', data: { key: 'while' } }],
+      output: null, // Not fixed due to comment
     },
     {
       code: 'foo[null];',
+      errors: [{ data: { key: 'null' }, messageId: 'useDot' }],
       output: 'foo.null;',
-      errors: [{ messageId: 'useDot', data: { key: 'null' } }],
     },
     {
       code: "foo['bar'] instanceof baz;",
+      errors: [{ data: { key: q('bar') }, messageId: 'useDot' }],
       output: 'foo.bar instanceof baz;',
-      errors: [{ messageId: 'useDot', data: { key: q('bar') } }],
     },
     {
       code: 'let.if();',
-      output: null, // `let["if"]()` is a syntax error because `let[` indicates a destructuring variable declaration
+      errors: [{ data: { key: 'if' }, messageId: 'useBrackets' }],
       options: [{ allowKeywords: false }],
-      errors: [{ messageId: 'useBrackets', data: { key: 'if' } }],
+      output: null, // `let["if"]()` is a syntax error because `let[` indicates a destructuring variable declaration
     },
     {
       code: `
@@ -309,6 +351,7 @@ class X {
 const x = new X();
 x['protected_prop'] = 123;
       `,
+      errors: [{ messageId: 'useDot' }],
       options: [{ allowProtectedClassPropertyAccess: false }],
       output: `
 class X {
@@ -318,7 +361,6 @@ class X {
 const x = new X();
 x.protected_prop = 123;
       `,
-      errors: [{ messageId: 'useDot' }],
     },
     {
       code: `
@@ -330,8 +372,8 @@ class X {
 const x = new X();
 x['prop'] = 'hello';
       `,
-      options: [{ allowIndexSignaturePropertyAccess: true }],
       errors: [{ messageId: 'useDot' }],
+      options: [{ allowIndexSignaturePropertyAccess: true }],
       output: `
 class X {
   prop: string;

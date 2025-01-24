@@ -1,31 +1,47 @@
+import type { MdxJsxFlowElement } from 'mdast-util-mdx';
+import type * as unist from 'unist';
+
 import type { RuleDocsPage } from './RuleDocsPage';
-import { convertToPlaygroundHash, nodeIsCode } from './utils';
+
+import { nodeIsCode } from '../utils/nodes';
+import { convertToPlaygroundHash } from '../utils/rules';
 
 const optionRegex = /option='(?<option>.*?)'/;
+
+function nodeIsJsxTabs(node: unist.Node): node is MdxJsxFlowElement {
+  return (
+    node.type === 'mdxJsxFlowElement' && 'name' in node && node.name === 'Tabs'
+  );
+}
 
 export function addESLintHashToCodeBlocksMeta(
   page: RuleDocsPage,
   eslintrc: string,
 ): void {
-  let insideTab = false;
-
   for (const node of page.children) {
-    if (
-      node.type === 'jsx' &&
-      'value' in node &&
-      typeof node.value === 'string'
-    ) {
-      if (node.value.startsWith('<TabItem')) {
-        insideTab = true;
-      } else if (node.value === '</TabItem>') {
-        insideTab = false;
-      }
-      continue;
+    if (nodeIsJsxTabs(node)) {
+      addHashesToChildrenTabs(node);
+    } else {
+      addHashToNodeIfCode(node);
     }
+  }
 
+  function addHashesToChildrenTabs(node: MdxJsxFlowElement): void {
+    for (const tabItem of node.children) {
+      if ('children' in tabItem) {
+        for (const child of tabItem.children) {
+          addHashToNodeIfCode(child, true);
+        }
+      }
+    }
+  }
+
+  function addHashToNodeIfCode(node: unist.Node, insideTab?: boolean): void {
     if (
       nodeIsCode(node) &&
       (insideTab || node.meta?.includes('showPlaygroundButton')) &&
+      !node.meta?.includes('title="eslint.config.mjs"') &&
+      !node.meta?.includes('title=".eslintrc.cjs"') &&
       !node.meta?.includes('eslintrcHash=')
     ) {
       let playgroundEslintrc = eslintrc;

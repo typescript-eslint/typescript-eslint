@@ -6,13 +6,13 @@ import type { ValidTestCase } from './ValidTestCase';
 
 export interface SuggestionOutput<MessageIds extends string> {
   /**
-   * Reported message ID.
-   */
-  readonly messageId: MessageIds;
-  /**
    * The data used to fill the message template.
    */
   readonly data?: ReportDescriptorMessageData;
+  /**
+   * Reported message ID.
+   */
+  readonly messageId: MessageIds;
   /**
    * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
@@ -63,8 +63,12 @@ export interface TestCaseError<MessageIds extends string> {
 
 export interface InvalidTestCase<
   MessageIds extends string,
-  Options extends Readonly<unknown[]>,
+  Options extends readonly unknown[],
 > extends ValidTestCase<Options> {
+  /**
+   * Constraints that must pass in the current environment for the test to run
+   */
+  readonly dependencyConstraints?: DependencyConstraint;
   /**
    * Expected errors.
    */
@@ -72,9 +76,5 @@ export interface InvalidTestCase<
   /**
    * The expected code after autofixes are applied. If set to `null`, the test runner will assert that no autofix is suggested.
    */
-  readonly output?: string | null;
-  /**
-   * Constraints that must pass in the current environment for the test to run
-   */
-  readonly dependencyConstraints?: DependencyConstraint;
+  readonly output?: string | string[] | null;
 }

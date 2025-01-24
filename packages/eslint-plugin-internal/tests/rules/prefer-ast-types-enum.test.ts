@@ -4,14 +4,47 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/prefer-ast-types-enum';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-  },
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-ast-types-enum', rule, {
+  invalid: [
+    {
+      code: "node.type === 'Literal';",
+      errors: [
+        {
+          data: { enumName: 'AST_NODE_TYPES', literal: AST_NODE_TYPES.Literal },
+          messageId: 'preferEnum',
+        },
+      ],
+      output: 'node.type === AST_NODE_TYPES.Literal;',
+    },
+    {
+      code: "node.type === 'Keyword';",
+      errors: [
+        {
+          data: {
+            enumName: 'AST_TOKEN_TYPES',
+            literal: AST_TOKEN_TYPES.Keyword,
+          },
+          messageId: 'preferEnum',
+        },
+      ],
+      output: 'node.type === AST_TOKEN_TYPES.Keyword;',
+    },
+    {
+      code: "node.type === 'Parameter';",
+      errors: [
+        {
+          data: {
+            enumName: 'DefinitionType',
+            literal: DefinitionType.Parameter,
+          },
+          messageId: 'preferEnum',
+        },
+      ],
+      output: 'node.type === DefinitionType.Parameter;',
+    },
+  ],
   valid: [
     "node.type === 'constructor';",
     'node.type === AST_NODE_TYPES.Literal;',
@@ -28,43 +61,5 @@ ruleTester.run('prefer-ast-types-enum', rule, {
         Literal = 'Literal',
       }
     `,
-  ],
-  invalid: [
-    {
-      code: "node.type === 'Literal';",
-      output: 'node.type === AST_NODE_TYPES.Literal;',
-      errors: [
-        {
-          data: { enumName: 'AST_NODE_TYPES', literal: AST_NODE_TYPES.Literal },
-          messageId: 'preferEnum',
-        },
-      ],
-    },
-    {
-      code: "node.type === 'Keyword';",
-      output: 'node.type === AST_TOKEN_TYPES.Keyword;',
-      errors: [
-        {
-          data: {
-            enumName: 'AST_TOKEN_TYPES',
-            literal: AST_TOKEN_TYPES.Keyword,
-          },
-          messageId: 'preferEnum',
-        },
-      ],
-    },
-    {
-      code: "node.type === 'Parameter';",
-      output: 'node.type === DefinitionType.Parameter;',
-      errors: [
-        {
-          data: {
-            enumName: 'DefinitionType',
-            literal: DefinitionType.Parameter,
-          },
-          messageId: 'preferEnum',
-        },
-      ],
-    },
   ],
 });

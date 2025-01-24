@@ -7,15 +7,15 @@
  * against the exact same version of the package.
  */
 
-import { spawnSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 import tmp from 'tmp';
 
 interface PackageJSON {
+  devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
-  devDependencies: Record<string, string>;
 }
 
 const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
@@ -27,7 +27,7 @@ const tarFolder = tmp.dirSync({
   keep: true,
 }).name;
 
-const tseslintPackages: PackageJSON['devDependencies'] = {};
+export const tseslintPackages: PackageJSON['devDependencies'] = {};
 for (const pkg of PACKAGES) {
   const packageDir = path.join(PACKAGES_DIR, pkg);
   const packagePath = path.join(packageDir, 'package.json');
@@ -35,6 +35,7 @@ for (const pkg of PACKAGES) {
     continue;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-require-imports -- this file needs to be sync and CJS for jest
   const packageJson = require(packagePath) as PackageJSON;
   if (packageJson.private === true) {
     continue;
@@ -51,4 +52,3 @@ for (const pkg of PACKAGES) {
 }
 
 console.log('Finished packing local packages.');
-export { tseslintPackages };

@@ -1,8 +1,7 @@
-import * as fs from 'node:fs/promises';
-import * as path from 'node:path';
-
 import fetch from 'cross-fetch';
 import makeDir from 'make-dir';
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
 import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 
@@ -27,8 +26,8 @@ async function getFileAndStoreLocally(
 ): Promise<void> {
   console.log('Fetching', url);
   const response = await fetch(BASE_HOST + url, {
-    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
+    method: 'GET',
   });
 
   const config = await prettier.resolveConfig(path);
@@ -52,10 +51,8 @@ function replaceImports(text: string, from: string, to: string): string {
 function injectImports(text: string, from: string, safeName: string): string {
   const regex = new RegExp(`import\\(["']${from}["']\\)`, 'g');
   if (regex.test(text)) {
-    return (
-      `import type * as ${safeName} from '${from}';\n` +
-      text.replace(regex, safeName)
-    );
+    return `import type * as ${safeName} from '${from}';
+${text.replace(regex, safeName)}`;
   }
   return text;
 }
@@ -76,7 +73,7 @@ function processFiles(text: string): string {
     'import TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
   );
   // replace all imports with import type
-  result = result.replace(/^import\s+(?!type)/gm, 'import type ');
+  result = result.replaceAll(/^import\s+(?!type)/gm, 'import type ');
   return result;
 }
 
@@ -102,7 +99,7 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch(error => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exitCode = 1;
 });

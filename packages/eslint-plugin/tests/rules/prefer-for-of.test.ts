@@ -1,10 +1,8 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-for-of';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-for-of', rule, {
   valid: [
@@ -150,7 +148,7 @@ for (let i = 0; i < arr.length; i++) {
   [...arr[i]] = [1];
 }
     `,
-    noFormat`
+    `
 for (let i = 0; i < arr.length; i++) {
   ({ foo: arr[i] }) = { foo: 0 };
 }

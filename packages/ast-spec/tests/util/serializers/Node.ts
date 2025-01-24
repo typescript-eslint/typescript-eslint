@@ -1,6 +1,7 @@
 import type { NewPlugin } from 'pretty-format';
 
 import type * as TSESTree from '../../../src';
+
 import { AST_NODE_TYPES } from '../../../src';
 
 function sortKeys<Node extends TSESTree.Node>(
@@ -21,7 +22,7 @@ function sortKeys<Node extends TSESTree.Node>(
     keySet.delete('interpreter');
   }
 
-  return Array.from(keySet).sort((a, b) =>
+  return [...keySet].sort((a, b) =>
     a.localeCompare(b),
   ) as (keyof typeof node)[];
 }
@@ -37,12 +38,9 @@ function hasValidType(type: unknown): type is string {
   return typeof type === 'string';
 }
 
-const serializer: NewPlugin = {
-  test(val: unknown) {
-    return isObject(val) && hasValidType(val.type);
-  },
+export const serializer: NewPlugin = {
   serialize(
-    node: TSESTree.Node & Record<string, unknown>,
+    node: Record<string, unknown> & TSESTree.Node,
     config,
     indentation,
     depth,
@@ -65,6 +63,7 @@ const serializer: NewPlugin = {
 
     for (const key of keys) {
       const value = node[key];
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish -- intentional strict equality
       if (value === undefined) {
         continue;
       }
@@ -88,6 +87,7 @@ const serializer: NewPlugin = {
 
     return outputLines.join('\n');
   },
+  test(val: unknown) {
+    return isObject(val) && hasValidType(val.type);
+  },
 };
-
-export { serializer };

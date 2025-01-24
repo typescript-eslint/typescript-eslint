@@ -1,16 +1,16 @@
+import type { DirOptions } from 'tmp';
+
+import ncp from 'ncp';
 import childProcess from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { promisify } from 'node:util';
-
-import ncp from 'ncp';
-import type { DirOptions } from 'tmp';
 import tmp from 'tmp';
 
 interface PackageJSON {
+  devDependencies: Record<string, string>;
   name: string;
   private?: boolean;
-  devDependencies: Record<string, string>;
 }
 
 const rootPackageJson: PackageJSON = require('../../../package.json');
@@ -27,8 +27,8 @@ const writeFile = promisify(fs.writeFile);
 const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
   ...global.tseslintPackages,
   eslint: rootPackageJson.devDependencies.eslint,
-  typescript: rootPackageJson.devDependencies.typescript,
   jest: rootPackageJson.devDependencies.jest,
+  typescript: rootPackageJson.devDependencies.typescript,
 };
 
 const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');
@@ -128,7 +128,6 @@ function integrationTest(
 export function eslintIntegrationTest(
   testFilename: string,
   filesGlob: string,
-  flatConfig = false,
 ): void {
   integrationTest('eslint', testFilename, async testFolder => {
     // lint, outputting to a JSON file
@@ -143,8 +142,6 @@ export function eslintIntegrationTest(
           'json',
           '--output-file',
           outFile,
-          '--config',
-          flatConfig ? './eslint.config.js' : './.eslintrc.js',
           '--fix-dry-run',
           filesGlob,
         ],
@@ -166,7 +163,7 @@ export function eslintIntegrationTest(
     // assert the linting state is consistent
     const lintOutputRAW = (await readFile(outFile, 'utf8'))
       // clean the output to remove any changing facets so tests are stable
-      .replace(
+      .replaceAll(
         new RegExp(`"filePath": ?"(/private)?${testFolder}`, 'g'),
         '"filePath": "<root>',
       );
@@ -182,11 +179,12 @@ export function eslintIntegrationTest(
 }
 
 export function typescriptIntegrationTest(
+  testName: string,
   testFilename: string,
   tscArgs: string[],
   assertOutput: (out: string) => void,
 ): void {
-  integrationTest('typescript', testFilename, async testFolder => {
+  integrationTest(testName, testFilename, async testFolder => {
     const [result] = await Promise.allSettled([
       execFile('yarn', ['tsc', '--noEmit', ...tscArgs], {
         cwd: testFolder,

@@ -5,11 +5,11 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
 });
 
@@ -473,6 +473,11 @@ ruleTester.run('prefer-readonly', rule, {
         }
       }
     `,
+    `
+      class TestComputedParameter {
+        private ['computed-ignored-by-rule'] = 1;
+      }
+    `,
     {
       code: `
 class Foo {
@@ -747,9 +752,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiableStatic',
           },
+          endColumn: 53,
+          endLine: 3,
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
@@ -767,9 +776,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiableStatic',
           },
+          endColumn: 46,
+          endLine: 3,
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
@@ -787,9 +800,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiableStaticArrow',
           },
+          endColumn: 58,
+          endLine: 3,
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
@@ -807,9 +824,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiableStaticArrow',
           },
+          endColumn: 51,
+          endLine: 3,
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
@@ -833,16 +854,22 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiableInline',
           },
+          endColumn: 46,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
         {
+          column: 15,
           data: {
             name: 'incorrectlyModifiableInline',
           },
+          endColumn: 50,
+          endLine: 7,
           line: 7,
           messageId: 'preferReadonly',
         },
@@ -873,16 +900,22 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiableInline',
           },
+          endColumn: 39,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
         {
+          column: 15,
           data: {
             name: '#incorrectlyModifiableInline',
           },
+          endColumn: 43,
+          endLine: 7,
           line: 7,
           messageId: 'preferReadonly',
         },
@@ -911,9 +944,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiableDelayed',
           },
+          endColumn: 47,
+          endLine: 3,
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
@@ -939,9 +976,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiableDelayed',
           },
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
           messageId: 'preferReadonly',
         },
       ],
@@ -973,9 +1014,12 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'childClassExpressionModifiable',
           },
+          endColumn: 49,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1014,9 +1058,12 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#childClassExpressionModifiable',
           },
+          endColumn: 42,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1049,9 +1096,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiablePostMinus',
           },
+          endColumn: 49,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1078,9 +1129,12 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiablePostMinus',
           },
+          endColumn: 42,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1107,9 +1161,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiablePostPlus',
           },
+          endColumn: 48,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1136,9 +1194,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiablePostPlus',
           },
+          endColumn: 41,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1165,9 +1227,12 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiablePreMinus',
           },
+          endColumn: 48,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1194,9 +1259,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiablePreMinus',
           },
+          endColumn: 41,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1223,9 +1292,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyModifiablePrePlus',
           },
+          endColumn: 47,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1252,9 +1325,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: '#incorrectlyModifiablePrePlus',
           },
+          endColumn: 40,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1285,9 +1362,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'overlappingClassVariable',
           },
+          endColumn: 43,
+          endLine: 3,
+
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1314,9 +1395,12 @@ class Foo {
       `,
       errors: [
         {
+          column: 30,
           data: {
             name: 'incorrectlyModifiableParameter',
           },
+          endColumn: 68,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1338,9 +1422,13 @@ class Foo {
       `,
       errors: [
         {
+          column: 13,
           data: {
             name: 'incorrectlyModifiableParameter',
           },
+          endColumn: 51,
+          endLine: 5,
+
           line: 5,
           messageId: 'preferReadonly',
         },
@@ -1362,9 +1450,12 @@ class Foo {
       `,
       errors: [
         {
+          column: 11,
           data: {
             name: 'incorrectlyInlineLambda',
           },
+          endColumn: 42,
+          endLine: 3,
           line: 3,
           messageId: 'preferReadonly',
         },
@@ -1388,6 +1479,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
   };
 }
       `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            name: '_name',
+          },
+          endColumn: 18,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
 function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
   return class extends Base {
@@ -1395,15 +1498,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
   };
 }
       `,
-      errors: [
-        {
-          data: {
-            name: '_name',
-          },
-          line: 4,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1413,6 +1507,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
   };
 }
       `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            name: '#name',
+          },
+          endColumn: 10,
+          endLine: 4,
+          line: 4,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
 function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
   return class extends Base {
@@ -1420,15 +1526,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
   };
 }
       `,
-      errors: [
-        {
-          data: {
-            name: '#name',
-          },
-          line: 4,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1442,6 +1539,19 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {
@@ -1453,15 +1563,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1475,6 +1576,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {
@@ -1486,15 +1599,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1510,6 +1614,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class TestObject {
           public prop: number;
@@ -1523,15 +1639,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 7,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1547,6 +1654,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 7,
+          line: 7,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class TestObject {
           public prop: number;
@@ -1560,15 +1679,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 7,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1581,6 +1691,19 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {
@@ -1591,15 +1714,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1612,6 +1726,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {
@@ -1622,15 +1748,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1641,6 +1758,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1649,15 +1778,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1668,6 +1788,19 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -1676,15 +1809,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1695,6 +1819,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1703,15 +1839,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1722,6 +1849,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -1730,15 +1869,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1749,6 +1879,19 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1757,15 +1900,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1776,6 +1910,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -1784,15 +1930,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1803,6 +1940,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1811,15 +1960,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1830,6 +1970,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -1838,15 +1990,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1857,6 +2000,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1865,15 +2020,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1884,6 +2030,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -1892,15 +2050,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1911,6 +2060,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1919,15 +2080,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1938,6 +2090,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -1946,15 +2110,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1965,6 +2120,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -1973,15 +2140,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -1992,6 +2150,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -2000,15 +2170,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -2019,6 +2180,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'testObj',
+          },
+          endColumn: 26,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly testObj = {};
@@ -2027,15 +2200,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -2046,6 +2210,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: '#testObj',
+          },
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           readonly #testObj = {};
@@ -2054,15 +2230,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: '#testObj',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -2075,6 +2242,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly prop: number = 3;
@@ -2085,15 +2264,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'prop',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -2106,6 +2276,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly prop: number = 3;
@@ -2116,15 +2298,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'prop',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
     {
       code: `
@@ -2137,6 +2310,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
+      errors: [
+        {
+          column: 11,
+          data: {
+            name: 'prop',
+          },
+          endColumn: 23,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferReadonly',
+        },
+      ],
       output: `
         class Test {
           private readonly prop: number;
@@ -2147,15 +2332,6 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
           }
         }
       `,
-      errors: [
-        {
-          data: {
-            name: 'prop',
-          },
-          line: 3,
-          messageId: 'preferReadonly',
-        },
-      ],
     },
   ],
 });

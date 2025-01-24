@@ -4,13 +4,15 @@ import type {
   PatternVisitorCallback,
   PatternVisitorOptions,
 } from './PatternVisitor';
+import type { VisitorOptions } from './VisitorBase';
+
 import { PatternVisitor } from './PatternVisitor';
-import { VisitorBase, VisitorOptions } from './VisitorBase';
+import { VisitorBase } from './VisitorBase';
 
 interface VisitPatternOptions extends PatternVisitorOptions {
   processRightHandNodes?: boolean;
 }
-class Visitor extends VisitorBase {
+export class Visitor extends VisitorBase {
   readonly #options: VisitorOptions;
   constructor(optionsOrVisitor: Visitor | VisitorOptions) {
     super(
@@ -42,4 +44,4 @@ class Visitor extends VisitorBase {
   }
 }
 
-export { Visitor, VisitorBase, VisitorOptions };
+export { VisitorBase, type VisitorOptions } from './VisitorBase';

@@ -21,6 +21,7 @@ function satisfiesDependencyConstraint(
       : constraintIn;
 
   return semver.satisfies(
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     (require(`${packageName}/package.json`) as { version: string }).version,
     constraint.range,
     typeof constraint.options === 'object'

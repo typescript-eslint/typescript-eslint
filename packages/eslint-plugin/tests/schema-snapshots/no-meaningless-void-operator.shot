@@ -10,6 +10,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "checkNever": {
         "default": false,
+        "description": "Whether to suggest removing \`void\` when the argument has type \`never\`.",
         "type": "boolean"
       }
     },
@@ -22,6 +23,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Whether to suggest removing \`void\` when the argument has type \`never\`. */
     checkNever?: boolean;
   },
 ];

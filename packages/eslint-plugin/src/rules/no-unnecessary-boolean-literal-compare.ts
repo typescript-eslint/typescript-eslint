@@ -1,21 +1,27 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, isStrongPrecedenceNode } from '../util';
+import {
+  createRule,
+  getConstraintInfo,
+  getParserServices,
+  isStrongPrecedenceNode,
+} from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'comparingNullableToFalse'
   | 'comparingNullableToTrueDirect'
   | 'comparingNullableToTrueNegated'
   | 'direct'
   | 'negated';
 
-type Options = [
+export type Options = [
   {
-    allowComparingNullableBooleansToTrue?: boolean;
     allowComparingNullableBooleansToFalse?: boolean;
+    allowComparingNullableBooleansToTrue?: boolean;
   },
 ];
 
@@ -32,6 +38,7 @@ interface BooleanComparisonWithTypeInformation extends BooleanComparison {
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-boolean-literal-compare',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow unnecessary equality comparisons against boolean literals',
@@ -40,45 +47,45 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      direct:
-        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
-      negated:
-        'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
+      comparingNullableToFalse:
+        'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',
       comparingNullableToTrueDirect:
         'This expression unnecessarily compares a nullable boolean value to true instead of using it directly.',
       comparingNullableToTrueNegated:
         'This expression unnecessarily compares a nullable boolean value to true instead of negating it.',
-      comparingNullableToFalse:
-        'This expression unnecessarily compares a nullable boolean value to false instead of using the ?? operator to provide a default.',
+      direct:
+        'This expression unnecessarily compares a boolean value to a boolean instead of using it directly.',
+      negated:
+        'This expression unnecessarily compares a boolean value to a boolean instead of negating it.',
     },
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
-          allowComparingNullableBooleansToTrue: {
-            description:
-              'Whether to allow comparisons between nullable boolean variables and `true`.',
-            type: 'boolean',
-          },
           allowComparingNullableBooleansToFalse: {
+            type: 'boolean',
             description:
               'Whether to allow comparisons between nullable boolean variables and `false`.',
+          },
+          allowComparingNullableBooleansToTrue: {
             type: 'boolean',
+            description:
+              'Whether to allow comparisons between nullable boolean variables and `true`.',
           },
         },
-        additionalProperties: false,
       },
     ],
-    type: 'suggestion',
   },
   defaultOptions: [
     {
-      allowComparingNullableBooleansToTrue: true,
       allowComparingNullableBooleansToFalse: true,
+      allowComparingNullableBooleansToTrue: true,
     },
   ],
   create(context, [options]) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -88,16 +95,23 @@ export default createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = services.getTypeAtLocation(comparison.expression);
+      const { constraintType, isTypeParameter } = getConstraintInfo(
+        checker,
+        services.getTypeAtLocation(comparison.expression),
+      );
 
-      if (isBooleanType(expressionType)) {
+      if (isTypeParameter && constraintType == null) {
+        return undefined;
+      }
+
+      if (isBooleanType(constraintType)) {
         return {
           ...comparison,
           expressionIsNullableBoolean: false,
         };
       }
 
-      if (isNullableBoolean(expressionType)) {
+      if (isNullableBoolean(constraintType)) {
         return {
           ...comparison,
           expressionIsNullableBoolean: true,
@@ -176,8 +190,8 @@ export default createRule<Options, MessageIds>({
         const negated = !comparisonType.isPositive;
 
         return {
-          literalBooleanInComparison,
           expression,
+          literalBooleanInComparison,
           negated,
         };
       }
@@ -196,7 +210,7 @@ export default createRule<Options, MessageIds>({
     return {
       BinaryExpression(node): void {
         const comparison = getBooleanComparison(node);
-        if (comparison === undefined) {
+        if (comparison == null) {
           return;
         }
 
@@ -216,7 +230,17 @@ export default createRule<Options, MessageIds>({
         }
 
         context.report({
-          fix: function* (fixer) {
+          node,
+          messageId: comparison.expressionIsNullableBoolean
+            ? comparison.literalBooleanInComparison
+              ? comparison.negated
+                ? 'comparingNullableToTrueNegated'
+                : 'comparingNullableToTrueDirect'
+              : 'comparingNullableToFalse'
+            : comparison.negated
+              ? 'negated'
+              : 'direct',
+          *fix(fixer) {
             // 1. isUnaryNegation - parent negation
             // 2. literalBooleanInComparison - is compared to literal boolean
             // 3. negated - is expression negated
@@ -254,16 +278,6 @@ export default createRule<Options, MessageIds>({
               yield fixer.insertTextAfter(mutatedNode, ' ?? true)');
             }
           },
-          messageId: comparison.expressionIsNullableBoolean
-            ? comparison.literalBooleanInComparison
-              ? comparison.negated
-                ? 'comparingNullableToTrueNegated'
-                : 'comparingNullableToTrueDirect'
-              : 'comparingNullableToFalse'
-            : comparison.negated
-              ? 'negated'
-              : 'direct',
-          node,
         });
       },
     };
@@ -277,18 +291,6 @@ interface EqualsKind {
 
 function getEqualsKind(operator: string): EqualsKind | undefined {
   switch (operator) {
-    case '==':
-      return {
-        isPositive: true,
-        isStrict: false,
-      };
-
-    case '===':
-      return {
-        isPositive: true,
-        isStrict: true,
-      };
-
     case '!=':
       return {
         isPositive: false,
@@ -298,6 +300,18 @@ function getEqualsKind(operator: string): EqualsKind | undefined {
     case '!==':
       return {
         isPositive: false,
+        isStrict: true,
+      };
+
+    case '==':
+      return {
+        isPositive: true,
+        isStrict: false,
+      };
+
+    case '===':
+      return {
+        isPositive: true,
         isStrict: true,
       };
 

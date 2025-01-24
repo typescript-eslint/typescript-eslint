@@ -2,9 +2,7 @@ import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-misused-new';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-misused-new', rule, {
   valid: [
@@ -85,14 +83,14 @@ interface I {
       `,
       errors: [
         {
-          messageId: 'errorMessageInterface',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
         },
         {
-          messageId: 'errorMessageInterface',
-          line: 4,
           column: 3,
+          line: 4,
+          messageId: 'errorMessageInterface',
         },
       ],
     },
@@ -105,9 +103,9 @@ interface G {
       `,
       errors: [
         {
-          messageId: 'errorMessageInterface',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
         },
       ],
     },
@@ -120,9 +118,9 @@ type T = {
       `,
       errors: [
         {
-          messageId: 'errorMessageInterface',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
         },
       ],
     },
@@ -134,9 +132,9 @@ class C {
       `,
       errors: [
         {
-          messageId: 'errorMessageClass',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'errorMessageClass',
         },
       ],
     },
@@ -148,9 +146,9 @@ declare abstract class C {
       `,
       errors: [
         {
-          messageId: 'errorMessageClass',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'errorMessageClass',
         },
       ],
     },
@@ -162,9 +160,9 @@ interface I {
       `,
       errors: [
         {
-          messageId: 'errorMessageInterface',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'errorMessageInterface',
         },
       ],
     },

@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 1`] = `
+"Incorrect
+Options: { "arrayDestructuring": true }
+
+const [a] = [1];
+      ~~~ Expected a type annotation.
+const [b, c] = [1, 2];
+      ~~~~~~ Expected a type annotation.
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 2`] = `
+"Correct
+Options: { "arrayDestructuring": true }
+
+const [a]: number[] = [1];
+const [b]: [number] = [2];
+const [c, d]: [boolean, string] = [true, 'text'];
+
+for (const [key, val] of new Map([['key', 1]])) {
+}
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 3`] = `
+"Incorrect
+Options: { "arrowParameter": true }
+
+const logsSize = size => console.log(size);
+                 ~~~~ Expected size to have a type annotation.
+
+['hello', 'world'].map(text => text.length);
+                       ~~~~ Expected text to have a type annotation.
+
+const mapper = {
+  map: text => text + '...',
+       ~~~~ Expected text to have a type annotation.
+};
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 4`] = `
+"Correct
+Options: { "arrowParameter": true }
+
+const logsSize = (size: number) => console.log(size);
+
+['hello', 'world'].map((text: string) => text.length);
+
+const mapper = {
+  map: (text: string) => text + '...',
+};
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: { "memberVariableDeclaration": true }
+
+class ContainsText {
+  delayedText;
+  ~~~~~~~~~~~~ Expected delayedText to have a type annotation.
+  immediateTextImplicit = 'text';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected immediateTextImplicit to have a type annotation.
+}
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 6`] = `
+"Correct
+Options: { "memberVariableDeclaration": true }
+
+class ContainsText {
+  delayedText: string;
+  immediateTextImplicit: string = 'text';
+}
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 7`] = `
+"Incorrect
+Options: { "objectDestructuring": true }
+
+const { length } = 'text';
+      ~~~~~~~~~~ Expected a type annotation.
+const [b, c] = Math.random() ? [1, 2] : [3, 4];
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 8`] = `
+"Correct
+Options: { "objectDestructuring": true }
+
+const { length }: { length: number } = 'text';
+const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
+
+for (const { key, val } of [{ key: 'key', val: 1 }]) {
+}
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 9`] = `
+"Incorrect
+Options: { "parameter": true }
+
+function logsSize(size): void {
+                  ~~~~ Expected size to have a type annotation.
+  console.log(size);
+}
+
+const doublesSize = function (size): number {
+                              ~~~~ Expected size to have a type annotation.
+  return size * 2;
+};
+
+const divider = {
+  curriesSize(size): number {
+              ~~~~ Expected size to have a type annotation.
+    return size;
+  },
+  dividesSize: function (size): number {
+                         ~~~~ Expected size to have a type annotation.
+    return size / 2;
+  },
+};
+
+class Logger {
+  log(text): boolean {
+      ~~~~ Expected text to have a type annotation.
+    console.log('>', text);
+    return true;
+  }
+}
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 10`] = `
+"Correct
+Options: { "parameter": true }
+
+function logsSize(size: number): void {
+  console.log(size);
+}
+
+const doublesSize = function (size: number): number {
+  return size * 2;
+};
+
+const divider = {
+  curriesSize(size: number): number {
+    return size;
+  },
+  dividesSize: function (size: number): number {
+    return size / 2;
+  },
+};
+
+class Logger {
+  log(text: boolean): boolean {
+    console.log('>', text);
+    return true;
+  }
+}
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 11`] = `
+"Incorrect
+Options: { "propertyDeclaration": true }
+
+type Members = {
+  member;
+  ~~~~~~~ Expected member to have a type annotation.
+  otherMember;
+  ~~~~~~~~~~~~ Expected otherMember to have a type annotation.
+};
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 12`] = `
+"Correct
+Options: { "propertyDeclaration": true }
+
+type Members = {
+  member: boolean;
+  otherMember: string;
+};
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 13`] = `
+"Incorrect
+Options: { "variableDeclaration": true }
+
+const text = 'text';
+      ~~~~~~~~~~~~~ Expected text to have a type annotation.
+let initialText = 'text';
+    ~~~~~~~~~~~~~~~~~~~~ Expected initialText to have a type annotation.
+let delayedText;
+    ~~~~~~~~~~~ Expected delayedText to have a type annotation.
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 14`] = `
+"Correct
+Options: { "variableDeclaration": true }
+
+const text: string = 'text';
+let initialText: string = 'text';
+let delayedText: string;
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 15`] = `
+"Incorrect
+Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
+
+const text = 'text';
+      ~~~~~~~~~~~~~ Expected text to have a type annotation.
+"
+`;
+
+exports[`Validating rule docs typedef.mdx code examples ESLint output 16`] = `
+"Correct
+Options: { "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }
+
+const a = (): void => {};
+const b = function (): void {};
+const c: () => void = (): void => {};
+
+class Foo {
+  a = (): void => {};
+  b = function (): void {};
+  c: () => void = (): void => {};
+}
+"
+`;

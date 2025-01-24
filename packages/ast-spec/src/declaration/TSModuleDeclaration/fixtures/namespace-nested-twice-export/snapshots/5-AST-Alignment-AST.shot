@@ -115,7 +115,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
 +             end: { column: 20, line: 1 },
             },
           },
--         kind: 'namespace',
+          kind: 'namespace',
 
           range: [7, 31],
           loc: {

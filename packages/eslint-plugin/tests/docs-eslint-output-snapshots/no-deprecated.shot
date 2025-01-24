@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+/** @deprecated Use apiV2 instead. */
+declare function apiV1(): Promise<string>;
+
+declare function apiV2(): Promise<string>;
+
+await apiV1();
+      ~~~~~ \`apiV1\` is deprecated. Use apiV2 instead.
+"
+`;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 2`] = `
+"Incorrect
+
+import { parse } from 'node:url';
+
+// 'parse' is deprecated. Use the WHATWG URL API instead.
+const url = parse('/foo');
+            ~~~~~ \`parse\` is deprecated. Use the WHATWG URL API instead.
+"
+`;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 3`] = `
+"Correct
+
+/** @deprecated Use apiV2 instead. */
+declare function apiV1(): Promise<string>;
+
+declare function apiV2(): Promise<string>;
+
+await apiV2();
+"
+`;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 4`] = `
+"Correct
+
+// Modern Node.js API, uses \`new URL()\`
+const url2 = new URL('/foo', 'http://www.example.com');
+"
+`;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 5`] = `
+"Incorrect
+Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}
+
+/** @deprecated */
+declare function apiV2(): Promise<string>;
+
+await apiV2();
+      ~~~~~ \`apiV2\` is deprecated.
+
+// \`unescape\` has been deprecated since ES5.
+unescape('...');
+~~~~~~~~ \`unescape\` is deprecated. A legacy feature for browser compatibility
+"
+`;
+
+exports[`Validating rule docs no-deprecated.mdx code examples ESLint output 6`] = `
+"Correct
+Options: {"allow":[{"from":"file","name":"apiV1"},{"from":"lib","name":"escape"}]}
+
+import { Bar } from 'bar-lib';
+/** @deprecated */
+declare function apiV1(): Promise<string>;
+
+await apiV1();
+
+// \`escape\` has been deprecated since ES5.
+escape('...');
+"
+`;

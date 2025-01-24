@@ -1,5 +1,8 @@
 import type * as ESQuery from 'esquery';
+
 import React, { useEffect, useMemo } from 'react';
+
+import type { OnHoverNodeFn } from './types';
 
 import CopyButton from '../inputs/CopyButton';
 import { debounce } from '../lib/debounce';
@@ -7,16 +10,15 @@ import { scrollIntoViewIfNeeded } from '../lib/scroll-into';
 import styles from './ASTViewer.module.css';
 import DataRender from './DataRenderer';
 import { findSelectionPath } from './selectedRange';
-import type { OnHoverNodeFn } from './types';
 
 export interface ASTViewerProps {
   readonly cursorPosition?: number;
-  readonly onHoverNode?: OnHoverNodeFn;
-  readonly value: unknown;
-  readonly filter?: ESQuery.Selector;
   readonly enableScrolling?: boolean;
+  readonly filter?: ESQuery.Selector;
   readonly hideCopyButton?: boolean;
+  readonly onHoverNode?: OnHoverNodeFn;
   readonly showTokens?: boolean;
+  readonly value: unknown;
 }
 
 function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
@@ -24,7 +26,9 @@ function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.esquery && filter) {
       // @ts-expect-error - esquery requires js ast types
-      return window.esquery.match(value, filter);
+      return window.esquery.match(value, filter, {
+        visitorKeys: window.visitorKeys,
+      });
     }
   } catch (e: unknown) {
     console.error(e);
@@ -34,12 +38,12 @@ function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
 
 function ASTViewer({
   cursorPosition,
-  onHoverNode,
-  value,
-  filter,
   enableScrolling,
+  filter,
   hideCopyButton,
+  onHoverNode,
   showTokens,
+  value,
 }: ASTViewerProps): React.JSX.Element {
   const model = useMemo(() => {
     if (filter) {
@@ -72,12 +76,12 @@ function ASTViewer({
   return (
     <div className={styles.list}>
       <DataRender
-        level="ast"
-        value={model}
         lastElement={true}
-        selectedPath={selectedPath}
+        level="ast"
         onHover={onHoverNode}
+        selectedPath={selectedPath}
         showTokens={showTokens}
+        value={model}
       />
       {!hideCopyButton && <CopyButton value={model} />}
     </div>

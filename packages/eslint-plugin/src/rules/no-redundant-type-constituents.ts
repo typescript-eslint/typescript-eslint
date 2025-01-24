@@ -6,8 +6,7 @@ import {
   arrayGroupByToMap,
   createRule,
   getParserServices,
-  isFunction,
-  isFunctionType,
+  isFunctionOrFunctionType,
   isTypeAnyType,
   isTypeBigIntLiteralType,
   isTypeNeverType,
@@ -57,9 +56,9 @@ const keywordNodeTypesToTsTypes = new Map([
   [TSESTree.AST_NODE_TYPES.TSBigIntKeyword, ts.TypeFlags.BigInt],
   [TSESTree.AST_NODE_TYPES.TSBooleanKeyword, ts.TypeFlags.Boolean],
   [TSESTree.AST_NODE_TYPES.TSNeverKeyword, ts.TypeFlags.Never],
-  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
   [TSESTree.AST_NODE_TYPES.TSNumberKeyword, ts.TypeFlags.Number],
   [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
+  [TSESTree.AST_NODE_TYPES.TSUnknownKeyword, ts.TypeFlags.Unknown],
 ]);
 
 type PrimitiveTypeFlag = (typeof primitiveTypeFlags)[number];
@@ -100,6 +99,10 @@ function describeLiteralType(type: ts.Type): string {
   if (type.isLiteral()) {
     // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return type.value.toString();
+  }
+
+  if (tsutils.isIntrinsicErrorType(type) && type.aliasSymbol) {
+    return type.aliasSymbol.escapedName.toString();
   }
 
   if (isTypeAnyType(type)) {
@@ -171,7 +174,7 @@ function describeLiteralTypeNode(typeNode: TSESTree.TypeNode): string {
 function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
   return !!(
     node.parent.type === AST_NODE_TYPES.TSTypeAnnotation &&
-    (isFunctionType(node.parent.parent) || isFunction(node.parent.parent))
+    isFunctionOrFunctionType(node.parent.parent)
   );
 }
 
@@ -190,6 +193,7 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
+    type: 'suggestion',
     docs: {
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
@@ -197,13 +201,13 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
+      errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
       literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
-      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -272,6 +276,10 @@ export default createRule({
           PrimitiveTypeFlag,
           TSESTree.TypeNode[]
         >();
+        const seenUnionTypes = new Map<
+          TSESTree.TypeNode,
+          TypeFlagsWithName[]
+        >();
 
         function checkIntersectionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
@@ -284,12 +292,15 @@ export default createRule({
           ] as const) {
             if (typeFlags === checkFlag) {
               context.report({
+                node: typeNode,
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : messageId,
                 data: {
                   container: 'intersection',
                   typeName,
                 },
-                messageId,
-                node: typeNode,
               });
               return true;
             }
@@ -323,8 +334,58 @@ export default createRule({
               }
             }
           }
+          // if any typeNode is TSTypeReference and typePartFlags have more than 1 element, than the referenced type is definitely a union.
+          if (typePartFlags.length >= 2) {
+            seenUnionTypes.set(typeNode, typePartFlags);
+          }
         }
-
+        /**
+         * @example
+         * ```ts
+         * type F = "a"|2|"b";
+         * type I = F & string;
+         * ```
+         * This function checks if all the union members of `F` are assignable to the other member of `I`. If every member is assignable, then its reported else not.
+         */
+        const checkIfUnionsAreAssignable = (): undefined => {
+          for (const [typeRef, typeValues] of seenUnionTypes) {
+            let primitive: number | undefined = undefined;
+            for (const { typeFlags } of typeValues) {
+              if (
+                seenPrimitiveTypes.has(
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ],
+                )
+              ) {
+                primitive =
+                  literalToPrimitiveTypeFlags[
+                    typeFlags as keyof typeof literalToPrimitiveTypeFlags
+                  ];
+              } else {
+                primitive = undefined;
+                break;
+              }
+            }
+            if (Number.isInteger(primitive)) {
+              context.report({
+                node: typeRef,
+                messageId: 'primitiveOverridden',
+                data: {
+                  literal: typeValues.map(name => name.typeName).join(' | '),
+                  primitive:
+                    primitiveTypeFlagNames[
+                      primitive as keyof typeof primitiveTypeFlagNames
+                    ],
+                },
+              });
+            }
+          }
+        };
+        if (seenUnionTypes.size > 0) {
+          checkIfUnionsAreAssignable();
+          return;
+        }
         // For each primitive type of all the seen primitive types,
         // if there was a literal type seen that overrides it,
         // report each of the primitive type's type nodes
@@ -333,12 +394,12 @@ export default createRule({
           if (matchedLiteralTypes) {
             for (const typeNode of typeNodes) {
               context.report({
+                node: typeNode,
+                messageId: 'primitiveOverridden',
                 data: {
                   literal: matchedLiteralTypes.join(' | '),
                   primitive: primitiveTypeFlagNames[primitiveTypeFlag],
                 },
-                messageId: 'primitiveOverridden',
-                node: typeNode,
               });
             }
           }
@@ -361,12 +422,15 @@ export default createRule({
           ] as const) {
             if (typeFlags === checkFlag) {
               context.report({
+                node: typeNode,
+                messageId:
+                  typeFlags === ts.TypeFlags.Any && typeName !== 'any'
+                    ? 'errorTypeOverrides'
+                    : 'overrides',
                 data: {
                   container: 'union',
                   typeName,
                 },
-                messageId: 'overrides',
-                node: typeNode,
               });
               return true;
             }
@@ -377,12 +441,12 @@ export default createRule({
             !isNodeInsideReturnType(node)
           ) {
             context.report({
+              node: typeNode,
+              messageId: 'overridden',
               data: {
                 container: 'union',
                 typeName: 'never',
               },
-              messageId: 'overridden',
-              node: typeNode,
             });
             return true;
           }
@@ -455,12 +519,12 @@ export default createRule({
 
           for (const [primitiveTypeFlag, pairs] of grouped) {
             context.report({
+              node: typeNode,
+              messageId: 'literalOverridden',
               data: {
                 literal: pairs.map(pair => pair.literalValue).join(' | '),
                 primitive: primitiveTypeFlagNames[primitiveTypeFlag],
               },
-              messageId: 'literalOverridden',
-              node: typeNode,
             });
           }
         }

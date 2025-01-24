@@ -1,14 +1,15 @@
-import * as fs from 'fs';
-import glob = require('glob');
-import * as path from 'path';
+import * as glob from 'glob';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import * as ts from 'typescript';
+
+import type { ParseAndGenerateServicesResult } from '../../src/parser';
+import type { TSESTreeOptions } from '../../src/parser-options';
+import type { TSESTree } from '../../src/ts-estree';
 
 import { clearCaches } from '../../src';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
-import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
-import type { TSESTreeOptions } from '../../src/parser-options';
-import type { TSESTree } from '../../src/ts-estree';
 import { expectToHaveParserServices } from '../test-utils/expectToHaveParserServices';
 import {
   createSnapshotTestBlock,
@@ -21,18 +22,19 @@ const testFiles = glob.sync(`**/*.src.ts`, {
   cwd: FIXTURES_DIR,
 });
 
-function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
+function createOptions(fileName: string): { cwd?: string } & TSESTreeOptions {
   return {
-    loc: true,
-    range: true,
-    tokens: true,
     comment: true,
-    jsx: false,
+    disallowAutomaticSingleRunInference: true,
     errorOnUnknownASTType: true,
     filePath: fileName,
-    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
-    project: `./tsconfig.json`,
+    jsx: false,
+    loc: true,
     loggerFn: false,
+    project: `./tsconfig.json`,
+    range: true,
+    tokens: true,
+    tsconfigRootDir: path.join(process.cwd(), FIXTURES_DIR),
   };
 }
 
@@ -40,6 +42,10 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
 beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
+  beforeEach(() => {
+    process.env.TSESTREE_SINGLE_RUN = '';
+  });
+
   // test all AST snapshots
   testFiles.forEach(filename => {
     const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
@@ -166,7 +172,7 @@ describe('semanticInfo', () => {
     ).declarations[0].init!;
     const tsBinaryExpression =
       parseResult.services.esTreeNodeToTSNodeMap.get(binaryExpression);
-    expectToBeDefined(tsBinaryExpression);
+    expect(tsBinaryExpression).toBeDefined();
     expect(tsBinaryExpression.kind).toEqual(ts.SyntaxKind.BinaryExpression);
 
     const computedPropertyString = (
@@ -175,7 +181,7 @@ describe('semanticInfo', () => {
     ).key;
     const tsComputedPropertyString =
       parseResult.services.esTreeNodeToTSNodeMap.get(computedPropertyString);
-    expectToBeDefined(tsComputedPropertyString);
+    expect(tsComputedPropertyString).toBeDefined();
     expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
   });
 
@@ -204,7 +210,7 @@ describe('semanticInfo', () => {
     expectToHaveParserServices(parseResult.services);
     const tsArrayBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(arrayBoundName);
-    expectToBeDefined(tsArrayBoundName);
+    expect(tsArrayBoundName).toBeDefined();
     checkNumberArrayType(checker, tsArrayBoundName);
 
     expect(
@@ -217,8 +223,8 @@ describe('semanticInfo', () => {
       `const x = [parseInt("5")];`,
       {
         ...createOptions('<input>'),
-        project: undefined,
         preserveNodeMaps: true,
+        project: undefined,
       },
     );
 
@@ -229,7 +235,6 @@ describe('semanticInfo', () => {
 
     const tsBoundName =
       parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-    expectToBeDefined(tsBoundName);
     expect(tsBoundName).toBeDefined();
 
     expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
@@ -246,7 +251,7 @@ describe('semanticInfo', () => {
     expect(parseResult.services.program).toBeDefined();
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it(`non-existent file should throw error when project provided`, () => {
       expect(() =>
         parseCodeAndGenerateServices(
@@ -259,7 +264,7 @@ describe('semanticInfo', () => {
     });
   }
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it('non-existent project file', () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
@@ -302,15 +307,6 @@ describe('semanticInfo', () => {
     });
   }
 
-  it('default program produced with option', () => {
-    const parseResult = parseCodeAndGenerateServices('var foo = 5;', {
-      ...createOptions('<input>'),
-      DEPRECATED__createDefaultProgram: true,
-    });
-
-    expectToHaveParserServices(parseResult.services);
-  });
-
   it('empty programs array should throw', () => {
     const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
     const badConfig = createOptions(fileName);
@@ -320,7 +316,7 @@ describe('semanticInfo', () => {
     );
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE !== 'true') {
     it(`first matching provided program instance is returned in result`, () => {
       const filename = testFiles[0];
       const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
@@ -335,6 +331,24 @@ describe('semanticInfo', () => {
       const parseResult = parseAndGenerateServices(code, optionsProjectString);
       expect(parseResult.services.program).toBe(program1);
     });
+
+    it('file not in single provided project instance in single-run mode should throw', () => {
+      process.env.TSESTREE_SINGLE_RUN = 'true';
+      const filename = 'non-existent-file.ts';
+      const options = createOptions(filename);
+      const optionsWithProjectTrue = {
+        ...options,
+        programs: undefined,
+        project: true,
+      };
+      expect(() =>
+        parseAndGenerateServices('const foo = 5;', optionsWithProjectTrue),
+      ).toThrow(
+        process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+          ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
+          : `The file was not found in any of the provided project(s): ${filename}`,
+      );
+    });
   }
 
   it('file not in single provided program instance should throw', () => {
@@ -348,8 +362,8 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
@@ -365,8 +379,8 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithSingleProgram),
     ).toThrow(
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
 
@@ -378,8 +392,8 @@ describe('semanticInfo', () => {
     expect(() =>
       parseAndGenerateServices('const foo = 5;', optionsWithMultiplePrograms),
     ).toThrow(
-      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`
+      process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true'
+        ? `${filename} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProject.`
         : `The file was not found in any of the provided program instance(s): ${filename}`,
     );
   });
@@ -398,14 +412,14 @@ describe('semanticInfo', () => {
 function testIsolatedFile(
   parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
 ): void {
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+  if (process.env.TYPESCRIPT_ESLINT_PROJECT_SERVICE === 'true') {
     return;
   }
 
   // get type checker
   expectToHaveParserServices(parseResult.services);
   const checker = parseResult.services.program.getTypeChecker();
-  expectToBeDefined(checker);
+  expect(checker).toBeDefined();
 
   // get number node (ast shape validated by snapshot)
   const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
@@ -416,7 +430,7 @@ function testIsolatedFile(
   // get corresponding TS node
   const tsArrayMember =
     parseResult.services.esTreeNodeToTSNodeMap.get(arrayMember);
-  expectToBeDefined(tsArrayMember);
+  expect(tsArrayMember).toBeDefined();
   expect(tsArrayMember.kind).toBe(ts.SyntaxKind.NumericLiteral);
   expect((tsArrayMember as ts.NumericLiteral).text).toBe('3');
 
@@ -436,7 +450,7 @@ function testIsolatedFile(
   const boundName = declaration.id as TSESTree.Identifier;
   expect(boundName.name).toBe('x');
   const tsBoundName = parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
-  expectToBeDefined(tsBoundName);
+  expect(tsBoundName).toBeDefined();
   checkNumberArrayType(checker, tsBoundName);
   expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
     boundName,

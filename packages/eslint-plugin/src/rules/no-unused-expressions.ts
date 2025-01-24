@@ -4,33 +4,38 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
+
 import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-unused-expressions');
 
-type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+
+const defaultOptions: Options = [
+  {
+    allowShortCircuit: false,
+    allowTaggedTemplates: false,
+    allowTernary: false,
+  },
+];
 
 export default createRule<Options, MessageIds>({
   name: 'no-unused-expressions',
   meta: {
     type: 'suggestion',
+    defaultOptions,
     docs: {
       description: 'Disallow unused expressions',
       extendsBaseRule: true,
+      recommended: 'recommended',
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
-    schema: baseRule.meta.schema,
     messages: baseRule.meta.messages,
+    schema: baseRule.meta.schema,
   },
-  defaultOptions: [
-    {
-      allowShortCircuit: false,
-      allowTernary: false,
-      allowTaggedTemplates: false,
-    },
-  ],
+  defaultOptions,
   create(context, [{ allowShortCircuit = false, allowTernary = false }]) {
     const rules = baseRule.create(context);
 
@@ -57,9 +62,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const expressionType = node.expression.type;
+
         if (
-          node.expression.type ===
-          TSESTree.AST_NODE_TYPES.TSInstantiationExpression
+          expressionType ===
+            TSESTree.AST_NODE_TYPES.TSInstantiationExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSAsExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSNonNullExpression ||
+          expressionType === TSESTree.AST_NODE_TYPES.TSTypeAssertion
         ) {
           rules.ExpressionStatement({
             ...node,

@@ -1,9 +1,18 @@
-import debug from 'debug';
 import type * as ts from 'typescript';
+
+import debug from 'debug';
+
+import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
+import type {
+  ParserServices,
+  ParserServicesNodeMaps,
+  TSESTreeOptions,
+} from './parser-options';
+import type { ParseSettings } from './parseSettings';
+import type { TSESTree } from './ts-estree';
 
 import { astConverter } from './ast-converter';
 import { convertError } from './convert';
-import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import {
@@ -11,21 +20,13 @@ import {
   createSourceFile,
 } from './create-program/createSourceFile';
 import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
-import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
 import { createParserServices } from './createParserServices';
-import type {
-  ParserServices,
-  ParserServicesNodeMaps,
-  TSESTreeOptions,
-} from './parser-options';
-import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
-import type { TSESTree } from './ts-estree';
 import { useProgramFromProjectService } from './useProgramFromProjectService';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
@@ -36,8 +37,13 @@ const log = debug('typescript-eslint:typescript-estree:parser');
  * clearProgramCache() is only intended to be used in testing to ensure the parser is clean between tests.
  */
 const existingPrograms = new Map<CanonicalPath, ts.Program>();
-function clearProgramCache(): void {
+export function clearProgramCache(): void {
   existingPrograms.clear();
+}
+
+const defaultProjectMatchedFiles = new Set<string>();
+export function clearDefaultProjectMatchedFiles(): void {
+  defaultProjectMatchedFiles.clear();
 }
 
 /**
@@ -49,11 +55,12 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
-  if (parseSettings.EXPERIMENTAL_projectService) {
+  if (parseSettings.projectService) {
     const fromProjectService = useProgramFromProjectService(
-      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings.projectService,
       parseSettings,
       hasFullTypeInformation,
+      defaultProjectMatchedFiles,
     );
     if (fromProjectService) {
       return fromProjectService;
@@ -76,33 +83,21 @@ function getProgramAndAST(
     return createNoProgram(parseSettings);
   }
 
-  const fromProjectProgram = createProjectProgram(
+  return createProjectProgram(
     parseSettings,
     getWatchProgramsForProjects(parseSettings),
   );
-  if (fromProjectProgram) {
-    return fromProjectProgram;
-  }
-
-  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-  if (parseSettings.DEPRECATED__createDefaultProgram) {
-    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-    const fromDefaultProgram = createDefaultProgram(parseSettings);
-    if (fromDefaultProgram) {
-      return fromDefaultProgram;
-    }
-  }
-
-  return createIsolatedProgram(parseSettings);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface EmptyObject {}
-type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject);
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+export type AST<T extends TSESTreeOptions> = (T['comment'] extends true
+  ? { comments: TSESTree.Comment[] }
+  : {}) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : {}) &
+  TSESTree.Program;
+/* eslint-enable @typescript-eslint/no-empty-object-type */
 
-interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
+export interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
@@ -111,7 +106,7 @@ interface ParseWithNodeMapsResult<T extends TSESTreeOptions>
   ast: AST<T>;
 }
 
-function parse<T extends TSESTreeOptions = TSESTreeOptions>(
+export function parse<T extends TSESTreeOptions = TSESTreeOptions>(
   code: string,
   options?: T,
 ): AST<T> {
@@ -120,7 +115,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: ts.SourceFile | string,
+  code: string | ts.SourceFile,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
@@ -146,7 +141,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Convert the TypeScript AST to an ESTree-compatible one
    */
-  const { estree, astMaps } = astConverter(
+  const { astMaps, estree } = astConverter(
     ast,
     parseSettings,
     shouldPreserveNodeMaps,
@@ -161,18 +156,20 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
 
 let parseAndGenerateServicesCalls: Record<string, number> = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
-function clearParseAndGenerateServicesCalls(): void {
+export function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};
 }
 
-function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: ts.SourceFile | string,
-  options: T,
+export function parseAndGenerateServices<
+  T extends TSESTreeOptions = TSESTreeOptions,
+>(
+  code: string | ts.SourceFile,
+  tsestreeOptions: T,
 ): ParseAndGenerateServicesResult<T> {
   /**
    * Reset the parse configuration
    */
-  const parseSettings = createParseSettings(code, options);
+  const parseSettings = createParseSettings(code, tsestreeOptions);
 
   /**
    * If this is a single run in which the user has not provided any existing programs but there
@@ -182,12 +179,12 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   if (
     parseSettings.singleRun &&
     !parseSettings.programs &&
-    parseSettings.projects.length > 0
+    parseSettings.projects.size > 0
   ) {
     parseSettings.programs = {
       *[Symbol.iterator](): Iterator<ts.Program> {
         for (const configFile of parseSettings.projects) {
-          const existingProgram = existingPrograms.get(configFile);
+          const existingProgram = existingPrograms.get(configFile[0]);
           if (existingProgram) {
             yield existingProgram;
           } else {
@@ -195,8 +192,8 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
               'Detected single-run/CLI usage, creating Program once ahead of time for project: %s',
               configFile,
             );
-            const newProgram = createProgramFromConfigFile(configFile);
-            existingPrograms.set(configFile, newProgram);
+            const newProgram = createProgramFromConfigFile(configFile[1]);
+            existingPrograms.set(configFile[0], newProgram);
             yield newProgram;
           }
         }
@@ -204,15 +201,15 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     };
   }
 
-  /**
-   * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
-   */
   const hasFullTypeInformation =
-    parseSettings.programs != null || parseSettings.projects.length > 0;
+    parseSettings.programs != null ||
+    parseSettings.projects.size > 0 ||
+    !!parseSettings.projectService;
 
   if (
-    typeof options.errorOnTypeScriptSyntacticAndSemanticIssues === 'boolean' &&
-    options.errorOnTypeScriptSyntacticAndSemanticIssues
+    typeof tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues ===
+      'boolean' &&
+    tsestreeOptions.errorOnTypeScriptSyntacticAndSemanticIssues
   ) {
     parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
   }
@@ -234,15 +231,15 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    * In this scenario we cannot rely upon the singleRun AOT compiled programs because the SourceFiles will not contain the source
    * with the latest fixes applied. Therefore we fallback to creating the quickest possible isolated program from the updated source.
    */
-  if (parseSettings.singleRun && options.filePath) {
-    parseAndGenerateServicesCalls[options.filePath] =
-      (parseAndGenerateServicesCalls[options.filePath] || 0) + 1;
+  if (parseSettings.singleRun && tsestreeOptions.filePath) {
+    parseAndGenerateServicesCalls[tsestreeOptions.filePath] =
+      (parseAndGenerateServicesCalls[tsestreeOptions.filePath] || 0) + 1;
   }
 
   const { ast, program } =
     parseSettings.singleRun &&
-    options.filePath &&
-    parseAndGenerateServicesCalls[options.filePath] > 1
+    tsestreeOptions.filePath &&
+    parseAndGenerateServicesCalls[tsestreeOptions.filePath] > 1
       ? createIsolatedProgram(parseSettings)
       : getProgramAndAST(parseSettings, hasFullTypeInformation);
 
@@ -255,7 +252,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
       ? parseSettings.preserveNodeMaps
       : true;
 
-  const { estree, astMaps } = astConverter(
+  const { astMaps, estree } = astConverter(
     ast,
     parseSettings,
     shouldPreserveNodeMaps,
@@ -280,12 +277,3 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     services: createParserServices(astMaps, program),
   };
 }
-
-export {
-  AST,
-  parse,
-  parseAndGenerateServices,
-  ParseAndGenerateServicesResult,
-  clearProgramCache,
-  clearParseAndGenerateServicesCalls,
-};

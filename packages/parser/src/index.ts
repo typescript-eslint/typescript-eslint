@@ -1,10 +1,11 @@
-export { parse, parseForESLint, ParserOptions } from './parser';
+export { parse, parseForESLint, type ParserOptions } from './parser';
 export {
-  ParserServices,
-  ParserServicesWithTypeInformation,
-  ParserServicesWithoutTypeInformation,
   clearCaches,
   createProgram,
+  type ParserServices,
+  type ParserServicesWithoutTypeInformation,
+  type ParserServicesWithTypeInformation,
+  withoutProjectParserOptions,
 } from '@typescript-eslint/typescript-estree';
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder

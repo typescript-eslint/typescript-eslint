@@ -1,9 +1,10 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
+
 import { es2019 } from './es2019';
 import { es2020_bigint } from './es2020.bigint';
 import { es2020_date } from './es2020.date';

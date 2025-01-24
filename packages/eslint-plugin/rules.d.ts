@@ -34,13 +34,54 @@ The inferred type of 'default' cannot be named without a reference to
 This is likely not portable. A type annotation is necessary. ts(2742)
 ```
 */
+/* eslint-disable no-restricted-syntax */
 
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  RuleModuleWithMetaDocs,
+  RuleRecommendation,
+  RuleRecommendationAcrossConfigs,
+} from '@typescript-eslint/utils/ts-eslint';
 
-export type TypeScriptESLintRules = Record<
+interface ESLintPluginDocs {
+  /**
+   * Does the rule extend (or is it based off of) an ESLint code rule?
+   * Alternately accepts the name of the base rule, in case the rule has been renamed.
+   * This is only used for documentation purposes.
+   */
+  extendsBaseRule?: boolean | string;
+
+  /**
+   * If a string config name, which starting config this rule is enabled in.
+   * If an object, which settings it has enabled in each of those configs.
+   */
+  recommended?: RuleRecommendation | RuleRecommendationAcrossConfigs<unknown[]>;
+
+  /**
+   * Does the rule require us to create a full TypeScript Program in order for it
+   * to type-check code. This is only used for documentation purposes.
+   */
+  requiresTypeChecking?: boolean;
+}
+
+type ESLintPluginRuleModule = RuleModuleWithMetaDocs<
   string,
-  RuleModule<string, unknown[]>
+  readonly unknown[],
+  ESLintPluginDocs
 >;
+
+type TypeScriptESLintRules = Record<
+  string,
+  RuleModuleWithMetaDocs<string, unknown[], ESLintPluginDocs>
+>;
+
 declare const rules: TypeScriptESLintRules;
-// eslint-disable-next-line import/no-default-export
-export default rules;
+
+declare namespace rules {
+  export type {
+    ESLintPluginDocs,
+    ESLintPluginRuleModule,
+    TypeScriptESLintRules,
+  };
+}
+
+export = rules;

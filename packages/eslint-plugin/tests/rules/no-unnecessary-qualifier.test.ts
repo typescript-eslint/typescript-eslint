@@ -7,11 +7,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -57,6 +57,30 @@ namespace X {
     `
 namespace X {
   const z = X.y;
+}
+    `,
+    `
+enum Foo {
+  One,
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
+}
+    `,
+    `
+namespace Foo {
+  export enum Foo {
+    One,
+  }
+}
+
+namespace Foo {
+  export function bar() {
+    return Foo.One;
+  }
 }
     `,
   ],

@@ -1,15 +1,18 @@
+import type {
+  InvalidTestCase,
+  SuggestionOutput,
+} from '@typescript-eslint/rule-tester';
+
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/no-explicit-any';
+
 import rule from '../../src/rules/no-explicit-any';
 
-type InvalidTestCase = TSESLint.InvalidTestCase<MessageIds, Options>;
-type SuggestionOutput = TSESLint.SuggestionOutput<MessageIds>;
+type RuleInvalidTestCase = InvalidTestCase<MessageIds, Options>;
+type RuleSuggestionOutput = SuggestionOutput<MessageIds>;
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('no-explicit-any', rule, {
   valid: [
@@ -375,9 +378,9 @@ interface Garply4 {
         code: 'const number: any = 1',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 15,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -385,9 +388,9 @@ interface Garply4 {
         code: 'function generic(): any {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 21,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -395,9 +398,9 @@ interface Garply4 {
         code: 'function generic(): Array<any> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 27,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -405,9 +408,9 @@ interface Garply4 {
         code: 'function generic(): any[] {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 21,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -415,9 +418,9 @@ interface Garply4 {
         code: 'function generic(param: Array<any>): number {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 31,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -425,9 +428,9 @@ interface Garply4 {
         code: 'function generic(param: any[]): number {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 25,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -435,9 +438,9 @@ interface Garply4 {
         code: 'function generic(param: Array<any>): Array<any> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 31,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -451,9 +454,9 @@ interface Garply4 {
             ],
           },
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 44,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -472,9 +475,9 @@ interface Garply4 {
         code: 'function generic(): Array<Array<any>> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 33,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -482,9 +485,9 @@ interface Garply4 {
         code: 'function generic(): Array<any[]> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 27,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -496,9 +499,9 @@ class Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 30,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -510,9 +513,9 @@ class Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -524,9 +527,9 @@ class Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -538,9 +541,9 @@ class Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -552,9 +555,9 @@ class Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 26,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -566,9 +569,9 @@ class Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -580,9 +583,9 @@ interface Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -594,9 +597,9 @@ interface Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -608,9 +611,9 @@ interface Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -622,9 +625,9 @@ interface Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 26,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -636,9 +639,9 @@ interface Greeter {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -650,9 +653,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -664,9 +667,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -678,9 +681,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 14,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -692,9 +695,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 26,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -706,9 +709,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 20,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -720,9 +723,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -734,9 +737,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -748,9 +751,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -762,9 +765,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 35,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -776,9 +779,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -790,9 +793,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -804,9 +807,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -818,9 +821,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 23,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -832,9 +835,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 35,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -846,9 +849,9 @@ type obj = {
             `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 29,
+            line: 3,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -856,9 +859,9 @@ type obj = {
         code: 'class Foo<t = any> extends Bar<any> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 15,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -871,9 +874,9 @@ type obj = {
             ],
           },
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 32,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -891,9 +894,9 @@ type obj = {
         code: 'abstract class Foo<t = any> extends Bar<any> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -906,9 +909,9 @@ type obj = {
             ],
           },
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 41,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -926,9 +929,9 @@ type obj = {
         code: 'abstract class Foo<t = any> implements Bar<any>, Baz<any> {}',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -943,9 +946,9 @@ type obj = {
             ],
           },
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 44,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -960,9 +963,9 @@ type obj = {
             ],
           },
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 54,
+            line: 1,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -982,9 +985,9 @@ type obj = {
         code: 'new Foo<any>()',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 9,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -992,9 +995,9 @@ type obj = {
         code: 'Foo<any>()',
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 5,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
       },
@@ -1006,9 +1009,9 @@ const test = <T extends Partial<any>>() => {};
       `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 2,
             column: 33,
+            line: 2,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -1027,9 +1030,9 @@ const test = <T extends Partial<any>>() => {};
             ],
           },
           {
-            messageId: 'unexpectedAny',
-            line: 3,
             column: 33,
+            line: 3,
+            messageId: 'unexpectedAny',
             suggestions: [
               {
                 messageId: 'suggestUnknown',
@@ -1058,147 +1061,147 @@ const test = <T extends Partial<never>>() => {};
       `,
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 2,
             column: 42,
+            line: 2,
+            messageId: 'unexpectedAny',
           },
         ],
       },
       {
         code: 'type Any = any;',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 12,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'function foo5(...args: any) {}',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'const bar5 = function (...args: any) {}',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 33,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'const baz5 = (...args: any) => {}',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'interface Qux5 { (...args: any): void; }',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 28,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'function quux5(fn: (...args: any) => void): void {}',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 30,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'function quuz5(): ((...args: any) => void) {}',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 30,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'type Fred5 = (...args: any) => void;',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 24,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'type Corge5 = new (...args: any) => void;',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 29,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'interface Grault5 { new (...args: any): void; }',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 35,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'interface Garply5 { f(...args: any): void; }',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 32,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
       {
         code: 'declare function waldo5(...args: any): void;',
-        options: [{ ignoreRestArgs: true }],
         errors: [
           {
-            messageId: 'unexpectedAny',
-            line: 1,
             column: 34,
+            line: 1,
+            messageId: 'unexpectedAny',
           },
         ],
+        options: [{ ignoreRestArgs: true }],
       },
-    ] as InvalidTestCase[]
-  ).reduce<InvalidTestCase[]>((acc, testCase) => {
-    const suggestions = (code: string): SuggestionOutput[] => [
+    ] as RuleInvalidTestCase[]
+  ).flatMap(testCase => {
+    const suggestions = (code: string): RuleSuggestionOutput[] => [
       {
         messageId: 'suggestUnknown',
         output: code.replace(/any/, 'unknown'),
@@ -1208,38 +1211,37 @@ const test = <T extends Partial<never>>() => {};
         output: code.replace(/any/, 'never'),
       },
     ];
-    acc.push({
-      ...testCase,
-      errors: testCase.errors.map(e => ({
-        ...e,
-        suggestions: e.suggestions ?? suggestions(testCase.code),
-      })),
-    });
-    const options = testCase.options ?? [];
     const code = `// fixToUnknown: true\n${testCase.code}`;
-    acc.push({
-      code,
-      output: code.replace(/any/g, 'unknown'),
-      options: [{ ...options[0], fixToUnknown: true }],
-      errors: testCase.errors.map(err => {
-        if (err.line === undefined) {
-          return err;
-        }
+    return [
+      {
+        ...testCase,
+        errors: testCase.errors.map(e => ({
+          ...e,
+          suggestions: e.suggestions ?? suggestions(testCase.code),
+        })),
+      },
+      {
+        code,
+        errors: testCase.errors.map(err => {
+          if (err.line == null) {
+            return err;
+          }
 
-        return {
-          ...err,
-          line: err.line + 1,
-          suggestions:
-            err.suggestions?.map(
-              (s): SuggestionOutput => ({
-                ...s,
-                output: `// fixToUnknown: true\n${s.output}`,
-              }),
-            ) ?? suggestions(code),
-        };
-      }),
-    });
-
-    return acc;
-  }, []),
+          return {
+            ...err,
+            line: err.line + 1,
+            suggestions:
+              err.suggestions?.map(
+                (s): RuleSuggestionOutput => ({
+                  ...s,
+                  output: `// fixToUnknown: true\n${s.output}`,
+                }),
+              ) ?? suggestions(code),
+          };
+        }),
+        options: [{ ...testCase.options?.[0], fixToUnknown: true }],
+        output: code.replaceAll('any', 'unknown'),
+      },
+    ];
+  }),
 });

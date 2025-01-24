@@ -18,7 +18,11 @@ TODO - convert this to /utils/ts-eslint
 */
 import type { TSESLint } from '@typescript-eslint/utils';
 
-interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
+export type InfiniteDepthConfigWithExtends =
+  | ConfigWithExtends
+  | InfiniteDepthConfigWithExtends[];
+
+export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
   /**
    * Allows you to "extend" a set of configs similar to `extends` from the
    * classic configs.
@@ -59,8 +63,11 @@ interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
    * ]
    * ```
    */
-  extends?: TSESLint.FlatConfig.ConfigArray;
+  extends?: InfiniteDepthConfigWithExtends[];
 }
+
+// exported so that users that make configs with tsconfig `declaration: true` can name the type
+export type ConfigArray = TSESLint.FlatConfig.ConfigArray;
 
 /**
  * Utility function to make it easy to strictly type your "Flat" config file
@@ -73,7 +80,7 @@ interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
  *
  * export default tseslint.config(
  *   eslint.configs.recommended,
- *   ...tseslint.configs.recommended,
+ *   tseslint.configs.recommended,
  *   {
  *     rules: {
  *       '@typescript-eslint/array-type': 'error',
@@ -83,24 +90,54 @@ interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
  * ```
  */
 export function config(
-  ...configs: ConfigWithExtends[]
-): TSESLint.FlatConfig.ConfigArray {
-  return configs.flatMap(configWithExtends => {
+  ...configs: InfiniteDepthConfigWithExtends[]
+): ConfigArray {
+  const flattened =
+    // @ts-expect-error -- intentionally an infinite type
+    configs.flat(Infinity) as ConfigWithExtends[];
+  return flattened.flatMap((configWithExtends, configIndex) => {
     const { extends: extendsArr, ...config } = configWithExtends;
     if (extendsArr == null || extendsArr.length === 0) {
       return config;
     }
+    const extendsArrFlattened = extendsArr.flat(
+      Infinity,
+    ) as ConfigWithExtends[];
 
-    const extension = {
-      ...(config.files && { files: config.files }),
-      ...(config.ignores && { ignores: config.ignores }),
-    };
+    const undefinedExtensions = extendsArrFlattened.reduce<number[]>(
+      (acc, extension, extensionIndex) => {
+        const maybeExtension = extension as
+          | TSESLint.FlatConfig.Config
+          | undefined;
+        if (maybeExtension == null) {
+          acc.push(extensionIndex);
+        }
+        return acc;
+      },
+      [],
+    );
+    if (undefinedExtensions.length) {
+      const configName =
+        configWithExtends.name != null
+          ? `, named "${configWithExtends.name}",`
+          : ' (anonymous)';
+      const extensionIndices = undefinedExtensions.join(', ');
+      throw new Error(
+        `Your config at index ${configIndex}${configName} contains undefined` +
+          ` extensions at the following indices: ${extensionIndices}.`,
+      );
+    }
 
     return [
-      ...extendsArr.map(conf => ({
-        ...conf,
-        ...extension,
-      })),
+      ...extendsArrFlattened.map(extension => {
+        const name = [config.name, extension.name].filter(Boolean).join('__');
+        return {
+          ...extension,
+          ...(config.files && { files: config.files }),
+          ...(config.ignores && { ignores: config.ignores }),
+          ...(name && { name }),
+        };
+      }),
       config,
     ];
   });

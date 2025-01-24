@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validating rule docs adjacent-overload-signatures.mdx code examples ESLint output 1`] = `
+"Incorrect
+
+declare namespace Foo {
+  export function foo(s: string): void;
+  export function foo(n: number): void;
+  export function bar(): void;
+  export function foo(sn: string | number): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
+}
+
+type Foo = {
+  foo(s: string): void;
+  foo(n: number): void;
+  bar(): void;
+  foo(sn: string | number): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
+};
+
+interface Foo {
+  foo(s: string): void;
+  foo(n: number): void;
+  bar(): void;
+  foo(sn: string | number): void;
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
+}
+
+class Foo {
+  foo(s: string): void;
+  foo(n: number): void;
+  bar(): void {}
+  foo(sn: string | number): void {}
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
+}
+
+export function foo(s: string): void;
+export function foo(n: number): void;
+export function bar(): void;
+export function foo(sn: string | number): void;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ All foo signatures should be adjacent.
+"
+`;
+
+exports[`Validating rule docs adjacent-overload-signatures.mdx code examples ESLint output 2`] = `
+"Correct
+
+declare namespace Foo {
+  export function foo(s: string): void;
+  export function foo(n: number): void;
+  export function foo(sn: string | number): void;
+  export function bar(): void;
+}
+
+type Foo = {
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void;
+  bar(): void;
+};
+
+interface Foo {
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void;
+  bar(): void;
+}
+
+class Foo {
+  foo(s: string): void;
+  foo(n: number): void;
+  foo(sn: string | number): void {}
+  bar(): void {}
+}
+
+export function bar(): void;
+export function foo(s: string): void;
+export function foo(n: number): void;
+export function foo(sn: string | number): void;
+"
+`;

@@ -1,7 +1,7 @@
 import { ImplicitLibVariable, Variable } from '../../../src/variable';
 import { createSerializer } from './baseSerializer';
 
-const serializer = createSerializer(Variable, [
+export const serializer = createSerializer(Variable, [
   //
   'defs',
   'name',
@@ -9,7 +9,7 @@ const serializer = createSerializer(Variable, [
   'isValueVariable',
   'isTypeVariable',
 ]);
-const implicitLibVarSerializer = createSerializer(ImplicitLibVariable, [
+export const implicitLibVarSerializer = createSerializer(ImplicitLibVariable, [
   //
   'defs',
   'name',
@@ -17,5 +17,3 @@ const implicitLibVarSerializer = createSerializer(ImplicitLibVariable, [
   'isValueVariable',
   'isTypeVariable',
 ]);
-
-export { serializer, implicitLibVarSerializer };

@@ -1,13 +1,13 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { extname } from 'path';
+import { extname } from 'node:path';
 import * as ts from 'typescript';
+
+import type { MakeRequired } from '../util';
 
 import { createRule } from '../util';
 
-type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
-};
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
   'constraint'
@@ -16,19 +16,19 @@ type TypeParameterWithConstraint = MakeRequired<
 export default createRule({
   name: 'no-unnecessary-type-constraint',
   meta: {
+    type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary constraints on generic types',
       recommended: 'recommended',
     },
     hasSuggestions: true,
     messages: {
-      unnecessaryConstraint:
-        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
       removeUnnecessaryConstraint:
         'Remove the unnecessary `{{constraint}}` constraint.',
+      unnecessaryConstraint:
+        'Constraining the generic type `{{name}}` to `{{constraint}}` does nothing and is unnecessary.',
     },
     schema: [],
-    type: 'suggestion',
   },
   defaultOptions: [],
   create(context) {
@@ -78,9 +78,11 @@ export default createRule({
 
       if (constraint) {
         context.report({
+          node,
+          messageId: 'unnecessaryConstraint',
           data: {
-            constraint,
             name: node.name.name,
+            constraint,
           },
           suggest: [
             {
@@ -96,8 +98,6 @@ export default createRule({
               },
             },
           ],
-          messageId: 'unnecessaryConstraint',
-          node,
         });
       }
     };

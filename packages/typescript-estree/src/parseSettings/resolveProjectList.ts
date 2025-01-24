@@ -1,25 +1,28 @@
 import debug from 'debug';
-import { sync as globSync } from 'globby';
+import { sync as globSync } from 'fast-glob';
 import isGlob from 'is-glob';
 
 import type { CanonicalPath } from '../create-program/shared';
+import type { TSESTreeOptions } from '../parser-options';
+
 import {
   createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
 } from '../create-program/shared';
-import type { TSESTreeOptions } from '../parser-options';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
 } from './ExpiringCache';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:resolveProjectList',
+  'typescript-eslint:typescript-estree:parseSettings:resolveProjectList',
 );
 
-let RESOLUTION_CACHE: ExpiringCache<string, readonly CanonicalPath[]> | null =
-  null;
+let RESOLUTION_CACHE: ExpiringCache<
+  string,
+  ReadonlyMap<CanonicalPath, string>
+> | null = null;
 
 export function clearGlobCache(): void {
   RESOLUTION_CACHE?.clear();
@@ -36,7 +39,7 @@ export function resolveProjectList(
     singleRun: boolean;
     tsconfigRootDir: string;
   }>,
-): readonly CanonicalPath[] {
+): ReadonlyMap<CanonicalPath, string> {
   const sanitizedProjects: string[] = [];
 
   // Normalize and sanitize the project paths
@@ -49,18 +52,13 @@ export function resolveProjectList(
   }
 
   if (sanitizedProjects.length === 0) {
-    return [];
+    return new Map();
   }
 
   const projectFolderIgnoreList = (
     options.projectFolderIgnoreList ?? ['**/node_modules/**']
   )
-    .reduce<string[]>((acc, folder) => {
-      if (typeof folder === 'string') {
-        acc.push(folder);
-      }
-      return acc;
-    }, [])
+    .filter(folder => typeof folder === 'string')
     // prefix with a ! for not match glob
     .map(folder => (folder.startsWith('!') ? folder : `!${folder}`));
 
@@ -77,8 +75,8 @@ export function resolveProjectList(
     RESOLUTION_CACHE = new ExpiringCache(
       options.singleRun
         ? 'Infinity'
-        : options.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+        : (options.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     );
   } else {
     const cached = RESOLUTION_CACHE.get(cacheKey);
@@ -91,20 +89,27 @@ export function resolveProjectList(
   const nonGlobProjects = sanitizedProjects.filter(project => !isGlob(project));
   const globProjects = sanitizedProjects.filter(project => isGlob(project));
 
-  const uniqueCanonicalProjectPaths = new Set(
-    nonGlobProjects
-      .concat(
-        globProjects.length === 0
-          ? []
-          : globSync([...globProjects, ...projectFolderIgnoreList], {
-              cwd: options.tsconfigRootDir,
-            }),
-      )
-      .map(project =>
-        getCanonicalFileName(
-          ensureAbsolutePath(project, options.tsconfigRootDir),
-        ),
+  let globProjectPaths: string[] = [];
+
+  if (globProjects.length > 0) {
+    // Although fast-glob supports multiple patterns, fast-glob returns arbitrary order of results
+    // to improve performance. To ensure the order is correct, we need to call fast-glob for each pattern
+    // separately and then concatenate the results in patterns' order.
+    globProjectPaths = globProjects.flatMap(pattern =>
+      globSync(pattern, {
+        cwd: options.tsconfigRootDir,
+        ignore: projectFolderIgnoreList,
+      }),
+    );
+  }
+
+  const uniqueCanonicalProjectPaths = new Map(
+    [...nonGlobProjects, ...globProjectPaths].map(project => [
+      getCanonicalFileName(
+        ensureAbsolutePath(project, options.tsconfigRootDir),
       ),
+      ensureAbsolutePath(project, options.tsconfigRootDir),
+    ]),
   );
 
   log(
@@ -112,9 +117,8 @@ export function resolveProjectList(
     uniqueCanonicalProjectPaths,
   );
 
-  const returnValue = Array.from(uniqueCanonicalProjectPaths);
-  RESOLUTION_CACHE.set(cacheKey, returnValue);
-  return returnValue;
+  RESOLUTION_CACHE.set(cacheKey, uniqueCanonicalProjectPaths);
+  return uniqueCanonicalProjectPaths;
 }
 
 function getHash({

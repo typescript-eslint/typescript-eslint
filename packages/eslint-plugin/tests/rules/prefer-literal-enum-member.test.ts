@@ -1,10 +1,8 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/prefer-literal-enum-member';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+const ruleTester = new RuleTester();
 
 ruleTester.run('prefer-literal-enum-member', rule, {
   valid: [
@@ -58,7 +56,7 @@ enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }
     `,
-    noFormat`
+    `
 enum ValidKeyWithComputedSyntaxButNoComputedKey {
   ['a'],
 }
@@ -77,6 +75,89 @@ enum Foo {
       `,
       options: [{ allowBitwiseExpressions: true }],
     },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = A | B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = Foo.A | Foo.B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 >> 0,
+  C = Foo['A'] | B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  ['A-1'] = 1 << 0,
+  C = ~Foo['A-1'],
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = A | B | C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | Foo.B | Foo.C,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | (Foo.B & ~Foo.C),
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1 << 0,
+  B = 1 << 1,
+  C = 1 << 2,
+  D = Foo.A | -Foo.B,
+}
+      `,
+      options: [{ allowBitwiseExpressions: true }],
+    },
   ],
   invalid: [
     {
@@ -87,9 +168,9 @@ enum InvalidObject {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -101,9 +182,9 @@ enum InvalidArray {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -115,9 +196,9 @@ enum InvalidTemplateLiteral {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -129,9 +210,9 @@ enum InvalidConstructor {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -143,9 +224,9 @@ enum InvalidExpression {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 3,
           column: 3,
+          line: 3,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -161,29 +242,29 @@ enum InvalidExpression {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 3,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 4,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 5,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 6,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
-          line: 7,
           column: 3,
+          line: 7,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -199,9 +280,9 @@ enum InvalidVariable {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 7,
           column: 3,
+          line: 7,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -214,9 +295,9 @@ enum InvalidEnumMember {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 4,
           column: 3,
+          line: 4,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -230,9 +311,9 @@ enum InvalidObjectMember {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 5,
           column: 3,
+          line: 5,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -248,9 +329,9 @@ enum InvalidEnumMember {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 7,
           column: 3,
+          line: 7,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -264,9 +345,9 @@ enum InvalidSpread {
       `,
       errors: [
         {
-          messageId: 'notLiteral',
-          line: 5,
           column: 3,
+          line: 5,
+          messageId: 'notLiteral',
         },
       ],
     },
@@ -282,44 +363,44 @@ enum Foo {
   G = ~1,
 }
       `,
-      options: [{ allowBitwiseExpressions: false }],
       errors: [
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 3,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 4,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 5,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 6,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 7,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 8,
-          column: 3,
+          messageId: 'notLiteral',
         },
         {
-          messageId: 'notLiteral',
-          line: 9,
           column: 3,
+          line: 9,
+          messageId: 'notLiteral',
         },
       ],
+      options: [{ allowBitwiseExpressions: false }],
     },
     {
       code: `
@@ -334,42 +415,79 @@ enum Foo {
   G = ~x,
 }
       `,
-      options: [{ allowBitwiseExpressions: true }],
       errors: [
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 4,
-          column: 3,
+          messageId: 'notLiteralOrBitwiseExpression',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 5,
-          column: 3,
+          messageId: 'notLiteralOrBitwiseExpression',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 6,
-          column: 3,
+          messageId: 'notLiteralOrBitwiseExpression',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 7,
-          column: 3,
+          messageId: 'notLiteralOrBitwiseExpression',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 8,
-          column: 3,
+          messageId: 'notLiteralOrBitwiseExpression',
         },
         {
-          messageId: 'notLiteral',
+          column: 3,
           line: 9,
-          column: 3,
+          messageId: 'notLiteralOrBitwiseExpression',
         },
         {
-          messageId: 'notLiteral',
-          line: 10,
           column: 3,
+          line: 10,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+const x = 1;
+enum Foo {
+  A = 1 << 0,
+  B = x >> Foo.A,
+  C = x >> A,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          line: 5,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+        {
+          column: 3,
+          line: 6,
+          messageId: 'notLiteralOrBitwiseExpression',
+        },
+      ],
+      options: [{ allowBitwiseExpressions: true }],
+    },
+    {
+      code: `
+enum Foo {
+  A,
+  B = +A,
+}
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'notLiteral',
         },
       ],
     },

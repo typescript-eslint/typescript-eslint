@@ -1,17 +1,24 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/repo-tools
+// npx nx generate-lib repo
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { es2023 } from './es2023';
+
+import { es2024 } from './es2024';
+import { esnext_array } from './esnext.array';
+import { esnext_collection } from './esnext.collection';
 import { esnext_decorators } from './esnext.decorators';
 import { esnext_disposable } from './esnext.disposable';
 import { esnext_intl } from './esnext.intl';
+import { esnext_iterator } from './esnext.iterator';
 
 export const esnext = {
-  ...es2023,
+  ...es2024,
   ...esnext_intl,
   ...esnext_decorators,
   ...esnext_disposable,
+  ...esnext_collection,
+  ...esnext_array,
+  ...esnext_iterator,
 } as Record<string, ImplicitLibVariableOptions>;

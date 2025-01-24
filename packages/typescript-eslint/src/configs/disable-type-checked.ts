@@ -7,10 +7,15 @@
 
 import type { FlatConfig } from '@typescript-eslint/utils/ts-eslint';
 
+/**
+ * A utility ruleset that will disable type-aware linting and all type-aware rules available in our project.
+ * @see {@link https://typescript-eslint.io/users/configs#disable-type-checked}
+ */
 export default (
   _plugin: FlatConfig.Plugin,
   _parser: FlatConfig.Parser,
 ): FlatConfig.Config => ({
+  name: 'typescript-eslint/disable-type-checked',
   rules: {
     '@typescript-eslint/await-thenable': 'off',
     '@typescript-eslint/consistent-return': 'off',
@@ -20,29 +25,33 @@ export default (
     '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/no-deprecated': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
     '@typescript-eslint/no-floating-promises': 'off',
     '@typescript-eslint/no-for-in-array': 'off',
     '@typescript-eslint/no-implied-eval': 'off',
     '@typescript-eslint/no-meaningless-void-operator': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/no-misused-spread': 'off',
     '@typescript-eslint/no-mixed-enums': 'off',
     '@typescript-eslint/no-redundant-type-constituents': 'off',
-    '@typescript-eslint/no-throw-literal': 'off',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-unnecessary-qualifier': 'off',
+    '@typescript-eslint/no-unnecessary-template-expression': 'off',
     '@typescript-eslint/no-unnecessary-type-arguments': 'off',
     '@typescript-eslint/no-unnecessary-type-assertion': 'off',
+    '@typescript-eslint/no-unnecessary-type-parameters': 'off',
     '@typescript-eslint/no-unsafe-argument': 'off',
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/no-unsafe-call': 'off',
     '@typescript-eslint/no-unsafe-enum-comparison': 'off',
     '@typescript-eslint/no-unsafe-member-access': 'off',
     '@typescript-eslint/no-unsafe-return': 'off',
+    '@typescript-eslint/no-unsafe-type-assertion': 'off',
     '@typescript-eslint/no-unsafe-unary-minus': 'off',
-    '@typescript-eslint/no-useless-template-literals': 'off',
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+    '@typescript-eslint/only-throw-error': 'off',
     '@typescript-eslint/prefer-destructuring': 'off',
     '@typescript-eslint/prefer-find': 'off',
     '@typescript-eslint/prefer-includes': 'off',
@@ -56,6 +65,7 @@ export default (
     '@typescript-eslint/prefer-return-this-type': 'off',
     '@typescript-eslint/prefer-string-starts-ends-with': 'off',
     '@typescript-eslint/promise-function-async': 'off',
+    '@typescript-eslint/related-getter-setter-pairs': 'off',
     '@typescript-eslint/require-array-sort-compare': 'off',
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/restrict-plus-operands': 'off',
@@ -64,6 +74,9 @@ export default (
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
-  languageOptions: { parserOptions: { project: false, program: null } },
+  languageOptions: {
+    parserOptions: { program: null, project: false, projectService: false },
+  },
 });

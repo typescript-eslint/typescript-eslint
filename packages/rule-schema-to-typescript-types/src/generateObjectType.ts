@@ -1,10 +1,12 @@
+import type { JSONSchema4ObjectSchema } from '@typescript-eslint/utils/json-schema';
+
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import { TSUtils } from '@typescript-eslint/utils';
-import type { JSONSchema4ObjectSchema } from '@typescript-eslint/utils/json-schema';
+
+import type { AST, ObjectAST, RefMap } from './types';
 
 import { generateType } from './generateType';
 import { getCommentLines } from './getCommentLines';
-import type { AST, ObjectAST, RefMap } from './types';
 
 export function generateObjectType(
   schema: JSONSchema4ObjectSchema,
@@ -15,12 +17,13 @@ export function generateObjectType(
   let indexSignature: AST | null = null;
   if (
     schema.additionalProperties === true ||
+    // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
     schema.additionalProperties === undefined
   ) {
     indexSignature = {
+      commentLines: [],
       type: 'type-reference',
       typeName: 'unknown',
-      commentLines: [],
     };
   } else if (typeof schema.additionalProperties === 'object') {
     const indexSigType = generateType(schema.additionalProperties, refMap);
@@ -47,9 +50,9 @@ export function generateObjectType(
   }
 
   return {
-    type: 'object',
-    properties,
-    indexSignature,
     commentLines,
+    indexSignature,
+    properties,
+    type: 'object',
   };
 }

@@ -1,8 +1,9 @@
 import type { Scope } from '../scope';
-import { ESLintScopeVariable } from './ESLintScopeVariable';
 import type { Variable } from './Variable';
 
-interface ImplicitLibVariableOptions {
+import { ESLintScopeVariable } from './ESLintScopeVariable';
+
+export interface ImplicitLibVariableOptions {
   readonly eslintImplicitGlobalSetting?: ESLintScopeVariable['eslintImplicitGlobalSetting'];
   readonly isTypeVariable?: boolean;
   readonly isValueVariable?: boolean;
@@ -12,7 +13,10 @@ interface ImplicitLibVariableOptions {
 /**
  * An variable implicitly defined by the TS Lib
  */
-class ImplicitLibVariable extends ESLintScopeVariable implements Variable {
+export class ImplicitLibVariable
+  extends ESLintScopeVariable
+  implements Variable
+{
   /**
    * `true` if the variable is valid in a type context, false otherwise
    */
@@ -27,10 +31,10 @@ class ImplicitLibVariable extends ESLintScopeVariable implements Variable {
     scope: Scope,
     name: string,
     {
+      eslintImplicitGlobalSetting,
       isTypeVariable,
       isValueVariable,
       writeable,
-      eslintImplicitGlobalSetting,
     }: ImplicitLibVariableOptions,
   ) {
     super(name, scope);
@@ -41,5 +45,3 @@ class ImplicitLibVariable extends ESLintScopeVariable implements Variable {
       eslintImplicitGlobalSetting ?? 'readonly';
   }
 }
-
-export { ImplicitLibVariable, ImplicitLibVariableOptions };

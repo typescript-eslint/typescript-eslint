@@ -1,9 +1,11 @@
-import { parseForESLint } from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
-import path from 'path';
 import type * as ts from 'typescript';
 
+import { parseForESLint } from '@typescript-eslint/parser';
+import path from 'node:path';
+
 import type { ReadonlynessOptions } from '../src/isTypeReadonly';
+
 import { isTypeReadonly } from '../src/isTypeReadonly';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
@@ -12,12 +14,13 @@ describe('isTypeReadonly', () => {
 
   describe('TSTypeAliasDeclaration ', () => {
     function getType(code: string): {
-      type: ts.Type;
       program: ts.Program;
+      type: ts.Type;
     } {
       const { ast, services } = parseForESLint(code, {
-        project: './tsconfig.json',
+        disallowAutomaticSingleRunInference: true,
         filePath: path.join(rootDir, 'file.ts'),
+        project: './tsconfig.json',
         tsconfigRootDir: rootDir,
       });
       expectToHaveParserServices(services);
@@ -26,10 +29,10 @@ describe('isTypeReadonly', () => {
 
       const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
       return {
+        program,
         type: program
           .getTypeChecker()
           .getTypeAtLocation(esTreeNodeToTSNodeMap.get(declaration.id)),
-        program,
       };
     }
 
@@ -38,7 +41,7 @@ describe('isTypeReadonly', () => {
       options: ReadonlynessOptions | undefined,
       expected: boolean,
     ): void {
-      const { type, program } = getType(code);
+      const { program, type } = getType(code);
 
       const result = isTypeReadonly(program, type, options);
       expect(result).toBe(expected);

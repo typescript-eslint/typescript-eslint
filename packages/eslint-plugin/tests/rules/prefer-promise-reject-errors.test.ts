@@ -6,12 +6,12 @@ import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
-  parserOptions: {
-    ecmaVersion: 2015,
-    tsconfigRootDir: rootDir,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootDir,
+    },
   },
-  parser: '@typescript-eslint/parser',
 });
 
 ruleTester.run('prefer-promise-reject-errors', rule, {
@@ -24,6 +24,20 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
           allowEmptyReject: true,
         },
       ],
+    },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: false }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      options: [{ allowThrowingAny: false, allowThrowingUnknown: true }],
     },
     'Promise.reject(new Error());',
     'Promise.reject(new TypeError());',
@@ -266,18 +280,47 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       declare const foo: PromiseConstructor;
       foo.reject(new Error());
     `,
+    'console[Symbol.iterator]();',
+    `
+      class A {
+        a = [];
+        [Symbol.iterator]() {
+          return this.a[Symbol.iterator]();
+        }
+      }
+    `,
+    `
+      declare const foo: PromiseConstructor;
+      function fun<T extends Error>(t: T): void {
+        foo.reject(t);
+      }
+    `,
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: true }],
+    },
   ],
   invalid: [
     {
       code: 'Promise.reject(5);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 18,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -285,12 +328,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: "Promise.reject('foo');",
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -298,12 +341,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject(`foo`);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -311,12 +354,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: "Promise.reject('foo', somethingElse);",
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -324,12 +367,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject(false);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 22,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -337,12 +380,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject(void `foo`);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -350,12 +393,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject();',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 17,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -363,39 +406,39 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject(undefined);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
     {
       code: 'Promise.reject(undefined);',
+      errors: [
+        {
+          column: 1,
+          endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
       options: [{ allowEmptyReject: true }],
-      errors: [
-        {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 1,
-          endColumn: 26,
-        },
-      ],
     },
     {
       code: 'Promise.reject(null);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -403,12 +446,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject({ foo: 1 });',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 27,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -416,12 +459,12 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       code: 'Promise.reject([1, 2, 3]);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 26,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -432,12 +475,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -448,12 +491,12 @@ Promise.reject(await foo());
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 28,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -464,12 +507,12 @@ Promise.reject(foo && new Error());
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -480,12 +523,12 @@ foo.reject();
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 13,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -494,12 +537,12 @@ foo.reject();
       code: 'Promise.reject?.(5);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 20,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -507,12 +550,12 @@ foo.reject();
       code: 'Promise?.reject(5);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 19,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -520,12 +563,12 @@ foo.reject();
       code: 'Promise?.reject?.(5);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -533,12 +576,12 @@ foo.reject();
       code: '(Promise?.reject)(5);',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -546,12 +589,12 @@ foo.reject();
       code: noFormat`(Promise?.reject)?.(5);`,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 23,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -559,12 +602,12 @@ foo.reject();
       code: "Promise['reject'](5);",
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 21,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -574,12 +617,12 @@ foo.reject();
       code: 'Promise.reject((foo += new Error()));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -587,12 +630,12 @@ foo.reject();
       code: 'Promise.reject((foo -= new Error()));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -600,12 +643,12 @@ foo.reject();
       code: 'Promise.reject((foo **= new Error()));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -613,12 +656,12 @@ foo.reject();
       code: 'Promise.reject((foo <<= new Error()));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -626,12 +669,12 @@ foo.reject();
       code: 'Promise.reject((foo |= new Error()));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -639,12 +682,12 @@ foo.reject();
       code: 'Promise.reject((foo &= new Error()));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 1,
           endColumn: 37,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -655,12 +698,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -671,12 +714,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -688,12 +731,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 4,
-          endLine: 4,
           column: 1,
           endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -704,12 +747,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -720,12 +763,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -736,12 +779,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -752,12 +795,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -768,12 +811,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -784,12 +827,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -800,12 +843,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -816,12 +859,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -833,12 +876,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 4,
-          endLine: 4,
           column: 1,
           endColumn: 20,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -849,12 +892,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -865,12 +908,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -881,12 +924,12 @@ Promise.reject(foo);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -899,12 +942,12 @@ new Promise(function (resolve, reject) {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 3,
           endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -916,12 +959,12 @@ new Promise(function (resolve, reject) {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 3,
           endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -933,12 +976,12 @@ new Promise((resolve, reject) => {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 3,
           endColumn: 11,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -946,12 +989,12 @@ new Promise((resolve, reject) => {
       code: 'new Promise((resolve, reject) => reject(5));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 34,
           endColumn: 43,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -966,12 +1009,12 @@ new Promise((resolve, reject) => {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 4,
-          endLine: 4,
           column: 14,
           endColumn: 38,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -979,12 +1022,12 @@ new Promise((resolve, reject) => {
       code: 'new Promise((yes, no) => no(5));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 26,
           endColumn: 31,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -992,12 +1035,12 @@ new Promise((resolve, reject) => {
       code: 'new Promise(({ foo, bar, baz }, reject) => reject(5));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 44,
           endColumn: 53,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1009,12 +1052,12 @@ new Promise(function (reject, reject) {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 3,
           endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1026,12 +1069,12 @@ new Promise(function (foo, arguments) {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 3,
           endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1039,12 +1082,12 @@ new Promise(function (foo, arguments) {
       code: 'new Promise((foo, arguments) => arguments(5));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 33,
           endColumn: 45,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1056,12 +1099,12 @@ new Promise(function ({}, reject) {
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 3,
           endColumn: 12,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1069,12 +1112,12 @@ new Promise(function ({}, reject) {
       code: 'new Promise(({}, reject) => reject(5));',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 29,
           endColumn: 38,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1082,12 +1125,12 @@ new Promise(function ({}, reject) {
       code: 'new Promise((resolve, reject, somethingElse = reject(5)) => {});',
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
           column: 47,
           endColumn: 56,
+          endLine: 1,
+          line: 1,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1100,12 +1143,12 @@ new foo.bar((resolve, reject) => reject(5));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 5,
-          endLine: 5,
           column: 34,
           endColumn: 43,
+          endLine: 5,
+          line: 5,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1118,12 +1161,12 @@ new (foo?.bar)((resolve, reject) => reject(5));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 5,
-          endLine: 5,
           column: 37,
           endColumn: 46,
+          endLine: 5,
+          line: 5,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1134,12 +1177,12 @@ new foo((resolve, reject) => reject(5));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 30,
           endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1150,12 +1193,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1166,12 +1209,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1183,12 +1226,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 4,
-          endLine: 4,
           column: 34,
           endColumn: 45,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1199,12 +1242,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1215,12 +1258,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1231,12 +1274,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1247,12 +1290,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1263,12 +1306,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1279,12 +1322,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1295,12 +1338,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1311,12 +1354,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1328,12 +1371,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 4,
-          endLine: 4,
           column: 34,
           endColumn: 45,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1344,12 +1387,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1360,12 +1403,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1376,12 +1419,12 @@ new Promise((resolve, reject) => reject(foo));
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 34,
           endColumn: 45,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1392,12 +1435,12 @@ Foo.reject(5);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1408,12 +1451,12 @@ foo.reject(5);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 3,
-          endLine: 3,
           column: 1,
           endColumn: 14,
+          endLine: 3,
+          line: 3,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },
@@ -1425,12 +1468,80 @@ Bar.reject(5);
       `,
       errors: [
         {
-          messageId: 'rejectAnError',
-          type: AST_NODE_TYPES.CallExpression,
-          line: 4,
-          endLine: 4,
           column: 1,
           endColumn: 14,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: PromiseConstructor;
+function fun<T extends number>(t: T): void {
+  foo.reject(t);
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 16,
+          endLine: 4,
+          line: 4,
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      options: [{ allowThrowingAny: false, allowThrowingUnknown: true }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+      options: [{ allowThrowingAny: true, allowThrowingUnknown: false }],
+    },
+    {
+      code: `
+        declare const someUnknownValue: unknown;
+        Promise.reject(someUnknownValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        declare const someAnyValue: any;
+        Promise.reject(someAnyValue);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
         },
       ],
     },

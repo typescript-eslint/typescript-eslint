@@ -2,10 +2,11 @@ import type { TSESTree } from '@typescript-eslint/types';
 
 import type { ScopeManager } from '../ScopeManager';
 import type { Scope } from './Scope';
+
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class ClassStaticBlockScope extends ScopeBase<
+export class ClassStaticBlockScope extends ScopeBase<
   ScopeType.classStaticBlock,
   TSESTree.StaticBlock,
   Scope
@@ -18,5 +19,3 @@ class ClassStaticBlockScope extends ScopeBase<
     super(scopeManager, ScopeType.classStaticBlock, upperScope, block, false);
   }
 }
-
-export { ClassStaticBlockScope };

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable @typescript-eslint/no-namespace, no-restricted-syntax */
 
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
@@ -42,7 +42,7 @@ declare class TokenStore {
   /**
    * Gets the first token of the given node.
    * @param node The AST node.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getFirstToken<T extends SourceCode.CursorWithSkipOptions>(
@@ -53,7 +53,7 @@ declare class TokenStore {
    * Gets the first token between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getFirstTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
@@ -65,7 +65,6 @@ declare class TokenStore {
    * Gets the first `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getFirstTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -86,7 +85,7 @@ declare class TokenStore {
   /**
    * Gets the last token of the given node.
    * @param node The AST node.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getLastToken<T extends SourceCode.CursorWithSkipOptions>(
@@ -97,7 +96,7 @@ declare class TokenStore {
    * Gets the last token between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getLastTokenBetween<T extends SourceCode.CursorWithSkipOptions>(
@@ -109,7 +108,6 @@ declare class TokenStore {
    * Gets the last `count` tokens of the given node.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getLastTokens<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node,
@@ -130,7 +128,7 @@ declare class TokenStore {
   /**
    * Gets the token that follows a given node or token.
    * @param node The AST node or token.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns An object representing the token.
    */
   getTokenAfter<T extends SourceCode.CursorWithSkipOptions>(
@@ -150,7 +148,7 @@ declare class TokenStore {
   /**
    * Gets the token starting at the specified index.
    * @param offset Index of the start of the token's range.
-   * @param option The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.skip`. If this is a function then it's `options.filter`.
    * @returns The token starting at index, or null if no such token.
    */
   getTokenByRangeStart<T extends { includeComments?: boolean }>(
@@ -183,21 +181,19 @@ declare class TokenStore {
    * Gets the `count` tokens that follows a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
    * @param node The AST node.
    * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
-   * @returns Tokens.
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
@@ -209,14 +205,14 @@ declare class TokenStore {
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    options?: T | number,
+    options?: number | T,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 declare class SourceCodeBase extends TokenStore {
   /**
    * Represents parsed source code.
-   * @param text The source code text.
    * @param ast The Program node of the AST representing the code. This AST should be created from the text that BOM was stripped.
    */
   constructor(text: string, ast: SourceCode.Program);
@@ -230,6 +226,9 @@ declare class SourceCodeBase extends TokenStore {
    * The parsed AST for the source code.
    */
   ast: SourceCode.Program;
+  applyInlineConfig(): void;
+  applyLanguageOptions(): void;
+  finalize(): void;
   /**
    * Retrieves an array containing all comments in the source code.
    * @returns An array of comment nodes.
@@ -237,7 +236,7 @@ declare class SourceCodeBase extends TokenStore {
   getAllComments(): TSESTree.Comment[];
   /**
    * Converts a (line, column) pair into a range index.
-   * @param loc A line/column location
+   * @param location A line/column location
    * @returns The range index of the location in the file.
    */
   getIndexFromLoc(location: TSESTree.Position): number;
@@ -416,7 +415,6 @@ namespace SourceCode {
       >;
 
   export type CursorWithSkipOptions =
-    | FilterPredicate
     | number
     | {
         /**
@@ -431,12 +429,16 @@ namespace SourceCode {
          * The count of tokens the cursor skips.
          */
         skip?: number;
-      };
+      }
+    | FilterPredicate;
 
   export type CursorWithCountOptions =
-    | FilterPredicate
     | number
     | {
+        /**
+         * The maximum count of tokens the cursor iterates.
+         */
+        count?: number;
         /**
          * The predicate function to choose tokens.
          */
@@ -445,11 +447,8 @@ namespace SourceCode {
          * The flag to iterate comments as well.
          */
         includeComments?: boolean;
-        /**
-         * The maximum count of tokens the cursor iterates.
-         */
-        count?: number;
-      };
+      }
+    | FilterPredicate;
 }
 
 class SourceCode extends (ESLintSourceCode as typeof SourceCodeBase) {}

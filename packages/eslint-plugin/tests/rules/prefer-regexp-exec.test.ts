@@ -6,10 +6,11 @@ import { getFixturesRootDir } from '../RuleTester';
 const rootPath = getFixturesRootDir();
 
 const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
+  languageOptions: {
+    parserOptions: {
+      project: './tsconfig.json',
+      tsconfigRootDir: rootPath,
+    },
   },
 });
 
@@ -82,15 +83,37 @@ function test(str: string) {
   str.match('[a-z');
 }
     `,
+    {
+      code: `
+const text = 'something';
+declare const search: RegExp;
+text.match(search);
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/8614
+    {
+      code: `
+const text = 'something';
+declare const obj: { search: RegExp };
+text.match(obj.search);
+      `,
+    },
+    {
+      code: `
+const text = 'something';
+declare function returnsRegexp(): RegExp;
+text.match(returnsRegexp());
+      `,
+    },
   ],
   invalid: [
     {
       code: "'something'.match(/thing/);",
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
           column: 13,
+          line: 1,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: "/thing/.exec('something');",
@@ -99,9 +122,9 @@ function test(str: string) {
       code: "'something'.match('^[a-z]+thing/?$');",
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 1,
           column: 13,
+          line: 1,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: "/^[a-z]+thing\\/?$/.exec('something');",
@@ -114,9 +137,9 @@ text.match(search);
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
           column: 6,
+          line: 4,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -133,9 +156,9 @@ text.match(search);
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
           column: 6,
+          line: 4,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -152,9 +175,9 @@ function f(s: 'a' | 'b') {
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 3,
           column: 5,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -172,9 +195,9 @@ function f(s: SafeString) {
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
           column: 5,
+          line: 4,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -192,9 +215,9 @@ function f<T extends 'a' | 'b'>(s: T) {
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 3,
           column: 5,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -211,9 +234,9 @@ text.match(search);
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
           column: 6,
+          line: 4,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -230,9 +253,9 @@ function test(pattern: string) {
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 3,
           column: 11,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `
@@ -251,14 +274,14 @@ function temp(text: string): void {
       `,
       errors: [
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 3,
           column: 8,
+          line: 3,
+          messageId: 'regExpExecOverStringMatch',
         },
         {
-          messageId: 'regExpExecOverStringMatch',
-          line: 4,
           column: 8,
+          line: 4,
+          messageId: 'regExpExecOverStringMatch',
         },
       ],
       output: `

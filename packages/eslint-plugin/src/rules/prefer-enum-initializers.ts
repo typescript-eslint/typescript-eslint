@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
+export type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
 export default createRule<[], MessageIds>({
   name: 'prefer-enum-initializers',
@@ -24,7 +24,7 @@ export default createRule<[], MessageIds>({
   defaultOptions: [],
   create(context) {
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
-      const { members } = node;
+      const { members } = node.body;
 
       members.forEach((member, index) => {
         if (member.initializer == null) {

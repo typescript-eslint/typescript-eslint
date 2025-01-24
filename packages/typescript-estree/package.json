@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "7.1.0",
+  "version": "8.21.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -22,7 +22,7 @@
   },
   "types": "./dist/index.d.ts",
   "engines": {
-    "node": "^16.0.0 || >=18.0.0"
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,8 @@
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
-  "license": "BSD-2-Clause",
+  "homepage": "https://typescript-eslint.io/packages/typescript-estree",
+  "license": "MIT",
   "keywords": [
     "ast",
     "estree",
@@ -50,34 +51,29 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage --runInBand --verbose",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "7.1.0",
-    "@typescript-eslint/visitor-keys": "7.1.0",
+    "@typescript-eslint/types": "8.21.0",
+    "@typescript-eslint/visitor-keys": "8.21.0",
     "debug": "^4.3.4",
-    "globby": "^11.1.0",
+    "fast-glob": "^3.3.2",
     "is-glob": "^4.0.3",
-    "minimatch": "9.0.3",
-    "semver": "^7.5.4",
-    "ts-api-utils": "^1.0.1"
+    "minimatch": "^9.0.4",
+    "semver": "^7.6.0",
+    "ts-api-utils": "^2.0.0"
   },
   "devDependencies": {
-    "@babel/code-frame": "*",
-    "@babel/parser": "*",
+    "@jest/types": "29.6.3",
     "glob": "*",
     "jest": "29.7.0",
-    "jest-specific-snapshot": "^8.0.0",
-    "make-dir": "*",
-    "prettier": "^3.0.3",
+    "prettier": "^3.2.5",
     "rimraf": "*",
     "tmp": "*",
     "typescript": "*"
   },
-  "peerDependenciesMeta": {
-    "typescript": {
-      "optional": true
-    }
+  "peerDependencies": {
+    "typescript": ">=4.8.4 <5.8.0"
   },
   "funding": {
     "type": "opencollective",
