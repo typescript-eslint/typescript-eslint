@@ -581,6 +581,46 @@ declare let x: (${type} & { __brand?: any }) | undefined;
       declare let y: number;
       !x ? y : x;
     `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== null ? defaultBoxOptional.a?.b : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+    `,
+    `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | null } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+    `,
     {
       code: `
 declare let x: 0 | 1 | 0n | 1n | undefined;
@@ -4690,6 +4730,270 @@ declare function getFallbackBox(): Box;
 declare const defaultBox: Box | undefined;
 
 defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b != null ? defaultBoxOptional.a?.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b != null ? defaultBoxOptional.a.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ? defaultBoxOptional.a?.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ? defaultBoxOptional.a.b : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
+  ? defaultBoxOptional.a?.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b !== undefined && defaultBoxOptional.a?.b !== null
+  ? defaultBoxOptional.a.b
+  : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBoxOptional: { a?: { b?: Box | undefined } };
+
+defaultBoxOptional.a?.b ?? getFallbackBox();
       `,
             },
           ],
