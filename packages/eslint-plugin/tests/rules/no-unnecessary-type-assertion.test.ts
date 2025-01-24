@@ -154,25 +154,37 @@ class Foo {
 }
     `,
     `
-type S = 10;
-
 class T {
   a = 'a' as const;
-  b = 3 as 3;
-  c = 10 as S;
 }
     `,
-    {
-      code: `
+    `
+class T {
+  a = 3 as 3;
+}
+    `,
+    `
+class T {
+  a = 10;
+}
+    `,
+    `
 const foo = 'foo';
 
 class T {
-  readonly a = 'a';
-  readonly b = 3;
   readonly test = \`\${foo}\` as const;
 }
-      `,
-    },
+    `,
+    `
+class T {
+  readonly a = 3 + 5;
+}
+    `,
+    `
+class T {
+  readonly a = { foo: 'foo' } as const;
+}
+    `,
     `
       declare const y: number | null;
       console.log(y!);
@@ -1211,6 +1223,24 @@ type S = 10;
 
 class T {
   readonly a = 10;
+}
+      `,
+    },
+    {
+      code: `
+class T {
+  readonly a = (3 + 5) as number;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = (3 + 5);
 }
       `,
     },
