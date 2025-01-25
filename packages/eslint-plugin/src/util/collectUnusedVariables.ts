@@ -17,7 +17,6 @@ import {
 } from '@typescript-eslint/utils';
 
 import { isTypeImport } from './isTypeImport';
-import { isDefinitionFile } from './misc';
 import { referenceContainsTypeQuery } from './referenceContainsTypeQuery';
 
 interface VariableAnalysis {
@@ -77,30 +76,26 @@ class UnusedVarsVisitor extends Visitor {
 
   protected TSMethodSignature = this.visitFunctionTypeSignature;
 
-  readonly #isDefinitionFile: boolean;
-
   readonly #scopeManager: TSESLint.Scope.ScopeManager;
 
-  private constructor(scopeManager: ScopeManager, isDefinitionFile: boolean) {
+  private constructor(scopeManager: ScopeManager) {
     super({
       visitChildrenEvenIfSelectorExists: true,
     });
 
     this.#scopeManager = scopeManager;
-    this.#isDefinitionFile = isDefinitionFile;
   }
 
   public static collectUnusedVariables(
     program: TSESTree.Program,
     scopeManager: ScopeManager,
-    isDefinitionFile: boolean,
   ): VariableAnalysis {
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
     }
 
-    const visitor = new this(scopeManager, isDefinitionFile);
+    const visitor = new this(scopeManager);
     visitor.visit(program);
 
     const unusedVars = visitor.collectUnusedVariables(
@@ -177,11 +172,6 @@ class UnusedVarsVisitor extends Visitor {
       // expression to self-reference if it has a name defined
       !scope.functionExpressionScope
     ) {
-      const implicitlyExported = allVariablesImplicitlyExported(
-        scope,
-        this.#isDefinitionFile,
-      );
-
       for (const variable of scope.variables) {
         // cases that we don't want to treat as used or unused
         if (
@@ -193,7 +183,6 @@ class UnusedVarsVisitor extends Visitor {
         }
 
         if (
-          implicitlyExported ||
           // variables marked with markVariableAsUsed()
           variable.eslintUsed ||
           // basic exported variables
@@ -480,64 +469,6 @@ function isExported(variable: ScopeVariable): boolean {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return node.parent!.type.startsWith('Export');
   });
-}
-
-function getStatementsOfNode(
-  block: TSESTree.Program | TSESTree.TSModuleDeclaration,
-): TSESTree.ProgramStatement[] {
-  if (block.type === AST_NODE_TYPES.Program) {
-    return block.body;
-  }
-
-  if (block.body == null) {
-    return [];
-  }
-
-  return block.body.body;
-}
-
-function hasOverridingExportStatement(
-  body: TSESTree.ProgramStatement[],
-): boolean {
-  for (const statement of body) {
-    if (
-      (statement.type === AST_NODE_TYPES.ExportNamedDeclaration &&
-        statement.declaration == null) ||
-      statement.type === AST_NODE_TYPES.ExportAllDeclaration ||
-      statement.type === AST_NODE_TYPES.TSExportAssignment
-    ) {
-      return true;
-    }
-
-    if (
-      statement.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
-      statement.declaration.type === AST_NODE_TYPES.Identifier
-    ) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-function allVariablesImplicitlyExported(
-  scope: TSESLint.Scope.Scope,
-  isDefinitionFile: boolean,
-): boolean {
-  if (
-    !isDefinitionFile ||
-    !(scope.type === ScopeType.tsModule || scope.type === ScopeType.module)
-  ) {
-    return false;
-  }
-
-  const body = getStatementsOfNode(scope.block);
-
-  if (hasOverridingExportStatement(body)) {
-    return false;
-  }
-
-  return true;
 }
 
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['??=', '&&=', '||=']);
@@ -899,6 +830,5 @@ export function collectVariables<
       context.sourceCode.scopeManager,
       'Missing required scope manager',
     ),
-    isDefinitionFile(context.filename),
   );
 }
