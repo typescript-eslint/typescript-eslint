@@ -6,7 +6,11 @@ import path from 'node:path';
 
 import type { TypeOrValueSpecifier } from '../src/TypeOrValueSpecifier';
 
-import { typeMatchesSpecifier, typeOrValueSpecifiersSchema } from '../src';
+import {
+  typeMatchesSpecifier,
+  typeOrValueSpecifiersSchema,
+  valueMatchesSpecifier,
+} from '../src';
 
 describe('TypeOrValueSpecifier', () => {
   describe('Schema', () => {
@@ -505,5 +509,106 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
       ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
     ])("doesn't match an error type: %s", runTestNegative);
+  });
+
+  describe('valueMatchesSpecifier', () => {
+    function runTests(
+      code: string,
+      specifier: TypeOrValueSpecifier,
+      expected: boolean,
+    ): void {
+      const rootDir = path.join(__dirname, 'fixtures');
+      const { ast } = parseForESLint(code, {
+        disallowAutomaticSingleRunInference: true,
+        filePath: path.join(rootDir, 'file.ts'),
+        project: './tsconfig.json',
+        tsconfigRootDir: rootDir,
+      });
+
+      const declaration = ast.body.at(-1) as TSESTree.VariableDeclaration;
+      const { init } = declaration.declarations[0];
+      expect(valueMatchesSpecifier(init!, specifier)).toBe(expected);
+    }
+
+    function runTestPositive(
+      code: string,
+      specifier: TypeOrValueSpecifier,
+    ): void {
+      runTests(code, specifier, true);
+    }
+
+    function runTestNegative(
+      code: string,
+      specifier: TypeOrValueSpecifier,
+    ): void {
+      runTests(code, specifier, false);
+    }
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['const value = 45; const hoge = value;', 'value'],
+      ['let value = 45; const hoge = value;', 'value'],
+      ['var value = 45; const hoge = value;', 'value'],
+    ])('matches a matching universal string specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['const value = 45; const hoge = value;', 'incorrect'],
+    ])(
+      "doesn't match a mismatched universal string specifier: %s",
+      runTestNegative,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'const value = 45; const hoge = value;',
+        { from: 'file', name: 'value' },
+      ],
+      [
+        'const value = 45; const hoge = value;',
+        { from: 'file', name: ['value', 'hoge'] },
+      ],
+      ['let value = 45; const hoge = value;', { from: 'file', name: 'value' }],
+      ['var value = 45; const hoge = value;', { from: 'file', name: 'value' }],
+    ])('matches a matching file specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'const value = 45; const hoge = value;',
+        { from: 'file', name: 'incorrect' },
+      ],
+      [
+        'const value = 45; const hoge = value;',
+        { from: 'file', name: ['incorrect', 'invalid'] },
+      ],
+    ])("doesn't match a mismatched file specifier: %s", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['const value = console', { from: 'lib', name: 'console' }],
+      ['const value = console', { from: 'lib', name: ['console', 'hoge'] }],
+      ['let value = console', { from: 'lib', name: 'console' }],
+      ['var value = console', { from: 'lib', name: 'console' }],
+    ])('matches a matching lib specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['const value = console', { from: 'lib', name: 'incorrect' }],
+      ['const value = console', { from: 'lib', name: ['incorrect', 'window'] }],
+    ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'import { mock } from "node:test"; const hoge = mock;',
+        { from: 'package', name: 'mock', package: 'node:test' },
+      ],
+      [
+        'import { mock } from "node:test"; const hoge = mock;',
+        { from: 'package', name: ['mock', 'hoge'], package: 'node:test' },
+      ],
+    ])('matches a matching package specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'import { mock } from "node:test"; const hoge = mock;',
+        { from: 'package', name: 'hoge', package: 'node:test' },
+      ],
+    ])("doesn't match a mismatched package specifier: %s", runTestNegative);
   });
 });
