@@ -845,7 +845,7 @@ function overloadingThatCanReturnPromise(
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       output: `
@@ -868,7 +868,7 @@ function overloadingThatIncludeAny(a?: boolean): any | number {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [{ allowAny: false }],
@@ -883,7 +883,7 @@ function overloadingThatIncludeUnknown(a?: boolean): unknown | number {
       `,
       errors: [
         {
-          messageId,
+          messageId: 'missingAsync',
         },
       ],
       options: [{ allowAny: false }],
