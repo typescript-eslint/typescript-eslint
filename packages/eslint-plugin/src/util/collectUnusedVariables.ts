@@ -1,4 +1,7 @@
-import type { ScopeVariable, Variable } from '@typescript-eslint/scope-manager';
+import type {
+  ScopeManager,
+  ScopeVariable,
+} from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import {
@@ -30,10 +33,7 @@ interface MutableVariableAnalysis {
  * This class leverages an AST visitor to mark variables as used via the
  * `eslintUsed` property.
  */
-class UnusedVarsVisitor<
-  MessageIds extends string,
-  Options extends readonly unknown[],
-> extends Visitor {
+class UnusedVarsVisitor extends Visitor {
   /**
    * We keep a weak cache so that multiple rules can share the calculation
    */
@@ -81,32 +81,26 @@ class UnusedVarsVisitor<
 
   readonly #scopeManager: TSESLint.Scope.ScopeManager;
 
-  private constructor(context: TSESLint.RuleContext<MessageIds, Options>) {
+  private constructor(scopeManager: ScopeManager, isDefinitionFile: boolean) {
     super({
       visitChildrenEvenIfSelectorExists: true,
     });
 
-    const scopeManager = ESLintUtils.nullThrows(
-      context.sourceCode.scopeManager,
-      'Missing required scope manager',
-    );
-
     this.#scopeManager = scopeManager;
-    this.#isDefinitionFile = isDefinitionFile(context.filename);
+    this.#isDefinitionFile = isDefinitionFile;
   }
 
-  public static collectUnusedVariables<
-    MessageIds extends string,
-    Options extends readonly unknown[],
-  >(context: TSESLint.RuleContext<MessageIds, Options>): VariableAnalysis {
-    const program = context.sourceCode.ast;
-
+  public static collectUnusedVariables(
+    program: TSESTree.Program,
+    scopeManager: ScopeManager,
+    isDefinitionFile: boolean,
+  ): VariableAnalysis {
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
     }
 
-    const visitor = new this(context);
+    const visitor = new this(scopeManager, isDefinitionFile);
     visitor.visit(program);
 
     const unusedVars = visitor.collectUnusedVariables(
@@ -188,7 +182,7 @@ class UnusedVarsVisitor<
         this.#isDefinitionFile,
       );
 
-      for (const variable of implicitlyExported ? [] : scope.variables) {
+      for (const variable of scope.variables) {
         // cases that we don't want to treat as used or unused
         if (
           // implicit lib variables (from @typescript-eslint/scope-manager)
@@ -199,6 +193,7 @@ class UnusedVarsVisitor<
         }
 
         if (
+          implicitlyExported ||
           // variables marked with markVariableAsUsed()
           variable.eslintUsed ||
           // basic exported variables
@@ -487,42 +482,59 @@ function isExported(variable: ScopeVariable): boolean {
   });
 }
 
+function getStatementsOfNode(
+  block: TSESTree.Program | TSESTree.TSModuleDeclaration,
+): TSESTree.ProgramStatement[] {
+  if (block.type === AST_NODE_TYPES.Program) {
+    return block.body;
+  }
+
+  if (block.body == null) {
+    return [];
+  }
+
+  return block.body.body;
+}
+
+function hasOverridingExportStatement(
+  body: TSESTree.ProgramStatement[],
+): boolean {
+  for (const statement of body) {
+    if (
+      (statement.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+        statement.declaration == null) ||
+      statement.type === AST_NODE_TYPES.ExportAllDeclaration ||
+      statement.type === AST_NODE_TYPES.TSExportAssignment
+    ) {
+      return true;
+    }
+
+    if (
+      statement.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
+      statement.declaration.type === AST_NODE_TYPES.Identifier
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function allVariablesImplicitlyExported(
   scope: TSESLint.Scope.Scope,
   isDefinitionFile: boolean,
 ): boolean {
-  // TODO: does this also happen in ambient module declarations?
   if (
     !isDefinitionFile ||
-    !(
-      scope.type === ScopeType.tsModule ||
-      scope.type === ScopeType.module ||
-      scope.type === ScopeType.global
-    )
+    !(scope.type === ScopeType.tsModule || scope.type === ScopeType.module)
   ) {
     return false;
   }
 
-  // TODO: test modules, globals
-  // TODO: look for `export {}`
+  const body = getStatementsOfNode(scope.block);
 
-  function isExportImportEquals(variable: Variable): boolean {
-    for (const def of variable.defs) {
-      if (
-        def.type === TSESLint.Scope.DefinitionType.ImportBinding &&
-        def.node.type === AST_NODE_TYPES.TSImportEqualsDeclaration &&
-        def.node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration
-      ) {
-        return true;
-      }
-    }
+  if (hasOverridingExportStatement(body)) {
     return false;
-  }
-
-  for (const variable of scope.variables) {
-    if (isExported(variable) && !isExportImportEquals(variable)) {
-      return false;
-    }
   }
 
   return true;
@@ -881,5 +893,12 @@ export function collectVariables<
 >(
   context: Readonly<TSESLint.RuleContext<MessageIds, Options>>,
 ): VariableAnalysis {
-  return UnusedVarsVisitor.collectUnusedVariables(context);
+  return UnusedVarsVisitor.collectUnusedVariables(
+    context.sourceCode.ast,
+    ESLintUtils.nullThrows(
+      context.sourceCode.scopeManager,
+      'Missing required scope manager',
+    ),
+    isDefinitionFile(context.filename),
+  );
 }

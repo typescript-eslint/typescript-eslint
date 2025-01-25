@@ -1168,20 +1168,15 @@ export class Foo {
         },
       ],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2867
     {
       code: `
 export namespace Foo {
   const foo: 1234;
-  export const bar: string;
-  export namespace NS {
-    const baz: 1234;
-  }
+  export {};
 }
       `,
       errors: [
         {
-          column: 9,
           data: {
             action: 'defined',
             additional: '',
@@ -1196,23 +1191,163 @@ export namespace Foo {
     {
       code: `
 export namespace Foo {
-  export import Bar = Something.Bar;
   const foo: 1234;
-  export const bar: string;
-  export namespace NS {
-    const baz: 1234;
-  }
+  const bar: 4567;
+
+  export { bar };
 }
       `,
       errors: [
         {
-          column: 9,
           data: {
             action: 'defined',
             additional: '',
             varName: 'foo',
           },
-          line: 4,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+  const bar: 4567;
+  export const bazz: 4567;
+
+  export { bar };
+}
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
+export {};
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
+const bar: 4567;
+
+export { bar };
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
+const bar: 4567;
+export const bazz: 4567;
+
+export { bar };
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: string;
+const bar: number;
+
+export default bar;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: string;
+const bar: number;
+export const bazz: number;
+
+export default bar;
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 2,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: string;
+export const bar: number;
+
+export * from '...';
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'foo',
+          },
+          line: 2,
           messageId: 'unusedVar',
         },
       ],
@@ -1221,23 +1356,42 @@ export namespace Foo {
     {
       code: `
 declare module 'foo' {
-  export import Bar = Something.Bar;
-  const foo: 1234;
-  export const bar: string;
-  export namespace NS {
-    const baz: 1234;
-  }
+  type Foo = 1;
+  type Bar = 1;
+
+  export = Bar;
 }
       `,
       errors: [
         {
-          column: 9,
           data: {
             action: 'defined',
             additional: '',
-            varName: 'foo',
+            varName: 'Foo',
           },
-          line: 4,
+          line: 3,
+          messageId: 'unusedVar',
+        },
+      ],
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+namespace Foo {
+  type Foo = 1;
+  type Bar = 1;
+
+  export = Bar;
+}
+      `,
+      errors: [
+        {
+          data: {
+            action: 'defined',
+            additional: '',
+            varName: 'Foo',
+          },
+          line: 3,
           messageId: 'unusedVar',
         },
       ],
@@ -2412,12 +2566,25 @@ export class Foo {
   }
 }
     `,
-    // https://github.com/typescript-eslint/typescript-eslint/issues/2867
     {
       code: `
 export namespace Foo {
   const foo: 1234;
 }
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  const foo: 1234;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+const foo: 1234;
       `,
       filename: 'foo.d.ts',
     },
@@ -2436,6 +2603,93 @@ declare module 'foo' {
   export import Bar = Something.Bar;
   const foo: 1234;
 }
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export import Bar = Something.Bar;
+const foo: 1234;
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  export import Bar = Something.Bar;
+  const foo: 1234;
+  export const bar: string;
+  export namespace NS {
+    const baz: 1234;
+  }
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  export import Bar = Something.Bar;
+  const foo: 1234;
+  export const bar: string;
+  export namespace NS {
+    const baz: 1234;
+  }
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export import Bar = Something.Bar;
+const foo: 1234;
+export const bar: string;
+export namespace NS {
+  const baz: 1234;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  const foo: 1234;
+  export const bar: string;
+  export namespace NS {
+    const baz: 1234;
+  }
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+export namespace Foo {
+  type Foo = 1;
+  type Bar = 1;
+
+  export default function foo(): Bar;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+declare module 'foo' {
+  type Foo = 1;
+  type Bar = 1;
+
+  export default function foo(): Bar;
+}
+      `,
+      filename: 'foo.d.ts',
+    },
+    {
+      code: `
+type Foo = 1;
+type Bar = 1;
+
+export default function foo(): Bar;
       `,
       filename: 'foo.d.ts',
     },
