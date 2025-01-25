@@ -36,6 +36,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Check operands that are typed as \`unknown\` when inspecting \\"loose boolean\\" operands.",
         "type": "boolean"
       },
+      "ignoreIfStatements": {
+        "description": "Whether to ignore \`if\` statements with a single expression in the consequent.",
+        "type": "boolean"
+      },
       "requireNullish": {
         "description": "Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting \\"loose boolean\\" operands.",
         "type": "boolean"
@@ -64,6 +68,8 @@ type Options = [
     checkString?: boolean;
     /** Check operands that are typed as \`unknown\` when inspecting "loose boolean" operands. */
     checkUnknown?: boolean;
+    /** Whether to ignore \`if\` statements with a single expression in the consequent. */
+    ignoreIfStatements?: boolean;
     /** Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting "loose boolean" operands. */
     requireNullish?: boolean;
   },
