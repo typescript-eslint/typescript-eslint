@@ -34,7 +34,7 @@ export interface ConfigWithExtends extends TSESLint.FlatConfig.Config {
    *   files: ['** /*.ts'],
    *   extends: [
    *     eslint.configs.recommended,
-   *     ...tseslint.configs.recommended,
+   *     tseslint.configs.recommended,
    *   ],
    *   rules: {
    *     '@typescript-eslint/array-type': 'error',
@@ -81,7 +81,7 @@ type Config = TSESLint.FlatConfig.Config;
  *
  * export default tseslint.config(
  *   eslint.configs.recommended,
- *   ...tseslint.configs.recommended,
+ *   tseslint.configs.recommended,
  *   {
  *     rules: {
  *       '@typescript-eslint/array-type': 'error',
