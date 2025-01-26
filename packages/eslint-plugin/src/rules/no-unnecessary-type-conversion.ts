@@ -268,25 +268,34 @@ export default createRule<Options, MessageIds>({
           const getType = () =>
             getConstrainedTypeAtLocation(services, node.arguments[0]);
 
+          const isBuiltInCall = (name: string) => {
+            if ((node.callee as TSESTree.Identifier).name === name) {
+              const scope = context.sourceCode.getScope(node);
+              const variable = scope.set.get(name);
+              return !variable?.defs.length;
+            }
+            return false;
+          };
+
           if (
             // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-            (node.callee.name === 'String' &&
+            (isBuiltInCall('String') &&
               doesUnderlyingTypeMatchFlag(
                 getType(),
                 ts.TypeFlags.StringLike,
               )) ||
-            (node.callee.name === 'Number' &&
+            (isBuiltInCall('Number') &&
               doesUnderlyingTypeMatchFlag(
                 getType(),
                 ts.TypeFlags.NumberLike,
               )) ||
             // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-            (node.callee.name === 'Boolean' &&
+            (isBuiltInCall('Boolean') &&
               doesUnderlyingTypeMatchFlag(
                 getType(),
                 ts.TypeFlags.BooleanLike,
               )) ||
-            (node.callee.name === 'BigInt' &&
+            (isBuiltInCall('BigInt') &&
               doesUnderlyingTypeMatchFlag(getType(), ts.TypeFlags.BigIntLike))
           ) {
             const keepParens = doesTypeRequireParentheses(

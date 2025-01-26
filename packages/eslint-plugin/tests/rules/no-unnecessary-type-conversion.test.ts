@@ -34,6 +34,12 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     "new String('asdf');",
     '!false;',
     '~256;',
+    `
+      function String(value) {
+        return value;
+      }
+      String('asdf');
+    `,
   ],
 
   invalid: [
