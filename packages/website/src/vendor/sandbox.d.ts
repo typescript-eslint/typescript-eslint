@@ -246,6 +246,7 @@ export declare const createTypeScriptSandbox: (
     importHelpers?: boolean;
     inlineSourceMap?: boolean;
     inlineSources?: boolean;
+    isolatedDeclarations?: boolean;
     isolatedModules?: boolean;
     jsx?: MonacoEditor.languages.typescript.JsxEmit;
     keyofStringsOnly?: boolean;
