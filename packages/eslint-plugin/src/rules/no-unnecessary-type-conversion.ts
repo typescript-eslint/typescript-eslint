@@ -16,7 +16,9 @@ import {
 } from '../util';
 
 type Options = [];
-type MessageIds = 'unnecessaryTypeConversion';
+type MessageIds =
+  | 'unnecessaryTypeConversion'
+  | 'unnecessaryTypeConversionSuggestion';
 
 export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-conversion',
@@ -28,9 +30,12 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       unnecessaryTypeConversion:
         '{{violation}} does not change the type or value of the {{type}}.',
+      unnecessaryTypeConversionSuggestion:
+        'Instead, assert that the value satisfies type {{type}}.',
     },
     schema: [],
   },
@@ -65,6 +70,9 @@ export default createRule<Options, MessageIds>({
       ].includes(type);
     }
 
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
+
     const ruleFixFilter = (ruleFix: boolean | RuleFix) =>
       typeof ruleFix !== 'boolean';
 
@@ -77,6 +85,18 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node.argument);
       if (doesUnderlyingTypeMatchFlag(type, typeFlag)) {
         const keepParens = doesTypeRequireParentheses(node.argument.type);
+        const fixFunction = (fixer: RuleFixer): RuleFix[] =>
+          [
+            keepParens && fixer.insertTextBeforeRange(node.argument.range, '('),
+            fixer.removeRange([
+              isDoubleOperator ? node.parent.range[0] : node.range[0],
+              node.argument.range[0],
+            ]),
+            fixer.removeRange([node.argument.range[1], node.range[1]]),
+            keepParens && fixer.insertTextAfterRange(node.argument.range, ')'),
+          ].filter(ruleFixFilter);
+        const typeString = checker.typeToString(type);
+
         context.report({
           loc: {
             start: isDoubleOperator ? node.parent.loc.start : node.loc.start,
@@ -87,23 +107,28 @@ export default createRule<Options, MessageIds>({
           },
           messageId: 'unnecessaryTypeConversion',
           data: reportDescriptorMessageData,
-          fix: (fixer: RuleFixer): RuleFix[] =>
-            [
-              keepParens &&
-                fixer.insertTextBeforeRange(node.argument.range, '('),
-              fixer.removeRange([
-                isDoubleOperator ? node.parent.range[0] : node.range[0],
-                node.argument.range[0],
-              ]),
-              fixer.removeRange([node.argument.range[1], node.range[1]]),
-              keepParens &&
-                fixer.insertTextAfterRange(node.argument.range, ')'),
-            ].filter(ruleFixFilter),
+          fix: fixFunction,
+          suggest:
+            node.argument.type === AST_NODE_TYPES.Identifier
+              ? [
+                  {
+                    messageId: 'unnecessaryTypeConversionSuggestion',
+                    data: { type: reportDescriptorMessageData.type },
+                    fix(fixer): RuleFix[] {
+                      return [
+                        ...fixFunction(fixer),
+                        fixer.insertTextAfterRange(
+                          node.argument.range,
+                          ` satisfies ${typeString}`,
+                        ),
+                      ];
+                    },
+                  },
+                ]
+              : null,
         });
       }
     }
-
-    const services = getParserServices(context);
 
     return {
       'AssignmentExpression[operator = "+="]'(
@@ -117,19 +142,34 @@ export default createRule<Options, MessageIds>({
             ts.TypeFlags.StringLike,
           )
         ) {
+          const fixFunction = (fixer: RuleFixer): RuleFix[] => [
+            fixer.removeRange([node.left.range[1], node.range[1]]),
+          ];
+
           context.report({
-            loc: {
-              start: node.left.loc.end,
-              end: node.loc.end,
-            },
+            node,
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.range[1]]),
-            ],
+            fix: fixFunction,
+            suggest:
+              node.left.type === AST_NODE_TYPES.Identifier
+                ? [
+                    {
+                      messageId: 'unnecessaryTypeConversionSuggestion',
+                      data: { type: 'string' },
+                      fix: fixer => [
+                        ...fixFunction(fixer),
+                        fixer.insertTextAfterRange(
+                          node.range,
+                          ' satisfies string',
+                        ),
+                      ],
+                    },
+                  ]
+                : null,
           });
         }
       },
@@ -144,6 +184,11 @@ export default createRule<Options, MessageIds>({
             ts.TypeFlags.StringLike,
           )
         ) {
+          const fixFunction = (fixer: RuleFixer): RuleFix[] => [
+            fixer.removeRange([node.range[0], node.left.range[0]]),
+            fixer.removeRange([node.left.range[1], node.range[1]]),
+          ];
+
           context.report({
             loc: {
               start: node.left.loc.end,
@@ -154,10 +199,23 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.left.range[0]]),
-              fixer.removeRange([node.left.range[1], node.range[1]]),
-            ],
+            fix: fixFunction,
+            suggest:
+              node.left.type === AST_NODE_TYPES.Identifier
+                ? [
+                    {
+                      messageId: 'unnecessaryTypeConversionSuggestion',
+                      data: { type: 'string' },
+                      fix: fixer => [
+                        ...fixFunction(fixer),
+                        fixer.insertTextAfterRange(
+                          node.range,
+                          ' satisfies string',
+                        ),
+                      ],
+                    },
+                  ]
+                : null,
           });
         } else if (
           node.left.type === AST_NODE_TYPES.Literal &&
@@ -167,6 +225,11 @@ export default createRule<Options, MessageIds>({
             ts.TypeFlags.StringLike,
           )
         ) {
+          const fixFunction = (fixer: RuleFixer): RuleFix[] => [
+            fixer.removeRange([node.range[0], node.right.range[0]]),
+            fixer.removeRange([node.right.range[1], node.range[1]]),
+          ];
+
           context.report({
             loc: {
               start: node.loc.start,
@@ -177,10 +240,23 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating '' with a string",
             },
-            fix: (fixer): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.right.range[0]]),
-              fixer.removeRange([node.right.range[1], node.range[1]]),
-            ],
+            fix: fixFunction,
+            suggest:
+              node.right.type === AST_NODE_TYPES.Identifier
+                ? [
+                    {
+                      messageId: 'unnecessaryTypeConversionSuggestion',
+                      data: { type: 'string' },
+                      fix: fixer => [
+                        ...fixFunction(fixer),
+                        fixer.insertTextAfterRange(
+                          node.range,
+                          ' satisfies string',
+                        ),
+                      ],
+                    },
+                  ]
+                : null,
           });
         }
       },
@@ -216,28 +292,41 @@ export default createRule<Options, MessageIds>({
             const keepParens = doesTypeRequireParentheses(
               node.arguments[0].type,
             );
+            const fixFunction = (fixer: RuleFixer): RuleFix[] =>
+              [
+                keepParens &&
+                  fixer.insertTextBeforeRange(node.arguments[0].range, '('),
+                fixer.removeRange([node.range[0], node.arguments[0].range[0]]),
+                fixer.removeRange([node.arguments[0].range[1], node.range[1]]),
+                keepParens &&
+                  fixer.insertTextAfterRange(node.arguments[0].range, ')'),
+              ].filter(ruleFixFilter);
+            const typeString = node.callee.name.toLowerCase();
+
             context.report({
               loc: node.callee.loc,
               messageId: 'unnecessaryTypeConversion',
               data: {
                 type: node.callee.name.toLowerCase(),
-                violation: `Passing a ${node.callee.name.toLowerCase()} to ${node.callee.name}()`,
+                violation: `Passing a ${typeString} to ${node.callee.name}()`,
               },
-              fix: (fixer): RuleFix[] =>
-                [
-                  keepParens &&
-                    fixer.insertTextBeforeRange(node.arguments[0].range, '('),
-                  fixer.removeRange([
-                    node.range[0],
-                    node.arguments[0].range[0],
-                  ]),
-                  fixer.removeRange([
-                    node.arguments[0].range[1],
-                    node.range[1],
-                  ]),
-                  keepParens &&
-                    fixer.insertTextAfterRange(node.arguments[0].range, ')'),
-                ].filter(ruleFixFilter),
+              fix: fixFunction,
+              suggest:
+                node.arguments[0].type === AST_NODE_TYPES.Identifier
+                  ? [
+                      {
+                        messageId: 'unnecessaryTypeConversionSuggestion',
+                        data: { type: typeString },
+                        fix: fixer => [
+                          ...fixFunction(fixer),
+                          fixer.insertTextAfterRange(
+                            node.range,
+                            ` satisfies ${typeString}`,
+                          ),
+                        ],
+                      },
+                    ]
+                  : null,
             });
           }
         }
@@ -249,6 +338,22 @@ export default createRule<Options, MessageIds>({
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
           const keepParens = doesTypeRequireParentheses(memberExpr.object.type);
+          const fixFunction = (fixer: RuleFixer): RuleFix[] =>
+            [
+              keepParens &&
+                fixer.insertTextBeforeRange(memberExpr.object.range, '('),
+              fixer.removeRange([
+                memberExpr.parent.range[0],
+                memberExpr.object.range[0],
+              ]),
+              fixer.removeRange([
+                memberExpr.object.range[1],
+                memberExpr.parent.range[1],
+              ]),
+              keepParens &&
+                fixer.insertTextAfterRange(memberExpr.object.range, ')'),
+            ].filter(ruleFixFilter);
+
           context.report({
             loc: {
               start: memberExpr.property.loc.start,
@@ -257,23 +362,25 @@ export default createRule<Options, MessageIds>({
             messageId: 'unnecessaryTypeConversion',
             data: {
               type: 'string',
-              violation: 'Using .toString() on a string',
+              violation: "Calling a string's .toString() method",
             },
-            fix: (fixer): RuleFix[] =>
-              [
-                keepParens &&
-                  fixer.insertTextBeforeRange(memberExpr.object.range, '('),
-                fixer.removeRange([
-                  memberExpr.parent.range[0],
-                  memberExpr.object.range[0],
-                ]),
-                fixer.removeRange([
-                  memberExpr.object.range[1],
-                  memberExpr.parent.range[1],
-                ]),
-                keepParens &&
-                  fixer.insertTextAfterRange(memberExpr.object.range, ')'),
-              ].filter(ruleFixFilter),
+            fix: fixFunction,
+            suggest:
+              memberExpr.object.type === AST_NODE_TYPES.Identifier
+                ? [
+                    {
+                      messageId: 'unnecessaryTypeConversionSuggestion',
+                      data: { type: 'string' },
+                      fix: fixer => [
+                        ...fixFunction(fixer),
+                        fixer.insertTextAfterRange(
+                          memberExpr.object.range,
+                          ` satisfies string`,
+                        ),
+                      ],
+                    },
+                  ]
+                : null,
           });
         }
       },

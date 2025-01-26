@@ -6,7 +6,7 @@ exports[`Validating rule docs no-unnecessary-type-conversion.mdx code examples E
 String('123');
 ~~~~~~ Passing a string to String() does not change the type or value of the string.
 '123'.toString();
-      ~~~~~~~~~~ Using .toString() on a string does not change the type or value of the string.
+      ~~~~~~~~~~ Calling a string's .toString() method does not change the type or value of the string.
 '' + '123';
 ~~~~~ Concatenating '' with a string does not change the type or value of the string.
 '123' + '';
@@ -29,7 +29,7 @@ BigInt(BigInt(1));
 
 let str = '123';
 str += '';
-   ~~~~~~ Concatenating a string with '' does not change the type or value of the string.
+~~~~~~~~~ Concatenating a string with '' does not change the type or value of the string.
 "
 `;
 

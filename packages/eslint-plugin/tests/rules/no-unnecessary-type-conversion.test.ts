@@ -88,16 +88,25 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
       `,
       errors: [
         {
-          column: 12,
+          column: 9,
           endColumn: 18,
           endLine: 3,
           line: 3,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        let str = 'asdf';
+        str satisfies string;
+      `,
+            },
+          ],
         },
       ],
       output: `
         let str = 'asdf';
-        ;
+        str;
       `,
     },
     {
@@ -167,7 +176,18 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
       output: 'BigInt(1);',
     },
 
-    // tests to make sure autofixes preserve parentheses in cases where logic would otherwise break
+    // make sure autofixes preserve parentheses in cases where logic would otherwise break
+    {
+      code: "String('a' + 'b').length;",
+      errors: [
+        {
+          column: 1,
+          endColumn: 7,
+          messageId: 'unnecessaryTypeConversion',
+        },
+      ],
+      output: "('a' + 'b').length;",
+    },
     {
       code: "('a' + 'b').toString().length;",
       errors: [
