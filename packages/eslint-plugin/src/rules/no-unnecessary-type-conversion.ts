@@ -165,7 +165,15 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix: fixFunction,
+            fix:
+              node.parent.type === AST_NODE_TYPES.ExpressionStatement
+                ? (fixer: RuleFixer): RuleFix[] => [
+                    fixer.removeRange([
+                      node.parent.range[0],
+                      node.parent.range[1],
+                    ]),
+                  ]
+                : fixFunction,
             suggest: shouldHaveSatisfiesSuggestion(node.left.type)
               ? [
                   {

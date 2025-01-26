@@ -89,13 +89,13 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
     },
     {
       code: `
-        let str = 'asdf';
-        str += '';
+let str = 'asdf';
+str += '';
       `,
       errors: [
         {
-          column: 9,
-          endColumn: 18,
+          column: 1,
+          endColumn: 10,
           endLine: 3,
           line: 3,
           messageId: 'unnecessaryTypeConversion',
@@ -103,16 +103,44 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
             {
               messageId: 'unnecessaryTypeConversionSuggestion',
               output: `
-        let str = 'asdf';
-        str satisfies string;
+let str = 'asdf';
+str satisfies string;
       `,
             },
           ],
         },
       ],
       output: `
-        let str = 'asdf';
-        str;
+let str = 'asdf';
+
+      `,
+    },
+    {
+      code: `
+let str = 'asdf';
+'asdf' + (str += '');
+      `,
+      errors: [
+        {
+          column: 11,
+          endColumn: 20,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+let str = 'asdf';
+'asdf' + (str satisfies string);
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+let str = 'asdf';
+'asdf' + (str);
       `,
     },
     {
