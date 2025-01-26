@@ -99,7 +99,10 @@ export default createRule<Options, MessageIds>({
             isDoubleOperator ? node.parent.range[0] : node.range[0],
             node.argument.range[0],
           ]),
-          fixer.removeRange([node.argument.range[1], node.range[1]]),
+          fixer.removeRange([
+            node.argument.range[1],
+            isDoubleOperator ? node.parent.range[1] : node.range[1],
+          ]),
           ...surroundWithParentheses(keepParens, fixer, node.argument.range),
         ];
         const typeString = checker.typeToString(type);
