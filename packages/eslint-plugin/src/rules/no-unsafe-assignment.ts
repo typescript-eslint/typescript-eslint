@@ -200,7 +200,7 @@ export default createRule({
           receiverProperty.key.type === AST_NODE_TYPES.TemplateLiteral &&
           receiverProperty.key.quasis.length === 1
         ) {
-          key = String(receiverProperty.key.quasis[0].value.cooked);
+          key = receiverProperty.key.quasis[0].value.cooked;
         } else {
           // can't figure out the name, so skip it
           continue;
