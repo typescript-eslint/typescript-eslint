@@ -271,5 +271,61 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
       ],
       output: '2n * (2n + 2n);',
     },
+
+    // make sure suggestions add parentheses in cases where syntax would otherwise break
+    {
+      code: `
+        let str = 'asdf';
+        String(str).length;
+      `,
+      errors: [
+        {
+          column: 9,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        let str = 'asdf';
+        (str satisfies string).length;
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+        let str = 'asdf';
+        str.length;
+      `,
+    },
+    {
+      code: `
+        let str = 'asdf';
+        str.toString().length;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 23,
+          messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: `
+        let str = 'asdf';
+        (str satisfies string).length;
+      `,
+            },
+          ],
+        },
+      ],
+      output: `
+        let str = 'asdf';
+        str.length;
+      `,
+    },
   ],
 });

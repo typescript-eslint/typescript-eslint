@@ -73,8 +73,17 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const ruleFixFilter = (ruleFix: boolean | RuleFix) =>
-      typeof ruleFix !== 'boolean';
+    const surroundWithParentheses = (
+      keepParens: boolean,
+      fixer: RuleFixer,
+      range: TSESTree.Range,
+    ) =>
+      keepParens
+        ? [
+            fixer.insertTextBeforeRange(range, '('),
+            fixer.insertTextAfterRange(range, ')'),
+          ]
+        : [];
 
     function handleUnaryOperator(
       node: TSESTree.UnaryExpression,
@@ -85,16 +94,14 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node.argument);
       if (doesUnderlyingTypeMatchFlag(type, typeFlag)) {
         const keepParens = doesTypeRequireParentheses(node.argument.type);
-        const fixFunction = (fixer: RuleFixer): RuleFix[] =>
-          [
-            keepParens && fixer.insertTextBeforeRange(node.argument.range, '('),
-            fixer.removeRange([
-              isDoubleOperator ? node.parent.range[0] : node.range[0],
-              node.argument.range[0],
-            ]),
-            fixer.removeRange([node.argument.range[1], node.range[1]]),
-            keepParens && fixer.insertTextAfterRange(node.argument.range, ')'),
-          ].filter(ruleFixFilter);
+        const fixFunction = (fixer: RuleFixer): RuleFix[] => [
+          fixer.removeRange([
+            isDoubleOperator ? node.parent.range[0] : node.range[0],
+            node.argument.range[0],
+          ]),
+          fixer.removeRange([node.argument.range[1], node.range[1]]),
+          ...surroundWithParentheses(keepParens, fixer, node.argument.range),
+        ];
         const typeString = checker.typeToString(type);
 
         context.report({
@@ -116,11 +123,11 @@ export default createRule<Options, MessageIds>({
                     data: { type: reportDescriptorMessageData.type },
                     fix(fixer): RuleFix[] {
                       return [
-                        ...fixFunction(fixer),
                         fixer.insertTextAfterRange(
                           node.argument.range,
                           ` satisfies ${typeString}`,
                         ),
+                        ...fixFunction(fixer),
                       ];
                     },
                   },
@@ -161,11 +168,11 @@ export default createRule<Options, MessageIds>({
                       messageId: 'unnecessaryTypeConversionSuggestion',
                       data: { type: 'string' },
                       fix: fixer => [
-                        ...fixFunction(fixer),
                         fixer.insertTextAfterRange(
                           node.range,
                           ' satisfies string',
                         ),
+                        ...fixFunction(fixer),
                       ],
                     },
                   ]
@@ -207,11 +214,11 @@ export default createRule<Options, MessageIds>({
                       messageId: 'unnecessaryTypeConversionSuggestion',
                       data: { type: 'string' },
                       fix: fixer => [
-                        ...fixFunction(fixer),
                         fixer.insertTextAfterRange(
                           node.range,
                           ' satisfies string',
                         ),
+                        ...fixFunction(fixer),
                       ],
                     },
                   ]
@@ -248,11 +255,11 @@ export default createRule<Options, MessageIds>({
                       messageId: 'unnecessaryTypeConversionSuggestion',
                       data: { type: 'string' },
                       fix: fixer => [
-                        ...fixFunction(fixer),
                         fixer.insertTextAfterRange(
                           node.range,
                           ' satisfies string',
                         ),
+                        ...fixFunction(fixer),
                       ],
                     },
                   ]
@@ -301,15 +308,14 @@ export default createRule<Options, MessageIds>({
             const keepParens = doesTypeRequireParentheses(
               node.arguments[0].type,
             );
-            const fixFunction = (fixer: RuleFixer): RuleFix[] =>
-              [
-                keepParens &&
-                  fixer.insertTextBeforeRange(node.arguments[0].range, '('),
-                fixer.removeRange([node.range[0], node.arguments[0].range[0]]),
-                fixer.removeRange([node.arguments[0].range[1], node.range[1]]),
-                keepParens &&
-                  fixer.insertTextAfterRange(node.arguments[0].range, ')'),
-              ].filter(ruleFixFilter);
+            const fixFunction = (
+              fixer: RuleFixer,
+              keepParens: boolean,
+            ): RuleFix[] => [
+              fixer.removeRange([node.range[0], node.arguments[0].range[0]]),
+              fixer.removeRange([node.arguments[0].range[1], node.range[1]]),
+              ...surroundWithParentheses(keepParens, fixer, node.range),
+            ];
             const typeString = node.callee.name.toLowerCase();
 
             context.report({
@@ -319,7 +325,7 @@ export default createRule<Options, MessageIds>({
                 type: node.callee.name.toLowerCase(),
                 violation: `Passing a ${typeString} to ${node.callee.name}()`,
               },
-              fix: fixFunction,
+              fix: fixer => fixFunction(fixer, keepParens),
               suggest:
                 node.arguments[0].type === AST_NODE_TYPES.Identifier
                   ? [
@@ -327,10 +333,15 @@ export default createRule<Options, MessageIds>({
                         messageId: 'unnecessaryTypeConversionSuggestion',
                         data: { type: typeString },
                         fix: fixer => [
-                          ...fixFunction(fixer),
                           fixer.insertTextAfterRange(
                             node.range,
                             ` satisfies ${typeString}`,
+                          ),
+                          ...fixFunction(
+                            fixer,
+                            keepParens ||
+                              node.parent.type ===
+                                AST_NODE_TYPES.MemberExpression,
                           ),
                         ],
                       },
@@ -347,21 +358,24 @@ export default createRule<Options, MessageIds>({
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
           const keepParens = doesTypeRequireParentheses(memberExpr.object.type);
-          const fixFunction = (fixer: RuleFixer): RuleFix[] =>
-            [
-              keepParens &&
-                fixer.insertTextBeforeRange(memberExpr.object.range, '('),
-              fixer.removeRange([
-                memberExpr.parent.range[0],
-                memberExpr.object.range[0],
-              ]),
-              fixer.removeRange([
-                memberExpr.object.range[1],
-                memberExpr.parent.range[1],
-              ]),
-              keepParens &&
-                fixer.insertTextAfterRange(memberExpr.object.range, ')'),
-            ].filter(ruleFixFilter);
+          const fixFunction = (
+            fixer: RuleFixer,
+            keepParens: boolean,
+          ): RuleFix[] => [
+            fixer.removeRange([
+              memberExpr.parent.range[0],
+              memberExpr.object.range[0],
+            ]),
+            fixer.removeRange([
+              memberExpr.object.range[1],
+              memberExpr.parent.range[1],
+            ]),
+            ...surroundWithParentheses(
+              keepParens,
+              fixer,
+              memberExpr.object.range,
+            ),
+          ];
 
           context.report({
             loc: {
@@ -373,7 +387,7 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Calling a string's .toString() method",
             },
-            fix: fixFunction,
+            fix: fixer => fixFunction(fixer, keepParens),
             suggest:
               memberExpr.object.type === AST_NODE_TYPES.Identifier
                 ? [
@@ -381,10 +395,15 @@ export default createRule<Options, MessageIds>({
                       messageId: 'unnecessaryTypeConversionSuggestion',
                       data: { type: 'string' },
                       fix: fixer => [
-                        ...fixFunction(fixer),
                         fixer.insertTextAfterRange(
                           memberExpr.object.range,
                           ` satisfies string`,
+                        ),
+                        ...fixFunction(
+                          fixer,
+                          keepParens ||
+                            node.parent.type ===
+                              AST_NODE_TYPES.MemberExpression,
                         ),
                       ],
                     },
