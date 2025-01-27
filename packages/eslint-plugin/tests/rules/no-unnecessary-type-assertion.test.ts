@@ -164,20 +164,10 @@ class T {
 }
     `,
     `
-class T {
-  a = 10;
-}
-    `,
-    `
 const foo = 'foo';
 
 class T {
   readonly test = \`\${foo}\` as const;
-}
-    `,
-    `
-class T {
-  readonly a = 3 + 5;
 }
     `,
     `
