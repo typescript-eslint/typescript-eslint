@@ -654,10 +654,10 @@ function isTestNodeEquivalentToNonNullishBranchNode(
   node: TSESTree.ConditionalExpression,
   operator: NullishCheckOperator,
 ): boolean {
-  const consequentNode = getNonNullishBranchNode(node, operator);
+  const nonNullishBranchNode = getNonNullishBranchNode(node, operator);
   if (
     testNode.type === AST_NODE_TYPES.ChainExpression &&
-    consequentNode.type === AST_NODE_TYPES.MemberExpression
+    nonNullishBranchNode.type === AST_NODE_TYPES.MemberExpression
   ) {
     return isTestNodeEquivalentToNonNullishBranchNode(
       testNode.expression,
@@ -665,7 +665,7 @@ function isTestNodeEquivalentToNonNullishBranchNode(
       operator,
     );
   }
-  return isNodeEqual(testNode, consequentNode);
+  return isNodeEqual(testNode, nonNullishBranchNode);
 }
 
 /**
