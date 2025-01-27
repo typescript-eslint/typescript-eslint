@@ -4,10 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import type { NodeWithKey } from '../util';
+
 import {
   createRule,
   getFunctionHeadLoc,
   getParserServices,
+  getStaticMemberAccessValue,
   isArrayMethodCallWithPredicate,
   isFunction,
   isRestParameterDeclaration,
@@ -470,9 +473,6 @@ export default createRule<Options, MessageId>({
           });
         }
       } else if (ts.isMethodDeclaration(tsNode)) {
-        if (ts.isComputedPropertyName(tsNode.name)) {
-          return;
-        }
         const obj = tsNode.parent;
 
         // Below condition isn't satisfied unless something goes wrong,
@@ -492,9 +492,14 @@ export default createRule<Options, MessageId>({
         if (objType == null) {
           return;
         }
-        const propertySymbol = checker.getPropertyOfType(
+        const staticAccessValue = getStaticMemberAccessValue(node, context);
+        if (staticAccessValue == null) {
+          return;
+        }
+        const propertySymbol = getMemberIfExists(
           objType,
-          tsNode.name.text,
+          staticAccessValue,
+          checker,
         );
         if (propertySymbol == null) {
           return;
@@ -594,11 +599,20 @@ export default createRule<Options, MessageId>({
           continue;
         }
 
+        const staticAccessValue = getStaticMemberAccessValue(
+          node as NodeWithKey,
+          context,
+        );
+
+        if (staticAccessValue == null) {
+          continue;
+        }
+
         for (const heritageType of heritageTypes) {
           checkHeritageTypeForMemberReturningVoid(
             nodeMember,
             heritageType,
-            memberName,
+            staticAccessValue,
           );
         }
       }
@@ -614,9 +628,13 @@ export default createRule<Options, MessageId>({
     function checkHeritageTypeForMemberReturningVoid(
       nodeMember: ts.Node,
       heritageType: ts.Type,
-      memberName: string,
+      staticAccessValue: string | symbol,
     ): void {
-      const heritageMember = getMemberIfExists(heritageType, memberName);
+      const heritageMember = getMemberIfExists(
+        heritageType,
+        staticAccessValue,
+        checker,
+      );
       if (heritageMember == null) {
         return;
       }
@@ -970,18 +988,45 @@ function getHeritageTypes(
     .map(typeExpression => checker.getTypeAtLocation(typeExpression));
 }
 
+function getWellKnownStringOfSymbol(symbol: symbol): string | null {
+  const globalSymbolKeys = Object.getOwnPropertyNames(Symbol);
+
+  for (const key of globalSymbolKeys) {
+    if (symbol === Symbol[key as keyof typeof Symbol]) {
+      return key;
+    }
+  }
+
+  return null;
+}
+
 /**
- * @returns The member with the given name in `type`, if it exists.
+ * @returns The member with the given name or known-symbol in `type`, if it exists.
  */
 function getMemberIfExists(
   type: ts.Type,
-  memberName: string,
+  staticAccessValue: string | symbol,
+  checker: ts.TypeChecker,
 ): ts.Symbol | undefined {
-  const escapedMemberName = ts.escapeLeadingUnderscores(memberName);
-  const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
-  return (
-    symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
-  );
+  if (typeof staticAccessValue === 'string') {
+    const escapedMemberName = ts.escapeLeadingUnderscores(staticAccessValue);
+    const symbolMemberMatch = type.getSymbol()?.members?.get(escapedMemberName);
+    return (
+      symbolMemberMatch ?? tsutils.getPropertyOfType(type, escapedMemberName)
+    );
+  }
+
+  const wellKnownSymbolName = getWellKnownStringOfSymbol(staticAccessValue);
+
+  if (wellKnownSymbolName != null) {
+    return tsutils.getWellKnownSymbolPropertyOfType(
+      type,
+      wellKnownSymbolName,
+      checker,
+    );
+  }
+
+  return undefined;
 }
 
 function isStaticMember(node: TSESTree.Node): boolean {
