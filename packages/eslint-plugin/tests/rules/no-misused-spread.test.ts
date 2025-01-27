@@ -306,6 +306,12 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 21,
           line: 1,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: "const a = 'test'.split('');",
+            },
+          ],
         },
       ],
     },
@@ -321,6 +327,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 26,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        function withText<Text extends string>(text: Text) {
+          return text.split('');
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -335,6 +351,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        const test = 'hello';
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -349,6 +374,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        const test = \`he\${'ll'}o\`;
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -363,6 +397,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare const test: string;
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -391,6 +434,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare const test: string & { __brand: 'test' };
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -419,6 +471,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function getString(): string;
+        const a = getString().split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -490,6 +551,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function getString<T extends string>(): T;
+        const a = getString().split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -504,6 +574,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function getString(): string & { __brand: 'test' };
+        const a = getString().split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -944,7 +1023,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         const promise = new Promise(() => {});
         const o = { ...await promise };
@@ -956,21 +1035,25 @@ ruleTester.run('no-misused-spread', rule, {
     },
     {
       code: `
-        const promise = new Promise(() => {});
-        const o = { ...(promise || {}) };
+        declare const promise: Promise<{ a: 1 }>;
+        async function foo() {
+          return { ...(promise || {}) };
+        }
       `,
       errors: [
         {
-          column: 21,
-          endColumn: 39,
-          line: 3,
+          column: 20,
+          endColumn: 38,
+          line: 4,
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
-        const promise = new Promise(() => {});
-        const o = { ...await (promise || {}) };
+        declare const promise: Promise<{ a: 1 }>;
+        async function foo() {
+          return { ...(await (promise || {})) };
+        }
       `,
             },
           ],
@@ -991,7 +1074,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         function withPromise<P extends Promise<void>>(promise: P) {
           return { ...await promise };
@@ -1015,7 +1098,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         declare const maybePromise: Promise<number> | { a: number };
         const o = { ...await maybePromise };
@@ -1038,7 +1121,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         declare const promise: Promise<number> & { a: number };
         const o = { ...await promise };
@@ -1061,7 +1144,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         declare function getPromise(): Promise<number>;
         const o = { ...await getPromise() };
@@ -1084,7 +1167,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         declare function getPromise<T extends Promise<number>>(arg: T): T;
         const o = { ...await getPromise() };
@@ -1819,7 +1902,7 @@ ruleTester.run('no-misused-spread', rule, {
           messageId: 'noPromiseSpreadInObject',
           suggestions: [
             {
-              messageId: 'replacePromiseSpreadInObject',
+              messageId: 'addAwait',
               output: `
         const promise = new Promise(() => {});
 
