@@ -27,8 +27,6 @@ const isIdentifierOrMemberOrChainExpression = isNodeOfTypes([
 
 type NullishCheckOperator = '!' | '!=' | '!==' | '==' | '===' | undefined;
 
-const nullishInequalityOperators = new Set<NullishCheckOperator>(['!=', '!==']);
-
 export type Options = [
   {
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
@@ -679,7 +677,7 @@ function getBranchNodes(
   node: TSESTree.ConditionalExpression,
   operator: NullishCheckOperator,
 ): { nonNullish: TSESTree.Expression; nullish: TSESTree.Expression } {
-  if (!operator || nullishInequalityOperators.has(operator)) {
+  if (!operator || ['!=', '!=='].includes(operator)) {
     return { nonNullish: node.consequent, nullish: node.alternate };
   }
   return { nonNullish: node.alternate, nullish: node.consequent };
