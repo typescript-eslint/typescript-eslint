@@ -16,6 +16,7 @@ This rule reports when you may consider replacing:
 
 - An `||` operator with `??`
 - An `||=` operator with `??=`
+- Ternary expressions (`?:`) that are equivalent to `||` or `??` with `??`
 
 :::caution
 This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
@@ -42,7 +43,9 @@ foo === undefined ? 'a string' : foo;
 
 const foo: string | null = 'bar';
 foo !== null ? foo : 'a string';
+foo ? foo : 'a string';
 foo === null ? 'a string' : foo;
+!foo ? 'a string' : foo;
 ```
 
 Correct code for `ignoreTernaryTests: false`:
@@ -59,6 +62,8 @@ foo ?? 'a string';
 foo ?? 'a string';
 
 const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
 ```
@@ -102,7 +107,7 @@ while (a ?? b) {}
 while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
-a ?? b ? true : false;
+(a ?? b) ? true : false;
 ```
 
 ### `ignoreMixedLogicalExpressions`
@@ -198,13 +203,13 @@ const x = Boolean(a ?? b);
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
-{/* insert option description */}
-
 :::danger Deprecated
 
-> This option will be removed in the next major version of typescript-eslint.
-> :::
-> Unless this is set to `true`, the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+This option will be removed in the next major version of typescript-eslint.
+
+:::
+
+{/* insert option description */}
 
 Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
 

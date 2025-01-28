@@ -73,6 +73,13 @@ enum E {
   C = NaN,
 }
     `,
+    `
+const A = 'A';
+enum E {
+  A = 'A',
+  B = \`\${A}\`,
+}
+    `,
   ],
   invalid: [
     {
@@ -127,6 +134,38 @@ enum E {
           column: 3,
           data: { value: 1 },
           line: 6,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
+    {
+      code: `
+enum E {
+  A = 'A',
+  B = \`A\`,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 'A' },
+          line: 4,
+          messageId: 'duplicateValue',
+        },
+      ],
+    },
+    {
+      code: `
+enum E {
+  A = \`A\`,
+  B = \`A\`,
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          data: { value: 'A' },
+          line: 4,
           messageId: 'duplicateValue',
         },
       ],

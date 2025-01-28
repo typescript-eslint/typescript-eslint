@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowConstructorOnly?: boolean;
     allowEmpty?: boolean;
@@ -12,7 +12,7 @@ type Options = [
     allowWithDecorator?: boolean;
   },
 ];
-type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
+export type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
 export default createRule<Options, MessageIds>({
   name: 'no-extraneous-class',
@@ -123,10 +123,12 @@ export default createRule<Options, MessageIds>({
             onlyConstructor = false;
             if (
               ((prop.type === AST_NODE_TYPES.PropertyDefinition ||
-                prop.type === AST_NODE_TYPES.MethodDefinition) &&
+                prop.type === AST_NODE_TYPES.MethodDefinition ||
+                prop.type === AST_NODE_TYPES.AccessorProperty) &&
                 !prop.static) ||
               prop.type === AST_NODE_TYPES.TSAbstractPropertyDefinition ||
-              prop.type === AST_NODE_TYPES.TSAbstractMethodDefinition // `static abstract` methods and properties are currently not supported. See: https://github.com/microsoft/TypeScript/issues/34516
+              prop.type === AST_NODE_TYPES.TSAbstractMethodDefinition || // `static abstract` methods and properties are currently not supported. See: https://github.com/microsoft/TypeScript/issues/34516
+              prop.type === AST_NODE_TYPES.TSAbstractAccessorProperty
             ) {
               onlyStatic = false;
             }

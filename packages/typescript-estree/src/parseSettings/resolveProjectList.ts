@@ -16,7 +16,7 @@ import {
 } from './ExpiringCache';
 
 const log = debug(
-  'typescript-eslint:typescript-estree:parser:parseSettings:resolveProjectList',
+  'typescript-eslint:typescript-estree:parseSettings:resolveProjectList',
 );
 
 let RESOLUTION_CACHE: ExpiringCache<
@@ -75,8 +75,8 @@ export function resolveProjectList(
     RESOLUTION_CACHE = new ExpiringCache(
       options.singleRun
         ? 'Infinity'
-        : options.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+        : (options.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS),
     );
   } else {
     const cached = RESOLUTION_CACHE.get(cacheKey);

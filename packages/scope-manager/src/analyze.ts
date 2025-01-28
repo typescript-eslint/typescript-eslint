@@ -11,7 +11,7 @@ import { ScopeManager } from './ScopeManager';
 // MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
 //////////////////////////////////////////////////////////
 
-interface AnalyzeOptions {
+export interface AnalyzeOptions {
   /**
    * Known visitor keys.
    */
@@ -59,7 +59,7 @@ interface AnalyzeOptions {
    */
   sourceType?: SourceType;
 
-  // TODO - remove this in v8
+  // TODO - remove this in v10
   /**
    * @deprecated This option never did what it was intended for and will be removed in a future major release.
    */
@@ -80,7 +80,7 @@ const DEFAULT_OPTIONS: Required<AnalyzeOptions> = {
 /**
  * Takes an AST and returns the analyzed scopes.
  */
-function analyze(
+export function analyze(
   tree: TSESTree.Node,
   providedOptions?: AnalyzeOptions,
 ): ScopeManager {
@@ -94,6 +94,7 @@ function analyze(
     jsxFragmentName:
       providedOptions?.jsxFragmentName ?? DEFAULT_OPTIONS.jsxFragmentName,
     jsxPragma:
+      // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
       providedOptions?.jsxPragma === undefined
         ? DEFAULT_OPTIONS.jsxPragma
         : providedOptions.jsxPragma,
@@ -111,5 +112,3 @@ function analyze(
 
   return scopeManager;
 }
-
-export { analyze, type AnalyzeOptions };

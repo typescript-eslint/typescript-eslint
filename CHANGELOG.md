@@ -1,3 +1,210 @@
+## 8.22.0 (2025-01-27)
+
+### 🚀 Features
+
+- **parser:** add standalone isolatedDeclarations option ([#10499](https://github.com/typescript-eslint/typescript-eslint/pull/10499))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [prefer-nullish-coalescing] doesn't report on ternary but on equivalent || ([#10517](https://github.com/typescript-eslint/typescript-eslint/pull/10517))
+- **eslint-plugin:** [no-duplicate-type-constituents] handle nested types ([#10638](https://github.com/typescript-eslint/typescript-eslint/pull/10638))
+- **eslint-plugin:** [no-shadow] don't report unnecessarily on valid ways of using module augmentation ([#10616](https://github.com/typescript-eslint/typescript-eslint/pull/10616))
+- **eslint-plugin:** [no-extraneous-class] handle accessor keyword ([#10678](https://github.com/typescript-eslint/typescript-eslint/pull/10678))
+- **eslint-plugin:** [prefer-readonly] autofixer doesn't add type to property that is mutated in the constructor ([#10552](https://github.com/typescript-eslint/typescript-eslint/pull/10552))
+- **eslint-plugin:** [no-unnecessary-template-expression] handle template literal type ([#10612](https://github.com/typescript-eslint/typescript-eslint/pull/10612))
+- **type-utils:** support matching intersection types in `TypeOrValueSpecifier` with a `PackageSpecifier` ([#10667](https://github.com/typescript-eslint/typescript-eslint/pull/10667))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- mdm317
+- Olivier Zalmanski @OlivierZal
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.21.0 (2025-01-20)
+
+### 🚀 Features
+
+- **ast-spec:** support import attributes in `TSImportType` ([#10640](https://github.com/typescript-eslint/typescript-eslint/pull/10640))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle type args on jsx ([#10630](https://github.com/typescript-eslint/typescript-eslint/pull/10630))
+- **eslint-plugin:** check JSX spread elements for misused spread usage ([#10653](https://github.com/typescript-eslint/typescript-eslint/pull/10653))
+- **eslint-plugin:** [no-for-in-array] report on any type which may be an array or array-like ([#10535](https://github.com/typescript-eslint/typescript-eslint/pull/10535))
+- **eslint-plugin:** [no-base-to-string] don't crash for recursive array or tuple types ([#10633](https://github.com/typescript-eslint/typescript-eslint/pull/10633))
+- **eslint-plugin:** [no-duplicate-enum-values] handle template literal ([#10675](https://github.com/typescript-eslint/typescript-eslint/pull/10675))
+- **eslint-plugin-internal:** [debug-namespace] on windows ([#10661](https://github.com/typescript-eslint/typescript-eslint/pull/10661))
+- **rule-tester:** handle window root path ([#10654](https://github.com/typescript-eslint/typescript-eslint/pull/10654))
+- **scope-manager:** add a reference for JSX closing element if it exists ([#10614](https://github.com/typescript-eslint/typescript-eslint/pull/10614))
+
+### ❤️ Thank You
+
+- Arya Emami @aryaemami59
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.20.0 (2025-01-13)
+
+### 🚀 Features
+
+- standardize debug namespaces to file paths ([#10599](https://github.com/typescript-eslint/typescript-eslint/pull/10599))
+- **eslint-plugin:** [no-misused-spread] add new rule ([#10551](https://github.com/typescript-eslint/typescript-eslint/pull/10551))
+- **eslint-plugin:** [no-deprecated] add allow options ([#10585](https://github.com/typescript-eslint/typescript-eslint/pull/10585))
+- **eslint-plugin:** [consistent-type-assertions] add arrayLiteralTypeAssertions options ([#10565](https://github.com/typescript-eslint/typescript-eslint/pull/10565))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-shadow] ignore ordering of type declarations ([#10593](https://github.com/typescript-eslint/typescript-eslint/pull/10593))
+- **eslint-plugin:** [no-unnecessary-condition] don't flag optional chaining for union types with an unconstrained type parameters ([#10602](https://github.com/typescript-eslint/typescript-eslint/pull/10602))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.19.1 (2025-01-06)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-base-to-string] check array generic type ([#10437](https://github.com/typescript-eslint/typescript-eslint/pull/10437))
+- **eslint-plugin:** [no-shadow] report correctly on parameters of functions declared with the `declare` keyword ([#10543](https://github.com/typescript-eslint/typescript-eslint/pull/10543))
+- **eslint-plugin:** [strict-boolean-expressions] remove remaining (unsafe) autofixes ([#10548](https://github.com/typescript-eslint/typescript-eslint/pull/10548))
+- **eslint-plugin:** [no-deprecated] doesn't report on shorthand property in an object expression ([#10550](https://github.com/typescript-eslint/typescript-eslint/pull/10550))
+- **eslint-plugin:** [no-unnecessary-type-assertion] handle literal types ([#10523](https://github.com/typescript-eslint/typescript-eslint/pull/10523))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger
+- mdm317
+- Ronen Amiel
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.19.0 (2024-12-30)
+
+### 🚀 Features
+
+- **eslint-plugin:** [strict-boolean-expressions] check array predicate functions' return statements ([#10106](https://github.com/typescript-eslint/typescript-eslint/pull/10106))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** add getConstraintInfo to handle generic constraints better ([#10496](https://github.com/typescript-eslint/typescript-eslint/pull/10496))
+- **eslint-plugin:** [array-type] autofix with conditional types needs parentheses ([#10522](https://github.com/typescript-eslint/typescript-eslint/pull/10522))
+- **eslint-plugin:** [consistent-indexed-object-style] don't report on indirect circular references ([#10537](https://github.com/typescript-eslint/typescript-eslint/pull/10537))
+- **eslint-plugin:** [member-ordering] ignore method overloading ([#10536](https://github.com/typescript-eslint/typescript-eslint/pull/10536))
+
+### ❤️ Thank You
+
+- Karl Werner
+- Kirk Waiblinger @kirkwaiblinger
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.18.2 (2024-12-23)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-deprecated] not reporting usages of deprecated declared constants as object value ([#10498](https://github.com/typescript-eslint/typescript-eslint/pull/10498))
+- **eslint-plugin:** [prefer-reduce-type-parameter] don't report cases in which the fix results in a type error ([#10494](https://github.com/typescript-eslint/typescript-eslint/pull/10494))
+- **eslint-plugin:** [no-unnecessary-condition] don't flag values of an unconstrained or valid type parameter ([#10473](https://github.com/typescript-eslint/typescript-eslint/pull/10473))
+- **eslint-plugin:** [consistent-indexed-object-style] use a suggestion over an auto-fix if can't reliably determine that produced index signature is valid ([#10490](https://github.com/typescript-eslint/typescript-eslint/pull/10490))
+- **eslint-plugin:** [no-unsafe-type-assertion] fix for unsafe assertion to a constrained type parameter ([#10461](https://github.com/typescript-eslint/typescript-eslint/pull/10461))
+- **eslint-plugin:** [no-unnecessary-type-arguments] handle type/value context ([#10503](https://github.com/typescript-eslint/typescript-eslint/pull/10503))
+- **eslint-plugin:** [consistent-type-assertions] allow default assertionStyle option ([#10512](https://github.com/typescript-eslint/typescript-eslint/pull/10512))
+- **eslint-plugin:** [no-unnecessary-condition] handle noUncheckedIndexedAccess true ([#10514](https://github.com/typescript-eslint/typescript-eslint/pull/10514))
+- **typescript-eslint:** export types so that declarations can be named for dts files ([#10513](https://github.com/typescript-eslint/typescript-eslint/pull/10513))
+
+### ❤️ Thank You
+
+- Brad Zacher @bradzacher
+- Luke Deen Taylor @controversial
+- Ronen Amiel
+- Scott O'Hara
+- YeonJuan @yeonjuan
+- Yukihiro Hasegawa @y-hsgw
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.18.1 (2024-12-16)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-template-expression] don't report when an expression includes comment ([#10444](https://github.com/typescript-eslint/typescript-eslint/pull/10444))
+- **eslint-plugin:** handle string like index type ([#10460](https://github.com/typescript-eslint/typescript-eslint/pull/10460))
+- **eslint-plugin:** [no-unnecessary-boolean-literal-compare] flag values of a type parameter with boolean type constraints ([#10474](https://github.com/typescript-eslint/typescript-eslint/pull/10474))
+- **eslint-plugin:** use consistent naming for asserting types and casting values ([#10472](https://github.com/typescript-eslint/typescript-eslint/pull/10472))
+- **eslint-plugin:** [no-unnecessary-condition] better message when comparing between literal types ([#10454](https://github.com/typescript-eslint/typescript-eslint/pull/10454))
+- **scope-manager:** visit params decorator before nest scope ([#10475](https://github.com/typescript-eslint/typescript-eslint/pull/10475))
+
+### ❤️ Thank You
+
+- Kirk Waiblinger @kirkwaiblinger
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.18.0 (2024-12-09)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-deprecated] report on super call of deprecated constructor ([#10397](https://github.com/typescript-eslint/typescript-eslint/pull/10397))
+- **eslint-plugin:** [switch-exhaustiveness-check] add support for "no default" comment ([#10218](https://github.com/typescript-eslint/typescript-eslint/pull/10218))
+
+### 🩹 Fixes
+
+- typescript peer dependency ([#10373](https://github.com/typescript-eslint/typescript-eslint/pull/10373))
+- **deps:** update dependency eslint to v9.16.0 ([#10471](https://github.com/typescript-eslint/typescript-eslint/pull/10471))
+- **eslint-plugin:** [no-deprecated] check if a JSX attribute is deprecated ([#10374](https://github.com/typescript-eslint/typescript-eslint/pull/10374))
+- **eslint-plugin:** [no-base-to-string] handle more robustly when multiple `toString()` declarations are present for a type ([#10432](https://github.com/typescript-eslint/typescript-eslint/pull/10432))
+- **eslint-plugin:** [use-unknown-in-catch-callback-variable] only flag function literals ([#10436](https://github.com/typescript-eslint/typescript-eslint/pull/10436))
+
+### ❤️  Thank You
+
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger @kirkwaiblinger
+- mdm317
+- rtritto
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.17.0 (2024-12-02)
+
+### 🚀 Features
+
+- **eslint-plugin:** [prefer-promise-reject-errors] options to allow any and unknown ([#10392](https://github.com/typescript-eslint/typescript-eslint/pull/10392))
+- **typescript-estree:** add package version to ts version warning ([#10343](https://github.com/typescript-eslint/typescript-eslint/pull/10343))
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-template-expressions] allow template expressions used to make trailing whitespace visible ([#10363](https://github.com/typescript-eslint/typescript-eslint/pull/10363))
+- **eslint-plugin:** remove references to "extendDefaults" in no-restricted-types ([#10401](https://github.com/typescript-eslint/typescript-eslint/pull/10401))
+- **eslint-plugin:** [promise-function-async] handle function overloading ([#10304](https://github.com/typescript-eslint/typescript-eslint/pull/10304))
+- **website:** press the Report an Issue button makes error if eslintrc does not include rules ([#10367](https://github.com/typescript-eslint/typescript-eslint/pull/10367))
+
+### ❤️  Thank You
+
+- Kim OhSeong @bkks1004
+- Kim Sang Du @developer-bandi
+- Kirk Waiblinger @kirkwaiblinger
+- Marco Pasqualetti @marcalexiei
+- Maria José Solano @MariaSolOs
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.16.0 (2024-11-25)
 
 ### 🚀 Features

@@ -9,7 +9,7 @@ interface Options {
   allowInGenericTypeArguments?: boolean | [string, ...string[]];
 }
 
-type MessageIds =
+export type MessageIds =
   | 'invalidVoidForGeneric'
   | 'invalidVoidNotReturn'
   | 'invalidVoidNotReturnOrGeneric'

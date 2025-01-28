@@ -19,7 +19,9 @@ foo === undefined ? 'a string' : foo;
 
 const foo: string | null = 'bar';
 foo !== null ? foo : 'a string';
+foo ? foo : 'a string';
 foo === null ? 'a string' : foo;
+!foo ? 'a string' : foo;
 "
 `;
 
@@ -37,6 +39,8 @@ foo ?? 'a string';
 foo ?? 'a string';
 
 const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
 "
@@ -79,7 +83,7 @@ while (a ?? b) {}
 while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
-a ?? b ? true : false;
+(a ?? b) ? true : false;
 "
 `;
 

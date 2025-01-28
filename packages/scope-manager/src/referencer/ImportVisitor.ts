@@ -5,7 +5,7 @@ import type { Referencer } from './Referencer';
 import { ImportBindingDefinition } from '../definition';
 import { Visitor } from './Visitor';
 
-class ImportVisitor extends Visitor {
+export class ImportVisitor extends Visitor {
   readonly #declaration: TSESTree.ImportDeclaration;
   readonly #referencer: Referencer;
 
@@ -57,5 +57,3 @@ class ImportVisitor extends Visitor {
       );
   }
 }
-
-export { ImportVisitor };

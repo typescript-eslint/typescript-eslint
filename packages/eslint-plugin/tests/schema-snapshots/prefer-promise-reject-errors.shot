@@ -11,6 +11,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "allowEmptyReject": {
         "description": "Whether to allow calls to \`Promise.reject()\` with no arguments.",
         "type": "boolean"
+      },
+      "allowThrowingAny": {
+        "description": "Whether to always allow throwing values typed as \`any\`.",
+        "type": "boolean"
+      },
+      "allowThrowingUnknown": {
+        "description": "Whether to always allow throwing values typed as \`unknown\`.",
+        "type": "boolean"
       }
     },
     "type": "object"
@@ -24,6 +32,10 @@ type Options = [
   {
     /** Whether to allow calls to \`Promise.reject()\` with no arguments. */
     allowEmptyReject?: boolean;
+    /** Whether to always allow throwing values typed as \`any\`. */
+    allowThrowingAny?: boolean;
+    /** Whether to always allow throwing values typed as \`unknown\`. */
+    allowThrowingUnknown?: boolean;
   },
 ];
 "

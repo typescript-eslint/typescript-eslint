@@ -6,7 +6,11 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class ModuleScope extends ScopeBase<ScopeType.module, TSESTree.Program, Scope> {
+export class ModuleScope extends ScopeBase<
+  ScopeType.module,
+  TSESTree.Program,
+  Scope
+> {
   constructor(
     scopeManager: ScopeManager,
     upperScope: ModuleScope['upper'],
@@ -15,5 +19,3 @@ class ModuleScope extends ScopeBase<ScopeType.module, TSESTree.Program, Scope> {
     super(scopeManager, ScopeType.module, upperScope, block, false);
   }
 }
-
-export { ModuleScope };

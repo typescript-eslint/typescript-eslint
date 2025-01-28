@@ -746,7 +746,7 @@ export class Converter {
     this.#checkModifiers(node);
 
     const pattern = this.allowPattern;
-    if (allowPattern !== undefined) {
+    if (allowPattern != null) {
       this.allowPattern = allowPattern;
     }
 
@@ -764,7 +764,7 @@ export class Converter {
   private convertImportAttributes(
     node: ts.ImportAttributes | undefined,
   ): TSESTree.ImportAttribute[] {
-    return node === undefined
+    return node == null
       ? []
       : node.elements.map(element => this.convertChild(element));
   }
@@ -2406,7 +2406,7 @@ export class Converter {
           type: AST_NODE_TYPES.MemberExpression,
           computed,
           object,
-          optional: node.questionDotToken !== undefined,
+          optional: node.questionDotToken != null,
           property,
         });
 
@@ -2422,7 +2422,7 @@ export class Converter {
           type: AST_NODE_TYPES.MemberExpression,
           computed,
           object,
-          optional: node.questionDotToken !== undefined,
+          optional: node.questionDotToken != null,
           property,
         });
 
@@ -2467,7 +2467,7 @@ export class Converter {
           type: AST_NODE_TYPES.CallExpression,
           arguments: args,
           callee,
-          optional: node.questionDotToken !== undefined,
+          optional: node.questionDotToken != null,
           typeArguments,
         });
 
@@ -3067,7 +3067,7 @@ export class Converter {
       case SyntaxKind.TypePredicate: {
         const result = this.createNode<TSESTree.TSTypePredicate>(node, {
           type: AST_NODE_TYPES.TSTypePredicate,
-          asserts: node.assertsModifier !== undefined,
+          asserts: node.assertsModifier != null,
           parameterName: this.convertChild(node.parameterName),
           typeAnnotation: null,
         });
@@ -3093,6 +3093,7 @@ export class Converter {
           type: AST_NODE_TYPES.TSImportType,
           range,
           argument: this.convertChild(node.argument),
+          attributes: this.convertImportAttributes(node.attributes),
           qualifier: this.convertChild(node.qualifier),
           typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(

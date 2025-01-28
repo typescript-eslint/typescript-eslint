@@ -135,8 +135,15 @@ declare module 'foo' {}
 
 ## When Not To Use It
 
-If your project was architected before modern modules and namespaces, it may be difficult to migrate off of namespaces.
+If your project uses TypeScript's CommonJS export syntax (`export = ...`), you may need to use namespaces in order to export types from your module.
+You can learn more about this at:
+
+- [TypeScript#52203](https://github.com/microsoft/TypeScript/pull/52203), the pull request introducing [`verbatimModuleSyntax`](https://www.typescriptlang.org/tsconfig/#verbatimModuleSyntax)
+- [TypeScript#60852](https://github.com/microsoft/TypeScript/issues/60852), an issue requesting syntax to export types from a CommonJS module.
+
+If your project uses this syntax, either because it was architected before modern modules and namespaces, or because a module option such as `verbatimModuleSyntax` requires it, it may be difficult to migrate off of namespaces.
 In that case you may not be able to use this rule for parts of your project.
+
 You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
@@ -144,6 +151,7 @@ You might consider using [ESLint disable comments](https://eslint.org/docs/lates
 {/* cspell:disable-next-line */}
 
 - [FAQ: I get errors from the `@typescript-eslint/no-namespace` and/or `no-var` rules about declaring global variables](/troubleshooting/faqs/eslint#i-get-errors-from-the-typescript-eslintno-namespace-andor-no-var-rules-about-declaring-global-variables)
-- [Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
-- [Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
-- [Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
+- [FAQ: How should I handle reports that conflict with verbatimModuleSyntax?](/troubleshooting/faqs/typescript#how-should-i-handle-reports-that-conflict-with-verbatimmodulesyntax)
+- [TypeScript handbook entry on Modules](https://www.typescriptlang.org/docs/handbook/modules.html)
+- [TypeScript handbook entry on Namespaces](https://www.typescriptlang.org/docs/handbook/namespaces.html)
+- [TypeScript handbook entry on Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)

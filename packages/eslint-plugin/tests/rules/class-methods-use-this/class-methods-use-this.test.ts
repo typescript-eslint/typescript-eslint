@@ -549,6 +549,22 @@ class Foo implements Bar {
         },
       ],
     },
+    {
+      code: `
+function fn() {
+  this.foo = 303;
+
+  class Foo {
+    method() {}
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
   ],
   valid: [
     {

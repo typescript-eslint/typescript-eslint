@@ -46,6 +46,7 @@ interface ParserOptions {
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
   experimentalDecorators?: boolean;
+  isolatedDeclarations?: boolean;
   extraFileExtensions?: string[];
   jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
@@ -155,6 +156,13 @@ Add extensions starting with `.`, followed by the file extension. E.g. for a `.v
 :::note
 See [Changes to `extraFileExtensions` with `projectService`](../troubleshooting/typed-linting/Performance.mdx#changes-to-extrafileextensions-with-projectservice) to avoid performance issues.
 :::
+
+### `isolatedDeclarations`
+
+> Default `undefined`.
+
+This option allow you to tell parser to act as if `isolatedDeclarations: true` is set in `tsconfig.json`, but without [type-aware linting](../getting-started/Typed_Linting.mdx).
+In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ### `jsDocParsingMode`
 
@@ -423,11 +431,9 @@ This option allows you to toggle the warning that the parser will give you if yo
 
 WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
 
-You may find that it works just fine, or you may not.
-
-SUPPORTED TYPESCRIPT VERSIONS: >=3.3.1 <5.1.0
-
-YOUR TYPESCRIPT VERSION: 5.1.3
+* @typescript-eslint/typescript-estree version: 8.15.0
+* Supported TypeScript versions: >=4.7.4 <5.7.0
+* Your TypeScript version: 5.7.1
 
 Please only submit bug reports when using the officially supported version.
 
