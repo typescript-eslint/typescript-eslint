@@ -168,18 +168,21 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SpreadElement,
       type: ts.Type,
     ): TSESLint.ReportSuggestionArray<MessageIds> | null {
-      if (
-        node.parent.type !== AST_NODE_TYPES.ArrayExpression ||
-        node.parent.elements.length > 1 ||
-        tsutils.unionTypeParts(type).some(type => !isString(type))
-      ) {
+      if (tsutils.unionTypeParts(type).some(type => !isString(type))) {
         return null;
       }
+
+      const targetNode: TSESTree.Node =
+        node.parent.type !== AST_NODE_TYPES.ArrayExpression ||
+        node.parent.elements.length > 1
+          ? node.argument
+          : node.parent;
+
       const code = context.sourceCode.getText(node.argument);
       return [
         {
           messageId: 'replaceStringSpread',
-          fix: fixer => fixer.replaceText(node.parent, `${code}.split('')`),
+          fix: fixer => fixer.replaceText(targetNode, `${code}.split('')`),
         },
       ];
     }

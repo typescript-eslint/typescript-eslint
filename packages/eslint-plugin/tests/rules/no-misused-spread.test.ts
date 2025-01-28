@@ -497,6 +497,18 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 29,
           line: 6,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text.split(''));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -514,12 +526,36 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 29,
           line: 6,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text.split(''), 'and', ...text);
+      `,
+            },
+          ],
         },
         {
           column: 38,
           endColumn: 45,
           line: 6,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text, 'and', ...text.split(''));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -537,6 +573,18 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 5,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        function withText<Text extends string>(text: Text) {
+          textIdentity(...text.split(''));
+        }
+      `,
+            },
+          ],
         },
       ],
     },
