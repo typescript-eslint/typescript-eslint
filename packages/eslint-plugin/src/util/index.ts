@@ -11,6 +11,7 @@ export * from './getStringLength';
 export * from './getTextWithParentheses';
 export * from './getThisExpression';
 export * from './getWrappingFixer';
+export * from './hasOverloadSignatures';
 export * from './isArrayMethodCallWithPredicate';
 export * from './isAssignee';
 export * from './isNodeEqual';

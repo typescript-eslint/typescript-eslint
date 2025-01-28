@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, getStaticMemberAccessValue } from '../util';
+import { createRule, hasOverloadSignatures } from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
@@ -196,79 +196,6 @@ export default createRule<[Options], MessageIds>({
       return null;
     }
 
-    function getFunctionDeclarationName(
-      node:
-        | TSESTree.FunctionDeclaration
-        | TSESTree.MethodDefinition
-        | TSESTree.TSDeclareFunction,
-    ): string | symbol | undefined {
-      if (
-        node.type === AST_NODE_TYPES.FunctionDeclaration ||
-        node.type === AST_NODE_TYPES.TSDeclareFunction
-      ) {
-        // For a `FunctionDeclaration` or `TSDeclareFunction` this may be `null` if
-        // and only if the parent is an `ExportDefaultDeclaration`.
-        //
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return node.id!.name;
-      }
-
-      return getStaticMemberAccessValue(node, context);
-    }
-
-    function hasOverloadMethods(
-      node: TSESTree.FunctionDeclaration | TSESTree.MethodDefinition,
-    ): boolean {
-      // `export default function () {}`
-      if (node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
-        for (const member of node.parent.parent.body) {
-          if (
-            member.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
-            member.declaration.type === AST_NODE_TYPES.TSDeclareFunction
-          ) {
-            return true;
-          }
-        }
-
-        return false;
-      }
-
-      // `export function f() {}`
-      if (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) {
-        for (const member of node.parent.parent.body) {
-          if (
-            member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
-            member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
-            getFunctionDeclarationName(member.declaration) ===
-              getFunctionDeclarationName(node)
-          ) {
-            return true;
-          }
-        }
-
-        return false;
-      }
-
-      // otherwise...
-      const nodeKey = getFunctionDeclarationName(node);
-
-      for (const member of node.parent.body) {
-        if (
-          member.type !== AST_NODE_TYPES.TSDeclareFunction &&
-          (member.type !== AST_NODE_TYPES.MethodDefinition ||
-            member.value.type === AST_NODE_TYPES.FunctionExpression)
-        ) {
-          continue;
-        }
-
-        if (nodeKey === getFunctionDeclarationName(member)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
     return {
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
         // checks T<..., void, ...> against specification of allowInGenericArguments option
@@ -304,7 +231,10 @@ export default createRule<[Options], MessageIds>({
             node.parent,
           );
 
-          if (declaringFunction && hasOverloadMethods(declaringFunction)) {
+          if (
+            declaringFunction &&
+            hasOverloadSignatures(declaringFunction, context)
+          ) {
             return;
           }
         }
