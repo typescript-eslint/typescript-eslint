@@ -461,12 +461,6 @@ export default createRule<Options, MessageIds>({
             });
           }
 
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
-            nullishCoalescingLeftNode,
-          );
-          const type = checker.getTypeAtLocation(tsNode);
-          const flags = getTypeFlags(type);
-
           // it is fixable if we check for both null and undefined, or not if neither
           if (
             hasUndefinedCheckWithoutTruthinessCheck ===
@@ -479,6 +473,12 @@ export default createRule<Options, MessageIds>({
           if (operator === '==' || operator === '!=') {
             return true;
           }
+
+          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+            nullishCoalescingLeftNode,
+          );
+          const type = checker.getTypeAtLocation(tsNode);
+          const flags = getTypeFlags(type);
 
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
             return false;
