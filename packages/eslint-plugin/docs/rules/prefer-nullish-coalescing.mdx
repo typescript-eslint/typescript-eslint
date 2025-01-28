@@ -28,9 +28,12 @@ This rule will not work as expected if [`strictNullChecks`](https://www.typescri
 
 {/* insert option description */}
 
-Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
+Examples of code for this rule with `{ ignoreTernaryTests: false }`:
 
-```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreTernaryTests": false }'
 const foo: any = 'bar';
 foo !== undefined && foo !== null ? foo : 'a string';
 foo === undefined || foo === null ? 'a string' : foo;
@@ -48,25 +51,22 @@ foo === null ? 'a string' : foo;
 !foo ? 'a string' : foo;
 ```
 
-Correct code for `ignoreTernaryTests: false`:
+</TabItem>
+<TabItem value="✅ Correct">
 
-```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
+```ts option='{ "ignoreTernaryTests": false }'
 const foo: any = 'bar';
-foo ?? 'a string';
-foo ?? 'a string';
-foo ?? 'a string';
 foo ?? 'a string';
 
 const foo: string | undefined = 'bar';
 foo ?? 'a string';
-foo ?? 'a string';
 
 const foo: string | null = 'bar';
 foo ?? 'a string';
-foo ?? 'a string';
-foo ?? 'a string';
-foo ?? 'a string';
 ```
+
+</TabItem>
+</Tabs>
 
 ### `ignoreConditionalTests`
 
@@ -76,9 +76,12 @@ Generally expressions within conditional tests intentionally use the falsy fallt
 
 If you're looking to enforce stricter conditional tests, you should consider using the `strict-boolean-expressions` rule.
 
-Incorrect code for `ignoreConditionalTests: false`, and correct code for `ignoreConditionalTests: true`:
+Examples of code for this rule with `{ ignoreConditionalTests: false }`:
 
-```ts option='{ "ignoreConditionalTests": false }' showPlaygroundButton
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreConditionalTests": false }'
 declare const a: string | null;
 declare const b: string | null;
 
@@ -93,9 +96,10 @@ for (let i = 0; a || b; i += 1) {}
 a || b ? true : false;
 ```
 
-Correct code for `ignoreConditionalTests: false`:
+</TabItem>
+<TabItem value="✅ Correct">
 
-```ts option='{ "ignoreConditionalTests": false }' showPlaygroundButton
+```ts option='{ "ignoreConditionalTests": false }'
 declare const a: string | null;
 declare const b: string | null;
 
@@ -110,6 +114,9 @@ for (let i = 0; a ?? b; i += 1) {}
 (a ?? b) ? true : false;
 ```
 
+</TabItem>
+</Tabs>
+
 ### `ignoreMixedLogicalExpressions`
 
 {/* insert option description */}
@@ -118,9 +125,12 @@ Generally expressions within mixed logical expressions intentionally use the fal
 
 If you're looking to enforce stricter conditional tests, you should consider using the `strict-boolean-expressions` rule.
 
-Incorrect code for `ignoreMixedLogicalExpressions: false`, and correct code for `ignoreMixedLogicalExpressions: true`:
+Examples of code for this rule with `{ ignoreMixedLogicalExpressions: false }`:
 
-```ts option='{ "ignoreMixedLogicalExpressions": false }' showPlaygroundButton
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreMixedLogicalExpressions": false }'
 declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
@@ -133,9 +143,10 @@ a || (b && c) || d;
 a || (b && c && d);
 ```
 
-Correct code for `ignoreMixedLogicalExpressions: false`:
+</TabItem>
+<TabItem value="✅ Correct">
 
-```ts option='{ "ignoreMixedLogicalExpressions": false }' showPlaygroundButton
+```ts option='{ "ignoreMixedLogicalExpressions": false }'
 declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
@@ -148,6 +159,9 @@ a ?? (b && c) ?? d;
 a ?? (b && c && d);
 ```
 
+</TabItem>
+</Tabs>
+
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
 
 ### `ignorePrimitives`
@@ -156,24 +170,31 @@ a ?? (b && c && d);
 
 If you would like to ignore expressions containing operands of certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
 
-- `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
-- `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
-- `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
-- `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
+- `string: true`, ignores `null` or `undefined` unions with `string` (default: `false`).
+- `number: true`, ignores `null` or `undefined` unions with `number` (default: `false`).
+- `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: `false`).
+- `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: `false`).
 
-Incorrect code for `ignorePrimitives: { string: false }`, and correct code for `ignorePrimitives: { string: true }`:
+Examples of code for this rule with `{ ignorePrimitives: { string: false } }`:
 
-```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
-const foo: string | undefined = 'bar';
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignorePrimitives": { "string": false } }'
+let foo: string | undefined;
 foo || 'a string';
 ```
 
-Correct code for both `ignorePrimitives: { string: false }` and `ignorePrimitives: { string: true }`:
+</TabItem>
+<TabItem value="✅ Correct">
 
-```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
-const foo: string | undefined = 'bar';
+```ts option='{ "ignorePrimitives": { "string": false } }'
+let foo: string | undefined;
 foo ?? 'a string';
 ```
+
+</TabItem>
+</Tabs>
 
 Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
@@ -183,23 +204,30 @@ Also, if you would like to ignore all primitives types, you can set `ignorePrimi
 
 Whether to ignore expressions that coerce a value into a boolean: `Boolean(...)`.
 
-Incorrect code for `ignoreBooleanCoercion: false`, and correct code for `ignoreBooleanCoercion: true`:
+Examples of code for this rule with `{ ignoreBooleanCoercion: false }`:
 
-```ts option='{ "ignoreBooleanCoercion": true }' showPlaygroundButton
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts option='{ "ignoreBooleanCoercion": false }'
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
 const x = Boolean(a || b);
 ```
 
-Correct code for `ignoreBooleanCoercion: false`:
+</TabItem>
+<TabItem value="✅ Correct">
 
-```ts option='{ "ignoreBooleanCoercion": false }' showPlaygroundButton
+```ts option='{ "ignoreBooleanCoercion": false }'
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
 const x = Boolean(a ?? b);
 ```
+
+</TabItem>
+</Tabs>
 
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
