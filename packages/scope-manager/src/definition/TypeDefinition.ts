@@ -3,7 +3,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { DefinitionBase } from './DefinitionBase';
 import { DefinitionType } from './DefinitionType';
 
-class TypeDefinition extends DefinitionBase<
+export class TypeDefinition extends DefinitionBase<
   DefinitionType.Type,
   | TSESTree.TSInterfaceDeclaration
   | TSESTree.TSMappedType
@@ -19,5 +19,3 @@ class TypeDefinition extends DefinitionBase<
     super(DefinitionType.Type, name, node, null);
   }
 }
-
-export { TypeDefinition };

@@ -8,7 +8,7 @@ import { createIdGenerator } from '../ID';
 
 const generator = createIdGenerator();
 
-class VariableBase {
+export class VariableBase {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing
    */
@@ -51,5 +51,3 @@ class VariableBase {
     this.scope = scope;
   }
 }
-
-export { VariableBase };

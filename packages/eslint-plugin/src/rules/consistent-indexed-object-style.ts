@@ -12,11 +12,11 @@ import {
   nullThrows,
 } from '../util';
 
-type MessageIds =
+export type MessageIds =
   | 'preferIndexSignature'
   | 'preferIndexSignatureSuggestion'
   | 'preferRecord';
-type Options = ['index-signature' | 'record'];
+export type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-indexed-object-style',

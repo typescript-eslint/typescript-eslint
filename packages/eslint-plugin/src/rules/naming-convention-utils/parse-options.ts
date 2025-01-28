@@ -80,7 +80,7 @@ function normalizeOption(option: Selector): NormalizedSelector[] {
   }));
 }
 
-function parseOptions(context: Context): ParsedOptions {
+export function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options.flatMap(normalizeOption);
 
   return Object.fromEntries(
@@ -90,5 +90,3 @@ function parseOptions(context: Context): ParsedOptions {
     ]),
   ) as ParsedOptions;
 }
-
-export { parseOptions };

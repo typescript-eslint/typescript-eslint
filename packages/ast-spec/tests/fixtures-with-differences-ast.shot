@@ -521,5 +521,6 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "statement/ForInStatement/fixtures/expr-init/fixture.ts",
   "statement/ForOfStatement/fixtures/expr-init/fixture.ts",
   "statement/ForOfStatement/fixtures/using-declaration/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
 ]
 `;

@@ -26,7 +26,7 @@ export type Options = [
   },
 ];
 
-type MessageIds = 'preferEndsWith' | 'preferStartsWith';
+export type MessageIds = 'preferEndsWith' | 'preferStartsWith';
 
 export default createRule<Options, MessageIds>({
   name: 'prefer-string-starts-ends-with',
