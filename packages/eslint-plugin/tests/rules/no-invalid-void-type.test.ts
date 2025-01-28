@@ -627,6 +627,44 @@ class SomeClass {
         },
       ],
     },
+    {
+      code: `
+function f(): void;
+function f(x: string): string | void;
+function f(x?: string): string | void {
+  if (x !== undefined) {
+    return x;
+  }
+}
+      `,
+      errors: [
+        {
+          column: 33,
+          line: 3,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
+    {
+      code: `
+class SomeClass {
+  f(): void;
+  f(x: string): string | void;
+  f(x?: string): string | void {
+    if (x !== undefined) {
+      return x;
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          column: 26,
+          line: 4,
+          messageId: 'invalidVoidUnionConstituent',
+        },
+      ],
+    },
   ],
 });
 
