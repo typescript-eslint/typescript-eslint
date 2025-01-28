@@ -12,4 +12,5 @@ module.exports = {
     ...baseConfig.setupFilesAfterEnv,
     './tests/util/setupJest.ts',
   ],
+  coveragePathIgnorePatterns: ['/fixtures/', '/node_modules/'],
 };
