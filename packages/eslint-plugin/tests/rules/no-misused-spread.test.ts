@@ -873,7 +873,7 @@ ruleTester.run('no-misused-spread', rule, {
               messageId: 'replaceMapSpreadInObject',
               output: `
         const o = {
-          ...Object.entries(new Map([
+          ...Object.fromEntries(new Map([
             ['test-1', 1],
             ['test-2', 2],
           ])),
@@ -908,7 +908,7 @@ ruleTester.run('no-misused-spread', rule, {
           ['test-2', 2],
         ]);
 
-        const o = { ...Object.entries(map) };
+        const o = { ...Object.fromEntries(map) };
       `,
             },
           ],
@@ -931,7 +931,7 @@ ruleTester.run('no-misused-spread', rule, {
               messageId: 'replaceMapSpreadInObject',
               output: `
         declare const map: Map<string, number>;
-        const o = { ...Object.entries(map) };
+        const o = { ...Object.fromEntries(map) };
       `,
             },
           ],
@@ -954,7 +954,7 @@ ruleTester.run('no-misused-spread', rule, {
               messageId: 'replaceMapSpreadInObject',
               output: `
         declare const map: ReadonlyMap<string, number>;
-        const o = { ...Object.entries(map) };
+        const o = { ...Object.fromEntries(map) };
       `,
             },
           ],
@@ -977,7 +977,7 @@ ruleTester.run('no-misused-spread', rule, {
               messageId: 'replaceMapSpreadInObject',
               output: `
         declare const map: WeakMap<{ a: number }, string>;
-        const o = { ...Object.entries(map) };
+        const o = { ...Object.fromEntries(map) };
       `,
             },
           ],
@@ -1014,7 +1014,7 @@ ruleTester.run('no-misused-spread', rule, {
               messageId: 'replaceMapSpreadInObject',
               output: `
         declare function getMap(): Map<string, number>;
-        const o = { ...Object.entries(getMap()) };
+        const o = { ...Object.fromEntries(getMap()) };
       `,
             },
           ],
@@ -1037,7 +1037,7 @@ ruleTester.run('no-misused-spread', rule, {
               messageId: 'replaceMapSpreadInObject',
               output: `
         declare const a: Map<boolean, string> & Set<number>;
-        const o = { ...Object.entries(a) };
+        const o = { ...Object.fromEntries(a) };
       `,
             },
           ],
@@ -1101,6 +1101,33 @@ ruleTester.run('no-misused-spread', rule, {
         declare const promise: Promise<{ a: 1 }>;
         async function foo() {
           return { ...(await (promise || {})) };
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const promise: Promise<any>;
+        async function foo() {
+          return { ...(Math.random() < 0.5 ? promise : {}) };
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 59,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<any>;
+        async function foo() {
+          return { ...(await (Math.random() < 0.5 ? promise : {})) };
         }
       `,
             },
@@ -1922,7 +1949,7 @@ ruleTester.run('no-misused-spread', rule, {
               output: `
         declare const map: Map<string, number>;
 
-        const o = <div {...Object.entries(map)} />;
+        const o = <div {...Object.fromEntries(map)} />;
       `,
             },
           ],

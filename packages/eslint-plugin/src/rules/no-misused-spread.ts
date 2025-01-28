@@ -125,7 +125,7 @@ export default createRule<Options, MessageIds>({
           fix: getWrappingFixer({
             node,
             sourceCode: context.sourceCode,
-            wrap: code => `Object.entries(${code})`,
+            wrap: code => `Object.fromEntries(${code})`,
           }),
         },
       ];
