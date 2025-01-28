@@ -174,25 +174,6 @@ export default createRule<[Options], MessageIds>({
       );
     }
 
-    function getMembers(
-      node:
-        | TSESTree.BlockStatement
-        | TSESTree.ClassBody
-        | TSESTree.Program
-        | TSESTree.TSModuleBlock,
-    ):
-      | TSESTree.ClassElement[]
-      | TSESTree.ProgramStatement[]
-      | TSESTree.Statement[] {
-      switch (node.type) {
-        case AST_NODE_TYPES.ClassBody:
-        case AST_NODE_TYPES.Program:
-        case AST_NODE_TYPES.TSModuleBlock:
-        case AST_NODE_TYPES.BlockStatement:
-          return node.body;
-      }
-    }
-
     function getParentFunctionDeclarationNode(
       node: TSESTree.Node,
     ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
@@ -240,7 +221,7 @@ export default createRule<[Options], MessageIds>({
     ): boolean {
       // `export default function () {}`
       if (node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
-        for (const member of getMembers(node.parent.parent)) {
+        for (const member of node.parent.parent.body) {
           if (
             member.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
             member.declaration.type === AST_NODE_TYPES.TSDeclareFunction
@@ -254,7 +235,7 @@ export default createRule<[Options], MessageIds>({
 
       // `export function f() {}`
       if (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) {
-        for (const member of getMembers(node.parent.parent)) {
+        for (const member of node.parent.parent.body) {
           if (
             member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
             member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
@@ -271,7 +252,7 @@ export default createRule<[Options], MessageIds>({
       // otherwise...
       const nodeKey = getFunctionDeclarationName(node);
 
-      for (const member of getMembers(node.parent)) {
+      for (const member of node.parent.body) {
         if (
           member.type !== AST_NODE_TYPES.TSDeclareFunction &&
           (member.type !== AST_NODE_TYPES.MethodDefinition ||
