@@ -400,24 +400,16 @@ function collectTypeParameterUsageCounts(
         // currently, if we are in a "class context", everything is accepted
         let thisAssumeMultipleUses = fromClass || assumeMultipleUses;
 
-        if (!thisAssumeMultipleUses) {
-          const isTuple = tsutils.isTupleType(type.target);
-          const isMutableTuple =
-            isTuple && !(type.target as ts.TupleType).readonly;
-          const typeName =
-            (type.symbol as ts.Symbol | undefined)?.getName() ?? '';
-          const isMutableArray = typeName === 'Array';
-          const isReadonlyArray = typeName === 'ReadonlyArray';
-          const isArray = isMutableArray || isReadonlyArray;
-
-          if (isArray || isTuple) {
-            thisAssumeMultipleUses =
-              isReturnType && (isMutableTuple || isMutableArray);
-          } else {
-            // other kind of type references always count as multiple uses
-            thisAssumeMultipleUses = true;
-          }
-        }
+        // special cases - readonly arrays/tuples are considered only to use the
+        // type parameter once. Mutable arrays/tuples are considered to use the
+        // type parameter multiple times if and only if they are returned.
+        // other kind of type references always count as multiple uses
+        thisAssumeMultipleUses ||= tsutils.isTupleType(type.target)
+          ? isReturnType && !type.target.readonly
+          : checker.isArrayType(type.target)
+            ? isReturnType &&
+              (type.symbol as ts.Symbol | undefined)?.getName() === 'Array'
+            : true;
 
         visitType(typeArgument, thisAssumeMultipleUses, isReturnType);
       }
