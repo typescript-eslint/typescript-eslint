@@ -98,6 +98,30 @@ x ??${equals} 'foo';
       'null != x ? y : x;',
       'undefined != x ? y : x;',
       `
+declare let x: number | undefined;
+x !== 15 && x !== undefined ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+x !== undefined && x !== 15 ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+15 !== x && undefined !== x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+undefined !== x && 15 !== x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+15 !== x && x !== undefined ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+undefined !== x && x !== 15 ? x : y;
+      `,
+      `
 declare let x: string;
 x === null ? x : y;
       `,
