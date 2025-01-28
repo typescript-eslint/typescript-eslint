@@ -91,7 +91,7 @@ Example of incorrect code when `ignoreClassesThatImplementAnInterface` is set to
 <Tabs>
 <TabItem value="❌ Incorrect">
 
-```ts option='{ "ignoreClassesThatImplementAnInterface": true }' showPlaygroundButton
+```ts option='{ "ignoreClassesThatImplementAnInterface": "public-fields" }' showPlaygroundButton
 interface Base {
   method(): void;
 }
@@ -99,6 +99,12 @@ interface Base {
 class Derived implements Base {
   method() {}
   property = () => {};
+
+  private privateMethod() {}
+  private privateProperty = () => {};
+
+  protected protectedMethod() {}
+  protected protectedProperty = () => {};
 }
 ```
 
@@ -113,12 +119,6 @@ interface Base {
 class Derived implements Base {
   method() {}
   property = () => {};
-
-  private privateMethod() {}
-  private privateProperty = () => {};
-
-  protected protectedMethod() {}
-  protected protectedProperty = () => {};
 }
 ```
 

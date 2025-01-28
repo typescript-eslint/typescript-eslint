@@ -37,3 +37,43 @@ class Derived implements Base {
 }
 "
 `;
+
+exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 4`] = `
+"Incorrect
+Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
+
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
+  method() {}
+  property = () => {};
+
+  private privateMethod() {}
+  ~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'privateMethod'.
+  private privateProperty = () => {};
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'privateProperty'.
+
+  protected protectedMethod() {}
+  ~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'protectedMethod'.
+  protected protectedProperty = () => {};
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Expected 'this' to be used by class method 'protectedProperty'.
+}
+"
+`;
+
+exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 5`] = `
+"Correct
+Options: { "ignoreClassesThatImplementAnInterface": "public-fields" }
+
+interface Base {
+  method(): void;
+}
+
+class Derived implements Base {
+  method() {}
+  property = () => {};
+}
+"
+`;
