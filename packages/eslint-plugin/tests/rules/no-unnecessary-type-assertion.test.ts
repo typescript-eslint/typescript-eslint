@@ -154,6 +154,28 @@ class Foo {
 }
     `,
     `
+class T {
+  a = 'a' as const;
+}
+    `,
+    `
+class T {
+  a = 3 as 3;
+}
+    `,
+    `
+const foo = 'foo';
+
+class T {
+  readonly test = \`\${foo}\` as const;
+}
+    `,
+    `
+class T {
+  readonly a = { foo: 'foo' } as const;
+}
+    `,
+    `
       declare const y: number | null;
       console.log(y!);
     `,
@@ -1137,6 +1159,82 @@ var x = 1;
 var x = 1;
 {
   x;
+}
+      `,
+    },
+    {
+      code: `
+class T {
+  readonly a = 'a' as const;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = 'a';
+}
+      `,
+    },
+    {
+      code: `
+class T {
+  readonly a = 3 as 3;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = 3;
+}
+      `,
+    },
+    {
+      code: `
+type S = 10;
+
+class T {
+  readonly a = 10 as S;
+}
+      `,
+      errors: [
+        {
+          line: 5,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+type S = 10;
+
+class T {
+  readonly a = 10;
+}
+      `,
+    },
+    {
+      code: `
+class T {
+  readonly a = (3 + 5) as number;
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+class T {
+  readonly a = (3 + 5);
 }
       `,
     },
