@@ -84,12 +84,70 @@ function bar(arg?: string | null) {
 
 {/* insert option description */}
 
-Example of correct code for `{ allowConstantLoopConditions: true }`:
+#### `'never'` or `false`
 
-```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
-while (true) {}
-for (; true; ) {}
-do {} while (true);
+Disallow constant conditions in loops.
+
+Example of incorrect code for `{ allowConstantLoopConditions: 'never' }`:
+
+```ts option='{ "allowConstantLoopConditions": "never" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+```
+
+#### `'always'` or `true`
+
+Allow constant conditions in loops.
+
+Example of correct code for `{ allowConstantLoopConditions: 'always' }`:
+
+```ts option='{ "allowConstantLoopConditions": "always" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+```
+
+#### `'only-allowed-literals'`
+
+Permit idiomatic constant literal conditions in `while` loop conditions.
+
+Specifically, `true`, `false`, `0`, and `1` are allowed despite always being truthy or falsy, as these are common patterns and are not likely to represent developer errors.
+
+Example of correct code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
+
+```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+```
+
+Example of incorrect code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
+
+```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
 ```
 
 ### `checkTypePredicates`
