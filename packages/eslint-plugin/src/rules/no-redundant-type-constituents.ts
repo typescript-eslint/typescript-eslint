@@ -73,6 +73,20 @@ interface TypeNodeWithValue {
   typeNode: TSESTree.TypeNode;
 }
 
+interface TypeWithName {
+  type: ts.Type;
+  typeName: string;
+}
+
+interface SubTypeNameWithSuperTypeName {
+  subTypeName: string;
+  superTypeName: string;
+}
+
+interface TypeWithNameAndGroupNode extends TypeWithName {
+  groupTypeNode: TSESTree.TypeNode;
+}
+
 function addToMapGroup<Key, Value>(
   map: Map<Key, Value[]>,
   key: Key,
@@ -190,6 +204,39 @@ function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
     : tsutils.unionTypeParts(type);
 }
 
+enum TypeAssignability {
+  Equal,
+  SourceToTargetAssignable,
+  TargetToSourceAssignable,
+  NotAssignable,
+}
+
+function checkTypeAssignability(
+  sourceType: ts.Type,
+  targetType: ts.Type,
+  checker: ts.TypeChecker,
+): TypeAssignability {
+  const isSourceAssignableToTarget = checker.isTypeAssignableTo(
+    sourceType,
+    targetType,
+  );
+  const isTargetAssignableToSource = checker.isTypeAssignableTo(
+    targetType,
+    sourceType,
+  );
+
+  if (isSourceAssignableToTarget && isTargetAssignableToSource) {
+    return TypeAssignability.Equal;
+  }
+  if (isSourceAssignableToTarget) {
+    return TypeAssignability.SourceToTargetAssignable;
+  }
+  if (isTargetAssignableToSource) {
+    return TypeAssignability.TargetToSourceAssignable;
+  }
+  return TypeAssignability.NotAssignable;
+}
+
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
@@ -203,6 +250,7 @@ export default createRule({
     messages: {
       errorTypeOverrides: `'{{typeName}}' is an 'error' type that acts as 'any' and overrides all other types in this {{container}} type.`,
       literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
+      objectOverridden: `{{subType}} is overridden by {{superType}} in this union type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
@@ -212,7 +260,9 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
+    const objectTypesCache = new Map<TSESTree.TypeNode, TypeWithName[]>();
 
     function getTypeNodeTypePartFlags(
       typeNode: TSESTree.TypeNode,
@@ -254,6 +304,55 @@ export default createRule({
         typeFlags: typePart.flags,
         typeName: describeLiteralType(typePart),
       }));
+    }
+
+    function getObjectTypePart(
+      typeNode: TSESTree.TypeNode,
+      checker: ts.TypeChecker,
+    ): TypeWithName[] {
+      if (typeNode.type === AST_NODE_TYPES.TSTypeLiteral) {
+        const type = services.getTypeAtLocation(typeNode);
+        const typeName = checker.typeToString(type);
+        return [
+          {
+            type,
+            typeName,
+          },
+        ];
+      }
+
+      if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
+        return typeNode.types.flatMap(typeNode =>
+          getObjectTypePart(typeNode, checker),
+        );
+      }
+      if (typeNode.type === AST_NODE_TYPES.TSTypeReference) {
+        const type = services.getTypeAtLocation(typeNode);
+        const typeParts = unionTypePartsUnlessBoolean(type);
+
+        return typeParts
+          .filter(type => type.flags & ts.TypeFlags.Object)
+          .map(typePart => ({
+            type: typePart,
+            typeName: checker.typeToString(typePart),
+          }));
+      }
+
+      return [];
+    }
+
+    function getObjectTypeAndNameCached(
+      typeNode: TSESTree.TypeNode,
+      checker: ts.TypeChecker,
+    ): TypeWithName[] {
+      const existing = objectTypesCache.get(typeNode);
+      if (existing) {
+        return existing;
+      }
+
+      const created = getObjectTypePart(typeNode, checker);
+      objectTypesCache.set(typeNode, created);
+      return created;
     }
 
     function getTypeNodeTypePartFlagsCached(
@@ -412,6 +511,12 @@ export default createRule({
         >();
         const seenPrimitiveTypes = new Set<PrimitiveTypeFlag>();
 
+        const seenObjectTypes = new Set<TypeWithNameAndGroupNode>();
+        const overriddenObjectTypes = new Map<
+          TSESTree.TypeNode,
+          SubTypeNameWithSuperTypeName[]
+        >();
+
         function checkUnionBottomAndTopTypes(
           { typeFlags, typeName }: TypeFlagsWithName,
           typeNode: TSESTree.TypeNode,
@@ -482,6 +587,52 @@ export default createRule({
               }
             }
           }
+
+          const objectTypeParts = getObjectTypeAndNameCached(typeNode, checker);
+
+          for (const objectTypePart of objectTypeParts) {
+            const { type: targetType, typeName: targetTypeName } =
+              objectTypePart;
+
+            for (const seenObjectType of seenObjectTypes) {
+              const { type: sourceType, typeName: sourceTypeName } =
+                seenObjectType;
+              const typeAssignability = checkTypeAssignability(
+                sourceType,
+                targetType,
+                checker,
+              );
+
+              switch (typeAssignability) {
+                case TypeAssignability.Equal:
+                  // addToMapGroup(overriddenObjectTypes, typeNode, {
+                  //   subTypeName: sourceTypeName,
+                  //   superTypeName: targetTypeName,
+                  // });
+                  continue;
+                case TypeAssignability.SourceToTargetAssignable:
+                  addToMapGroup(
+                    overriddenObjectTypes,
+                    seenObjectType.groupTypeNode,
+                    {
+                      subTypeName: sourceTypeName,
+                      superTypeName: targetTypeName,
+                    },
+                  );
+                  continue;
+                case TypeAssignability.TargetToSourceAssignable:
+                  addToMapGroup(overriddenObjectTypes, typeNode, {
+                    subTypeName: targetTypeName,
+                    superTypeName: sourceTypeName,
+                  });
+                  continue;
+              }
+            }
+          }
+
+          for (const objectTypePart of objectTypeParts) {
+            seenObjectTypes.add({ ...objectTypePart, groupTypeNode: typeNode });
+          }
         }
 
         interface TypeFlagWithText {
@@ -524,6 +675,29 @@ export default createRule({
               data: {
                 literal: pairs.map(pair => pair.literalValue).join(' | '),
                 primitive: primitiveTypeFlagNames[primitiveTypeFlag],
+              },
+            });
+          }
+        }
+
+        for (const [
+          typeNode,
+          typeNameWithSuperTypeName,
+        ] of overriddenObjectTypes) {
+          const grouped = arrayGroupByToMap(
+            typeNameWithSuperTypeName,
+            pair => pair.superTypeName,
+          );
+
+          for (const [superTypeName, pairs] of grouped) {
+            context.report({
+              node: typeNode,
+              messageId: 'objectOverridden',
+              data: {
+                subType: pairs
+                  .map(typeinfo => typeinfo.subTypeName)
+                  .join(' | '),
+                superType: superTypeName,
               },
             });
           }
