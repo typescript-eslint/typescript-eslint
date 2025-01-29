@@ -1190,6 +1190,11 @@ enum Foo {
 }
 type Bar = \`\${Foo.A}\`;
     `,
+    `
+function foo<T extends string>() {
+  const a: \`\${T}\` = 'a';
+}
+    `,
   ],
 
   invalid: [
@@ -1429,27 +1434,6 @@ enum Foo {
   B = 'B',
 }
 type Bar = Foo.A;
-      `,
-    },
-    {
-      code: `
-function foo<T extends string>() {
-  const a: \`\${T}\` = 'a';
-}
-      `,
-      errors: [
-        {
-          column: 13,
-          endColumn: 17,
-          endLine: 3,
-          line: 3,
-          messageId: 'noUnnecessaryTemplateExpression',
-        },
-      ],
-      output: `
-function foo<T extends string>() {
-  const a: T = 'a';
-}
       `,
     },
   ],
