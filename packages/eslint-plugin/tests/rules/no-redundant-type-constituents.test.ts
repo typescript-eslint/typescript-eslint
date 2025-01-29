@@ -857,5 +857,345 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         },
       ],
     },
+    {
+      code: 'type T = { a: 1 } | any;',
+      errors: [
+        {
+          column: 21,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = { a: 1 };
+        type T = B | any;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = any | { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = any;
+        type T = B | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'union',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 } | never;',
+      errors: [
+        {
+          column: 21,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = { a: 1 };
+        type T = B | never;
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = never;
+        type T = B | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = never | { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            typeName: 'never',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 } | unknown;',
+      errors: [
+        {
+          column: 21,
+          data: {
+            container: 'union',
+            typeName: 'unknown',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = unknown | { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'union',
+            typeName: 'unknown',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown | { a: 1 };',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'union',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 } | { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 18,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } | { a: 1 };',
+      errors: [
+        {
+          column: 26,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 34,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } | ({ a: 1 } | { a: 2 });',
+      errors: [
+        {
+          column: 27,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 46,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = ({ a: 1 } | { a: 2 }) | { a: number };',
+      errors: [
+        {
+          column: 11,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 30,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = { a: 1 } | { a: 2 };
+        type T = ({ a: 3 } | B) | { a: number };
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            subType: '{ a: 3; } | { a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 31,
+          line: 3,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = ({ a: 0 } | ({ a: 1 } | { a: 2 })) | { a: number };',
+      errors: [
+        {
+          column: 11,
+          data: {
+            subType: '{ a: 0; } | { a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 43,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = ({ a: 0 } | { a: 1 }) | { a: number };',
+      errors: [
+        {
+          column: 11,
+          data: {
+            subType: '{ a: 0; } | { a: 1; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 30,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: "type T = ({ a: 1 } | 'other' | { a: 2 }) | { a: number };",
+      errors: [
+        {
+          column: 11,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 40,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: "type Foo = { a: string } | { a: 'b' | 'c' };",
+      errors: [
+        {
+          column: 28,
+          data: {
+            subType: '{ a: "b" | "c"; }',
+            superType: '{ a: string; }',
+          },
+          endColumn: 44,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: "type Foo = { a: string } | ({ a: 'a' } | { a: string } | { a: 'b' });",
+      errors: [
+        {
+          column: 29,
+          data: {
+            subType: '{ a: "a"; }',
+            superType: '{ a: string; }',
+          },
+          endColumn: 39,
+          messageId: 'objectOverridden',
+        },
+        {
+          column: 29,
+          data: {
+            subType: '{ a: "a"; } | { a: "b"; }',
+            superType: '{ a: string; }',
+          },
+          endColumn: 68,
+          messageId: 'objectOverridden',
+        },
+        {
+          column: 58,
+          data: {
+            subType: '{ a: "b"; }',
+            superType: '{ a: string; }',
+          },
+          endColumn: 68,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: "type Foo = ({ a: 'b' } | { a: 1 }) | { a: string } | { a: number };",
+      errors: [
+        {
+          column: 13,
+          data: {
+            subType: '{ a: "b"; }',
+            superType: '{ a: string; }',
+          },
+          endColumn: 34,
+          messageId: 'objectOverridden',
+        },
+        {
+          column: 13,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 34,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
   ],
 });
