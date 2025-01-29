@@ -300,50 +300,47 @@ describe('Validating rule docs', () => {
           return [];
         });
 
-        if (schemaProps.length > 0) {
-          describe('rule options', () => {
-            const headingsAfterOptions = headings.slice(
-              headings.findIndex(header => header.text === 'Options'),
+        describe.runIf(schemaProps.length > 0)('rule options', () => {
+          const headingsAfterOptions = headings.slice(
+            headings.findIndex(header => header.text === 'Options'),
+          );
+
+          it.for(schemaProps)('%s', ([property]) => {
+            const correspondingHeadingIndex = headingsAfterOptions.findIndex(
+              heading => heading.text.includes(`\`${property}\``),
             );
 
-            it.for(schemaProps)('%s', ([property]) => {
-              const correspondingHeadingIndex = headingsAfterOptions.findIndex(
-                heading => heading.text.includes(`\`${property}\``),
+            if (correspondingHeadingIndex === -1) {
+              throw new Error(
+                `At least one header should include \`${property}\`.`,
               );
+            }
 
-              if (correspondingHeadingIndex === -1) {
-                throw new Error(
-                  `At least one header should include \`${property}\`.`,
-                );
+            if (rulesWithComplexOptionHeadings.has(ruleName)) {
+              return;
+            }
+
+            const relevantChildren = tokens.slice(
+              tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex]),
+              tokens.indexOf(
+                headingsAfterOptions[correspondingHeadingIndex + 1],
+              ),
+            );
+
+            for (const rawTab of [
+              `<TabItem value="✅ Correct">`,
+              `<TabItem value="❌ Incorrect">`,
+            ]) {
+              if (
+                !relevantChildren.some(
+                  child => child.type === 'html' && child.raw.includes(rawTab),
+                )
+              ) {
+                throw new Error(`Missing option example tab: ${rawTab}`);
               }
-
-              if (rulesWithComplexOptionHeadings.has(ruleName)) {
-                return;
-              }
-
-              const relevantChildren = tokens.slice(
-                tokens.indexOf(headingsAfterOptions[correspondingHeadingIndex]),
-                tokens.indexOf(
-                  headingsAfterOptions[correspondingHeadingIndex + 1],
-                ),
-              );
-
-              for (const rawTab of [
-                `<TabItem value="✅ Correct">`,
-                `<TabItem value="❌ Incorrect">`,
-              ]) {
-                if (
-                  !relevantChildren.some(
-                    child =>
-                      child.type === 'html' && child.raw.includes(rawTab),
-                  )
-                ) {
-                  throw new Error(`Missing option example tab: ${rawTab}`);
-                }
-              }
-            });
+            }
           });
-        }
+        });
       }
 
       test('must include only valid code samples', () => {
