@@ -1195,6 +1195,7 @@ function foo<T extends string>() {
   const a: \`\${T}\` = 'a';
 }
     `,
+    'type T<A extends string> = `${A}`;',
   ],
 
   invalid: [
