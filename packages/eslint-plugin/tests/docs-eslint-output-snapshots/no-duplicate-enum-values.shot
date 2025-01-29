@@ -12,6 +12,8 @@ enum E {
   A = 'A',
   B = 'A',
   ~~~~~~~ Duplicate enum member value A.
+  C = `A`,
+  ~~~~~~~ Duplicate enum member value A.
 }
 
 Correct
@@ -26,4 +28,5 @@ Correct
 enum E {
   A = 'A',
   B = 'B',
+  C = `C`,
 }

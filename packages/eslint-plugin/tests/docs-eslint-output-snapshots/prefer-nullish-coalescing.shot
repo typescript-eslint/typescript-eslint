@@ -16,7 +16,9 @@ foo === undefined ? 'a string' : foo;
 
 const foo: string | null = 'bar';
 foo !== null ? foo : 'a string';
+foo ? foo : 'a string';
 foo === null ? 'a string' : foo;
+!foo ? 'a string' : foo;
 
 Options: { "ignoreTernaryTests": false }
 
@@ -31,6 +33,8 @@ foo ?? 'a string';
 foo ?? 'a string';
 
 const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
 
