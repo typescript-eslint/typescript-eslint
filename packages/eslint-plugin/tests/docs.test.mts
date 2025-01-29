@@ -13,7 +13,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { titleCase } from 'title-case';
 import * as unistUtilVisit from 'unist-util-visit';
-import { it, describe, expect } from 'vitest';
+import { it, describe, expect, test } from 'vitest';
 
 import rules from '../src/rules/index.js';
 import { areOptionsValid } from './areOptionsValid.js';
@@ -208,7 +208,7 @@ describe('Validating rule docs', () => {
       const filePath = path.join(docsRoot, `${ruleName}.mdx`);
       const { fullText, tokens } = parseMarkdownFile(filePath);
 
-      it(`${ruleName}.mdx must start with frontmatter description`, () => {
+      test(`${ruleName}.mdx must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
           raw: '---\n',
           type: 'hr',
@@ -222,7 +222,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      it(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
+      test(`${ruleName}.mdx must next have a blockquote directing to website`, () => {
         expect(tokens[4]).toMatchObject({
           text: [
             `🛑 This file is source code, not the primary documentation location! 🛑`,
@@ -234,7 +234,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      it(`headings must be title-cased`, () => {
+      test(`headings must be title-cased`, () => {
         // Get all H2 headings objects as the other levels are variable by design.
         const headings = tokens.filter(tokenIsH2);
 
@@ -256,7 +256,7 @@ describe('Validating rule docs', () => {
         ...requiredHeadings,
       ]);
 
-      it('important headings must be h2s', () => {
+      test('important headings must be h2s', () => {
         for (const heading of headings) {
           if (importantHeadings.has(heading.raw.replaceAll('#', '').trim())) {
             expect(heading.depth).toBe(2);
@@ -265,7 +265,7 @@ describe('Validating rule docs', () => {
       });
 
       if (!rules[ruleName as keyof typeof rules].meta.docs?.extendsBaseRule) {
-        it('must include required headings', () => {
+        test('must include required headings', () => {
           const headingTexts = new Set(
             tokens.filter(tokenIsH2).map(token => token.text),
           );
@@ -346,7 +346,7 @@ describe('Validating rule docs', () => {
         }
       }
 
-      it('must include only valid code samples', () => {
+      test('must include only valid code samples', () => {
         for (const token of tokens) {
           if (token.type !== 'code') {
             continue;
@@ -372,7 +372,7 @@ describe('Validating rule docs', () => {
         }
       });
 
-      it('code examples ESLint output', async () => {
+      test('code examples ESLint output', async () => {
         // TypeScript can't infer type arguments unless we provide them explicitly
         linter.defineRule<
           keyof (typeof rule)['meta']['messages'],
@@ -531,7 +531,7 @@ ${token.value}`,
   }
 });
 
-it('There should be no obsolete ESLint output snapshots', () => {
+test('There should be no obsolete ESLint output snapshots', () => {
   const files = fs.readdirSync(eslintOutputSnapshotFolder);
   const names = new Set(Object.keys(rules).map(k => `${k}.shot`));
 
