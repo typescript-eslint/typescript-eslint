@@ -12,7 +12,7 @@ function filePathToNamespace(filePath: string) {
 
   const relativeNamespace = relativePath
     .replace(/^[\\/]/, '')
-    .replace(/(?:dist|lib|src)\//, '')
+    .replace(/(?:dist|lib|src)(\/|\\)/, '')
     .replace(/\.\w+$/, '')
     .replaceAll(/[^a-z0-9-]+/gi, ':');
 

@@ -125,6 +125,230 @@ x === null ? x : y;
 declare let x: string | null | unknown;
 x === null ? x : y;
       `,
+      `
+declare let x: string;
+x ? x : y;
+      `,
+      `
+declare let x: string;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object;
+x ? x : y;
+      `,
+      `
+declare let x: string | object;
+!x ? y : x;
+      `,
+      `
+declare let x: number;
+x ? x : y;
+      `,
+      `
+declare let x: number;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint;
+x ? x : y;
+      `,
+      `
+declare let x: bigint;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean;
+x ? x : y;
+      `,
+      `
+declare let x: boolean;
+!x ? y : x;
+      `,
+      `
+declare let x: any;
+x ? x : y;
+      `,
+      `
+declare let x: any;
+!x ? y : x;
+      `,
+      `
+declare let x: unknown;
+x ? x : y;
+      `,
+      `
+declare let x: unknown;
+!x ? y : x;
+      `,
+      `
+declare let x: object;
+x ? x : y;
+      `,
+      `
+declare let x: object;
+!x ? y : x;
+      `,
+      `
+declare let x: string[];
+x ? x : y;
+      `,
+      `
+declare let x: string[];
+!x ? y : x;
+      `,
+      `
+declare let x: Function;
+x ? x : y;
+      `,
+      `
+declare let x: Function;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string;
+x ? x : y;
+      `,
+      `
+declare let x: () => string;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: () => string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: () => string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: { n: string };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | object };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | object };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: number };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: number };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: bigint };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: bigint };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: boolean };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: boolean };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: any };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: any };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: unknown };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: unknown };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: object };
+x ? x : y;
+      `,
+      `
+declare let x: { n: object };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: string[] };
+x ? x : y;
+      `,
+      `
+declare let x: { n: string[] };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: Function };
+x ? x : y;
+      `,
+      `
+declare let x: { n: Function };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string | null };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string | null };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string | undefined };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string | undefined };
+!x ? y : x;
+      `,
+      `
+declare let x: { n: () => string | null | undefined };
+x ? x : y;
+      `,
+      `
+declare let x: { n: () => string | null | undefined };
+!x ? y : x;
+      `,
     ].map(code => ({
       code,
       options: [{ ignoreTernaryTests: false }] as const,
@@ -220,6 +444,62 @@ x || y;
       `,
       options: [{ ignorePrimitives: true }],
     })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: ${type} | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+x ? x : y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<ValidTestCase<Options>>(type => ({
+      code: `
+declare let x: (${type} & { __brand?: any }) | undefined;
+!x ? y : x;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
     `
       declare let x: any;
       declare let y: number;
@@ -234,6 +514,36 @@ x || y;
       declare let x: never;
       declare let y: number;
       x || y;
+    `,
+    `
+      declare let x: any;
+      declare let y: number;
+      x ? x : y;
+    `,
+    `
+      declare let x: any;
+      declare let y: number;
+      !x ? y : x;
+    `,
+    `
+      declare let x: unknown;
+      declare let y: number;
+      x ? x : y;
+    `,
+    `
+      declare let x: unknown;
+      declare let y: number;
+      !x ? y : x;
+    `,
+    `
+      declare let x: never;
+      declare let y: number;
+      x ? x : y;
+    `,
+    `
+      declare let x: never;
+      declare let y: number;
+      !x ? y : x;
     `,
     {
       code: `
@@ -369,6 +679,270 @@ x || y;
     },
     {
       code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+declare let x: 0 | 'foo' | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum.A | Enum.B | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 0,
+  B = 1,
+  C = 2,
+}
+declare let x: Enum.A | Enum.B | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum.A | Enum.B | undefined;
+x ? x : y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
+enum Enum {
+  A = 'a',
+  B = 'b',
+  C = 'c',
+}
+declare let x: Enum.A | Enum.B | undefined;
+!x ? y : x;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+          },
+        },
+      ],
+    },
+    {
+      code: `
 let a: string | true | undefined;
 let b: string | boolean | undefined;
 
@@ -471,6 +1045,60 @@ let b: string | boolean | undefined;
 let c: string | boolean | undefined;
 
 const test = Boolean(((a = b), b || c));
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+const x = Boolean(a ? a : b);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+const test = Boolean(!a ? b : a);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean((a ? a : b) || c);
+      `,
+      options: [
+        {
+          ignoreBooleanCoercion: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+const test = Boolean(c || (!a ? b : a));
       `,
       options: [
         {
@@ -603,6 +1231,64 @@ let a: string | undefined;
 let b: string | undefined;
 
 if (!!(a || b)) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | true | undefined;
+let b: string | boolean | undefined;
+
+if (a ? a : b) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+
+if (!a ? b : a) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if ((a ? a : b) || c) {
+}
+      `,
+      options: [
+        {
+          ignoreConditionalTests: true,
+        },
+      ],
+    },
+    {
+      code: `
+let a: string | boolean | undefined;
+let b: string | boolean | undefined;
+let c: string | boolean | undefined;
+
+if (c || (!a ? b : a)) {
 }
       `,
       options: [
@@ -787,6 +1473,222 @@ x === null ? y : x;
 declare let x: string | null;
 null === x ? y : x;
       `,
+      `
+declare let x: string | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | null;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string | object | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string | object | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: number | null;
+x ? x : y;
+      `,
+      `
+declare let x: number | null;
+!x ? y : x;
+      `,
+      `
+declare let x: number | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: number | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: number | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | null;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | null;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: bigint | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: bigint | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | null;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | null;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: boolean | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: boolean | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string[] | null;
+x ? x : y;
+      `,
+      `
+declare let x: string[] | null;
+!x ? y : x;
+      `,
+      `
+declare let x: string[] | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string[] | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: string[] | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: string[] | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | null;
+x ? x : y;
+      `,
+      `
+declare let x: object | null;
+!x ? y : x;
+      `,
+      `
+declare let x: object | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: object | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: object | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | null;
+x ? x : y;
+      `,
+      `
+declare let x: Function | null;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: Function | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: Function | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: Function | null | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | null;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | null;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | undefined;
+!x ? y : x;
+      `,
+      `
+declare let x: (() => string) | null | undefined;
+x ? x : y;
+      `,
+      `
+declare let x: (() => string) | null | undefined;
+!x ? y : x;
+      `,
     ].map(code => ({
       code,
       errors: [
@@ -802,6 +1704,247 @@ null === x ? y : x;
               output: `
 ${code.split('\n')[1]}
 x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+
+    ...[
+      `
+declare let x: { n: string | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | object | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | object | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | object | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | object | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string | object | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string | object | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: number | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: number | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: number | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: number | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: number | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: number | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: bigint | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: bigint | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: bigint | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: bigint | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: bigint | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: bigint | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: boolean | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: boolean | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: boolean | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: boolean | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: boolean | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: boolean | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string[] | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string[] | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string[] | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string[] | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: string[] | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: string[] | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: object | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: object | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: object | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: object | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: object | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: object | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: Function | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: Function | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: Function | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: Function | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: Function | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: Function | null | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: (() => string) | null };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: (() => string) | null };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: (() => string) | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: (() => string) | undefined };
+!x.n ? y : x.n;
+      `,
+      `
+declare let x: { n: (() => string) | null | undefined };
+x.n ? x.n : y;
+      `,
+      `
+declare let x: { n: (() => string) | null | undefined };
+!x.n ? y : x.n;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+x.n ?? y;
       `,
             },
           ],
@@ -1282,6 +2425,110 @@ x ?? y;
       ],
       output: null,
     },
+    {
+      code: `
+declare let x: string | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: string | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: { bigint: true, boolean: true, number: true },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: number | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: number | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: { bigint: true, boolean: true, string: true },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: boolean | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: boolean | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: { bigint: true, number: true, string: true },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: bigint | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: bigint | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: { boolean: true, number: true, string: true },
+        },
+      ],
+      output: null,
+    },
     // falsy
     {
       code: `
@@ -1438,6 +2685,161 @@ x ?? y;
       ],
       output: null,
     },
+    {
+      code: `
+declare let x: '' | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: '' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: \`\` | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: \`\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: false | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
     // truthy
     {
       code: `
@@ -1571,6 +2973,316 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: \`hello\${'string'}\` | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: \`hello\${'string'}\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: \`hello\${'string'}\` | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: \`hello\${'string'}\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
               messageId: 'suggestNullish',
@@ -1812,6 +3524,440 @@ x ?? y;
       ],
       output: null,
     },
+    {
+      code: `
+declare let x: 'a' | 'b' | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | 'b' | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | 'b' | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | \`b\` | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 'a' | \`b\` | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 'a' | \`b\` | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | 2 | 3 | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1 | 2 | 3 | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1 | 2 | 3 | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | 1n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | 2n | 3n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 1n | 2n | 3n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 1n | 2n | 3n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | false | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
     // Mixed unions
     {
       code: `
@@ -1852,6 +3998,130 @@ x || y;
       errors: [
         {
           messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | false | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: 0 | 1 | 0n | 1n | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: false,
+            boolean: true,
+            number: false,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | null | undefined;
+x ? x : y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+declare let x: true | false | null | undefined;
+x ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [
+        {
+          ignorePrimitives: {
+            bigint: true,
+            boolean: false,
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+declare let x: true | false | null | undefined;
+!x ? y : x;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
           suggestions: [
             {
               messageId: 'suggestNullish',
@@ -2328,6 +4598,69 @@ if (+(a ?? b)) {
           ignoreConditionalTests: true,
         },
       ],
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox || getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      output: null,
+    },
+    {
+      code: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ? defaultBox : getFallbackBox();
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverTernary',
+          suggestions: [
+            {
+              messageId: 'suggestNullish',
+              output: `
+interface Box {
+  value: string;
+}
+declare function getFallbackBox(): Box;
+declare const defaultBox: Box | undefined;
+
+defaultBox ?? getFallbackBox();
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }],
+      output: null,
     },
   ],
 });

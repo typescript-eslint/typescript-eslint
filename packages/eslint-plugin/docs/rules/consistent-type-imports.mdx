@@ -107,8 +107,8 @@ The rule will **_not_** report any errors in files _that contain decorators_ whe
 
 > See [Blog > Changes to consistent-type-imports when used with legacy decorators and decorator metadata](/blog/changes-to-consistent-type-imports-with-decorators) for more details.
 
-If you are using [type-aware linting](https://typescript-eslint.io/linting/typed-linting) then we will automatically infer your setup from your tsconfig and you should not need to configure anything.
-Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on by setting both [`parserOptions.emitDecoratorMetadata = true`](https://typescript-eslint.io/packages/parser/#emitdecoratormetadata) and [`parserOptions.experimentalDecorators = true`](https://typescript-eslint.io/packages/parser/#experimentaldecorators).
+If you are using [type-aware linting](/getting-started/typed-linting) then we will automatically infer your setup from your tsconfig and you should not need to configure anything.
+Otherwise you can explicitly tell our tooling to analyze your code as if the compiler option was turned on by setting both [`parserOptions.emitDecoratorMetadata = true`](/packages/parser/#emitdecoratormetadata) and [`parserOptions.experimentalDecorators = true`](/packages/parser/#experimentaldecorators).
 
 ## Comparison with `importsNotUsedAsValues` / `verbatimModuleSyntax`
 
