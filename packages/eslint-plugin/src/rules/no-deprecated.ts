@@ -12,6 +12,7 @@ import {
   nullThrows,
   typeOrValueSpecifiersSchema,
   typeMatchesSomeSpecifier,
+  valueMatchesSomeSpecifier,
 } from '../util';
 
 type IdentifierLike =
@@ -372,7 +373,10 @@ export default createRule<Options, MessageIds>({
       }
 
       const type = services.getTypeAtLocation(node);
-      if (typeMatchesSomeSpecifier(type, allow, services.program)) {
+      if (
+        typeMatchesSomeSpecifier(type, allow, services.program) ||
+        valueMatchesSomeSpecifier(node, allow)
+      ) {
         return;
       }
 
