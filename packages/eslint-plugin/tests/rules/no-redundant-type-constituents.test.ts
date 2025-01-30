@@ -166,6 +166,9 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       type U = T & string;
     `,
     "declare function fn(): never | 'foo';",
+    'type Foo = { a: string } | { a: number };',
+    "type Superset = { a: string } | { a: 'b' | 'c' | 0 };",
+    "type Superset = { a: 'b' | 'c' | 0 } | ({ a: 1 } | { a: 'a' });",
   ],
 
   invalid: [
@@ -1101,6 +1104,20 @@ ruleTester.run('no-redundant-type-constituents', rule, {
       ],
     },
     {
+      code: 'type T = ({ a: 0 } | ({ a: 1 } | { a: 2 })) | { a: 1 | 2 };',
+      errors: [
+        {
+          column: 11,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: 1 | 2; }',
+          },
+          endColumn: 43,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
       code: 'type T = ({ a: 0 } | { a: 1 }) | { a: number };',
       errors: [
         {
@@ -1122,6 +1139,20 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           data: {
             subType: '{ a: 1; } | { a: 2; }',
             superType: '{ a: number; }',
+          },
+          endColumn: 40,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: "type T = ({ a: 1 } | 'other' | { a: 2 }) | { a: 1 | 2 };",
+      errors: [
+        {
+          column: 11,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: 1 | 2; }',
           },
           endColumn: 40,
           messageId: 'objectOverridden',
