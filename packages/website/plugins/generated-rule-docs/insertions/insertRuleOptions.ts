@@ -43,7 +43,7 @@ export function insertRuleOptions(page: RuleDocsPage): void {
       if (!page.rule.meta.docs.extendsBaseRule) {
         throw new Error(`Missing description for option ${optionName}.`);
       }
-      return;
+      continue;
     }
 
     const existingHeadingIndex = findHeadingIndex(
