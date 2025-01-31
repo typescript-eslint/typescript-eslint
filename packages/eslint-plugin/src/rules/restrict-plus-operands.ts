@@ -218,7 +218,10 @@ export default createRule<Options, MessageIds>({
         if (
           !allowNumberAndString &&
           isTypeFlagSetInUnion(baseType, ts.TypeFlags.StringLike) &&
-          isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
+          isTypeFlagSetInUnion(
+            otherType,
+            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+          )
         ) {
           return context.report({
             node,
