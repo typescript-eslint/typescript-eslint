@@ -127,13 +127,24 @@ function configWithoutAssumptions(configs: unknown[]): ConfigArray {
       throw extendsError('value to be an array');
     }
 
-    return [
-      ...extendsArr.flat(Infinity).map((extension, i) => {
+    const extendsArrFlattened = extendsArr.flat(Infinity);
+    const nonObjectExtensions = extendsArrFlattened.reduce<number[]>(
+      (acc, extension, extensionIndex) => {
         if (!isObject(extension)) {
-          throw extendsError(
-            `array to only contain objects (non-object found at index ${i})`,
-          );
+          acc.push(extensionIndex);
         }
+        return acc;
+      },
+      [],
+    );
+    if (nonObjectExtensions.length) {
+      throw extendsError(
+        `array to only contain objects (contains non-objects at the following indices: ${nonObjectExtensions.join(`, `)})`,
+      );
+    }
+
+    return [
+      ...extendsArrFlattened.map((extension: object) => {
         const mergedName = [
           nameIsString && name,
           'name' in extension && extension.name,
