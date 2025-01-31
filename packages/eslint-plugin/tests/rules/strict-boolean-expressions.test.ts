@@ -114,6 +114,13 @@ if (x) {
       `,
       options: [{ allowNullableBoolean: true }],
     },
+    {
+      code: `
+        const a: (undefined | boolean | null)[] = [true, undefined, null];
+        a.some(x => x);
+      `,
+      options: [{ allowNullableBoolean: true }],
+    },
 
     // nullable string in boolean context
     {
@@ -694,6 +701,27 @@ declare function f(x: string | null): boolean;
         { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
       output: null,
+    },
+    {
+      code: `
+        declare const array: string[];
+        array.some(x => x);
+      `,
+      errors: [
+        {
+          messageId: 'predicateReturnsNonBoolean',
+          suggestions: [
+            {
+              messageId: 'explicitBooleanReturnType',
+              output: `
+        declare const array: string[];
+        array.some((x): boolean => x);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableBoolean: true, allowString: false }],
     },
     {
       code: noFormat`
