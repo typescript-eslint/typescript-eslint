@@ -44,13 +44,13 @@
     "syntax"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && yarn run postbuild",
     "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
+    "postclean": "rimraf dist/ _ts4.3/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "test": "jest --coverage --runInBand --verbose",
+    "test": "vitest --run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -64,13 +64,13 @@
     "ts-api-utils": "^2.0.0"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
+    "@vitest/coverage-v8": "^3.0.4",
+    "downlevel-dts": "*",
     "glob": "*",
-    "jest": "29.7.0",
     "prettier": "^3.2.5",
     "rimraf": "*",
-    "tmp": "*",
-    "typescript": "*"
+    "typescript": "*",
+    "vitest": "^3.0.4"
   },
   "peerDependencies": {
     "typescript": ">=4.8.4 <5.8.0"

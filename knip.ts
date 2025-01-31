@@ -11,6 +11,7 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+  vitest: { config: ['vitest.config.mts', 'packages/*/vitest.config.mts'] },
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],

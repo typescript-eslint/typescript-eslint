@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 
 import { getParsedConfigFile } from '../../src/create-program/getParsedConfigFile';
 
-const mockGetParsedCommandLineOfConfigFile = jest.fn();
+const mockGetParsedCommandLineOfConfigFile = vi.fn();
 
 const mockTsserver: typeof ts = {
   formatDiagnostics: ts.formatDiagnostics,
@@ -14,7 +14,7 @@ const mockTsserver: typeof ts = {
 
 describe('getParsedConfigFile', () => {
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it('throws an error when tsserver.sys is undefined', () => {
@@ -27,7 +27,7 @@ describe('getParsedConfigFile', () => {
 
   it('uses the cwd as the default project directory', () => {
     getParsedConfigFile(mockTsserver, './tsconfig.json');
-    expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledTimes(1);
+    expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledOnce();
     const [_configFileName, _optionsToExtend, host] =
       mockGetParsedCommandLineOfConfigFile.mock.calls[0];
     expect(host.getCurrentDirectory()).toBe(process.cwd());
@@ -39,7 +39,7 @@ describe('getParsedConfigFile', () => {
       './tsconfig.json',
       path.relative('./', path.dirname(__filename)),
     );
-    expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledTimes(1);
+    expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledOnce();
     const [_configFileName, _optionsToExtend, host] =
       mockGetParsedCommandLineOfConfigFile.mock.calls[0];
     expect(host.getCurrentDirectory()).toBe(path.dirname(__filename));
@@ -47,7 +47,7 @@ describe('getParsedConfigFile', () => {
 
   it('resolves an absolute project directory when passed', () => {
     getParsedConfigFile(mockTsserver, './tsconfig.json', __dirname);
-    expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledTimes(1);
+    expect(mockGetParsedCommandLineOfConfigFile).toHaveBeenCalledOnce();
     const [_configFileName, _optionsToExtend, host] =
       mockGetParsedCommandLineOfConfigFile.mock.calls[0];
     expect(host.getCurrentDirectory()).toBe(__dirname);
