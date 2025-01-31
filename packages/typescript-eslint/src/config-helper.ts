@@ -119,18 +119,20 @@ function configWithoutAssumptions(configs: unknown[]): ConfigArray {
     const nameIsString = typeof name === 'string';
     const extendsError = (expected: string) =>
       new TypeError(
-        `tseslint.config(): Config ${
+        `tseslint.config(): Config at index ${configIndex} ${
           nameIsString ? `"${name}"` : '(anonymous)'
-        }: Key "extends": Expected ${expected} at user-defined index ${configIndex}.`,
+        }: Key "extends": Expected ${expected}.`,
       );
     if (!Array.isArray(extendsArr)) {
       throw extendsError('value to be an array');
     }
 
     return [
-      ...extendsArr.flat(Infinity).map(extension => {
+      ...extendsArr.flat(Infinity).map((extension, i) => {
         if (!isObject(extension)) {
-          throw extendsError('array to only contain objects');
+          throw extendsError(
+            `array to only contain objects (non-object found at index ${i})`,
+          );
         }
         const mergedName = [
           nameIsString && name,

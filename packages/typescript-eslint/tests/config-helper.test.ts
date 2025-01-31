@@ -66,7 +66,7 @@ describe('config helper', () => {
         extends: 42,
       }),
     ).toThrow(
-      'tseslint.config(): Config (anonymous): Key "extends": Expected value to be an array at user-defined index 0.',
+      'tseslint.config(): Config at index 0 (anonymous): Key "extends": Expected value to be an array.',
     );
   });
 
@@ -92,7 +92,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'tseslint.config(): Config "my-config-2": Key "extends": Expected array to only contain objects at user-defined index 1.',
+      'tseslint.config(): Config at index 1 "my-config-2": Key "extends": Expected array to only contain objects (non-object found at index 0).',
     );
   });
 
@@ -117,7 +117,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'tseslint.config(): Config (anonymous): Key "extends": Expected array to only contain objects at user-defined index 1.',
+      'tseslint.config(): Config at index 1 (anonymous): Key "extends": Expected array to only contain objects (non-object found at index 0).',
     );
   });
 
