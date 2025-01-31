@@ -134,6 +134,20 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
     });
   }
 
+  if (rule.docs.extendsBaseRule) {
+    features.push({
+      children: (
+        <>
+          {' '}
+          This is an "extension" rule that replaces a core ESLint rule to work
+          with TypeScript. See{' '}
+          <Link href="/rules#extension-rules">Rules &gt; Extension Rules</Link>.
+        </>
+      ),
+      emoji: '🧱',
+    });
+  }
+
   return (
     <div className={styles.features}>
       {features.map(feature => (
