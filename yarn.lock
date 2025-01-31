@@ -5859,6 +5859,7 @@ __metadata:
     "@typescript-eslint/typescript-estree": 8.22.0
     "@typescript-eslint/visitor-keys": 8.22.0
     glob: "*"
+    jest: 29.7.0
     jest-specific-snapshot: "*"
     make-dir: "*"
     prettier: ^3.2.5
