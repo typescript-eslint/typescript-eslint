@@ -31,7 +31,6 @@
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
     "test": "npx jest",
-    "test-coverage": "npx jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
