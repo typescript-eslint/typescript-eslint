@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs consistent-return.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 
 function foo(): undefined {}
 function bar(flag: boolean): undefined {
@@ -15,11 +12,8 @@ async function baz(flag: boolean): Promise<undefined> {
   return foo();
   ~~~~~~~~~~~~~ Async function 'baz' expected no return value.
 }
-"
-`;
 
-exports[`Validating rule docs consistent-return.mdx code examples ESLint output 2`] = `
-"Correct
+Correct
 
 function foo(): void {}
 function bar(flag: boolean): void {
@@ -31,5 +25,3 @@ async function baz(flag: boolean): Promise<void | number> {
   if (flag) return 42;
   return;
 }
-"
-`;

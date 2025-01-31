@@ -1,5 +1,4 @@
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import 'jest-specific-snapshot';
 import fs from 'node:fs';
 import path from 'node:path';
 import prettier from 'prettier';
@@ -49,7 +48,6 @@ const ONLY = '';
 describe('Rule schemas should be convertible to TS types for documentation purposes', () => {
   for (const [ruleName, ruleDef] of Object.entries(rules)) {
     if (SKIPPED_RULES_FOR_TYPE_GENERATION.has(ruleName)) {
-      // eslint-disable-next-line jest/no-disabled-tests -- intentional skip for documentation purposes
       it.skip(ruleName, () => {});
       continue;
     }
@@ -88,7 +86,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
         PRETTIER_CONFIG.tsType,
       );
 
-      expect(
+      await expect(
         [
           '',
           '# SCHEMA:',
@@ -99,7 +97,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
           '',
           compilationResult,
         ].join('\n'),
-      ).toMatchSpecificSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
+      ).toMatchFileSnapshot(path.join(snapshotFolder, `${ruleName}.shot`));
     });
   }
 });
