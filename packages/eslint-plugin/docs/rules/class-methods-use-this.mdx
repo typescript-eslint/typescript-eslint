@@ -33,10 +33,15 @@ const defaultOptions: Options = {
 
 {/* insert option description */}
 
-Example of a correct code when `ignoreOverrideMethods` is set to `true`:
+Example of correct code when `ignoreOverrideMethods` is set to `true`:
 
 ```ts option='{ "ignoreOverrideMethods": true }' showPlaygroundButton
-class X {
+abstract class Base {
+  abstract method(): void;
+  abstract property: () => void;
+}
+
+class Derived extends Base {
   override method() {}
   override property = () => {};
 }
