@@ -127,7 +127,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
-          to run.
+          to run, which comes with performance tradeoffs.
         </>
       ),
       emoji: '💭',
