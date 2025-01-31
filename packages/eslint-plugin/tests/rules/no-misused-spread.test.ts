@@ -306,6 +306,12 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 21,
           line: 1,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: "const a = 'test'.split('');",
+            },
+          ],
         },
       ],
     },
@@ -321,6 +327,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 26,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        function withText<Text extends string>(text: Text) {
+          return text.split('');
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -335,6 +351,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        const test = 'hello';
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -349,6 +374,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        const test = \`he\${'ll'}o\`;
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -363,6 +397,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare const test: string;
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -391,6 +434,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare const test: string & { __brand: 'test' };
+        const a = test.split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -419,6 +471,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function getString(): string;
+        const a = getString().split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -436,6 +497,18 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 29,
           line: 6,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text.split(''));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -453,12 +526,36 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 29,
           line: 6,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text.split(''), 'and', ...text);
+      `,
+            },
+          ],
         },
         {
           column: 38,
           endColumn: 45,
           line: 6,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        declare const text: string;
+
+        textIdentity(...text, 'and', ...text.split(''));
+      `,
+            },
+          ],
         },
       ],
     },
@@ -476,6 +573,18 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 5,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function textIdentity(...args: string[]);
+
+        function withText<Text extends string>(text: Text) {
+          textIdentity(...text.split(''));
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -490,6 +599,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function getString<T extends string>(): T;
+        const a = getString().split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -504,6 +622,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
+          suggestions: [
+            {
+              messageId: 'replaceStringSpread',
+              output: `
+        declare function getString(): string & { __brand: 'test' };
+        const a = getString().split('');
+      `,
+            },
+          ],
         },
       ],
     },
@@ -741,6 +868,19 @@ ruleTester.run('no-misused-spread', rule, {
           endLine: 6,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        const o = {
+          ...Object.fromEntries(new Map([
+            ['test-1', 1],
+            ['test-2', 2],
+          ])),
+        };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -759,6 +899,19 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 7,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        const map = new Map([
+          ['test-1', 1],
+          ['test-2', 2],
+        ]);
+
+        const o = { ...Object.fromEntries(map) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -773,6 +926,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = { ...Object.fromEntries(map) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -787,6 +949,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: ReadonlyMap<string, number>;
+        const o = { ...Object.fromEntries(map) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -801,6 +972,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: WeakMap<{ a: number }, string>;
+        const o = { ...Object.fromEntries(map) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -829,6 +1009,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 32,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare function getMap(): Map<string, number>;
+        const o = { ...Object.fromEntries(getMap()) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -843,6 +1032,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 25,
           line: 3,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const a: Map<boolean, string> & Set<number>;
+        const o = { ...Object.fromEntries(a) };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -871,6 +1069,69 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        const promise = new Promise(() => {});
+        const o = { ...await promise };
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const promise: Promise<{ a: 1 }>;
+        async function foo() {
+          return { ...(promise || {}) };
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 38,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<{ a: 1 }>;
+        async function foo() {
+          return { ...(await (promise || {})) };
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const promise: Promise<any>;
+        async function foo() {
+          return { ...(Math.random() < 0.5 ? promise : {}) };
+        }
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 59,
+          line: 4,
+          messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<any>;
+        async function foo() {
+          return { ...(await (Math.random() < 0.5 ? promise : {})) };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -886,6 +1147,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 30,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        function withPromise<P extends Promise<void>>(promise: P) {
+          return { ...await promise };
+        }
+      `,
+            },
+          ],
         },
       ],
     },
@@ -900,6 +1171,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const maybePromise: Promise<number> | { a: number };
+        const o = { ...await maybePromise };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -914,6 +1194,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare const promise: Promise<number> & { a: number };
+        const o = { ...await promise };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -928,6 +1217,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare function getPromise(): Promise<number>;
+        const o = { ...await getPromise() };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -942,6 +1240,15 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 3,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        declare function getPromise<T extends Promise<number>>(arg: T): T;
+        const o = { ...await getPromise() };
+      `,
+            },
+          ],
         },
       ],
     },
@@ -1636,6 +1943,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 32,
           line: 4,
           messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+
+        const o = <div {...Object.fromEntries(map)} />;
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {
@@ -1658,6 +1975,16 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 36,
           line: 4,
           messageId: 'noPromiseSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'addAwait',
+              output: `
+        const promise = new Promise(() => {});
+
+        const o = <div {...await promise} />;
+      `,
+            },
+          ],
         },
       ],
       languageOptions: {

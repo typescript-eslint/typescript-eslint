@@ -1,5 +1,6 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -8,7 +9,9 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
+  getOperatorPrecedence,
   getParserServices,
+  getWrappingFixer,
   isBuiltinSymbolLike,
   isPromiseLike,
   isTypeFlagSet,
@@ -23,6 +26,7 @@ type Options = [
 ];
 
 type MessageIds =
+  | 'addAwait'
   | 'noArraySpreadInObject'
   | 'noClassDeclarationSpreadInObject'
   | 'noClassInstanceSpreadInObject'
@@ -30,7 +34,9 @@ type MessageIds =
   | 'noIterableSpreadInObject'
   | 'noMapSpreadInObject'
   | 'noPromiseSpreadInObject'
-  | 'noStringSpread';
+  | 'noStringSpread'
+  | 'replaceMapSpreadInObject'
+  | 'replaceStringSpread';
 
 export default createRule<Options, MessageIds>({
   name: 'no-misused-spread',
@@ -42,7 +48,9 @@ export default createRule<Options, MessageIds>({
       recommended: 'strict',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
+      addAwait: 'Add await operator.',
       noArraySpreadInObject:
         'Using the spread operator on an array in an object will result in a list of indices.',
       noClassDeclarationSpreadInObject:
@@ -59,6 +67,9 @@ export default createRule<Options, MessageIds>({
         'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
       noStringSpread:
         "Using the spread operator on a string can cause unexpected behavior. Prefer `.split('')` instead.",
+      replaceMapSpreadInObject:
+        'Replace map spread in object with `Object.fromEntries(map)`',
+      replaceStringSpread: "Replace string spread with `.split('')`",
     },
     schema: [
       {
@@ -95,8 +106,85 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noStringSpread',
+          suggest: getStringSpreadSuggestions(node, type),
         });
       }
+    }
+
+    function getMapSpreadSuggestions(
+      node: TSESTree.Expression,
+      type: ts.Type,
+    ): TSESLint.ReportSuggestionArray<MessageIds> | null {
+      const types = tsutils.unionTypeParts(type);
+      if (types.some(t => !isMap(services.program, t))) {
+        return null;
+      }
+      return [
+        {
+          messageId: 'replaceMapSpreadInObject',
+          fix: getWrappingFixer({
+            node,
+            sourceCode: context.sourceCode,
+            wrap: code => `Object.fromEntries(${code})`,
+          }),
+        },
+      ];
+    }
+
+    function isHigherPrecedenceThanAwait(tsNode: ts.Node): boolean {
+      const operator = ts.isBinaryExpression(tsNode)
+        ? tsNode.operatorToken.kind
+        : ts.SyntaxKind.Unknown;
+      const nodePrecedence = getOperatorPrecedence(tsNode.kind, operator);
+      const awaitPrecedence = getOperatorPrecedence(
+        ts.SyntaxKind.AwaitExpression,
+        ts.SyntaxKind.Unknown,
+      );
+      return nodePrecedence > awaitPrecedence;
+    }
+
+    function getPromiseSpreadSuggestions(
+      node: TSESTree.Expression,
+    ): TSESLint.ReportSuggestionArray<MessageIds> {
+      const isHighPrecendence = isHigherPrecedenceThanAwait(
+        services.esTreeNodeToTSNodeMap.get(node),
+      );
+
+      return [
+        {
+          messageId: 'addAwait',
+          fix: fixer =>
+            isHighPrecendence
+              ? fixer.insertTextBefore(node, 'await ')
+              : [
+                  fixer.insertTextBefore(node, 'await ('),
+                  fixer.insertTextAfter(node, ')'),
+                ],
+        },
+      ];
+    }
+
+    function getStringSpreadSuggestions(
+      node: TSESTree.SpreadElement,
+      type: ts.Type,
+    ): TSESLint.ReportSuggestionArray<MessageIds> | null {
+      if (tsutils.unionTypeParts(type).some(type => !isString(type))) {
+        return null;
+      }
+
+      const targetNode: TSESTree.Node =
+        node.parent.type !== AST_NODE_TYPES.ArrayExpression ||
+        node.parent.elements.length > 1
+          ? node.argument
+          : node.parent;
+
+      const code = context.sourceCode.getText(node.argument);
+      return [
+        {
+          messageId: 'replaceStringSpread',
+          fix: fixer => fixer.replaceText(targetNode, `${code}.split('')`),
+        },
+      ];
     }
 
     function checkObjectSpread(
@@ -112,6 +200,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noPromiseSpreadInObject',
+          suggest: getPromiseSpreadSuggestions(node.argument),
         });
 
         return;
@@ -130,6 +219,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noMapSpreadInObject',
+          suggest: getMapSpreadSuggestions(node.argument, type),
         });
 
         return;
