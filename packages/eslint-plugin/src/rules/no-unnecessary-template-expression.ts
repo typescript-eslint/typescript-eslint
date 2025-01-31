@@ -451,13 +451,14 @@ export default createRule<[], MessageId>({
           isTrivialInterpolation(node) &&
           !hasCommentsBetweenQuasi(node.quasis[0], node.quasis[1])
         ) {
-          const { constraintType } = getConstraintInfo(
+          const { constraintType, isTypeParameter } = getConstraintInfo(
             checker,
             services.getTypeAtLocation(node.types[0]),
           );
 
           if (
             constraintType &&
+            !isTypeParameter &&
             isUnderlyingTypeString(constraintType) &&
             !isEnumType(constraintType)
           ) {
