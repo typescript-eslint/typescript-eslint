@@ -29,5 +29,11 @@ export function isNodeEqual(a: TSESTree.Node, b: TSESTree.Node): boolean {
       isNodeEqual(a.property, b.property) && isNodeEqual(a.object, b.object)
     );
   }
+  if (
+    a.type === AST_NODE_TYPES.ChainExpression &&
+    b.type === AST_NODE_TYPES.ChainExpression
+  ) {
+    return isNodeEqual(a.expression, b.expression);
+  }
   return false;
 }
