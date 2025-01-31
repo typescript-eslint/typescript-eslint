@@ -437,6 +437,8 @@ export default createRule<Options, MessageIds>({
               isNodeEqual(testNode, node.alternate)
             ) {
               identifierOrMemberExpression = testNode;
+            } else {
+              return;
             }
           }
         }
