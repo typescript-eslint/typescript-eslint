@@ -79,8 +79,6 @@ cond ? console.log('true') : console.error('false');
 
 {/* insert option description */}
 
-Whether to ignore "shorthand" `() =>` arrow functions: those without `{ ... }` braces.
-
 It might be undesirable to wrap every arrow function shorthand expression.
 Especially when using the Prettier formatter, which spreads such code across 3 lines instead of 1.
 
@@ -93,8 +91,6 @@ promise.then(value => window.postMessage(value));
 ### `ignoreVoidOperator`
 
 {/* insert option description */}
-
-Whether to ignore returns that start with the `void` operator.
 
 It might be preferable to only use some distinct syntax
 to explicitly mark the confusing but valid usage of void expressions.
@@ -126,8 +122,6 @@ console.log(void alert('Hello, world!'));
 ### `ignoreVoidReturningFunctions`
 
 {/* insert option description */}
-
-Whether to ignore returns from functions with `void` return types when inside a function with a `void` return type.
 
 Some projects prefer allowing functions that explicitly return `void` to return `void` expressions. Doing so allows more writing more succinct functions.
 
