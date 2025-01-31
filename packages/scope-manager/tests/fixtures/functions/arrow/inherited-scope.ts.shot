@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`functions arrow inherited-scope 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -67,4 +64,3 @@ ScopeManager {
     },
   ],
 }
-`;

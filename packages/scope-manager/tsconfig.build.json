@@ -6,7 +6,7 @@
     "rootDir": "./src",
     "resolveJsonModule": true,
     "declaration": true,
-    "types": ["node", "jest"]
+    "types": ["node", "vitest/globals", "vitest/importMeta"]
   },
   "include": ["src", "typings"],
   "exclude": ["**/*.test.ts"],

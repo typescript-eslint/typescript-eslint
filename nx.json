@@ -23,9 +23,26 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "cache": true
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ],
+      "inputs": [
+        {
+          "input": "production"
+        },
+        {
+          "input": "production",
+          "dependencies": true
+        }
+      ],
+      "outputs": ["{projectRoot}/dist"],
+      "cache": true,
+      "options": {
+        "cwd": "{projectRoot}"
+      }
     },
     "test": {
       "inputs": [
@@ -58,27 +75,54 @@
       }
     },
     "lint": {
+      "executor": "@nx/eslint:lint",
       "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
+        {
+          "projects": [
+            "eslint-plugin",
+            "eslint-plugin-internal",
+            "typescript-eslint"
+          ],
+          "target": "build"
+        }
       ],
+      "options": {
+        "noEslintrc": true,
+        "cache": true,
+        "eslintConfig": "{workspaceRoot}/eslint.config.js"
+      },
       "inputs": [
-        "default",
-        "{workspaceRoot}/eslint.config.js",
-        "{workspaceRoot}/eslint.config.mjs",
+        {
+          "input": "default"
+        },
+        {
+          "fileset": "{workspaceRoot}/eslint.config.js"
+        },
+        {
+          "fileset": "{workspaceRoot}/eslint.config.mjs"
+        },
         {
           "dependentTasksOutputFiles": "**/*.js",
           "transitive": false
         }
       ],
+      "outputs": ["{options.outputFile}"],
       "cache": true
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      {
+        "fileset": "{projectRoot}/**/*"
+      },
+      {
+        "input": "sharedGlobals"
+      }
+    ],
     "sharedGlobals": [
-      "{workspaceRoot}/.github/workflows/ci.yml",
+      {
+        "fileset": "{workspaceRoot}/.github/workflows/ci.yml"
+      },
       {
         "runtime": "node -v"
       },
@@ -88,14 +132,29 @@
       {
         "runtime": "yarn -v"
       },
-      "{workspaceRoot}/yarn.lock"
+      {
+        "fileset": "{workspaceRoot}/yarn.lock"
+      }
     ],
     "production": [
-      "default",
-      "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s"
+      {
+        "input": "default"
+      },
+      {
+        "fileset": "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)"
+      },
+      {
+        "fileset": "!{projectRoot}/tsconfig.spec.json"
+      },
+      {
+        "fileset": "!{projectRoot}/jest.config.[jt]s"
+      },
+      {
+        "fileset": "!{projectRoot}/src/test-setup.[jt]s"
+      },
+      {
+        "fileset": "!{projectRoot}/vitest.config.m[jt]s"
+      }
     ]
   }
 }
