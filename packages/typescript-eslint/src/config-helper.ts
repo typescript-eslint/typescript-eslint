@@ -90,20 +90,21 @@ type Config = TSESLint.FlatConfig.Config;
  * );
  * ```
  */
-export const config = (
+export function config(
   ...configs: InfiniteDepthConfigWithExtends[]
-): ConfigArray => configWithoutAssumptions(configs);
+): ConfigArray {
+  return configWithoutAssumptions(configs);
+}
+
+function isObject(value: unknown): value is object {
+  // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish, eqeqeq
+  return typeof value === 'object' && value !== null;
+}
+
+// Implement the `config()` helper without assuming the runtime type of the input.
 function configWithoutAssumptions(configs: unknown[]): ConfigArray {
-  /* We intentionally temporarily change the type to `unknown`, to ensure that we make no assumptions about the types of
-  the arguments passed to this function at runtime. If any argument is an unexpected type, we should not cause a
-  `TypeError`, and instead, we should silently return the unexpected argument unchanged, because ESLint will later
-   validate the types. */
   const flattened = configs.flat(Infinity);
   return flattened.flatMap((configWithExtends, configIndex) => {
-    const isObject = (
-      value: unknown,
-      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    ): value is {} => !!value && typeof value === 'object';
     if (!isObject(configWithExtends) || !('extends' in configWithExtends)) {
       // `configWithExtends` could be anything, but we'll assume it's a `Config` object for TS purposes.
       return configWithExtends as Config;
@@ -119,7 +120,7 @@ function configWithoutAssumptions(configs: unknown[]): ConfigArray {
     const extendsError = (expected: string) =>
       new TypeError(
         `tseslint.config(): Config ${
-          nameIsString ? `"${name}"` : '(unnamed)'
+          nameIsString ? `"${name}"` : '(anonymous)'
         }: Key "extends": Expected ${expected} at user-defined index ${configIndex}.`,
       );
     if (!Array.isArray(extendsArr)) {
@@ -141,8 +142,11 @@ function configWithoutAssumptions(configs: unknown[]): ConfigArray {
           // `extension` could be any object, but we'll assume it's a `Config` object for TS purposes.
           ...(extension as Config),
           ...Object.fromEntries(
-            Object.entries(config).filter(([key]) =>
-              ['files', 'ignores'].includes(key),
+            Object.entries(config).filter(
+              ([key, value]) =>
+                ['files', 'ignores'].includes(key) &&
+                // eslint-disable-next-line @typescript-eslint/internal/eqeq-nullish
+                value !== undefined,
             ),
           ),
           ...(mergedName && { name: mergedName }),

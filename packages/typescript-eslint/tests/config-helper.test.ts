@@ -106,7 +106,7 @@ describe('config helper', () => {
         },
       ),
     ).toThrow(
-      'tseslint.config(): Config (unnamed): Key "extends": Expected array to only contain objects at user-defined index 1.',
+      'tseslint.config(): Config (anonymous): Key "extends": Expected array to only contain objects at user-defined index 1.',
     );
   });
 
@@ -246,7 +246,7 @@ describe('config helper', () => {
     ]);
   });
 
-  it.each([undefined, null])(
+  it.each([undefined, null, 'not a config object', 42])(
     'passes invalid arguments through unchanged',
     config => {
       expect(
