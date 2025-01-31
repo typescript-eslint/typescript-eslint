@@ -59,6 +59,17 @@ describe('config helper', () => {
     ]);
   });
 
+  it('throws error when extends is not an array', () => {
+    expect(() =>
+      plugin.config({
+        // @ts-expect-error purposely testing invalid values
+        extends: 42,
+      }),
+    ).toThrow(
+      'tseslint.config(): Config (anonymous): Key "extends": Expected value to be an array at user-defined index 0.',
+    );
+  });
+
   it('throws error containing config name when some extensions are undefined', () => {
     const extension: TSESLint.FlatConfig.Config = { rules: { rule1: 'error' } };
 
