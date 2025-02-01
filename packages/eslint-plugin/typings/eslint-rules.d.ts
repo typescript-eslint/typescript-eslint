@@ -558,7 +558,8 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
           // extended
           allowTypeImports?: boolean;
           caseSensitive?: boolean;
-          group: string[];
+          group?: string[];
+          regex?: string;
           message?: string;
         }[]
       | string[];

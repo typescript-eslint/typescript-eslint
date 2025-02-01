@@ -267,24 +267,38 @@ export default createRule<Options, MessageIds>({
 
     const restrictedPatterns = getRestrictedPatterns(options);
     const allowedImportTypeMatchers: Ignore[] = [];
+    const allowedImportTypeRegexMatchers: RegExp[] = [];
     for (const restrictedPattern of restrictedPatterns) {
       if (
         typeof restrictedPattern === 'object' &&
         restrictedPattern.allowTypeImports
       ) {
         // Following how ignore is configured in the base rule
-        allowedImportTypeMatchers.push(
-          ignore({
-            allowRelativePaths: true,
-            ignoreCase: !restrictedPattern.caseSensitive,
-          }).add(restrictedPattern.group),
-        );
+        if (restrictedPattern.group) {
+          allowedImportTypeMatchers.push(
+            ignore({
+              allowRelativePaths: true,
+              ignoreCase: !restrictedPattern.caseSensitive,
+            }).add(restrictedPattern.group),
+          );
+        }
+        if (restrictedPattern.regex) {
+          allowedImportTypeRegexMatchers.push(
+            new RegExp(
+              restrictedPattern.regex,
+              restrictedPattern.caseSensitive ? 'u' : 'iu',
+            ),
+          );
+        }
       }
     }
     function isAllowedTypeImportPattern(importSource: string): boolean {
       return (
         // As long as there's one matching pattern that allows type import
-        allowedImportTypeMatchers.some(matcher => matcher.ignores(importSource))
+        allowedImportTypeMatchers.some(matcher =>
+          matcher.ignores(importSource),
+        ) ||
+        allowedImportTypeRegexMatchers.some(regex => regex.test(importSource))
       );
     }
 
