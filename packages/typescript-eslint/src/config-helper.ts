@@ -138,7 +138,16 @@ export function config(
           ...(name && { name }),
         };
       }),
-      config,
+      // The base config should not be included in the final output if it
+      // consists of only metadata keys (i.e. properties that do not affect the
+      // final ESLint configuration object)
+      ...(Object.keys(config).every(key =>
+        ['name', 'files', 'ignores'].includes(key),
+      )
+        ? []
+        : // There is some configuration in the base config, so forward it to
+          // final config array without the `extends` key
+          [config]),
     ];
   });
 }
