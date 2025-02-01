@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, hasOverloadSignatures } from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
@@ -174,6 +174,28 @@ export default createRule<[Options], MessageIds>({
       );
     }
 
+    function getParentFunctionDeclarationNode(
+      node: TSESTree.Node,
+    ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
+      let current = node.parent;
+      while (current) {
+        if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
+          return current;
+        }
+
+        if (
+          current.type === AST_NODE_TYPES.FunctionExpression &&
+          current.parent.type === AST_NODE_TYPES.MethodDefinition
+        ) {
+          return current.parent;
+        }
+
+        current = current.parent;
+      }
+
+      return null;
+    }
+
     return {
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
         // checks T<..., void, ...> against specification of allowInGenericArguments option
@@ -201,6 +223,20 @@ export default createRule<[Options], MessageIds>({
           isValidUnionType(node.parent)
         ) {
           return;
+        }
+
+        // using `void` as part of the return type of function overloading implementation
+        if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
+          const declaringFunction = getParentFunctionDeclarationNode(
+            node.parent,
+          );
+
+          if (
+            declaringFunction &&
+            hasOverloadSignatures(declaringFunction, context)
+          ) {
+            return;
+          }
         }
 
         // this parameter is ok to be void.
