@@ -247,4 +247,44 @@ describe('config helper', () => {
       { rules: { rule: 'error' } },
     ]);
   });
+
+  it('does not create global ignores in extends', () => {
+    expect(
+      plugin.config({
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+        ignores: ['ignored'],
+      }),
+    ).toEqual([
+      { rules: { rule1: 'error' }, ignores: ['ignored'] },
+      { rules: { rule2: 'error' }, ignores: ['ignored'] },
+      // Should not create global ignores
+      // { ignores: ['ignored'] },
+    ]);
+  });
+
+  it('does not create extraneous config in extends', () => {
+    expect(
+      plugin.config({
+        extends: [{ rules: { rule1: 'error' } }, { rules: { rule2: 'error' } }],
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+      }),
+    ).toEqual([
+      {
+        rules: { rule1: 'error' },
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+      },
+      {
+        rules: { rule2: 'error' },
+        files: ['file'],
+        ignores: ['ignored'],
+        name: 'my-config',
+      },
+      // Should not create configuration object with no keys
+      // { name: "my-config", files: ["file"], ignores: ["ignored"] },
+    ]);
+  });
 });
