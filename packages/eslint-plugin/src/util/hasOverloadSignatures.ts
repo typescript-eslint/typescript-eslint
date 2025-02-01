@@ -46,7 +46,9 @@ export function hasOverloadSignatures(
     return false;
   }
 
-  // otherwise...
+  // either:
+  // - `function f() {}`
+  // - `class T { foo() {} }`
   const nodeKey = getFunctionDeclarationName(node, context);
 
   for (const member of node.parent.body) {
