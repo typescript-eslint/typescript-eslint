@@ -34,20 +34,25 @@ Examples of code for this rule with `{ ignoreTernaryTests: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreTernaryTests": false }'
-const foo: any = 'bar';
+declare const foo: any;
+
 foo !== undefined && foo !== null ? foo : 'a string';
 foo === undefined || foo === null ? 'a string' : foo;
 foo == undefined ? 'a string' : foo;
 foo == null ? 'a string' : foo;
 
-const foo: string | undefined = 'bar';
+declare const foo: string | undefined;
+
 foo !== undefined ? foo : 'a string';
 foo === undefined ? 'a string' : foo;
-
-const foo: string | null = 'bar';
-foo !== null ? foo : 'a string';
 foo ? foo : 'a string';
+!foo ? 'a string' : foo;
+
+declare const foo: string | null;
+
+foo !== null ? foo : 'a string';
 foo === null ? 'a string' : foo;
+foo ? foo : 'a string';
 !foo ? 'a string' : foo;
 ```
 
@@ -55,13 +60,16 @@ foo === null ? 'a string' : foo;
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreTernaryTests": false }'
-const foo: any = 'bar';
+declare const foo: any;
+
 foo ?? 'a string';
 
-const foo: string | undefined = 'bar';
+declare const foo: string | undefined;
+
 foo ?? 'a string';
 
-const foo: string | null = 'bar';
+declare const foo: string | null;
+
 foo ?? 'a string';
 ```
 
@@ -182,6 +190,7 @@ Examples of code for this rule with `{ ignorePrimitives: { string: false } }`:
 
 ```ts option='{ "ignorePrimitives": { "string": false } }'
 let foo: string | undefined;
+
 foo || 'a string';
 ```
 
@@ -190,6 +199,7 @@ foo || 'a string';
 
 ```ts option='{ "ignorePrimitives": { "string": false } }'
 let foo: string | undefined;
+
 foo ?? 'a string';
 ```
 

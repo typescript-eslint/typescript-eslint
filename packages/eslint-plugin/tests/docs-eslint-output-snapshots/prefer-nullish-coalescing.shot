@@ -4,7 +4,8 @@ exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint
 "Incorrect
 Options: { "ignoreTernaryTests": false }
 
-const foo: any = 'bar';
+declare const foo: any;
+
 foo !== undefined && foo !== null ? foo : 'a string';
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
 foo === undefined || foo === null ? 'a string' : foo;
@@ -14,14 +15,18 @@ foo == undefined ? 'a string' : foo;
 foo == null ? 'a string' : foo;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Prefer using nullish coalescing operator (\`??\`) instead of a ternary expression, as it is simpler to read.
 
-const foo: string | undefined = 'bar';
+declare const foo: string | undefined;
+
 foo !== undefined ? foo : 'a string';
 foo === undefined ? 'a string' : foo;
-
-const foo: string | null = 'bar';
-foo !== null ? foo : 'a string';
 foo ? foo : 'a string';
+!foo ? 'a string' : foo;
+
+declare const foo: string | null;
+
+foo !== null ? foo : 'a string';
 foo === null ? 'a string' : foo;
+foo ? foo : 'a string';
 !foo ? 'a string' : foo;
 "
 `;
@@ -30,13 +35,16 @@ exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint
 "Correct
 Options: { "ignoreTernaryTests": false }
 
-const foo: any = 'bar';
+declare const foo: any;
+
 foo ?? 'a string';
 
-const foo: string | undefined = 'bar';
+declare const foo: string | undefined;
+
 foo ?? 'a string';
 
-const foo: string | null = 'bar';
+declare const foo: string | null;
+
 foo ?? 'a string';
 "
 `;
@@ -129,6 +137,7 @@ exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint
 Options: { "ignorePrimitives": { "string": false } }
 
 let foo: string | undefined;
+
 foo || 'a string';
     ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
 "
@@ -139,6 +148,7 @@ exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint
 Options: { "ignorePrimitives": { "string": false } }
 
 let foo: string | undefined;
+
 foo ?? 'a string';
 "
 `;
