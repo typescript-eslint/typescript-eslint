@@ -6,9 +6,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getStaticMemberAccessValue } from './misc';
 
 /**
- * A type unaware variation of `checker.isImplementationOfOverload()`.
- *
- * @return true if the function or method node has overload signatures.
+ * @return `true` if the function or method node has overload signatures.
  */
 export function hasOverloadSignatures(
   node: TSESTree.FunctionDeclaration | TSESTree.MethodDefinition,
