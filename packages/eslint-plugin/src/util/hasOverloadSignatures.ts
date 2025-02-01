@@ -3,6 +3,8 @@ import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
+import type { MethodDefinitionWithBody } from './isMethodDefinitionWithBody';
+
 import { getStaticMemberAccessValue } from './misc';
 
 /**
@@ -11,7 +13,7 @@ import { getStaticMemberAccessValue } from './misc';
  * @return true if the function or method node has overload signatures.
  */
 export function hasOverloadSignatures(
-  node: TSESTree.FunctionDeclaration | TSESTree.MethodDefinition,
+  node: MethodDefinitionWithBody | TSESTree.FunctionDeclaration,
   context: RuleContext<string, unknown[]>,
 ): boolean {
   // `export default function () {}`

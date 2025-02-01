@@ -2,7 +2,13 @@ import type { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import { createRule, hasOverloadSignatures } from '../util';
+import type { MethodDefinitionWithBody } from '../util';
+
+import {
+  createRule,
+  hasOverloadSignatures,
+  isMethodDefinitionWithBody,
+} from '../util';
 
 interface Options {
   allowAsThisParameter?: boolean;
@@ -176,17 +182,15 @@ export default createRule<[Options], MessageIds>({
 
     function getParentFunctionDeclarationNode(
       node: TSESTree.Node,
-    ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
+    ): MethodDefinitionWithBody | TSESTree.FunctionDeclaration | null {
       let current = node.parent;
+
       while (current) {
         if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
           return current;
         }
 
-        if (
-          current.type === AST_NODE_TYPES.FunctionExpression &&
-          current.parent.type === AST_NODE_TYPES.MethodDefinition
-        ) {
+        if (current.parent && isMethodDefinitionWithBody(current.parent)) {
           return current.parent;
         }
 
