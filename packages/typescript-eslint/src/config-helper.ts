@@ -138,7 +138,11 @@ export function config(
           ...(name && { name }),
         };
       }),
-      config,
+      ...(Object.keys(config).every(key =>
+        ['name', 'files', 'ignores'].includes(key),
+      )
+        ? []
+        : [config]),
     ];
   });
 }
