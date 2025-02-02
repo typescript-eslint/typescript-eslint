@@ -1,3 +1,23 @@
+## 8.22.0 (2025-01-27)
+
+### 🩹 Fixes
+
+- **eslint-plugin:** [no-unnecessary-template-expression] handle template literal type ([#10612](https://github.com/typescript-eslint/typescript-eslint/pull/10612))
+- **eslint-plugin:** [prefer-readonly] autofixer doesn't add type to property that is mutated in the constructor ([#10552](https://github.com/typescript-eslint/typescript-eslint/pull/10552))
+- **eslint-plugin:** [no-extraneous-class] handle accessor keyword ([#10678](https://github.com/typescript-eslint/typescript-eslint/pull/10678))
+- **eslint-plugin:** [no-shadow] don't report unnecessarily on valid ways of using module augmentation ([#10616](https://github.com/typescript-eslint/typescript-eslint/pull/10616))
+- **eslint-plugin:** [no-duplicate-type-constituents] handle nested types ([#10638](https://github.com/typescript-eslint/typescript-eslint/pull/10638))
+- **eslint-plugin:** [prefer-nullish-coalescing] doesn't report on ternary but on equivalent || ([#10517](https://github.com/typescript-eslint/typescript-eslint/pull/10517))
+
+### ❤️ Thank You
+
+- mdm317
+- Olivier Zalmanski @OlivierZal
+- Ronen Amiel
+- YeonJuan @yeonjuan
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.21.0 (2025-01-20)
 
 ### 🩹 Fixes
