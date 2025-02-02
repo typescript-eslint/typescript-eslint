@@ -174,28 +174,6 @@ export default createRule<[Options], MessageIds>({
       );
     }
 
-    function getParentFunctionDeclarationNode(
-      node: TSESTree.Node,
-    ): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
-      let current = node.parent;
-      while (current) {
-        if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
-          return current;
-        }
-
-        if (
-          current.type === AST_NODE_TYPES.FunctionExpression &&
-          current.parent.type === AST_NODE_TYPES.MethodDefinition
-        ) {
-          return current.parent;
-        }
-
-        current = current.parent;
-      }
-
-      return null;
-    }
-
     return {
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
         // checks T<..., void, ...> against specification of allowInGenericArguments option
@@ -281,4 +259,26 @@ function getNotReturnOrGenericMessageId(
   return node.parent.type === AST_NODE_TYPES.TSUnionType
     ? 'invalidVoidUnionConstituent'
     : 'invalidVoidNotReturnOrGeneric';
+}
+
+function getParentFunctionDeclarationNode(
+  node: TSESTree.Node,
+): TSESTree.FunctionDeclaration | TSESTree.MethodDefinition | null {
+  let current = node.parent;
+  while (current) {
+    if (current.type === AST_NODE_TYPES.FunctionDeclaration) {
+      return current;
+    }
+
+    if (
+      current.type === AST_NODE_TYPES.MethodDefinition &&
+      current.value.body != null
+    ) {
+      return current;
+    }
+
+    current = current.parent;
+  }
+
+  return null;
 }

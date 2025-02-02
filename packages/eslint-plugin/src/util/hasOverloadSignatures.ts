@@ -14,54 +14,40 @@ export function hasOverloadSignatures(
 ): boolean {
   // `export default function () {}`
   if (node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration) {
-    for (const member of node.parent.parent.body) {
-      if (
+    return node.parent.parent.body.some(member => {
+      return (
         member.type === AST_NODE_TYPES.ExportDefaultDeclaration &&
         member.declaration.type === AST_NODE_TYPES.TSDeclareFunction
-      ) {
-        return true;
-      }
-    }
-
-    return false;
+      );
+    });
   }
 
   // `export function f() {}`
   if (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration) {
-    for (const member of node.parent.parent.body) {
-      if (
+    return node.parent.parent.body.some(member => {
+      return (
         member.type === AST_NODE_TYPES.ExportNamedDeclaration &&
         member.declaration?.type === AST_NODE_TYPES.TSDeclareFunction &&
         getFunctionDeclarationName(member.declaration, context) ===
           getFunctionDeclarationName(node, context)
-      ) {
-        return true;
-      }
-    }
-
-    return false;
+      );
+    });
   }
 
   // either:
   // - `function f() {}`
   // - `class T { foo() {} }`
+
   const nodeKey = getFunctionDeclarationName(node, context);
 
-  for (const member of node.parent.body) {
-    if (
-      member.type !== AST_NODE_TYPES.TSDeclareFunction &&
-      (member.type !== AST_NODE_TYPES.MethodDefinition ||
-        member.value.type === AST_NODE_TYPES.FunctionExpression)
-    ) {
-      continue;
-    }
-
-    if (nodeKey === getFunctionDeclarationName(member, context)) {
-      return true;
-    }
-  }
-
-  return false;
+  return node.parent.body.some(member => {
+    return (
+      (member.type === AST_NODE_TYPES.TSDeclareFunction ||
+        (member.type === AST_NODE_TYPES.MethodDefinition &&
+          member.value.body == null)) &&
+      nodeKey === getFunctionDeclarationName(member, context)
+    );
+  });
 }
 
 function getFunctionDeclarationName(
