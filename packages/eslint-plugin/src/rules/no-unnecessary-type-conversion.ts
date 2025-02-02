@@ -69,11 +69,6 @@ export default createRule<Options, MessageIds>({
         AST_NODE_TYPES.MemberExpression,
       ].includes(type);
 
-    const shouldHaveSatisfiesSuggestion = (type: AST_NODE_TYPES) =>
-      [AST_NODE_TYPES.Identifier, AST_NODE_TYPES.MemberExpression].includes(
-        type,
-      );
-
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -121,23 +116,21 @@ export default createRule<Options, MessageIds>({
           messageId: 'unnecessaryTypeConversion',
           data: reportDescriptorMessageData,
           fix: fixFunction,
-          suggest: shouldHaveSatisfiesSuggestion(node.argument.type)
-            ? [
-                {
-                  messageId: 'unnecessaryTypeConversionSuggestion',
-                  data: { type: reportDescriptorMessageData.type },
-                  fix(fixer): RuleFix[] {
-                    return [
-                      fixer.insertTextAfterRange(
-                        node.argument.range,
-                        ` satisfies ${typeString}`,
-                      ),
-                      ...fixFunction(fixer),
-                    ];
-                  },
-                },
-              ]
-            : null,
+          suggest: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              data: { type: reportDescriptorMessageData.type },
+              fix(fixer): RuleFix[] {
+                return [
+                  fixer.insertTextAfterRange(
+                    node.argument.range,
+                    ` satisfies ${typeString}`,
+                  ),
+                  ...fixFunction(fixer),
+                ];
+              },
+            },
+          ],
         });
       }
     }
@@ -174,21 +167,16 @@ export default createRule<Options, MessageIds>({
                     ]),
                   ]
                 : fixFunction,
-            suggest: shouldHaveSatisfiesSuggestion(node.left.type)
-              ? [
-                  {
-                    messageId: 'unnecessaryTypeConversionSuggestion',
-                    data: { type: 'string' },
-                    fix: fixer => [
-                      fixer.insertTextAfterRange(
-                        node.range,
-                        ' satisfies string',
-                      ),
-                      ...fixFunction(fixer),
-                    ],
-                  },
-                ]
-              : null,
+            suggest: [
+              {
+                messageId: 'unnecessaryTypeConversionSuggestion',
+                data: { type: 'string' },
+                fix: fixer => [
+                  fixer.insertTextAfterRange(node.range, ' satisfies string'),
+                  ...fixFunction(fixer),
+                ],
+              },
+            ],
           });
         }
       },
@@ -219,21 +207,16 @@ export default createRule<Options, MessageIds>({
               violation: "Concatenating a string with ''",
             },
             fix: fixFunction,
-            suggest: shouldHaveSatisfiesSuggestion(node.left.type)
-              ? [
-                  {
-                    messageId: 'unnecessaryTypeConversionSuggestion',
-                    data: { type: 'string' },
-                    fix: fixer => [
-                      fixer.insertTextAfterRange(
-                        node.range,
-                        ' satisfies string',
-                      ),
-                      ...fixFunction(fixer),
-                    ],
-                  },
-                ]
-              : null,
+            suggest: [
+              {
+                messageId: 'unnecessaryTypeConversionSuggestion',
+                data: { type: 'string' },
+                fix: fixer => [
+                  fixer.insertTextAfterRange(node.range, ' satisfies string'),
+                  ...fixFunction(fixer),
+                ],
+              },
+            ],
           });
         } else if (
           node.left.type === AST_NODE_TYPES.Literal &&
@@ -259,21 +242,16 @@ export default createRule<Options, MessageIds>({
               violation: "Concatenating '' with a string",
             },
             fix: fixFunction,
-            suggest: shouldHaveSatisfiesSuggestion(node.right.type)
-              ? [
-                  {
-                    messageId: 'unnecessaryTypeConversionSuggestion',
-                    data: { type: 'string' },
-                    fix: fixer => [
-                      fixer.insertTextAfterRange(
-                        node.range,
-                        ' satisfies string',
-                      ),
-                      ...fixFunction(fixer),
-                    ],
-                  },
-                ]
-              : null,
+            suggest: [
+              {
+                messageId: 'unnecessaryTypeConversionSuggestion',
+                data: { type: 'string' },
+                fix: fixer => [
+                  fixer.insertTextAfterRange(node.range, ' satisfies string'),
+                  ...fixFunction(fixer),
+                ],
+              },
+            ],
           });
         }
       },
@@ -336,26 +314,23 @@ export default createRule<Options, MessageIds>({
                 violation: `Passing a ${typeString} to ${node.callee.name}()`,
               },
               fix: fixer => fixFunction(fixer, keepParens),
-              suggest: shouldHaveSatisfiesSuggestion(node.arguments[0].type)
-                ? [
-                    {
-                      messageId: 'unnecessaryTypeConversionSuggestion',
-                      data: { type: typeString },
-                      fix: fixer => [
-                        fixer.insertTextAfterRange(
-                          node.range,
-                          ` satisfies ${typeString}`,
-                        ),
-                        ...fixFunction(
-                          fixer,
-                          keepParens ||
-                            node.parent.type ===
-                              AST_NODE_TYPES.MemberExpression,
-                        ),
-                      ],
-                    },
-                  ]
-                : null,
+              suggest: [
+                {
+                  messageId: 'unnecessaryTypeConversionSuggestion',
+                  data: { type: typeString },
+                  fix: fixer => [
+                    fixer.insertTextAfterRange(
+                      node.range,
+                      ` satisfies ${typeString}`,
+                    ),
+                    ...fixFunction(
+                      fixer,
+                      keepParens ||
+                        node.parent.type === AST_NODE_TYPES.MemberExpression,
+                    ),
+                  ],
+                },
+              ],
             });
           }
         }
@@ -397,25 +372,23 @@ export default createRule<Options, MessageIds>({
               violation: "Calling a string's .toString() method",
             },
             fix: fixer => fixFunction(fixer, keepParens),
-            suggest: shouldHaveSatisfiesSuggestion(memberExpr.object.type)
-              ? [
-                  {
-                    messageId: 'unnecessaryTypeConversionSuggestion',
-                    data: { type: 'string' },
-                    fix: fixer => [
-                      fixer.insertTextAfterRange(
-                        memberExpr.object.range,
-                        ` satisfies string`,
-                      ),
-                      ...fixFunction(
-                        fixer,
-                        keepParens ||
-                          node.parent.type === AST_NODE_TYPES.MemberExpression,
-                      ),
-                    ],
-                  },
-                ]
-              : null,
+            suggest: [
+              {
+                messageId: 'unnecessaryTypeConversionSuggestion',
+                data: { type: 'string' },
+                fix: fixer => [
+                  fixer.insertTextAfterRange(
+                    memberExpr.object.range,
+                    ` satisfies string`,
+                  ),
+                  ...fixFunction(
+                    fixer,
+                    keepParens ||
+                      node.parent.type === AST_NODE_TYPES.MemberExpression,
+                  ),
+                ],
+              },
+            ],
           });
         }
       },
