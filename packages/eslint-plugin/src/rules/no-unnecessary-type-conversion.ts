@@ -61,28 +61,7 @@ export default createRule<Options, MessageIds>({
       return matchesType(type);
     }
 
-    const doesTypeRequireParentheses = (type: AST_NODE_TYPES) =>
-      ![
-        AST_NODE_TYPES.Literal,
-        AST_NODE_TYPES.Identifier,
-        AST_NODE_TYPES.UnaryExpression,
-        AST_NODE_TYPES.CallExpression,
-        AST_NODE_TYPES.MemberExpression,
-      ].includes(type);
-
     const services = getParserServices(context);
-
-    const surroundWithParentheses = (
-      keepParens: boolean,
-      fixer: RuleFixer,
-      range: TSESTree.Range,
-    ) =>
-      keepParens
-        ? [
-            fixer.insertTextBeforeRange(range, '('),
-            fixer.insertTextAfterRange(range, ')'),
-          ]
-        : [];
 
     function handleUnaryOperator(
       node: TSESTree.UnaryExpression,
@@ -92,18 +71,11 @@ export default createRule<Options, MessageIds>({
     ) {
       const type = services.getTypeAtLocation(node.argument);
       if (doesUnderlyingTypeMatchFlag(type, typeFlag)) {
-        const keepParens = doesTypeRequireParentheses(node.argument.type);
-        const fixFunction = (fixer: RuleFixer): RuleFix[] => [
-          fixer.removeRange([
-            isDoubleOperator ? node.parent.range[0] : node.range[0],
-            node.argument.range[0],
-          ]),
-          fixer.removeRange([
-            node.argument.range[1],
-            isDoubleOperator ? node.parent.range[1] : node.range[1],
-          ]),
-          ...surroundWithParentheses(keepParens, fixer, node.argument.range),
-        ];
+        const wrappingFixerParams = {
+          node: isDoubleOperator ? node.parent : node,
+          innerNode: [node.argument],
+          sourceCode: context.sourceCode,
+        };
         const typeString =
           typeFlag === ts.TypeFlags.BooleanLike ? 'boolean' : 'number';
 
@@ -117,15 +89,16 @@ export default createRule<Options, MessageIds>({
           },
           messageId: 'unnecessaryTypeConversion',
           data: reportDescriptorMessageData,
-          fix: fixFunction,
+          fix: getWrappingFixer({
+            ...wrappingFixerParams,
+            wrap: expr => expr,
+          }),
           suggest: [
             {
               messageId: 'unnecessaryTypeConversionSuggestion',
               data: { type: reportDescriptorMessageData.type },
               fix: getWrappingFixer({
-                node: isDoubleOperator ? node.parent : node,
-                innerNode: [node.argument],
-                sourceCode: context.sourceCode,
+                ...wrappingFixerParams,
                 wrap: expr => `${expr} satisfies ${typeString}`,
               }),
             },
@@ -146,9 +119,11 @@ export default createRule<Options, MessageIds>({
             ts.TypeFlags.StringLike,
           )
         ) {
-          const fixFunction = (fixer: RuleFixer): RuleFix[] => [
-            fixer.removeRange([node.left.range[1], node.range[1]]),
-          ];
+          const wrappingFixerParams = {
+            node,
+            innerNode: [node.left],
+            sourceCode: context.sourceCode,
+          };
 
           context.report({
             node,
@@ -165,15 +140,16 @@ export default createRule<Options, MessageIds>({
                       node.parent.range[1],
                     ]),
                   ]
-                : fixFunction,
+                : getWrappingFixer({
+                    ...wrappingFixerParams,
+                    wrap: expr => expr,
+                  }),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
-                  node,
-                  innerNode: [node.left],
-                  sourceCode: context.sourceCode,
+                  ...wrappingFixerParams,
                   wrap: expr => `${expr} satisfies string`,
                 }),
               },
@@ -192,10 +168,11 @@ export default createRule<Options, MessageIds>({
             ts.TypeFlags.StringLike,
           )
         ) {
-          const fixFunction = (fixer: RuleFixer): RuleFix[] => [
-            fixer.removeRange([node.range[0], node.left.range[0]]),
-            fixer.removeRange([node.left.range[1], node.range[1]]),
-          ];
+          const wrappingFixerParams = {
+            node,
+            innerNode: [node.left],
+            sourceCode: context.sourceCode,
+          };
 
           context.report({
             loc: {
@@ -207,15 +184,16 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix: fixFunction,
+            fix: getWrappingFixer({
+              ...wrappingFixerParams,
+              wrap: expr => expr,
+            }),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
-                  node,
-                  innerNode: [node.left],
-                  sourceCode: context.sourceCode,
+                  ...wrappingFixerParams,
                   wrap: expr => `${expr} satisfies string`,
                 }),
               },
@@ -229,10 +207,11 @@ export default createRule<Options, MessageIds>({
             ts.TypeFlags.StringLike,
           )
         ) {
-          const fixFunction = (fixer: RuleFixer): RuleFix[] => [
-            fixer.removeRange([node.range[0], node.right.range[0]]),
-            fixer.removeRange([node.right.range[1], node.range[1]]),
-          ];
+          const wrappingFixerParams = {
+            node,
+            innerNode: [node.right],
+            sourceCode: context.sourceCode,
+          };
 
           context.report({
             loc: {
@@ -244,15 +223,16 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating '' with a string",
             },
-            fix: fixFunction,
+            fix: getWrappingFixer({
+              ...wrappingFixerParams,
+              wrap: expr => expr,
+            }),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
-                  node,
-                  innerNode: [node.right],
-                  sourceCode: context.sourceCode,
+                  ...wrappingFixerParams,
                   wrap: expr => `${expr} satisfies string`,
                 }),
               },
@@ -298,17 +278,11 @@ export default createRule<Options, MessageIds>({
             (isBuiltInCall('BigInt') &&
               doesUnderlyingTypeMatchFlag(getType(), ts.TypeFlags.BigIntLike))
           ) {
-            const keepParens = doesTypeRequireParentheses(
-              node.arguments[0].type,
-            );
-            const fixFunction = (
-              fixer: RuleFixer,
-              keepParens: boolean,
-            ): RuleFix[] => [
-              fixer.removeRange([node.range[0], node.arguments[0].range[0]]),
-              fixer.removeRange([node.arguments[0].range[1], node.range[1]]),
-              ...surroundWithParentheses(keepParens, fixer, node.range),
-            ];
+            const wrappingFixerParams = {
+              node,
+              innerNode: [node.arguments[0]],
+              sourceCode: context.sourceCode,
+            };
             const typeString = node.callee.name.toLowerCase();
 
             context.report({
@@ -318,15 +292,16 @@ export default createRule<Options, MessageIds>({
                 type: node.callee.name.toLowerCase(),
                 violation: `Passing a ${typeString} to ${node.callee.name}()`,
               },
-              fix: fixer => fixFunction(fixer, keepParens),
+              fix: getWrappingFixer({
+                ...wrappingFixerParams,
+                wrap: expr => expr,
+              }),
               suggest: [
                 {
                   messageId: 'unnecessaryTypeConversionSuggestion',
                   data: { type: typeString },
                   fix: getWrappingFixer({
-                    node,
-                    innerNode: [node.arguments[0]],
-                    sourceCode: context.sourceCode,
+                    ...wrappingFixerParams,
                     wrap: expr => `${expr} satisfies ${typeString}`,
                   }),
                 },
@@ -341,25 +316,11 @@ export default createRule<Options, MessageIds>({
         const memberExpr = node.parent as TSESTree.MemberExpression;
         const type = getConstrainedTypeAtLocation(services, memberExpr.object);
         if (doesUnderlyingTypeMatchFlag(type, ts.TypeFlags.StringLike)) {
-          const keepParens = doesTypeRequireParentheses(memberExpr.object.type);
-          const fixFunction = (
-            fixer: RuleFixer,
-            keepParens: boolean,
-          ): RuleFix[] => [
-            fixer.removeRange([
-              memberExpr.parent.range[0],
-              memberExpr.object.range[0],
-            ]),
-            fixer.removeRange([
-              memberExpr.object.range[1],
-              memberExpr.parent.range[1],
-            ]),
-            ...surroundWithParentheses(
-              keepParens,
-              fixer,
-              memberExpr.object.range,
-            ),
-          ];
+          const wrappingFixerParams = {
+            node: memberExpr.parent,
+            innerNode: [memberExpr.object],
+            sourceCode: context.sourceCode,
+          };
 
           context.report({
             loc: {
@@ -371,15 +332,16 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Calling a string's .toString() method",
             },
-            fix: fixer => fixFunction(fixer, keepParens),
+            fix: getWrappingFixer({
+              ...wrappingFixerParams,
+              wrap: expr => expr,
+            }),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
                 fix: getWrappingFixer({
-                  node: memberExpr.parent,
-                  innerNode: [memberExpr.object],
-                  sourceCode: context.sourceCode,
+                  ...wrappingFixerParams,
                   wrap: expr => `${expr} satisfies string`,
                 }),
               },
