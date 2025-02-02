@@ -34,43 +34,37 @@ Examples of code for this rule with `{ ignoreTernaryTests: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreTernaryTests": false }'
-declare const foo: any;
+declare const a: any;
+a !== undefined && a !== null ? a : 'a string';
+a === undefined || a === null ? 'a string' : a;
+a == undefined ? 'a string' : a;
+a == null ? 'a string' : a;
 
-foo !== undefined && foo !== null ? foo : 'a string';
-foo === undefined || foo === null ? 'a string' : foo;
-foo == undefined ? 'a string' : foo;
-foo == null ? 'a string' : foo;
+declare const b: string | undefined;
+b !== undefined ? b : 'a string';
+b === undefined ? 'a string' : b;
+b ? b : 'a string';
+!b ? 'a string' : b;
 
-declare const foo: string | undefined;
-
-foo !== undefined ? foo : 'a string';
-foo === undefined ? 'a string' : foo;
-foo ? foo : 'a string';
-!foo ? 'a string' : foo;
-
-declare const foo: string | null;
-
-foo !== null ? foo : 'a string';
-foo === null ? 'a string' : foo;
-foo ? foo : 'a string';
-!foo ? 'a string' : foo;
+declare const c: string | null;
+c !== null ? c : 'a string';
+c === null ? 'a string' : c;
+c ? c : 'a string';
+!c ? 'a string' : c;
 ```
 
 </TabItem>
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreTernaryTests": false }'
-declare const foo: any;
+declare const a: any;
+a ?? 'a string';
 
-foo ?? 'a string';
+declare const b: string | undefined;
+b ?? 'a string';
 
-declare const foo: string | undefined;
-
-foo ?? 'a string';
-
-declare const foo: string | null;
-
-foo ?? 'a string';
+declare const c: string | null;
+c ?? 'a string';
 ```
 
 </TabItem>
@@ -220,8 +214,8 @@ Examples of code for this rule with `{ ignoreBooleanCoercion: false }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignoreBooleanCoercion": false }'
-let a: string | true | undefined;
-let b: string | boolean | undefined;
+declare const a: string | true | undefined;
+declare const b: string | boolean | undefined;
 
 const x = Boolean(a || b);
 ```
@@ -230,8 +224,8 @@ const x = Boolean(a || b);
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignoreBooleanCoercion": false }'
-let a: string | true | undefined;
-let b: string | boolean | undefined;
+declare const a: string | true | undefined;
+declare const b: string | boolean | undefined;
 
 const x = Boolean(a ?? b);
 ```
