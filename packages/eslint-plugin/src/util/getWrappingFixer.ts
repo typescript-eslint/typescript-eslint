@@ -27,7 +27,7 @@ interface WrappingFixerParams {
 }
 
 /**
- * Wraps node with some code. Adds parenthesis as necessary.
+ * Wraps node with some code. Adds parentheses as necessary.
  * @returns Fixer which adds the specified code and parens if necessary.
  */
 export function getWrappingFixer(
@@ -105,7 +105,7 @@ export function getMovedNodeCode(params: {
 }
 
 /**
- * Check if a node will always have the same precedence if it's parent changes.
+ * Check if a node will always have the same precedence if its parent changes.
  */
 export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
   return (
