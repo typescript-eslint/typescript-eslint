@@ -50,6 +50,12 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           column: 1,
           endColumn: 7,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: "'asdf' satisfies string;",
+            },
+          ],
         },
       ],
       output: "'asdf';",
@@ -61,6 +67,12 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           column: 8,
           endColumn: 18,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: "'asdf' satisfies string;",
+            },
+          ],
         },
       ],
       output: "'asdf';",
@@ -72,6 +84,12 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           column: 1,
           endColumn: 6,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: "'asdf' satisfies string;",
+            },
+          ],
         },
       ],
       output: "'asdf';",
@@ -83,6 +101,12 @@ ruleTester.run('no-unnecessary-type-conversion', rule, {
           column: 7,
           endColumn: 12,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: "'asdf' satisfies string;",
+            },
+          ],
         },
       ],
       output: "'asdf';",
@@ -150,6 +174,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 7,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '123 satisfies number;',
+            },
+          ],
         },
       ],
       output: '123;',
@@ -161,6 +191,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 2,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '123 satisfies number;',
+            },
+          ],
         },
       ],
       output: '123;',
@@ -172,6 +208,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 3,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '123 satisfies number;',
+            },
+          ],
         },
       ],
       output: '123;',
@@ -183,6 +225,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 8,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: 'true satisfies boolean;',
+            },
+          ],
         },
       ],
       output: 'true;',
@@ -194,6 +242,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 3,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: 'true satisfies boolean;',
+            },
+          ],
         },
       ],
       output: 'true;',
@@ -205,6 +259,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 7,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: 'BigInt(1) satisfies bigint;',
+            },
+          ],
         },
       ],
       output: 'BigInt(1);',
@@ -218,6 +278,12 @@ let str = 'asdf';
           column: 1,
           endColumn: 7,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: "(('a' + 'b') satisfies string).length;",
+            },
+          ],
         },
       ],
       output: "('a' + 'b').length;",
@@ -229,6 +295,12 @@ let str = 'asdf';
           column: 13,
           endColumn: 23,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: "(('a' + 'b') satisfies string).length;",
+            },
+          ],
         },
       ],
       output: "('a' + 'b').length;",
@@ -240,6 +312,12 @@ let str = 'asdf';
           column: 5,
           endColumn: 6,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '2 * ((2 + 2) satisfies number);',
+            },
+          ],
         },
       ],
       output: '2 * (2 + 2);',
@@ -251,6 +329,12 @@ let str = 'asdf';
           column: 5,
           endColumn: 11,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '2 * ((2 + 2) satisfies number);',
+            },
+          ],
         },
       ],
       output: '2 * (2 + 2);',
@@ -262,6 +346,12 @@ let str = 'asdf';
           column: 5,
           endColumn: 7,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '2 * ((2 + 2) satisfies number);',
+            },
+          ],
         },
       ],
       output: '2 * (2 + 2);',
@@ -273,6 +363,12 @@ let str = 'asdf';
           column: 10,
           endColumn: 12,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: 'false && ((false || true) satisfies boolean);',
+            },
+          ],
         },
       ],
       output: 'false && (false || true);',
@@ -284,6 +380,12 @@ let str = 'asdf';
           column: 10,
           endColumn: 17,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: 'false && ((false || true) satisfies boolean);',
+            },
+          ],
         },
       ],
       output: 'false && (false || true);',
@@ -295,6 +397,12 @@ let str = 'asdf';
           column: 6,
           endColumn: 12,
           messageId: 'unnecessaryTypeConversion',
+          suggestions: [
+            {
+              messageId: 'unnecessaryTypeConversionSuggestion',
+              output: '2n * ((2n + 2n) satisfies bigint);',
+            },
+          ],
         },
       ],
       output: '2n * (2n + 2n);',
