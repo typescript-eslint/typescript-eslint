@@ -54,10 +54,6 @@ export default createRule<Options, MessageIds>({
         return type.types.every(matchesType);
       }
 
-      if (type.isIntersection()) {
-        return type.types.some(matchesType);
-      }
-
       return matchesType(type);
     }
 
