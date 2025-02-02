@@ -71,7 +71,6 @@ export default createRule<Options, MessageIds>({
       ].includes(type);
 
     const services = getParserServices(context);
-    const checker = services.program.getTypeChecker();
 
     const surroundWithParentheses = (
       keepParens: boolean,
@@ -105,7 +104,8 @@ export default createRule<Options, MessageIds>({
           ]),
           ...surroundWithParentheses(keepParens, fixer, node.argument.range),
         ];
-        const typeString = checker.typeToString(type);
+        const typeString =
+          typeFlag === ts.TypeFlags.BooleanLike ? 'boolean' : 'number';
 
         context.report({
           loc: {
