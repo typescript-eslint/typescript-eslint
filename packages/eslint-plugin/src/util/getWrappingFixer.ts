@@ -23,7 +23,7 @@ interface WrappingFixerParams {
    * Receives multiple arguments if there are multiple innerNodes.
    * E.g. ``code => `${code} != null` ``
    */
-  wrap: (...code: string[]) => string;
+  wrap?: (...code: string[]) => string;
 }
 
 /**
@@ -54,6 +54,10 @@ export function getWrappingFixer(
 
       return code;
     });
+
+    if (!wrap) {
+      return fixer.replaceText(node, innerCodes.join(''));
+    }
 
     // do the wrapping
     let code = wrap(...innerCodes);

@@ -89,10 +89,7 @@ export default createRule<Options, MessageIds>({
           },
           messageId: 'unnecessaryTypeConversion',
           data: reportDescriptorMessageData,
-          fix: getWrappingFixer({
-            ...wrappingFixerParams,
-            wrap: expr => expr,
-          }),
+          fix: getWrappingFixer(wrappingFixerParams),
           suggest: [
             {
               messageId: 'unnecessaryTypeConversionSuggestion',
@@ -140,10 +137,7 @@ export default createRule<Options, MessageIds>({
                       node.parent.range[1],
                     ]),
                   ]
-                : getWrappingFixer({
-                    ...wrappingFixerParams,
-                    wrap: expr => expr,
-                  }),
+                : getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
@@ -184,10 +178,7 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating a string with ''",
             },
-            fix: getWrappingFixer({
-              ...wrappingFixerParams,
-              wrap: expr => expr,
-            }),
+            fix: getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
@@ -223,10 +214,7 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Concatenating '' with a string",
             },
-            fix: getWrappingFixer({
-              ...wrappingFixerParams,
-              wrap: expr => expr,
-            }),
+            fix: getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
@@ -292,10 +280,7 @@ export default createRule<Options, MessageIds>({
                 type: node.callee.name.toLowerCase(),
                 violation: `Passing a ${typeString} to ${node.callee.name}()`,
               },
-              fix: getWrappingFixer({
-                ...wrappingFixerParams,
-                wrap: expr => expr,
-              }),
+              fix: getWrappingFixer(wrappingFixerParams),
               suggest: [
                 {
                   messageId: 'unnecessaryTypeConversionSuggestion',
@@ -332,10 +317,7 @@ export default createRule<Options, MessageIds>({
               type: 'string',
               violation: "Calling a string's .toString() method",
             },
-            fix: getWrappingFixer({
-              ...wrappingFixerParams,
-              wrap: expr => expr,
-            }),
+            fix: getWrappingFixer(wrappingFixerParams),
             suggest: [
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
