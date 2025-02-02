@@ -12,6 +12,7 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
+  getWrappingFixer,
   isTypeFlagSet,
 } from '../util';
 
@@ -83,6 +84,7 @@ export default createRule<Options, MessageIds>({
             fixer.insertTextAfterRange(range, ')'),
           ]
         : [];
+
     function handleUnaryOperator(
       node: TSESTree.UnaryExpression,
       typeFlag: ts.TypeFlags,
@@ -120,15 +122,12 @@ export default createRule<Options, MessageIds>({
             {
               messageId: 'unnecessaryTypeConversionSuggestion',
               data: { type: reportDescriptorMessageData.type },
-              fix(fixer): RuleFix[] {
-                return [
-                  fixer.insertTextAfterRange(
-                    node.argument.range,
-                    ` satisfies ${typeString}`,
-                  ),
-                  ...fixFunction(fixer),
-                ];
-              },
+              fix: getWrappingFixer({
+                node: isDoubleOperator ? node.parent : node,
+                innerNode: [node.argument],
+                sourceCode: context.sourceCode,
+                wrap: expr => `${expr} satisfies ${typeString}`,
+              }),
             },
           ],
         });
@@ -171,10 +170,12 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
-                fix: fixer => [
-                  fixer.insertTextAfterRange(node.range, ' satisfies string'),
-                  ...fixFunction(fixer),
-                ],
+                fix: getWrappingFixer({
+                  node,
+                  innerNode: [node.left],
+                  sourceCode: context.sourceCode,
+                  wrap: expr => `${expr} satisfies string`,
+                }),
               },
             ],
           });
@@ -211,10 +212,12 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
-                fix: fixer => [
-                  fixer.insertTextAfterRange(node.range, ' satisfies string'),
-                  ...fixFunction(fixer),
-                ],
+                fix: getWrappingFixer({
+                  node,
+                  innerNode: [node.left],
+                  sourceCode: context.sourceCode,
+                  wrap: expr => `${expr} satisfies string`,
+                }),
               },
             ],
           });
@@ -246,10 +249,12 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
-                fix: fixer => [
-                  fixer.insertTextAfterRange(node.range, ' satisfies string'),
-                  ...fixFunction(fixer),
-                ],
+                fix: getWrappingFixer({
+                  node,
+                  innerNode: [node.right],
+                  sourceCode: context.sourceCode,
+                  wrap: expr => `${expr} satisfies string`,
+                }),
               },
             ],
           });
@@ -318,17 +323,12 @@ export default createRule<Options, MessageIds>({
                 {
                   messageId: 'unnecessaryTypeConversionSuggestion',
                   data: { type: typeString },
-                  fix: fixer => [
-                    fixer.insertTextAfterRange(
-                      node.range,
-                      ` satisfies ${typeString}`,
-                    ),
-                    ...fixFunction(
-                      fixer,
-                      keepParens ||
-                        node.parent.type === AST_NODE_TYPES.MemberExpression,
-                    ),
-                  ],
+                  fix: getWrappingFixer({
+                    node,
+                    innerNode: [node.arguments[0]],
+                    sourceCode: context.sourceCode,
+                    wrap: expr => `${expr} satisfies ${typeString}`,
+                  }),
                 },
               ],
             });
@@ -376,17 +376,12 @@ export default createRule<Options, MessageIds>({
               {
                 messageId: 'unnecessaryTypeConversionSuggestion',
                 data: { type: 'string' },
-                fix: fixer => [
-                  fixer.insertTextAfterRange(
-                    memberExpr.object.range,
-                    ` satisfies string`,
-                  ),
-                  ...fixFunction(
-                    fixer,
-                    keepParens ||
-                      node.parent.type === AST_NODE_TYPES.MemberExpression,
-                  ),
-                ],
+                fix: getWrappingFixer({
+                  node: memberExpr.parent,
+                  innerNode: [memberExpr.object],
+                  sourceCode: context.sourceCode,
+                  wrap: expr => `${expr} satisfies string`,
+                }),
               },
             ],
           });
