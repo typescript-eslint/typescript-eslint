@@ -138,7 +138,7 @@ exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint
 "Incorrect
 Options: { "ignorePrimitives": { "string": false } }
 
-let foo: string | undefined;
+declare const foo: string | undefined;
 
 foo || 'a string';
     ~~ Prefer using nullish coalescing operator (\`??\`) instead of a logical or (\`||\`), as it is a safer operator.
@@ -149,7 +149,7 @@ exports[`Validating rule docs prefer-nullish-coalescing.mdx code examples ESLint
 "Correct
 Options: { "ignorePrimitives": { "string": false } }
 
-let foo: string | undefined;
+declare const foo: string | undefined;
 
 foo ?? 'a string';
 "
