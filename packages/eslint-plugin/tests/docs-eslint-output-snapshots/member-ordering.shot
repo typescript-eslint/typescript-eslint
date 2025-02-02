@@ -1,7 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 1`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 interface Foo {
@@ -16,11 +13,8 @@ interface Foo {
   [Z: string]: any; // -> signature
   ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 2`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 type Foo = {
@@ -33,11 +27,8 @@ type Foo = {
 
   // no signature
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 3`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 class Foo {
@@ -56,11 +47,8 @@ class Foo {
   [Z: string]: any; // -> signature
   ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 4`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 const Foo = class {
@@ -80,11 +68,8 @@ const Foo = class {
 
   protected static E: string; // -> field
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 5`] = `
-"Correct
+Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 interface Foo {
@@ -96,11 +81,8 @@ interface Foo {
 
   B: string; // -> field
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 6`] = `
-"Correct
+Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 type Foo = {
@@ -112,11 +94,8 @@ type Foo = {
 
   B: string; // -> field
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 7`] = `
-"Correct
+Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 class Foo {
@@ -131,11 +110,8 @@ class Foo {
   public D: string; // -> field
   protected static E: string; // -> field
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 8`] = `
-"Correct
+Correct
 Options: { "default": ["signature", "method", "constructor", "field"] }
 
 const Foo = class {
@@ -150,11 +126,8 @@ const Foo = class {
   public D: string; // -> field
   protected static E: string; // -> field
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 9`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
 class Foo {
@@ -173,11 +146,8 @@ class Foo {
   public B(): void {} // -> public instance method
   ~~~~~~~~~~~~~~~~~~~ Member B should be declared before all public static field definitions.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 10`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
 const Foo = class {
@@ -196,11 +166,8 @@ const Foo = class {
   public B(): void {} // -> public instance method
   ~~~~~~~~~~~~~~~~~~~ Member B should be declared before all public static field definitions.
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 11`] = `
-"Correct
+Correct
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
 class Foo {
@@ -218,11 +185,8 @@ class Foo {
 
   [Z: string]: any; // (irrelevant)
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 12`] = `
-"Correct
+Correct
 Options: { "default": ["public-instance-method", "public-static-field"] }
 
 const Foo = class {
@@ -240,11 +204,8 @@ const Foo = class {
 
   public static E: string; // -> public static field
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 13`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
 class Foo {
@@ -262,11 +223,8 @@ class Foo {
 
   [Z: string]: any; // (irrelevant)
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 14`] = `
-"Incorrect
+Incorrect
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
 const foo = class {
@@ -288,11 +246,8 @@ const foo = class {
   public static A: string; // -> public static field
   ~~~~~~~~~~~~~~~~~~~~~~~~ Member A should be declared before all static field definitions.
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 15`] = `
-"Correct
+Correct
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
 class Foo {
@@ -306,11 +261,8 @@ class Foo {
 
   [Z: string]: any; // (irrelevant)
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 16`] = `
-"Correct
+Correct
 Options: { "default": ["public-static-field", "static-field", "instance-field"] }
 
 const foo = class {
@@ -328,11 +280,8 @@ const foo = class {
 
   public T(): void {} // -> method (irrelevant)
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 17`] = `
-"Incorrect
+Incorrect
 Options: { "classes": ["method", "constructor", "field"] }
 
 class Foo {
@@ -348,11 +297,8 @@ class Foo {
   public B(): void {} // -> method
   ~~~~~~~~~~~~~~~~~~~ Member B should be declared before all field definitions.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 18`] = `
-"Correct
+Correct
 Options: { "classes": ["method", "constructor", "field"] }
 
 class Foo {
@@ -365,11 +311,8 @@ class Foo {
   public D: string; // -> field
   protected static E: string; // -> field
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 19`] = `
-"Incorrect
+Incorrect
 Options: { "classExpressions": ["method", "constructor", "field"] }
 
 const foo = class {
@@ -385,11 +328,8 @@ const foo = class {
   public B(): void {} // -> method
   ~~~~~~~~~~~~~~~~~~~ Member B should be declared before all field definitions.
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 20`] = `
-"Correct
+Correct
 Options: { "classExpressions": ["method", "constructor", "field"] }
 
 const foo = class {
@@ -402,11 +342,8 @@ const foo = class {
   public D: string; // -> field
   protected static E: string; // -> field
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 21`] = `
-"Incorrect
+Incorrect
 Options: { "interfaces": ["signature", "method", "constructor", "field"] }
 
 interface Foo {
@@ -421,11 +358,8 @@ interface Foo {
   [Z: string]: any; // -> signature
   ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 22`] = `
-"Correct
+Correct
 Options: { "interfaces": ["signature", "method", "constructor", "field"] }
 
 interface Foo {
@@ -437,11 +371,8 @@ interface Foo {
 
   B: string; // -> field
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 23`] = `
-"Incorrect
+Incorrect
 Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
 
 type Foo = {
@@ -456,11 +387,8 @@ type Foo = {
   [Z: string]: any; // -> signature
   ~~~~~~~~~~~~~~~~~ Member Z should be declared before all field definitions.
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 24`] = `
-"Correct
+Correct
 Options: { "typeLiterals": ["signature", "method", "constructor", "field"] }
 
 type Foo = {
@@ -472,11 +400,8 @@ type Foo = {
 
   B: string; // -> field
 };
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 25`] = `
-"Incorrect
+Incorrect
 Options: {"default":{"order":"alphabetically"}}
 
 interface Foo {
@@ -490,11 +415,8 @@ interface Foo {
   a(): void;
   ~~~~~~~~~~ Member a should be declared before member c.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 26`] = `
-"Correct
+Correct
 Options: {"default":{"order":"alphabetically"}}
 
 interface Foo {
@@ -506,11 +428,8 @@ interface Foo {
   a(): void;
   c(): void;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 27`] = `
-"Incorrect
+Incorrect
 Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
 
 interface Foo {
@@ -524,11 +443,8 @@ interface Foo {
   ~~~~~ Member B should be declared before member a.
   c: x;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 28`] = `
-"Correct
+Correct
 Options: {"default":{"memberTypes":["method","field"],"order":"alphabetically"}}
 
 interface Foo {
@@ -540,11 +456,8 @@ interface Foo {
   a: x;
   c: x;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 29`] = `
-"Incorrect
+Incorrect
 Options: {"default":{"order":"alphabetically-case-insensitive"}}
 
 interface Foo {
@@ -558,11 +471,8 @@ interface Foo {
   a(): void;
   ~~~~~~~~~~ Member a should be declared before member c.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 30`] = `
-"Correct
+Correct
 Options: {"default":{"order":"alphabetically-case-insensitive"}}
 
 interface Foo {
@@ -574,11 +484,8 @@ interface Foo {
   B(): void;
   c(): void;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 31`] = `
-"Incorrect
+Incorrect
 Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
 
 interface Foo {
@@ -591,11 +498,8 @@ interface Foo {
   (): Baz;
   ~~~~~~~~ Member call should be declared before member new.
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 32`] = `
-"Correct
+Correct
 Options: { "default": { "memberTypes": "never", "order": "alphabetically" } }
 
 interface Foo {
@@ -606,11 +510,8 @@ interface Foo {
   (): Baz;
   new (): Bar;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 33`] = `
-"Incorrect
+Incorrect
 Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
 
 interface Foo {
@@ -619,11 +520,8 @@ interface Foo {
   b?: number;
   c: string;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 34`] = `
-"Correct
+Correct
 Options: { "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }
 
 interface Foo {
@@ -631,11 +529,8 @@ interface Foo {
   a: boolean;
   c: string;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 35`] = `
-"Incorrect
+Incorrect
 Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
 
 interface Foo {
@@ -644,11 +539,8 @@ interface Foo {
   ~~~~~~~~~~~ Member b should be declared after all required members.
   c: string;
 }
-"
-`;
 
-exports[`Validating rule docs member-ordering.mdx code examples ESLint output 36`] = `
-"Correct
+Correct
 Options: { "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }
 
 interface Foo {
@@ -656,5 +548,3 @@ interface Foo {
   c: string;
   b?: number;
 }
-"
-`;

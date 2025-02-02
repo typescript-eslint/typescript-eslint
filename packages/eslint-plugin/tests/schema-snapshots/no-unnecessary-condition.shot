@@ -1,7 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-unnecessary-condition 1`] = `
-"
 # SCHEMA:
 
 [
@@ -9,7 +5,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowConstantLoopConditions": {
-        "description": "Whether to ignore constant loop conditions, such as \`while (true)\`.",
+        "description": "Whether to ignore constant loop conditions, such as `while (true)`.",
         "type": "boolean"
       },
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
@@ -30,7 +26,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore constant loop conditions, such as \`while (true)\`. */
+    /** Whether to ignore constant loop conditions, such as `while (true)`. */
     allowConstantLoopConditions?: boolean;
     /** Whether to not error when running with a tsconfig that has strictNullChecks turned. */
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
@@ -38,5 +34,4 @@ type Options = [
     checkTypePredicates?: boolean;
   },
 ];
-"
-`;
+
