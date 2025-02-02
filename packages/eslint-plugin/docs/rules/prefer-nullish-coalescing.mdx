@@ -183,7 +183,7 @@ Examples of code for this rule with `{ ignorePrimitives: { string: false } }`:
 <TabItem value="❌ Incorrect">
 
 ```ts option='{ "ignorePrimitives": { "string": false } }'
-let foo: string | undefined;
+declare const foo: string | undefined;
 
 foo || 'a string';
 ```
@@ -192,7 +192,7 @@ foo || 'a string';
 <TabItem value="✅ Correct">
 
 ```ts option='{ "ignorePrimitives": { "string": false } }'
-let foo: string | undefined;
+declare const foo: string | undefined;
 
 foo ?? 'a string';
 ```
