@@ -569,9 +569,6 @@ export default createRule<Options, MessageIds>({
     /**
      * Checks if the initialization of a variable has the declare modifier in a
      * definition file.
-     * @param variable The variable to check.
-     * @returns Whether or not the initialization of a variable has the declare
-     * modifier in a definition file.
      */
     function isDeclareInDTSFile(variable: TSESLint.Scope.Variable): boolean {
       const fileName = context.filename;
