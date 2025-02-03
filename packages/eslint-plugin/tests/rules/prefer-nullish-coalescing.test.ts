@@ -154,11 +154,11 @@ declare let x: string | undefined | null;
 x !== null ? x : y;
       `,
       `
-declare let x: string | null | any;
+declare let x: any;
 x === null ? x : y;
       `,
       `
-declare let x: string | null | unknown;
+declare let x: unknown;
 x === null ? x : y;
       `,
       `
