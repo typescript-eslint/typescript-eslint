@@ -48,8 +48,8 @@ For CommonJS modules and/or older versions of Node.js, [use `__dirname` or an al
 In more detail:
 
 - `tseslint.configs.recommendedTypeChecked` is a [shared configuration](../users/Shared_Configurations.mdx). It contains recommended rules that additionally require type information.
-- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser#projectService](../packages/Parser.mdx#projectService)).
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser > Project Service](../packages/Parser.mdx#projectservice)).
+- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser > tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
 <TabItem value="Legacy Config">
@@ -82,8 +82,8 @@ module.exports = {
 In more detail:
 
 - `plugin:@typescript-eslint/recommended-type-checked` is a [shared configuration](../users/Shared_Configurations.mdx). It contains recommended rules that additionally require type information.
-- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser#projectService](../packages/Parser.mdx#projectService)).
-- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../packages/Parser.mdx#tsconfigrootdir)).
+- `parserOptions.projectService: true` indicates to ask TypeScript's type checking service for each source file's type information (see [Parser > `projectService`](../packages/Parser.mdx#projectService)).
+- `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser > `tsconfigRootDir`](../packages/Parser.mdx#tsconfigrootdir)).
 
 </TabItem>
 </Tabs>
@@ -160,3 +160,8 @@ See [Troubleshooting > Typed Linting > Performance](../troubleshooting/typed-lin
 ## Troubleshooting
 
 If you're having problems with typed linting, please see our [Troubleshooting FAQs](../troubleshooting/faqs/General.mdx) and in particular [Troubleshooting > Typed Linting](../troubleshooting/typed-linting/index.mdx).
+
+For details on the parser options that enable typed linting, see:
+
+- [Parser > `projectService`](../packages/Parser.mdx#projectService): our recommended option, with settings to customize TypeScript project information
+- [Parser > `project`](../packages/Parser.mdx#projectService): an older option that can be used as an alternative
