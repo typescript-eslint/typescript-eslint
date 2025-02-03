@@ -1,3 +1,15 @@
+## 8.23.0 (2025-02-03)
+
+### 🚀 Features
+
+- **types:** add strict `parent` types for function-declaration, default-export and named-export nodes ([#10685](https://github.com/typescript-eslint/typescript-eslint/pull/10685))
+
+### ❤️ Thank You
+
+- Ronen Amiel
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.22.0 (2025-01-27)
 
 ### 🚀 Features
