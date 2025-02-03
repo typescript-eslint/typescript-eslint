@@ -7,7 +7,7 @@ import path from 'node:path';
 import { getTypeName } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('getTypeName', () => {
+describe(getTypeName, () => {
   function getTypes(code: string): { checker: ts.TypeChecker; type: ts.Type } {
     const rootDir = path.join(__dirname, 'fixtures');
 
@@ -45,7 +45,7 @@ describe('getTypeName', () => {
       ['type Test = undefined;', 'undefined'],
       ['type Test = null;', 'null'],
       ['type Test = symbol;', 'symbol'],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)('when code is %s, returns %s', runTest);
   });
 
   describe('returns non-primitive type', () => {
@@ -57,6 +57,6 @@ describe('getTypeName', () => {
       ['type Test<T = number> = T & boolean;', 'Test<T>'],
       ['type Test = string | number;', 'Test'],
       ['type Test = string | string[];', 'Test'],
-    ])('when code is %s, returns %s', runTest);
+    ] as const)('when code is %s, returns %s', runTest);
   });
 });

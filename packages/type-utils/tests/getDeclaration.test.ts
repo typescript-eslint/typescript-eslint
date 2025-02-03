@@ -24,7 +24,7 @@ const mockDeclaration = (): ts.Declaration => {
   return {} as ts.Declaration;
 };
 
-describe('getDeclaration', () => {
+describe(getDeclaration, () => {
   describe('when symbol does not exist', () => {
     it('returns null', () => {
       const services = mockServices();
