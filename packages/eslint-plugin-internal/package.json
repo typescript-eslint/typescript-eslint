@@ -16,10 +16,10 @@
   "scripts": {
     "build": "npx tsc -b tsconfig.build.json",
     "clean": "npx tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf coverage",
+    "postclean": "rimraf dist/ coverage/",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
-    "test": "jest",
+    "test": "vitest --run",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
