@@ -3,7 +3,12 @@
 exports[`Validating rule docs class-methods-use-this.mdx code examples ESLint output 1`] = `
 "Options: { "ignoreOverrideMethods": true }
 
-class X {
+abstract class Base {
+  abstract method(): void;
+  abstract property: () => void;
+}
+
+class Derived extends Base {
   override method() {}
   override property = () => {};
 }
