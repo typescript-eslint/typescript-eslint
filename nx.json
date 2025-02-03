@@ -62,7 +62,7 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
-      "outputs": ["{projectRoot}/dist"],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.*"],
       "options": {
         "cwd": "{projectRoot}"
       },
@@ -113,14 +113,9 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
-      ],
+      "dependsOn": ["eslint-plugin-internal:build", "typescript-eslint:build"],
       "inputs": [
         "default",
-        "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/eslint.config.mjs",
         {
           "dependentTasksOutputFiles": "**/*.js",
@@ -153,9 +148,9 @@
     ],
     "production": [
       "default",
-      "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)",
       "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/jest.config.js",
       "!{projectRoot}/vitest.config.m[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]

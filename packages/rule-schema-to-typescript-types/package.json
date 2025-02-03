@@ -25,9 +25,11 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
-    "check-types": "npx nx typecheck"
+    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
+    "postclean": "rimraf dist/ coverage/",
+    "format": "yarn run -T format",
+    "lint": "yarn run -T nx lint",
+    "check-types": "yarn run --top-level nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/type-utils": "8.28.0",
@@ -36,6 +38,8 @@
     "prettier": "^3.2.5"
   },
   "devDependencies": {
+    "eslint": "*",
+    "rimraf": "*",
     "typescript": "*"
   },
   "funding": {

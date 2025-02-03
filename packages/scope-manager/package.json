@@ -6,6 +6,7 @@
     "dist",
     "!*.tsbuildinfo",
     "package.json",
+    "_ts4.3",
     "README.md",
     "LICENSE"
   ],
@@ -37,14 +38,16 @@
     "estree"
   ],
   "scripts": {
-    "build": "npx nx build",
-    "clean": "npx nx clean",
-    "clean-fixtures": "npx nx clean-fixtures",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "npx nx generate-lib repo",
-    "lint": "npx nx lint",
+    "build": "tsc -b tsconfig.build.json && yarn run postbuild",
+    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
+    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
+    "postclean": "rimraf dist/ _ts4.3/ coverage/",
+    "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
+    "format": "yarn run -T format",
+    "generate-lib": "yarn run -T nx generate-lib repo",
+    "lint": "yarn run -T nx lint",
     "test": "jest",
-    "check-types": "npx nx typecheck"
+    "check-types": "yarn run --top-level nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.28.0",
@@ -53,12 +56,13 @@
   "devDependencies": {
     "@jest/types": "29.6.3",
     "@typescript-eslint/typescript-estree": "8.28.0",
+    "downlevel-dts": "*",
     "glob": "*",
     "jest": "29.7.0",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
-    "prettier": "^3.2.5",
     "pretty-format": "*",
+    "rimraf": "*",
     "typescript": "*"
   },
   "funding": {
