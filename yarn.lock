@@ -5648,12 +5648,12 @@ __metadata:
     "@jest/types": 29.6.3
     "@microsoft/api-extractor": ^7.47.11
     "@typescript-eslint/typescript-estree": "workspace:*"
+    eslint: "*"
     glob: "*"
     jest: 29.7.0
     jest-diff: ^29.7.0
     jest-specific-snapshot: ^8.0.0
     make-dir: "*"
-    prettier: ^3.2.5
     pretty-format: "*"
     rimraf: "*"
     typescript: "*"
@@ -5670,9 +5670,11 @@ __metadata:
     "@typescript-eslint/scope-manager": "workspace:*"
     "@typescript-eslint/type-utils": "workspace:*"
     "@typescript-eslint/utils": "workspace:*"
+    eslint: "*"
     jest: 29.7.0
     prettier: ^3.2.5
     rimraf: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
@@ -5706,7 +5708,7 @@ __metadata:
     mdast-util-mdx: ^3.0.0
     micromark-extension-mdxjs: ^3.0.0
     natural-compare: ^1.4.0
-    prettier: ^3.2.5
+    prettier: ^3.5.3
     rimraf: "*"
     title-case: ^3.0.3
     ts-api-utils: ^2.0.1
@@ -5729,10 +5731,11 @@ __metadata:
     ncp: "*"
     tmp: "*"
     tsx: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
-"@typescript-eslint/parser@8.26.1, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:packages/parser":
+"@typescript-eslint/parser@8.26.1, @typescript-eslint/parser@workspace:*, @typescript-eslint/parser@workspace:^, @typescript-eslint/parser@workspace:packages/parser":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/parser@workspace:packages/parser"
   dependencies:
@@ -5745,7 +5748,6 @@ __metadata:
     downlevel-dts: "*"
     glob: "*"
     jest: 29.7.0
-    prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
   peerDependencies:
@@ -5760,8 +5762,10 @@ __metadata:
   dependencies:
     "@typescript-eslint/type-utils": 8.26.1
     "@typescript-eslint/utils": 8.26.1
+    eslint: "*"
     natural-compare: ^1.4.0
     prettier: ^3.2.5
+    rimraf: "*"
     typescript: "*"
   languageName: unknown
   linkType: soft
@@ -5778,12 +5782,16 @@ __metadata:
     "@typescript-eslint/utils": 8.26.1
     ajv: ^6.12.6
     chai: ^4.4.1
+    downlevel-dts: "*"
+    eslint: "*"
     eslint-visitor-keys: ^4.2.0
     espree: ^10.3.0
     esprima: ^4.0.1
+    jest: 29.7.0
     json-stable-stringify-without-jsonify: ^1.0.1
     lodash.merge: 4.6.2
     mocha: ^10.4.0
+    rimraf: "*"
     semver: ^7.6.0
     sinon: ^16.1.3
     source-map-support: ^0.5.21
@@ -5801,12 +5809,13 @@ __metadata:
     "@typescript-eslint/types": 8.26.1
     "@typescript-eslint/typescript-estree": 8.26.1
     "@typescript-eslint/visitor-keys": 8.26.1
+    downlevel-dts: "*"
     glob: "*"
     jest: 29.7.0
     jest-specific-snapshot: "*"
     make-dir: "*"
-    prettier: ^3.2.5
     pretty-format: "*"
+    rimraf: "*"
     typescript: "*"
   languageName: unknown
   linkType: soft
@@ -5822,8 +5831,8 @@ __metadata:
     ajv: ^6.12.6
     debug: ^4.3.4
     downlevel-dts: "*"
+    eslint: "*"
     jest: 29.7.0
-    prettier: ^3.2.5
     rimraf: "*"
     ts-api-utils: ^2.0.1
     typescript: "*"
@@ -5838,7 +5847,6 @@ __metadata:
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
     downlevel-dts: "*"
-    prettier: ^3.2.5
     rimraf: "*"
     tsx: "*"
     typescript: "*"
@@ -5864,6 +5872,7 @@ __metadata:
     "@nx/devkit": 20.4.5
     "@nx/eslint": 20.4.5
     "@nx/jest": 20.4.5
+    "@nx/js": 20.4.5
     "@nx/workspace": 20.4.5
     "@swc/core": ^1.4.12
     "@swc/jest": ^0.2.36
@@ -5882,6 +5891,7 @@ __metadata:
     "@types/yargs": ^17.0.32
     "@typescript-eslint/eslint-plugin": "workspace:^"
     "@typescript-eslint/eslint-plugin-internal": "workspace:^"
+    "@typescript-eslint/parser": "workspace:^"
     "@typescript-eslint/scope-manager": "workspace:^"
     "@typescript-eslint/types": "workspace:^"
     "@typescript-eslint/typescript-estree": "workspace:^"
@@ -5889,7 +5899,6 @@ __metadata:
     console-fail-test: ^0.5.0
     cross-fetch: ^4.0.0
     cspell: ^8.15.2
-    downlevel-dts: ">=0.11.0"
     eslint: ^9.15.0
     eslint-plugin-eslint-plugin: ^6.3.1
     eslint-plugin-import: ^2.31.0
@@ -5933,12 +5942,12 @@ __metadata:
     "@typescript-eslint/types": 8.26.1
     "@typescript-eslint/visitor-keys": 8.26.1
     debug: ^4.3.4
+    downlevel-dts: "*"
     fast-glob: ^3.3.2
     glob: "*"
     is-glob: ^4.0.3
     jest: 29.7.0
     minimatch: ^9.0.4
-    prettier: ^3.2.5
     rimraf: "*"
     semver: ^7.6.0
     tmp: "*"
@@ -5959,7 +5968,6 @@ __metadata:
     "@typescript-eslint/typescript-estree": 8.26.1
     downlevel-dts: "*"
     jest: 29.7.0
-    prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
   peerDependencies:
@@ -5977,7 +5985,6 @@ __metadata:
     downlevel-dts: "*"
     eslint-visitor-keys: ^4.2.0
     jest: 29.7.0
-    prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
   languageName: unknown
@@ -5996,7 +6003,7 @@ __metadata:
     esbuild: ~0.25.0
     eslint: "*"
     esquery: "*"
-    prettier: ^3.2.5
+    rimraf: "*"
     tsx: "*"
   languageName: unknown
   linkType: soft
@@ -9078,7 +9085,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"downlevel-dts@npm:*, downlevel-dts@npm:>=0.11.0":
+"downlevel-dts@npm:*":
   version: 0.11.0
   resolution: "downlevel-dts@npm:0.11.0"
   dependencies:
@@ -19567,8 +19574,8 @@ __metadata:
     "@typescript-eslint/parser": 8.26.1
     "@typescript-eslint/utils": 8.26.1
     downlevel-dts: "*"
+    eslint: "*"
     jest: 29.7.0
-    prettier: ^3.2.5
     rimraf: "*"
     typescript: "*"
   peerDependencies:

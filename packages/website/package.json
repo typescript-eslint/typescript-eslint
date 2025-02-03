@@ -14,15 +14,16 @@
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear",
-    "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
+    "clean": "tsc -b tsconfig.json --clean & yarn run clear",
+    "format": "yarn run -T format",
     "generate-website-dts": "tsx ./tools/generate-website-dts.mts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "npx nx lint",
+    "lint": "yarn run -T nx lint",
     "serve": "docusaurus serve",
-    "start": "npx nx start",
+    "start": "yarn run -T nx start",
     "swizzle": "docusaurus swizzle",
-    "check-types": "npx nx typecheck"
+    "check-types": "yarn run --top-level nx typecheck"
   },
   "dependencies": {
     "@babel/runtime": "^7.24.4",
@@ -51,9 +52,6 @@
     "typedoc": "^0.27.0",
     "typedoc-plugin-markdown": "^4.2.10",
     "typescript": "*"
-  },
-  "resolutions": {
-    "react": "^18.2.0"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "^3.2.1",

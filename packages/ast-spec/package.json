@@ -32,13 +32,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json && api-extractor run --local",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf coverage",
+    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
+    "postclean": "rimraf dist/ coverage/",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
+    "format": "yarn run -T format",
+    "lint": "yarn run -T nx lint",
     "test": "jest",
-    "check-types": "npx nx typecheck"
+    "check-types": "yarn run --top-level nx typecheck"
   },
   "funding": {
     "type": "opencollective",
@@ -51,12 +51,12 @@
     "@jest/types": "29.6.3",
     "@microsoft/api-extractor": "^7.47.11",
     "@typescript-eslint/typescript-estree": "workspace:*",
+    "eslint": "*",
     "glob": "*",
     "jest": "29.7.0",
     "jest-diff": "^29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
-    "prettier": "^3.2.5",
     "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"
