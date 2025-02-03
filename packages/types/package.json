@@ -39,37 +39,17 @@
   ],
   "scripts": {
     "copy-ast-spec": "tsx ./tools/copy-ast-spec.mts",
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && yarn run postbuild",
     "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "npx nx run scope-manager:generate-lib",
-    "lint": "npx nx lint",
-    "check-types": "npx nx typecheck"
-  },
-  "nx": {
-    "targets": {
-      "copy-ast-spec": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "{projectRoot}/src/generated"
-        ],
-        "cache": true
-      },
-      "build": {
-        "dependsOn": [
-          "^build",
-          "copy-ast-spec"
-        ]
-      }
-    }
+    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
+    "postclean": "rimraf dist/ src/generated/ _ts4.3/ coverage/",
+    "format": "yarn run -T format",
+    "generate-lib": "yarn run --top-level nx run scope-manager:generate-lib",
+    "lint": "yarn run -T nx lint",
+    "check-types": "yarn run --top-level nx typecheck"
   },
   "devDependencies": {
     "downlevel-dts": "*",
-    "prettier": "^3.2.5",
     "rimraf": "*",
     "tsx": "*",
     "typescript": "*"
