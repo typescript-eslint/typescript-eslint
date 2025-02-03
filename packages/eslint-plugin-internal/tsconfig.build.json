@@ -9,7 +9,7 @@
     "types": ["node"]
   },
   "include": ["src/**/*.ts", "index.d.ts"],
-  "exclude": ["jest.config.js", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "exclude": ["vitest.config.mts", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
     {
       "path": "../type-utils/tsconfig.build.json"
