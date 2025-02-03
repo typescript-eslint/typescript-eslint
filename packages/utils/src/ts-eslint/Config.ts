@@ -203,6 +203,8 @@ export namespace FlatConfig {
     /**
      * A severity string indicating if and how unused inline directives
      * should be tracked and reported.
+     *
+     * since ESLint 9.19.0
      * @default "off"
      */
     reportUnusedInlineConfigs?:
