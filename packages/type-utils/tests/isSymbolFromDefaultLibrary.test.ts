@@ -7,7 +7,7 @@ import path from 'node:path';
 import { isSymbolFromDefaultLibrary } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('isSymbolFromDefaultLibrary', () => {
+describe(isSymbolFromDefaultLibrary, () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getTypes(code: string): {
@@ -43,7 +43,7 @@ describe('isSymbolFromDefaultLibrary', () => {
       ['type Test = Promise<void>'],
       ['type Test = Error'],
       ['type Test = Object'],
-    ])('when code is %s, returns true', runTest);
+    ] as const)('when code is %s, returns true', runTest);
   });
 
   describe('is not symbol from default library', () => {
@@ -55,6 +55,6 @@ describe('isSymbolFromDefaultLibrary', () => {
       ['const test: Array<number> = [1,2,3];'],
       ['type Test = number;'],
       ['interface Test { bar: string; };'],
-    ])('when code is %s, returns false', runTest);
+    ] as const)('when code is %s, returns false', runTest);
   });
 });
