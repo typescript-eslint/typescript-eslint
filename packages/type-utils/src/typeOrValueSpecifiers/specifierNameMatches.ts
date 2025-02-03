@@ -1,7 +1,5 @@
 import type * as ts from 'typescript';
 
-import * as tsutils from 'ts-api-utils';
-
 export function specifierNameMatches(
   type: ts.Type,
   names: string | string[],
@@ -17,10 +15,6 @@ export function specifierNameMatches(
 
   if (names.some(item => candidateNames.includes(item))) {
     return true;
-  }
-
-  if (tsutils.isIntersectionType(type)) {
-    return type.types.some(subType => specifierNameMatches(subType, names));
   }
 
   return false;

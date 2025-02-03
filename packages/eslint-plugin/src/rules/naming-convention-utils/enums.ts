@@ -1,4 +1,4 @@
-enum PredefinedFormats {
+export enum PredefinedFormats {
   camelCase = 1,
   strictCamelCase,
   PascalCase,
@@ -6,9 +6,9 @@ enum PredefinedFormats {
   snake_case,
   UPPER_CASE,
 }
-type PredefinedFormatsString = keyof typeof PredefinedFormats;
+export type PredefinedFormatsString = keyof typeof PredefinedFormats;
 
-enum UnderscoreOptions {
+export enum UnderscoreOptions {
   forbid = 1,
   allow,
   require,
@@ -18,9 +18,9 @@ enum UnderscoreOptions {
   allowDouble,
   allowSingleOrDouble,
 }
-type UnderscoreOptionsString = keyof typeof UnderscoreOptions;
+export type UnderscoreOptionsString = keyof typeof UnderscoreOptions;
 
-enum Selectors {
+export enum Selectors {
   // variableLike
   variable = 1 << 0,
   function = 1 << 1,
@@ -48,9 +48,9 @@ enum Selectors {
   // other
   import = 1 << 18,
 }
-type SelectorsString = keyof typeof Selectors;
+export type SelectorsString = keyof typeof Selectors;
 
-enum MetaSelectors {
+export enum MetaSelectors {
   /* eslint-disable @typescript-eslint/prefer-literal-enum-member */
   default = -1,
   variableLike = 0 |
@@ -85,10 +85,12 @@ enum MetaSelectors {
   accessor = 0 | Selectors.classicAccessor | Selectors.autoAccessor,
   /* eslint-enable @typescript-eslint/prefer-literal-enum-member */
 }
-type MetaSelectorsString = keyof typeof MetaSelectors;
-type IndividualAndMetaSelectorsString = MetaSelectorsString | SelectorsString;
+export type MetaSelectorsString = keyof typeof MetaSelectors;
+export type IndividualAndMetaSelectorsString =
+  | MetaSelectorsString
+  | SelectorsString;
 
-enum Modifiers {
+export enum Modifiers {
   // const variable
   const = 1 << 0,
   // readonly members
@@ -122,29 +124,13 @@ enum Modifiers {
 
   // make sure TypeModifiers starts at Modifiers + 1 or else sorting won't work
 }
-type ModifiersString = keyof typeof Modifiers;
+export type ModifiersString = keyof typeof Modifiers;
 
-enum TypeModifiers {
+export enum TypeModifiers {
   boolean = 1 << 17,
   string = 1 << 18,
   number = 1 << 19,
   function = 1 << 20,
   array = 1 << 21,
 }
-type TypeModifiersString = keyof typeof TypeModifiers;
-
-export {
-  type IndividualAndMetaSelectorsString,
-  MetaSelectors,
-  type MetaSelectorsString,
-  Modifiers,
-  type ModifiersString,
-  PredefinedFormats,
-  type PredefinedFormatsString,
-  Selectors,
-  type SelectorsString,
-  TypeModifiers,
-  type TypeModifiersString,
-  UnderscoreOptions,
-  type UnderscoreOptionsString,
-};
+export type TypeModifiersString = keyof typeof TypeModifiers;

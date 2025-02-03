@@ -16,6 +16,7 @@ This rule reports when you may consider replacing:
 
 - An `||` operator with `??`
 - An `||=` operator with `??=`
+- Ternary expressions (`?:`) that are equivalent to `||` or `??` with `??`
 
 :::caution
 This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
@@ -42,7 +43,9 @@ foo === undefined ? 'a string' : foo;
 
 const foo: string | null = 'bar';
 foo !== null ? foo : 'a string';
+foo ? foo : 'a string';
 foo === null ? 'a string' : foo;
+!foo ? 'a string' : foo;
 ```
 
 Correct code for `ignoreTernaryTests: false`:
@@ -59,6 +62,8 @@ foo ?? 'a string';
 foo ?? 'a string';
 
 const foo: string | null = 'bar';
+foo ?? 'a string';
+foo ?? 'a string';
 foo ?? 'a string';
 foo ?? 'a string';
 ```
@@ -175,8 +180,6 @@ Also, if you would like to ignore all primitives types, you can set `ignorePrimi
 ### `ignoreBooleanCoercion`
 
 {/* insert option description */}
-
-Whether to ignore expressions that coerce a value into a boolean: `Boolean(...)`.
 
 Incorrect code for `ignoreBooleanCoercion: false`, and correct code for `ignoreBooleanCoercion: true`:
 

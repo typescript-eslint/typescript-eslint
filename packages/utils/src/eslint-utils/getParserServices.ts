@@ -17,7 +17,7 @@ const ERROR_MESSAGE_UNKNOWN_PARSER =
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -27,7 +27,7 @@ function getParserServices<
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -38,7 +38,7 @@ function getParserServices<
  * Try to retrieve type-aware parser service from context.
  * This **_will not_** throw if it is not available.
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -49,7 +49,7 @@ function getParserServices<
  * Try to retrieve type-aware parser service from context.
  * This may or may not throw if it is not available, depending on if `allowWithoutFullTypeInformation` is `true`
  */
-function getParserServices<
+export function getParserServices<
   MessageIds extends string,
   Options extends readonly unknown[],
 >(
@@ -57,7 +57,7 @@ function getParserServices<
   allowWithoutFullTypeInformation: boolean,
 ): ParserServices;
 
-function getParserServices(
+export function getParserServices(
   context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
   allowWithoutFullTypeInformation = false,
 ): ParserServices {
@@ -103,5 +103,3 @@ function throwError(parser: string | undefined): never {
 
   throw new Error(messages.join('\n'));
 }
-
-export { getParserServices };

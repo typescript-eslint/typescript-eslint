@@ -1,0 +1,288 @@
+---
+authors: joshuakgoldberg
+description: How typescript-eslint expands on TypeScript's type safety to catch explicit and implicit `any`s.
+slug: avoiding-anys
+tags: [any, no-explicit-any, no-unsafe, noImplicitAny, typed linting]
+title: 'Avoiding `any`s with Linting and TypeScript'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+TypeScript's `any` type is, by design, the single most unsafe part of its type system.
+The `any` type indicates a type that can be anything and can be used in place of any other type.
+Using `any` is unsafe because the type disables many of TypeScript's type-checking features and hampers TypeScript's ability to provide developer assistance.
+
+typescript-eslint includes several lint rules that help prevent unsafe practices around the `any` type.
+These rules flag uses of `any` or code patterns that sneakily introduce it.
+
+In this blog post, we'll show you those lint rules and several other handy ways to prevent `any`s from sneaking into your code.
+
+{/* truncate */}
+
+## `noImplicitAny` Isn't Enough
+
+TypeScript includes a [`noImplicitAny`](https://www.typescriptlang.org/tsconfig/#noImplicitAny) flag to report when a better type than `any` can't be inferred for a value.
+`noImplicitAny` is part of its family of [`strict` compiler options](https://www.typescriptlang.org/tsconfig/#strict) and is generally recommended for all projects.
+
+However, even with `noImplicitAny` enabled, the `any` type can easily be introduced into codebases.
+`noImplicitAny` doesn't prevent developers from explicitly writing the `any` type in type type annotations.
+Some built-in APIs such as `JSON.stringify` and types such as `Function` can introduce the `any` type without triggering `noImplicitAny`.
+
+Enabling `noImplicitAny` is a great first step towards better project type safety, but it's not enough to prevent `any`s altogether.
+
+## Banning Unsafe Types
+
+The first line of defense against `any` for many repositories is adding lint rules that report on explicitly written unsafe types.
+Developers can always [disable ESLint rules with inline comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1), so this isn't guaranteed to prevent explicit `any`s from popping up.
+But these lint rules put an immediate restriction on unsafe types -- and help guide towards better alternatives.
+
+### Banning Explicit `any`s
+
+[`@typescript-eslint/no-explicit-any`](/rules/no-explicit-any) reports on any instance of the `any` type written in your source code.
+Doing so helps prevent developers from using `any` instead of a more safe type.
+
+Take the following unsafe declaration of `friend: any` in a `greet` function.
+Because its `friend` parameter is typed as `any` instead of `string`, TypeScript won't report a type error on a call that provides another type.
+`@typescript-eslint/no-explicit-any` would report on that `any`:
+
+```ts
+function greet(friend: any) {
+  //                   ~~~
+  // eslint(@typescript-eslint/no-explicit-any):
+  // Unexpected any. Specify a different type.
+  console.log(`Hello, ${friend.toUpperCase()}!`);
+}
+
+greet('Lazlo'); // Ok
+
+greet({ name: 'Nadya' }); // Should be a type error, but isn't
+```
+
+Instead of `any`, it would have been more type safe to give `friend` the more precise type `string`.
+
+#### Prefer `unknown`
+
+If you have data that is of an unknown type, instead of describing it with the unsafe `any` type, prefer the safer `unknown` instead.
+`unknown` is almost always preferable because it doesn't allow using the value in any arbitrary, potentially unsafe way.
+
+[`@typescript-eslint/no-explicit-any`](/rules/no-explicit-any)'s rule reports include a suggestion fixer that switches the explicit `any` to `unknown`.
+
+### Banning `Function`
+
+[`@typescript-eslint/no-unsafe-function-type`](/rules/no-unsafe-function-type) reports on any instance of the built-in `Function` type written in source code.
+`Function` is a loose, unsafe type: it allows being called with any number of arguments and returns type `any`.
+
+Take the following version of `greet` that takes in a function for its parameter.
+`Function` doesn't describe any parameter or return types, so TypeScript can't know what types it's meant to take in or return.
+`@typescript-eslint/no-unsafe-function-type` would report on that `Function`:
+
+```ts
+function greet(getFriend: Function) {
+  //                      ~~~~~~~~
+  // eslint(@typescript-eslint/no-unsafe-function-type):
+  // The `Function` type accepts any function-like value.
+  // Prefer explicitly defining any function parameters and return type.
+  console.log(`Hello, ${getFriend().toUpperCase()}!`);
+}
+
+greet(() => 'Lazlo'); // Ok
+
+greet(() => ({ name: 'Nadya' })); // Should be a type error, but isn't
+```
+
+Instead of `Function`, it would have been more type safe to give `getFriend` the more precise type `() => string`.
+
+### Enforcing `unknown` for Caught Exceptions
+
+There is no way to indicate what types functions may throw in TypeScript, due to the highly dynamic nature of JavaScript[^no-throws].
+Therefore, TypeScript treats all caught values as `any` by default.
+TypeScript's [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig/#useUnknownInCatchVariables) changes `catch` block variables to have the more appropriate `unknown` type, but no compiler option equivalent exists for `Promise` rejections' `.catch()` method.
+
+[`@typescript-eslint/use-unknown-in-catch-callback-variable`](/rules/use-unknown-in-catch-callback-variable) enforces always using the `unknown` type for the parameter of a Promise rejection callback.
+
+For example, given the following code, TypeScript would not report a type error, but the lint rule would report:
+
+```ts
+function rejectWith(value: string) {
+  return Promise.reject(value);
+}
+
+rejectWith('Nandor').catch(error => {
+  //                       ~~~~~
+  // eslint(@typescript-eslint/use-unknown-in-catch-callback-variable):
+  // Prefer the safe `: unknown` for a `catch` callback variable.
+
+  console.log(error.message); // Should be a type error, but isn't
+});
+```
+
+Had the `error` been given a `: unknown` type, TypeScript would be able to report on `error.message` as being unsafe.
+
+## Banning Usage of Unsafe Types
+
+Once an `any` type exists in code, it is "infectious": it can turn the types of values based on it into more `any`s.
+
+typescript-eslint includes a collection of rules that flag code patterns which make use of `any`'s unsafe, viral nature.
+Each of the following rules reports on a specific use of `any`.
+
+- [`@typescript-eslint/no-unsafe-argument`](/rules/no-unsafe-argument) reports on passing an `any` typed value to a function call
+- [`@typescript-eslint/no-unsafe-assignment`](/rules/no-unsafe-assignment) reports on assigning an `any` typed value to a property or variable
+- [`@typescript-eslint/no-unsafe-call`](/rules/no-unsafe-call) reports on calling an `any` typed value like a function
+- [`@typescript-eslint/no-unsafe-member-access`](/rules/no-unsafe-member-access) reports on accessing members of any value typed as `any`
+- [`@typescript-eslint/no-unsafe-return`](/rules/no-unsafe-return) reports on returning a value typed as `any` from a function
+
+For example, this `parseData` function violates several of those lint rules by creating a `shape` value of type `any` and not validating its type before using it:
+
+```ts
+export interface Shape {
+  label: string;
+  value: number;
+}
+
+export function parseShapeFromData(raw: string): Shape {
+  const shape = JSON.parse(raw);
+  //    ~~~~~~~~~~~~~~~~~~~~~~~
+  // eslint(@typescript-eslint/no-unsafe-assignment):
+  // Unsafe assignment of an `any` value.
+
+  console.log('Making a shape with value:', shape.value);
+  //                                              ~~~~~
+  // eslint(@typescript-eslint/no-unsafe-member-access):
+  // Unsafe member access .value of an `any` value.
+
+  return shape;
+  // eslint(@typescript-eslint/no-unsafe-return):
+  // Unsafe return of an `any` value.
+}
+```
+
+Had the `parseShapeFromData` function included checks on the type of the `shape` value or used a schema validation library such as [Zod](https://zod.dev), it would be informed at runtime if its `raw` string didn't create the expected `Shape`.
+
+Put together, the `@typescript-eslint/no-unusafe-*` rules around `any` safety provide a comprehensive suite of checks that can flag most accidental uses of `any` across a codebase.
+We highly recommend using them alongside TypeScript's `noImplicitAny` compiler option.
+
+## Additional Helpers
+
+### Disabling TypeScript Suppressions
+
+The `any` type is not the only way to bypass TypeScript's type system.
+Developers are also able to use inline TypeScript directives: `// @ts-expect-error` and `// @ts-ignore`.
+Those inline comment directives cause TypeScript to ignore type errors on a line.
+Disabling TypeScript on a per-line basis can sometimes be necessary in rare cases, but is always unsafe and should not be part of your standard toolkit.
+
+:::tip
+`// @ts-expect-error` and `// @ts-ignore` are almost the same, except `// @ts-expect-error` will produce a new error if there isn't any existing error for it to suppress.
+It's generally preferable to use `// @ts-expect-error` over `// @ts-ignore`.
+:::
+
+[`@typescript-eslint/ban-comment`](/rules/ban-ts-comment) can be used to report on cases where developers use TypeScript comment directives.
+By default, the rule:
+
+- Prohibits all `@ts-ignore` and `@ts-nocheck` comment directives
+- Prohibits `@ts-expect-error` directives unless they have an explanatory comment description
+- Requires explanatory comment descriptions to contain at least 3 characters
+
+For example, suppose `"@example/package"` exports a `processString` function that should take in a `string` but whose types incorrectly indicate take in a `number`.
+A `// @ts-expect-error` comment could be used to tell TypeScript to ignore the line:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+import { processString } from '@example/package';
+
+// @ts-ignore
+processString('New York City');
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+import { processString } from '@example/package';
+
+// @ts-expect-error -- Pending updating the processString types. See GH-1234.
+processString('New York City');
+```
+
+</TabItem>
+</Tabs>
+
+Once the types for `@example/package` are fixed to no longer produce a type error, the comment directive will itself produce a type error asking to delete itself.
+
+### ESLint Comments Plugin
+
+ESLint includes its own inline comment directives separate from TypeScript's.
+`// eslint-disable`, `// eslint-disable-next-line`, and other inline ESLint config comments can suppress lint rules — including those mentioned in this post.
+Suppressing ESLint rules can also be necessary in cases where the rule and/or TypeScript's type system have misunderstand your code.
+
+If you must use ESLint comment directives, we recommend utilizing [`@eslint-community/eslint-plugin-eslint-comments`](https://eslint-community.github.io/eslint-plugin-eslint-comments).
+The plugin's [recommended preset](https://eslint-community.github.io/eslint-plugin-eslint-comments/#%F0%9F%93%96-usage) enables rules that enforce best practices around ESLint comment directives, including:
+
+- [`@eslint-community/eslint-comments/disable-enable-pair`](https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/disable-enable-pair.html): to prevent accidentally disabling rules for the rest of a file, rather than on specific lines
+- [`@eslint-community/eslint-comments/no-unlimited-disable`](https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/no-unlimited-disable.html): to prevent accidentally disabling all ESLint rules, rather than specific ones
+- [`@eslint-community/eslint-comments/require-description`](https://eslint-community.github.io/eslint-plugin-eslint-comments/rules/require-description.html): to require comments explaining why directives are necessary
+
+For example, suppose the type of an imported variable is temporarily `any` pending some soon-to-be-completed refactoring.
+It might be reasonable to include an ESLint disable comment to suppress a lint rule reporting on the `any`.
+That comment should ideally include an explanation and link to the pending task, so developers know it's not normal to disable lint rules without good reason:
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+import { processString } from '@example/package';
+
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+processString('New York City');
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+import { processString } from '@example/package';
+
+// Pending GH-1234: will soon not be any.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+processString('New York City');
+```
+
+</TabItem>
+</Tabs>
+
+Once the types for `@example/package` are fixed to no longer produce an `any`, running ESLint with [`reportUnusedDisableDirectives`](https://eslint.org/docs/latest/use/configure/rules#report-unused-eslint-disable-comments) option will produce a lint report asking to remove the comment directive.
+
+### `ts-reset`
+
+Some sources of `any` come from built-in global types provided by TypeScript.
+[`JSON.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse), [`.json()`](https://developer.mozilla.org/en-US/docs/Web/API/Response/json), and [`Storage`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#basic_concepts) properties are all typed as `any` by default in TypeScript.
+TypeScript keeps `any` in the types for legacy support reasons[^compiler-option-lib-any].
+
+The [`ts-reset`](https://www.totaltypescript.com/ts-reset) library switches those global type definitions to safer equivalents.
+It switches the `any`s in those built-in types to `unknown`.
+
+With `ts-reset`, the following `data` variable would switch from being type `any` to `unknown`:
+
+```ts
+const data = JSON.parse(`"clearly-a-string"`);
+//    ^? any (without ts-reset)
+//    ^? unknown (with ts-reset)
+
+console.log(data.some.property.that.does.not.exist);
+```
+
+Note that `ts-reset` applies globally, so it should only be used in application code.
+
+## Next Steps
+
+We highly recommend using at least the [`tseslint.configs.recommendedTypeChecked`](/users/configs#recommended-type-checked) preset in your ESLint configuration.
+It enables the `no-explicit-any` and `no-unsafe-*` lint rules mentioned in this blog post, as well as a large set of other rules that help enforce type safety and TypeScript best practices.
+
+If you're interested in achieving stronger type safety with more strict linting, consider upgrading to the [`tseslint.configs.strictTypeChecked`](/users/configs#strict-type-checked) preset.
+It includes all the recommended rules, as well as `use-unknown-in-catch-callback-variable` and other rules that enforce more strict type safety and TypeScript best practices.
+
+[^compiler-option-lib-any]: [microsoft/TypeScript#60899 Compiler option to switch lib .d.ts anys to unknown](https://github.com/microsoft/TypeScript/issues/60899)
+
+[^no-throws]: [Why TypeScript Doesn't Include a `throws` Keyword](https://www.learningtypescript.com/articles/why-typescript-doesnt-include-a-throws-keyword)

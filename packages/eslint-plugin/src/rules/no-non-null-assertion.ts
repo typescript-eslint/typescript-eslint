@@ -9,7 +9,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type MessageIds = 'noNonNull' | 'suggestOptionalChain';
+export type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
 export default createRule<[], MessageIds>({
   name: 'no-non-null-assertion',
