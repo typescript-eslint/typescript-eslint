@@ -1,8 +1,9 @@
 {
   "name": "parser",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/parser",
+  "sourceRoot": "packages/parser/src",
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint",
