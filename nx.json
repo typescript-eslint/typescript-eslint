@@ -23,26 +23,81 @@
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        }
+      ],
+      "inputs": [
+        {
+          "input": "production"
+        },
+        {
+          "input": "production",
+          "dependencies": true
+        }
+      ],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.*"],
+      "options": {
+        "cwd": "{projectRoot}"
+      },
       "cache": true
     },
     "test": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        },
+        {
+          "projects": ["typescript-estree"],
+          "target": "build"
+        }
+      ],
       "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
+        {
+          "input": "default"
+        },
+        {
+          "input": "production",
+          "dependencies": true
+        },
+        {
+          "fileset": "{workspaceRoot}/jest.config.js"
+        },
+        {
+          "fileset": "{workspaceRoot}/jest.config.base.js"
+        }
       ],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
     "@nx/jest:jest": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        },
+        {
+          "projects": ["typescript-estree"],
+          "target": "build"
+        }
+      ],
       "inputs": [
-        "default",
-        "^production",
-        "{workspaceRoot}/jest.config.js",
-        "{workspaceRoot}/jest.config.base.js"
+        {
+          "input": "default"
+        },
+        {
+          "input": "production",
+          "dependencies": true
+        },
+        {
+          "fileset": "{workspaceRoot}/jest.config.js"
+        },
+        {
+          "fileset": "{workspaceRoot}/jest.config.base.js"
+        }
       ],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true,
@@ -57,28 +112,93 @@
         }
       }
     },
-    "lint": {
+    "@nx/eslint:lint": {
       "dependsOn": [
-        "eslint-plugin:build",
-        "eslint-plugin-internal:build",
-        "typescript-eslint:build"
+        {
+          "projects": ["eslint-plugin-internal", "typescript-eslint"],
+          "target": "build"
+        }
       ],
       "inputs": [
-        "default",
-        "{workspaceRoot}/eslint.config.js",
-        "{workspaceRoot}/eslint.config.mjs",
+        {
+          "input": "default"
+        },
+        {
+          "fileset": "{workspaceRoot}/eslint.config.js"
+        },
+        {
+          "fileset": "{workspaceRoot}/eslint.config.mjs"
+        },
         {
           "dependentTasksOutputFiles": "**/*.js",
           "transitive": false
+        }
+      ],
+      "options": {
+        "noEslintrc": true,
+        "cache": true,
+        "eslintConfig": "{workspaceRoot}/eslint.config.js"
+      },
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
+    "lint": {
+      "dependsOn": [
+        {
+          "projects": ["eslint-plugin-internal", "typescript-eslint"],
+          "target": "build"
+        }
+      ],
+      "inputs": [
+        {
+          "input": "default"
+        },
+        {
+          "fileset": "{workspaceRoot}/eslint.config.js"
+        },
+        {
+          "fileset": "{workspaceRoot}/eslint.config.mjs"
+        },
+        {
+          "dependentTasksOutputFiles": "**/*.js",
+          "transitive": false
+        }
+      ],
+      "outputs": ["{options.outputFile}"],
+      "cache": true
+    },
+    "typecheck": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "dependencies": true
+        },
+        {
+          "projects": ["typescript-eslint"],
+          "target": "build"
+        }
+      ],
+      "inputs": [
+        {
+          "input": "default"
         }
       ],
       "cache": true
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      {
+        "fileset": "{projectRoot}/**/*"
+      },
+      {
+        "input": "sharedGlobals"
+      }
+    ],
     "sharedGlobals": [
-      "{workspaceRoot}/.github/workflows/ci.yml",
+      {
+        "fileset": "{workspaceRoot}/.github/workflows/ci.yml"
+      },
       {
         "runtime": "node -v"
       },
@@ -88,14 +208,26 @@
       {
         "runtime": "yarn -v"
       },
-      "{workspaceRoot}/yarn.lock"
+      {
+        "fileset": "{workspaceRoot}/yarn.lock"
+      }
     ],
     "production": [
-      "default",
-      "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json",
-      "!{projectRoot}/jest.config.[jt]s",
-      "!{projectRoot}/src/test-setup.[jt]s"
+      {
+        "input": "default"
+      },
+      {
+        "fileset": "!{projectRoot}/**/?(*.)+(test).?(m|c)[jt]s?(x)?(.snap|.shot)"
+      },
+      {
+        "fileset": "!{projectRoot}/tsconfig.spec.json"
+      },
+      {
+        "fileset": "!{projectRoot}/jest.config.js"
+      },
+      {
+        "fileset": "!{projectRoot}/src/test-setup.[jt]s"
+      }
     ]
   }
 }
