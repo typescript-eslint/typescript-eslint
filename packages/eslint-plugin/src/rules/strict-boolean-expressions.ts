@@ -335,14 +335,44 @@ export default createRule<Options, MessageId>({
         ...new Set(returnTypes.flatMap(type => tsutils.unionTypeParts(type))),
       ];
       const types = inspectVariantTypes(flattenTypes);
+      const category = determineTypeCategory(types);
 
-      const is = hasExactTypes.bind(null, types);
-
-      if (is('boolean') || is('truthy boolean')) {
+      if (category === 'boolean' || category === 'never') {
         return;
       }
 
-      if (is('nullish', 'boolean') && options.allowNullableBoolean) {
+      if (category === 'nullable boolean' && options.allowNullableBoolean) {
+        return;
+      }
+
+      if (category === 'nullable number' && options.allowNullableNumber) {
+        return;
+      }
+
+      if (
+        (options.allowNumber && category === 'nullable truthy number') ||
+        (options.allowString && category === 'nullable string')
+      ) {
+        return;
+      }
+
+      if (category === 'string' && options.allowString) {
+        return;
+      }
+
+      if (category === 'number' && options.allowNumber) {
+        return;
+      }
+
+      if (category === 'nullable object' && options.allowNullableObject) {
+        return;
+      }
+
+      if (category === 'nullable enum' && options.allowNullableEnum) {
+        return;
+      }
+
+      if (category === 'any' && options.allowAny) {
         return;
       }
 
@@ -436,6 +466,85 @@ export default createRule<Options, MessageId>({
       checkNode(node);
     }
 
+    function determineTypeCategory(types: Set<VariantType>) {
+      const is = (...wantedTypes: readonly VariantType[]): boolean =>
+        types.size === wantedTypes.length &&
+        wantedTypes.every(type => types.has(type));
+
+      if (is('boolean') || is('truthy boolean')) {
+        return 'boolean';
+      }
+
+      if (is('never')) {
+        return 'never';
+      }
+
+      if (is('nullish')) {
+        return 'nullish';
+      }
+
+      // Known edge case: boolean `true` and nullish values are always valid boolean expressions
+      if (is('nullish', 'truthy boolean')) {
+        return 'nullable truthy boolean';
+      }
+
+      if (is('nullish', 'boolean')) {
+        return 'nullable boolean';
+      }
+
+      if (is('nullish', 'truthy string')) {
+        return 'nullable truthy string';
+      }
+
+      if (is('string') || is('truthy string')) {
+        return 'string';
+      }
+
+      if (is('nullish', 'string')) {
+        return 'nullable string';
+      }
+
+      if (is('nullish', 'truthy number')) {
+        return 'nullable truthy number';
+      }
+
+      if (is('number') || is('truthy number')) {
+        return 'number';
+      }
+
+      if (is('nullish', 'number')) {
+        return 'nullable number';
+      }
+
+      if (is('object')) {
+        return 'object';
+      }
+
+      if (is('nullish', 'object')) {
+        return 'nullable object';
+      }
+
+      if (
+        is('nullish', 'number', 'enum') ||
+        is('nullish', 'string', 'enum') ||
+        is('nullish', 'truthy number', 'enum') ||
+        is('nullish', 'truthy string', 'enum') ||
+        // mixed enums
+        is('nullish', 'truthy number', 'truthy string', 'enum') ||
+        is('nullish', 'truthy number', 'string', 'enum') ||
+        is('nullish', 'truthy string', 'number', 'enum') ||
+        is('nullish', 'number', 'string', 'enum')
+      ) {
+        return 'nullable enum';
+      }
+
+      if (is('any')) {
+        return 'any';
+      }
+
+      return null;
+    }
+
     /**
      * This function does the actual type check on a node.
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
@@ -443,35 +552,23 @@ export default createRule<Options, MessageId>({
     function checkNode(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
+      const category = determineTypeCategory(types);
 
-      const is = hasExactTypes.bind(null, types);
-
-      // boolean
-      if (is('boolean') || is('truthy boolean')) {
-        // boolean is always okay
+      if (category === 'boolean' || category === 'never') {
         return;
       }
 
-      // never
-      if (is('never')) {
-        // never is always okay
-        return;
-      }
-
-      // nullish
-      if (is('nullish')) {
+      if (category === 'nullish') {
         // condition is always false
         context.report({ node, messageId: 'conditionErrorNullish' });
         return;
       }
 
-      // Known edge case: boolean `true` and nullish values are always valid boolean expressions
-      if (is('nullish', 'truthy boolean')) {
+      if (category === 'nullable truthy boolean') {
         return;
       }
 
-      // nullable boolean
-      if (is('nullish', 'boolean')) {
+      if (category === 'nullable boolean') {
         if (!options.allowNullableBoolean) {
           if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableBoolean)
@@ -529,14 +626,13 @@ export default createRule<Options, MessageId>({
 
       // Known edge case: truthy primitives and nullish values are always valid boolean expressions
       if (
-        (options.allowNumber && is('nullish', 'truthy number')) ||
-        (options.allowString && is('nullish', 'truthy string'))
+        (options.allowNumber && category === 'nullable truthy number') ||
+        (options.allowString && category === 'nullable truthy string')
       ) {
         return;
       }
 
-      // string
-      if (is('string') || is('truthy string')) {
+      if (category === 'string') {
         if (!options.allowString) {
           if (isLogicalNegationExpression(node.parent)) {
             // if (!string)
@@ -610,8 +706,7 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // nullable string
-      if (is('nullish', 'string')) {
+      if (category === 'nullable string') {
         if (!options.allowNullableString) {
           if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableString)
@@ -684,8 +779,7 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // number
-      if (is('number') || is('truthy number')) {
+      if (category === 'number') {
         if (!options.allowNumber) {
           if (isArrayLengthExpression(node, checker, services)) {
             if (isLogicalNegationExpression(node.parent)) {
@@ -796,8 +890,7 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // nullable number
-      if (is('nullish', 'number')) {
+      if (category === 'nullable number') {
         if (!options.allowNullableNumber) {
           if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableNumber)
@@ -870,15 +963,13 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // object
-      if (is('object')) {
+      if (category === 'object') {
         // condition is always true
         context.report({ node, messageId: 'conditionErrorObject' });
         return;
       }
 
-      // nullable object
-      if (is('nullish', 'object')) {
+      if (category === 'nullable object') {
         if (!options.allowNullableObject) {
           if (isLogicalNegationExpression(node.parent)) {
             // if (!nullableObject)
@@ -918,18 +1009,7 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // nullable enum
-      if (
-        is('nullish', 'number', 'enum') ||
-        is('nullish', 'string', 'enum') ||
-        is('nullish', 'truthy number', 'enum') ||
-        is('nullish', 'truthy string', 'enum') ||
-        // mixed enums
-        is('nullish', 'truthy number', 'truthy string', 'enum') ||
-        is('nullish', 'truthy number', 'string', 'enum') ||
-        is('nullish', 'truthy string', 'number', 'enum') ||
-        is('nullish', 'number', 'string', 'enum')
-      ) {
+      if (category === 'nullable enum') {
         if (!options.allowNullableEnum) {
           if (isLogicalNegationExpression(node.parent)) {
             context.report({
@@ -967,8 +1047,7 @@ export default createRule<Options, MessageId>({
         return;
       }
 
-      // any
-      if (is('any')) {
+      if (category === 'any') {
         if (!options.allowAny) {
           context.report({
             node,
@@ -1113,16 +1192,6 @@ export default createRule<Options, MessageId>({
       }
 
       return variantTypes;
-    }
-
-    function hasExactTypes(
-      types: Set<VariantType>,
-      ...wantedTypes: readonly VariantType[]
-    ): boolean {
-      return (
-        types.size === wantedTypes.length &&
-        wantedTypes.every(type => types.has(type))
-      );
     }
   },
 });
