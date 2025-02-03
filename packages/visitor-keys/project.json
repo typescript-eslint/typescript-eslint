@@ -1,12 +1,12 @@
 {
   "name": "visitor-keys",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "type": "library",
-  "implicitDependencies": [],
+  "projectType": "library",
+  "root": "packages/visitor-keys",
+  "sourceRoot": "packages/visitor-keys/src",
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
   }
 }
