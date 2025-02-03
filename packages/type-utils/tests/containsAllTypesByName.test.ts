@@ -7,7 +7,7 @@ import path from 'node:path';
 import { containsAllTypesByName } from '../src';
 import { expectToHaveParserServices } from './test-utils/expectToHaveParserServices';
 
-describe('containsAllTypesByName', () => {
+describe(containsAllTypesByName, () => {
   const rootDir = path.join(__dirname, 'fixtures');
 
   function getType(code: string): ts.Type {
@@ -42,7 +42,7 @@ describe('containsAllTypesByName', () => {
         ['type Test = unknown;', false],
         ['type Test = any;', false],
         ['type Test = string;', false],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
 
     describe('is false', () => {
@@ -54,7 +54,7 @@ describe('containsAllTypesByName', () => {
         ['type Test = unknown;', true],
         ['type Test = any;', true],
         ['type Test = string;', false],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
   });
 
@@ -83,7 +83,7 @@ describe('containsAllTypesByName', () => {
         [`type Test = Promise<void> & string`, true],
         ['type Test = Promise<void> | string', true],
         ['type Test = Promise<void> | Object', true],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
 
     describe('is false', () => {
@@ -95,7 +95,7 @@ describe('containsAllTypesByName', () => {
         ['type Test = Promise<void> & string', false],
         ['type Test = Promise<void> | string', false],
         ['type Test = Promise<void> | Object', true],
-      ])('when code is "%s" expected is %s', runTest);
+      ] as const)('when code is "%s" expected is %s', runTest);
     });
   });
 });

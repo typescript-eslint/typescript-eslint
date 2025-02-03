@@ -23,7 +23,7 @@ describe('typeFlagUtils', () => {
     return services.getTypeAtLocation(declaration.id);
   }
 
-  describe('getTypeFlags', () => {
+  describe(getTypeFlags, () => {
     function runTestForAliasDeclaration(
       code: string,
       expected: ts.TypeFlags,
@@ -40,12 +40,18 @@ describe('typeFlagUtils', () => {
       ['type Test = number;', 8],
       ['type Test = "text";', 128],
       ['type Test = 123;', 256],
-      ['type Test = string | number', 12],
+      [
+        'type Test = string | number',
+        ts.TypeFlags.String | ts.TypeFlags.Number,
+      ],
       ['type Test = "text" | 123', 384],
-    ])('when code is "%s", type flags is %d', runTestForAliasDeclaration);
+    ] as const)(
+      'when code is "%s", type flags is %d',
+      runTestForAliasDeclaration,
+    );
   });
 
-  describe('isTypeFlagSet', () => {
+  describe(isTypeFlagSet, () => {
     function runTestForAliasDeclaration(
       code: string,
       flagsToCheck: ts.TypeFlags,
@@ -69,7 +75,7 @@ describe('typeFlagUtils', () => {
         ['type Test = string;', ts.TypeFlags.String],
         ['type Test = string | number;', ts.TypeFlags.String],
         ['type Test = string & { foo: string };', ts.TypeFlags.Intersection],
-      ])(
+      ] as const)(
         'when code is "%s" and flagsToCheck is %d , returns true',
         runTestIsTypeFlagSet,
       );
@@ -87,7 +93,7 @@ describe('typeFlagUtils', () => {
         ['type Test = string', ts.TypeFlags.Any],
         ['type Test = string | number;', ts.TypeFlags.Any],
         ['type Test = string & { foo: string }', ts.TypeFlags.String],
-      ])(
+      ] as const)(
         'when code is "%s" and flagsToCheck is %d , returns false',
         runTestIsNotTypeFlagSet,
       );
