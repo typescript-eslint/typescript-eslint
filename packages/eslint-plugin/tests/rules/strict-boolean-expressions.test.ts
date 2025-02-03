@@ -165,6 +165,13 @@ if (x) {
       `,
       options: [{ allowNullableNumber: true }],
     },
+    {
+      code: `
+        declare const arrayOfArrays: (null | unknown[])[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
+      `,
+      options: [{ allowNullableNumber: true }],
+    },
 
     // any in boolean context
     {
@@ -184,6 +191,13 @@ if (x) {
     {
       code: `
         <T extends any>(x: T) => (x ? 1 : 0);
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: any[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowAny: true }],
     },
@@ -224,6 +238,27 @@ if (x) {
         0 || false || '' ? null : {};
       `,
       options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: string[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowString: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: number[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNumber: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: (null | object)[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNullableObject: true }],
     },
 
     // nullable enum in boolean context
@@ -337,7 +372,17 @@ if (x) {
       `,
       options: [{ allowNullableEnum: true }],
     },
-
+    {
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        declare const arrayOfArrays: (ExampleEnum | null)[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
     {
       code: `
 declare const x: string[] | null;
@@ -3136,6 +3181,7 @@ assert(Boolean(nullableString));
           ],
         },
       ],
+      options: [{ allowString: false }],
     },
     {
       code: `
@@ -3461,6 +3507,11 @@ function foo<T extends number>(x: number): T {}
           endLine: 3,
           line: 3,
           messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
         },
       ],
     },
