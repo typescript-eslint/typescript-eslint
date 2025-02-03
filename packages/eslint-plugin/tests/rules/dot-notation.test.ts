@@ -185,6 +185,27 @@ foo['bar'];
         },
       },
     },
+    {
+      code: `
+type ExtraKey = \`extra\${string}\`;
+
+type Foo = {
+  foo: string;
+  [extraKey: ExtraKey]: number;
+};
+
+function f<T extends Foo>(x: T) {
+  x['extraKey'];
+}
+      `,
+      languageOptions: {
+        parserOptions: {
+          project: './tsconfig.noPropertyAccessFromIndexSignature.json',
+          projectService: false,
+          tsconfigRootDir: rootPath,
+        },
+      },
+    },
   ],
   invalid: [
     {
@@ -434,6 +455,33 @@ type Foo = {
   [key: \`key_\${string}\`]: number;
 };
 foo.key_baz;
+      `,
+    },
+    {
+      code: `
+type ExtraKey = \`extra\${string}\`;
+
+type Foo = {
+  foo: string;
+  [extraKey: ExtraKey]: number;
+};
+
+function f<T extends Foo>(x: T) {
+  x['extraKey'];
+}
+      `,
+      errors: [{ messageId: 'useDot' }],
+      output: `
+type ExtraKey = \`extra\${string}\`;
+
+type Foo = {
+  foo: string;
+  [extraKey: ExtraKey]: number;
+};
+
+function f<T extends Foo>(x: T) {
+  x.extraKey;
+}
       `,
     },
   ],
