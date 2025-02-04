@@ -18,10 +18,7 @@
     "check-types": "npx nx typecheck"
   },
   "devDependencies": {
-    "@jest/types": "29.6.3",
-    "jest": "29.7.0",
-    "ncp": "*",
-    "tmp": "*",
-    "tsx": "*"
+    "@vitest/coverage-v8": "^3.0.7",
+    "vitest": "^3.0.7"
   }
 }
