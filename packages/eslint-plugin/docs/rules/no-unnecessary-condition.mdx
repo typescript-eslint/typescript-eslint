@@ -141,13 +141,23 @@ while (true) {
 Example of incorrect code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
 
 ```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
-for (; true; ) {
+declare const alwaysTrue: true;
+
+// `alwaysTrue` has the type `true` (which isn't allowed)
+// as only the literal value of `true` is allowed
+
+while (alwaysTrue) {
   // ...
 }
 
-do {
+// same for booleans as only the literal value of `true` or `false`
+// are allowed
+
+declare const bool: boolean;
+
+while (bool) {
   // ...
-} while (true);
+}
 ```
 
 ### `checkTypePredicates`
