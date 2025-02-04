@@ -148,24 +148,27 @@ export default createRule({
       }
     }
 
+    function checkProperty(
+      node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
+    ): void {
+      if (
+        !(
+          node.value?.type === AST_NODE_TYPES.FunctionExpression ||
+          node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
+        )
+      ) {
+        return;
+      }
+
+      checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
+    }
+
     return {
+      'ClassBody > AccessorProperty': checkProperty,
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
         checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
       },
-      'ClassBody > PropertyDefinition'(
-        node: TSESTree.PropertyDefinition,
-      ): void {
-        if (
-          !(
-            node.value?.type === AST_NODE_TYPES.FunctionExpression ||
-            node.value?.type === AST_NODE_TYPES.ArrowFunctionExpression
-          )
-        ) {
-          return;
-        }
-
-        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
-      },
+      'ClassBody > PropertyDefinition': checkProperty,
     };
   },
 });
