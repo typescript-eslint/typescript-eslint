@@ -84,9 +84,9 @@ function bar(arg?: string | null) {
 
 {/* insert option description */}
 
-#### `'never'` or `false`
+#### `'never'`
 
-Disallow constant conditions in loops.
+Disallow constant conditions in loops. Same as `false`.
 
 Example of incorrect code for `{ allowConstantLoopConditions: 'never' }`:
 
@@ -104,9 +104,9 @@ do {
 } while (true);
 ```
 
-#### `'always'` or `true`
+#### `'always'`
 
-Allow constant conditions in loops.
+Allow constant conditions in loops. Same as `true`.
 
 Example of correct code for `{ allowConstantLoopConditions: 'always' }`:
 
@@ -141,21 +141,21 @@ while (true) {
 Example of incorrect code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
 
 ```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
-declare const alwaysTrue: true;
+// `alwaysTrue` has the type of `true` (which isn't allowed)
+// as only the literal value of `true` is allowed.
 
-// `alwaysTrue` has the type `true` (which isn't allowed)
-// as only the literal value of `true` is allowed
+declare const alwaysTrue: true;
 
 while (alwaysTrue) {
   // ...
 }
 
-// same for booleans as only the literal value of `true` or `false`
-// are allowed
+// not even a variable that references the value of `true` is allowed, only
+// the literal value of `true` used directly.
 
-declare const bool: boolean;
+const thisIsTrue = true;
 
-while (bool) {
+while (thisIsTrue) {
   // ...
 }
 ```
