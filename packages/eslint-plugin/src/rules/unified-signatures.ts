@@ -1,10 +1,15 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import type { Equal } from '../util';
 
-import { arraysAreEqual, createRule, nullThrows } from '../util';
+import {
+  arraysAreEqual,
+  createRule,
+  LINEBREAK_MATCHER,
+  nullThrows,
+} from '../util';
 
 interface Failure {
   only2: boolean;
@@ -61,6 +66,7 @@ export type MessageIds =
 export type Options = [
   {
     ignoreDifferentlyNamedParameters?: boolean;
+    ignoreOverloadsWithDifferentJSDoc?: boolean;
   },
 ];
 
@@ -91,6 +97,11 @@ export default createRule<Options, MessageIds>({
             description:
               'Whether two parameters with different names at the same index should be considered different even if their types are the same.',
           },
+          ignoreOverloadsWithDifferentJSDoc: {
+            type: 'boolean',
+            description:
+              'Whether two overloads with different JSDoc comments should be considered different even if their parameter and return types are the same.',
+          },
         },
       },
     ],
@@ -98,9 +109,13 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [
     {
       ignoreDifferentlyNamedParameters: false,
+      ignoreOverloadsWithDifferentJSDoc: false,
     },
   ],
-  create(context, [{ ignoreDifferentlyNamedParameters }]) {
+  create(
+    context,
+    [{ ignoreDifferentlyNamedParameters, ignoreOverloadsWithDifferentJSDoc }],
+  ) {
     //----------------------------------------------------------------------
     // Helpers
     //----------------------------------------------------------------------
@@ -227,6 +242,15 @@ export default createRule<Options, MessageIds>({
           ) {
             return false;
           }
+        }
+      }
+
+      if (ignoreOverloadsWithDifferentJSDoc) {
+        const aComment = getJSDocCommentForNode(getExportingNode(a) ?? a);
+        const bComment = getJSDocCommentForNode(getExportingNode(b) ?? b);
+
+        if (aComment?.value !== bComment?.value) {
+          return false;
         }
       }
 
@@ -522,6 +546,18 @@ export default createRule<Options, MessageIds>({
       currentScope = scopes.pop();
     }
 
+    /**
+     * @returns the first valid JSDoc comment annotating `node`
+     */
+    function getJSDocCommentForNode(
+      node: TSESTree.Node,
+    ): TSESTree.Comment | undefined {
+      return context.sourceCode
+        .getCommentsBefore(node)
+        .reverse()
+        .find(comment => isJSDocComment(comment));
+    }
+
     function addOverload(
       signature: OverloadNode,
       key?: string,
@@ -586,7 +622,7 @@ export default createRule<Options, MessageIds>({
 });
 
 function getExportingNode(
-  node: TSESTree.TSDeclareFunction,
+  node: SignatureDefinition,
 ):
   | TSESTree.ExportDefaultDeclaration
   | TSESTree.ExportNamedDeclaration
@@ -633,4 +669,27 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
+}
+
+/**
+ * Checks if a comment is in JSDoc form.
+ *
+ * Based on https://github.com/eslint/eslint/blob/93c325a7a841d0fe4b5bf79efdec832e7c8f805f/lib/rules/multiline-comment-style.js#L104-L119
+ */
+function isJSDocComment(comment: TSESTree.Comment) {
+  if (comment.type !== AST_TOKEN_TYPES.Block) {
+    return false;
+  }
+
+  const lines = comment.value.split(LINEBREAK_MATCHER);
+
+  if (lines.length === 1) {
+    return lines[0].startsWith('*');
+  }
+
+  return (
+    /^\*\s*$/u.test(lines[0]) &&
+    lines.slice(1, -1).every(line => /^\s* /u.test(line)) &&
+    /^\s*$/u.test(lines[lines.length - 1])
+  );
 }

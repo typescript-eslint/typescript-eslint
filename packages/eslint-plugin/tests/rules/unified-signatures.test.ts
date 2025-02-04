@@ -220,6 +220,145 @@ class C {
       `,
       options: [{ ignoreDifferentlyNamedParameters: true }],
     },
+    {
+      code: `
+/** @deprecated */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: number): unknown;
+/** @deprecated */
+declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: number): unknown;
+/** @deprecated */ declare function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: string): void;
+/**
+ * @async
+ */
+declare function f(x: boolean): void;
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * @deprecate
+ */
+declare function f(x: string): void;
+/**
+ * @async
+ */
+declare function f(x: boolean): void;
+declare function f(x: number): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ */
+declare function f(x: number): void;
+
+/**
+ * This signature does something else.
+ */
+declare function f(x: string): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/** @deprecated */
+export function f(x: number): unknown;
+export function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+export function f(x: number): unknown;
+/** @deprecated */
+export function f(x: boolean): unknown;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+export function f(x: string): void;
+/**
+ * @async
+ */
+export function f(x: boolean): void;
+/**
+ * @deprecate
+ */
+export function f(x: number): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * @deprecate
+ */
+export function f(x: string): void;
+/**
+ * @async
+ */
+export function f(x: boolean): void;
+export function f(x: number): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ */
+export function f(x: number): void;
+
+/**
+ * This signature does something else.
+ */
+export function f(x: string): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ */
+
+// some other comment
+export function f(x: number): void;
+
+/**
+ * This signature does something else.
+ */
+export function f(x: string): void;
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
   ],
   invalid: [
     {
@@ -770,6 +909,231 @@ export default function (foo: number, bar?: string): string[];
           messageId: 'omittingSingleParameter',
         },
       ],
+    },
+    {
+      code: `
+/**
+ * @deprecate
+ */
+declare function f(x: string): void;
+declare function f(x: number): void;
+declare function f(x: boolean): void;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 6 can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 7,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * @deprecate
+ */
+declare function f(x: string): void;
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+declare function f(x: boolean): void;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 5 can be combined into one signature',
+            type1: 'string',
+            type2: 'number',
+          },
+          line: 9,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+declare function f(x: string): void;
+/**
+ * @deprecate
+ */
+declare function f(x: number): void;
+/**
+ * @deprecate
+ */
+declare function f(x: boolean): void;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 6 can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 10,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+export function f(x: string): void;
+/**
+ * @deprecate
+ */
+export function f(x: number): void;
+/**
+ * @deprecate
+ */
+export function f(x: boolean): void;
+      `,
+      errors: [
+        {
+          column: 19,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 6 can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 10,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ */
+
+/**
+ * This signature does something else.
+ */
+function f(x: number): void;
+
+/**
+ * This signature does something else.
+ */
+function f(x: string): void;
+      `,
+      errors: [
+        {
+          column: 12,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'string',
+          },
+          line: 14,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    // invalid jsdoc comments
+    {
+      code: `
+/* @deprecated */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 4,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/*
+ * This signature does something.
+ */
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 6,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+/**
+ * This signature does something.
+ **/
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 6,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+// just a comment
+declare function f(x: number): unknown;
+declare function f(x: boolean): unknown;
+      `,
+      errors: [
+        {
+          column: 20,
+          data: {
+            failureStringStart:
+              'These overloads can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 4,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
     },
   ],
 });
