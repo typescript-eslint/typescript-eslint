@@ -203,6 +203,14 @@ class Foo {
     },
     {
       code: `
+class Foo {
+  accessor a = 1 as any;
+}
+      `,
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
 const [x] = spooky;
       `,
       errors: [
