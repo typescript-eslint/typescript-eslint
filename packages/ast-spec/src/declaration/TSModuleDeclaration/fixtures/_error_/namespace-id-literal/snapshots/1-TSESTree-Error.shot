@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSModuleDeclaration _error_ namespace-id-literal TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > TSModuleDeclaration > _error_ > namespace-id-literal > TSESTree - Error`]
+TSError
 > 1 | namespace 'a' {}
     |           ^ Identifier expected.
-  2 |"
-`;
+  2 |

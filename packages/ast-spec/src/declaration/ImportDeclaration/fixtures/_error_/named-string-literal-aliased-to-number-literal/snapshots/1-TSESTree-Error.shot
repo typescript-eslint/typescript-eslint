@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ named-string-literal-aliased-to-number-literal TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > named-string-literal-aliased-to-number-literal > TSESTree - Error`]
+TSError
 > 1 | import { "😭" as 1 } from 'mod';
     |                  ^ Identifier expected.
-  2 |"
-`;
+  2 |

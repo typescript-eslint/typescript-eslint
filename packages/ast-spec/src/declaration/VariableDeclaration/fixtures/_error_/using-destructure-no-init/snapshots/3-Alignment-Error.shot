@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ using-destructure-no-init Error Alignment 1`] = `"Both errored"`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > using-destructure-no-init > Error Alignment`]
+Both errored

@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ declare-let-id-type-init Babel - Error 1`] = `[SyntaxError: Initializers are not allowed in ambient contexts. (1:23)]`;
+exports[`AST Fixtures > declaration > VariableDeclaration > _error_ > declare-let-id-type-init > Babel - Error`]
+SyntaxError: Initializers are not allowed in ambient contexts. (1:23)

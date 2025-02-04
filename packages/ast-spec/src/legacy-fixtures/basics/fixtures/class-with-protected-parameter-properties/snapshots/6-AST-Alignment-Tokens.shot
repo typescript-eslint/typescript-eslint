@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-protected-parameter-properties AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-protected-parameter-properties > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -364,5 +364,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-protected-parameter-prop
         end: { column: 1, line: 10 },
       },
     },
-  ]"
-`;
+  ]

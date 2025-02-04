@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier Babel - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",
@@ -93,4 +90,3 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier Babel
     },
   },
 ]
-`;

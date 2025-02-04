@@ -1,15 +1,32 @@
-'use strict';
+import {
+  coverageConfigDefaults,
+  defineConfig,
+  mergeConfig,
+} from 'vitest/config';
+import { vitestBaseConfig } from '../../vitest.config.base.mjs';
+import packageJson from './package.json' with { type: 'json' };
 
-// @ts-check
+const vitestConfig = mergeConfig(
+  vitestBaseConfig,
 
-const baseConfig = require('../../jest.config.base.js');
+  defineConfig({
+    test: {
+      dir: `${import.meta.dirname}/tests`,
+      name: packageJson.name,
+      root: import.meta.dirname,
 
-/** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
-  ...baseConfig,
-  collectCoverage: false,
-  setupFilesAfterEnv: [
-    ...baseConfig.setupFilesAfterEnv,
-    './tests/util/setupJest.ts',
-  ],
-};
+      coverage: {
+        exclude: [...coverageConfigDefaults.exclude, './**/fixtures/'],
+      },
+
+      setupFiles: ['./tests/util/setupVitest.mts'],
+
+      typecheck: {
+        enabled: true,
+        tsconfig: `${import.meta.dirname}/tsconfig.json`,
+      },
+    },
+  }),
+);
+
+export default vitestConfig;
