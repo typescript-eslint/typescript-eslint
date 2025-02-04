@@ -423,7 +423,10 @@ export default createRule<Options, MessageIds>({
 
           if (
             testNode &&
-            isNodeEquivalent(testNode, getNonNullishBranchNode(node, operator))
+            isNodeOrNodeExpressionEqual(
+              testNode,
+              getNonNullishBranchNode(node, operator),
+            )
           ) {
             nullishCoalescingLeftNode = testNode;
           }
@@ -435,7 +438,7 @@ export default createRule<Options, MessageIds>({
             } else if (isUndefinedIdentifier(testNode)) {
               hasUndefinedCheckWithoutTruthinessCheck = true;
             } else if (
-              isNodeEquivalent(
+              isNodeOrNodeExpressionEqual(
                 testNode,
                 getNonNullishBranchNode(node, operator),
               )
@@ -650,11 +653,10 @@ function isMixedLogicalExpression(
   return false;
 }
 
-/**
- * Returns whether two nodes, comparing with the expression in case of chain,
- * are equal
- */
-function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
+function isNodeOrNodeExpressionEqual(
+  a: TSESTree.Node,
+  b: TSESTree.Node,
+): boolean {
   if (
     a.type === AST_NODE_TYPES.ChainExpression ||
     b.type === AST_NODE_TYPES.ChainExpression
@@ -665,7 +667,7 @@ function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
     if (b.type === AST_NODE_TYPES.ChainExpression) {
       b = b.expression;
     }
-    return isNodeEquivalent(a, b);
+    return isNodeOrNodeExpressionEqual(a, b);
   }
   return isNodeEqual(a, b);
 }
