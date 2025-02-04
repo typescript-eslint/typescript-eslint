@@ -359,6 +359,18 @@ export function f(x: string): void;
       `,
       options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
     },
+    {
+      code: `
+interface I {
+  /**
+   * This signature does something else.
+   */
+  f(x: number): void;
+  f(x: string): void;
+}
+      `,
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
   ],
   invalid: [
     {
@@ -1041,6 +1053,35 @@ function f(x: string): void;
             type2: 'string',
           },
           line: 14,
+          messageId: 'singleParameterDifference',
+        },
+      ],
+      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
+    },
+    {
+      code: `
+interface I {
+  f(x: string): void;
+  /**
+   * @deprecate
+   */
+  f(x: number): void;
+  /**
+   * @deprecate
+   */
+  f(x: boolean): void;
+}
+      `,
+      errors: [
+        {
+          column: 5,
+          data: {
+            failureStringStart:
+              'This overload and the one on line 7 can be combined into one signature',
+            type1: 'number',
+            type2: 'boolean',
+          },
+          line: 11,
           messageId: 'singleParameterDifference',
         },
       ],
