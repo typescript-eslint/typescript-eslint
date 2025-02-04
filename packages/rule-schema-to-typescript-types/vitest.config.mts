@@ -1,8 +1,17 @@
-'use strict';
+import { defineConfig, mergeConfig } from 'vitest/config';
+import { vitestBaseConfig } from '../../vitest.config.base.mjs';
+import packageJson from './package.json' with { type: 'json' };
 
-// @ts-check
-/** @type {import('@jest/types').Config.InitialOptions} */
-module.exports = {
-  ...require('../../jest.config.base.js'),
-  passWithNoTests: true,
-};
+const vitestConfig = mergeConfig(
+  vitestBaseConfig,
+
+  defineConfig({
+    test: {
+      name: packageJson.name,
+      root: import.meta.dirname,
+      passWithNoTests: true,
+    },
+  }),
+);
+
+export default vitestConfig;

@@ -28,6 +28,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
+    "test": "vitest --run",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
