@@ -11,6 +11,9 @@ export default {
     types: 'off',
     unresolved: 'off',
   },
+  vitest: {
+    config: ['vitest.config.mts', 'packages/*/vitest.config.mts'],
+  },
   workspaces: {
     '.': {
       entry: ['tools/release/changelog-renderer.js', 'tools/scripts/**/*.mts'],
@@ -54,6 +57,13 @@ export default {
     },
     'packages/integration-tests': {
       ignore: ['fixtures/**', 'typings/global.d.ts'],
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          '**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)',
+          'tools/pack-packages.ts',
+        ],
+      },
     },
     'packages/parser': {
       ignore: ['tests/fixtures/**'],
