@@ -7,6 +7,6 @@
     "eslint": "latest",
     "@stylistic/eslint-plugin": "latest",
     "eslint-plugin-deprecation": "latest",
-    "eslint-plugin-jest": "latest"
+    "@vitest/eslint-plugin": "latest"
   }
 }
