@@ -339,51 +339,51 @@ declare let x: { n: object };
       `,
       `
 declare let x: { n: string[] };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: string[] };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: Function };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: Function };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | null };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | null };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | undefined };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | undefined };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
       `
 declare let x: { n: () => string | null | undefined };
-x ? x : y;
+x.n ? x.n : y;
       `,
       `
 declare let x: { n: () => string | null | undefined };
-!x ? y : x;
+!x.n ? y : x.n;
       `,
     ].map(code => ({
       code,
@@ -2021,6 +2021,79 @@ declare let x: { n: (() => string) | null | undefined };
               output: `
 ${code.split('\n')[1]}
 x.n ?? y;
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ ignoreTernaryTests: false }] as const,
+      output: null,
+    })),
+
+    ...[
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a !== undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != undefined ? x.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x?.n.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string } };
+x?.n?.a != null ? x.n.a : y;
+      `,
+    ].map(code => ({
+      code,
+      errors: [
+        {
+          column: 1,
+          endColumn: code.split('\n')[2].length,
+          endLine: 3,
+          line: 3,
+          messageId: 'preferNullishOverTernary' as const,
+          suggestions: [
+            {
+              messageId: 'suggestNullish' as const,
+              output: `
+${code.split('\n')[1]}
+x?.n?.a ?? y;
       `,
             },
           ],
