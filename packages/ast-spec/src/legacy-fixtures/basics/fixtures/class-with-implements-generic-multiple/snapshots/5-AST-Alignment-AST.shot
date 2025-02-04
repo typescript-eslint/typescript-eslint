@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-with-implements-generic-multiple AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-with-implements-generic-multiple > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -130,5 +130,4 @@ exports[`AST Fixtures legacy-fixtures basics class-with-implements-generic-multi
       start: { column: 0, line: 3 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

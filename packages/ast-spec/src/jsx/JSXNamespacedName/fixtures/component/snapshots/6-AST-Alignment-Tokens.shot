@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > jsx > JSXNamespacedName > component > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -312,7 +312,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
     },
     String {
       type: 'String',
-      value: '\\'a:b\\'',
+      value: '\'a:b\'',
 
       range: [159, 164],
       loc: {
@@ -512,7 +512,7 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
     },
     String {
       type: 'String',
-      value: '\\'a:b\\'',
+      value: '\'a:b\'',
 
       range: [268, 273],
       loc: {
@@ -600,5 +600,4 @@ exports[`AST Fixtures jsx JSXNamespacedName component AST Alignment - Token 1`] 
         end: { column: 1, line: 10 },
       },
     },
-  ]"
-`;
+  ]

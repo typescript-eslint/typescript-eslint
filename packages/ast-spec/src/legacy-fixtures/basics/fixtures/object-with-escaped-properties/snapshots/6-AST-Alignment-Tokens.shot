@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > object-with-escaped-properties > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -220,7 +220,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
     },
     String {
       type: 'String',
-      value: '\\'__\\'',
+      value: '\'__\'',
 
       range: [110, 114],
       loc: {
@@ -322,7 +322,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
     },
     String {
       type: 'String',
-      value: '\\'__\\'',
+      value: '\'__\'',
 
       range: [139, 143],
       loc: {
@@ -372,5 +372,4 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
         end: { column: 1, line: 11 },
       },
     },
-  ]"
-`;
+  ]

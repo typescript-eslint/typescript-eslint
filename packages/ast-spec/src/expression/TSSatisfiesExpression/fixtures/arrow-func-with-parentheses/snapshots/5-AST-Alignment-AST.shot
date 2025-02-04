@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-with-parentheses AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > expression > TSSatisfiesExpression > arrow-func-with-parentheses > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -89,5 +89,4 @@ exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-with-parenthes
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

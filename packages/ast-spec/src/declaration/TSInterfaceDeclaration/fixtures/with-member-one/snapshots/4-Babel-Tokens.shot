@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -63,4 +60,3 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one Babel -
     },
   },
 ]
-`;

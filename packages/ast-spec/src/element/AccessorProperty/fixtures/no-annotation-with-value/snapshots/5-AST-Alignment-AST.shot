@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > element > AccessorProperty > no-annotation-with-value > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -40,7 +40,7 @@ exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alig
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\'str\\'',
+                raw: '\'str\'',
                 value: 'str',
 
                 range: [30, 35],
@@ -95,5 +95,4 @@ exports[`AST Fixtures element AccessorProperty no-annotation-with-value AST Alig
       start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },
     },
-  }"
-`;
+  }

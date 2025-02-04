@@ -1,11 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression ImportExpression _error_ extra-arguments TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > expression > ImportExpression > _error_ > extra-arguments > TSESTree - Error`]
+TSError
   2 |   "./source.json",
   3 |   {assert: {type: "json"}},
 > 4 |   extraArgument
     |   ^^^^^^^^^^^^^ Dynamic import requires exactly one or two arguments.
   5 | );
-  6 |"
-`;
+  6 |

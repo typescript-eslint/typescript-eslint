@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression TSSatisfiesExpression identifier-object-type AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > expression > TSSatisfiesExpression > identifier-object-type > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -51,7 +51,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-object-type AS
                     type: 'TSLiteralType',
                     literal: Literal {
                       type: 'Literal',
-                      raw: '\\'value\\'',
+                      raw: '\'value\'',
                       value: 'value',
 
                       range: [22, 29],
@@ -111,5 +111,4 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-object-type AS
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },
     },
-  }"
-`;
+  }

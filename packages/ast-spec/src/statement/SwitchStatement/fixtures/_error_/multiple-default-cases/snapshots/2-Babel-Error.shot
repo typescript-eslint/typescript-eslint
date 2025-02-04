@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures statement SwitchStatement _error_ multiple-default-cases Babel - Error 1`] = `[SyntaxError: Multiple default clauses. (2:10)]`;
+exports[`AST Fixtures > statement > SwitchStatement > _error_ > multiple-default-cases > Babel - Error`]
+SyntaxError: Multiple default clauses. (2:10)
