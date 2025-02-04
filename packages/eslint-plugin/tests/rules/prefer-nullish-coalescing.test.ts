@@ -2079,6 +2079,14 @@ x?.n?.a != null ? x?.n.a : y;
 declare let x: { n?: { a?: string } };
 x?.n?.a != null ? x.n.a : y;
       `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x?.n?.a : y;
+      `,
+      `
+declare let x: { n?: { a?: string | null } };
+x?.n?.a !== undefined && x.n.a !== null ? x.n.a : y;
+      `,
     ].map(code => ({
       code,
       errors: [

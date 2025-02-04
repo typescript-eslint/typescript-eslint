@@ -423,7 +423,7 @@ export default createRule<Options, MessageIds>({
 
           if (
             testNode &&
-            isTestNodeEquivalentToNonNullishBranchNode(testNode, node, operator)
+            isNodeEquivalent(testNode, getNonNullishBranchNode(node, operator))
           ) {
             nullishCoalescingLeftNode = testNode;
           }
@@ -435,13 +435,14 @@ export default createRule<Options, MessageIds>({
             } else if (isUndefinedIdentifier(testNode)) {
               hasUndefinedCheckWithoutTruthinessCheck = true;
             } else if (
-              isTestNodeEquivalentToNonNullishBranchNode(
+              isNodeEquivalent(
                 testNode,
-                node,
-                operator,
+                getNonNullishBranchNode(node, operator),
               )
             ) {
-              nullishCoalescingLeftNode = testNode;
+              if (!nullishCoalescingLeftNode) {
+                nullishCoalescingLeftNode = testNode;
+              }
             } else {
               return;
             }
@@ -649,23 +650,24 @@ function isMixedLogicalExpression(
   return false;
 }
 
-function isTestNodeEquivalentToNonNullishBranchNode(
-  testNode: TSESTree.Node,
-  node: TSESTree.ConditionalExpression,
-  operator: NullishCheckOperator,
-): boolean {
-  const nonNullishBranchNode = getNonNullishBranchNode(node, operator);
+/**
+ * Returns whether two nodes, comparing with the expression in case of chain,
+ * are equal
+ */
+function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
   if (
-    testNode.type === AST_NODE_TYPES.ChainExpression &&
-    nonNullishBranchNode.type === AST_NODE_TYPES.MemberExpression
+    a.type === AST_NODE_TYPES.ChainExpression ||
+    b.type === AST_NODE_TYPES.ChainExpression
   ) {
-    return isTestNodeEquivalentToNonNullishBranchNode(
-      testNode.expression,
-      node,
-      operator,
-    );
+    if (a.type === AST_NODE_TYPES.ChainExpression) {
+      a = a.expression;
+    }
+    if (b.type === AST_NODE_TYPES.ChainExpression) {
+      b = b.expression;
+    }
+    return isNodeEquivalent(a, b);
   }
-  return isNodeEqual(testNode, nonNullishBranchNode);
+  return isNodeEqual(a, b);
 }
 
 /**
