@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ missing-id TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > missing-id > TSESTree - Error`]
+TSError
 > 1 | interface {}
     |           ^ Interface must be given a name.
-  2 |"
-`;
+  2 |

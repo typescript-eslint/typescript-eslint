@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ExportNamedDeclaration _error_ braced-string-literal-aliased-to-number-literal-without-source TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > ExportNamedDeclaration > _error_ > braced-string-literal-aliased-to-number-literal-without-source > TSESTree - Error`]
+TSError
 > 1 | export { 'a a' as 1 };
     |                   ^ Identifier expected.
-  2 |"
-`;
+  2 |

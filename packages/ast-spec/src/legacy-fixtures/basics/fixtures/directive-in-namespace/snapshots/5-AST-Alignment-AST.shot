@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignment - AST 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > directive-in-namespace > AST Alignment - AST`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -18,7 +18,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
 -             directive: 'use strict',
               expression: Literal {
                 type: 'Literal',
-                raw: '\\'use strict\\'',
+                raw: '\'use strict\'',
                 value: 'use strict',
 
                 range: [91, 103],
@@ -84,7 +84,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
               type: 'ExpressionStatement',
               expression: Literal {
                 type: 'Literal',
-                raw: '\\'use strict\\'',
+                raw: '\'use strict\'',
                 value: 'use strict',
 
                 range: [120, 132],
@@ -138,5 +138,4 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
       start: { column: 0, line: 3 },
       end: { column: 0, line: 8 },
     },
-  }"
-`;
+  }

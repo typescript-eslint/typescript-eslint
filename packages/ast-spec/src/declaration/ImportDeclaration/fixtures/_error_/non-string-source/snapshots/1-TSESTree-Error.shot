@@ -1,8 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ non-string-source TSESTree - Error 1`] = `
-"TSError
+exports[`AST Fixtures > declaration > ImportDeclaration > _error_ > non-string-source > TSESTree - Error`]
+TSError
 > 1 | import * as x from module;
     |                    ^^^^^^ Module specifier must be a string literal.
-  2 |"
-`;
+  2 |

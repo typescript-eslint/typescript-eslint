@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends Babel - Tokens 1`] = `
 [
   Punctuator {
     type: "Punctuator",
@@ -123,4 +120,3 @@ exports[`AST Fixtures special TSTypeParameter arrow-const-modifier-extends Babel
     },
   },
 ]
-`;
