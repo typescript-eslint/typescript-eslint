@@ -12,9 +12,16 @@ type BinaryOperatorWithoutInvalidTypes = Exclude<
   | SyntaxKind.CommaToken // -> SequenceExpression
   | SyntaxKind.QuestionQuestionToken // -> LogicalExpression
 >;
-type _Test = {
-  readonly [T in BinaryOperatorWithoutInvalidTypes]: BinaryOperatorToText[T];
-  // If there are any BinaryOperator members that don't have a corresponding
-  // BinaryOperatorToText, then this line will error with "Type 'T' cannot
-  // be used to index type 'BinaryOperatorToText'."
-};
+
+test('type tests', () => {
+  expectTypeOf<BinaryOperatorToText>()
+    .pick<BinaryOperatorWithoutInvalidTypes>()
+    .toEqualTypeOf<BinaryOperatorToText>();
+
+  type _Test = {
+    readonly [T in BinaryOperatorWithoutInvalidTypes]: BinaryOperatorToText[T];
+    // If there are any BinaryOperator members that don't have a corresponding
+    // BinaryOperatorToText, then this line will error with "Type 'T' cannot
+    // be used to index type 'BinaryOperatorToText'."
+  };
+});
