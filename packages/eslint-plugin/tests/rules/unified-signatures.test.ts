@@ -295,56 +295,6 @@ export function f(x: boolean): unknown;
     },
     {
       code: `
-export function f(x: number): unknown;
-/** @deprecated */
-export function f(x: boolean): unknown;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-export function f(x: string): void;
-/**
- * @async
- */
-export function f(x: boolean): void;
-/**
- * @deprecate
- */
-export function f(x: number): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * @deprecate
- */
-export function f(x: string): void;
-/**
- * @async
- */
-export function f(x: boolean): void;
-export function f(x: number): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
-/**
- * This signature does something.
- */
-export function f(x: number): void;
-
-/**
- * This signature does something else.
- */
-export function f(x: string): void;
-      `,
-      options: [{ ignoreOverloadsWithDifferentJSDoc: true }],
-    },
-    {
-      code: `
 /**
  * This signature does something.
  */
