@@ -27,6 +27,7 @@
     "build": "tsc -b tsconfig.build.json",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
+    "test": "vitest --run",
     "check-types": "npx nx typecheck"
   },
   "dependencies": {
