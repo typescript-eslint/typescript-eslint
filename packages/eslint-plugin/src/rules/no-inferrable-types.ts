@@ -193,6 +193,7 @@ export default createRule<Options, MessageIds>({
      */
     function reportInferrableType(
       node:
+        | TSESTree.AccessorProperty
         | TSESTree.Parameter
         | TSESTree.PropertyDefinition
         | TSESTree.VariableDeclarator,
@@ -277,7 +278,15 @@ export default createRule<Options, MessageIds>({
       reportInferrableType(node, node.typeAnnotation, node.value);
     }
 
+    function inferrableAccessorVisitor(node: TSESTree.AccessorProperty): void {
+      if (ignoreProperties) {
+        return;
+      }
+      reportInferrableType(node, node.typeAnnotation, node.value);
+    }
+
     return {
+      AccessorProperty: inferrableAccessorVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       FunctionExpression: inferrableParameterVisitor,
