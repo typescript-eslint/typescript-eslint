@@ -107,15 +107,25 @@ while (true) {
 exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 6`] = `
 "Options: { "allowConstantLoopConditions": "only-allowed-literals" }
 
-for (; true; ) {
-       ~~~~ Unnecessary conditional, value is always truthy.
+// \`alwaysTrue\` has the type of \`true\` (which isn't allowed)
+// as only the literal value of \`true\` is allowed.
+
+declare const alwaysTrue: true;
+
+while (alwaysTrue) {
+       ~~~~~~~~~~ Unnecessary conditional, value is always truthy.
   // ...
 }
 
-do {
+// not even a variable that references the value of \`true\` is allowed, only
+// the literal value of \`true\` used directly.
+
+const thisIsTrue = true;
+
+while (thisIsTrue) {
+       ~~~~~~~~~~ Unnecessary conditional, value is always truthy.
   // ...
-} while (true);
-         ~~~~ Unnecessary conditional, value is always truthy.
+}
 "
 `;
 
