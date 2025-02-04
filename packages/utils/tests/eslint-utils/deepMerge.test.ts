@@ -1,6 +1,6 @@
 import { ESLintUtils } from '../../src';
 
-describe('deepMerge', () => {
+describe(ESLintUtils.deepMerge, () => {
   it('creates a brand new object', () => {
     const a = {};
     const b = {};
