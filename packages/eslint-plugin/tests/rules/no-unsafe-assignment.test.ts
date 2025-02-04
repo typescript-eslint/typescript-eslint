@@ -94,6 +94,11 @@ class Foo {
   private a = 1;
 }
     `,
+    `
+class Foo {
+  accessor a = 1;
+}
+    `,
     'const x: Set<string> = new Set();',
     'const x: Set<string> = new Set<string>();',
     'const [x] = [1];',
