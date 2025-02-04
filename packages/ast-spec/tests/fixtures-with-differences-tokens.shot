@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures List fixtures with Token differences 1`] = `
+exports[`AST Fixtures > List fixtures with Token differences`]
 [
   "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",
@@ -140,6 +140,5 @@ exports[`AST Fixtures List fixtures with Token differences 1`] = `
   "special/TSTypeParameter/fixtures/interface-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
-  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts",
+  "type/TSImportType/fixtures/type-import-type-with-import-attributes/fixture.ts"
 ]
-`;

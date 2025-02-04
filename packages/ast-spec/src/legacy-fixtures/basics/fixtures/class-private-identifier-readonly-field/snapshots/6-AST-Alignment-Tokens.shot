@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures legacy-fixtures basics class-private-identifier-readonly-field AST Alignment - Token 1`] = `
-"Snapshot Diff:
+exports[`AST Fixtures > legacy-fixtures > basics > class-private-identifier-readonly-field > AST Alignment - Token`]
+Snapshot Diff:
 - TSESTree
 + Babel
 
@@ -99,5 +99,4 @@ exports[`AST Fixtures legacy-fixtures basics class-private-identifier-readonly-f
         end: { column: 1, line: 5 },
       },
     },
-  ]"
-`;
+  ]

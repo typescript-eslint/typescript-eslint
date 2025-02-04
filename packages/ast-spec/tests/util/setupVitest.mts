@@ -1,9 +1,5 @@
-import { addSerializer } from 'jest-specific-snapshot';
-
-import { serializers } from './serializers';
+import { serializers } from './serializers/index.js';
 
 for (const serializer of serializers) {
-  // the jest types are wrong here
   expect.addSnapshotSerializer(serializer);
-  addSerializer(serializer);
 }

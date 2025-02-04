@@ -38,12 +38,18 @@ export default {
     'packages/ast-spec': {
       ignore: [
         'src/**/fixtures/**',
-        'tests/*.type-test.ts',
         // @typescript-eslint/typescript-estree is not listed in dependencies to avoid circular dependency errors
         // You can check a more detailed explanation in this file
         'tests/util/parsers/typescript-estree-import.ts',
         'typings/global.d.ts',
       ],
+      vitest: {
+        config: ['vitest.config.mts'],
+        entry: [
+          '**/*.{bench,test,test-d,spec}.?(c|m)[jt]s?(x)',
+          'tests/util/setupVitest.mts',
+        ],
+      },
     },
     'packages/eslint-plugin': {
       ignore: [

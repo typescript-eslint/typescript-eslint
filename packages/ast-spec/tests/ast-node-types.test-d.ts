@@ -10,7 +10,7 @@ type AllKeys = {
 type TakesString<T extends Record<string, string>> = T;
 
 test('type tests', () => {
-  expectTypeOf<AllKeys>().toMatchTypeOf<Record<string, string>>();
+  expectTypeOf<AllKeys>().toExtend<Record<string, string>>();
 
   type _Test =
     // forcing the test onto a new line so it isn't covered by the expect error
