@@ -1919,6 +1919,100 @@ abstract class SomeClass {
     },
     {
       code: `
+class SomeClass {
+  accessor foo = 1;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 15,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAccessibility',
+          suggestions: [
+            {
+              data: { type: 'public' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+class SomeClass {
+  public accessor foo = 1;
+}
+      `,
+            },
+            {
+              data: { type: 'private' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+class SomeClass {
+  private accessor foo = 1;
+}
+      `,
+            },
+            {
+              data: { type: 'protected' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+class SomeClass {
+  protected accessor foo = 1;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ accessibility: 'explicit' }],
+      output: null,
+    },
+    {
+      code: `
+abstract class SomeClass {
+  abstract accessor foo: string;
+}
+      `,
+      errors: [
+        {
+          column: 3,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'missingAccessibility',
+          suggestions: [
+            {
+              data: { type: 'public' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+abstract class SomeClass {
+  public abstract accessor foo: string;
+}
+      `,
+            },
+            {
+              data: { type: 'private' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+abstract class SomeClass {
+  private abstract accessor foo: string;
+}
+      `,
+            },
+            {
+              data: { type: 'protected' },
+              messageId: 'addExplicitAccessibility',
+              output: `
+abstract class SomeClass {
+  protected abstract accessor foo: string;
+}
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ accessibility: 'explicit' }],
+      output: null,
+    },
+    {
+      code: `
 class DecoratedClass {
   constructor(@foo @bar() readonly arg: string) {}
   @foo @bar() x: string;
