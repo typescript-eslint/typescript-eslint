@@ -52,7 +52,7 @@ export default createRule<Options, MessageIds>({
           },
           ignoreClassesThatImplementAnInterface: {
             description:
-              'Makes the rule ignore class members that are defined within a class that `implements` a type',
+              'Whether to ignore class members that are defined within a class that `implements` a type.',
             oneOf: [
               {
                 type: 'boolean',
@@ -68,7 +68,8 @@ export default createRule<Options, MessageIds>({
           },
           ignoreOverrideMethods: {
             type: 'boolean',
-            description: 'Ignore members marked with the `override` modifier',
+            description:
+              'Whether to ignore members marked with the `override` modifier.',
           },
         },
       },

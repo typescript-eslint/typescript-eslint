@@ -1,3 +1,9 @@
+## 8.23.0 (2025-02-03)
+
+This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.22.0 (2025-01-27)
 
 This was a version bump only for typescript-eslint to align it with other projects, there were no code changes.
