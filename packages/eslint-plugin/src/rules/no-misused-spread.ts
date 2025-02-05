@@ -61,8 +61,8 @@ export default createRule<Options, MessageIds>({
         'Using the spread operator on a string can mishandle special characters, as can `.split("")`.',
         '- `...` produces Unicode code points, which will decompose complex emojis into individual emojis',
         '- .split("") produces UTF-16 code units, which breaks rich characters in many languages',
-        "If this string does not need to preserve emojis or other non-English characters, disable this lint rule on this line or configure the 'allow' rule option.",
-        'Otherwise, consider using `Intl.Segmenter`.',
+        'Consider using `Intl.Segmenter` for locale-aware string decomposition.',
+        "Otherwise, if you don't need to preserve emojis or other non-Ascii characters, disable this lint rule on this line or configure the 'allow' rule option.",
       ].join('\n'),
     },
     schema: [
