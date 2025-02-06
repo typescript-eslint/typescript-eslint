@@ -616,7 +616,11 @@ function getOverloadInfo(node: OverloadNode): string {
     default: {
       const { key } = node as MethodDefinition;
 
-      return isIdentifier(key) ? key.name : (key as TSESTree.Literal).raw;
+      if (isIdentifier(key) || isPrivateIdentifier(key)) {
+        return key.name;
+      }
+
+      return (key as TSESTree.Literal).raw;
     }
   }
 }
@@ -633,4 +637,10 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
+}
+
+function isPrivateIdentifier(
+  node: TSESTree.Node,
+): node is TSESTree.PrivateIdentifier {
+  return node.type === AST_NODE_TYPES.PrivateIdentifier;
 }
