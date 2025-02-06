@@ -601,6 +601,15 @@ export default { Foo };
     },
     {
       code: `
+export class Foo {
+  accessor bar = (): void => {
+    return;
+  };
+}
+      `,
+    },
+    {
+      code: `
 export function foo(): (n: number) => string {
   return n => String(n);
 }
