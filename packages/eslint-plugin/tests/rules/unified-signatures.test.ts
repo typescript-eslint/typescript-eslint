@@ -31,6 +31,11 @@ class C {
   a(a?: number, b?: number): void {}
 }
     `,
+    `
+declare class Example {
+  static #privateMethod1(a: number): void;
+  static #privateMethod2(a: number, b?: string): void;
+}`,
     // No error for arity difference greater than 1.
     `
 interface I {
