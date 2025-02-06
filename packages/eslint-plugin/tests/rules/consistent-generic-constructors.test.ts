@@ -286,12 +286,12 @@ class Foo {
   accessor a = new Foo<string>();
 }
       `,
-      options: ['type-annotation'],
       errors: [
         {
           messageId: 'preferTypeAnnotation',
         },
       ],
+      options: ['type-annotation'],
       output: `
 class Foo {
   accessor a: Foo<string> = new Foo();
