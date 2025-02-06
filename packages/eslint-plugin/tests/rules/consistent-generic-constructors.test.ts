@@ -283,6 +283,24 @@ class Foo {
     {
       code: `
 class Foo {
+  accessor a = new Foo<string>();
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class Foo {
+  accessor a: Foo<string> = new Foo();
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
   accessor [a]: Foo<string> = new Foo();
 }
       `,
