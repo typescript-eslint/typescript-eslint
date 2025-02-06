@@ -160,13 +160,13 @@ export default createRule({
         return;
       }
 
-      checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
+      checkFunction(node.value, node.parent.parent);
     }
 
     return {
       'ClassBody > AccessorProperty': checkProperty,
       'ClassBody > MethodDefinition'(node: TSESTree.MethodDefinition): void {
-        checkFunction(node.value, node.parent.parent as ClassLikeDeclaration);
+        checkFunction(node.value, node.parent.parent);
       },
       'ClassBody > PropertyDefinition': checkProperty,
     };
