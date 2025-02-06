@@ -308,7 +308,6 @@ class Test {
       `,
       options: [{ accessibility: 'no-public' }],
     },
-    // private members
     {
       code: `
 class Test {
@@ -317,6 +316,20 @@ class Test {
 }
       `,
       options: [{ accessibility: 'explicit' }],
+    },
+    {
+      code: `
+class Test {
+  private accessor foo = 1;
+}
+      `,
+    },
+    {
+      code: `
+abstract class Test {
+  private abstract accessor foo: number;
+}
+      `,
     },
   ],
   invalid: [
