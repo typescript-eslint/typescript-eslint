@@ -1975,7 +1975,6 @@ class SomeClass {
         },
       ],
       options: [{ accessibility: 'explicit' }],
-      output: null,
     },
     {
       code: `
@@ -2022,7 +2021,6 @@ abstract class SomeClass {
         },
       ],
       options: [{ accessibility: 'explicit' }],
-      output: null,
     },
     {
       code: `
