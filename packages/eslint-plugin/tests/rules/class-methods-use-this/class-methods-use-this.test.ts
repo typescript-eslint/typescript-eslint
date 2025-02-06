@@ -956,5 +956,23 @@ class Foo implements Bar {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  accessor method = () => {
+    this;
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor method = function () {
+    this;
+  };
+}
+      `,
+    },
   ],
 });
