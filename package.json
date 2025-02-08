@@ -117,7 +117,7 @@
     "prettier": "3.4.2",
     "pretty-format": "^29.7.0",
     "rimraf": "^5.0.5",
-    "semver": "7.6.2",
+    "semver": "7.7.0",
     "tmp": "^0.2.1",
     "tsx": "*",
     "typescript": ">=4.8.4 <5.8.0",
