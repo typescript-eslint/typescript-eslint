@@ -601,6 +601,8 @@ function getOverloadKey(node: OverloadNode): string {
   const info = getOverloadInfo(node);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    ((node as MethodDefinition).kind || '') +
     ((node as MethodDefinition).computed ? '0' : '1') +
     ((node as MethodDefinition).static ? '0' : '1') +
     info

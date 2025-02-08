@@ -160,6 +160,18 @@ async function rest(...args: any[], y?: string): Promise<number[] | string> {
   return y || args;
 }
     `,
+    `
+declare class Foo {
+  get bar();
+  set bar(x: number);
+}
+    `,
+    `
+interface Foo {
+  get bar();
+  set bar(x: number);
+}
+    `,
     {
       code: `
 function f(a: number): void;
