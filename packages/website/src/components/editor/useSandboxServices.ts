@@ -10,7 +10,6 @@ import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
 import type { CommonEditorProps } from './types';
 
-// eslint-disable-next-line @typescript-eslint/internal/no-relative-paths-to-internal-packages
 import rootPackageJson from '../../../../../package.json';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';

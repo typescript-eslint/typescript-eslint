@@ -53,6 +53,10 @@ export default createRule({
         );
         const packageOfImport = pathOfImportFromPackagesDir.split(path.sep)[0];
 
+        if (path.dirname(absolutePathOfImport) === REPO_ROOT) {
+          return;
+        }
+
         if (packageOfImport !== packageOfFile) {
           context.report({
             node: importSource,
