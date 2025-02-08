@@ -266,7 +266,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function inferrablePropertyVisitor(
-      node: TSESTree.PropertyDefinition,
+      node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
     ): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
@@ -278,15 +278,8 @@ export default createRule<Options, MessageIds>({
       reportInferrableType(node, node.typeAnnotation, node.value);
     }
 
-    function inferrableAccessorVisitor(node: TSESTree.AccessorProperty): void {
-      if (ignoreProperties) {
-        return;
-      }
-      reportInferrableType(node, node.typeAnnotation, node.value);
-    }
-
     return {
-      AccessorProperty: inferrableAccessorVisitor,
+      AccessorProperty: inferrablePropertyVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       FunctionExpression: inferrableParameterVisitor,
