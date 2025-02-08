@@ -1228,5 +1228,93 @@ ruleTester.run('no-redundant-type-constituents', rule, {
         },
       ],
     },
+    {
+      code: 'type Foo = { a: 1 | 2 } | ({ a: 1 } & { a: 1 | 3 });',
+      errors: [
+        {
+          column: 28,
+          data: {
+            subType: '{ a: 1; } & { a: 1 | 3; }',
+            superType: '{ a: 1 | 2; }',
+          },
+          endColumn: 51,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = { a: 1 | 2 } | ({ a: 1 } | ({ a: 2 } & { a: 1 | 2 }));',
+      errors: [
+        {
+          column: 28,
+          data: {
+            subType: '{ a: 1; } | ({ a: 2; } & { a: 1 | 2; })',
+            superType: '{ a: 1 | 2; }',
+          },
+          endColumn: 64,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type Foo = { a: 1 } | ({ a: 3 } | ({ a: 1 | 2 } & { a: number }));',
+      errors: [
+        {
+          column: 12,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 2; } & { a: number; }',
+          },
+          endColumn: 20,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = { a: 1 | 2 } & { a: number };
+type T = R | { a: 1 };
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 2; } & { a: number; }',
+          },
+          endColumn: 22,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+type R = { a: 1 | 2 } & { a: number };
+type T = R | { a: 1 };
+type U = T | { a: 2 };
+      `,
+      errors: [
+        {
+          column: 14,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 2; } & { a: number; }',
+          },
+          endColumn: 22,
+          line: 3,
+          messageId: 'objectOverridden',
+        },
+        {
+          column: 14,
+          data: {
+            subType: '{ a: 2; }',
+            superType: '{ a: 1 | 2; } & { a: number; }',
+          },
+          endColumn: 22,
+          line: 4,
+          messageId: 'objectOverridden',
+        },
+      ],
+    },
   ],
 });

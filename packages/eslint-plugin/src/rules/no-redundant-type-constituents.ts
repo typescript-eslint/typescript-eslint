@@ -78,13 +78,13 @@ interface TypeWithName {
   typeName: string;
 }
 
-interface SubTypeNameWithSuperTypeName {
-  subTypeName: string;
-  superTypeName: string;
+interface TypeRelation {
+  subType: TypeWithName;
+  superType: TypeWithName;
 }
 
-interface TypeWithNameAndGroupNode extends TypeWithName {
-  groupTypeNode: TSESTree.TypeNode;
+interface TypeWithNameAndParentNode extends TypeWithName {
+  parentTypeNode: TSESTree.TypeNode;
 }
 
 function addToMapGroup<Key, Value>(
@@ -237,6 +237,36 @@ function checkTypeAssignability(
   return TypeAssignability.NotAssignable;
 }
 
+function mergeTypeNames(
+  typeWithNames: TypeWithName[],
+  operator: '&' | '|',
+): string {
+  if (typeWithNames.length === 1) {
+    return typeWithNames[0].typeName;
+  }
+
+  const wrapType = (typeWithName: TypeWithName) => {
+    if (operator === '|' && typeWithName.type.isIntersection()) {
+      return `(${typeWithName.typeName})`;
+    }
+    if (operator === '&' && typeWithName.type.isUnion()) {
+      return `(${typeWithName.typeName})`;
+    }
+    return typeWithName.typeName;
+  };
+
+  return typeWithNames.map(wrapType).join(` ${operator} `);
+}
+
+function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
+  const declaration = type.aliasSymbol?.getDeclarations()?.[0];
+
+  if (declaration && ts.isTypeAliasDeclaration(declaration)) {
+    return declaration.type;
+  }
+  return;
+}
+
 export default createRule({
   name: 'no-redundant-type-constituents',
   meta: {
@@ -262,7 +292,6 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const typesCache = new Map<TSESTree.TypeNode, TypeFlagsWithName[]>();
-    const objectTypesCache = new Map<TSESTree.TypeNode, TypeWithName[]>();
 
     function getTypeNodeTypePartFlags(
       typeNode: TSESTree.TypeNode,
@@ -306,12 +335,16 @@ export default createRule({
       }));
     }
 
-    function getObjectTypePart(
-      typeNode: TSESTree.TypeNode,
+    function getObjectUnionTypePart(
+      typeNode: ts.Node,
       checker: ts.TypeChecker,
     ): TypeWithName[] {
-      if (typeNode.type === AST_NODE_TYPES.TSTypeLiteral) {
-        const type = services.getTypeAtLocation(typeNode);
+      if (ts.isParenthesizedTypeNode(typeNode)) {
+        return getObjectUnionTypePart(typeNode.type, checker);
+      }
+
+      if (typeNode.kind === ts.SyntaxKind.TypeLiteral) {
+        const type = checker.getTypeAtLocation(typeNode);
         const typeName = checker.typeToString(type);
         return [
           {
@@ -320,39 +353,33 @@ export default createRule({
           },
         ];
       }
-
-      if (typeNode.type === AST_NODE_TYPES.TSUnionType) {
+      if (ts.isUnionTypeNode(typeNode)) {
         return typeNode.types.flatMap(typeNode =>
-          getObjectTypePart(typeNode, checker),
+          getObjectUnionTypePart(typeNode, checker),
         );
       }
-      if (typeNode.type === AST_NODE_TYPES.TSTypeReference) {
-        const type = services.getTypeAtLocation(typeNode);
-        const typeParts = unionTypePartsUnlessBoolean(type);
-
-        return typeParts
-          .filter(type => type.flags & ts.TypeFlags.Object)
-          .map(typePart => ({
-            type: typePart,
-            typeName: checker.typeToString(typePart),
-          }));
+      if (ts.isIntersectionTypeNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        const typeParts = tsutils.intersectionTypeParts(type);
+        const typeName = typeParts
+          .map(typePart => checker.typeToString(typePart))
+          .join(' & ');
+        return [
+          {
+            type,
+            typeName,
+          },
+        ];
       }
+      if (ts.isTypeReferenceNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        const node = getTypeNodeFromReferenceType(type);
 
+        if (node) {
+          return getObjectUnionTypePart(node, checker);
+        }
+      }
       return [];
-    }
-
-    function getObjectTypeAndNameCached(
-      typeNode: TSESTree.TypeNode,
-      checker: ts.TypeChecker,
-    ): TypeWithName[] {
-      const existing = objectTypesCache.get(typeNode);
-      if (existing) {
-        return existing;
-      }
-
-      const created = getObjectTypePart(typeNode, checker);
-      objectTypesCache.set(typeNode, created);
-      return created;
     }
 
     function getTypeNodeTypePartFlagsCached(
@@ -511,10 +538,10 @@ export default createRule({
         >();
         const seenPrimitiveTypes = new Set<PrimitiveTypeFlag>();
 
-        const seenObjectTypes = new Set<TypeWithNameAndGroupNode>();
+        const seenObjectTypes = new Set<TypeWithNameAndParentNode>();
         const overriddenObjectTypes = new Map<
           TSESTree.TypeNode,
-          SubTypeNameWithSuperTypeName[]
+          TypeRelation[]
         >();
 
         function checkUnionBottomAndTopTypes(
@@ -588,15 +615,19 @@ export default createRule({
             }
           }
 
-          const objectTypeParts = getObjectTypeAndNameCached(typeNode, checker);
+          const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
+          const objectTypeParts = getObjectUnionTypePart(tsTypeNode, checker);
 
           for (const objectTypePart of objectTypeParts) {
             const { type: targetType, typeName: targetTypeName } =
               objectTypePart;
 
             for (const seenObjectType of seenObjectTypes) {
-              const { type: sourceType, typeName: sourceTypeName } =
-                seenObjectType;
+              const {
+                type: sourceType,
+                parentTypeNode,
+                typeName: sourceTypeName,
+              } = seenObjectType;
               const typeAssignability = checkTypeAssignability(
                 sourceType,
                 targetType,
@@ -611,19 +642,15 @@ export default createRule({
                   // });
                   continue;
                 case TypeAssignability.SourceToTargetAssignable:
-                  addToMapGroup(
-                    overriddenObjectTypes,
-                    seenObjectType.groupTypeNode,
-                    {
-                      subTypeName: sourceTypeName,
-                      superTypeName: targetTypeName,
-                    },
-                  );
+                  addToMapGroup(overriddenObjectTypes, parentTypeNode, {
+                    subType: { type: sourceType, typeName: sourceTypeName },
+                    superType: { type: targetType, typeName: targetTypeName },
+                  });
                   continue;
                 case TypeAssignability.TargetToSourceAssignable:
                   addToMapGroup(overriddenObjectTypes, typeNode, {
-                    subTypeName: targetTypeName,
-                    superTypeName: sourceTypeName,
+                    subType: { type: targetType, typeName: targetTypeName },
+                    superType: { type: sourceType, typeName: sourceTypeName },
                   });
                   continue;
               }
@@ -631,7 +658,10 @@ export default createRule({
           }
 
           for (const objectTypePart of objectTypeParts) {
-            seenObjectTypes.add({ ...objectTypePart, groupTypeNode: typeNode });
+            seenObjectTypes.add({
+              ...objectTypePart,
+              parentTypeNode: typeNode,
+            });
           }
         }
 
@@ -680,23 +710,22 @@ export default createRule({
           }
         }
 
-        for (const [
-          typeNode,
-          typeNameWithSuperTypeName,
-        ] of overriddenObjectTypes) {
+        for (const [typeNode, typeRelations] of overriddenObjectTypes) {
           const grouped = arrayGroupByToMap(
-            typeNameWithSuperTypeName,
-            pair => pair.superTypeName,
+            typeRelations,
+            ({ superType }) => superType.typeName,
           );
+          for (const [superTypeName, typeRelations] of grouped) {
+            const mergedSubTypeName = mergeTypeNames(
+              typeRelations.map(({ subType }) => subType),
+              '|',
+            );
 
-          for (const [superTypeName, pairs] of grouped) {
             context.report({
               node: typeNode,
               messageId: 'objectOverridden',
               data: {
-                subType: pairs
-                  .map(typeinfo => typeinfo.subTypeName)
-                  .join(' | '),
+                subType: mergedSubTypeName,
                 superType: superTypeName,
               },
             });
