@@ -259,10 +259,14 @@ function mergeTypeNames(
 }
 
 function getTypeNodeFromReferenceType(type: ts.Type): ts.Node | undefined {
-  const declaration = type.aliasSymbol?.getDeclarations()?.[0];
+  const symbol = type.getSymbol() ?? type.aliasSymbol;
+  const declaration = symbol?.getDeclarations()?.[0];
 
-  if (declaration && ts.isTypeAliasDeclaration(declaration)) {
-    return declaration.type;
+  if (declaration) {
+    if (ts.isTypeAliasDeclaration(declaration)) {
+      return declaration.type;
+    }
+    return declaration;
   }
   return;
 }
@@ -284,6 +288,7 @@ export default createRule({
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
       primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
+      superObjectTypeOverridden: `{{superType}} is overridden by {{subType}} in this intersection type.`,
     },
     schema: [],
   },
@@ -382,6 +387,52 @@ export default createRule({
       return [];
     }
 
+    function getObjectInterSectionTypePart(
+      typeNode: ts.Node,
+      checker: ts.TypeChecker,
+    ): TypeWithName[] {
+      if (ts.isParenthesizedTypeNode(typeNode)) {
+        return getObjectInterSectionTypePart(typeNode.type, checker);
+      }
+
+      if (typeNode.kind === ts.SyntaxKind.TypeLiteral) {
+        const type = checker.getTypeAtLocation(typeNode);
+        const typeName = checker.typeToString(type);
+        return [
+          {
+            type,
+            typeName,
+          },
+        ];
+      }
+      if (ts.isIntersectionTypeNode(typeNode)) {
+        return typeNode.types.flatMap(typeNode =>
+          getObjectInterSectionTypePart(typeNode, checker),
+        );
+      }
+      if (ts.isUnionTypeNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        const typeParts = tsutils.unionTypeParts(type);
+        const typeName = typeParts
+          .map(typePart => checker.typeToString(typePart))
+          .join(' | ');
+        return [
+          {
+            type,
+            typeName,
+          },
+        ];
+      }
+      if (ts.isTypeReferenceNode(typeNode)) {
+        const type = checker.getTypeFromTypeNode(typeNode);
+        const node = getTypeNodeFromReferenceType(type);
+        if (node) {
+          return getObjectInterSectionTypePart(node, checker);
+        }
+      }
+      return [];
+    }
+
     function getTypeNodeTypePartFlagsCached(
       typeNode: TSESTree.TypeNode,
     ): TypeFlagsWithName[] {
@@ -405,6 +456,12 @@ export default createRule({
         const seenUnionTypes = new Map<
           TSESTree.TypeNode,
           TypeFlagsWithName[]
+        >();
+
+        const seenObjectTypes = new Set<TypeWithNameAndParentNode>();
+        const overriddenObjectTypes = new Map<
+          TSESTree.TypeNode,
+          TypeRelation[]
         >();
 
         function checkIntersectionBottomAndTopTypes(
@@ -464,6 +521,60 @@ export default createRule({
           if (typePartFlags.length >= 2) {
             seenUnionTypes.set(typeNode, typePartFlags);
           }
+
+          const tsTypeNode = services.esTreeNodeToTSNodeMap.get(typeNode);
+          const objectTypeParts = getObjectInterSectionTypePart(
+            tsTypeNode,
+            checker,
+          );
+
+          for (const objectTypePart of objectTypeParts) {
+            const { type: targetType, typeName: targetTypeName } =
+              objectTypePart;
+
+            for (const seenObjectType of seenObjectTypes) {
+              const {
+                type: sourceType,
+                parentTypeNode,
+                typeName: sourceTypeName,
+              } = seenObjectType;
+              const typeAssignability = checkTypeAssignability(
+                sourceType,
+                targetType,
+                checker,
+              );
+
+              switch (typeAssignability) {
+                case TypeAssignability.Equal:
+                  // addToMapGroup(overriddenObjectTypes, typeNode, {
+                  //   subTypeName: sourceTypeName,
+                  //   superTypeName: targetTypeName,
+                  // });
+                  continue;
+                case TypeAssignability.SourceToTargetAssignable:
+                  addToMapGroup(overriddenObjectTypes, typeNode, {
+                    subType: { type: sourceType, typeName: sourceTypeName },
+                    superType: { type: targetType, typeName: targetTypeName },
+                  });
+                  continue;
+                case TypeAssignability.TargetToSourceAssignable:
+                  addToMapGroup(overriddenObjectTypes, parentTypeNode, {
+                    subType: { type: targetType, typeName: targetTypeName },
+                    superType: { type: sourceType, typeName: sourceTypeName },
+                  });
+                  continue;
+              }
+            }
+          }
+          for (const objectTypePart of objectTypeParts) {
+            // if (objectTypePart.type.flags === ts.TypeFlags.Never) {
+            //   continue;
+            // }
+            seenObjectTypes.add({
+              ...objectTypePart,
+              parentTypeNode: typeNode,
+            });
+          }
         }
         /**
          * @example
@@ -510,24 +621,46 @@ export default createRule({
         };
         if (seenUnionTypes.size > 0) {
           checkIfUnionsAreAssignable();
-          return;
-        }
-        // For each primitive type of all the seen primitive types,
-        // if there was a literal type seen that overrides it,
-        // report each of the primitive type's type nodes
-        for (const [primitiveTypeFlag, typeNodes] of seenPrimitiveTypes) {
-          const matchedLiteralTypes = seenLiteralTypes.get(primitiveTypeFlag);
-          if (matchedLiteralTypes) {
-            for (const typeNode of typeNodes) {
-              context.report({
-                node: typeNode,
-                messageId: 'primitiveOverridden',
-                data: {
-                  literal: matchedLiteralTypes.join(' | '),
-                  primitive: primitiveTypeFlagNames[primitiveTypeFlag],
-                },
-              });
+        } else {
+          // For each primitive type of all the seen primitive types,
+          // if there was a literal type seen that overrides it,
+          // report each of the primitive type's type nodes
+          for (const [primitiveTypeFlag, typeNodes] of seenPrimitiveTypes) {
+            const matchedLiteralTypes = seenLiteralTypes.get(primitiveTypeFlag);
+            if (matchedLiteralTypes) {
+              for (const typeNode of typeNodes) {
+                context.report({
+                  node: typeNode,
+                  messageId: 'primitiveOverridden',
+                  data: {
+                    literal: matchedLiteralTypes.join(' & '),
+                    primitive: primitiveTypeFlagNames[primitiveTypeFlag],
+                  },
+                });
+              }
             }
+          }
+        }
+
+        for (const [typeNode, typeRelations] of overriddenObjectTypes) {
+          const grouped = arrayGroupByToMap(
+            typeRelations,
+            ({ superType }) => superType.typeName,
+          );
+          for (const [superTypeName, typeRelations] of grouped) {
+            const mergedSubTypeName = mergeTypeNames(
+              typeRelations.map(({ subType }) => subType),
+              '&',
+            );
+
+            context.report({
+              node: typeNode,
+              messageId: 'superObjectTypeOverridden',
+              data: {
+                subType: mergedSubTypeName,
+                superType: superTypeName,
+              },
+            });
           }
         }
       },

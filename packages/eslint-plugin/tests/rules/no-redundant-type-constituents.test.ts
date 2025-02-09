@@ -1240,6 +1240,15 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           endColumn: 51,
           messageId: 'objectOverridden',
         },
+        {
+          column: 39,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 3; }',
+          },
+          endColumn: 51,
+          messageId: 'superObjectTypeOverridden',
+        },
       ],
     },
     {
@@ -1253,6 +1262,15 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           },
           endColumn: 64,
           messageId: 'objectOverridden',
+        },
+        {
+          column: 51,
+          data: {
+            subType: '{ a: 2; }',
+            superType: '{ a: 1 | 2; }',
+          },
+          endColumn: 63,
+          messageId: 'superObjectTypeOverridden',
         },
       ],
     },
@@ -1268,6 +1286,15 @@ ruleTester.run('no-redundant-type-constituents', rule, {
           endColumn: 20,
           messageId: 'objectOverridden',
         },
+        {
+          column: 51,
+          data: {
+            subType: '{ a: 1 | 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 64,
+          messageId: 'superObjectTypeOverridden',
+        },
       ],
     },
     {
@@ -1276,6 +1303,16 @@ type R = { a: 1 | 2 } & { a: number };
 type T = R | { a: 1 };
       `,
       errors: [
+        {
+          column: 25,
+          data: {
+            subType: '{ a: 1 | 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 38,
+          line: 2,
+          messageId: 'superObjectTypeOverridden',
+        },
         {
           column: 14,
           data: {
@@ -1295,6 +1332,16 @@ type U = T | { a: 2 };
       `,
       errors: [
         {
+          column: 25,
+          data: {
+            subType: '{ a: 1 | 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 38,
+          line: 2,
+          messageId: 'superObjectTypeOverridden',
+        },
+        {
           column: 14,
           data: {
             subType: '{ a: 1; }',
@@ -1313,6 +1360,228 @@ type U = T | { a: 2 };
           endColumn: 22,
           line: 4,
           messageId: 'objectOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: false } & { a: boolean };',
+      errors: [
+        {
+          column: 25,
+          data: {
+            subType: '{ a: false; }',
+            superType: '{ a: boolean; }',
+          },
+          endColumn: 39,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = { a: false };
+        type T = B & { a: boolean };
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            subType: '{ a: false }',
+            superType: '{ a: boolean; }',
+          },
+          endColumn: 36,
+          line: 3,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: true } & { a: boolean };',
+      errors: [
+        {
+          column: 24,
+          data: {
+            subType: '{ a: true; }',
+            superType: '{ a: boolean; }',
+          },
+          endColumn: 38,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } & any;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'intersection',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = any & { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            typeName: 'any',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type ErrorTypes = NotKnown & { a: 0 };',
+      errors: [
+        {
+          column: 19,
+          data: {
+            container: 'intersection',
+            typeName: 'NotKnown',
+          },
+          messageId: 'errorTypeOverrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } & never;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: `
+        type B = never;
+        type T = B & { a: number };
+      `,
+      errors: [
+        {
+          column: 18,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          line: 3,
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = never & { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            typeName: 'never',
+          },
+          messageId: 'overrides',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: number } & unknown;',
+      errors: [
+        {
+          column: 26,
+          data: {
+            container: 'intersection',
+            typeName: 'unknown',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = unknown & { a: number };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            container: 'intersection',
+            typeName: 'unknown',
+          },
+          messageId: 'overridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type T = { a: 1 } | { a: 2 };
+        type U = T & { a: number };
+      `,
+      errors: [
+        {
+          column: 22,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: `
+        type S = { a: 1 } | { a: 2 };
+        type T = { a: 'a' } | { a: 'b' };
+        type U = S & T & { a: string } & { a: number };
+      `,
+      errors: [
+        {
+          column: 26,
+          data: {
+            subType: '{ a: "a"; } | { a: "b"; }',
+            superType: '{ a: string; }',
+          },
+          endColumn: 39,
+          line: 4,
+          messageId: 'superObjectTypeOverridden',
+        },
+        {
+          column: 42,
+          data: {
+            subType: '{ a: 1; } | { a: 2; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 55,
+          line: 4,
+          messageId: 'superObjectTypeOverridden',
+        },
+      ],
+    },
+    {
+      code: 'type T = { a: 1 | 2 } & { a: number } & { a: 1 };',
+      errors: [
+        {
+          column: 10,
+          data: {
+            subType: '{ a: 1; }',
+            superType: '{ a: 1 | 2; }',
+          },
+          endColumn: 22,
+          messageId: 'superObjectTypeOverridden',
+        },
+        {
+          column: 25,
+          data: {
+            subType: '{ a: 1 | 2; } & { a: 1; }',
+            superType: '{ a: number; }',
+          },
+          endColumn: 38,
+          messageId: 'superObjectTypeOverridden',
         },
       ],
     },
