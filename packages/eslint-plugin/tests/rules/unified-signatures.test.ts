@@ -33,6 +33,12 @@ class C {
     `,
     `
 declare class Example {
+  privateMethod(a: number): void;
+  #privateMethod(a: number, b?: string): void;
+}
+    `,
+    `
+declare class Example {
   #privateMethod1(a: number): void;
   #privateMethod2(a: number, b?: string): void;
 }
