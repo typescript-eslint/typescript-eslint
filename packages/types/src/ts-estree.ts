@@ -73,6 +73,34 @@ declare module './generated/ast-spec' {
       | TSESTree.ImportDeclaration;
   }
 
+  interface ExportDefaultDeclaration {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface ExportNamedDeclarationWithoutSourceWithMultiple {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface ExportNamedDeclarationWithoutSourceWithSingle {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface ExportNamedDeclarationWithSource {
+    parent: TSESTree.BlockStatement | TSESTree.Program | TSESTree.TSModuleBlock;
+  }
+
+  interface FunctionDeclarationWithName {
+    parent:
+      | TSESTree.BlockStatement
+      | TSESTree.ExportDefaultDeclaration
+      | TSESTree.ExportNamedDeclaration
+      | TSESTree.Program;
+  }
+
+  interface FunctionDeclarationWithOptionalName {
+    parent: TSESTree.ExportDefaultDeclaration;
+  }
+
   interface JSXAttribute {
     parent: TSESTree.JSXOpeningElement;
   }

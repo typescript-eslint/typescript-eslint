@@ -98,6 +98,42 @@ x ??${equals} 'foo';
       'null != x ? y : x;',
       'undefined != x ? y : x;',
       `
+declare let x: number | undefined;
+x !== 15 && x !== undefined ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+x !== undefined && x !== 15 ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+15 !== x && undefined !== x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+undefined !== x && 15 !== x ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+15 !== x && x !== undefined ? x : y;
+      `,
+      `
+declare let x: number | undefined;
+undefined !== x && x !== 15 ? x : y;
+      `,
+      `
+declare let x: string | undefined;
+x !== 'foo' && x !== undefined ? x : y;
+      `,
+      `
+function test(value: number | undefined): number {
+  return value !== foo() && value !== undefined ? value : 1;
+}
+      `,
+      `
+const test = (value: boolean | undefined): boolean => value !== undefined && value !== false ? value : false;
+      `,
+      `
 declare let x: string;
 x === null ? x : y;
       `,
@@ -118,11 +154,11 @@ declare let x: string | undefined | null;
 x !== null ? x : y;
       `,
       `
-declare let x: string | null | any;
+declare let x: any;
 x === null ? x : y;
       `,
       `
-declare let x: string | null | unknown;
+declare let x: unknown;
 x === null ? x : y;
       `,
       `

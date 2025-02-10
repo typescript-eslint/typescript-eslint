@@ -1,3 +1,15 @@
+## 8.23.0 (2025-02-03)
+
+### 🩹 Fixes
+
+- bump ts-api-utils to ^2.0.1 ([#10761](https://github.com/typescript-eslint/typescript-eslint/pull/10761))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.22.0 (2025-01-27)
 
 ### 🚀 Features
