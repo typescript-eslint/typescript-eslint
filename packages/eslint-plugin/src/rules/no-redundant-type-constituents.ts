@@ -73,18 +73,23 @@ interface TypeNodeWithValue {
   typeNode: TSESTree.TypeNode;
 }
 
-interface TypeWithName {
+interface TypeWithNode {
   type: ts.Type;
-  typeName: string;
+  typeNode: ts.Node;
 }
 
 interface TypeRelation {
-  subType: TypeWithName;
-  superType: TypeWithName;
+  subType: ts.Node;
+  superType: ts.Node;
 }
 
-interface TypeWithNameAndParentNode extends TypeWithName {
+interface TypeWithNameAndParentNode extends TypeWithNode {
   parentTypeNode: TSESTree.TypeNode;
+}
+
+interface TypeNodeWithName {
+  typeName: string;
+  typeNode: ts.Node;
 }
 
 function addToMapGroup<Key, Value>(
@@ -238,18 +243,18 @@ function checkTypeAssignability(
 }
 
 function mergeTypeNames(
-  typeWithNames: TypeWithName[],
+  typeWithNames: TypeNodeWithName[],
   operator: '&' | '|',
 ): string {
   if (typeWithNames.length === 1) {
     return typeWithNames[0].typeName;
   }
 
-  const wrapType = (typeWithName: TypeWithName) => {
-    if (operator === '|' && typeWithName.type.isIntersection()) {
+  const wrapType = (typeWithName: TypeNodeWithName) => {
+    if (operator === '|' && ts.isIntersectionTypeNode(typeWithName.typeNode)) {
       return `(${typeWithName.typeName})`;
     }
-    if (operator === '&' && typeWithName.type.isUnion()) {
+    if (operator === '&' && ts.isUnionTypeNode(typeWithName.typeNode)) {
       return `(${typeWithName.typeName})`;
     }
     return typeWithName.typeName;
@@ -343,18 +348,17 @@ export default createRule({
     function getObjectUnionTypePart(
       typeNode: ts.Node,
       checker: ts.TypeChecker,
-    ): TypeWithName[] {
+    ): TypeWithNode[] {
       if (ts.isParenthesizedTypeNode(typeNode)) {
         return getObjectUnionTypePart(typeNode.type, checker);
       }
 
       if (typeNode.kind === ts.SyntaxKind.TypeLiteral) {
         const type = checker.getTypeAtLocation(typeNode);
-        const typeName = checker.typeToString(type);
         return [
           {
             type,
-            typeName,
+            typeNode,
           },
         ];
       }
@@ -365,14 +369,10 @@ export default createRule({
       }
       if (ts.isIntersectionTypeNode(typeNode)) {
         const type = checker.getTypeFromTypeNode(typeNode);
-        const typeParts = tsutils.intersectionTypeParts(type);
-        const typeName = typeParts
-          .map(typePart => checker.typeToString(typePart))
-          .join(' & ');
         return [
           {
             type,
-            typeName,
+            typeNode,
           },
         ];
       }
@@ -390,18 +390,17 @@ export default createRule({
     function getObjectInterSectionTypePart(
       typeNode: ts.Node,
       checker: ts.TypeChecker,
-    ): TypeWithName[] {
+    ): TypeWithNode[] {
       if (ts.isParenthesizedTypeNode(typeNode)) {
         return getObjectInterSectionTypePart(typeNode.type, checker);
       }
 
       if (typeNode.kind === ts.SyntaxKind.TypeLiteral) {
         const type = checker.getTypeAtLocation(typeNode);
-        const typeName = checker.typeToString(type);
         return [
           {
             type,
-            typeName,
+            typeNode,
           },
         ];
       }
@@ -412,14 +411,10 @@ export default createRule({
       }
       if (ts.isUnionTypeNode(typeNode)) {
         const type = checker.getTypeFromTypeNode(typeNode);
-        const typeParts = tsutils.unionTypeParts(type);
-        const typeName = typeParts
-          .map(typePart => checker.typeToString(typePart))
-          .join(' | ');
         return [
           {
             type,
-            typeName,
+            typeNode,
           },
         ];
       }
@@ -529,14 +524,14 @@ export default createRule({
           );
 
           for (const objectTypePart of objectTypeParts) {
-            const { type: targetType, typeName: targetTypeName } =
+            const { type: targetType, typeNode: targetTypeNode } =
               objectTypePart;
 
             for (const seenObjectType of seenObjectTypes) {
               const {
                 type: sourceType,
                 parentTypeNode,
-                typeName: sourceTypeName,
+                typeNode: sourceTypeNode,
               } = seenObjectType;
               const typeAssignability = checkTypeAssignability(
                 sourceType,
@@ -553,14 +548,14 @@ export default createRule({
                   continue;
                 case TypeAssignability.SourceToTargetAssignable:
                   addToMapGroup(overriddenObjectTypes, typeNode, {
-                    subType: { type: sourceType, typeName: sourceTypeName },
-                    superType: { type: targetType, typeName: targetTypeName },
+                    subType: sourceTypeNode,
+                    superType: targetTypeNode,
                   });
                   continue;
                 case TypeAssignability.TargetToSourceAssignable:
                   addToMapGroup(overriddenObjectTypes, parentTypeNode, {
-                    subType: { type: targetType, typeName: targetTypeName },
-                    superType: { type: sourceType, typeName: sourceTypeName },
+                    subType: targetTypeNode,
+                    superType: sourceTypeNode,
                   });
                   continue;
               }
@@ -643,13 +638,31 @@ export default createRule({
         }
 
         for (const [typeNode, typeRelations] of overriddenObjectTypes) {
-          const grouped = arrayGroupByToMap(
-            typeRelations,
-            ({ superType }) => superType.typeName,
+          const typeRelationAndName = typeRelations.map(
+            ({ subType, superType }) => {
+              return {
+                subTypeName: subType.getText(),
+                subTypeNode: subType,
+                superTypeName: superType.getText(),
+                superTypeNode: subType,
+              };
+            },
           );
-          for (const [superTypeName, typeRelations] of grouped) {
+
+          const groupedTypeRelation = arrayGroupByToMap(
+            typeRelationAndName,
+            ({ superTypeName }) => superTypeName,
+          );
+
+          for (const [
+            superTypeName,
+            typeRelationAndNames,
+          ] of groupedTypeRelation) {
             const mergedSubTypeName = mergeTypeNames(
-              typeRelations.map(({ subType }) => subType),
+              typeRelationAndNames.map(({ subTypeName, subTypeNode }) => ({
+                typeName: subTypeName,
+                typeNode: subTypeNode,
+              })),
               '&',
             );
 
@@ -752,14 +765,14 @@ export default createRule({
           const objectTypeParts = getObjectUnionTypePart(tsTypeNode, checker);
 
           for (const objectTypePart of objectTypeParts) {
-            const { type: targetType, typeName: targetTypeName } =
+            const { type: targetType, typeNode: targetTypeNode } =
               objectTypePart;
 
             for (const seenObjectType of seenObjectTypes) {
               const {
                 type: sourceType,
                 parentTypeNode,
-                typeName: sourceTypeName,
+                typeNode: sourceTypeNode,
               } = seenObjectType;
               const typeAssignability = checkTypeAssignability(
                 sourceType,
@@ -776,14 +789,14 @@ export default createRule({
                   continue;
                 case TypeAssignability.SourceToTargetAssignable:
                   addToMapGroup(overriddenObjectTypes, parentTypeNode, {
-                    subType: { type: sourceType, typeName: sourceTypeName },
-                    superType: { type: targetType, typeName: targetTypeName },
+                    subType: sourceTypeNode,
+                    superType: targetTypeNode,
                   });
                   continue;
                 case TypeAssignability.TargetToSourceAssignable:
                   addToMapGroup(overriddenObjectTypes, typeNode, {
-                    subType: { type: targetType, typeName: targetTypeName },
-                    superType: { type: sourceType, typeName: sourceTypeName },
+                    subType: targetTypeNode,
+                    superType: sourceTypeNode,
                   });
                   continue;
               }
@@ -844,13 +857,31 @@ export default createRule({
         }
 
         for (const [typeNode, typeRelations] of overriddenObjectTypes) {
-          const grouped = arrayGroupByToMap(
-            typeRelations,
-            ({ superType }) => superType.typeName,
+          const typeRelationAndName = typeRelations.map(
+            ({ subType, superType }) => {
+              return {
+                subTypeName: subType.getText(),
+                subTypeNode: subType,
+                superTypeName: superType.getText(),
+                superTypeNode: subType,
+              };
+            },
           );
-          for (const [superTypeName, typeRelations] of grouped) {
+
+          const groupedTypeRelation = arrayGroupByToMap(
+            typeRelationAndName,
+            ({ superTypeName }) => superTypeName,
+          );
+
+          for (const [
+            superTypeName,
+            typeRelationAndNames,
+          ] of groupedTypeRelation) {
             const mergedSubTypeName = mergeTypeNames(
-              typeRelations.map(({ subType }) => subType),
+              typeRelationAndNames.map(({ subTypeName, subTypeNode }) => ({
+                typeName: subTypeName,
+                typeNode: subTypeNode,
+              })),
               '|',
             );
 
