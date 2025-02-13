@@ -5,20 +5,25 @@ title: Releases
 ---
 
 export function LocalTimeOfRelease() {
-  const date = new Date('1970-01-01T17:00Z');
-  const now = new Date();
-  // your time zone minus UTC time
-  const offset = -now.getTimezoneOffset();
+  // An arbitrary Wednesday at 17:00 UTC.
+  const date = new Date('1970-01-05T17:00Z');
   const formatted = date.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
   });
-  if (offset >= (24 - 17) * 60) {
-    return 'Tuesdays at ' + formatted;
-  }
-  if (offset < -17 * 60) {
-    return 'Sundays at ' + formatted;
+  // Specify the day of week if it's not a Monday.
+  const dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  if (date.getDay() !== 1) {
+    return `${dayNames[date.getDay()]}s at ${formatted}`;
   }
   return formatted;
 }
