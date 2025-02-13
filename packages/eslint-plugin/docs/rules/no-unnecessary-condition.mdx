@@ -84,12 +84,80 @@ function bar(arg?: string | null) {
 
 {/* insert option description */}
 
-Example of correct code for `{ allowConstantLoopConditions: true }`:
+#### `'never'`
 
-```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
-while (true) {}
-for (; true; ) {}
-do {} while (true);
+Disallow constant conditions in loops. Same as `false`.
+
+Example of incorrect code for `{ allowConstantLoopConditions: 'never' }`:
+
+```ts option='{ "allowConstantLoopConditions": "never" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+```
+
+#### `'always'`
+
+Allow constant conditions in loops. Same as `true`.
+
+Example of correct code for `{ allowConstantLoopConditions: 'always' }`:
+
+```ts option='{ "allowConstantLoopConditions": "always" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+```
+
+#### `'only-allowed-literals'`
+
+Permit idiomatic constant literal conditions in `while` loop conditions.
+
+Specifically, `true`, `false`, `0`, and `1` are allowed despite always being truthy or falsy, as these are common patterns and are not likely to represent developer errors.
+
+Example of correct code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
+
+```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
+while (true) {
+  // ...
+}
+```
+
+Example of incorrect code for `{ allowConstantLoopConditions: 'only-allowed-literals' }`:
+
+```ts option='{ "allowConstantLoopConditions": "only-allowed-literals" }' showPlaygroundButton
+// `alwaysTrue` has the type of `true` (which isn't allowed)
+// as only the literal value of `true` is allowed.
+
+declare const alwaysTrue: true;
+
+while (alwaysTrue) {
+  // ...
+}
+
+// not even a variable that references the value of `true` is allowed, only
+// the literal value of `true` used directly.
+
+const thisIsTrue = true;
+
+while (thisIsTrue) {
+  // ...
+}
 ```
 
 ### `checkTypePredicates`
