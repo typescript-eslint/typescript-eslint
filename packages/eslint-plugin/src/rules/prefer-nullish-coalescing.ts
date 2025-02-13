@@ -425,7 +425,7 @@ export default createRule<Options, MessageIds>({
             testNode &&
             isNodeOrNodeExpressionEqual(
               testNode,
-              getNonNullishBranchNode(node, operator),
+              getBranchNodes(node, operator).nonNullishBranch,
             )
           ) {
             nullishCoalescingLeftNode = testNode;
@@ -440,12 +440,16 @@ export default createRule<Options, MessageIds>({
             } else if (
               isNodeOrNodeExpressionEqual(
                 testNode,
-                getNonNullishBranchNode(node, operator),
+                getBranchNodes(node, operator).nonNullishBranch,
               )
             ) {
-              if (!nullishCoalescingLeftNode) {
-                nullishCoalescingLeftNode = testNode;
-              }
+              // Only consider the first expression in a multi-part nullish check,
+              // as subsequent expressions might not require all the optional chaining operators.
+              // For example: a?.b?.c !== undefined && a.b.c !== null ? a.b.c : 'foo';
+              // This works because `node.test` is always evaluated first in the loop
+              // and has the same or more necessary optional chaining operators
+              // than `node.alternate` or `node.consequent`.
+              nullishCoalescingLeftNode ??= testNode;
             } else {
               return;
             }
@@ -516,7 +520,7 @@ export default createRule<Options, MessageIds>({
                     node,
                     `${getTextWithParentheses(context.sourceCode, nullishCoalescingLeftNode)} ?? ${getTextWithParentheses(
                       context.sourceCode,
-                      getNullishBranchNode(node, operator),
+                      getBranchNodes(node, operator).nullishBranch,
                     )}`,
                   );
                 },
@@ -674,29 +678,18 @@ function isNodeOrNodeExpressionEqual(
 
 /**
  * Returns the branch nodes of a conditional expression:
- * - the `nonNullish` branch is the branch when test node is not nullish
- * - the `nullish` branch is the branch when test node is nullish
+ * - the "nonNullish branch" is the branch when test node is not nullish
+ * - the "nullish branch" is the branch when test node is nullish
  */
 function getBranchNodes(
   node: TSESTree.ConditionalExpression,
   operator: NullishCheckOperator,
-): { nonNullish: TSESTree.Expression; nullish: TSESTree.Expression } {
+): {
+  nonNullishBranch: TSESTree.Expression;
+  nullishBranch: TSESTree.Expression;
+} {
   if (!operator || ['!=', '!=='].includes(operator)) {
-    return { nonNullish: node.consequent, nullish: node.alternate };
+    return { nonNullishBranch: node.consequent, nullishBranch: node.alternate };
   }
-  return { nonNullish: node.alternate, nullish: node.consequent };
-}
-
-function getNonNullishBranchNode(
-  node: TSESTree.ConditionalExpression,
-  operator: NullishCheckOperator,
-): TSESTree.Expression {
-  return getBranchNodes(node, operator).nonNullish;
-}
-
-function getNullishBranchNode(
-  node: TSESTree.ConditionalExpression,
-  operator: NullishCheckOperator,
-): TSESTree.Expression {
-  return getBranchNodes(node, operator).nullish;
+  return { nonNullishBranch: node.alternate, nullishBranch: node.consequent };
 }

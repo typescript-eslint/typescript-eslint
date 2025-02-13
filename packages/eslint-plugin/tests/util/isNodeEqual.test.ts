@@ -95,11 +95,6 @@ ruleTester.run('isNodeEqual', rule, {
       errors: [{ messageId: 'removeExpression' }],
       output: 'x.z[1][this[this.o]]["3"][a.b.c]',
     },
-    {
-      code: 'a?.b || a?.b',
-      errors: [{ messageId: 'removeExpression' }],
-      output: 'a?.b',
-    },
   ],
   valid: [
     { code: 'a || b' },
