@@ -4,6 +4,34 @@ sidebar_label: Releases
 title: Releases
 ---
 
+export function LocalTimeOfRelease() {
+  const date = new Date('1970-01-01T17:00Z');
+  const now = new Date();
+  // your time zone minus UTC time
+  const offset = -now.getTimezoneOffset();
+  const formatter = new Intl.DateTimeFormat(undefined, {
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZoneName: 'short',
+  });
+  const parts = formatter.formatToParts(date);
+  const formatted = parts
+    .map(part => {
+      if (part.type === 'dayPeriod') {
+        return part.value.toLowerCase();
+      }
+      return part.value;
+    })
+    .join('');
+  if (offset >= (24 - 17) * 60) {
+    return 'Tuesdays at ' + formatted;
+  }
+  if (offset < -17 * 60) {
+    return 'Sundays at ' + formatted;
+  }
+  return formatted;
+}
+
 ## Latest
 
 <a href="https://www.npmjs.com/package/@typescript-eslint/parser">
@@ -13,7 +41,7 @@ title: Releases
   />
 </a>
 
-We release a latest version every Monday at 17:00 UTC using the latest commit to `main` at that time. This release is performed automatically by a Github action located in a private repository. This release goes to the standard `latest` tag on npm.
+We release a latest version every Monday at 17:00 UTC (<LocalTimeOfRelease />) using the latest commit to `main` at that time. This release is performed automatically by a Github action located in a private repository. This release goes to the standard `latest` tag on npm.
 
 See [Versioning](./Versioning.mdx) for how the version number is calculated.
 
