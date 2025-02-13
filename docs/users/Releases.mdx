@@ -22,7 +22,7 @@ export function LocalTimeOfRelease() {
     'Friday',
     'Saturday',
   ];
-  if (date.getDay() !== 1) {
+  if (date.getDay() !== date.getUTCDay()) {
     return `${dayNames[date.getDay()]}s at ${formatted}`;
   }
   return formatted;
