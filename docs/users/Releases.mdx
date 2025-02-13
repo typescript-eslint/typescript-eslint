@@ -9,20 +9,11 @@ export function LocalTimeOfRelease() {
   const now = new Date();
   // your time zone minus UTC time
   const offset = -now.getTimezoneOffset();
-  const formatter = new Intl.DateTimeFormat(undefined, {
+  const formatted = date.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     timeZoneName: 'short',
   });
-  const parts = formatter.formatToParts(date);
-  const formatted = parts
-    .map(part => {
-      if (part.type === 'dayPeriod') {
-        return part.value.toLowerCase();
-      }
-      return part.value;
-    })
-    .join('');
   if (offset >= (24 - 17) * 60) {
     return 'Tuesdays at ' + formatted;
   }
