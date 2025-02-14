@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -35,8 +34,7 @@ type MessageIds =
   | 'noMapSpreadInObject'
   | 'noPromiseSpreadInObject'
   | 'noStringSpread'
-  | 'replaceMapSpreadInObject'
-  | 'replaceStringSpread';
+  | 'replaceMapSpreadInObject';
 
 export default createRule<Options, MessageIds>({
   name: 'no-misused-spread',
@@ -74,7 +72,6 @@ export default createRule<Options, MessageIds>({
       ].join('\n'),
       replaceMapSpreadInObject:
         'Replace map spread in object with `Object.fromEntries(map)`',
-      replaceStringSpread: "Replace string spread with `.split('')`",
     },
     schema: [
       {
@@ -111,7 +108,6 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noStringSpread',
-          suggest: getStringSpreadSuggestions(node, type),
         });
       }
     }
@@ -165,29 +161,6 @@ export default createRule<Options, MessageIds>({
                   fixer.insertTextBefore(node, 'await ('),
                   fixer.insertTextAfter(node, ')'),
                 ],
-        },
-      ];
-    }
-
-    function getStringSpreadSuggestions(
-      node: TSESTree.SpreadElement,
-      type: ts.Type,
-    ): TSESLint.ReportSuggestionArray<MessageIds> | null {
-      if (tsutils.unionTypeParts(type).some(type => !isString(type))) {
-        return null;
-      }
-
-      const targetNode: TSESTree.Node =
-        node.parent.type !== AST_NODE_TYPES.ArrayExpression ||
-        node.parent.elements.length > 1
-          ? node.argument
-          : node.parent;
-
-      const code = context.sourceCode.getText(node.argument);
-      return [
-        {
-          messageId: 'replaceStringSpread',
-          fix: fixer => fixer.replaceText(targetNode, `${code}.split('')`),
         },
       ];
     }

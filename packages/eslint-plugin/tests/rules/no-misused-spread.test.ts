@@ -306,12 +306,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 21,
           line: 1,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: "const a = 'test'.split('');",
-            },
-          ],
         },
       ],
     },
@@ -327,16 +321,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 26,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        function withText<Text extends string>(text: Text) {
-          return text.split('');
-        }
-      `,
-            },
-          ],
         },
       ],
     },
@@ -351,15 +335,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        const test = 'hello';
-        const a = test.split('');
-      `,
-            },
-          ],
         },
       ],
     },
@@ -374,15 +349,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        const test = \`he\${'ll'}o\`;
-        const a = test.split('');
-      `,
-            },
-          ],
         },
       ],
     },
@@ -397,15 +363,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare const test: string;
-        const a = test.split('');
-      `,
-            },
-          ],
         },
       ],
     },
@@ -434,15 +391,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 27,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare const test: string & { __brand: 'test' };
-        const a = test.split('');
-      `,
-            },
-          ],
         },
       ],
     },
@@ -471,15 +419,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function getString(): string;
-        const a = getString().split('');
-      `,
-            },
-          ],
         },
       ],
     },
@@ -497,18 +436,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 29,
           line: 6,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function textIdentity(...args: string[]);
-
-        declare const text: string;
-
-        textIdentity(...text.split(''));
-      `,
-            },
-          ],
         },
       ],
     },
@@ -526,36 +453,12 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 29,
           line: 6,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function textIdentity(...args: string[]);
-
-        declare const text: string;
-
-        textIdentity(...text.split(''), 'and', ...text);
-      `,
-            },
-          ],
         },
         {
           column: 38,
           endColumn: 45,
           line: 6,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function textIdentity(...args: string[]);
-
-        declare const text: string;
-
-        textIdentity(...text, 'and', ...text.split(''));
-      `,
-            },
-          ],
         },
       ],
     },
@@ -573,18 +476,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 31,
           line: 5,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function textIdentity(...args: string[]);
-
-        function withText<Text extends string>(text: Text) {
-          textIdentity(...text.split(''));
-        }
-      `,
-            },
-          ],
         },
       ],
     },
@@ -599,15 +490,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function getString<T extends string>(): T;
-        const a = getString().split('');
-      `,
-            },
-          ],
         },
       ],
     },
@@ -622,15 +504,6 @@ ruleTester.run('no-misused-spread', rule, {
           endColumn: 34,
           line: 3,
           messageId: 'noStringSpread',
-          suggestions: [
-            {
-              messageId: 'replaceStringSpread',
-              output: `
-        declare function getString(): string & { __brand: 'test' };
-        const a = getString().split('');
-      `,
-            },
-          ],
         },
       ],
     },
