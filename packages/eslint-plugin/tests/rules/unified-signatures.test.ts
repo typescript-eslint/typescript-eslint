@@ -172,6 +172,12 @@ interface Foo {
   set bar(x: number);
 }
     `,
+    `
+abstract class Foo {
+  abstract get bar();
+  abstract set bar(a: unknown);
+}
+    `,
     {
       code: `
 function f(a: number): void;
