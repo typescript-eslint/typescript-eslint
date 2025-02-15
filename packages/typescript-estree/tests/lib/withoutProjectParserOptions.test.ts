@@ -2,7 +2,7 @@ import type { TSESTreeOptions } from '../../src';
 
 import { withoutProjectParserOptions } from '../../src';
 
-describe('withoutProjectParserOptions', () => {
+describe(withoutProjectParserOptions, () => {
   it('removes only project parser options', () => {
     const options = {
       comment: true,
