@@ -639,11 +639,11 @@ function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
 }
 
-function isGetterOrSetter(node: TSESTree.Node): boolean {
-  return (
-    (node.type === AST_NODE_TYPES.MethodDefinition ||
-      node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-      node.type === AST_NODE_TYPES.TSMethodSignature) &&
-    (node.kind === 'get' || node.kind === 'set')
-  );
+function isGetterOrSetter(
+  node:
+    | TSESTree.MethodDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSMethodSignature,
+): boolean {
+  return node.kind === 'get' || node.kind === 'set';
 }
