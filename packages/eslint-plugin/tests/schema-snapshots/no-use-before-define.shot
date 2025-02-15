@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-use-before-define 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-use-before-define > no-use-before-define`]
 # SCHEMA:
 
 [
@@ -71,5 +70,4 @@ type Options = [
       variables?: boolean;
     },
 ];
-"
-`;
+

@@ -1,7 +1,7 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Validating rule docs only-throw-error.mdx code examples ESLint output 1`] = `
-"Incorrect
+exports[`Validating rule docs > only-throw-error.mdx > code examples ESLint output`]
+Incorrect
 
 throw 'error';
       ~~~~~~~ Expected an error object to be thrown.
@@ -20,7 +20,7 @@ throw 'an ' + err;
       ~~~~~~~~~~~ Expected an error object to be thrown.
 
 const err = new Error();
-throw \`\${err}\`;
+throw `${err}`;
       ~~~~~~~~ Expected an error object to be thrown.
 
 const err = '';
@@ -37,11 +37,9 @@ const foo = {
 };
 throw foo.bar;
       ~~~~~~~ Expected an error object to be thrown.
-"
-`;
 
-exports[`Validating rule docs only-throw-error.mdx code examples ESLint output 2`] = `
-"Correct
+exports[`Validating rule docs > only-throw-error.mdx > code examples ESLint output`]
+Correct
 
 throw new Error();
 
@@ -73,5 +71,3 @@ class CustomError extends Error {
   // ...
 }
 throw new CustomError();
-"
-`;

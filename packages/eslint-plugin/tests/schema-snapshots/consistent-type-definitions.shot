@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-definitions 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > consistent-type-definitions > consistent-type-definitions`]
 # SCHEMA:
 
 [
@@ -21,5 +20,4 @@ type Options = [
   /** Which type definition syntax to prefer. */
   | 'interface',
 ];
-"
-`;
+

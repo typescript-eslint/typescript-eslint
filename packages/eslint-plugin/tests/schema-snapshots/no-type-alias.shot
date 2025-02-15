@@ -1,7 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Rule schemas should be convertible to TS types for documentation purposes no-type-alias 1`] = `
-"
+exports[`Rule schemas should be convertible to TS types for documentation purposes > no-type-alias > no-type-alias`]
 # SCHEMA:
 
 [
@@ -93,5 +92,4 @@ type Options = [
     allowTupleTypes?: ExpandedOptions;
   },
 ];
-"
-`;
+
