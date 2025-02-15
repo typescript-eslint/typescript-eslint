@@ -1,0 +1,62 @@
+---
+description: 'Disallow extraneous union types in return type annotations.'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+> 🛑 This file is source code, not the primary documentation location! 🛑
+>
+> See **https://typescript-eslint.io/rules/no-extraneous-return-types** for documentation.
+
+Explicit function return type annotations can sometimes be helpful in TypeScript to describe a more precise return type than what the type checker would infer.
+Functions that can return one of multiple types of values generally use union types to describe their return type.
+This lint rule checks for "extraneous", or unnecessary, constituents of union type returns: those that don't describe a type the function can return.
+
+## Examples
+
+<Tabs>
+<TabItem value="❌ Incorrect">
+
+```ts
+function test1(): string | null {
+  return 'string';
+}
+
+function test2(): Promise<string | null> {
+  return Promise.resolve('string');
+}
+
+class A {
+  test(): string | null {
+    return 'string';
+  }
+}
+```
+
+</TabItem>
+<TabItem value="✅ Correct">
+
+```ts
+function test1(): string {
+  return 'string';
+}
+
+function test2(): Promise<string> {
+  return Promise.resolve('string');
+}
+
+class A {
+  test(): string {
+    return 'string';
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+## When Not To Use It
+
+Some projects have early-stage functions, which are likely to evolve later on to match their declared return types.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
