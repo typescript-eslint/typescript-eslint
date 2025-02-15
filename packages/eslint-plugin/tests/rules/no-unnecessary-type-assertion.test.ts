@@ -384,6 +384,38 @@ if (Math.random()) {
 x!;
       `,
     },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T.Value2;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1 = 0,
+  Value2 = 1,
+}
+
+const b = 1 as T.Value2;
+      `,
+    },
   ],
 
   invalid: [
@@ -1251,6 +1283,56 @@ const b: string | undefined = (a ? undefined : a)!;
       output: `
 const a = '';
 const b: string | undefined = (a ? undefined : a);
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as T.Value1;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a;
+      `,
+    },
+    {
+      code: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a as const;
+      `,
+      errors: [
+        {
+          messageId: 'unnecessaryAssertion',
+        },
+      ],
+      output: `
+enum T {
+  Value1,
+  Value2,
+}
+
+declare const a: T.Value1;
+const b = a;
       `,
     },
   ],
