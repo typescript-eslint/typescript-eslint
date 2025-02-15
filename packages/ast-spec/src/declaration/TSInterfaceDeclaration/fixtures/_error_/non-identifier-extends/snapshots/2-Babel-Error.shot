@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ non-identifier-extends Babel - Error 1`] = `[SyntaxError: Unexpected token (1:20)]`;
+exports[`AST Fixtures > declaration > TSInterfaceDeclaration > _error_ > non-identifier-extends > Babel - Error`]
+SyntaxError: Unexpected token (1:20)

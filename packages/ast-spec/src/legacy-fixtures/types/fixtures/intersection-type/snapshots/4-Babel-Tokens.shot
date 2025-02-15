@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AST Fixtures legacy-fixtures types intersection-type Babel - Tokens 1`] = `
 [
   Identifier {
     type: "Identifier",
@@ -173,4 +170,3 @@ exports[`AST Fixtures legacy-fixtures types intersection-type Babel - Tokens 1`]
     },
   },
 ]
-`;

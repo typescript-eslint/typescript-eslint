@@ -1,3 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`AST Fixtures expression UpdateExpression _error_ call-expr Error Alignment 1`] = `"Both errored"`;
+exports[`AST Fixtures > expression > UpdateExpression > _error_ > call-expr > Error Alignment`]
+Both errored
