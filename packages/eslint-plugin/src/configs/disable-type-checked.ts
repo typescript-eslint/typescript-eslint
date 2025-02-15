@@ -66,6 +66,7 @@ export = {
     '@typescript-eslint/return-await': 'off',
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/switch-exhaustiveness-check': 'off',
+    '@typescript-eslint/thenable-in-promise-aggregators': 'off',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
   },
