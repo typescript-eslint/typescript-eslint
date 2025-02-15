@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import { TSESTree } from '@typescript-eslint/utils';
 
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -558,12 +558,12 @@ export default createRule<Options, MessageIds>({
 
       // collect overloads
       MethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
       TSAbstractMethodDefinition(node): void {
-        if (!node.value.body) {
+        if (!node.value.body && !isGetterOrSetter(node)) {
           addOverload(node);
         }
       },
@@ -573,7 +573,11 @@ export default createRule<Options, MessageIds>({
         const exportingNode = getExportingNode(node);
         addOverload(node, node.id?.name ?? exportingNode?.type, exportingNode);
       },
-      TSMethodSignature: addOverload,
+      TSMethodSignature(node): void {
+        if (!isGetterOrSetter(node)) {
+          addOverload(node);
+        }
+      },
 
       // validate scopes
       'ClassDeclaration:exit': checkScope,
@@ -601,8 +605,6 @@ function getOverloadKey(node: OverloadNode): string {
   const info = getOverloadInfo(node);
 
   return (
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    ((node as MethodDefinition).kind || '') +
     ((node as MethodDefinition).computed ? '0' : '1') +
     ((node as MethodDefinition).static ? '0' : '1') +
     info
@@ -635,4 +637,13 @@ function getStaticParameterName(param: TSESTree.Node): string | undefined {
 }
 function isIdentifier(node: TSESTree.Node): node is TSESTree.Identifier {
   return node.type === AST_NODE_TYPES.Identifier;
+}
+
+function isGetterOrSetter(node: TSESTree.Node): boolean {
+  return (
+    (node.type === AST_NODE_TYPES.MethodDefinition ||
+      node.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+      node.type === AST_NODE_TYPES.TSMethodSignature) &&
+    (node.kind === 'get' || node.kind === 'set')
+  );
 }
