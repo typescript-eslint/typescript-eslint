@@ -1,6 +1,3 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`ts-module self-ref 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -83,4 +80,3 @@ ScopeManager {
     },
   ],
 }
-`;

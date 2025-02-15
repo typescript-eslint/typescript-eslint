@@ -1,64 +1,44 @@
 {
   "name": "scope-manager",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
-  "tags": [],
+  "root": "packages/scope-manager",
+  "sourceRoot": "packages/scope-manager/src",
   "targets": {
-    "build": {
-      "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.3"],
-      "options": {
-        "parallel": false,
-        "cwd": "packages/scope-manager",
-        "commands": [
-          "rimraf _ts4.3",
-          "tsc -b tsconfig.build.json",
-          "downlevel-dts dist _ts4.3/dist --to=4.3"
-        ]
-      }
-    },
     "typecheck": {
       "executor": "nx:run-commands",
       "options": {
         "parallel": true,
-        "cwd": "packages/scope-manager",
+        "cwd": "{projectRoot}",
         "commands": [
-          "tsc -p tsconfig.build.json --noEmit",
-          "tsc -p tsconfig.spec.json --noEmit"
+          { "command": "tsc -p tsconfig.build.json --noEmit" },
+          { "command": "tsc -p tsconfig.spec.json --noEmit" }
         ]
       }
     },
     "clean": {
       "executor": "nx:run-commands",
       "options": {
-        "parallel": false,
-        "cwd": "packages/scope-manager",
+        "cwd": "{projectRoot}",
+        "parallel": true,
         "commands": [
-          "tsc -b tsconfig.build.json --clean",
-          "rimraf dist",
-          "rimraf _ts4.3",
-          "rimraf coverage"
+          { "command": "tsc -b tsconfig.build.json --clean" },
+          { "command": "rimraf dist/ _ts4.3/ coverage/" }
         ]
       }
     },
     "clean-fixtures": {
       "executor": "nx:run-commands",
       "options": {
-        "parallel": false,
-        "cwd": "packages/scope-manager",
-        "commands": ["rimraf -g \"./src/**/fixtures/**/snapshots\""]
+        "cwd": "{projectRoot}",
+        "commands": [
+          { "command": "rimraf -g \"./src/**/fixtures/**/snapshots\"" }
+        ]
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "options": {
-        "jestConfig": "packages/scope-manager/jest.config.js"
-      }
     }
   }
 }
