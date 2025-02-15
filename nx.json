@@ -25,6 +25,10 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"],
+      "options": {
+        "cwd": "{projectRoot}"
+      },
       "cache": true
     },
     "test": {
@@ -58,6 +62,7 @@
       }
     },
     "lint": {
+      "executor": "@nx/eslint:lint",
       "dependsOn": [
         "eslint-plugin:build",
         "eslint-plugin-internal:build",
@@ -72,6 +77,7 @@
           "transitive": false
         }
       ],
+      "outputs": ["{options.outputFile}"],
       "cache": true
     }
   },
@@ -95,6 +101,7 @@
       "!{projectRoot}/**/?(*.)+(test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json",
       "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/vitest.config.m[jt]s",
       "!{projectRoot}/src/test-setup.[jt]s"
     ]
   }
