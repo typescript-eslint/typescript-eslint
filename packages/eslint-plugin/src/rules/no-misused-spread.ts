@@ -57,8 +57,13 @@ export default createRule<Options, MessageIds>({
         'Using the spread operator on a Map in an object will result in an empty object. Did you mean to use `Object.fromEntries(map)` instead?',
       noPromiseSpreadInObject:
         'Using the spread operator on Promise in an object can cause unexpected behavior. Did you forget to await the promise?',
-      noStringSpread:
-        "Using the spread operator on a string can cause unexpected behavior. Prefer `.split('')` instead.",
+      noStringSpread: [
+        'Using the spread operator on a string can mishandle special characters, as can `.split("")`.',
+        '- `...` produces Unicode code points, which will decompose complex emojis into individual emojis',
+        '- .split("") produces UTF-16 code units, which breaks rich characters in many languages',
+        'Consider using `Intl.Segmenter` for locale-aware string decomposition.',
+        "Otherwise, if you don't need to preserve emojis or other non-Ascii characters, disable this lint rule on this line or configure the 'allow' rule option.",
+      ].join('\n'),
     },
     schema: [
       {
@@ -99,7 +104,9 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function checkObjectSpread(node: TSESTree.SpreadElement): void {
+    function checkObjectSpread(
+      node: TSESTree.JSXSpreadAttribute | TSESTree.SpreadElement,
+    ): void {
       const type = getConstrainedTypeAtLocation(services, node.argument);
 
       if (typeMatchesSomeSpecifier(type, options.allow, services.program)) {
@@ -175,6 +182,7 @@ export default createRule<Options, MessageIds>({
     return {
       'ArrayExpression > SpreadElement': checkArrayOrCallSpread,
       'CallExpression > SpreadElement': checkArrayOrCallSpread,
+      JSXSpreadAttribute: checkObjectSpread,
       'ObjectExpression > SpreadElement': checkObjectSpread,
     };
   },
