@@ -17,6 +17,7 @@ import {
   isUndefinedIdentifier,
   nullThrows,
   NullThrowsReasons,
+  skipChainExpression,
 } from '../util';
 
 const isIdentifierOrMemberOrChainExpression = isNodeOfTypes([
@@ -659,19 +660,7 @@ function isNodeOrNodeExpressionEqual(
   a: TSESTree.Node,
   b: TSESTree.Node,
 ): boolean {
-  if (
-    a.type === AST_NODE_TYPES.ChainExpression ||
-    b.type === AST_NODE_TYPES.ChainExpression
-  ) {
-    if (a.type === AST_NODE_TYPES.ChainExpression) {
-      a = a.expression;
-    }
-    if (b.type === AST_NODE_TYPES.ChainExpression) {
-      b = b.expression;
-    }
-    return isNodeOrNodeExpressionEqual(a, b);
-  }
-  return isNodeEqual(a, b);
+  return isNodeEqual(skipChainExpression(a), skipChainExpression(b));
 }
 
 /**
