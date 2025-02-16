@@ -169,7 +169,6 @@ export default createRule<Options, MessageIds>({
     const parserServices = getParserServices(context);
     const compilerOptions = parserServices.program.getCompilerOptions();
 
-    const checker = parserServices.program.getTypeChecker();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
@@ -482,10 +481,9 @@ export default createRule<Options, MessageIds>({
             return true;
           }
 
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+          const type = parserServices.getTypeAtLocation(
             nullishCoalescingLeftNode,
           );
-          const type = checker.getTypeAtLocation(tsNode);
           const flags = getTypeFlags(type);
 
           if (flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
