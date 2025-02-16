@@ -1,4 +1,8 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
 
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
@@ -113,18 +117,36 @@ export default createRule<Options, MessageIds>({
     }
 
     function getMapSpreadSuggestions(
-      node: TSESTree.Expression,
+      node: TSESTree.JSXSpreadAttribute | TSESTree.SpreadElement,
       type: ts.Type,
     ): TSESLint.ReportSuggestionArray<MessageIds> | null {
       const types = tsutils.unionTypeParts(type);
       if (types.some(t => !isMap(services.program, t))) {
         return null;
       }
+
+      if (
+        node.parent.type === AST_NODE_TYPES.ObjectExpression &&
+        node.parent.properties.length === 1
+      ) {
+        return [
+          {
+            messageId: 'replaceMapSpreadInObject',
+            fix: getWrappingFixer({
+              node: node.parent,
+              innerNode: node.argument,
+              sourceCode: context.sourceCode,
+              wrap: code => `Object.fromEntries(${code})`,
+            }),
+          },
+        ];
+      }
+
       return [
         {
           messageId: 'replaceMapSpreadInObject',
           fix: getWrappingFixer({
-            node,
+            node: node.argument,
             sourceCode: context.sourceCode,
             wrap: code => `Object.fromEntries(${code})`,
           }),
@@ -197,7 +219,7 @@ export default createRule<Options, MessageIds>({
         context.report({
           node,
           messageId: 'noMapSpreadInObject',
-          suggest: getMapSpreadSuggestions(node.argument, type),
+          suggest: getMapSpreadSuggestions(node, type),
         });
 
         return;
