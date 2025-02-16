@@ -4,6 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import type { GlobalScope, Scope } from '../scope';
 import type { ScopeManager } from '../ScopeManager';
+import type { ImplicitLibVariableOptions, Variable } from '../variable';
 import type { ReferenceImplicitGlobal } from './Reference';
 import type { VisitorOptions } from './Visitor';
 
@@ -19,6 +20,8 @@ import {
   VariableDefinition,
 } from '../definition';
 import { lib as TSLibraries } from '../lib';
+import { TYPE, VALUE, TYPE_VALUE } from '../lib/base-config';
+import { ImplicitLibVariable } from '../variable';
 import { ClassVisitor } from './ClassVisitor';
 import { ExportVisitor } from './ExportVisitor';
 import { ImportVisitor } from './ImportVisitor';
@@ -32,6 +35,15 @@ export interface ReferencerOptions extends VisitorOptions {
   jsxPragma: string | null;
   lib: Lib[];
 }
+
+type ImplicitVariableMap = Map<string, ImplicitLibVariableOptions>;
+
+// The `TSLibraries` object should have this type instead, but that's outside the scope of this prototype
+const entriesByLib = new Map<Lib, [string, ImplicitLibVariableOptions][]>();
+// This object caches by the serialized JSON representation of the file's libs array
+const variablesFromSerializedLibs = new Map<string, ImplicitVariableMap>();
+// This object caches by reference from the file's libs array
+const variablesFromRawLibs = new WeakMap<Lib[], ImplicitVariableMap>();
 
 // Referencing variables and creating bindings.
 export class Referencer extends Visitor {
@@ -51,23 +63,130 @@ export class Referencer extends Visitor {
   }
 
   private populateGlobalsFromLib(globalScope: GlobalScope): void {
-    for (const lib of this.#lib) {
-      const variables = TSLibraries[lib];
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      /* istanbul ignore if */ if (!variables) {
-        throw new Error(`Invalid value for lib provided: ${lib}`);
+    let implicitVariablesFromLibs: ImplicitVariableMap | undefined =
+      variablesFromRawLibs.get(this.#lib);
+    if (!implicitVariablesFromLibs) {
+      // Try to find out if this is a different object but same content we've seen before.
+      const libs: Lib[] = [...this.#lib].sort();
+      const serialized: string = JSON.stringify(libs);
+      implicitVariablesFromLibs = variablesFromSerializedLibs.get(serialized);
+      if (!implicitVariablesFromLibs) {
+        // No match, need to create it
+        implicitVariablesFromLibs = new Map();
+        for (const lib of libs) {
+          let entriesForLib:
+            | [string, ImplicitLibVariableOptions][]
+            | undefined = entriesByLib.get(lib);
+          if (!entriesForLib) {
+            const variables = TSLibraries[lib];
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+            /* istanbul ignore if */ if (!variables) {
+              throw new Error(`Invalid value for lib provided: ${lib}`);
+            }
+            entriesForLib = Object.entries(variables);
+            entriesByLib.set(lib, entriesForLib);
+          }
+
+          for (const [name, variable] of entriesForLib) {
+            const existing = implicitVariablesFromLibs.get(name);
+            // Since a variable can be a type, a value, or both, and it isn't
+            // guaranteed to be the same between libs, merges
+            if (existing) {
+              if (existing === TYPE_VALUE || existing === variable) {
+                continue;
+              } else if (
+                (existing === VALUE && variable === TYPE) ||
+                (existing === TYPE && variable === VALUE)
+              ) {
+                implicitVariablesFromLibs.set(name, TYPE_VALUE);
+                continue;
+              }
+            }
+            // variable is either net-new, or is upgrading to TYPE_VALUE
+            implicitVariablesFromLibs.set(name, variable);
+          }
+        }
+        variablesFromSerializedLibs.set(serialized, implicitVariablesFromLibs);
       }
-      for (const [name, variable] of Object.entries(variables)) {
-        globalScope.defineImplicitVariable(name, variable);
+      variablesFromRawLibs.set(this.#lib, implicitVariablesFromLibs);
+    }
+
+    // Collect all names that are defined or referenced.
+    const allScopes = new Set<Scope>([globalScope]);
+    const allNames = new Set<string>();
+
+    for (const scope of allScopes) {
+      for (const childScope of scope.childScopes) {
+        allScopes.add(childScope);
+      }
+
+      for (const reference of scope.references) {
+        allNames.add(reference.identifier.name);
+      }
+
+      for (const variable of scope.variables) {
+        allNames.add(variable.name);
       }
     }
 
-    // for const assertions (`{} as const` / `<const>{}`)
-    globalScope.defineImplicitVariable('const', {
-      eslintImplicitGlobalSetting: 'readonly',
-      isTypeVariable: true,
-      isValueVariable: false,
-    });
+    // Rules only care about implicit globals if they are referenced or overlap with a local declaration,
+    // so add only those implicit globals.
+    const replacements = new Map<Variable, Variable>();
+    const arraysToProcess = new Set<Variable[]>([globalScope.variables]);
+    const { declaredVariables } = this.scopeManager;
+    for (const name of allNames) {
+      const libVariable: ImplicitLibVariableOptions | undefined =
+        implicitVariablesFromLibs.get(name);
+      if (libVariable) {
+        const existingVariable = globalScope.set.get(name);
+        if (existingVariable) {
+          // This should be cleaned up
+          const newVariable = new ImplicitLibVariable(
+            globalScope,
+            name,
+            libVariable,
+          );
+          replacements.set(existingVariable, newVariable);
+          globalScope.set.set(name, newVariable);
+
+          // Copy over information about the conflicting declaration
+          for (const def of existingVariable.defs) {
+            newVariable.defs.push(def);
+            // These arrays were created during defineVariable invocation
+            const parentDeclarations =
+              def.parent && declaredVariables.get(def.parent);
+            if (parentDeclarations) {
+              arraysToProcess.add(parentDeclarations);
+            }
+
+            const nodeDeclarations = declaredVariables.get(def.node);
+            if (nodeDeclarations) {
+              arraysToProcess.add(nodeDeclarations);
+            }
+          }
+
+          // This mapping is unidirectional, so just copy
+          for (const identifier of existingVariable.identifiers) {
+            newVariable.identifiers.push(identifier);
+          }
+
+          // References should not have been bound yet, so no action needed
+        } else {
+          globalScope.defineImplicitVariable(name, libVariable);
+        }
+      }
+    }
+
+    if (replacements.size > 0) {
+      for (const array of arraysToProcess) {
+        for (let i = array.length - 1; i >= 0; i--) {
+          const replacement = replacements.get(array[i]);
+          if (replacement) {
+            array[i] = replacement;
+          }
+        }
+      }
+    }
   }
   public close(node: TSESTree.Node): void {
     while (this.currentScope(true) && node === this.currentScope().block) {
@@ -575,7 +694,14 @@ export class Referencer extends Visitor {
 
   protected Program(node: TSESTree.Program): void {
     const globalScope = this.scopeManager.nestGlobalScope(node);
-    this.populateGlobalsFromLib(globalScope);
+
+    // Keep this first since it reduces the amount of snapshot changes significantly
+    // for const assertions (`{} as const` / `<const>{}`)
+    globalScope.defineImplicitVariable('const', {
+      eslintImplicitGlobalSetting: 'readonly',
+      isTypeVariable: true,
+      isValueVariable: false,
+    });
 
     if (this.scopeManager.isGlobalReturn()) {
       // Force strictness of GlobalScope to false when using node.js scope.
@@ -592,6 +718,9 @@ export class Referencer extends Visitor {
     }
 
     this.visitChildren(node);
+    // Need to call this after all references and variables are defined,
+    // but before we bind the global scope's references.
+    this.populateGlobalsFromLib(globalScope);
     this.close(node);
   }
 
