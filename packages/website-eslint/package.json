@@ -27,8 +27,9 @@
   },
   "scripts": {
     "build": "tsx ./build.ts",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
+    "clean": "rimraf dist/",
+    "format": "prettier --write . --ignore-path $PROJECT_CWD/.prettierignore",
+    "lint": "yarn run -T nx lint",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
@@ -41,7 +42,8 @@
     "esbuild": "~0.25.0",
     "eslint": "*",
     "esquery": "*",
-    "prettier": "^3.2.5",
+    "prettier": "^3.5.1",
+    "rimraf": "*",
     "tsx": "*"
   }
 }

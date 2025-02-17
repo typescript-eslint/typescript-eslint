@@ -25,12 +25,11 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-contributors": "tsx ./src/generate-contributors.ts",
-    "generate-sponsors": "tsx ./src/generate-sponsors.ts",
-    "lint": "npx nx lint",
-    "postinstall-script": "tsx ./src/postinstall.ts",
-    "test": "npx jest --coverage",
+    "clean": "tsc -b tsconfig.build.json --clean & yarn run postclean",
+    "postclean": "rimraf dist/ coverage/",
+    "format": "prettier --write . --ignore-path $PROJECT_CWD/.prettierignore",
+    "lint": "yarn run -T nx lint",
+    "test": "jest --coverage",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -41,6 +40,9 @@
   },
   "devDependencies": {
     "@jest/types": "29.6.3",
+    "eslint": "*",
+    "jest": "29.7.0",
+    "rimraf": "*",
     "typescript": "*"
   },
   "funding": {

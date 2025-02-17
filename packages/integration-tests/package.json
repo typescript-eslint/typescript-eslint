@@ -12,8 +12,8 @@
   "homepage": "https://typescript-eslint.io",
   "license": "MIT",
   "scripts": {
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "npx nx lint",
+    "format": "prettier --write . --ignore-path $PROJECT_CWD/.prettierignore",
+    "lint": "yarn run -T nx lint",
     "test": "jest --no-coverage",
     "typecheck": "tsc --noEmit"
   },
@@ -21,7 +21,9 @@
     "@jest/types": "29.6.3",
     "jest": "29.7.0",
     "ncp": "*",
+    "prettier": "^3.5.1",
     "tmp": "*",
-    "tsx": "*"
+    "tsx": "*",
+    "typescript": "*"
   }
 }

@@ -1,19 +1,13 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.build.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ],
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": false
-  }
+    "composite": false,
+    "rootDir": "."
+  },
+  "include": ["src", "tests", "tools"],
+  "exclude": ["tests/fixtures"],
+  "references": [
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../visitor-keys/tsconfig.build.json" }
+  ]
 }
