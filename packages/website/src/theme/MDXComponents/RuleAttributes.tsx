@@ -127,10 +127,24 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           <Link href="/getting-started/typed-linting" target="_blank">
             type information
           </Link>{' '}
-          to run.
+          to run, which comes with performance tradeoffs.
         </>
       ),
       emoji: '💭',
+    });
+  }
+
+  if (rule.docs.extendsBaseRule) {
+    features.push({
+      children: (
+        <>
+          {' '}
+          This is an "extension" rule that replaces a core ESLint rule to work
+          with TypeScript. See{' '}
+          <Link href="/rules#extension-rules">Rules &gt; Extension Rules</Link>.
+        </>
+      ),
+      emoji: '🧱',
     });
   }
 

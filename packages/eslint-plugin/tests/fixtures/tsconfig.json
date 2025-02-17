@@ -15,6 +15,7 @@
     "mixed-enums-decl.ts",
     "react.tsx",
     "var-declaration.ts",
-    "errors.ts"
+    "errors.ts",
+    "switch-exhaustiveness-check.ts"
   ]
 }

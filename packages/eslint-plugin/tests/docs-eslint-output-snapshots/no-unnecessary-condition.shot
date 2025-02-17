@@ -59,15 +59,77 @@ function bar(arg?: string | null) {
 `;
 
 exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 3`] = `
-"Options: { "allowConstantLoopConditions": true }
+"Options: { "allowConstantLoopConditions": "never" }
 
-while (true) {}
-for (; true; ) {}
-do {} while (true);
+while (true) {
+       ~~~~ Unnecessary conditional, value is always truthy.
+  // ...
+}
+
+for (; true; ) {
+       ~~~~ Unnecessary conditional, value is always truthy.
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+         ~~~~ Unnecessary conditional, value is always truthy.
 "
 `;
 
 exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 4`] = `
+"Options: { "allowConstantLoopConditions": "always" }
+
+while (true) {
+  // ...
+}
+
+for (; true; ) {
+  // ...
+}
+
+do {
+  // ...
+} while (true);
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 5`] = `
+"Options: { "allowConstantLoopConditions": "only-allowed-literals" }
+
+while (true) {
+  // ...
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 6`] = `
+"Options: { "allowConstantLoopConditions": "only-allowed-literals" }
+
+// \`alwaysTrue\` has the type of \`true\` (which isn't allowed)
+// as only the literal value of \`true\` is allowed.
+
+declare const alwaysTrue: true;
+
+while (alwaysTrue) {
+       ~~~~~~~~~~ Unnecessary conditional, value is always truthy.
+  // ...
+}
+
+// not even a variable that references the value of \`true\` is allowed, only
+// the literal value of \`true\` used directly.
+
+const thisIsTrue = true;
+
+while (thisIsTrue) {
+       ~~~~~~~~~~ Unnecessary conditional, value is always truthy.
+  // ...
+}
+"
+`;
+
+exports[`Validating rule docs no-unnecessary-condition.mdx code examples ESLint output 7`] = `
 "Options: { "checkTypePredicates": true }
 
 function assert(condition: unknown): asserts condition {
