@@ -3732,6 +3732,38 @@ declare const nullOrNumber: number | null;
     },
     {
       code: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter(x => objectValue);
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorObjectInPredicate',
+        },
+      ],
+    },
+    {
+      code: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter(x => {
+  return objectValue;
+});
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'conditionErrorObjectInPredicate',
+        },
+      ],
+    },
+    {
+      code: `
 declare const nullOrObject: object | null;
 [{ a: 0 }, null].filter(x => nullOrObject);
       `,

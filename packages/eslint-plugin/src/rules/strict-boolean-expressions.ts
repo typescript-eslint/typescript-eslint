@@ -50,6 +50,7 @@ export type MessageId =
   | 'conditionErrorNumber'
   | 'conditionErrorNumberInPredicate'
   | 'conditionErrorObject'
+  | 'conditionErrorObjectInPredicate'
   | 'conditionErrorOther'
   | 'conditionErrorString'
   | 'conditionErrorStringInPredicate'
@@ -128,6 +129,9 @@ export default createRule<Options, MessageId>({
         'An explicit zero/NaN check is required.',
       conditionErrorObject:
         'Unexpected object value in conditional. ' +
+        'The condition is always true.',
+      conditionErrorObjectInPredicate:
+        'Unexpected object value in array predicate return type. ' +
         'The condition is always true.',
       conditionErrorOther:
         'Unexpected value in conditional. ' +
@@ -413,6 +417,14 @@ export default createRule<Options, MessageId>({
           );
           return;
         }
+      }
+
+      if (category === 'object' && isFunctionExpression) {
+        context.report({
+          node: predicateNode.body,
+          messageId: 'conditionErrorObjectInPredicate',
+        });
+        return;
       }
 
       if (category === 'string') {
