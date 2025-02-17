@@ -307,16 +307,11 @@ export default createRule<Options, MessageIds>({
     }
 
     function getLeftNode(
-      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
+      init: TSESTree.Expression | TSESTree.PrivateIdentifier,
     ): TSESTree.MemberExpression {
-      const skippedChainExpressionNode = skipChainExpression(node);
-
-      let leftNode;
-      if (skippedChainExpressionNode.type === AST_NODE_TYPES.CallExpression) {
-        leftNode = skippedChainExpressionNode.callee;
-      } else {
-        leftNode = skippedChainExpressionNode;
-      }
+      const node = skipChainExpression(init);
+      const leftNode =
+        node.type === AST_NODE_TYPES.CallExpression ? node.callee : node;
 
       if (leftNode.type !== AST_NODE_TYPES.MemberExpression) {
         throw new Error(`Expected a MemberExpression, got ${leftNode.type}`);
