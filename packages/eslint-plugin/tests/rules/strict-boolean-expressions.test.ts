@@ -114,6 +114,13 @@ if (x) {
       `,
       options: [{ allowNullableBoolean: true }],
     },
+    {
+      code: `
+        const a: (undefined | boolean | null)[] = [true, undefined, null];
+        a.some(x => x);
+      `,
+      options: [{ allowNullableBoolean: true }],
+    },
 
     // nullable string in boolean context
     {
@@ -158,6 +165,13 @@ if (x) {
       `,
       options: [{ allowNullableNumber: true }],
     },
+    {
+      code: `
+        declare const arrayOfArrays: (null | unknown[])[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array?.length);
+      `,
+      options: [{ allowNullableNumber: true }],
+    },
 
     // any in boolean context
     {
@@ -177,6 +191,13 @@ if (x) {
     {
       code: `
         <T extends any>(x: T) => (x ? 1 : 0);
+      `,
+      options: [{ allowAny: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: any[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
       `,
       options: [{ allowAny: true }],
     },
@@ -217,6 +238,27 @@ if (x) {
         0 || false || '' ? null : {};
       `,
       options: [{ allowNumber: true, allowString: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: string[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowString: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: number[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNumber: true }],
+    },
+    {
+      code: `
+        declare const arrayOfArrays: (null | object)[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNullableObject: true }],
     },
 
     // nullable enum in boolean context
@@ -330,7 +372,17 @@ if (x) {
       `,
       options: [{ allowNullableEnum: true }],
     },
-
+    {
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        declare const arrayOfArrays: (ExampleEnum | null)[];
+        const isAnyNonEmptyArray1 = arrayOfArrays.some(array => array);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
     {
       code: `
 declare const x: string[] | null;
@@ -694,6 +746,41 @@ declare function f(x: string | null): boolean;
         { allowNullableObject: false, allowNumber: false, allowString: false },
       ],
       output: null,
+    },
+    {
+      code: `
+        declare const array: string[];
+        array.some(x => x);
+      `,
+      errors: [
+        {
+          messageId: 'conditionErrorStringInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+        declare const array: string[];
+        array.some(x => x.length > 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+        declare const array: string[];
+        array.some(x => x !== "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+        declare const array: string[];
+        array.some(x => Boolean(x));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableBoolean: true, allowString: false }],
     },
     {
       code: noFormat`
@@ -3108,6 +3195,7 @@ assert(Boolean(nullableString));
           ],
         },
       ],
+      options: [{ allowString: false }],
     },
     {
       code: `
@@ -3433,6 +3521,410 @@ function foo<T extends number>(x: number): T {}
           endLine: 3,
           line: 3,
           messageId: 'predicateReturnsNonBoolean',
+        },
+      ],
+      options: [
+        {
+          allowNumber: false,
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString);
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableStringInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => Boolean(nullOrString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrString: string | null;
+['one', null].filter(x => !nullOrString);
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableString',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => nullOrString == null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => !(nullOrString ?? ""));
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrString: string | null;
+['one', null].filter(x => !Boolean(nullOrString));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const anyValue: any;
+['one', null].filter(x => anyValue);
+      `,
+      errors: [
+        {
+          column: 27,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorAnyInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const anyValue: any;
+['one', null].filter(x => Boolean(anyValue));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter(x => nullOrBoolean);
+      `,
+      errors: [
+        {
+          column: 26,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableBooleanInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixDefaultFalse',
+              output: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter(x => nullOrBoolean ?? false);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareTrue',
+              output: `
+declare const nullOrBoolean: boolean | null;
+[true, null].filter(x => nullOrBoolean === true);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+[0, 1].filter(x => theEnum);
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 27,
+          endLine: 7,
+          line: 7,
+          messageId: 'conditionErrorNullableEnumInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+enum ExampleEnum {
+  This = 0,
+  That = 1,
+}
+const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+[0, 1].filter(x => theEnum != null);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => nullOrNumber);
+      `,
+      errors: [
+        {
+          column: 23,
+          endColumn: 35,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableNumberInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => nullOrNumber != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => nullOrNumber ?? 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrNumber: number | null;
+[0, null].filter(x => Boolean(nullOrNumber));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter(x => objectValue);
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 39,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorObjectInPredicate',
+        },
+      ],
+    },
+    {
+      code: `
+const objectValue: object = {};
+[{ a: 0 }, {}].filter(x => {
+  return objectValue;
+});
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 2,
+          endLine: 5,
+          line: 3,
+          messageId: 'conditionErrorObjectInPredicate',
+        },
+      ],
+    },
+    {
+      code: `
+declare const nullOrObject: object | null;
+[{ a: 0 }, null].filter(x => nullOrObject);
+      `,
+      errors: [
+        {
+          column: 30,
+          endColumn: 42,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableObjectInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrObject: object | null;
+[{ a: 0 }, null].filter(x => nullOrObject != null);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNullableObject: false }],
+    },
+    {
+      code: `
+const numbers: number[] = [1];
+[1, 2].filter(x => numbers.length);
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 34,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNumberInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareArrayLengthNonzero',
+              output: `
+const numbers: number[] = [1];
+[1, 2].filter(x => numbers.length > 0);
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+const numberValue: number = 1;
+[1, 2].filter(x => numberValue);
+      `,
+      errors: [
+        {
+          column: 20,
+          endColumn: 31,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNumberInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareZero',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter(x => numberValue !== 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareNaN',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter(x => !Number.isNaN(numberValue));
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+const numberValue: number = 1;
+[1, 2].filter(x => Boolean(numberValue));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowNumber: false }],
+    },
+    {
+      code: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => stringValue);
+      `,
+      errors: [
+        {
+          column: 29,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorStringInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareStringLength',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => stringValue.length > 0);
+      `,
+            },
+            {
+              messageId: 'conditionFixCompareEmptyString',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => stringValue !== "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+const stringValue: string = 'hoge';
+['hoge', 'foo'].filter(x => Boolean(stringValue));
+      `,
+            },
+          ],
+        },
+      ],
+      options: [{ allowString: false }],
+    },
+    {
+      code: `
+declare const nullOrString: string | null;
+['hoge', null].filter(x => nullOrString);
+      `,
+      errors: [
+        {
+          column: 28,
+          endColumn: 40,
+          endLine: 3,
+          line: 3,
+          messageId: 'conditionErrorNullableStringInPredicate',
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+declare const nullOrString: string | null;
+['hoge', null].filter(x => nullOrString != null);
+      `,
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output: `
+declare const nullOrString: string | null;
+['hoge', null].filter(x => nullOrString ?? "");
+      `,
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output: `
+declare const nullOrString: string | null;
+['hoge', null].filter(x => Boolean(nullOrString));
+      `,
+            },
+          ],
         },
       ],
     },
