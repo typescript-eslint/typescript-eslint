@@ -49,8 +49,7 @@ This config file exports a flat config that enables both the [core ESLint recomm
 
 ### `config(...)`
 
-`tseslint.config` takes in any number of ESLint config objects.
-Each of those config objects may additionally include an `extends` array of configs to extend.
+`tseslint.config(...)` takes in any number of ESLint config objects, each of which may additionally include an `extends` array of configs to extend.
 `tseslint.config(...)` returns the equivalent ESLint config of applying the rest of the settings for each extension.
 
 By using this function you will get autocomplete and documentation for all config properties.
