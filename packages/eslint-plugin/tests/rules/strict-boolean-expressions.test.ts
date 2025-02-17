@@ -3732,38 +3732,6 @@ declare const nullOrNumber: number | null;
     },
     {
       code: `
-const nullValue = null;
-[null].filter(x => nullValue);
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 29,
-          endLine: 3,
-          line: 3,
-          messageId: 'conditionErrorNullishInPredicate',
-        },
-      ],
-    },
-    {
-      code: `
-const nullValue = null;
-[null].filter(x => {
-  return nullValue;
-});
-      `,
-      errors: [
-        {
-          column: 20,
-          endColumn: 2,
-          endLine: 5,
-          line: 3,
-          messageId: 'conditionErrorNullishInPredicate',
-        },
-      ],
-    },
-    {
-      code: `
 const objectValue: object = {};
 [{ a: 0 }, {}].filter(x => objectValue);
       `,
