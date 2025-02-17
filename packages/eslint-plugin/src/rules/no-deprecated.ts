@@ -17,6 +17,7 @@ import {
 type IdentifierLike =
   | TSESTree.Identifier
   | TSESTree.JSXIdentifier
+  | TSESTree.PrivateIdentifier
   | TSESTree.Super;
 
 type MessageIds = 'deprecated' | 'deprecatedWithReason';
@@ -400,6 +401,7 @@ export default createRule<Options, MessageIds>({
           checkIdentifier(node);
         }
       },
+      PrivateIdentifier: checkIdentifier,
       Super: checkIdentifier,
     };
   },

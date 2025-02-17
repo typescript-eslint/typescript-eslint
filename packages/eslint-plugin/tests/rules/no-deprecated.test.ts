@@ -363,6 +363,15 @@ exists('/foo');
       declare const test: string;
       const bar = { test };
     `,
+    `
+      class A {
+        #b = () => {};
+
+        c() {
+          this.#b();
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -2856,6 +2865,28 @@ class B extends A {
           column: 11,
           data: { name: 'b' },
           endColumn: 12,
+          endLine: 7,
+          line: 7,
+          messageId: 'deprecated',
+        },
+      ],
+    },
+    {
+      code: `
+        class A {
+          /** @deprecated */
+          #b = () => {};
+
+          c() {
+            this.#b();
+          }
+        }
+      `,
+      errors: [
+        {
+          column: 18,
+          data: { name: 'b' },
+          endColumn: 20,
           endLine: 7,
           line: 7,
           messageId: 'deprecated',
