@@ -47,6 +47,7 @@ export type MessageId =
   | 'conditionErrorNullableString'
   | 'conditionErrorNullableStringInPredicate'
   | 'conditionErrorNullish'
+  | 'conditionErrorNullishInPredicate'
   | 'conditionErrorNumber'
   | 'conditionErrorNumberInPredicate'
   | 'conditionErrorObject'
@@ -120,6 +121,9 @@ export default createRule<Options, MessageId>({
         'Please handle the nullish/empty cases explicitly.',
       conditionErrorNullish:
         'Unexpected nullish value in conditional. ' +
+        'The condition is always false.',
+      conditionErrorNullishInPredicate:
+        'Unexpected nullish value in array predicate return type. ' +
         'The condition is always false.',
       conditionErrorNumber:
         'Unexpected number value in conditional. ' +
@@ -374,6 +378,14 @@ export default createRule<Options, MessageId>({
       const category = determineTypeCategory(types);
 
       if (category === 'boolean' || category === 'never') {
+        return;
+      }
+
+      if (category === 'nullish' && isFunctionExpression) {
+        context.report({
+          node: predicateNode.body,
+          messageId: 'conditionErrorNullishInPredicate',
+        });
         return;
       }
 
