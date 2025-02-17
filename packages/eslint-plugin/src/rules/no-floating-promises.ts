@@ -15,6 +15,7 @@ import {
   OperatorPrecedence,
   readonlynessOptionsDefaults,
   readonlynessOptionsSchema,
+  skipChainExpression,
   typeMatchesSomeSpecifier,
 } from '../util';
 
@@ -135,11 +136,7 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        let expression = node.expression;
-
-        if (expression.type === AST_NODE_TYPES.ChainExpression) {
-          expression = expression.expression;
-        }
+        const expression = skipChainExpression(node.expression);
 
         if (isKnownSafePromiseReturn(expression)) {
           return;
