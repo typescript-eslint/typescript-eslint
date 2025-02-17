@@ -13,6 +13,7 @@ import {
   isStaticMemberAccessOfValue,
   nullThrows,
   NullThrowsReasons,
+  skipChainExpression,
 } from '../util';
 
 const EQ_OPERATORS = /^[=!]=/;
@@ -308,15 +309,13 @@ export default createRule<Options, MessageIds>({
     function getLeftNode(
       node: TSESTree.Expression | TSESTree.PrivateIdentifier,
     ): TSESTree.MemberExpression {
-      if (node.type === AST_NODE_TYPES.ChainExpression) {
-        return getLeftNode(node.expression);
-      }
+      const skippedChainExpressionNode = skipChainExpression(node);
 
       let leftNode;
-      if (node.type === AST_NODE_TYPES.CallExpression) {
-        leftNode = node.callee;
+      if (skippedChainExpressionNode.type === AST_NODE_TYPES.CallExpression) {
+        leftNode = skippedChainExpressionNode.callee;
       } else {
-        leftNode = node;
+        leftNode = skippedChainExpressionNode;
       }
 
       if (leftNode.type !== AST_NODE_TYPES.MemberExpression) {

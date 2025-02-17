@@ -12,6 +12,7 @@ import {
   getStaticValue,
   isStaticMemberAccessOfValue,
   nullThrows,
+  skipChainExpression,
 } from '../util';
 
 export default createRule({
@@ -56,23 +57,17 @@ export default createRule({
         return parseArrayFilterExpressions(lastExpression);
       }
 
-      if (expression.type === AST_NODE_TYPES.ChainExpression) {
-        return parseArrayFilterExpressions(expression.expression);
-      }
+      const node = skipChainExpression(expression);
 
       // This is the only reason we're returning a list rather than a single value.
-      if (expression.type === AST_NODE_TYPES.ConditionalExpression) {
+      if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // Both branches of the ternary _must_ return results.
-        const consequentResult = parseArrayFilterExpressions(
-          expression.consequent,
-        );
+        const consequentResult = parseArrayFilterExpressions(node.consequent);
         if (consequentResult.length === 0) {
           return [];
         }
 
-        const alternateResult = parseArrayFilterExpressions(
-          expression.alternate,
-        );
+        const alternateResult = parseArrayFilterExpressions(node.alternate);
         if (alternateResult.length === 0) {
           return [];
         }
@@ -82,11 +77,8 @@ export default createRule({
       }
 
       // Check if it looks like <<stuff>>(...), but not <<stuff>>?.(...)
-      if (
-        expression.type === AST_NODE_TYPES.CallExpression &&
-        !expression.optional
-      ) {
-        const callee = expression.callee;
+      if (node.type === AST_NODE_TYPES.CallExpression && !node.optional) {
+        const callee = node.callee;
         // Check if it looks like <<stuff>>.filter(...) or <<stuff>>['filter'](...),
         // or the optional chaining variants.
         if (callee.type === AST_NODE_TYPES.MemberExpression) {
