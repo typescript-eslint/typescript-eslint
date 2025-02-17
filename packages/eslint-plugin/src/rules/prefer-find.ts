@@ -48,16 +48,16 @@ export default createRule({
     function parseArrayFilterExpressions(
       expression: TSESTree.Expression,
     ): FilterExpressionData[] {
-      if (expression.type === AST_NODE_TYPES.SequenceExpression) {
+      const node = skipChainExpression(expression);
+
+      if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Only the last expression in (a, b, [1, 2, 3].filter(condition))[0] matters
         const lastExpression = nullThrows(
-          expression.expressions.at(-1),
+          node.expressions.at(-1),
           'Expected to have more than zero expressions in a sequence expression',
         );
         return parseArrayFilterExpressions(lastExpression);
       }
-
-      const node = skipChainExpression(expression);
 
       // This is the only reason we're returning a list rather than a single value.
       if (node.type === AST_NODE_TYPES.ConditionalExpression) {
