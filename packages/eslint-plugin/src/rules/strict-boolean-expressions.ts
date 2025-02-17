@@ -35,16 +35,24 @@ export type Options = [
 
 export type MessageId =
   | 'conditionErrorAny'
+  | 'conditionErrorAnyInPredicate'
   | 'conditionErrorNullableBoolean'
+  | 'conditionErrorNullableBooleanInPredicate'
   | 'conditionErrorNullableEnum'
+  | 'conditionErrorNullableEnumInPredicate'
   | 'conditionErrorNullableNumber'
+  | 'conditionErrorNullableNumberInPredicate'
   | 'conditionErrorNullableObject'
+  | 'conditionErrorNullableObjectInPredicate'
   | 'conditionErrorNullableString'
+  | 'conditionErrorNullableStringInPredicate'
   | 'conditionErrorNullish'
   | 'conditionErrorNumber'
+  | 'conditionErrorNumberInPredicate'
   | 'conditionErrorObject'
   | 'conditionErrorOther'
   | 'conditionErrorString'
+  | 'conditionErrorStringInPredicate'
   | 'conditionFixCastBoolean'
   | 'conditionFixCompareArrayLengthNonzero'
   | 'conditionFixCompareArrayLengthZero'
@@ -76,26 +84,47 @@ export default createRule<Options, MessageId>({
       conditionErrorAny:
         'Unexpected any value in conditional. ' +
         'An explicit comparison or type conversion is required.',
+      conditionErrorAnyInPredicate:
+        'Unexpected any value in array predicate return type. ' +
+        'An explicit comparison or type conversion is required.',
       conditionErrorNullableBoolean:
         'Unexpected nullable boolean value in conditional. ' +
+        'Please handle the nullish case explicitly.',
+      conditionErrorNullableBooleanInPredicate:
+        'Unexpected nullable boolean in array predicate return type. ' +
         'Please handle the nullish case explicitly.',
       conditionErrorNullableEnum:
         'Unexpected nullable enum value in conditional. ' +
         'Please handle the nullish/zero/NaN cases explicitly.',
+      conditionErrorNullableEnumInPredicate:
+        'Unexpected nullable enum value in array predicate return type. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
       conditionErrorNullableNumber:
         'Unexpected nullable number value in conditional. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
+      conditionErrorNullableNumberInPredicate:
+        'Unexpected nullable number value in array predicate return type. ' +
         'Please handle the nullish/zero/NaN cases explicitly.',
       conditionErrorNullableObject:
         'Unexpected nullable object value in conditional. ' +
         'An explicit null check is required.',
+      conditionErrorNullableObjectInPredicate:
+        'Unexpected nullable object value in array predicate return type. ' +
+        'An explicit null check is required.',
       conditionErrorNullableString:
         'Unexpected nullable string value in conditional. ' +
+        'Please handle the nullish/empty cases explicitly.',
+      conditionErrorNullableStringInPredicate:
+        'Unexpected nullable string value in array predicate return type. ' +
         'Please handle the nullish/empty cases explicitly.',
       conditionErrorNullish:
         'Unexpected nullish value in conditional. ' +
         'The condition is always false.',
       conditionErrorNumber:
         'Unexpected number value in conditional. ' +
+        'An explicit zero/NaN check is required.',
+      conditionErrorNumberInPredicate:
+        'Unexpected number value in array predicate return type. ' +
         'An explicit zero/NaN check is required.',
       conditionErrorObject:
         'Unexpected object value in conditional. ' +
@@ -105,6 +134,9 @@ export default createRule<Options, MessageId>({
         'A boolean expression is required.',
       conditionErrorString:
         'Unexpected string value in conditional. ' +
+        'An explicit empty string check is required.',
+      conditionErrorStringInPredicate:
+        'Unexpected string value in array predicate return type. ' +
         'An explicit empty string check is required.',
       conditionFixCastBoolean:
         'Explicitly convert value to a boolean (`Boolean(value)`)',
@@ -350,7 +382,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedNullableBooleanCondition(predicateNode.body);
+          reportUnexpectedNullableBooleanCondition(
+            predicateNode.body,
+            'conditionErrorNullableBooleanInPredicate',
+          );
 
           return;
         }
@@ -372,7 +407,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedNullableStringCondition(predicateNode.body);
+          reportUnexpectedNullableStringCondition(
+            predicateNode.body,
+            'conditionErrorNullableStringInPredicate',
+          );
           return;
         }
       }
@@ -386,7 +424,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedStringCondition(predicateNode.body);
+          reportUnexpectedStringCondition(
+            predicateNode.body,
+            'conditionErrorStringInPredicate',
+          );
 
           return;
         }
@@ -401,7 +442,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedNumberCondition(predicateNode.body);
+          reportUnexpectedNumberCondition(
+            predicateNode.body,
+            'conditionErrorNumberInPredicate',
+          );
 
           return;
         }
@@ -416,7 +460,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedNullableNumberCondition(predicateNode.body);
+          reportUnexpectedNullableNumberCondition(
+            predicateNode.body,
+            'conditionErrorNullableNumberInPredicate',
+          );
 
           return;
         }
@@ -431,7 +478,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedNullableObjectCondition(predicateNode.body);
+          reportUnexpectedNullableObjectCondition(
+            predicateNode.body,
+            'conditionErrorNullableObjectInPredicate',
+          );
           return;
         }
       }
@@ -445,7 +495,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedNullableEnumCondition(predicateNode.body);
+          reportUnexpectedNullableEnumCondition(
+            predicateNode.body,
+            'conditionErrorNullableEnumInPredicate',
+          );
           return;
         }
       }
@@ -459,7 +512,10 @@ export default createRule<Options, MessageId>({
           isFunctionExpression &&
           predicateNode.body.type !== AST_NODE_TYPES.BlockStatement
         ) {
-          reportUnexpectedAnyCondition(predicateNode.body);
+          reportUnexpectedAnyCondition(
+            predicateNode.body,
+            'conditionErrorAnyInPredicate',
+          );
           return;
         }
       }
@@ -633,12 +689,18 @@ export default createRule<Options, MessageId>({
       return null;
     }
 
-    function reportUnexpectedStringCondition(node: TSESTree.Expression) {
+    function reportUnexpectedStringCondition(
+      node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        'conditionErrorString' | 'conditionErrorStringInPredicate'
+      >,
+    ) {
       if (isLogicalNegationExpression(node.parent)) {
         // if (!string)
         context.report({
           node,
-          messageId: 'conditionErrorString',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -673,7 +735,7 @@ export default createRule<Options, MessageId>({
         // if (string)
         context.report({
           node,
-          messageId: 'conditionErrorString',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareStringLength',
@@ -706,12 +768,17 @@ export default createRule<Options, MessageId>({
 
     function reportUnexpectedNullableStringCondition(
       node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        | 'conditionErrorNullableString'
+        | 'conditionErrorNullableStringInPredicate'
+      >,
     ) {
       if (isLogicalNegationExpression(node.parent)) {
         // if (!nullableString)
         context.report({
           node,
-          messageId: 'conditionErrorNullableString',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -745,7 +812,7 @@ export default createRule<Options, MessageId>({
         // if (nullableString)
         context.report({
           node,
-          messageId: 'conditionErrorNullableString',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -776,13 +843,19 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function reportUnexpectedNumberCondition(node: TSESTree.Expression) {
+    function reportUnexpectedNumberCondition(
+      node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        'conditionErrorNumber' | 'conditionErrorNumberInPredicate'
+      >,
+    ) {
       if (isArrayLengthExpression(node, checker, services)) {
         if (isLogicalNegationExpression(node.parent)) {
           // if (!array.length)
           context.report({
             node,
-            messageId: 'conditionErrorNumber',
+            messageId,
             suggest: [
               {
                 messageId: 'conditionFixCompareArrayLengthZero',
@@ -799,7 +872,7 @@ export default createRule<Options, MessageId>({
           // if (array.length)
           context.report({
             node,
-            messageId: 'conditionErrorNumber',
+            messageId,
             suggest: [
               {
                 messageId: 'conditionFixCompareArrayLengthNonzero',
@@ -816,7 +889,7 @@ export default createRule<Options, MessageId>({
         // if (!number)
         context.report({
           node,
-          messageId: 'conditionErrorNumber',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareZero',
@@ -853,7 +926,7 @@ export default createRule<Options, MessageId>({
         // if (number)
         context.report({
           node,
-          messageId: 'conditionErrorNumber',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareZero',
@@ -886,12 +959,17 @@ export default createRule<Options, MessageId>({
 
     function reportUnexpectedNullableNumberCondition(
       node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        | 'conditionErrorNullableNumber'
+        | 'conditionErrorNullableNumberInPredicate'
+      >,
     ) {
       if (isLogicalNegationExpression(node.parent)) {
         // if (!nullableNumber)
         context.report({
           node,
-          messageId: 'conditionErrorNullableNumber',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -925,7 +1003,7 @@ export default createRule<Options, MessageId>({
         // if (nullableNumber)
         context.report({
           node,
-          messageId: 'conditionErrorNullableNumber',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -958,12 +1036,17 @@ export default createRule<Options, MessageId>({
 
     function reportUnexpectedNullableBooleanCondition(
       node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        | 'conditionErrorNullableBoolean'
+        | 'conditionErrorNullableBooleanInPredicate'
+      >,
     ) {
       if (isLogicalNegationExpression(node.parent)) {
         // if (!nullableBoolean)
         context.report({
           node,
-          messageId: 'conditionErrorNullableBoolean',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixDefaultFalse',
@@ -988,7 +1071,7 @@ export default createRule<Options, MessageId>({
         // if (nullableBoolean)
         context.report({
           node,
-          messageId: 'conditionErrorNullableBoolean',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixDefaultFalse',
@@ -1013,12 +1096,17 @@ export default createRule<Options, MessageId>({
 
     function reportUnexpectedNullableObjectCondition(
       node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        | 'conditionErrorNullableObject'
+        | 'conditionErrorNullableObjectInPredicate'
+      >,
     ) {
       if (isLogicalNegationExpression(node.parent)) {
         // if (!nullableObject)
         context.report({
           node,
-          messageId: 'conditionErrorNullableObject',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1035,7 +1123,7 @@ export default createRule<Options, MessageId>({
         // if (nullableObject)
         context.report({
           node,
-          messageId: 'conditionErrorNullableObject',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1050,11 +1138,17 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function reportUnexpectedNullableEnumCondition(node: TSESTree.Expression) {
+    function reportUnexpectedNullableEnumCondition(
+      node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        'conditionErrorNullableEnum' | 'conditionErrorNullableEnumInPredicate'
+      >,
+    ) {
       if (isLogicalNegationExpression(node.parent)) {
         context.report({
           node,
-          messageId: 'conditionErrorNullableEnum',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1070,7 +1164,7 @@ export default createRule<Options, MessageId>({
       } else {
         context.report({
           node,
-          messageId: 'conditionErrorNullableEnum',
+          messageId,
           suggest: [
             {
               messageId: 'conditionFixCompareNullish',
@@ -1085,10 +1179,16 @@ export default createRule<Options, MessageId>({
       }
     }
 
-    function reportUnexpectedAnyCondition(node: TSESTree.Expression) {
+    function reportUnexpectedAnyCondition(
+      node: TSESTree.Expression,
+      messageId: Extract<
+        MessageId,
+        'conditionErrorAny' | 'conditionErrorAnyInPredicate'
+      >,
+    ) {
       context.report({
         node,
-        messageId: 'conditionErrorAny',
+        messageId,
         suggest: [
           {
             messageId: 'conditionFixCastBoolean',
@@ -1127,7 +1227,10 @@ export default createRule<Options, MessageId>({
 
       if (category === 'nullable boolean') {
         if (!options.allowNullableBoolean) {
-          reportUnexpectedNullableBooleanCondition(node);
+          reportUnexpectedNullableBooleanCondition(
+            node,
+            'conditionErrorNullableBoolean',
+          );
         }
         return;
       }
@@ -1142,28 +1245,34 @@ export default createRule<Options, MessageId>({
 
       if (category === 'string') {
         if (!options.allowString) {
-          reportUnexpectedStringCondition(node);
+          reportUnexpectedStringCondition(node, 'conditionErrorString');
         }
         return;
       }
 
       if (category === 'nullable string') {
         if (!options.allowNullableString) {
-          reportUnexpectedNullableStringCondition(node);
+          reportUnexpectedNullableStringCondition(
+            node,
+            'conditionErrorNullableString',
+          );
         }
         return;
       }
 
       if (category === 'number') {
         if (!options.allowNumber) {
-          reportUnexpectedNumberCondition(node);
+          reportUnexpectedNumberCondition(node, 'conditionErrorNumber');
         }
         return;
       }
 
       if (category === 'nullable number') {
         if (!options.allowNullableNumber) {
-          reportUnexpectedNullableNumberCondition(node);
+          reportUnexpectedNullableNumberCondition(
+            node,
+            'conditionErrorNullableNumber',
+          );
         }
         return;
       }
@@ -1176,21 +1285,27 @@ export default createRule<Options, MessageId>({
 
       if (category === 'nullable object') {
         if (!options.allowNullableObject) {
-          reportUnexpectedNullableObjectCondition(node);
+          reportUnexpectedNullableObjectCondition(
+            node,
+            'conditionErrorNullableObject',
+          );
         }
         return;
       }
 
       if (category === 'nullable enum') {
         if (!options.allowNullableEnum) {
-          reportUnexpectedNullableEnumCondition(node);
+          reportUnexpectedNullableEnumCondition(
+            node,
+            'conditionErrorNullableEnum',
+          );
         }
         return;
       }
 
       if (category === 'any') {
         if (!options.allowAny) {
-          reportUnexpectedAnyCondition(node);
+          reportUnexpectedAnyCondition(node, 'conditionErrorAny');
         }
         return;
       }
