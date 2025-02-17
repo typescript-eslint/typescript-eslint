@@ -121,6 +121,7 @@ export default createRule<Options, MessageIds>({
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.PropertyDefinition:
+        case AST_NODE_TYPES.AccessorProperty:
           return parent.key === node;
 
         case AST_NODE_TYPES.Property:
