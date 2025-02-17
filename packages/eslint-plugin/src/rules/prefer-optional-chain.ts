@@ -116,7 +116,7 @@ export default createRule<
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
     return {
-      // specific handling for `if (foo) { foo.bar(); }` / `if (foo) foo.bar();`
+      // specific handling for `if (foo) { foo.bar }` / `if (foo) foo.bar`
       'IfStatement[consequent.type=BlockStatement][consequent.body.length=1], IfStatement[consequent.type=ExpressionStatement]'(
         node: TSESTree.IfStatement,
       ): void {
