@@ -2885,7 +2885,7 @@ class B extends A {
       errors: [
         {
           column: 18,
-          data: { name: 'b' },
+          data: { name: '#b' },
           endColumn: 20,
           endLine: 7,
           line: 7,

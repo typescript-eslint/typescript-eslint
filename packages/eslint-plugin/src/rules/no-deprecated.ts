@@ -378,7 +378,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const name = node.type === AST_NODE_TYPES.Super ? 'super' : node.name;
+      const name = getReportedNodeName(node);
 
       context.report({
         ...(reason
@@ -406,3 +406,15 @@ export default createRule<Options, MessageIds>({
     };
   },
 });
+
+function getReportedNodeName(node: IdentifierLike): string {
+  if (node.type === AST_NODE_TYPES.Super) {
+    return 'super';
+  }
+
+  if (node.type === AST_NODE_TYPES.PrivateIdentifier) {
+    return `#${node.name}`;
+  }
+
+  return node.name;
+}
