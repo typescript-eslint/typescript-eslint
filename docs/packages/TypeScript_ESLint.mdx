@@ -162,7 +162,7 @@ export default tseslint.config({
 
 ### Manual usage
 
-`tseslint.config` specifies typescript-eslint `parser` and `plugin` options for you, so there is no need to manually provide those.
+[typescript-eslint's recommended and stylistic configurations](../users/configs) specify typescript-eslint `parser` and `plugin` options for you, so there is no need to manually provide those.
 However, in complex ESLint configurations, you may find yourself manually specifying those options yourself.
 
 #### Manually configuring our plugin and parser
@@ -204,7 +204,7 @@ This has been the standard namespace for our plugin for many years and is what u
 You may choose a different namespace - but note that currently [flat configs allow the same plugin to be registered, configured, and have duplicate reports under multiple namespaces](https://github.com/eslint/eslint/discussions/17766).
 :::
 
-#### Usage with other plugins
+### Usage with other plugins
 
 Below is a more complex example of how you might use our tooling with flat configs.
 This config:
