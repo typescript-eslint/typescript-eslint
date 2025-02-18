@@ -48,6 +48,45 @@ class Foo {
     {
       code: `
 class Foo {
+  accessor method = () => {};
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+      options: [{}],
+    },
+    {
+      code: `
+class Foo {
+  private accessor method = () => {};
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+      options: [{}],
+    },
+    {
+      code: `
+class Foo {
+  protected accessor method = () => {};
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+      options: [{}],
+    },
+    {
+      code: `
+class Foo {
   #method() {}
 }
       `,
@@ -578,6 +617,14 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  accessor method = () => {};
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: true }],
+    },
+    {
+      code: `
+class Foo implements Bar {
   get getter() {}
 }
       `,
@@ -611,6 +658,14 @@ class Foo {
       code: `
 class Foo {
   protected override method() {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  override accessor method = () => {};
 }
       `,
       options: [{ ignoreOverrideMethods: true }],
@@ -900,6 +955,24 @@ class Foo implements Bar {
           ignoreOverrideMethods: true,
         },
       ],
+    },
+    {
+      code: `
+class Foo {
+  accessor method = () => {
+    this;
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  accessor method = function () {
+    this;
+  };
+}
+      `,
     },
   ],
 });
