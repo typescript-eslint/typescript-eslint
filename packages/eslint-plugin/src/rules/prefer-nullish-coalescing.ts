@@ -423,7 +423,7 @@ export default createRule<Options, MessageIds>({
 
           if (
             testNode &&
-            isNodeOrNodeExpressionEqual(
+            isNodeEquivalent(
               testNode,
               getBranchNodes(node, operator).nonNullishBranch,
             )
@@ -438,7 +438,7 @@ export default createRule<Options, MessageIds>({
             } else if (isUndefinedIdentifier(testNode)) {
               hasUndefinedCheckWithoutTruthinessCheck = true;
             } else if (
-              isNodeOrNodeExpressionEqual(
+              isNodeEquivalent(
                 testNode,
                 getBranchNodes(node, operator).nonNullishBranch,
               )
@@ -656,10 +656,23 @@ function isMixedLogicalExpression(
   return false;
 }
 
-function isNodeOrNodeExpressionEqual(
-  a: TSESTree.Node,
-  b: TSESTree.Node,
-): boolean {
+function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
+  if (
+    a.type === AST_NODE_TYPES.MemberExpression &&
+    a.object.type === AST_NODE_TYPES.ChainExpression &&
+    b.type === AST_NODE_TYPES.MemberExpression
+  ) {
+    return (
+      isNodeEqual(a.property, b.property) &&
+      isNodeEquivalent(a.object.expression, b.object)
+    );
+  }
+  if (
+    a.type === AST_NODE_TYPES.ChainExpression ||
+    b.type === AST_NODE_TYPES.ChainExpression
+  ) {
+    return isNodeEquivalent(skipChainExpression(a), skipChainExpression(b));
+  }
   return isNodeEqual(skipChainExpression(a), skipChainExpression(b));
 }
 
