@@ -659,23 +659,17 @@ function isMixedLogicalExpression(
 function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
   if (
     a.type === AST_NODE_TYPES.MemberExpression &&
-    a.object.type === AST_NODE_TYPES.ChainExpression &&
     b.type === AST_NODE_TYPES.MemberExpression
   ) {
-    return (
-      isNodeEqual(a.property, b.property) &&
-      isNodeEquivalent(a.object.expression, b.object)
-    );
-  }
-  if (
-    b.type === AST_NODE_TYPES.MemberExpression &&
-    b.object.type === AST_NODE_TYPES.ChainExpression &&
-    a.type === AST_NODE_TYPES.MemberExpression
-  ) {
-    return (
-      isNodeEqual(a.property, b.property) &&
-      isNodeEquivalent(a.object, b.object.expression)
-    );
+    if (!isNodeEqual(a.property, b.property)) {
+      return false;
+    }
+    if (a.object.type === AST_NODE_TYPES.ChainExpression) {
+      return isNodeEquivalent(a.object.expression, b.object);
+    }
+    if (b.object.type === AST_NODE_TYPES.ChainExpression) {
+      return isNodeEquivalent(a.object, b.object.expression);
+    }
   }
   if (
     a.type === AST_NODE_TYPES.ChainExpression ||
