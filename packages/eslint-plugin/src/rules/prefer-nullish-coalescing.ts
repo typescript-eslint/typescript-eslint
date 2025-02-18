@@ -672,7 +672,7 @@ function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
   ) {
     return isNodeEquivalent(skipChainExpression(a), skipChainExpression(b));
   }
-  return isNodeEqual(skipChainExpression(a), skipChainExpression(b));
+  return isNodeEqual(a, b);
 }
 
 /**
