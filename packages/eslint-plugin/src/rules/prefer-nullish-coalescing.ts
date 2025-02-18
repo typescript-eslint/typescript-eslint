@@ -661,10 +661,10 @@ function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
     a.type === AST_NODE_TYPES.MemberExpression &&
     b.type === AST_NODE_TYPES.MemberExpression
   ) {
-    if (!isNodeEqual(a.property, b.property)) {
-      return false;
-    }
-    return isNodeEquivalent(a.object, b.object);
+    return (
+      isNodeEqual(a.property, b.property)) &&
+      isNodeEquivalent(a.object, b.object)
+    );
   }
   if (
     a.type === AST_NODE_TYPES.ChainExpression ||
