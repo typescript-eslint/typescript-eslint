@@ -664,12 +664,7 @@ function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
     if (!isNodeEqual(a.property, b.property)) {
       return false;
     }
-    if (a.object.type === AST_NODE_TYPES.ChainExpression) {
-      return isNodeEquivalent(a.object.expression, b.object);
-    }
-    if (b.object.type === AST_NODE_TYPES.ChainExpression) {
-      return isNodeEquivalent(a.object, b.object.expression);
-    }
+    return isNodeEquivalent(a.object, b.object);
   }
   if (
     a.type === AST_NODE_TYPES.ChainExpression ||
