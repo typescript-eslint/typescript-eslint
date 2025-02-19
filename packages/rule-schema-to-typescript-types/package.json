@@ -30,7 +30,6 @@
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "typecheck": "tsc --noEmit",
     "_typecheck": "npx nx typecheck"
   },
   "dependencies": {

@@ -3,16 +3,23 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../type-utils" },
-    { "path": "../parser" },
-    { "path": "../rule-tester" },
-    { "path": "../visitor-keys" },
-    { "path": "../ast-spec" },
-    { "path": "../types" },
-    { "path": "../typescript-estree" },
-    { "path": "../scope-manager" },
-    { "path": "../utils" },
-    { "path": "./tsconfig.build.json" },
-    { "path": "./tsconfig.spec.json" }
+    {
+      "path": "../type-utils"
+    },
+    {
+      "path": "../scope-manager"
+    },
+    {
+      "path": "../rule-tester"
+    },
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ]
 }

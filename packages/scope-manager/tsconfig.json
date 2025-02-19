@@ -3,11 +3,20 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../visitor-keys" },
-    { "path": "../ast-spec" },
-    { "path": "../types" },
-    { "path": "../typescript-estree" },
-    { "path": "./tsconfig.build.json" },
-    { "path": "./tsconfig.spec.json" }
+    {
+      "path": "../visitor-keys"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../typescript-estree"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ]
 }

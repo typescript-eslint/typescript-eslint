@@ -3,8 +3,11 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../ast-spec" },
-    { "path": "./tsconfig.build.json" },
-    { "path": "./tsconfig.tools.json" }
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.tools.json"
+    }
   ]
 }

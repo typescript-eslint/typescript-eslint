@@ -3,9 +3,14 @@
   "files": [],
   "include": [],
   "references": [
-    { "path": "../ast-spec" },
-    { "path": "../types" },
-    { "path": "./tsconfig.build.json" },
-    { "path": "./tsconfig.spec.json" }
+    {
+      "path": "../types"
+    },
+    {
+      "path": "./tsconfig.build.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
   ]
 }

@@ -11,8 +11,11 @@
   "include": ["src/**/*.ts", "typings"],
   "exclude": ["jest.config.js", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
-    { "path": "../visitor-keys/tsconfig.build.json" },
-    { "path": "../ast-spec/tsconfig.build.json" },
-    { "path": "../types/tsconfig.build.json" }
+    {
+      "path": "../visitor-keys/tsconfig.build.json"
+    },
+    {
+      "path": "../types/tsconfig.build.json"
+    }
   ]
 }

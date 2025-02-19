@@ -12,12 +12,14 @@
   "include": ["src/**/*.ts", "typings"],
   "exclude": ["jest.config.js", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
-    { "path": "../utils/tsconfig.build.json" },
-    { "path": "../visitor-keys/tsconfig.build.json" },
-    { "path": "../ast-spec/tsconfig.build.json" },
-    { "path": "../types/tsconfig.build.json" },
-    { "path": "../typescript-estree/tsconfig.build.json" },
-    { "path": "../scope-manager/tsconfig.build.json" },
-    { "path": "../parser/tsconfig.build.json" }
+    {
+      "path": "../utils/tsconfig.build.json"
+    },
+    {
+      "path": "../typescript-estree/tsconfig.build.json"
+    },
+    {
+      "path": "../parser/tsconfig.build.json"
+    }
   ]
 }
