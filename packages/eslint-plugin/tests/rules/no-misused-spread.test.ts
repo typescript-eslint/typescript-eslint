@@ -810,6 +810,52 @@ ruleTester.run('no-misused-spread', rule, {
       ],
     },
     {
+      code: noFormat`
+        declare const map: Map<string, number>;
+        const o = { ...(map) };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 29,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = Object.fromEntries(map);
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        declare const map: Map<string, number>;
+        const o = { ...(map, map) };
+      `,
+      errors: [
+        {
+          column: 21,
+          endColumn: 34,
+          line: 3,
+          messageId: 'noMapSpreadInObject',
+          suggestions: [
+            {
+              messageId: 'replaceMapSpreadInObject',
+              output: `
+        declare const map: Map<string, number>;
+        const o = Object.fromEntries((map, map));
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: `
         declare const map: Map<string, number>;
         const others = { a: 1 };

@@ -9,7 +9,6 @@ import type { TypeOrValueSpecifier } from '../util';
 import {
   createRule,
   getConstrainedTypeAtLocation,
-  getOperatorPrecedence,
   getParserServices,
   getWrappingFixer,
   isBuiltinSymbolLike,
@@ -17,6 +16,7 @@ import {
   isTypeFlagSet,
   readonlynessOptionsSchema,
   typeMatchesSomeSpecifier,
+  isHigherPrecedenceThanAwait,
 } from '../util';
 
 type Options = [
@@ -72,7 +72,7 @@ export default createRule<Options, MessageIds>({
         "Otherwise, if you don't need to preserve emojis or other non-Ascii characters, disable this lint rule on this line or configure the 'allow' rule option.",
       ].join('\n'),
       replaceMapSpreadInObject:
-        'Replace map spread in object with `Object.fromEntries(map)`',
+        'Replace map spread in object with `Object.fromEntries()`',
     },
     schema: [
       {
@@ -149,18 +149,6 @@ export default createRule<Options, MessageIds>({
           }),
         },
       ];
-    }
-
-    function isHigherPrecedenceThanAwait(tsNode: ts.Node): boolean {
-      const operator = ts.isBinaryExpression(tsNode)
-        ? tsNode.operatorToken.kind
-        : ts.SyntaxKind.Unknown;
-      const nodePrecedence = getOperatorPrecedence(tsNode.kind, operator);
-      const awaitPrecedence = getOperatorPrecedence(
-        ts.SyntaxKind.AwaitExpression,
-        ts.SyntaxKind.Unknown,
-      );
-      return nodePrecedence > awaitPrecedence;
     }
 
     function getPromiseSpreadSuggestions(
