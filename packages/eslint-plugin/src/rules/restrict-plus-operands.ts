@@ -12,7 +12,7 @@ import {
   isTypeFlagSet,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     allowAny?: boolean;
     allowBoolean?: boolean;
@@ -23,7 +23,7 @@ type Options = [
   },
 ];
 
-type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
+export type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
 export default createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
@@ -218,7 +218,10 @@ export default createRule<Options, MessageIds>({
         if (
           !allowNumberAndString &&
           isTypeFlagSetInUnion(baseType, ts.TypeFlags.StringLike) &&
-          isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
+          isTypeFlagSetInUnion(
+            otherType,
+            ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
+          )
         ) {
           return context.report({
             node,

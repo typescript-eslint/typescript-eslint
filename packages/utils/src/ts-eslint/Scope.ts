@@ -2,7 +2,7 @@
 
 import * as scopeManager from '@typescript-eslint/scope-manager';
 
-namespace Scope {
+export namespace Scope {
   export type ScopeManager = scopeManager.ScopeManager;
   export type Reference = scopeManager.Reference;
   export type Variable = scopeManager.ScopeVariable;
@@ -47,5 +47,3 @@ namespace Scope {
     export type WithScope = scopeManager.WithScope;
   }
 }
-
-export { Scope };

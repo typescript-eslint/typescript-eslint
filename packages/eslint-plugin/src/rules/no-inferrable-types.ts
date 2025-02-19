@@ -5,13 +5,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
-type Options = [
+export type Options = [
   {
     ignoreParameters?: boolean;
     ignoreProperties?: boolean;
   },
 ];
-type MessageIds = 'noInferrableType';
+export type MessageIds = 'noInferrableType';
 
 export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',
@@ -193,6 +193,7 @@ export default createRule<Options, MessageIds>({
      */
     function reportInferrableType(
       node:
+        | TSESTree.AccessorProperty
         | TSESTree.Parameter
         | TSESTree.PropertyDefinition
         | TSESTree.VariableDeclarator,
@@ -265,7 +266,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function inferrablePropertyVisitor(
-      node: TSESTree.PropertyDefinition,
+      node: TSESTree.AccessorProperty | TSESTree.PropertyDefinition,
     ): void {
       // We ignore `readonly` because of Microsoft/TypeScript#14416
       // Essentially a readonly property without a type
@@ -278,6 +279,7 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
+      AccessorProperty: inferrablePropertyVisitor,
       ArrowFunctionExpression: inferrableParameterVisitor,
       FunctionDeclaration: inferrableParameterVisitor,
       FunctionExpression: inferrableParameterVisitor,

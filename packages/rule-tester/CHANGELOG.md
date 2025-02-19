@@ -1,3 +1,57 @@
+## 8.24.1 (2025-02-17)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.24.0 (2025-02-10)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.23.0 (2025-02-03)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.22.0 (2025-01-27)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.21.0 (2025-01-20)
+
+### 🩹 Fixes
+
+- **eslint-plugin-internal:** [debug-namespace] on windows ([#10661](https://github.com/typescript-eslint/typescript-eslint/pull/10661))
+
+### ❤️ Thank You
+
+- Arya Emami @aryaemami59
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.20.0 (2025-01-13)
+
+### 🚀 Features
+
+- **eslint-plugin:** [no-misused-spread] add new rule ([#10551](https://github.com/typescript-eslint/typescript-eslint/pull/10551))
+
+### ❤️ Thank You
+
+- Josh Goldberg ✨
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+## 8.19.1 (2025-01-06)
+
+This was a version bump only for rule-tester to align it with other projects, there were no code changes.
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
 ## 8.19.0 (2024-12-30)
 
 This was a version bump only for rule-tester to align it with other projects, there were no code changes.

@@ -22,6 +22,12 @@ import tseslint from 'typescript-eslint';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const compat = new FlatCompat({ baseDirectory: __dirname });
 
+const restrictNamedDeclarations = {
+  message:
+    'Prefer a named export (e.g. `export const ...`) over an object export (e.g. `export { ... }`).',
+  selector: 'ExportNamedDeclaration[declaration=null][source=null]',
+};
+
 export default tseslint.config(
   // register all of the plugins up-front
   {
@@ -190,12 +196,14 @@ export default tseslint.config(
       // Internal repo rules
       //
 
+      '@typescript-eslint/internal/debug-namespace': 'error',
       '@typescript-eslint/internal/eqeq-nullish': 'error',
       '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
       '@typescript-eslint/internal/no-relative-paths-to-internal-packages':
         'error',
       '@typescript-eslint/internal/no-typescript-default-import': 'error',
       '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+      'no-restricted-syntax': ['error', restrictNamedDeclarations],
 
       //
       // eslint-base
@@ -479,6 +487,7 @@ export default tseslint.config(
           selector:
             'ExportDefaultDeclaration Property[key.name="create"] MemberExpression[object.name="context"][property.name="options"]',
         },
+        restrictNamedDeclarations,
       ],
     },
   },

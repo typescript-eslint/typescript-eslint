@@ -10,7 +10,7 @@ import type { Scope } from './Scope';
 import { ScopeBase } from './ScopeBase';
 import { ScopeType } from './ScopeType';
 
-class FunctionScope extends ScopeBase<
+export class FunctionScope extends ScopeBase<
   ScopeType.function,
   | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
@@ -68,5 +68,3 @@ class FunctionScope extends ScopeBase<
     );
   }
 }
-
-export { FunctionScope };

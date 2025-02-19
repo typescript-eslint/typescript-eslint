@@ -976,6 +976,9 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
   valid: [
     "const string = 'a';",
     'const string = `a`;',
+    'const string = `NaN: ${/* comment */ NaN}`;',
+    'const string = `undefined: ${/* comment */ undefined}`;',
+    'const string = `Infinity: ${Infinity /* comment */}`;',
     `
       declare const string: 'a';
       \`\${string}b\`;
@@ -1099,6 +1102,11 @@ ruleTester.run('no-unnecessary-template-expression', rule, {
 this code has trailing whitespace: \${'    '}
     \`;
     `,
+    `
+\`
+this code has trailing whitespace: \${\`    \`}
+    \`;
+    `,
     noFormat`
 \`this code has trailing whitespace with a windows \\\r new line: \${' '}\r\n\`;
     `,
@@ -1142,6 +1150,106 @@ this code has trailing whitespace: \${'    '}
   // intentional comment after
 }\`;
     `,
+    `
+      function getTpl<T>(input: T) {
+        return \`\${input}\`;
+      }
+    `,
+    `
+type FooBarBaz = \`foo\${/* comment */ 'bar'}"baz"\`;
+    `,
+    `
+enum Foo {
+  A = 'A',
+  B = 'B',
+}
+type Foos = \`\${Foo}\`;
+    `,
+    `
+type Foo = 'A' | 'B';
+type Bar = \`foo\${Foo}foo\`;
+    `,
+    `
+type Foo =
+  \`trailing position interpolated empty string also makes whitespace clear    \${''}
+\`;
+    `,
+    noFormat`
+type Foo = \`this code has trailing whitespace with a windows \\\r new line: \${\` \`}\r\n\`;
+    `,
+    "type Foo = `${'foo' | 'bar' | null}`;",
+
+    `
+type StringOrNumber = string | number;
+type Foo = \`\${StringOrNumber}\`;
+    `,
+    `
+enum Foo {
+  A = 1,
+  B = 2,
+}
+type Bar = \`\${Foo.A}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+
+type Union = \`\${Enum1 | Enum2}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+
+type Union = \`\${Enum1.A | Enum2.B}\`;
+    `,
+    `
+enum Enum1 {
+  A = 'A1',
+  B = 'B1',
+}
+
+enum Enum2 {
+  A = 'A2',
+  B = 'B2',
+}
+type Enums = Enum1 | Enum2;
+type Union = \`\${Enums}\`;
+    `,
+    `
+enum Enum {
+  A = 'A',
+  B = 'A',
+}
+
+type Intersection = \`\${Enum1.A & string}\`;
+    `,
+    `
+enum Foo {
+  A = 'A',
+  B = 'B',
+}
+type Bar = \`\${Foo.A}\`;
+    `,
+    `
+function foo<T extends string>() {
+  const a: \`\${T}\` = 'a';
+}
+    `,
+    'type T<A extends string> = `${A}`;',
   ],
 
   invalid: [
@@ -1258,6 +1366,105 @@ declare const nested: string, interpolation: string;
         },
       ],
       output: "true ? ('test' || '').trim() : undefined;",
+    },
+    {
+      code: 'type Foo = `${1}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `1`;',
+    },
+    {
+      code: 'type Foo = `${null}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `null`;',
+    },
+    {
+      code: 'type Foo = `${undefined}`;',
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: 'type Foo = `undefined`;',
+    },
+    {
+      code: "type Foo = `${'foo'}`;",
+      errors: [{ messageId: 'noUnnecessaryTemplateExpression' }],
+      output: "type Foo = 'foo';",
+    },
+    {
+      code: `
+type Foo = 'A' | 'B';
+type Bar = \`\${Foo}\`;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 19,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: `
+type Foo = 'A' | 'B';
+type Bar = Foo;
+      `,
+    },
+    {
+      code: `
+type Foo = 'A' | 'B';
+type Bar = \`\${\`\${Foo}\`}\`;
+      `,
+      errors: [
+        {
+          column: 13,
+          endColumn: 24,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+        {
+          column: 16,
+          endColumn: 22,
+          endLine: 3,
+          line: 3,
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: [
+        `
+type Foo = 'A' | 'B';
+type Bar = \`\${Foo}\`;
+      `,
+
+        `
+type Foo = 'A' | 'B';
+type Bar = Foo;
+      `,
+      ],
+    },
+    {
+      code: "type FooBarBaz = `foo${'bar'}baz`;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: 'type FooBarBaz = `foobarbaz`;',
+    },
+    {
+      code: 'type FooBar = `foo${`bar`}`;',
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: 'type FooBar = `foobar`;',
+    },
+    {
+      code: "type FooBar = `${'foo' | 'bar'}`;",
+      errors: [
+        {
+          messageId: 'noUnnecessaryTemplateExpression',
+        },
+      ],
+      output: "type FooBar = 'foo' | 'bar';",
     },
   ],
 });

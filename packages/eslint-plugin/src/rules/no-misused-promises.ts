@@ -15,7 +15,7 @@ import {
   NullThrowsReasons,
 } from '../util';
 
-type Options = [
+export type Options = [
   {
     checksConditionals?: boolean;
     checksSpreads?: boolean;
@@ -32,7 +32,7 @@ export interface ChecksVoidReturnOptions {
   variables?: boolean;
 }
 
-type MessageId =
+export type MessageId =
   | 'conditional'
   | 'predicate'
   | 'spread'
@@ -987,7 +987,8 @@ function getMemberIfExists(
 function isStaticMember(node: TSESTree.Node): boolean {
   return (
     (node.type === AST_NODE_TYPES.MethodDefinition ||
-      node.type === AST_NODE_TYPES.PropertyDefinition) &&
+      node.type === AST_NODE_TYPES.PropertyDefinition ||
+      node.type === AST_NODE_TYPES.AccessorProperty) &&
     node.static
   );
 }

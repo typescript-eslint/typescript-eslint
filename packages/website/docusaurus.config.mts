@@ -91,12 +91,6 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
             href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
             label: 'Stack Overflow',
           },
-          {
-            className: 'image-link twitter-link social-link-icon',
-            href: 'https://twitter.com/tseslint',
-            label: 'Twitter',
-            rel: 'me noopener',
-          },
         ],
         title: 'Community',
       },
@@ -184,7 +178,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
     title: 'typescript-eslint',
   },
   prism: {
-    additionalLanguages: ['ignore'],
+    additionalLanguages: ['bash', 'diff', 'ignore'],
     magicComments: [
       {
         block: { end: 'highlight-end', start: 'highlight-start' },
