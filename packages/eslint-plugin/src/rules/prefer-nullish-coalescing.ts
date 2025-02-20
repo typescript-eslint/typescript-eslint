@@ -423,7 +423,7 @@ export default createRule<Options, MessageIds>({
 
           if (
             testNode &&
-            isNodeEquivalent(
+            areNodesSimilarMemberAccess(
               testNode,
               getBranchNodes(node, operator).nonNullishBranch,
             )
@@ -438,7 +438,7 @@ export default createRule<Options, MessageIds>({
             } else if (isUndefinedIdentifier(testNode)) {
               hasUndefinedCheckWithoutTruthinessCheck = true;
             } else if (
-              isNodeEquivalent(
+              areNodesSimilarMemberAccess(
                 testNode,
                 getBranchNodes(node, operator).nonNullishBranch,
               )
@@ -656,21 +656,40 @@ function isMixedLogicalExpression(
   return false;
 }
 
-function isNodeEquivalent(a: TSESTree.Node, b: TSESTree.Node): boolean {
+/**
+ * Checks if two TSESTree nodes have similar member access orders,
+ * ignoring optional chaining differences.
+ *
+ * Note: This doesn't mean the nodes are runtime-equivalent,
+ * it simply verifies that the member access sequence is the same.
+ *
+ * Example: `a.b.c`, `a?.b.c`, `a.b?.c`, `(a?.b).c`, `(a.b)?.c` are considered similar.
+ *
+ * @param a First TSESTree node.
+ * @param b Second TSESTree node.
+ * @returns `true` if the nodes access members in the same order; otherwise, `false`.
+ */
+function areNodesSimilarMemberAccess(
+  a: TSESTree.Node,
+  b: TSESTree.Node,
+): boolean {
   if (
     a.type === AST_NODE_TYPES.MemberExpression &&
     b.type === AST_NODE_TYPES.MemberExpression
   ) {
     return (
       isNodeEqual(a.property, b.property) &&
-      isNodeEquivalent(a.object, b.object)
+      areNodesSimilarMemberAccess(a.object, b.object)
     );
   }
   if (
     a.type === AST_NODE_TYPES.ChainExpression ||
     b.type === AST_NODE_TYPES.ChainExpression
   ) {
-    return isNodeEquivalent(skipChainExpression(a), skipChainExpression(b));
+    return areNodesSimilarMemberAccess(
+      skipChainExpression(a),
+      skipChainExpression(b),
+    );
   }
   return isNodeEqual(a, b);
 }
