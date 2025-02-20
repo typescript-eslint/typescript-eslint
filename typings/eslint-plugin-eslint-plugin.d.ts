@@ -1,3 +1,4 @@
+// TODO: Move this to DefinitelyTyped
 declare module 'eslint-plugin-eslint-plugin' {
   import type { FlatConfig, Linter } from '@typescript-eslint/utils/ts-eslint';
 

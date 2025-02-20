@@ -23,7 +23,7 @@ export type Options = [
   },
 ];
 
-interface ChecksVoidReturnOptions {
+export interface ChecksVoidReturnOptions {
   arguments?: boolean;
   attributes?: boolean;
   inheritedMethods?: boolean;

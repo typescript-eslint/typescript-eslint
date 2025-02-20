@@ -1,2 +1,3 @@
 # see comment in the file
 packages/ast-spec/tests/util/parsers/typescript-estree-import.ts
+packages/integration-tests/fixtures/**/*
