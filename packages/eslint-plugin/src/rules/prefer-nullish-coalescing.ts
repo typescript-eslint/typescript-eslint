@@ -657,11 +657,10 @@ function isMixedLogicalExpression(
 }
 
 /**
- * Checks if two TSESTree nodes have similar member access orders,
- * ignoring optional chaining differences.
+ * Checks if two TSESTree nodes have the same member access sequence,
+ * regardless of optional chaining differences.
  *
- * Note: This doesn't mean the nodes are runtime-equivalent,
- * it simply verifies that the member access sequence is the same.
+ * Note: This does not imply that the nodes are runtime-equivalent.
  *
  * Example: `a.b.c`, `a?.b.c`, `a.b?.c`, `(a?.b).c`, `(a.b)?.c` are considered similar.
  *
