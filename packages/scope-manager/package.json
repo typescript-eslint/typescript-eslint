@@ -44,7 +44,7 @@
     "generate-lib": "npx nx generate-lib repo",
     "lint": "npx nx lint",
     "test": "npx nx test --code-coverage",
-    "_typecheck": "npx nx typecheck"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.24.1",

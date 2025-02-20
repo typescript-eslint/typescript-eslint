@@ -19,6 +19,6 @@
     { "path": "./packages/visitor-keys" },
     { "path": "./packages/website" },
     { "path": "./packages/website-eslint" },
-    { "path": "./tsconfig.eslint.json" }
+    { "path": "./tsconfig.repo-config-files.json" }
   ]
 }

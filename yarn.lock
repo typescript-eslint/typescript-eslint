@@ -5154,6 +5154,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/esquery@npm:^1.5.4":
+  version: 1.5.4
+  resolution: "@types/esquery@npm:1.5.4"
+  dependencies:
+    "@types/estree": "*"
+  checksum: 5fc78cbaf48e66b05d051013a634aa270311b02a4c38b9b02510e4224ebd29974c0f8b9bff647d258c08ac35dc3e3266425b39c4b7e24b055097eec502a12d71
+  languageName: node
+  linkType: hard
+
 "@types/estree-jsx@npm:^1.0.0":
   version: 1.0.5
   resolution: "@types/estree-jsx@npm:1.0.5"
@@ -5869,6 +5878,7 @@ __metadata:
     "@types/debug": ^4.1.12
     "@types/eslint-plugin-jsx-a11y": ^6.10.0
     "@types/eslint__eslintrc": ^2.1.2
+    "@types/esquery": ^1.5.4
     "@types/is-glob": ^4.0.4
     "@types/jest": 29.5.13
     "@types/jest-specific-snapshot": ^0.5.9

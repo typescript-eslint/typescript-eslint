@@ -52,7 +52,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "npx nx lint",
     "test": "jest --coverage --runInBand --verbose",
-    "_typecheck": "npx nx typecheck"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/types": "8.24.1",

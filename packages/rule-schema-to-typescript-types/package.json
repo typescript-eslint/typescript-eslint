@@ -30,7 +30,7 @@
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
-    "_typecheck": "npx nx typecheck"
+    "check-types": "npx nx typecheck"
   },
   "dependencies": {
     "@typescript-eslint/type-utils": "8.24.1",

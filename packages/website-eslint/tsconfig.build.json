@@ -7,9 +7,11 @@
     "tsBuildInfoFile": "dist/tsconfig.build.tsbuildinfo",
     // Build is done by esbuild
     "emitDeclarationOnly": true,
-    "types": ["node"]
+    "types": ["node"],
+    "allowJs": true,
+    "checkJs": true
   },
-  "include": ["src/**/*.ts", "types", "build.ts"],
+  "include": ["src/**/*.ts", "src/index.js", "types", "build.ts"],
   "exclude": ["jest.config.js", "src/**/*.spec.ts", "src/**/*.test.ts"],
   "references": [
     {

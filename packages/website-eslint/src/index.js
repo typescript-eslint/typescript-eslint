@@ -3,7 +3,6 @@ NOTE - this file intentionally uses deep `/use-at-your-own-risk` imports into ou
 This is so that esbuild can properly tree-shake and only include the necessary code.
 This saves us having to mock unnecessary things and reduces our bundle size.
 */
-// @ts-check
 
 import eslintJs from '@eslint/js';
 import * as plugin from '@typescript-eslint/eslint-plugin';
@@ -26,7 +25,12 @@ exports.esquery = esquery;
 exports.createLinter = function () {
   const linter = new Linter({ configType: 'eslintrc' });
   for (const name in plugin.rules) {
-    linter.defineRule(`@typescript-eslint/${name}`, plugin.rules[name]);
+    linter.defineRule(
+      `@typescript-eslint/${name}`,
+      /** @type {import('eslint').Rule.RuleModule} */ (
+        /** @type {unknown} */ (plugin.rules[name])
+      ),
+    );
   }
   return linter;
 };
