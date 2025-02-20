@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/*",
+      "packages/ast-spec/tests/util/parsers/babel-8"
     ]
   },
   "installConfig": {
@@ -127,6 +128,7 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
+    "@babel/eslint-parser-v8/@babel/core": "^8.0.0-0",
     "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",
     "@jest/test-result": "^29",

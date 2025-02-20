@@ -2,6 +2,7 @@ type SnapshotPathFn = (i: number) => string;
 
 interface SuccessSnapshotPaths {
   readonly ast: SnapshotPathFn;
+  readonly astBabel8?: SnapshotPathFn;
   readonly tokens: SnapshotPathFn;
 }
 

@@ -1,10 +1,13 @@
 import type { ParserOptions } from '@babel/core';
 
-import { parse } from '@babel/eslint-parser';
+import { parse as parse7 } from '@babel/eslint-parser';
+import { parse as parse8 } from './babel-8';
 
 import type { Fixture, ParserResponse } from './parser-types';
 
 import { ParserResponseType } from './parser-types';
+
+const PARSERS = { 7: parse7, 8: parse8 };
 
 const PLUGINS: NonNullable<ParserOptions['plugins']> = [
   'decoratorAutoAccessors',
@@ -13,18 +16,22 @@ const PLUGINS: NonNullable<ParserOptions['plugins']> = [
   'classProperties',
   'decorators-legacy',
   'explicitResourceManagement',
-  'importAssertions',
   'typescript',
 ];
 
-export function parseBabel(fixture: Fixture, contents: string): ParserResponse {
+export function parseBabel(
+  fixture: Fixture,
+  contents: string,
+  version: 7 | 8 = 7,
+): ParserResponse {
   const plugins = [...PLUGINS];
   if (fixture.isJSX) {
     plugins.push('jsx');
   }
+  plugins.push(version === 7 ? 'importAssertions' : 'deprecatedImportAssert');
 
   try {
-    const result = parse(contents, {
+    const result = PARSERS[version](contents, {
       allowImportExportEverywhere: true,
       babelOptions: {
         parserOpts: {
