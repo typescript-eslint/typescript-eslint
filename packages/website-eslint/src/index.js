@@ -1,3 +1,7 @@
+// TODO: Maybe we can share this forked typing more effectively?
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+/// <reference path="../../website/typings/esquery.d.ts" />
+
 /*
 NOTE - this file intentionally uses deep `/use-at-your-own-risk` imports into our packages.
 This is so that esbuild can properly tree-shake and only include the necessary code.

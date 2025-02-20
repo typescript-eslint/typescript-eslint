@@ -74,7 +74,6 @@
     "@types/debug": "^4.1.12",
     "@types/eslint-plugin-jsx-a11y": "^6.10.0",
     "@types/eslint__eslintrc": "^2.1.2",
-    "@types/esquery": "^1.5.4",
     "@types/is-glob": "^4.0.4",
     "@types/jest": "29.5.13",
     "@types/jest-specific-snapshot": "^0.5.9",
